@@ -28,7 +28,7 @@ REQUIRED = NAV_REQUIRED
 #: map, geometry, scene) is rejected so a map cannot leak into the prompt or
 #: the navigation component.
 STATIC_KEYS = ('orders', 'condition', 'goal', 'mission', 'robot_count',
-               'destination_zone', 'leader_id', 'role')
+               'destination_zone', 'leader_id', 'role', 'slots')
 DEPENDENCY_STATUS = ('nav-only own-input navigation adapter pending; '
                      'selfnav wiring and own-command odometry not injected')
 
@@ -82,24 +82,32 @@ def nav_static(static):
     return _reject_geometry(value)
 
 
-def queue_fields(seed):
+def queue_fields(seed, robots=ROBOTS):
     """Explicit queue markers written only by ``--prepare --mode nav``."""
-    return dict(nav_only=True, robots=list(ROBOTS), leader_id=leader_for_seed(seed),
+    robots = tuple(robots)
+    if not robots or not set(robots) <= set(ROBOTS):
+        raise ValueError('invalid execution robot set')
+    return dict(nav_only=True, robots=list(robots), leader_id=robots[seed % len(robots)],
                 component_requirements=list(REQUIRED), static_map_input=False,
                 dependency_status=DEPENDENCY_STATUS)
 
 
-def validate_queue(queue, seed):
+def validate_queue(queue, seed, robots=ROBOTS):
     """Re-check the prepared nav queue before any physics import.
 
     This is deliberately fail-closed: a tampered or stale queue cannot turn a
-    three-robot (or static-map) run into nav mode.
+    three-robot (or static-map) run into nav mode.  ``robots`` is the pair, or
+    the single robot of the r4 solo diagnostic (validated again in the gate
+    queue: the solo marker is r4-only).
     """
+    robots = tuple(robots)
+    if not robots or not set(robots) <= set(ROBOTS):
+        raise ValueError('NAV_ROBOTS_REQUIRED')
     if queue.get('nav_only') is not True:
         raise ValueError('NAV_ONLY_QUEUE_REQUIRED')
-    if tuple(queue.get('robots') or ()) != ROBOTS:
+    if tuple(queue.get('robots') or ()) != robots:
         raise ValueError('NAV_ROBOTS_REQUIRED')
-    if queue.get('leader_id') != leader_for_seed(seed):
+    if queue.get('leader_id') != robots[seed % len(robots)]:
         raise ValueError('NAV_LEADER_MISMATCH')
     if queue.get('static_map_input') is not False:
         raise ValueError('NAV_STATIC_MAP_INPUT_FORBIDDEN')
@@ -110,9 +118,10 @@ def validate_queue(queue, seed):
     return queue
 
 
-def fail_closed_result_fields():
+def fail_closed_result_fields(robots=ROBOTS):
     """Result markers: nav mode never claims physical or E2E success."""
-    return dict(nav_only=True, robots=list(ROBOTS),
+    robots = tuple(robots)
+    return dict(nav_only=True, robots=list(robots),
                 component_requirements=list(REQUIRED), static_map_input=False,
                 student_execution=False, physical_success_available=False,
                 success_claim='not_available', success_evidence=None,

@@ -28,9 +28,13 @@ from harness.e2ewarp_nav_mode import (MODE as NAV_MODE, ROBOTS as NAV_ROBOTS,
                                       leader_for_seed as nav_leader, nav_static,
                                       queue_fields as nav_queue_fields,
                                       validate_queue as nav_validate_queue)
-from harness.e2ewarp_nav_gate import (NAV_SCENARIO, SIM_BUDGET_S as NAV_SIM_BUDGET_S,
+from harness.e2ewarp_nav_gate import (GATE_MODE_V230_R4, LANE_Y, NAV_SCENARIO,
+                                      SIM_BUDGET_S as NAV_SIM_BUDGET_S,
+                                      gate_mode as nav_gate_mode,
                                       gate_queue_fields as nav_gate_fields,
+                                      gate_robots as nav_gate_robots,
                                       nav_orders as nav_gate_orders,
+                                      slot_assignment as nav_slot_assignment,
                                       validate_calibration_binding as nav_validate_calibration,
                                       validate_gate_queue as nav_validate_gate_queue)
 from harness.zone_study_contract import ROBOTS
@@ -52,6 +56,11 @@ def head():
 def stack_config():
     path = ROOT/'configs/current_stack.json'
     return json.loads(path.read_text()), sha(path.read_bytes())
+
+
+def nav_slots_enabled():
+    """True only for the explicit r4 gate mode (slots are r4-only markers)."""
+    return nav_gate_mode()['name'] == GATE_MODE_V230_R4
 
 
 def apply_arrival_args(a):
@@ -136,9 +145,12 @@ def prepare(a):
             values[key] = value
             deviations.append(dict(id=key, reason='navigation-only gate: component not used and not loaded',
                                    approval=dict(approval)))
-        # Explicit opt-in queue markers; the smoke/mission queue stays byte-identical.
-        queue.update(nav_queue_fields(a.seed))
-        queue.update(nav_gate_fields(a.seed, sim_budget_s=a.nav_sim_budget_s))
+        # Explicit opt-in queue markers; the smoke/mission queue stays
+        # byte-identical.  r4 adds the opt-in solo diagnostic (one execution
+        # robot) and the order-sheet slots; both are r4-only and fail closed.
+        robots = nav_gate_robots(getattr(a, 'nav_solo_robot', None))
+        queue.update(nav_queue_fields(a.seed, robots))
+        queue.update(nav_gate_fields(a.seed, sim_budget_s=a.nav_sim_budget_s, robots=robots))
         nav_validate_gate_queue(queue)
     a.output.mkdir(parents=True, exist_ok=False)
     write(funnel, dict(raw=str(a.output.resolve()), reproduction=a.command,
@@ -203,9 +215,11 @@ def admit(a, queue):
 def run(a, queue):
     apply_arrival_args(a)
     nav = a.mode == NAV_MODE
+    solo_robot = getattr(a, 'nav_solo_robot', None)
+    robots = nav_gate_robots(solo_robot) if nav else ROBOTS
     if nav:
         # Fail closed before any host admission or physics import.
-        nav_validate_queue(queue, a.seed)
+        nav_validate_queue(queue, a.seed, robots)
         nav_validate_gate_queue(queue)
         nav_validate_calibration(queue)
     # Admission is complete before importing physics/render packages.
@@ -213,7 +227,6 @@ def run(a, queue):
     components = (require_components(a.components, ROOT) if a.mode == 'mission'
                   else require_navigation(a.components, ROOT) if nav else None)
     active = bool(components) or nav
-    robots = NAV_ROBOTS if nav else ROBOTS
     actor = load_actor(components['ACT']) if components and not nav else None
     from scripts.e2e_warp_physics import build_context, transport, issue, own_map
     import numpy as np
@@ -224,26 +237,36 @@ def run(a, queue):
     meta = dict(class_='dev', branch='codex/e2ewarp', sha=head(), batch=a.output.name,
           **{'class': 'dev'}, source='e2ewarp', physics_backend='mjwarp_batch_v1')
     if nav:
-        meta.update(execution_mode=NAV_MODE, robots=list(NAV_ROBOTS), leader_id=nav_leader(a.seed),
+        meta.update(execution_mode=NAV_MODE, robots=list(robots), leader_id=nav_leader(a.seed),
                     component_requirements=list(NAV_REQUIRED), static_map_input=False)
+        if len(robots) == 1:
+            meta.update(nav_solo_robot=robots[0], diagnostic=True,
+                        gate='eval-only claim/contact diagnostic; not an acceptance gate')
     write(a.output/'RUN_META.json', meta)
     contexts, planners, tasks, channels, ownstates, rings = [], {}, {}, [], {}, {}
     decisions, maprows, rejects, commands, evaluations, evalstates = [], [], [], [], [], []
     message_drops = []
+    contact_ledger = None
     status, error, tick, hooks = 'HOST_ERROR', None, 0, None
     started = time.monotonic()
     try:
         for w in range(a.nworld):
             # Same static model/seed per batch; worlds have independent control.
-            context = build_context(a.seed, a.output/f'world-{w:02d}', queue['stack_values'], nav_scene=nav)
+            context = build_context(a.seed, a.output/f'world-{w:02d}', queue['stack_values'],
+                                    nav_scene=nav, nav_keep=robots if nav else ('r1', 'r2'),
+                                    nav_spawns=({r: LANE_Y[r] for r in robots} if nav else None))
             contexts.append(context)
             scenario = context['scene'].scene['params']['scenario_setup']
             if nav:
                 # No static map: only order/condition metadata reaches the
-                # navigation component and the LLM prompt.
-                static = nav_static(dict(orders=nav_gate_orders(scenario['orders']),
-                                         condition=a.condition, robot_count=len(robots),
-                                         destination_zone='B'))
+                # navigation component and the LLM prompt.  r4 adds the
+                # per-robot order-sheet slot (order metadata, not geometry).
+                static_fields = dict(orders=nav_gate_orders(scenario['orders']),
+                                     condition=a.condition, robot_count=len(robots),
+                                     destination_zone='B')
+                if nav_slots_enabled():
+                    static_fields['slots'] = nav_slot_assignment(robots)
+                static = nav_static(static_fields)
             else:
                 static = dict(orders=scenario['orders'], static_map=context['static_map'],
                               condition=a.condition, communication_schema=dict(
@@ -264,6 +287,14 @@ def run(a, queue):
                 ownstates[key], rings[key] = {}, deque(maxlen=101)  # 10 SIM s at existing 10Hz + current
         hooks = transport(contexts, a.output, head(), queue['stack_values'])
         hooks.initialize(contexts)
+        if nav:
+            # Eval-only cross-robot contact ledger (never a controller input).
+            from harness import e2ewarp_nav_contacts as nav_contacts
+            model = contexts[0]['world'].model
+            contact_ledger = nav_contacts.ledger(
+                robots, base_boxes={r: nav_contacts.base_box(model, r) for r in robots},
+                note='MJWarp contact buffer read after each step; evaluation sink only')
+            write(a.output/'contact-ledger.json', contact_ledger)
         write(a.output/'runtime-applied.json', dict(flow='e2e_llm', stack_values=queue['stack_values'],
             stack_deviations=queue['stack_deviations'], host=queue['host'],
             contact_profile=dict(profile=queue['stack_values']['contact_profile'],
@@ -378,6 +409,12 @@ def run(a, queue):
                 status = 'NAV_ARRIVAL_UNVERIFIED'
                 break
             hooks.step(contexts, np.ones(a.nworld, dtype=bool))
+            if nav and contact_ledger is not None:
+                from harness import e2ewarp_nav_contacts as nav_contacts
+                for w in range(a.nworld):
+                    nav_contacts.record(contact_ledger,
+                                        nav_contacts.read_contacts(hooks, w, robots=set(robots)),
+                                        (tick + 1) / 10.0)
             if (tick+1) % 10 == 0:
                 write(a.output/'progress.json', dict(sim_s=(tick+1)/10, client_requests=sum(p.calls for p in planners.values()),
                       model_calls=sum(len((r.get('upstream') or {}).get('attempts', [])) for p in planners.values() for r in p.rows),
@@ -406,6 +443,8 @@ def run(a, queue):
         if nav:
             write(a.output/'nav-events.json', {f'{w}:{r}': task.component.events for (w,r),task in tasks.items()})
             write(a.output/'message-drops.json', message_drops)
+            if contact_ledger is not None:
+                write(a.output/'contact-ledger.json', contact_ledger)
         elif components:
             write(a.output/'mission-events.json', {f'{w}:{r}': task.component.events for (w,r),task in tasks.items()})
         sizes = []
@@ -436,7 +475,18 @@ def run(a, queue):
             summary['message_dropped_n'] = len(message_drops)
             # Nav-only result: no evaluator, so no E2E/physical success field can
             # be set true even after an own-input arrival report.
-            summary.update(nav_result_fields())
+            summary.update(nav_result_fields(robots))
+            if len(robots) == 1:
+                summary.update(nav_solo_robot=robots[0], nav_diagnostic=True,
+                               gate_applicable=False)
+            if contact_ledger is not None:
+                summary.update(contact_ledger=dict(
+                    available=contact_ledger['contacts_available'],
+                    unavailable_reason=contact_ledger['unavailable_reason'],
+                    contact_ticks=contact_ledger['contact_ticks'],
+                    contact_pairs_total=contact_ledger['contact_pairs_total'],
+                    first_contact_s=contact_ledger['first_contact_s'],
+                    last_contact_s=contact_ledger['last_contact_s']))
         if not (a.output/'first30.json').exists():
             incomplete = first30(allrows, decisions, sim_s, a.nworld, time.monotonic()-started)
             incomplete.update(scope='incomplete prefix; first30 not reached', completed_first30=False)
@@ -488,6 +538,9 @@ def build_parser():
     p.add_argument('--round', type=int, choices=(1, 2, 3), default=1)
     p.add_argument('--nworld', type=int, choices=range(1, 41), default=1)
     p.add_argument('--seed', type=int, default=601)
+    p.add_argument('--nav-solo-robot', choices=('r1', 'r2'), default=None,
+                   help='r4 diagnostic only: run one execution robot in the nav scene '
+                        '(same seed/budget/slots); never an acceptance gate')
     p.add_argument('--nav-sim-budget-s', type=float, default=NAV_SIM_BUDGET_S,
                    help='navigation-gate SIM budget cap (<=120 s); ignored outside --mode nav')
     p.add_argument('--arrival-odom-residual', action='store_true',
@@ -522,6 +575,10 @@ def main(argv=None):
     a = p.parse_args(argv)
     if a.mode == 'smoke' and a.nworld > 2:
         p.error('first30 smoke is restricted to 1–2 worlds')
+    if a.nav_solo_robot and a.mode != NAV_MODE:
+        p.error('--nav-solo-robot requires --mode nav')
+    if a.nav_solo_robot and nav_gate_mode()['name'] != GATE_MODE_V230_R4:
+        p.error('--nav-solo-robot requires E2EWARP_NAV_GATE_MODE=v230_r4')
     a.command = ['python', '-m', 'scripts.run_e2e_warp', *(argv if argv is not None else __import__('sys').argv[1:])]
     if a.prepare:
         if a.execute:

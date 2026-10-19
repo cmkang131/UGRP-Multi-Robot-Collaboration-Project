@@ -51,6 +51,18 @@ Contract v1 (2026-10-18, user decisions):
   `harness.e2ewarp_nav_gate` (`E2EWARP_NAV_GATE_MODE=v230_fwd24`); the
   constructor default remains `search_in_place` with no forward leg, so every
   existing v1/gate-1/r5 condition is unchanged.
+- **Approved gate mode v230_r4 (2026-10-19 r4 step ②; default OFF).** Same
+  claim as r3 (the 0.52 m projection along the armed *component-centre* bearing
+  and the 1.0 m path fail-safe are unchanged), plus an order-sheet per-robot
+  *slot* (`left` / `right`).  The slot is realised in the robot's own camera:
+  the visible destination component is split into two equal halves, and the
+  follower aims at the centre column of its own half (25 % / 75 % of the
+  component bbox, so there is no tuned offset constant; the detector's own
+  linear column->bearing mapping supplies the angle).  The aim is applied to
+  the *following* bearing only: the arming bearing and therefore the claim
+  direction `u` stay the component-centre bearing exactly as in r3, so the
+  claim definition is untouched.  The slot is order metadata (which half of the
+  destination this robot owns), never map geometry and never GT.
 - **Approved gate mode v230_r3 (2026-10-19 decision ①; default OFF).** The
   r2 Step B run failed because its claim counted the *path length* of the own
   issued pulses while arrival is a *position* judgement: both robots drove
@@ -76,7 +88,16 @@ from collections.abc import Mapping
 from dataclasses import dataclass, field
 
 OPTION = 'e2ewarp_selfnav_v1'
-ALLOWED_STATIC_KEYS = ('orders', 'goal', 'mission', 'robot_count', 'destination_zone', 'condition')
+ALLOWED_STATIC_KEYS = ('orders', 'goal', 'mission', 'robot_count', 'destination_zone', 'condition',
+                       'slots')
+#: Order-sheet slots (2026-10-19 r4 step ②).  ``left``/``right`` is the half of
+#: the *visible* destination marking this robot owns, relative to the robot's
+#: own camera (positive bearing = robot-left, the approved v230 convention).
+#: The slot is order metadata only; it is realised from the own component bbox
+#: (see ``SelfCentricNavigation._slot_detections``) and never from a map or GT.
+SLOT_LEFT = 'left'
+SLOT_RIGHT = 'right'
+SLOTS = (SLOT_LEFT, SLOT_RIGHT)
 # Existing calibrated finite-pulse vocabulary (percent x pulse width), taken from
 # harness.egocentric_goto.duty (scale .35, 0.10 s).  These are command limits,
 # not odometry calibration: metres/degrees per percent-second stay injected.
@@ -280,6 +301,11 @@ class Landmark:
     # detector; used only by the ground-distance arrival option, which projects
     # the patch's centre pixel onto the floor.  ``None`` fails closed.
     bbox: tuple | None = None
+    # r4 slot aim: rotation-invariant offset (degrees) from the component-centre
+    # bearing to the centre of this robot's half of the visible marking.  It is
+    # applied to the *following* bearing only; the arming bearing and the claim
+    # direction stay the component-centre bearing (r3 definition unchanged).
+    slot_bearing_offset_deg: float = 0.0
     # Appearance-only detectors (e.g. GpuCalibZoneDetector) report no metric
     # range.  A default 0.0 must never be read as "arrived at 0 m".
     range_measured: bool = True
@@ -329,6 +355,7 @@ class SelfCentricMemory:
                                  touches_top=bool(det.get('touches_top', False)),
                                  bbox=(tuple(int(v) for v in det['bbox'])
                                        if det.get('bbox') is not None else None),
+                                 slot_bearing_offset_deg=float(det.get('slot_bearing_offset_deg') or 0.0),
                                  range_measured=measured))
         self.items = kept[-16:]
 
@@ -350,6 +377,7 @@ class SelfCentricMemory:
                      bottom_norm=round(i.bottom_norm, 3), width_norm=round(i.width_norm, 3),
                      height_norm=round(i.height_norm, 3), solidity=round(i.solidity, 3),
                      bbox=(None if i.bbox is None else [int(v) for v in i.bbox]),
+                     slot_bearing_offset_deg=round(float(i.slot_bearing_offset_deg), 3),
                      range_measured=bool(i.range_measured))
                 for i in self.items]
 
@@ -367,7 +395,7 @@ class SelfCentricNavigation:
                  arrival_projection_m=ARRIVAL_ODOM_PROJECTION_M,
                  arrival_projection_path_cap_m=ARRIVAL_PROJECTION_PATH_CAP_M,
                  arrival_bottom_contact_norm=ARRIVAL_BOTTOM_CONTACT_NORM,
-                 ground_projection=None):
+                 ground_projection=None, slot=None):
         if robot_id not in ('r1', 'r2'):
             raise ValueError('contract v1 navigation is two-robot only (r1/r2)')
         if acquisition_mode not in ACQUISITION_MODES:
@@ -433,6 +461,17 @@ class SelfCentricNavigation:
         if destination_kind is None and isinstance(zone, str) and zone:
             destination_kind = zone if zone.startswith('zone_') else f'zone_{zone}'
         self.destination_kind = str(destination_kind) if destination_kind is not None else DESTINATION_KIND
+        # r4 step ②: the order sheet may name this robot's slot (left/right).
+        # It is read only as order metadata; the aim is computed from the own
+        # camera component (no map/GT).  An explicit argument wins, so a caller
+        # can bind it without the sheet; both fail closed on an unknown value.
+        if slot is None:
+            slot = (sheet.get('slots') or {}).get(robot_id)
+        if slot is not None:
+            slot = str(slot)
+            if slot not in SLOTS:
+                raise ValueError('unknown destination slot: ' + slot)
+        self.slot = slot
         self.arrival_range_m = float(arrival_range_m)
         if self.arrival_range_m < 0.0:
             raise ValueError('arrival range threshold must be nonnegative')
@@ -522,6 +561,8 @@ class SelfCentricNavigation:
         if self.option != OPTION:
             return self._report(active=False, now_s=frame.sim_s)
         detections = self.detector(frame) if self.detector else ()
+        if self.slot is not None:
+            detections = self._slot_detections(detections)
         accepted = self._accepted_hit(detections)
         self.memory.observe(frame.sim_s, detections)
         if self.memory.nearest(self.destination_kind) is not None:
@@ -561,6 +602,38 @@ class SelfCentricNavigation:
         return self._report(active=True, now_s=frame.sim_s)
 
     # --- C: acquisition quality ------------------------------------------
+    def _slot_detections(self, detections):
+        """Add the r4 slot aim offset to the own-camera destination detections.
+
+        The visible destination marking is split into two equal halves; the
+        robot aims at the centre column of its own half.  With the detector's
+        linear column->bearing mapping, that column's bearing is the midpoint of
+        the component-centre bearing and the bbox edge bearing, so the offset is
+        ``aim - centre`` and no new angle constant is introduced.  The offset is
+        stored on the detection (and therefore on the remembered landmark) for
+        the *following* bearing only: ``bearing_deg`` itself is untouched, so the
+        arming bearing and the r3 claim direction stay the component centre.
+
+        A destination detection that cannot attest both bbox edge bearings fails
+        closed (a slot must never silently fall back to the centre aim).
+        """
+        adjusted = []
+        for det in detections or ():
+            if str(det.get('kind')) != self.destination_kind:
+                adjusted.append(det)
+                continue
+            left = det.get('bearing_at_left_edge_deg')
+            right = det.get('bearing_at_right_edge_deg')
+            if left is None or right is None:
+                raise ValueError('slot aim requires measured component edge bearings')
+            center = float(det.get('bearing_deg') or 0.0)
+            edge = float(left) if self.slot == SLOT_LEFT else float(right)
+            value = dict(det)
+            value['slot_bearing_offset_deg'] = wrap_deg(0.5 * (float(edge) + center) - center)
+            value['slot'] = self.slot
+            adjusted.append(value)
+        return adjusted
+
     def _accepted_hit(self, detections):
         """Largest destination component that passes the C height pre-filter.
 
@@ -750,7 +823,7 @@ class SelfCentricNavigation:
             if reason == 'search_timeout':
                 return dict(reason=reason, landmark=None, forward=0.0, turn=0.0)
             return dict(reason=reason, landmark=None, forward=0.0, turn=self._search_turn())
-        bearing = wrap_deg(landmark.bearing_deg)
+        bearing = wrap_deg(landmark.bearing_deg + landmark.slot_bearing_offset_deg)
         turn = clamp(bearing / BEARING_FULL_DEG, -1.0, 1.0)
         if abs(bearing) > ALIGN_GATE_DEG:
             forward = 0.0  # rotate toward the destination before translating
@@ -793,6 +866,7 @@ class SelfCentricNavigation:
                     target_confirmed=bool(self._target_confirmed),
                     forward_reacquire=bool(self.forward_reacquire),
                     arrival_mode=self.arrival_mode,
+                    slot=self.slot,
                     arrival_armed=bool(self._arrival_armed),
                     arrival_travel_m=round(self._arrival_travel_m, 6),
                     arrival_projection_m=round(self._arrival_proj_m, 6),
@@ -1207,11 +1281,22 @@ class GpuCalibZoneDetector:
         H, W = mask.shape
         left, right, top, bottom = comp['left'], comp['right'], comp['top'], comp['bottom']
         width, height = right - left, bottom - top
+
+        def column_bearing(column):
+            """Bearing (deg) of one image column under this detector's convention."""
+            offset = column / max(W - 1, 1) - 0.5
+            if self.bearing_convention == BEARING_POSITIVE_LEFT:
+                offset = -offset
+            return offset * self.hfov_deg
+
         cx = (left + right - 1) / 2.0
-        offset = cx / max(W - 1, 1) - 0.5
-        if self.bearing_convention == BEARING_POSITIVE_LEFT:
-            offset = -offset
-        bearing = offset * self.hfov_deg
+        bearing = column_bearing(cx)
+        # r4 slot aim (2026-10-19, default OFF): the bbox edge columns are
+        # measured here from the same own frame so an order-sheet slot can aim
+        # at the centre of one half of the visible marking.  They are additive
+        # measurement fields; no existing consumer reads them.
+        bearing_left = column_bearing(left)
+        bearing_right = column_bearing(right)
         return [dict(kind='zone_B', bearing_deg=bearing, bottom_norm=bottom / H,
                      width_norm=width / W, height_norm=height / H,
                      area_norm=comp['area'] / (H * W), solidity=comp['area'] / (width * height),
@@ -1219,6 +1304,8 @@ class GpuCalibZoneDetector:
                      touches_left=bool(left <= 0), touches_right=bool(right >= W),
                      touches_top=bool(top <= 0),
                      bbox=(left, top, right, bottom), pixels=comp['area'], total_pixels=total,
+                     bearing_at_left_edge_deg=bearing_left,
+                     bearing_at_right_edge_deg=bearing_right,
                      hue_units=self.band['units'], profile=self.profile,
                      bearing_convention=self.bearing_convention)]
 

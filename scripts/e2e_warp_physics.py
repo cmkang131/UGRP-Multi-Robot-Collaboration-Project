@@ -40,7 +40,7 @@ def source_module():
     return backend, core, schedule
 
 
-def build_context(seed, out, stack, *, nav_scene=False, nav_spawns=None):
+def build_context(seed, out, stack, *, nav_scene=False, nav_spawns=None, nav_keep=('r1', 'r2')):
     """Privileged initial construction only. No CPU integration/settling.
 
     ``nav_scene`` builds the contract-v1 two-robot navigation gate: cargo is not
@@ -102,7 +102,7 @@ def build_context(seed, out, stack, *, nav_scene=False, nav_spawns=None):
     xml = apply_xml(xml, stack['contact_profile'])
     if nav_scene:
         from harness.e2ewarp_nav_gate import prune_robots
-        xml = prune_robots(xml, keep=('r1', 'r2'))
+        xml = prune_robots(xml, keep=nav_keep)
     model = mujoco.MjModel.from_xml_string(xml)
     data = mujoco.MjData(model)
     assert_model_profile(model, stack['contact_profile'], data.eq_active)
@@ -111,6 +111,8 @@ def build_context(seed, out, stack, *, nav_scene=False, nav_spawns=None):
     robots, ports = {}, {}
     if nav_scene:
         spawns = nav_spawns or pair_lane_spawns(scene.config['setup_only']['spawns'])
+        # The r4 solo diagnostic keeps exactly one authored robot in the scene.
+        spawns = {r: pose for r, pose in spawns.items() if r in tuple(nav_keep)}
     else:
         spawns = scene.config['setup_only']['spawns']
     servo_joint = dict(yaw='arm_yaw', shoulder='shoulder', elbow='elbow', wrist='wrist_pitch')
@@ -202,7 +204,7 @@ def transport(contexts, out, sha, stack):
             self.wd = mjw.put_data(m, contexts[0]['world'].data, nworld=self.n, nconmax=512, njmax=2048)
             self.copy_initial_state(contexts)
             self.robot_relay_states = {r: np.zeros((self.n, 4), int) for r in self.robot_ids}
-            self.relay_state = self.robot_relay_states['r1']
+            self.relay_state = self.robot_relay_states.get(self.robot_ids[0])
             steps, chunk, launches = schedule.physics_schedule(.1, self.dt)
             self.launches = launches
             self.tape = wp.zeros((steps, self.n, m.nu), dtype=float)
