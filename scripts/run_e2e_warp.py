@@ -28,7 +28,7 @@ from harness.e2ewarp_nav_mode import (MODE as NAV_MODE, ROBOTS as NAV_ROBOTS,
                                       leader_for_seed as nav_leader, nav_static,
                                       queue_fields as nav_queue_fields,
                                       validate_queue as nav_validate_queue)
-from harness.e2ewarp_nav_gate import (GATE_MODE_V230_R4, LANE_Y, NAV_SCENARIO,
+from harness.e2ewarp_nav_gate import (GATE_MODE_V230_R4, NAV_SCENARIO,
                                       SIM_BUDGET_S as NAV_SIM_BUDGET_S,
                                       gate_mode as nav_gate_mode,
                                       gate_queue_fields as nav_gate_fields,
@@ -252,9 +252,11 @@ def run(a, queue):
     try:
         for w in range(a.nworld):
             # Same static model/seed per batch; worlds have independent control.
+            # build_context derives the authored lane spawns and keeps only the
+            # execution robot set (the r4 solo diagnostic prunes the XML to one
+            # robot); setup-only spawns never reach a controller.
             context = build_context(a.seed, a.output/f'world-{w:02d}', queue['stack_values'],
-                                    nav_scene=nav, nav_keep=robots if nav else ('r1', 'r2'),
-                                    nav_spawns=({r: LANE_Y[r] for r in robots} if nav else None))
+                                    nav_scene=nav, nav_keep=robots if nav else ('r1', 'r2'))
             contexts.append(context)
             scenario = context['scene'].scene['params']['scenario_setup']
             if nav:
