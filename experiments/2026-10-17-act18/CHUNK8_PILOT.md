@@ -13,8 +13,9 @@ TRAIN4 결과와 합산하지 않는다.
   `n_action_steps`를 `1..c.CHUNK`로 제한하고,
   `:175-176`에서 예측 shape이 `(c.CHUNK, ACTION_DIM)`이 아니면
   `ValueError('invalid action chunk')`를 낸다.
-- 파일럿 `scripts/collect_act16w_dagger.py:80`이
-  `ChunkExecutor(actor.predict)`를 기본값(`n_action_steps=8`)으로 만든다.
+- 파일럿 `scripts/collect_act16w_dagger.py:80`(base `9682754a0`; 이 PR
+  적용 후 `:91`)이 `ChunkExecutor(actor.predict)`를 기본값
+  (`n_action_steps=8`)으로 만든다.
 - R100은 `act18_policy.CANDIDATES['R100']=100`으로 만들어져
   `Actor.predict()`가 `(100, 14)`를 반환하고 adapter.json의 `chunk`도
   100이다. 그래서 첫 `executor.step()`에서 위 shape 검사에 걸린다.
