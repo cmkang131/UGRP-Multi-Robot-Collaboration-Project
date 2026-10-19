@@ -24,18 +24,20 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def validate_probe_options(candidate, init_checkpoint, steps, post_close_weight, pre_close_weight,
                            done_positive_batch_fraction=None, base_smooth_window=None, val_select=False,
-                           done_current_step_only=False):
+                           done_current_step_only=False, done_window_ticks=None, done_clock_jitter_s=None):
     """Default-off pilot options; never silently mixes with the R8/R100 reference pair."""
     supplied = [value is not None for value in
                 (init_checkpoint, steps, post_close_weight, pre_close_weight, done_positive_batch_fraction,
-                 base_smooth_window)] + ([True] if val_select else [])
+                 base_smooth_window, done_window_ticks, done_clock_jitter_s)] + ([True] if val_select else [])
     pilot_only = [value is not None for value in
                   (init_checkpoint, steps, post_close_weight, pre_close_weight, done_positive_batch_fraction)]
     if candidate in PILOT_CANDIDATES:
         if steps is None:
             raise ValueError(candidate+' requires --steps')
-        if candidate in (TUNE_CANDIDATE, 'act18-doneb1') and init_checkpoint is None:
+        if candidate in (TUNE_CANDIDATE, 'act18-doneb1', 'act18-r3dw') and init_checkpoint is None:
             raise ValueError(candidate+' requires --init-checkpoint')
+        if candidate == 'act18-r3dw' and done_window_ticks is None:
+            raise ValueError(candidate+' requires --done-window-ticks')
     elif candidate == 'act18-co':
         if any(pilot_only):
             raise ValueError('co-training does not combine with pilot options')
@@ -60,6 +62,20 @@ def validate_probe_options(candidate, init_checkpoint, steps, post_close_weight,
         raise ValueError('--val-select requires a pilot candidate')
     if done_current_step_only and candidate not in PILOT_CANDIDATES:
         raise ValueError('--done-current-step-only requires a pilot candidate')
+    if done_window_ticks is not None:
+        if candidate != 'act18-r3dw':
+            raise ValueError('--done-window-ticks requires --candidate act18-r3dw')
+        if type(done_window_ticks) is not int or not 1 <= done_window_ticks <= 20:
+            raise ValueError('--done-window-ticks must be an integer within [1, 20]')
+    if done_clock_jitter_s is not None:
+        if candidate != 'act18-r3dw':
+            raise ValueError('--done-clock-jitter-s requires --candidate act18-r3dw')
+        if done_window_ticks is None:
+            raise ValueError('--done-clock-jitter-s requires --done-window-ticks')
+        if (not isinstance(done_clock_jitter_s, (int, float))
+                or isinstance(done_clock_jitter_s, bool)
+                or not 0 < done_clock_jitter_s <= 2.):
+            raise ValueError('--done-clock-jitter-s must be within (0, 2] seconds')
     return steps
 
 
@@ -111,6 +127,11 @@ def main():
     # existing balanced BCE weights (0.5/prior vs 0.5/(1-prior) = 361:1) stay
     # the harness implementation, so action losses are unchanged.
     p.add_argument('--done-positive-batch-fraction', type=float)
+    # R3 done-window (default OFF): expand the grasp completion labels over the
+    # K-1 immediately preceding same-episode/skill rows at 0.1 s spacing.
+    p.add_argument('--done-window-ticks', type=int)
+    # R3-B (default OFF): add U(-s,+s) seconds to verify_lift/hold clock inputs.
+    p.add_argument('--done-clock-jitter-s', type=float)
     # B2 standard alignment (default OFF): act-plus-plus smooths the mobile base
     # action with a per-episode moving average at data-load time.
     p.add_argument('--base-smooth-window', type=int)
@@ -166,9 +187,11 @@ def main():
                                              a.post_close_weight, a.pre_close_weight,
                                              a.done_positive_batch_fraction,
                                              a.base_smooth_window, a.val_select,
-                                             a.done_current_step_only) or protocol['steps']
+                                             a.done_current_step_only,
+                                             a.done_window_ticks, a.done_clock_jitter_s) or protocol['steps']
     if cotrain and (a.post_close_weight is not None or a.pre_close_weight is not None
-                    or a.done_positive_batch_fraction is not None or a.done_current_step_only):
+                    or a.done_positive_batch_fraction is not None or a.done_current_step_only
+                    or a.done_window_ticks is not None or a.done_clock_jitter_s is not None):
         raise ValueError('co-training does not combine with tuning options')
     if cotrain and a.candidate not in ('act18-co', 'act18-loop'):
         raise ValueError('--cotrain-native requires --candidate act18-co or act18-loop')
@@ -184,6 +207,8 @@ def main():
             raise ValueError('--lr override must be within [1e-7, 1e-4]')
     done_positive_fraction = a.done_positive_batch_fraction
     weighted = a.post_close_weight is not None or a.pre_close_weight is not None
+    if weighted and (a.done_window_ticks is not None or a.done_clock_jitter_s is not None):
+        raise ValueError('R3 done-window options do not combine with post-close weighting')
     sampling = (('cotrain_transition_v1' if a.transition_weight is not None else 'cotrain_v1')
                 if cotrain else ('weighted_post_close_v1' if weighted else 'uniform_episode_v1'))
     if cotrain:
@@ -199,7 +224,9 @@ def main():
     else:
         data = ReferenceDataset(a.dataset, 'train', chunk=CANDIDATES[a.candidate],
                                 base_smooth_window=a.base_smooth_window,
-                                done_horizon='current_only' if a.done_current_step_only else 'all')
+                                done_horizon='current_only' if a.done_current_step_only else 'all',
+                                done_window_ticks=int(a.done_window_ticks or 0),
+                                done_clock_jitter_s=a.done_clock_jitter_s)
     positive_indices = done_positive_indices(data) if done_positive_fraction is not None else None
     if (set(data.manifest['eligible_train_seeds'])!=set(protocol['train_seeds'])
             or original_sha256(a.dataset/'manifest.json')!=queue['dataset_manifest_sha256']):
@@ -305,7 +332,9 @@ def main():
             condition_token=dict(default=[1.0,0.0],order=['v7','act16w'],dim=2),
             note='v7 TRAIN200 + act16w TRAIN32; condition token appended to state; done head trained separately'))
     if a.candidate in PILOT_CANDIDATES:
-        if a.done_current_step_only:
+        if a.candidate == 'act18-r3dw':
+            probe_kind='done_window_finetune_v1'
+        elif a.done_current_step_only:
             probe_kind='done_horizon_current_only_v1'
         elif a.init_checkpoint is not None:
             probe_kind=('transition_weighted_finetune_v1' if a.transition_weight is not None
@@ -327,6 +356,13 @@ def main():
             base_smooth_window=a.base_smooth_window,
             val_select=a.val_select,
             done_current_step_only=a.done_current_step_only,lr_override=a.lr,
+            done_window_ticks=int(a.done_window_ticks or 0),
+            done_window_skill='grasp' if a.done_window_ticks else None,
+            done_window_receipt=(data.done_window_receipt if a.done_window_ticks else None),
+            done_clock_jitter_s=a.done_clock_jitter_s,
+            done_clock_jitter_seed=(20261017 if a.done_clock_jitter_s is not None else None),
+            done_clock_jitter_rows=int(getattr(data,'clock_jitter_rows',0)),
+            completion_prior=priors,
             note='short default-off pilot probe; never packaged or pooled with R8/R100')
         config.update(probe=probe)
     report=dict(**config,status='running',complete=False,steps_completed=0,

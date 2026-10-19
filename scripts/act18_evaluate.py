@@ -230,6 +230,13 @@ def main():
             from act18_policy import registered_pilot_checkpoint
             continuation=(provenance.get('candidate')=='act18-co' and provenance.get('resume')
                           and isinstance(provenance.get('step'),int) and 20000<=provenance['step']<=100000)
+            # Registered short probes include the R3 done-window probe
+            # (done_window_finetune_v1). It is evaluable for diagnosis only and
+            # must never be packaging eligible.
+            if provenance.get('probe',{}).get('kind')=='done_window_finetune_v1' and (
+                    provenance['probe'].get('packaging_eligible') is not False
+                    or provenance.get('candidate')!='act18-r3dw'):
+                raise ValueError('R3 done-window probe must stay unpackaged act18-r3dw')
             if not continuation and not registered_pilot_checkpoint(provenance,sha256(protocol_path)):
                 raise ValueError('complete registered100k reference model required')
     class Client(originals[2]):

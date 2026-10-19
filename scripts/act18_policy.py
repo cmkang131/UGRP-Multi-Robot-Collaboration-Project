@@ -21,15 +21,31 @@ from act17_policy import observation_batch
 # align..close demonstration segments. It is never a packaged comparison model
 # (adapter training_complete stays False because its step != protocol steps).
 CANDIDATES = {'R8': 8, 'R100': 100, 'act18-tune': 8, 'act18-doneb1': 100,
-              'act18-std': 20, 'act18-b3': 20, 'act18-co': 20, 'act18-loop': 20}
+              'act18-std': 20, 'act18-b3': 20, 'act18-co': 20, 'act18-loop': 20,
+              'act18-r3dw': 8}
 TUNE_CANDIDATE = 'act18-tune'
 # Registered short pilot checkpoints (never 100k reference models, never packaged):
 # 'act18-tune' = post-close weighted 2k probe on R8; 'act18-doneb1' = done-only
-# 5k probe on R100 (pre-registered 2026-10-18 for Lead-approved B1).
-PILOT_CANDIDATES = ('act18-tune', 'act18-doneb1', 'act18-std', 'act18-b3', 'act18-loop')
+# 5k probe on R100 (pre-registered 2026-10-18 for Lead-approved B1);
+# 'act18-r3dw' = R3 done-window 10k probe on R8 (pre-registered 2026-10-19).
+PILOT_CANDIDATES = ('act18-tune', 'act18-doneb1', 'act18-std', 'act18-b3', 'act18-loop',
+                    'act18-r3dw')
 PILOT_KINDS = ('init_aligned_finetune_v1', 'done_positive_balanced_finetune_v1',
                'standard_aligned_scratch_v1', 'done_horizon_current_only_v1',
-               'transition_weighted_finetune_v1')
+               'transition_weighted_finetune_v1', 'done_window_finetune_v1')
+# R3 done-window label expansion (spec act-C2-R3 2026-10-19 section 4):
+# the last K local rows of the grasp skill are positive, never crossing an
+# episode/skill boundary and only on exactly 0.1 s spaced rows. Release
+# positives are a different skill and stay unchanged, so the window changes
+# 200 grasp rows (one per TRAIN episode) to 200*K rows.
+DONE_WINDOW_SKILL = 'grasp'
+DONE_WINDOW_MAX_TICKS = 20
+DONE_WINDOW_PERIOD_S = .1
+# R3-B only: add U(-jitter,+jitter) seconds to the two recorded clock inputs on
+# verify_lift/hold rows, before normalization. Frozen augmentation seed.
+DONE_CLOCK_JITTER_PHASES = ('verify_lift', 'hold')
+DONE_CLOCK_JITTER_SEED = 20261017
+DONE_CLOCK_MAX_S = 120.
 # Segment table frozen before the probe run (Lead 2026-10-18 instruction):
 # the post-close phases are where the student halts, pre-close phases are the
 # immediately preceding approach/alignment tail. Phase labels are the recorded
@@ -79,17 +95,66 @@ def weighted_sampler_mass(episode_indices, row_weights):
     return mass
 
 
-def extend_targets(actions, metadata, chunk, done_horizon='all'):
+def expand_done_window(actions, metadata, window_ticks):
+    """Return done labels with the last K local grasp rows positive (R3).
+
+    The window is anchored on each raw grasp completion row and walks backwards
+    over the immediately preceding rows of the same episode and skill at exactly
+    0.1 s spacing. It never crosses an episode or skill boundary and never
+    invents rows. Release completion rows belong to another skill and are left
+    unchanged. ``window_ticks == 0`` returns the input array unchanged.
+    """
+    if type(window_ticks) is not int or not 0 <= window_ticks <= DONE_WINDOW_MAX_TICKS:
+        raise ValueError('done_window_ticks must be an integer within [0, %d]' % DONE_WINDOW_MAX_TICKS)
+    actions = np.asarray(actions)
+    if window_ticks == 0:
+        return actions, dict(window_ticks=0, positive_rows=0, window_rows=0, added_rows=0,
+                             stopped_by_boundary=0, episodes=0)
+    if len(actions) != len(metadata):
+        raise ValueError('one metadata row per action row required')
+    result = np.array(actions, dtype=np.float32, copy=True)
+    positives = [index for index, row in enumerate(metadata)
+                 if row['skill'] == DONE_WINDOW_SKILL and float(actions[index, -1]) == 1.]
+    window_rows = set()
+    stopped_by_boundary = 0
+    for positive in positives:
+        window_rows.add(positive)
+        previous = positive
+        for _ in range(window_ticks - 1):
+            candidate = previous - 1
+            if (candidate < 0
+                    or metadata[candidate]['skill'] != metadata[positive]['skill']
+                    or metadata[candidate]['sample_id'].split(':')[0] != metadata[positive]['sample_id'].split(':')[0]
+                    or abs(float(metadata[previous]['t']) - float(metadata[candidate]['t'])
+                           - DONE_WINDOW_PERIOD_S) > 1e-5):
+                stopped_by_boundary += 1
+                break
+            window_rows.add(candidate)
+            previous = candidate
+    for index in window_rows:
+        result[index, -1] = 1.
+    added = len(window_rows) - len(positives)
+    return result, dict(window_ticks=window_ticks, positive_rows=len(positives),
+                        window_rows=len(window_rows), added_rows=added,
+                        stopped_by_boundary=stopped_by_boundary,
+                        episodes=len({row['sample_id'].split(':')[0] for row in metadata
+                                      if row['skill'] == DONE_WINDOW_SKILL}))
+
+
+def extend_targets(actions, metadata, chunk, done_horizon='all', done_window_ticks=0):
     """Reconstruct future labels from original h0, within the same skill only.
 
     done_horizon='current_only' keeps the completion target only at the chunk
     row that corresponds to the observation itself (h=0). B1 showed the learned
     done mass sits at far horizons (h≈99) while execution reads h=0, so this
     candidate isolates the horizon-contract hypothesis.
+
+    done_window_ticks>0 first expands the grasp completion labels (R3), then
+    builds chunks from the expanded labels. Default 0 keeps the previous bytes.
     """
     if done_horizon not in ('all', 'current_only'):
         raise ValueError('done_horizon must be all or current_only')
-    actions = np.asarray(actions)
+    actions, _ = expand_done_window(actions, metadata, done_window_ticks)
     out = np.zeros((len(actions), chunk, actions.shape[-1]), dtype=np.float32)
     pad = np.ones((len(actions), chunk), dtype=bool)
     for i, origin in enumerate(metadata):
@@ -117,14 +182,38 @@ class ReferenceDataset(Dataset):
     # optional window keeps that standard alignment toggle default OFF.
     BASE_ACTION_DIMS = 8
 
-    def __init__(self, root, split, *, chunk=8, base_smooth_window=None, done_horizon='all'):
+    def __init__(self, root, split, *, chunk=8, base_smooth_window=None, done_horizon='all',
+                 done_window_ticks=0, done_clock_jitter_s=None):
         super().__init__(root, split, image_mode='current_full_v1')
         if chunk not in CANDIDATES.values():
             raise ValueError('registered ACT chunk required')
         if base_smooth_window is not None and (type(base_smooth_window) is not int or base_smooth_window < 1):
             raise ValueError('base_smooth_window must be a positive integer')
+        if type(done_window_ticks) is not int or not 0 <= done_window_ticks <= DONE_WINDOW_MAX_TICKS:
+            raise ValueError('done_window_ticks must be an integer within [0, %d]' % DONE_WINDOW_MAX_TICKS)
+        if done_clock_jitter_s is not None:
+            if (not isinstance(done_clock_jitter_s, (int, float))
+                    or isinstance(done_clock_jitter_s, bool)
+                    or not 0 < done_clock_jitter_s <= 2.):
+                raise ValueError('done_clock_jitter_s must be within (0, 2] seconds')
+            if split != 'train':
+                raise ValueError('clock jitter is a TRAIN-only input augmentation')
         self.chunk = chunk
         self.base_smooth_window = base_smooth_window
+        self.done_window_ticks = done_window_ticks
+        self.done_clock_jitter_s = done_clock_jitter_s
+        self.done_window_receipt = None
+        self.clock_jitter_offsets_s = None
+        self.clock_jitter_rows = 0
+        if done_clock_jitter_s is not None:
+            generator = np.random.Generator(np.random.PCG64(DONE_CLOCK_JITTER_SEED))
+            offsets = generator.uniform(-float(done_clock_jitter_s), float(done_clock_jitter_s),
+                                        size=len(self.metadata))
+            eligible = np.asarray([row.get('teacher_phase') in DONE_CLOCK_JITTER_PHASES
+                                   for row in self.metadata], dtype=bool)
+            offsets[~eligible] = 0.
+            self.clock_jitter_offsets_s = offsets.astype(np.float64)
+            self.clock_jitter_rows = int(eligible.sum())
         offset = 0
         for shard in self.shards:
             n = len(shard['state'])
@@ -138,22 +227,74 @@ class ReferenceDataset(Dataset):
             else:
                 target_source = raw
             actions, pad = extend_targets(target_source, self.metadata[offset:offset+n], chunk,
-                                          done_horizon=done_horizon)
+                                          done_horizon=done_horizon,
+                                          done_window_ticks=done_window_ticks)
+            if done_window_ticks:
+                _, receipt = expand_done_window(target_source, self.metadata[offset:offset+n],
+                                                done_window_ticks)
+                if self.done_window_receipt is None:
+                    self.done_window_receipt = dict(receipt)
+                else:
+                    for key in ('positive_rows', 'window_rows', 'added_rows', 'stopped_by_boundary',
+                                'episodes'):
+                        self.done_window_receipt[key] += receipt[key]
             # This is a new view over existing successful v7 recordings. Verify
             # byte-exact parity with all original horizons that still exist.
             common = min(chunk, shard['action'].shape[1])
             # done_horizon='current_only' intentionally clears the completion
             # column for h>0, so parity covers only the untouched columns.
             kept = shard['action'].shape[-1] - 1 if done_horizon == 'current_only' else shard['action'].shape[-1]
+            original_action = shard['action'][:, :common]
+            original_pad = shard['action_is_pad'][:, :common]
             if base_smooth_window is None:
-                if (not np.array_equal(actions[:, :common, :kept], shard['action'][:, :common, :kept])
-                        or not np.array_equal(pad[:, :common], shard['action_is_pad'][:, :common])):
-                    raise ValueError('reconstructed future targets differ from original chunk8')
-            elif not np.array_equal(actions[:, :common, self.BASE_ACTION_DIMS:kept],
-                                    shard['action'][:, :common, self.BASE_ACTION_DIMS:kept]):
-                raise ValueError('smoothed base action changed non-base targets')
+                if done_window_ticks == 0:
+                    if (not np.array_equal(actions[:, :common, :kept], original_action[..., :kept])
+                            or not np.array_equal(pad[:, :common], original_pad)):
+                        raise ValueError('reconstructed future targets differ from original chunk8')
+                else:
+                    valid = ~pad[:, :common]
+                    if not np.array_equal(actions[:, :common, :13][valid],
+                                          original_action[:, :, :13][valid]):
+                        raise ValueError('done window changed a non-completion target')
+                    if np.any(valid & original_pad):
+                        raise ValueError('done window validated a previously padded slot')
+                    both = valid & ~original_pad
+                    if np.any(actions[:, :common, -1][both] < original_action[:, :, -1][both]):
+                        raise ValueError('done window removed a previously valid completion target')
+            else:
+                if not np.array_equal(actions[:, :common, self.BASE_ACTION_DIMS:13],
+                                      original_action[:, :, self.BASE_ACTION_DIMS:13]):
+                    raise ValueError('smoothed base action changed non-base targets')
+                if np.any(~pad[:, :common] & original_pad):
+                    raise ValueError('smoothed target unexpectedly extended a padded slot')
+                if done_window_ticks == 0 and not np.array_equal(
+                        actions[:, :common, self.BASE_ACTION_DIMS:kept],
+                        original_action[..., self.BASE_ACTION_DIMS:kept]):
+                    raise ValueError('smoothed base action changed non-base targets')
             shard['action'], shard['action_is_pad'] = actions, pad
             offset += n
+
+    def __getitem__(self,index):
+        """Default path is the parent bytes; R3-B adds clock jitter before normalization."""
+        if self.done_clock_jitter_s is None:
+            return super().__getitem__(index)
+        from harness.grasp_act_data import IMAGE_KEYS,normalized_image,assert_tensor_keys
+        from act17_data import raw_image
+        j,i=self.index[index];s=self.shards[j];refs=[s['frames'][k] for k in s['image_index'][i]]
+        image=normalized_image(raw_image(refs[-1]['path'],refs[-1]['sha256'],False))
+        state=np.array(s['state'][i],dtype=np.float32,copy=True)
+        offset_s=float(self.clock_jitter_offsets_s[index])
+        if offset_s:
+            # Clocks are recorded as min(120 s, elapsed)/120; add seconds in the
+            # same units before normalization and clamp only at zero as specified.
+            state[-2:]=np.maximum(0.,state[-2:]+offset_s/DONE_CLOCK_MAX_S)
+        batch={IMAGE_KEYS[0]:image,'observation.state':
+               (state-np.asarray(self.stats['state_mean'],np.float32))/np.asarray(self.stats['state_std'],np.float32),
+               'action':(s['action'][i]-np.asarray(self.stats['action_mean'],np.float32))/np.asarray(self.stats['action_std'],np.float32),
+               'action_is_pad':s['action_is_pad'][i].copy()}
+        batch['action'][batch['action_is_pad']]=0.
+        assert_tensor_keys(batch,training=True)
+        return batch
 
 
 def registered_pilot_checkpoint(provenance, protocol_sha256):
@@ -173,13 +314,16 @@ def registered_pilot_checkpoint(provenance, protocol_sha256):
     candidate = provenance.get('candidate')
     kind = probe.get('kind')
     init_kinds = ('init_aligned_finetune_v1', 'done_positive_balanced_finetune_v1',
-                  'done_horizon_current_only_v1', 'transition_weighted_finetune_v1')
+                  'done_horizon_current_only_v1', 'transition_weighted_finetune_v1',
+                  'done_window_finetune_v1')
     if kind in init_kinds and not isinstance(receipt, dict):
         # B2 was trained from scratch with the done fix and predates the
         # standard-scratch kind label; its standard flags still register it.
         if not (candidate == 'act18-std' and (probe.get('val_select') or probe.get('base_smooth_window'))):
             return False
     if kind == 'standard_aligned_scratch_v1' and candidate != 'act18-std':
+        return False
+    if kind == 'done_window_finetune_v1' and candidate != 'act18-r3dw':
         return False
     return bool(candidate in PILOT_CANDIDATES
                 and kind in PILOT_KINDS
