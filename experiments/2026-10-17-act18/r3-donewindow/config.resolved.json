@@ -119,8 +119,16 @@
       "python3 scripts/act18_r3_offline_gate.py --enabled report --gate-dir <run root>/offline --out <run root>/offline"
     ],
     "R8_validation": {
-      "pilot": "/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T200500Z/offline/r8-validation/pilot",
-      "e0": "/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T200500Z/offline/r8-validation/e0"
+      "pilot": {
+        "path": "/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T200500Z/offline/r8-validation/pilot",
+        "status": "paused_for_c2_priority_before_first_world_row",
+        "expected_with_R8": "g1 false, g2 true, g3 true",
+        "note": "PID 1447377 was reniced by the coordinator and then stopped to protect C2a/C2b; rerun with a new --out after C2."
+      },
+      "e0": {
+        "path": "/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T200500Z/offline/r8-validation/e0",
+        "status": "passed_4_of_4_with_R8_frames"
+      }
     }
   }
 }

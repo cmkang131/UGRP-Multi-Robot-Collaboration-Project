@@ -98,21 +98,21 @@ Claude 결정(창민 위임) 2026-10-19: R3은 브랜치·데이터·config diff
 
 | gate | 정의 | 명령 | 상태 |
 |---|---|---|---|
-| g1 | 파일럿 teacher V0: hold 끝 ±10틱 TE done ≥ .65가 ≥3/4 | `... --enabled pilot --checkpoint <R3> --prereg ... --out <run>/offline/pilot` | 스크립트·R8 검증 실행 |
-| g2 | verify_lift 시작 이전 TE done ≥ .65가 0/4 | 위와 같음 | 스크립트·R8 검증 실행 |
-| g3 | lookback onset \|Δ\| ≤ 5틱 ≥3/4 | 위와 같음 | 스크립트·R8 검증 실행 |
+| g1 | 파일럿 teacher V0: hold 끝 ±10틱 TE done ≥ .65가 ≥3/4 | `... --enabled pilot --checkpoint <R3> --prereg ... --out <run>/offline/pilot` | 스크립트 준비; R8 검증은 C2 우선으로 중단 |
+| g2 | verify_lift 시작 이전 TE done ≥ .65가 0/4 | 위와 같음 | 스크립트 준비; R8 검증은 C2 우선으로 중단 |
+| g3 | lookback onset \|Δ\| ≤ 5틱 ≥3/4 | 위와 같음 | 스크립트 준비; R8 검증은 C2 우선으로 중단 |
 | g4 | C2b S2(v7): lift 6개 중 발화 ≥4, 비-lift 대조 2개 중 ≤1 | `... --enabled c2b --c2b-summary <C2b adapter json>` | 스크립트·합성 입력 검증(5/6, 1/2 → PASS). 실제 C2b 산출물 대기 |
 | g5 | E0 open-loop TRAIN4 teacher 종료 행 4/4 ≥ .65 | `... --enabled e0 --dataset <dataset-r1> --checkpoint <R3> --out <run>/offline/e0` 또는 `--frames <R3 open-loop frames>` | 스크립트·R8 frames 4/4 검증 |
 | report | g1∧g2∧g3∧g4∧g5 | `... --enabled report --gate-dir <run>/offline --out <run>/offline` | 스크립트 준비 |
 
 - **PASS = g1∧g2∧g3∧g4∧g5. 하나라도 실패하면 GPU 평가 금지, R3을 FAIL로 닫고 다음 후보는 R3b(별도 command-history head).**
-- R8 검증(도구가 실제로 도는지 확인): E0 frames 평가는 **4/4 PASS**(R8은 done head가 정상인 기준선). pilot replay는 R8에서 g1 FAIL·g2 PASS·g3 PASS가 기대값이며 별도 run root에 기록했다(아래 “검증 실행”).
+- R8 검증(도구가 실제로 도는지 확인): E0 frames 평가는 **4/4 PASS**(R8은 done head가 정상인 기준선). g4는 합성 입력(5/6 lift, 1/2 control)으로 PASS를 확인했다. pilot replay는 R8에서 g1 FAIL·g2 PASS·g3 PASS가 기대값이지만, **C2a/C2b 우선 지시로 첫 world 완료 전에 중단**했다(부분 산출물만 보존). 도구 로드·window bounds·JPEG 해시·단일 chunk 추론까지는 확인했다.
 - g4 입력 형식(`ugrp.act18.r3_c2b_gate_input.v1`)은 C2b 담당이 자기 원본에서 변환해 내야 한다. Oracle에서 재추론하지 않는다.
 
 검증 실행 경로:
 
 - `/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T200500Z/offline/r8-validation/e0/` (g5 4/4)
-- `/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T200500Z/offline/r8-validation/pilot/` (R8 pilot replay, g1 FAIL·g2/g3 PASS)
+- `/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T200500Z/offline/r8-validation/pilot/` (R8 pilot replay, **중단됨**: 첫 world row 파일 없음. 삭제하지 않고 보존. C2 완료 뒤 새 out dir로 재실행)
 - C2b 합성 입력 검증은 `/tmp/r3-gate-c2b/`(임시, 커밋하지 않음).
 
 ## 6. 학습 실행 (승인 대기 — 이번에 실행하지 않음)
