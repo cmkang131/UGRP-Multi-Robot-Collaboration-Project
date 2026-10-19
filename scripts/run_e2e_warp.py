@@ -57,16 +57,20 @@ def stack_config():
 def apply_arrival_args(a):
     """Bind the approved (B) arrival option from the explicit CLI flags.
 
-    Both distance-based arrival candidates are DEFAULT OFF: without a flag the
-    queue records `bottom_band` and the process environment carries no arrival
-    variables, so every frozen condition is unchanged.  The flags exist only for
-    the approved `v230_r2` gate mode (the gate queue rejects them elsewhere).
+    Both distance-based arrival candidates and the r3 projection claim are
+    DEFAULT OFF: without a flag the queue records `bottom_band` and the process
+    environment carries no arrival variables, so every frozen condition is
+    unchanged.  The flags exist only for the approved `v230_r2` / `v230_r3` gate
+    modes (the gate queue rejects them elsewhere).  The r3 projection threshold
+    (0.52 m) and its 1.0 m path fail-safe have no CLI override: they are frozen
+    code constants.
     """
     from harness.e2ewarp_nav_gate import (ARRIVAL_ENV, ARRIVAL_GROUND_M_ENV,
                                          ARRIVAL_ODOM_M_ENV)
     odom = bool(getattr(a, 'arrival_odom_residual', False))
     ground = getattr(a, 'arrival_ground_distance_m', None)
-    if odom and ground is not None:
+    projection = bool(getattr(a, 'arrival_odom_projection', False))
+    if sum((odom, ground is not None, projection)) > 1:
         raise ValueError('NAV_ARRIVAL_METHOD_AMBIGUOUS')
     for key in (ARRIVAL_ENV, ARRIVAL_ODOM_M_ENV, ARRIVAL_GROUND_M_ENV):
         os.environ.pop(key, None)
@@ -78,6 +82,8 @@ def apply_arrival_args(a):
     elif ground is not None:
         os.environ[ARRIVAL_ENV] = 'ground_distance'
         os.environ[ARRIVAL_GROUND_M_ENV] = repr(float(ground))
+    elif projection:
+        os.environ[ARRIVAL_ENV] = 'odom_projection'
 
 
 def prepare(a):
@@ -493,6 +499,10 @@ def build_parser():
     p.add_argument('--arrival-ground-distance-m', type=float, default=None,
                    help='B(b) default-off: claim arrival when the ground-projected '
                         'distance of the patch centre is <= this value (v230_r2 only)')
+    p.add_argument('--arrival-odom-projection', action='store_true',
+                   help='B(r3) default-off: claim arrival when the own-odometry '
+                        'displacement projected onto the armed bearing reaches the '
+                        'frozen 0.52 m (v230_r3 only; 1.0 m path fail-safe)')
     p.add_argument('--condition', choices=COMM_CONDITIONS, default='no_comm')
     p.add_argument('--prepare', action='store_true')
     p.add_argument('--execute', action='store_true')

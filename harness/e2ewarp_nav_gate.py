@@ -39,7 +39,8 @@ Gate modes (2026-10-19 user approval; default OFF):
 """
 from __future__ import annotations
 
-from harness.e2ewarp_selfnav import ACQUIRE_CONFIRM_TICKS, ACQUIRE_MIN_HEIGHT_NORM
+from harness.e2ewarp_selfnav import (ACQUIRE_CONFIRM_TICKS, ACQUIRE_MIN_HEIGHT_NORM,
+                                     ARRIVAL_ODOM_PROJECTION)
 
 import hashlib
 import json
@@ -81,6 +82,15 @@ GATE_MODE_V230_FWD24 = 'v230_fwd24'
 #: the same 2.4 m cap when the target is lost.  The two B candidates stay
 #: default OFF and are selected only through the explicit arrival flags below.
 GATE_MODE_V230_R2 = 'v230_r2'
+#: 2026-10-19 decision ① (`v230_r3`): the same C acquisition quality and the same
+#: B arming event/0.52 m geometry as ``v230_r2``, but the arrival claim is the
+#: *projection* of the own-odometry displacement onto the armed own-memory
+#: bearing direction (``odom_projection`` mode) instead of the integrated path
+#: length.  The r2 Step B run failed exactly on that distinction (path 0.52 m
+#: vs x reach 0.31-0.40 m).  The mode is default OFF and is the only mode that
+#: admits the projection arrival option; 0.52 m and the 1.0 m path fail-safe are
+#: frozen constants, not flags.
+GATE_MODE_V230_R3 = 'v230_r3'
 ARRIVAL_ENV = 'E2EWARP_NAV_ARRIVAL'
 ARRIVAL_ODOM_M_ENV = 'E2EWARP_NAV_ARRIVAL_ODOM_M'
 ARRIVAL_GROUND_M_ENV = 'E2EWARP_NAV_ARRIVAL_GROUND_M'
@@ -115,11 +125,23 @@ GATE_MODES = {
                             acquire_min_height_norm=ACQUIRE_MIN_HEIGHT_NORM,
                             acquire_confirm_ticks=ACQUIRE_CONFIRM_TICKS,
                             forward_reacquire=True),
+    # r3 differs from r2 only in the arrival claim definition (and in nothing
+    # else): the same band, the same 2.4 m forward acquisition, the same C gate.
+    # The projection arrival option is bound through ARRIVAL_ENV and validated
+    # below; the 0.52 m projection and the 1.0 m path fail-safe are frozen.
+    GATE_MODE_V230_R3: dict(zone_profile='gpu_calib_v230',
+                            acquisition_mode='forward_then_search',
+                            forward_cap_m=FORWARD_ACQUISITION_CAP_M,
+                            zone_min_component=600,
+                            bearing_convention='positive_left',
+                            acquire_min_height_norm=ACQUIRE_MIN_HEIGHT_NORM,
+                            acquire_confirm_ticks=ACQUIRE_CONFIRM_TICKS,
+                            forward_reacquire=True),
 }
 DEFAULT_GATE_MODE = GATE_MODE_V1
 #: Modes that carry the C acquisition-quality block.  Every other mode stays
 #: byte-identical to its frozen condition (no new queue markers are written).
-ACQUISITION_QUALITY_MODES = (GATE_MODE_V230_R2,)
+ACQUISITION_QUALITY_MODES = (GATE_MODE_V230_R2, GATE_MODE_V230_R3)
 
 
 def arrival_selection():
@@ -132,7 +154,9 @@ def arrival_selection():
     """
     from harness.e2ewarp_selfnav import (ARRIVAL_BOTTOM_BAND, ARRIVAL_GROUND_DISTANCE,
                                          ARRIVAL_GROUND_DISTANCE_M, ARRIVAL_MODES,
-                                         ARRIVAL_ODOM_RESIDUAL, ARRIVAL_ODOM_RESIDUAL_M)
+                                         ARRIVAL_ODOM_PROJECTION_M, ARRIVAL_ODOM_RESIDUAL,
+                                         ARRIVAL_ODOM_RESIDUAL_M,
+                                         ARRIVAL_PROJECTION_PATH_CAP_M)
     mode = os.environ.get(ARRIVAL_ENV, ARRIVAL_BOTTOM_BAND)
     if mode not in ARRIVAL_MODES:
         raise ValueError('NAV_ARRIVAL_MODE_UNKNOWN:' + str(mode))
@@ -142,7 +166,12 @@ def arrival_selection():
         raise ValueError('NAV_ARRIVAL_ODOM_RESIDUAL_INVALID')
     if mode == ARRIVAL_GROUND_DISTANCE and not ground > 0.0:
         raise ValueError('NAV_ARRIVAL_GROUND_DISTANCE_INVALID')
-    return dict(mode=mode, odom_residual_m=odom, ground_distance_m=ground)
+    # r3: the projection threshold (0.52 m, B_A geometry) and the 1.0 m path
+    # fail-safe are frozen constants; there is deliberately no environment
+    # override, so a result cannot re-tune the claim after the fact.
+    return dict(mode=mode, odom_residual_m=odom, ground_distance_m=ground,
+                projection_m=ARRIVAL_ODOM_PROJECTION_M,
+                projection_path_cap_m=ARRIVAL_PROJECTION_PATH_CAP_M)
 
 
 def gate_mode(name=None):
@@ -286,9 +315,16 @@ def navigation_factory(robot_id, static=None, **kwargs):
     constants = record['constants']
     arrival = arrival_selection()
     from harness.e2ewarp_selfnav import (ARRIVAL_BOTTOM_BAND, ARRIVAL_GROUND_DISTANCE,
-                                         ARRIVAL_ODOM_RESIDUAL)
+                                         ARRIVAL_ODOM_PROJECTION, ARRIVAL_ODOM_RESIDUAL)
     if arrival['mode'] != ARRIVAL_BOTTOM_BAND and mode['name'] not in ACQUISITION_QUALITY_MODES:
         raise ValueError('NAV_ARRIVAL_REQUIRES_V230_R2')
+    # r3 is the only mode that admits the projection claim, and inside r3 the
+    # projection claim is the only admitted arrival mode (fail closed on a
+    # process that forgot the flag).
+    if mode['name'] == GATE_MODE_V230_R3 and arrival['mode'] != ARRIVAL_ODOM_PROJECTION:
+        raise ValueError('NAV_ARRIVAL_REQUIRES_V230_R3')
+    if arrival['mode'] == ARRIVAL_ODOM_PROJECTION and mode['name'] != GATE_MODE_V230_R3:
+        raise ValueError('NAV_ARRIVAL_REQUIRES_V230_R3')
     extra = {}
     if mode['name'] in ACQUISITION_QUALITY_MODES:
         extra.update(acquire_min_height_norm=mode['acquire_min_height_norm'],
@@ -299,6 +335,9 @@ def navigation_factory(robot_id, static=None, **kwargs):
                      arrival_ground_distance_m=(arrival['ground_distance_m']
                                                 if arrival['mode'] == ARRIVAL_GROUND_DISTANCE
                                                 else None))
+        if arrival['mode'] == ARRIVAL_ODOM_PROJECTION:
+            extra.update(arrival_projection_m=arrival['projection_m'],
+                         arrival_projection_path_cap_m=arrival['projection_path_cap_m'])
     return SelfCentricNavigation(
         robot_id, static, option=OPTION,
         detector=GpuCalibZoneDetector(profile=mode['zone_profile'],
@@ -336,6 +375,11 @@ def gate_queue_fields(seed, calibration=None, sim_budget_s=SIM_BUDGET_S):
                       nav_arrival_mode=arrival['mode'],
                       nav_arrival_odom_residual_m=float(arrival['odom_residual_m']),
                       nav_arrival_ground_distance_m=float(arrival['ground_distance_m']))
+        if mode['name'] == GATE_MODE_V230_R3:
+            # r3-only frozen markers: the projection threshold and its fail-safe
+            # path cap.  v230_r2 queues stay byte-identical (no new keys).
+            fields.update(nav_arrival_odom_projection_m=float(arrival['projection_m']),
+                          nav_arrival_projection_path_cap_m=float(arrival['projection_path_cap_m']))
     return fields
 
 
@@ -392,8 +436,8 @@ def validate_gate_queue(queue):
             mode['bearing_convention']:
         raise ValueError('NAV_GATE_BEARING_CONVENTION_MISMATCH')
     # C acquisition-quality markers: required and exact for the approved
-    # v230_r2 mode, absent for every frozen mode (so a v1/v230_fwd24 queue is
-    # byte-identical to its old condition).
+    # v230_r2/v230_r3 modes, absent for every frozen mode (so a v1/v230_fwd24
+    # queue is byte-identical to its old condition).
     if mode['name'] in ACQUISITION_QUALITY_MODES:
         try:
             min_height = float(queue['nav_acquire_min_height_norm'])
@@ -409,16 +453,30 @@ def validate_gate_queue(queue):
         arrival = arrival_selection()
         if queue.get('nav_arrival_mode') != arrival['mode']:
             raise ValueError('NAV_ARRIVAL_MODE_MISMATCH')
-        if abs(float(queue.get('nav_arrival_odom_residual_m', -1.0))
-               - float(arrival['odom_residual_m'])) > 1e-9:
-            raise ValueError('NAV_ARRIVAL_ODOM_RESIDUAL_MISMATCH')
-        if abs(float(queue.get('nav_arrival_ground_distance_m', -1.0))
-               - float(arrival['ground_distance_m'])) > 1e-9:
-            raise ValueError('NAV_ARRIVAL_GROUND_DISTANCE_MISMATCH')
+        if arrival['mode'] == ARRIVAL_ODOM_PROJECTION:
+            # r3: the projection claim only exists in v230_r3, and its frozen
+            # threshold/fail-safe markers must match the code constants exactly.
+            if mode['name'] != GATE_MODE_V230_R3:
+                raise ValueError('NAV_ARRIVAL_REQUIRES_V230_R3')
+            if abs(float(queue.get('nav_arrival_odom_projection_m', -1.0))
+                   - float(arrival['projection_m'])) > 1e-9:
+                raise ValueError('NAV_ARRIVAL_ODOM_PROJECTION_MISMATCH')
+            if abs(float(queue.get('nav_arrival_projection_path_cap_m', -1.0))
+                   - float(arrival['projection_path_cap_m'])) > 1e-9:
+                raise ValueError('NAV_ARRIVAL_PROJECTION_PATH_CAP_MISMATCH')
+        else:
+            if mode['name'] == GATE_MODE_V230_R3:
+                raise ValueError('NAV_ARRIVAL_REQUIRES_V230_R3')
+            if abs(float(queue.get('nav_arrival_odom_residual_m', -1.0))
+                   - float(arrival['odom_residual_m'])) > 1e-9:
+                raise ValueError('NAV_ARRIVAL_ODOM_RESIDUAL_MISMATCH')
+            if abs(float(queue.get('nav_arrival_ground_distance_m', -1.0))
+                   - float(arrival['ground_distance_m'])) > 1e-9:
+                raise ValueError('NAV_ARRIVAL_GROUND_DISTANCE_MISMATCH')
     else:
         if queue.get('nav_arrival_mode', 'bottom_band') != 'bottom_band':
             raise ValueError('NAV_ARRIVAL_REQUIRES_V230_R2')
-        if arrival_selection()['mode'] != 'bottom_band':
+        if arrival_selection()['mode'] not in ('bottom_band',):
             raise ValueError('NAV_ARRIVAL_REQUIRES_V230_R2')
     return queue
 

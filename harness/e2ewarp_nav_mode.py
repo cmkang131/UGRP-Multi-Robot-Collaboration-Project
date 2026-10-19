@@ -151,6 +151,9 @@ class NavigationOnlyController:
         self.navigation = navigation
         self.phase, self.instruction = 'TASK', None
         self.events, self.completed = [], []
+        # r3 fail-safe record: a NO_CLAIM stop is recorded once, next to the
+        # ARRIVED events, so the raw run shows why the wheels held.
+        self._no_claim_recorded = False
 
     @property
     def needs_decision(self):
@@ -171,6 +174,13 @@ class NavigationOnlyController:
             self.events.append(dict(sim_s=frame.sim_s, before=self.phase, after='ARRIVED',
                                     reason='own-input destination_arrived (unverified)'))
             self.phase = 'ARRIVED'
+        if (self.phase == 'NAVIGATE' and report.get('arrival_no_claim') is True
+                and not self._no_claim_recorded):
+            # r3 fail-safe: the path cap was spent without reaching the projection
+            # claim.  Recorded once; the wheels hold and no arrival is claimed.
+            self._no_claim_recorded = True
+            self.events.append(dict(sim_s=frame.sim_s, before=self.phase, after=self.phase,
+                                    reason='NO_CLAIM: path cap reached with d_proj below the claim'))
         return dict(phase=self.phase, own_navigation=report,
                     physical_success_available=False, arrival_claim_verified=False)
 

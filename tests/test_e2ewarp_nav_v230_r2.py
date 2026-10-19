@@ -168,7 +168,10 @@ def test_b_flags_default_off_and_rejected_outside_v230_r2():
         sn.SelfCentricNavigation('r1', {}, option=sn.OPTION,
                                  acquisition_mode=sn.ACQUISITION_SEARCH_IN_PLACE,
                                  arrival_mode=sn.ARRIVAL_ODOM_RESIDUAL)
-    assert sn.ARRIVAL_MODES == ('bottom_band', 'odom_residual', 'ground_distance')
+    # r3 (2026-10-19 decision ①) adds the default-off `odom_projection` claim
+    # mode; the r2 modes and their constants are unchanged.
+    assert sn.ARRIVAL_MODES == ('bottom_band', 'odom_residual', 'ground_distance',
+                                'odom_projection')
 
 
 def test_b_odom_residual_arms_only_on_a_bottom_contact_then_claims_by_distance():

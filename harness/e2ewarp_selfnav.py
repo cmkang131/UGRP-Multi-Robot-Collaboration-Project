@@ -51,6 +51,20 @@ Contract v1 (2026-10-18, user decisions):
   `harness.e2ewarp_nav_gate` (`E2EWARP_NAV_GATE_MODE=v230_fwd24`); the
   constructor default remains `search_in_place` with no forward leg, so every
   existing v1/gate-1/r5 condition is unchanged.
+- **Approved gate mode v230_r3 (2026-10-19 decision ①; default OFF).** The
+  r2 Step B run failed because its claim counted the *path length* of the own
+  issued pulses while arrival is a *position* judgement: both robots drove
+  off-axis (x progress 75 % for r1 and 50 % for r2 of the integrated path), so
+  a 0.52 m path claim landed outside the zone. r3 keeps the approved 0.52 m
+  geometry value and re-defines the claim in the self-odometry frame:
+  ``d_proj = (p_odom(t) - p_odom(t_armed)) . u(t_armed) >= 0.52 m`` where
+  ``p_odom`` is integrated from the adapter's own issued pulses and ``u`` is the
+  unit vector of the own-memory bearing direction at the arming event. The world
+  x axis, the static map and GT are never read. After arming the own-odometry
+  yaw is held on ``u`` with the existing proportional turn controller (its input
+  is the yaw error) and the same forward magnitude the r2 follower used. If the
+  path driven since arming reaches 1.0 m with ``d_proj`` still below 0.52 m, the
+  adapter does **not** claim: it holds the wheels and records ``NO_CLAIM``.
 
 No ground truth, contact, evaluator, top camera, or peer raw input is accepted.
 """
@@ -172,7 +186,29 @@ ARRIVAL_ODOM_RESIDUAL_M = 0.52
 # `GATE_GROUND_PROJECTION`).
 ARRIVAL_GROUND_DISTANCE = 'ground_distance'
 ARRIVAL_GROUND_DISTANCE_M = 0.25
-ARRIVAL_MODES = (ARRIVAL_BOTTOM_BAND, ARRIVAL_ODOM_RESIDUAL, ARRIVAL_GROUND_DISTANCE)
+# (r3) `--arrival-odom-projection`: the 2026-10-19 decision ① *definition fix* of
+# the same approved 0.52 m geometry constant, not a re-tuned value.  The r2 run
+# claimed on the integrated *path length* while arrival is a position judgement;
+# both robots drove off-axis (measured x progress 75 % (r1) / 50 % (r2) of the
+# path), so 0.52 m of path fell short of 0.52 m of x reach.  r3 claims on
+#   d_proj = (p_odom(t) - p_odom(t_armed)) . u(t_armed) >= 0.52 m
+# where p_odom is the pose integrated from the adapter's own issued wheel pulses
+# with the owner-injected percent-second calibration and u is the unit vector of
+# the own-memory bearing direction at the arming event, expressed in that same
+# self-odometry frame.  No world x axis, static map, GT or simulator state is
+# read.  Heading hold: after arming the own-odometry yaw is driven onto u by the
+# existing proportional turn controller (its input is the yaw error, full scale
+# BEARING_FULL_DEG) and forward stays at the full-scale magnitude the r2
+# appearance-only follower used (same 35 % x pulse-width vocabulary).  Fail-safe:
+# when the path driven since arming reaches ARRIVAL_PROJECTION_PATH_CAP_M (1.0 m,
+# the approved value; 0.52 / 0.5 is 1.04 m and the directive's 1.0 m is the
+# tighter cap) with d_proj still below the threshold, the adapter does NOT claim:
+# the wheels hold and `NO_CLAIM` is recorded in the report and the nav events.
+ARRIVAL_ODOM_PROJECTION = 'odom_projection'
+ARRIVAL_ODOM_PROJECTION_M = ARRIVAL_ODOM_RESIDUAL_M  # 0.52 m: B_A_DERIVATION, unchanged
+ARRIVAL_PROJECTION_PATH_CAP_M = 1.0
+ARRIVAL_MODES = (ARRIVAL_BOTTOM_BAND, ARRIVAL_ODOM_RESIDUAL, ARRIVAL_GROUND_DISTANCE,
+                 ARRIVAL_ODOM_PROJECTION)
 # Ground-plane camera model used by the ground-distance arrival option.  The
 # intrinsics/distortion are the *measured physical* ones already used by the
 # renderer (sim/masterpi_camera_profile.py scaled to 640x480).  The mount pose
@@ -328,6 +364,8 @@ class SelfCentricNavigation:
                  forward_reacquire=False, arrival_mode=ARRIVAL_BOTTOM_BAND,
                  arrival_odom_residual_m=ARRIVAL_ODOM_RESIDUAL_M,
                  arrival_ground_distance_m=None,
+                 arrival_projection_m=ARRIVAL_ODOM_PROJECTION_M,
+                 arrival_projection_path_cap_m=ARRIVAL_PROJECTION_PATH_CAP_M,
                  arrival_bottom_contact_norm=ARRIVAL_BOTTOM_CONTACT_NORM,
                  ground_projection=None):
         if robot_id not in ('r1', 'r2'):
@@ -370,6 +408,16 @@ class SelfCentricNavigation:
         else:
             arrival_ground_distance_m = (None if arrival_ground_distance_m is None
                                          else float(arrival_ground_distance_m))
+        # B(r3): projection claim (definition fix of the same 0.52 m geometry).
+        arrival_projection_m = float(arrival_projection_m)
+        arrival_projection_path_cap_m = float(arrival_projection_path_cap_m)
+        if arrival_mode == ARRIVAL_ODOM_PROJECTION:
+            if not arrival_projection_m > 0.0:
+                raise ValueError('odometry-projection arrival requires a positive threshold')
+            if not arrival_projection_path_cap_m > 0.0:
+                raise ValueError('odometry-projection arrival requires a positive path cap')
+            if acquisition_mode != ACQUISITION_FORWARD_THEN_SEARCH:
+                raise ValueError('odometry-projection arrival is an acquisition-mode option')
         arrival_bottom_contact_norm = float(arrival_bottom_contact_norm)
         if not 0.0 < arrival_bottom_contact_norm <= 1.0:
             raise ValueError('arrival bottom-contact threshold must be in (0, 1]')
@@ -429,12 +477,28 @@ class SelfCentricNavigation:
         self.arrival_mode = arrival_mode
         self.arrival_odom_residual_m = arrival_odom_residual_m
         self.arrival_ground_distance_m = arrival_ground_distance_m
+        self.arrival_projection_m = arrival_projection_m
+        self.arrival_projection_path_cap_m = arrival_projection_path_cap_m
         self.arrival_bottom_contact_norm = arrival_bottom_contact_norm
         self.ground_projection = (dict(ground_projection) if ground_projection is not None
                                   else dict(GATE_GROUND_PROJECTION))
         self._arrival_armed = False
         self._arrival_travel_m = 0.0
         self._ground_distance_m = None
+        # B(r3) projection-claim state: the own-odometry pose (self frame, origin
+        # at the first issued command), the pose and bearing unit vector latched
+        # at the arming event, the integrated path since arming and the signed
+        # projection of the displacement onto that unit vector.
+        self._odom_x_m = 0.0
+        self._odom_y_m = 0.0
+        self._odom_yaw_deg = 0.0
+        self._arrival_origin_x_m = 0.0
+        self._arrival_origin_y_m = 0.0
+        self._arrival_u_deg = 0.0
+        self._arrival_arming_bearing_deg = 0.0
+        self._arrival_path_m = 0.0
+        self._arrival_proj_m = 0.0
+        self._arrival_no_claim = False
 
     @property
     def ready(self):
@@ -476,11 +540,23 @@ class SelfCentricNavigation:
                 and frame.sim_s - self._last_accepted_s > ACQUIRE_MAX_AGE_S:
             self._target_confirmed = False
             self._acquire_streak = 0
-        # B(a): latch the bottom-contact event once, on an *accepted* detection.
-        if (self.arrival_mode == ARRIVAL_ODOM_RESIDUAL and accepted is not None
+        # B(a)/B(r3): latch the bottom-contact event once, on an *accepted*
+        # detection.  r3 additionally fixes the claim direction to the own-memory
+        # bearing seen at that instant (self-odometry frame).
+        if (self.arrival_mode in (ARRIVAL_ODOM_RESIDUAL, ARRIVAL_ODOM_PROJECTION)
+                and accepted is not None
                 and not self._arrival_armed
                 and float(accepted.get('bottom_norm') or 0.0) >= self.arrival_bottom_contact_norm):
             self._arrival_armed = True
+            if self.arrival_mode == ARRIVAL_ODOM_PROJECTION:
+                self._arrival_arming_bearing_deg = wrap_deg(float(accepted.get('bearing_deg') or 0.0))
+                # Own-memory bearing (robot-relative, positive left) expressed in
+                # the own-odometry frame: the direction the claim projects onto.
+                self._arrival_u_deg = wrap_deg(self._odom_yaw_deg + self._arrival_arming_bearing_deg)
+                self._arrival_origin_x_m = self._odom_x_m
+                self._arrival_origin_y_m = self._odom_y_m
+                self._arrival_path_m = 0.0
+                self._arrival_proj_m = 0.0
         self._revision += 1
         return self._report(active=True, now_s=frame.sim_s)
 
@@ -535,8 +611,16 @@ class SelfCentricNavigation:
         visible ground latches an arming event, then the robot claims after a
         fixed own-command residual (no band threshold is re-tuned);
         (b) ``ground_distance`` - the current patch centre is projected onto the
-        floor with the camera model and compared with a metric threshold.
+        floor with the camera model and compared with a metric threshold;
+        (c) ``odom_projection`` - the r3 definition fix: after the same arming
+        event, claim only when the own-odometry displacement projected onto the
+        armed bearing direction reaches the frozen threshold.  The claim is
+        purely odometric, so it does not need a remembered landmark.
         """
+        if self.arrival_mode == ARRIVAL_ODOM_PROJECTION:
+            return bool(self._arrival_armed
+                        and not self._arrival_no_claim
+                        and self._arrival_proj_m >= self.arrival_projection_m)
         if landmark is None:
             return False
         if self.arrival_mode == ARRIVAL_ODOM_RESIDUAL:
@@ -631,9 +715,25 @@ class SelfCentricNavigation:
         # A distance-based arrival claim can outlive the visual target (B(a)
         # latches at the contact event), so it is evaluated before the
         # acquisition branch.  With the frozen bottom band this is exactly the
-        # old order: the claim still needs a remembered landmark.
-        if landmark is not None and self._arrival_evidence(landmark, now_s):
+        # old order: the claim still needs a remembered landmark (r3's odometric
+        # projection claim is the one mode that does not).
+        if self._arrival_evidence(landmark, now_s):
             return dict(reason='arrived', landmark=landmark, forward=0.0, turn=0.0)
+        if self.arrival_mode == ARRIVAL_ODOM_PROJECTION and self._arrival_armed:
+            # r3 heading hold: drive on the armed bearing direction using the
+            # existing proportional turn controller with the own-odometry yaw
+            # error as its input.  Forward keeps the r2 follower's full-scale
+            # magnitude (same pulse vocabulary).  The fail-safe holds the wheels
+            # once the path cap is spent without a claim.
+            if self._arrival_no_claim:
+                return dict(reason='no_claim', landmark=landmark, forward=0.0, turn=0.0)
+            error = wrap_deg(self._arrival_u_deg - self._odom_yaw_deg)
+            turn = clamp(error / BEARING_FULL_DEG, -1.0, 1.0)
+            forward = 1.0
+            left = clamp(forward - turn, -1.0, 1.0)
+            right = clamp(forward + turn, -1.0, 1.0)
+            return dict(reason='driving_hold_heading', landmark=landmark,
+                        forward=(left + right) / 2.0, turn=(right - left) / 2.0)
         if landmark is None or not self._target_usable(now_s):
             # No usable destination: acquire it with a bounded forward leg
             # (approved mode only), then the bounded in-place sweep.  Fail
@@ -672,7 +772,7 @@ class SelfCentricNavigation:
         returned = self.memory.nearest('return')
         plan = self._drive_plan(now_s)
         zone = plan['landmark']
-        arrived = bool(active and zone is not None and self._arrival_evidence(zone, now_s))
+        arrived = bool(active and self._arrival_evidence(zone, now_s))
         handoff = bool(self.phase == 'APPROACH' and self.memory.nearest('cargo') is not None
                        and self.memory.nearest('cargo').range_m <= 0.6)
         return dict(robot_id=self.robot_id, phase=self.phase, position_xy=(0.0, 0.0),
@@ -695,6 +795,19 @@ class SelfCentricNavigation:
                     arrival_mode=self.arrival_mode,
                     arrival_armed=bool(self._arrival_armed),
                     arrival_travel_m=round(self._arrival_travel_m, 6),
+                    arrival_projection_m=round(self._arrival_proj_m, 6),
+                    arrival_projection_threshold_m=round(self.arrival_projection_m, 6),
+                    arrival_path_m=round(self._arrival_path_m, 6),
+                    arrival_path_cap_m=round(self.arrival_projection_path_cap_m, 6),
+                    arrival_u_deg=(round(self._arrival_u_deg, 3) if self._arrival_armed else None),
+                    arrival_bearing_armed_deg=(round(self._arrival_arming_bearing_deg, 3)
+                                               if self._arrival_armed else None),
+                    arrival_heading_error_deg=(round(wrap_deg(self._arrival_u_deg
+                                                              - self._odom_yaw_deg), 3)
+                                               if self._arrival_armed else None),
+                    arrival_no_claim=bool(self._arrival_no_claim),
+                    odom_pose=(round(self._odom_x_m, 6), round(self._odom_y_m, 6),
+                               round(self._odom_yaw_deg, 3)),
                     arrival_ground_distance_m=(None if self._ground_distance_m is None
                                                else round(self._ground_distance_m, 6)))
 
@@ -732,7 +845,7 @@ class SelfCentricNavigation:
             if self._search_started_s is None:
                 self._search_started_s = float(now_s)
             self._search_steps += 1
-        if plan['reason'] == 'driving' or searching or acquiring:
+        if plan['reason'] in ('driving', 'driving_hold_heading') or searching or acquiring:
             from harness.grasp_act_contract import wheel_mix
             if acquiring:
                 forward, turn = 1.0, 0.0  # straight +x bounded leg, no turn
@@ -765,8 +878,40 @@ class SelfCentricNavigation:
             step_m, _yaw = self.odometry.step(row)
             if step_m > 0.0:
                 self._arrival_travel_m += step_m
+        if self.arrival_mode == ARRIVAL_ODOM_PROJECTION:
+            # B(r3): integrate the self-odometry pose from the same (possibly
+            # clipped) issued row and update the path/projection of the claim.
+            self._integrate_projection_step(row)
         self._issued.append(row)
         return row
+
+    def _integrate_projection_step(self, row):
+        """Advance the own-odometry pose and the r3 projection claim state.
+
+        The pose is integrated from own issued pulses with the owner-injected
+        percent-second calibration (the same `OwnCommandOdometry.step` used for
+        self-centric memory): midpoint heading for the translation, then the
+        path length and the projection onto the armed bearing unit vector.  When
+        the path cap is spent without reaching the claim threshold the adapter
+        latches ``NO_CLAIM`` and the plan holds the wheels.  No GT, map or
+        world-frame input is read.
+        """
+        if self.odometry is None:
+            return
+        step_m, step_yaw_deg = self.odometry.step(row)
+        heading = math.radians(self._odom_yaw_deg + 0.5 * step_yaw_deg)
+        self._odom_x_m += step_m * math.cos(heading)
+        self._odom_y_m += step_m * math.sin(heading)
+        self._odom_yaw_deg = wrap_deg(self._odom_yaw_deg + step_yaw_deg)
+        if not self._arrival_armed or self._arrival_no_claim:
+            return
+        self._arrival_path_m += abs(step_m)
+        u = math.radians(self._arrival_u_deg)
+        self._arrival_proj_m = ((self._odom_x_m - self._arrival_origin_x_m) * math.cos(u)
+                                + (self._odom_y_m - self._arrival_origin_y_m) * math.sin(u))
+        if (self._arrival_proj_m < self.arrival_projection_m
+                and self._arrival_path_m >= self.arrival_projection_path_cap_m - 1e-12):
+            self._arrival_no_claim = True
 
     def _consume_forward_step(self, row):
         """Charge one issued forward pulse against the approved 2.4 m cap.
