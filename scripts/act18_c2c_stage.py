@@ -79,10 +79,11 @@ def main():
         folder = a.run_root / name; folder.mkdir()
         stage_dir = folder / f'R8-{stage}'; stage_dir.mkdir()
         if stage == 'diag':
-            # Design E2 preflight fallback: the registered 2-world HO4 group
-            # fails warp_act_backend.py:402 (combined model scalars differ), so
-            # each HO4 world runs as its own group with its own compiled case.
-            groups = [([seed], f'case-{seed - 88600:03d}') for seed in prereg['holdout']['seeds']]
+            # Design E2 preflight fallback: the registered {88668,88669} group
+            # fails warp_act_backend.py:402 (88669 has two fewer geoms, so the
+            # combined model scalar topologies differ). Keep the validated
+            # {88670,88671} pair and run the other two worlds as single groups.
+            groups = [([88668], 'case-068'), ([88669], 'case-069'), ([88670, 88671], 'case-070')]
         else:
             groups = [(definition['seeds'], definition['compiled_reference_case'])
                       for definition in prereg['queues']['TRAIN4']['groups'].values()]
@@ -118,7 +119,7 @@ def main():
         subprocess.run([sys.executable, str(ROOT / 'scripts/check_current_stack.py'), str(queue_path),
                         '--flow', 'act_eval', '--output', str(folder / 'current-stack-check.json')], check=True)
         launch = dict(schema='ugrp.act18.c2c_launch.v1', run=name, arm=arm, queue=queue, rep=rep,
-                      stage=stage, grouping=('ho4_per_world_fallback' if stage == 'diag'
+                      stage=stage, grouping=('ho4_split_after_preflight_failure' if stage == 'diag'
                                              else 'registered_two_world_groups'),
                       argv=commands, cwd=str(Q), host=host, source_sha=source, git_sha=source,
                       checkpoint_sha256=checkpoint_sha, checkpoint_path=str(a.checkpoint),
