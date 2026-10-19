@@ -10,11 +10,16 @@
   "prereg": "experiments/2026-10-17-act18/R3_DONEWINDOW_PREREG.json",
   "arm_selection": {
     "primary": "R3-A",
-    "primary_rule": "C2a PASS, INCONCLUSIVE, or no C2a result at training start",
-    "conditional": "R3-B",
+    "primary_rule": "C2a PASS or INCONCLUSIVE, or no C2a result at training start",
+    "conditional": "R3-B only if C2a FAIL (not selected)",
     "conditional_rule": "C2a FAIL",
     "c2a_status_at_prep": "not arrived (no C2a result file at 2026-10-19T20:05:32Z)",
-    "record_at_launch": "launch.json records the C2a verdict artifact path+sha or 'absent'"
+    "record_at_launch": "launch.json records the C2a verdict artifact path+sha or 'absent'",
+    "c2a_status_post_prep": "INCONCLUSIVE at 2026-10-19T20:33Z -> R3-A per the frozen rule; R3-B is not selected",
+    "c2a_status_artifact": {
+      "path": "experiments/2026-10-17-act18/r3-donewindow/c2a-status.json",
+      "sha256": "ca08cbd49d9b64d41ad62a69acf5f15c6aa1705ace4cc2dfaeacf0c7586e920a"
+    }
   },
   "resolved": {
     "R3-A": {
@@ -36,7 +41,9 @@
       "done_clock_jitter_s": null,
       "done_clock_jitter_seed": null,
       "checkpoint_path": "/home/ugrp/ugrp-sim/runs/act18-r3-donewindow-<UTC TS>/train/step-10000",
-      "save_steps": [10000],
+      "save_steps": [
+        10000
+      ],
       "readback_verification": "save_actor then Actor.load and bit-equal predict_action_chunk",
       "packaging_eligible": false,
       "release_or_registry": false
@@ -59,10 +66,15 @@
       "done_window_ticks": 10,
       "done_clock_jitter_s": 1.0,
       "done_clock_jitter_seed": 20261017,
-      "done_clock_jitter_phases": ["verify_lift", "hold"],
+      "done_clock_jitter_phases": [
+        "verify_lift",
+        "hold"
+      ],
       "done_clock_jitter_units": "seconds added to the two recorded clock state dims (divided by the 120 s contract cap) before normalization; clamp at 0; targets unchanged; per-row frozen offsets",
       "checkpoint_path": "/home/ugrp/ugrp-sim/runs/act18-r3-donewindow-<UTC TS>/train/step-10000",
-      "save_steps": [10000],
+      "save_steps": [
+        10000
+      ],
       "readback_verification": "save_actor then Actor.load and bit-equal predict_action_chunk",
       "packaging_eligible": false,
       "release_or_registry": false
@@ -86,7 +98,10 @@
     "chunk_added_padded_slots": 12600,
     "rows_with_h0_done_change": 1800,
     "clock_jitter_rows": 8200,
-    "clock_jitter_rows_by_phase": {"verify_lift": 2200, "hold": 6000},
+    "clock_jitter_rows_by_phase": {
+      "verify_lift": 2200,
+      "hold": 6000
+    },
     "note": "Measured on the registered dataset-r1 tensors+samples with the R3 data dry-run; image frames were absent from the Oracle retrieval, so the derived-root placeholder only satisfied dataset initialization. Labels/priors/targets are hash-verified and complete. Re-run scripts/act18_r3_data_delta.py on the VM full dataset before training."
   },
   "protocol_sha256": "1db4e22345fdf29cdd80d07bbf61f23aa6101a6859e125f974f550577be1fb4e",
@@ -119,16 +134,92 @@
       "python3 scripts/act18_r3_offline_gate.py --enabled report --gate-dir <run root>/offline --out <run root>/offline"
     ],
     "R8_validation": {
+      "root": "/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T213000Z/offline",
       "pilot": {
-        "path": "/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T200500Z/offline/r8-validation/pilot",
-        "status": "paused_for_c2_priority_before_first_world_row",
-        "expected_with_R8": "g1 false, g2 true, g3 true",
-        "note": "PID 1447377 was reniced by the coordinator and then stopped to protect C2a/C2b; rerun with a new --out after C2."
+        "path": "/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T213000Z/offline/r8-validation/pilot/pilot.json",
+        "sha256": "59ba43889a90fc48c95b71415a56b5d187e0be260d99a833fe815cbe8af62a5f",
+        "status": "passed_tool_validation_R8_expected_fail",
+        "model_sha256": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a",
+        "gates": {
+          "g1": false,
+          "g2": true,
+          "g3": true
+        },
+        "numbers": {
+          "onset_ticks": [
+            203,
+            231,
+            214,
+            194
+          ],
+          "delta_vs_lookback": [
+            4,
+            4,
+            4,
+            4
+          ],
+          "done_max_hold_pm10": [
+            0.001991,
+            0.00059,
+            0.002048,
+            0.000384
+          ],
+          "done_max_before_verify": [
+            0.000181,
+            0.000176,
+            0.000192,
+            0.000177
+          ]
+        },
+        "note": "E1 V0 reproduction; R3 checkpoint absent, so these are not R3 gate results"
+      },
+      "c2b": {
+        "path": "/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T213000Z/offline/c2b/c2b.json",
+        "sha256": "027ce1ddb457ca9815a7fb77cab6fb0a2ea1f57584c9f29f865891e06e51bb40",
+        "status": "PASS_actual_C2b_S2",
+        "lift_fired": 6,
+        "lift_N": 6,
+        "control_fired": 0,
+        "control_N": 2,
+        "c2_summary_sha256": "65dd902e8886da36cf7475d9a6ab4858209dd5196a4cce1b4daadc79a220d62b"
       },
       "e0": {
-        "path": "/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T200500Z/offline/r8-validation/e0",
-        "status": "passed_4_of_4_with_R8_frames"
-      }
+        "path": "/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T213000Z/offline/gates/e0/e0.json",
+        "sha256": "5e9b30485808305bd26b6ace4ee340e4297227ead65a324e5722226595372aa8",
+        "status": "evaluator_passed_R8_4of4",
+        "probabilities": [
+          0.997741,
+          0.996556,
+          0.924894,
+          0.998077
+        ]
+      },
+      "report": {
+        "path": "/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T213000Z/offline/gates/summary.json",
+        "sha256": "ad7d5d82e590725e12406b927a6ef059da81004da250b20f94fc92eae78fe53b",
+        "gates": {
+          "g1": false,
+          "g2": true,
+          "g3": true,
+          "g4": true,
+          "g5": true
+        },
+        "PASS": false,
+        "note": "PASS=false because R8 fails g1 as expected; validates the fail-closed rule, not the R3 model"
+      },
+      "previous_paused": {
+        "path": "/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T200500Z/offline/r8-validation/pilot",
+        "status": "preserved_paused_for_c2_priority_before_first_world"
+      },
+      "unverified": [
+        "g1,g2,g3,g5 on the R3 checkpoint",
+        "g5 R3 CPU inference on the full dataset",
+        "HO4 closed-loop (diag stage absent)"
+      ]
+    },
+    "gate_prep_artifact": {
+      "path": "experiments/2026-10-17-act18/r3-donewindow/gate-prep.json",
+      "sha256": "0a7d598c9619d417cc7d909c7db5171d78fc847b638b3cced8f7a69e758b24b0"
     }
   }
 }

@@ -1,0 +1,113 @@
+{
+  "schema": "ugrp.act18.r3_gate_prep.v1",
+  "generated_utc": "2026-10-19T21:37:53Z",
+  "status": "R3 checkpoint absent: actual R3 gates cannot be judged. R8/C2b dry validation only.",
+  "checkpoint_used": {
+    "kind": "R8-reference-validation",
+    "model_sha256": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a",
+    "note": "R8 step-100000, chunk8; used only to validate the gate tool, not the R3 model"
+  },
+  "gates": {
+    "g1": {
+      "status": "validated_on_R8_FAIL_expected",
+      "r3": "unverified",
+      "evidence": {
+        "path": "/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T213000Z/offline/gates/pilot/pilot.json",
+        "sha256": "59ba43889a90fc48c95b71415a56b5d187e0be260d99a833fe815cbe8af62a5f"
+      },
+      "r8_done_max_hold_pm10": {
+        "group-000-world-000": 0.001991,
+        "group-000-world-001": 0.00059,
+        "group-001-world-000": 0.002048,
+        "group-001-world-001": 0.000384
+      },
+      "note": "R8 fails g1 as expected (C2 defect); R3 must reach >=3/4 >= .65"
+    },
+    "g2": {
+      "status": "validated_on_R8_PASS",
+      "r3": "unverified",
+      "evidence": {
+        "path": "/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T213000Z/offline/gates/pilot/pilot.json",
+        "sha256": "59ba43889a90fc48c95b71415a56b5d187e0be260d99a833fe815cbe8af62a5f"
+      },
+      "r8_done_max_before_verify": {
+        "group-000-world-000": 0.000181,
+        "group-000-world-001": 0.000176,
+        "group-001-world-000": 0.000192,
+        "group-001-world-001": 0.000177
+      },
+      "note": "no R8 fire before verify_lift; R3 replay still required"
+    },
+    "g3": {
+      "status": "validated_on_R8_PASS",
+      "r3": "unverified",
+      "evidence": {
+        "path": "/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T213000Z/offline/gates/pilot/pilot.json",
+        "sha256": "59ba43889a90fc48c95b71415a56b5d187e0be260d99a833fe815cbe8af62a5f"
+      },
+      "r8_onset_ticks": {
+        "group-000-world-000": 203,
+        "group-000-world-001": 231,
+        "group-001-world-000": 214,
+        "group-001-world-001": 194
+      },
+      "r8_delta_vs_lookback": {
+        "group-000-world-000": 4,
+        "group-000-world-001": 4,
+        "group-001-world-000": 4,
+        "group-001-world-001": 4
+      },
+      "note": "E1 V0 reproduction (onset 203/231/214/194, delta 4); R3 replay still required"
+    },
+    "g4": {
+      "status": "PASS_actual_C2b_S2",
+      "r3": "not_applicable_per_spec_definition",
+      "evidence": {
+        "path": "/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T213000Z/offline/gates/c2b/c2b.json",
+        "sha256": "027ce1ddb457ca9815a7fb77cab6fb0a2ea1f57584c9f29f865891e06e51bb40"
+      },
+      "lift_fired": 6,
+      "lift_N": 6,
+      "control_fired": 0,
+      "control_N": 2,
+      "source_sha": "e5bed0586e07a33272666015955e29a7d2e05e7b",
+      "checkpoint_sha256": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a",
+      "note": "adapter built from the committed C2_DONECLOCK_SUMMARY.json; no re-inference on Oracle"
+    },
+    "g5": {
+      "status": "evaluator_validated_on_R8_4of4",
+      "r3": "unverified",
+      "evidence": {
+        "path": "/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T213000Z/offline/gates/e0/e0.json",
+        "sha256": "5e9b30485808305bd26b6ace4ee340e4297227ead65a324e5722226595372aa8"
+      },
+      "r8_done_probabilities": {
+        "88600": 0.997741,
+        "88601": 0.996556,
+        "88602": 0.924894,
+        "88603": 0.998077
+      },
+      "note": "R8 frames terminal rows are 0.925-0.998; R3 inference/frames still required"
+    }
+  },
+  "r8_report": {
+    "path": "/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T213000Z/offline/gates/summary.json",
+    "sha256": "ad7d5d82e590725e12406b927a6ef059da81004da250b20f94fc92eae78fe53b",
+    "gates": {
+      "g1": false,
+      "g2": true,
+      "g3": true,
+      "g4": true,
+      "g5": true
+    },
+    "PASS": false,
+    "note": "PASS=false because g1 is false for R8; this validates the report rule, not the R3 model"
+  },
+  "unverified_scope": [
+    "g1/g2/g3 on the R3 checkpoint (checkpoint does not exist until approved training)",
+    "g5 on the R3 checkpoint (must run CPU positive-row inference on the full dataset)",
+    "actual g4 was produced with R8 weights in C2b; the spec defines g4 on C2b S2, not on R3 weights",
+    "R3 closed-loop HO4 (no diag stage in base; needs E2/C2 merge)"
+  ],
+  "PASS_rule": "g1 AND g2 AND g3 AND g4 AND g5; any failure closes R3 as FAIL and forbids GPU evaluation"
+}

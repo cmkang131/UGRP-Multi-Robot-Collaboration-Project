@@ -1,0 +1,34 @@
+{
+  "schema": "ugrp.act18.r3_c2a_status.v1",
+  "recorded_utc": "2026-10-19T21:28:27Z",
+  "note": "Post-prep C2 verdict recorded without changing the frozen R3 prereg. R3 training is still unexecuted.",
+  "source": {
+    "c2_summary_path": "/home/ubuntu/UGRP-wt/act18-c2/experiments/2026-10-17-act18/C2_DONECLOCK_SUMMARY.json",
+    "c2_summary_sha256": "65dd902e8886da36cf7475d9a6ab4858209dd5196a4cce1b4daadc79a220d62b",
+    "c2_code_head": "e5bed0586e07a33272666015955e29a7d2e05e7b",
+    "c2_checkpoint_model_sha256": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a"
+  },
+  "c2a": {
+    "verdict": "INCONCLUSIVE",
+    "summary_path": "/home/ubuntu/UGRP/outputs/runs/act18-c2-doneclock-20261019T2002Z/c2a/summary.json",
+    "summary_sha256": "1693249883113e7c75f15c6b944caf9c5a7003d56775b888ee9ba41a9e2e5973",
+    "a1_worlds_done_ge_065": 4,
+    "a3_worlds_interval_inside_target": 0,
+    "fingerprint_confirmed": false
+  },
+  "c2b": {
+    "verdict": "PASS",
+    "summary_path": "/home/ubuntu/UGRP/outputs/runs/act18-c2-doneclock-20261019T2002Z/c2b/replay/summary.json",
+    "summary_sha256": "830ee7c969fc85664b9809096dadacd23ec4eb9c1cdaee5a8f613f7a642ba1b3",
+    "s2_lift_fires_any": 6,
+    "s2_lift_fires_pe_in_range": 6,
+    "s2_control_fires": 0,
+    "done_path_verdict": "PASS"
+  },
+  "r3_variant": {
+    "selected": "R3-A",
+    "rule": "prereg variant_selection: C2a PASS or INCONCLUSIVE -> R3-A; C2a FAIL -> R3-B",
+    "reason": "C2a is INCONCLUSIVE, so R3-A (K=10, no clock jitter) is the arm to run after approval. R3-B remains prepared but is not selected."
+  },
+  "training_executed": false
+}

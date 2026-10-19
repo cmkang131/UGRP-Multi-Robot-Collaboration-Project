@@ -1,6 +1,7 @@
 # R3 done-window 재학습 준비 (act18-r3dw)
 
 상태: **준비 완료(PREP), 학습 미실행**. 브랜치 `dsh/act18-r3-donewindow`, base `95e668c59`.
+**C2a는 INCONCLUSIVE(2026-10-19T20:33Z)로 확인**되어 사전 규칙(INCONCLUSIVE→R3-A)에 따라 **R3-A(K=10, jitter 없음)**가 선택 arm이다. C2b는 PASS이며 R3-B는 준비만 되어 있고 선택되지 않았다.
 Claude 결정(창민 위임) 2026-10-19: R3은 브랜치·데이터·config diff·오프라인 gate 준비까지만 하고, **학습 실행은 창민 보고·승인 뒤**에 한다. GPU·VM·학습은 이 작업에서 실행하지 않았다(CPU만).
 
 - 사전등록: `experiments/2026-10-17-act18/R3_DONEWINDOW_PREREG.json` (학습 전 커밋)
@@ -89,7 +90,7 @@ Claude 결정(창민 위임) 2026-10-19: R3은 브랜치·데이터·config diff
 - 새 체크포인트만 `<run root>/train/step-10000/`에 생성. `packaging_eligible=false`, Release/registry 금지
 - TRAIN4 88600–88603은 적합도 진단, HO4 88668–88671은 시연 밖, **VAL8·FINAL40 잠금**
 - R8/R100/tune/doneb1/std/b3/doneh/loop/C2/C2c와 **pooling 금지**
-- R3-A 기본. C2a FAIL일 때만 R3-B. C2a 결과 미도착이면 R3-A로 두고 launch.json에 조건 기록
+- R3-A 기본. **C2a INCONCLUSIVE는 R3-A**(사후 확인: 2026-10-19T20:33Z INCONCLUSIVE, `c2a-status.json`). C2a **FAIL일 때만** R3-B. C2a 결과 미도착이면 R3-A로 두고 launch.json에 조건 기록
 - 오프라인 gate g1–g5 전부 PASS가 GPU 평가 조건
 
 ## 5. 오프라인 gate g1–g5 준비
@@ -98,22 +99,26 @@ Claude 결정(창민 위임) 2026-10-19: R3은 브랜치·데이터·config diff
 
 | gate | 정의 | 명령 | 상태 |
 |---|---|---|---|
-| g1 | 파일럿 teacher V0: hold 끝 ±10틱 TE done ≥ .65가 ≥3/4 | `... --enabled pilot --checkpoint <R3> --prereg ... --out <run>/offline/pilot` | 스크립트 준비; R8 검증은 C2 우선으로 중단 |
-| g2 | verify_lift 시작 이전 TE done ≥ .65가 0/4 | 위와 같음 | 스크립트 준비; R8 검증은 C2 우선으로 중단 |
-| g3 | lookback onset \|Δ\| ≤ 5틱 ≥3/4 | 위와 같음 | 스크립트 준비; R8 검증은 C2 우선으로 중단 |
-| g4 | C2b S2(v7): lift 6개 중 발화 ≥4, 비-lift 대조 2개 중 ≤1 | `... --enabled c2b --c2b-summary <C2b adapter json>` | 스크립트·합성 입력 검증(5/6, 1/2 → PASS). 실제 C2b 산출물 대기 |
-| g5 | E0 open-loop TRAIN4 teacher 종료 행 4/4 ≥ .65 | `... --enabled e0 --dataset <dataset-r1> --checkpoint <R3> --out <run>/offline/e0` 또는 `--frames <R3 open-loop frames>` | 스크립트·R8 frames 4/4 검증 |
-| report | g1∧g2∧g3∧g4∧g5 | `... --enabled report --gate-dir <run>/offline --out <run>/offline` | 스크립트 준비 |
+| g1 | 파일럿 teacher V0: hold 끝 ±10틱 TE done ≥ .65가 ≥3/4 | `... --enabled pilot --checkpoint <R3> --prereg ... --out <run>/offline/pilot` | **R8 검증 완료: FAIL(기대)**, world별 max 0.000384–0.002048. R3 미검증 |
+| g2 | verify_lift 시작 이전 TE done ≥ .65가 0/4 | 위와 같음 | **R8 검증 PASS**: verify 이전 max 0.000176–0.000192, 발화 0/4. R3 미검증 |
+| g3 | lookback onset \|Δ\| ≤ 5틱 ≥3/4 | 위와 같음 | **R8 검증 PASS**: onset 203/231/214/194, lookback 대비 Δ=4(4/4). R3 미검증 |
+| g4 | C2b S2(v7): lift 6개 중 발화 ≥4, 비-lift 대조 2개 중 ≤1 | `... --enabled c2b --c2b-summary <C2b adapter json> --checkpoint-sha <model sha>` | **실제 C2b S2 결과로 PASS: lift 6/6 발화, 대조 0/2 발화** (C2 summary `65dd902e…`) |
+| g5 | E0 open-loop TRAIN4 teacher 종료 행 4/4 ≥ .65 | `... --enabled e0 --dataset <dataset-r1> --checkpoint <R3> --out <run>/offline/e0` 또는 `--frames <R3 open-loop frames>` | **R8 frames 4/4 검증**(0.9249–0.9981); R3 체크포인트 없어 실제 g5 미검증 |
+| report | g1∧g2∧g3∧g4∧g5 | `... --enabled report --gate-dir <run>/offline/gates --out <run>/offline/gates` | **R8 검증 report: g1 false, g2–g5 true → PASS=false**(규칙이 R8을 FAIL로 닫는지 확인) |
 
 - **PASS = g1∧g2∧g3∧g4∧g5. 하나라도 실패하면 GPU 평가 금지, R3을 FAIL로 닫고 다음 후보는 R3b(별도 command-history head).**
-- R8 검증(도구가 실제로 도는지 확인): E0 frames 평가는 **4/4 PASS**(R8은 done head가 정상인 기준선). g4는 합성 입력(5/6 lift, 1/2 control)으로 PASS를 확인했다. pilot replay는 R8에서 g1 FAIL·g2 PASS·g3 PASS가 기대값이지만, **C2a/C2b 우선 지시로 첫 world 완료 전에 중단**했다(부분 산출물만 보존). 도구 로드·window bounds·JPEG 해시·단일 chunk 추론까지는 확인했다.
+- R8 검증(도구가 실제로 도는지 확인, **R3 모델 판정이 아님**): pilot replay는 E1 V0를 그대로 재현했다 — onset 203/231/214/194, lookback 대비 Δ=4/4, hold 끝±10 max 0.000384–0.002048(→ g1 FAIL, C2 결함과 일치), verify 이전 max 0.000176–0.000192(→ g2 PASS), g3 PASS. E0 frames는 **4/4 PASS**(0.9249–0.9981). g4는 **실제 C2b S2 결과로 PASS**(lift 6/6, 대조 0/2). report는 g1 false·나머지 true로 **PASS=false**를 출력해 “하나라도 실패면 FAIL” 규칙이 작동함을 확인했다.
+- 요약 receipt: `experiments/2026-10-17-act18/r3-donewindow/gate-prep.json`.
 - g4 입력 형식(`ugrp.act18.r3_c2b_gate_input.v1`)은 C2b 담당이 자기 원본에서 변환해 내야 한다. Oracle에서 재추론하지 않는다.
 
 검증 실행 경로:
 
-- `/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T200500Z/offline/r8-validation/e0/` (g5 4/4)
-- `/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T200500Z/offline/r8-validation/pilot/` (R8 pilot replay, **중단됨**: 첫 world row 파일 없음. 삭제하지 않고 보존. C2 완료 뒤 새 out dir로 재실행)
-- C2b 합성 입력 검증은 `/tmp/r3-gate-c2b/`(임시, 커밋하지 않음).
+- 새 run root: `/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T213000Z/offline/`
+  - `r8-validation/pilot/` — R8 g1–g3 replay (pilot.json, rows-*.jsonl)
+  - `c2b/` — 실제 C2b S2 g4 (adapter `c2b-input.json`는 C2 summary에서 생성)
+  - `gates/{pilot,c2b,e0}/` + `gates/summary.json` — report
+- 이전 중단 산출물 `/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T200500Z/offline/r8-validation/pilot/`은 **삭제하지 않고 보존**(C2 우선으로 첫 world 전 중단).
+- **미검증 범위**: R3 체크포인트의 g1·g2·g3·g5(체크포인트가 아직 없음), g5의 R3 CPU 추론, HO4 폐루프(diag stage 없음). g4는 스펙 정의상 C2b S2(R8 가중치) 결과다.
 
 ## 6. 학습 실행 (승인 대기 — 이번에 실행하지 않음)
 
@@ -138,7 +143,7 @@ python3 scripts/act18_train.py --enabled --candidate act18-r3dw --precision bf16
 
 ## 7. 리스크·미해결
 
-- **C2a 결과 미도착**: R3-A를 기본으로 등록했고 R3-B도 준비했다. C2a FAIL이 확인되면 R3-B로 바꾸는 것은 사전 규칙이며, launch.json에 C2a 산출물 경로·sha를 남겨야 한다.
+- **C2a INCONCLUSIVE 확인(2026-10-19T20:33Z)**: 사전 규칙상 **R3-A**를 쓴다. R3-B는 C2a FAIL일 때만이며 이번에는 선택되지 않았다. 근거·경로·sha는 `c2a-status.json`에 기록했고, launch.json에도 C2a 산출물 경로·sha를 남긴다.
 - **HO4 평가 하네스 없음**: base `act18_evaluate.py`에는 HO4 `diag` stage가 없다. 폐루프 HO4는 E2/C2의 `--stage diag --diag-prereg` 코드가 병합된 뒤에만 가능하다. 그전에는 TRAIN4만 제출 가능이며 HO4는 미제출로 보고한다.
 - **이미지 없는 dry-run**: 위 3절. VM 전체 데이터에서 `derived_root=false` 재실행 전에는 학습을 시작하지 않는다.
 - **release done 불변**: R3은 grasp done만 겨냥한다. release 단계 병목(B4 전례)은 별개다.
@@ -149,6 +154,7 @@ python3 scripts/act18_train.py --enabled --candidate act18-r3dw --precision bf16
 ## 8. 산출물
 
 - `experiments/2026-10-17-act18/R3_DONEWINDOW_PREREG.json`
-- `experiments/2026-10-17-act18/r3-donewindow/{README.md,config.resolved.json,data-delta.json,code.diff}`
+- `experiments/2026-10-17-act18/r3-donewindow/{README.md,config.resolved.json,data-delta.json,code.diff,c2a-status.json,gate-prep.json}`
+- `code.diff`는 base..`f031b8ee0`의 **코드·테스트 6개 파일만** 담는다(`scripts/act18_{policy,train,evaluate,r3_data_delta,r3_offline_gate}.py`, `tests/test_act18_r3_donewindow.py`). 실험 산출물 JSON은 diff에서 뺐다.
 - 코드: `scripts/act18_policy.py`, `scripts/act18_train.py`, `scripts/act18_evaluate.py`, `scripts/act18_r3_data_delta.py`, `scripts/act18_r3_offline_gate.py`
 - 테스트: `tests/test_act18_r3_donewindow.py`
