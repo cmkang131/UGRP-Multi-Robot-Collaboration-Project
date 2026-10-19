@@ -78,14 +78,18 @@ def main():
         deadband = prereg['arms'][arm]['issued_clock_deadband']
         folder = a.run_root / name; folder.mkdir()
         stage_dir = folder / f'R8-{stage}'; stage_dir.mkdir()
-        group_defs = (prereg['holdout']['groups'] if stage == 'diag'
-                      else prereg['queues']['TRAIN4']['groups'])
+        if stage == 'diag':
+            # Design E2 preflight fallback: the registered 2-world HO4 group
+            # fails warp_act_backend.py:402 (combined model scalars differ), so
+            # each HO4 world runs as its own group with its own compiled case.
+            groups = [([seed], f'case-{seed - 88600:03d}') for seed in prereg['holdout']['seeds']]
+        else:
+            groups = [(definition['seeds'], definition['compiled_reference_case'])
+                      for definition in prereg['queues']['TRAIN4']['groups'].values()]
         run_seeds = []
         commands = []
-        for group in (0, 1):
-            definition = group_defs[f'group-{group:03d}']
-            seeds = definition['seeds'];run_seeds.extend(seeds)
-            case = definition['compiled_reference_case']
+        for group, (seeds, case) in enumerate(groups):
+            run_seeds.extend(seeds)
             group_dir = stage_dir / f'group-{group:03d}'; group_dir.mkdir()
             plans_path = group_dir / 'plans.json'
             plans_path.write_text(json.dumps(dict(episodes=[plans[seed] for seed in seeds]), indent=2) + '\n')
@@ -114,7 +118,9 @@ def main():
         subprocess.run([sys.executable, str(ROOT / 'scripts/check_current_stack.py'), str(queue_path),
                         '--flow', 'act_eval', '--output', str(folder / 'current-stack-check.json')], check=True)
         launch = dict(schema='ugrp.act18.c2c_launch.v1', run=name, arm=arm, queue=queue, rep=rep,
-                      stage=stage, argv=commands, cwd=str(Q), host=host, source_sha=source, git_sha=source,
+                      stage=stage, grouping=('ho4_per_world_fallback' if stage == 'diag'
+                                             else 'registered_two_world_groups'),
+                      argv=commands, cwd=str(Q), host=host, source_sha=source, git_sha=source,
                       checkpoint_sha256=checkpoint_sha, checkpoint_path=str(a.checkpoint),
                       clock=dict(mode='deadband' if deadband else 'v6', deadband=deadband,
                                  flag=f'--issued-clock-deadband {deadband}'),

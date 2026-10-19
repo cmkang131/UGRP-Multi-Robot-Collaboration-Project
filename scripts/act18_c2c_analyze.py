@@ -140,8 +140,9 @@ def main():
         folder = a.run_root / name
         stage = 'diag' if queue == 'ho4' else 'train'
         run_worlds = []
-        for group in (0, 1):
-            evaldir = folder / f'R8-{stage}' / f'group-{group:03d}' / 'evaluation'
+        for group_dir in sorted((folder / f'R8-{stage}').glob('group-*')):
+            group = int(group_dir.name.split('-')[1])
+            evaldir = group_dir / 'evaluation'
             if not (evaldir / 'summary.json').exists():
                 raise ValueError(f'missing evaluation summary: {evaldir}')
             run_worlds.extend(group_rows(evaldir, name, arm, queue, rep, group))
