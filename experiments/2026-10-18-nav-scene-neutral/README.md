@@ -66,9 +66,11 @@ sha256 `4e921717…60ab9`)** — [before-after.json](before-after.json),
 
 ## 5. Tests
 
-- 신규 `tests/test_neutral_pickup_floor.py` (8 tests): 오버레이 제거·타일 60개·
+- 신규 `tests/test_neutral_pickup_floor.py` (**9 tests**): 오버레이 제거·타일 60개·
   면적/위치·S=0·zone B 불변·기록 프레임 before 실측·v5/v6 프로필 해시 고정·
-  `apply_xml`이 v6에서만 오버레이를 바꾸는지·current_stack/맵 SHA 고정.
+  `apply_xml`이 v6에서만 오버레이를 바꾸는지·current_stack/맵 SHA 고정·
+  fail-closed 2건(오버레이 없음 → `NEUTRAL_PICKUP_OVERLAY_MISSING`,
+  rgba 변경 → `NEUTRAL_PICKUP_OVERLAY_RGBA_CHANGED`).
 - 함께 실행: `tests/test_zone_scenario_scene.py`, `tests/test_render_profile.py`,
   `tests/test_e2ewarp_nav_gate.py`, `tests/test_zone_environment_registry.py`,
   `tests/test_natural_scene_texture.py`.

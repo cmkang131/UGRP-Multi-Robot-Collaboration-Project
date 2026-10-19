@@ -288,7 +288,7 @@
     {
       "id": "scene_profile",
       "current": "walls_floor_contrast_v6_indigo110_s80_neutral_start",
-      "decision_date": "2026-10-18",
+      "decision_date": "2026-10-15",
       "source": {
         "references": [
           {
@@ -374,7 +374,7 @@
         "source_artifact": "source_confirmed_runtime_separate",
         "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
       },
-      "notes": "2026-10-18 nav gate: 시작 픽업 바닥의 파란 오버레이(rgba .12 .36 .70 .14)를 중성 회색 타일 60개로 교체하고 조명 배율을 0.30→0.70로 올린 v6. v5 프로필은 동결(해시 b95ad4e7…), v6는 벽 텍스처를 v5 자산에서 재사용하며 지도 SHA는 바뀌지 않는다. GPU 프레임에서 V·채도를 다시 재기 전까지 기존 탐지기 캘리브레이션은 유효하지 않다."
+      "notes": "자연 바닥+벽 질감+벽/바닥 색 분리. main에 아직 모듈 없음; 열린 PR #527/#556/#557 소스로 확인. XML 질감 서명만으로 정확한 버전을 확정하지 않음."
     },
     {
       "id": "end_color_scene",

@@ -92,7 +92,10 @@ def test_report_splits_worktrees_tiers_and_budget_without_writing(project, capsy
     assert tiers["tensorboard"]["tier"] == "infrastructure"
     assert tiers["retired-worktrees"]["tier"] == "retired-worktrees"
     exts = {r["ext"]: r for r in report["experiments"]["by_ext"]}
-    assert exts["jpg"]["bytes"] == 300_000 and report["experiments"]["heavy_media_bytes"] >= 300_000
+    # RUNTIME_KEEP seeds are 1 KB files; a .jpg among them also counts under experiments/.
+    runtime_jpg_bytes = 1_000 * sum(path.endswith(".jpg") for path in agent_worktree.RUNTIME_KEEP)
+    assert exts["jpg"]["bytes"] == 300_000 + runtime_jpg_bytes
+    assert report["experiments"]["heavy_media_bytes"] >= 300_000
     assert report["agents"][".kiro"]["bytes"] >= 30_000
     budget = report["budget"]
     assert budget["project_bytes"] == sum(row["bytes"] for row in budget["rows"].values())

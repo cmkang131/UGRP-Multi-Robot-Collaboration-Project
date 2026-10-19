@@ -47,6 +47,8 @@ def repo(tmp_path, monkeypatch):
         "experiments/a/video.mp4": "M" * 4000,
         "experiments/dispatch-skill-integration-20260917/models.zip": "K" * 3000,
         "experiments/2026-09-10-rgb-varied-start/models.zip": "V" * 3000,
+        # RUNTIME_KEEP is the sparse re-include list, so every entry must exist in this fixture.
+        "experiments/2026-10-18-nav-gate-1/raw/r1-tick5.jpg": "J" * 12,
         "tests/fixtures/frame.jpg": "F" * 100,
         "scripts/tool.py": "print(1)\n",
     }

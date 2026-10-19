@@ -100,6 +100,31 @@ def test_neutral_pickup_replaces_overlay_and_keeps_zone_b():
     assert before_zone_b[0]['rgba'] == '.20 .40 .95 .30'
 
 
+def test_missing_overlay_fails_closed_with_the_named_error():
+    """No silent blue-floor fallback when a map loses the pickup overlay."""
+    root = ET.fromstring(
+        '<mujoco><worldbody>'
+        '<geom name="floor" type="plane" size="8 8 .1" pos="0 0 0"/>'
+        '</worldbody></mujoco>')
+    before = ET.tostring(root, encoding='unicode')
+    with pytest.raises(ValueError) as excinfo:
+        neutral.apply_root(root)
+    assert str(excinfo.value) == 'NEUTRAL_PICKUP_OVERLAY_MISSING: zone_pickup'
+    assert ET.tostring(root, encoding='unicode') == before  # nothing was painted
+
+
+def test_changed_overlay_rgba_fails_closed_with_the_named_error():
+    """A map rgba edit must stop the profile, not repaint an unknown overlay."""
+    root = synthetic_xml()
+    source = root.find("worldbody/geom[@name='zone_pickup']")
+    source.set('rgba', '.12 .36 .70 .20')
+    before = ET.tostring(root, encoding='unicode')
+    with pytest.raises(ValueError) as excinfo:
+        neutral.apply_root(root)
+    assert str(excinfo.value) == "NEUTRAL_PICKUP_OVERLAY_RGBA_CHANGED: '.12 .36 .70 .20'"
+    assert ET.tostring(root, encoding='unicode') == before  # source kept, no tiles added
+
+
 def test_start_paint_is_outside_the_zone_b_hue_band_while_zone_b_stays_blue():
     old_h, old_s, old_v = opencv_hsv(neutral.SOURCE_RGBA)
     # The removed overlay sits 2-6 units below zone B's hue and is saturated.
