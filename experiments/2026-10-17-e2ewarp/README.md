@@ -85,6 +85,12 @@ R3의 old modulo 동작은 off로 보존한다. **수정 뒤 GPU 재실행은 �
 - 최종 Mac 검증은 비물리24 tests pass(통합23 + workflow 계획1), compile/whitespace, vendor334 SHA 일치다.
   source/native smoke는 위 e0e124483에 한정하며 후속 mission 조합/키프레임 후보에
   그 물리 결과를 승계하지 않는다. Mac 물리 step/render0, 추가 GPU 라운드0.
+- 후속 **eval-only evaluator** `harness/e2ewarp_evaluator.py`를 추가했다. 제어 종료 뒤
+  `evaluation-state.npz`/`eval-geometry.json`만 읽어 `physical-evaluation.json`을 쓰고,
+  zone B base·cargo landing·door aperture·same episode·self-map 원장을 판정한다.
+  누락/파손/SHA 불일치는 fail-closed HOST_ERROR이며 agent claim은 읽지 않는다. 합성
+  fixture 30 tests pass, manifest `ready`+SHA 배선, 기본 smoke/CLI 경로 불변. 실제 장면
+  통합·물리 실행은 아직 없다([evaluator.md](evaluator.md)).
 - queue와 실제 XML/manifest의 current_stack 점검은 pass이지만
   localization/nearfield/setdown **3개 승인된 smoke 이탈**이 있어 current_compliant=false다.
   [점검 결과](r3/runtime-stack-check.json)의 선언 범위와 실제 관문 증거를 구분한다.
