@@ -35,7 +35,7 @@ done
 git -C $SRC/root rev-parse HEAD   # 이 값을 ROOT_SHA로 기록
 
 # 순수 함수 테스트 (simulator 불필요)
-cd $SRC/teacher && python -m pytest -q tests/test_pair_carry_teacher_warp.py          # 기대: 48 passed
+cd $SRC/teacher && python -m pytest -q tests/test_pair_carry_teacher_warp.py          # 기대: 48 passed (origin/dsh/pairact-carry-r1 ref가 없으면 47 passed, 1 skipped)
 cd $SRC/adapter && python -m pytest -q tests/test_pairact_p2_adapter.py               # 기대: 3 passed
 cd $SRC/root    && python -m pytest -q tests/test_pairact_p2_root.py                  # 기대: 8 passed
 
