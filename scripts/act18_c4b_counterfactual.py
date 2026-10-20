@@ -1,10 +1,20 @@
-"""ACT18 C4b — offline counterfactual replay of the C2c release window (CPU only).
+"""ACT18 C4b — offline counterfactual replay of the C2c release window.
 
 Replays the frozen R8 step-100000 ACT policy over the *recorded* C2c observations of
 the release skill, replacing exactly one policy input at a time, and records the
-deployed temporal-ensemble pwm1 output. No physics, no simulator, no training, no
-GPU. The recorded observations make the replay deterministic: every variant tick
-keeps the original observations except for the one substituted input.
+deployed temporal-ensemble pwm1 output. No physics, no simulator, no training. The
+recorded observations make the replay deterministic: every variant tick keeps the
+original observations except for the one substituted input.
+
+``--device`` selects cpu (default, the registered CPU condition) or cuda (C4b-GPU,
+``C4_COUNTERFACTUAL_PREREG_ADDENDUM_GPU.json``). Only the module forward moves; GPU
+and CPU replays are separate conditions and are never pooled.
+
+With ``--addendum`` the GPU addendum is applied: V-hist-fail becomes a formal arm on
+the 10 failure worlds, and two offline aggregates are computed from the *same*
+forward outputs (no extra forward): the first tick whose raw chunk contains a
+pwm1 >= 1900 row, and the open tick under alternative no-ensemble executors
+(latest chunk first, n_action_steps 4 and 8).
 
 Default OFF (``--enabled`` required). The pre-registration JSON must be written and
 committed before results; the replay verifies the registered world table against
@@ -40,6 +50,17 @@ ARMS = ('V0', 'V-pe', 'V-se', 'V-img-same', 'V-img-cross', 'V-hist')
 # content" from "any different 16-command history" for a V-hist recovery.
 EXTRA_ARMS = ('V-hist-fail',)
 CONTROL_ARMS = ARMS[1:]
+# GPU addendum (C4_COUNTERFACTUAL_PREREG_ADDENDUM_GPU.json): V-hist-fail is formal,
+# replayed on failure worlds only (green has no failure world, so there is no
+# same-kind failure reference for success worlds; the arm is not applicable there).
+ADDENDUM_SCHEMA = 'ugrp.act18.c4b_gpu_addendum.v1'
+ADDENDUM_ARMS = ARMS + EXTRA_ARMS
+FAILURE_ONLY_ARMS = ('V-hist-fail',)
+# Offline executors re-aggregated from the recorded raw chunks (no extra forward):
+# name -> n_action_steps of a no-ensemble harness ChunkExecutor (latest chunk first,
+# unweighted). latest8 executes the whole 8-row chunk without averaging.
+ALT_EXECUTORS = {'latest4': 4, 'latest8': 8}
+DECISION_MIN = 6
 CHECKPOINT_SHA256 = 'e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a'
 RECOVERED_MANIFEST_SHA256 = '6515c3c9be1be026da7ac9eb331def3c937959f99867479b8ed1c9758358f2d2'
 
@@ -394,6 +415,74 @@ def open_tau(series, threshold=OPEN_PWM1):
     return None
 
 
+def chunk_open(series, threshold=OPEN_PWM1):
+    """(a) First tick whose raw chunk (any of its rows) predicts pwm1 >= threshold.
+
+    Returns (tau, row index of the first such row) or (None, None). Ticks without a
+    forward (after the TE done freeze) carry no chunk and are skipped.
+    """
+    for item in series:
+        rows = item.get('chunk_pwm1')
+        if not rows:
+            continue
+        for index, pwm1 in enumerate(rows):
+            if pwm1 >= threshold:
+                return item['tau'], index
+    return None, None
+
+
+def chunk_executor_series(series, n_action_steps, threshold=OPEN_PWM1):
+    """(b) Re-aggregate recorded raw chunks with a no-ensemble ChunkExecutor.
+
+    Same arithmetic as ``harness.grasp_act_policy.ChunkExecutor(predict,
+    n_action_steps=n, temporal_ensemble_coeff=None)`` reset at release entry: when
+    the pending queue is empty the chunk predicted at that tick is taken (latest chunk
+    first, no weights) and its first ``n`` rows are executed in order; a done row
+    clears the queue and every later tick holds the recorded last issued command.
+    Only forwards already made for the deployed TE replay are used; if a needed
+    chunk is missing (the TE arm stopped forwarding after its own done) the series is
+    truncated and ``truncated_at_tau`` records where.
+    """
+    if type(n_action_steps) is not int or not 1 <= n_action_steps <= contract.CHUNK:
+        raise ValueError('n_action_steps must be 1..chunk')
+    pending, done, executed = [], False, []
+    done_tau = truncated = None
+    for item in series:
+        if done:
+            executed.append((item['tau'], item['held_pwm1']))
+            continue
+        if not pending:
+            rows = item.get('chunk_pwm1')
+            if not rows:
+                truncated = item['tau']
+                break
+            pending = list(zip(rows[:n_action_steps], item['chunk_done'][:n_action_steps]))
+        pwm1, row_done = pending.pop(0)
+        executed.append((item['tau'], int(pwm1)))
+        if row_done:
+            done, done_tau, pending = True, item['tau'], []
+    return dict(n_action_steps=n_action_steps,
+                open_tau=open_tau(executed, threshold),
+                pwm1_max=max((value for _, value in executed), default=None),
+                done_tau=done_tau, truncated_at_tau=truncated, ticks=len(executed))
+
+
+def history_delta_series(window, references):
+    """Descriptive size of a history substitution: mean |dPWM| over 16 x 5 servos."""
+    values = []
+    for row, reference in zip(window, references):
+        own = row['observation']['issued']
+        other = reference['observation']['issued']
+        diffs = [abs(int(a['pwm'][str(s)]) - int(b['pwm'][str(s)]))
+                 for a, b in zip(own, other) for s in contract.SERVOS]
+        pwm1 = [abs(int(a['pwm']['1']) - int(b['pwm']['1'])) for a, b in zip(own, other)]
+        values.append((sum(diffs) / len(diffs), sum(pwm1) / len(pwm1)))
+    if not values:
+        return None
+    return dict(mean_abs_pwm=round(sum(v[0] for v in values) / len(values), 3),
+                mean_abs_pwm1=round(sum(v[1] for v in values) / len(values), 3))
+
+
 def decide(recovered):
     """Apply the pre-registered failure decision rules; counts is arm -> n_recovered."""
     if set(recovered) != set(CONTROL_ARMS):
@@ -408,6 +497,39 @@ def decide(recovered):
                         text='V-img-cross만 회복 -> kind 특이 시각 일반화')
         return dict(verdict='single_input_cause', arms=hit, text='단일 입력 원인: ' + arm)
     return dict(verdict='multiple_inputs', arms=hit, text='복수 입력 변형이 기준 이상')
+
+
+def decide_addendum(recovered, hist_fail_recovered, executor_recovered, v0_chunk_open,
+                    failure_n=10, minimum=DECISION_MIN):
+    """GPU addendum rules; the original ``decide`` over the 5 control arms is unchanged.
+
+    H-A1 (history copycat): V-hist >= 6 and V-hist-fail < 6 -> supported (success
+    history content); both >= 6 -> refuted as content-specific (any history change
+    recovers); V-hist < 6 -> not supported.
+    H-A2 (temporal-ensemble dilution): an alternative executor on the V0 forwards
+    recovers >= 6 -> supported; V0 raw chunks of the failure worlds never contain an
+    open row (0/10) -> refuted; otherwise not supported.
+    """
+    hist = recovered.get('V-hist')
+    if hist is None or hist_fail_recovered is None:
+        h_a1 = dict(verdict='incomplete', text='V-hist 또는 V-hist-fail 미실행')
+    elif hist >= minimum and hist_fail_recovered >= minimum:
+        h_a1 = dict(verdict='refuted_any_history', text='임의 실패 이력도 회복 -> 성공 이력 내용 특이성 기각')
+    elif hist >= minimum:
+        h_a1 = dict(verdict='supported', text='성공 이력만 회복 -> H-A1 지지')
+    else:
+        h_a1 = dict(verdict='not_supported', text='V-hist 회복 < %d/%d' % (minimum, failure_n))
+    hit = sorted(name for name, value in executor_recovered.items() if value >= minimum)
+    if v0_chunk_open is None:
+        h_a2 = dict(verdict='incomplete', executors=[], text='V0 chunk 집계 없음')
+    elif hit:
+        h_a2 = dict(verdict='supported', executors=hit, text='대체 실행기 회복 -> H-A2 지지')
+    elif v0_chunk_open == 0:
+        h_a2 = dict(verdict='refuted', executors=[], text='raw chunk에 open 예측 없음 -> H-A2 기각')
+    else:
+        h_a2 = dict(verdict='not_supported', executors=[],
+                    text='raw chunk open 있으나 대체 실행기 회복 < %d/%d' % (minimum, failure_n))
+    return dict(h_a1=h_a1, h_a2=h_a2)
 
 
 def rindex(observations, t0, tick):
@@ -504,13 +626,19 @@ def replay_world(world, arms, run_root, recovered_root, actor, checkpoint_sha):
                 prediction = np.asarray(actor.predict(changed, jpegs), dtype=float)
                 forward_times[arm] += time.perf_counter() - started
                 action, averaged = ensemble.step(prediction)
-                raw = contract.decode_action(prediction[0])
+                rows = [contract.decode_action(values) for values in prediction]
+                raw = rows[0]
             tau = round(observation['t'] - t0, 6)
             if action['done'] and done_tau[arm] is None:
                 done_tau[arm] = tau
             series[arm].append(dict(tau=tau,
                                     te_pwm1=int(action['pwm']['1']),
                                     raw_pwm1=None if raw is None else int(raw['pwm']['1']),
+                                    chunk_pwm1=None if raw is None else
+                                    [int(item['pwm']['1']) for item in rows],
+                                    chunk_done=None if raw is None else
+                                    [bool(item['done']) for item in rows],
+                                    held_pwm1=int(observation['issued'][-1]['pwm']['1']),
                                     te_done=None if averaged is None else round(
                                         float(averaged[-1]), 6)))
     result = dict(label=world['label'], seed=world['seed'], kind=world['kind'],
@@ -521,6 +649,9 @@ def replay_world(world, arms, run_root, recovered_root, actor, checkpoint_sha):
                   reference_same=world['reference_same'],
                   reference_cross=world['reference_cross'], arms={})
     for arm in arms:
+        chunk_tau, chunk_row = chunk_open(series[arm])
+        executors = {name: chunk_executor_series(series[arm], steps)
+                     for name, steps in ALT_EXECUTORS.items()}
         te_series = [(item['tau'], item['te_pwm1']) for item in series[arm]]
         raw_series = [(item['tau'], item['raw_pwm1']) for item in series[arm]
                       if item['raw_pwm1'] is not None]
@@ -530,6 +661,12 @@ def replay_world(world, arms, run_root, recovered_root, actor, checkpoint_sha):
             raw_open_tau=open_tau(raw_series) if raw_series else None,
             raw_pwm1_max=max((value for _, value in raw_series), default=None),
             done_tau=done_tau[arm],
+            chunk_open_tau=chunk_tau, chunk_open_row=chunk_row,
+            executors=executors,
+            history_delta=(history_delta_series(window, [
+                rindex(same_obs if arm == 'V-hist' else fail_obs,
+                       same_t0 if arm == 'V-hist' else fail_t0, index)
+                for index in range(len(window))]) if arm in ('V-hist', 'V-hist-fail') else None),
             forwards=int(sum(1 for item in series[arm] if item['raw_pwm1'] is not None)),
             forward_wall_s=round(forward_times[arm], 3),
             series=series[arm])
@@ -570,27 +707,105 @@ def fidelity_check(replay):
                 open_status_ok=status_ok, worlds=len(replay), details=details)
 
 
-def summarize(replay, checkpoint_sha, arms=ARMS):
+def _count(worlds, arm, predicate):
+    return sum(1 for world in worlds if arm in world['arms'] and predicate(world['arms'][arm]))
+
+
+def summarize(replay, checkpoint_sha, arms=ARMS, addendum=False):
     failures = [world for world in replay if world['outcome'] == 'failure']
     successes = [world for world in replay if world['outcome'] == 'success']
     table = {}
     for arm in arms:
+        def masked(value):
+            return value.get('chunk_open_tau') is not None and value['open_tau'] is None
         table[arm] = dict(
-            failure_open=sum(1 for world in failures if world['arms'][arm]['open_tau'] is not None),
-            success_open=sum(1 for world in successes if world['arms'][arm]['open_tau'] is not None),
-            failure_raw_open=sum(1 for world in failures
-                                 if world['arms'][arm]['raw_open_tau'] is not None),
-            failure_done=sum(1 for world in failures if world['arms'][arm]['done_tau'] is not None),
-            failure_te_pwm1_max=[world['arms'][arm]['te_pwm1_max'] for world in failures])
+            failure_n=_count(failures, arm, lambda value: True),
+            success_n=_count(successes, arm, lambda value: True),
+            failure_open=_count(failures, arm, lambda value: value['open_tau'] is not None),
+            success_open=_count(successes, arm, lambda value: value['open_tau'] is not None),
+            failure_raw_open=_count(failures, arm, lambda value: value['raw_open_tau'] is not None),
+            failure_done=_count(failures, arm, lambda value: value['done_tau'] is not None),
+            failure_te_pwm1_max=[world['arms'][arm]['te_pwm1_max'] for world in failures
+                                 if arm in world['arms']],
+            failure_chunk_open=_count(failures, arm,
+                                      lambda value: value.get('chunk_open_tau') is not None),
+            success_chunk_open=_count(successes, arm,
+                                      lambda value: value.get('chunk_open_tau') is not None),
+            # H-A2 indicator: open present in a raw chunk but absent after TE averaging.
+            failure_masked_by_te=_count(failures, arm, masked),
+            success_masked_by_te=_count(successes, arm, masked),
+            executors={name: dict(
+                failure_open=_count(failures, arm, lambda value, name=name: (
+                    value.get('executors', {}).get(name, {}).get('open_tau') is not None)),
+                success_open=_count(successes, arm, lambda value, name=name: (
+                    value.get('executors', {}).get(name, {}).get('open_tau') is not None)),
+                truncated=_count(failures + successes, arm, lambda value, name=name: (
+                    value.get('executors', {}).get(name, {}).get('truncated_at_tau')
+                    is not None)))
+                for name in ALT_EXECUTORS})
     recovered = {}
     for arm in CONTROL_ARMS:
         if arm in table:
             recovered[arm] = sum(1 for world in failures
                                  if world['arms'][arm]['open_tau'] is not None
                                  and world['arms']['V0']['open_tau'] is None)
-    return dict(checkpoint_sha256=checkpoint_sha,
-                failure_n=len(failures), success_n=len(successes),
-                table=table, recovered=recovered, decision=decide(recovered))
+    result = dict(checkpoint_sha256=checkpoint_sha,
+                  failure_n=len(failures), success_n=len(successes),
+                  table=table, recovered=recovered, decision=decide(recovered))
+    if addendum:
+        hist_fail = None
+        if 'V-hist-fail' in arms:
+            hist_fail = sum(1 for world in failures
+                            if world['arms']['V-hist-fail']['open_tau'] is not None
+                            and world['arms']['V0']['open_tau'] is None)
+        executor_recovered = {}
+        v0_chunk_open = masked_rate = None
+        if 'V0' in arms:
+            for name in ALT_EXECUTORS:
+                executor_recovered[name] = sum(
+                    1 for world in failures
+                    if world['arms']['V0']['executors'][name]['open_tau'] is not None
+                    and world['arms']['V0']['open_tau'] is None)
+            v0_chunk_open = table['V0']['failure_chunk_open']
+            masked_rate = (table['V0']['failure_masked_by_te'] / len(failures)
+                           if failures else None)
+        result['addendum'] = dict(
+            hist_fail_recovered=hist_fail,
+            executor_recovered=executor_recovered,
+            h_a2_masked_by_te=dict(arm='V0', n=table.get('V0', {}).get('failure_masked_by_te'),
+                                   N=len(failures), rate=masked_rate),
+            decision=decide_addendum(recovered, hist_fail, executor_recovered, v0_chunk_open,
+                                     failure_n=len(failures)))
+    return result
+
+
+def device_guard(requested, available):
+    """Fail closed: never silently fall back to the CPU when cuda was asked for."""
+    if requested not in ('cpu', 'cuda'):
+        raise ValueError('unknown device: %r' % (requested,))
+    if requested == 'cuda' and not available:
+        raise SystemExit('--device cuda requested but torch.cuda.is_available() is False')
+    return requested
+
+
+def load_addendum(path, prereg_path):
+    """GPU addendum must name the exact base prereg it extends."""
+    value = json.loads(Path(path).read_text())
+    if value.get('schema') != ADDENDUM_SCHEMA:
+        raise SystemExit('unregistered addendum schema')
+    if value.get('base_prereg', {}).get('sha256') != sha256(prereg_path):
+        raise SystemExit('addendum base prereg sha256 mismatch')
+    if value.get('registered_before_results') is not True:
+        raise SystemExit('addendum must be registered before results')
+    return value
+
+
+def hist_fail_reference(registration, label, kind):
+    """Registered V-hist-fail rule: first same-kind failure world (registration order),
+    excluding the target itself."""
+    failures = [item for item in registration['targets']['failure']
+                if item['kind'] == kind and item['label'] != label]
+    return failures[0]['label'] if failures else None
 
 
 def parse_arguments(argv=None):
@@ -602,7 +817,11 @@ def parse_arguments(argv=None):
     parser.add_argument('--prereg', type=Path)
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--emit-prereg', type=Path)
-    parser.add_argument('--arms', default=','.join(ARMS))
+    parser.add_argument('--arms', default='',
+                        help='default: the 6 registered arms, or the 7 addendum arms '
+                             'with --addendum')
+    parser.add_argument('--addendum', type=Path,
+                        help='C4_COUNTERFACTUAL_PREREG_ADDENDUM_GPU.json (C4b-GPU)')
     parser.add_argument('--worlds', default='')
     parser.add_argument('--threads', type=int, default=2)
     parser.add_argument('--device', default='cpu', choices=('cpu', 'cuda'),
@@ -623,7 +842,8 @@ def main(argv=None):
                 else Path(args.recovered_root) / 'remote-rgb-sha256.txt')
     if sha256(manifest) != RECOVERED_MANIFEST_SHA256:
         raise SystemExit('unexpected C4a recovered manifest hash')
-    arms = tuple(part.strip() for part in args.arms.split(',') if part.strip())
+    arms = (tuple(part.strip() for part in args.arms.split(',') if part.strip())
+            or (ADDENDUM_ARMS if args.addendum else ARMS))
     for arm in arms:
         if arm not in ARMS + EXTRA_ARMS:
             raise SystemExit('unknown arm %r' % (arm,))
@@ -646,6 +866,12 @@ def main(argv=None):
     if args.prereg is None:
         raise SystemExit('--prereg is required for a replay')
     registration = json.loads(Path(args.prereg).read_text())
+    addendum = load_addendum(args.addendum, args.prereg) if args.addendum else None
+    if addendum is not None:
+        if args.device != addendum['device']:
+            raise SystemExit('addendum registers device %r' % addendum['device'])
+        if set(arms) != set(addendum['arms']):
+            raise SystemExit('addendum registers arms %s' % ','.join(addendum['arms']))
     if registration.get('schema') != 'ugrp.act18.c4_counterfactual_prereg.v1':
         raise SystemExit('unregistered prereg schema')
     if registration['source']['checkpoint_model_sha256'] != CHECKPOINT_SHA256:
@@ -674,8 +900,7 @@ def main(argv=None):
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     import torch
-    if args.device == 'cuda' and not torch.cuda.is_available():
-        raise SystemExit('--device cuda requested but no CUDA device is visible')
+    device_guard(args.device, torch.cuda.is_available())
     if args.device == 'cpu':
         torch.set_num_threads(max(1, args.threads))
     from act18_policy import Actor
@@ -689,15 +914,20 @@ def main(argv=None):
         world['reference_cross'] = reference_labels['img_cross'][label]
         world['reference_worlds'] = {world['reference_same']: all_worlds[world['reference_same']],
                                      world['reference_cross']: all_worlds[world['reference_cross']]}
-        if 'V-hist-fail' in arms:
-            failures = [item for item in registration['targets']['failure']
-                        if item['kind'] == world['kind'] and item['label'] != label]
-            if not failures:
+        world_arms = arms
+        if addendum is not None and world['outcome'] != 'failure':
+            # Registered: V-hist-fail swaps histories between failure worlds only.
+            world_arms = tuple(arm for arm in arms if arm not in FAILURE_ONLY_ARMS)
+        if 'V-hist-fail' in world_arms:
+            reference = hist_fail_reference(registration, label, world['kind'])
+            if reference is None:
                 raise SystemExit('no same-kind failure reference for %s' % label)
-            world['reference_fail'] = failures[0]['label']
+            if addendum is not None and addendum['hist_fail_reference'][label] != reference:
+                raise SystemExit('V-hist-fail reference differs from addendum for %s' % label)
+            world['reference_fail'] = reference
             world['reference_fail_world'] = all_worlds[world['reference_fail']]
         world_started = time.time()
-        result = replay_world(world, arms, args.c2c_root, args.recovered_root, actor,
+        result = replay_world(world, world_arms, args.c2c_root, args.recovered_root, actor,
                               CHECKPOINT_SHA256)
         replay.append(result)
         print('[%d/%d] %s %s %s ticks=%d wall=%.1fs V0_open=%s V-pe=%s V-se=%s '
@@ -710,19 +940,35 @@ def main(argv=None):
                   result['arms'].get('V-img-same', {}).get('open_tau'),
                   result['arms'].get('V-img-cross', {}).get('open_tau'),
                   result['arms'].get('V-hist', {}).get('open_tau')), flush=True)
+        if addendum is not None:
+            v0 = result['arms'].get('V0', {})
+            print('    hist-fail=%s chunk_open=%s latest4=%s latest8=%s' % (
+                result['arms'].get('V-hist-fail', {}).get('open_tau'),
+                v0.get('chunk_open_tau'),
+                v0.get('executors', {}).get('latest4', {}).get('open_tau'),
+                v0.get('executors', {}).get('latest8', {}).get('open_tau')), flush=True)
         write_json(out / 'replay.json', dict(worlds=replay))
     wall = time.time() - started
     fidelity = fidelity_check(replay)
-    summary = summarize(replay, CHECKPOINT_SHA256, arms)
+    summary = summarize(replay, CHECKPOINT_SHA256, arms, addendum=addendum is not None)
     receipt = dict(schema='ugrp.act18.c4b_counterfactual.v1',
                    prereg=str(args.prereg), prereg_sha256=sha256(args.prereg),
                    args={key: (str(value) if isinstance(value, Path) else value)
                          for key, value in vars(args).items()},
                    checkpoint_sha256=CHECKPOINT_SHA256,
                    recovered_manifest_sha256=RECOVERED_MANIFEST_SHA256,
-                   recovered_manifest=str(manifest), device=args.device,
+                   recovered_manifest=str(manifest),
+                   device=dict(name=args.device, torch=torch.__version__,
+                               torch_cuda=torch.version.cuda,
+                               gpu=(torch.cuda.get_device_name(0)
+                                    if args.device == 'cuda' else None),
+                               condition=('gpu_replay' if args.device == 'cuda'
+                                          else 'cpu_replay'),
+                               pooled_with_cpu=False),
+                   addendum=(None if addendum is None else
+                             dict(path=str(args.addendum), sha256=sha256(args.addendum))),
                    arms=list(arms), worlds=len(replay), wall_s=round(wall, 1),
-                   forwards=sum(world['arms'][arm]['forwards'] for world in replay for arm in arms),
+                   forwards=sum(value['forwards'] for world in replay for value in world['arms'].values()),
                    created_utc=time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
                    fidelity=fidelity, summary=summary)
     write_json(out / 'summary.json', receipt)
@@ -733,7 +979,8 @@ def main(argv=None):
                                            success_open=summary['table'][arm]['success_open'])
                                  for arm in arms},
                           recovered=summary['recovered'],
-                          decision=summary['decision'], wall_s=round(wall, 1)), indent=1))
+                          decision=summary['decision'],
+                          addendum=summary.get('addendum'), wall_s=round(wall, 1)), indent=1))
     if (fidelity['exact_fraction'] < registration['fidelity']['exact_fraction_min']
             or fidelity['max_abs_diff'] > registration['fidelity']['max_abs_diff']
             or fidelity['open_status'] != registration['fidelity']['open_status']):

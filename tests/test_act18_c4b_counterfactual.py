@@ -192,3 +192,188 @@ def test_exploratory_hist_failure_arm_requires_reference():
     assert all(row['pwm']['1'] == 1650 for row in changed['issued'])
     assert c4b.EXTRA_ARMS == ('V-hist-fail',)
     assert 'V-hist-fail' not in c4b.CONTROL_ARMS
+
+
+# --- C4b-GPU addendum (C4_COUNTERFACTUAL_PREREG_ADDENDUM_GPU.json) -----------------
+
+ADDENDUM = ROOT / 'experiments/2026-10-17-act18/C4_COUNTERFACTUAL_PREREG_ADDENDUM_GPU.json'
+PREREG = ROOT / 'experiments/2026-10-17-act18/C4_COUNTERFACTUAL_PREREG.json'
+
+
+def chunk_row(pwm1, done=False):
+    values = np.zeros(c.ACTION_DIM)
+    values[8] = (pwm1 - 1500) / 1000.
+    values[-1] = .9 if done else .1
+    return values
+
+
+def series_from(predictions, held=1500):
+    series = []
+    for tick, prediction in enumerate(predictions):
+        rows = [c.decode_action(values) for values in prediction]
+        series.append(dict(tau=round(.1 * tick, 6), te_pwm1=0, raw_pwm1=rows[0]['pwm']['1'],
+                           chunk_pwm1=[row['pwm']['1'] for row in rows],
+                           chunk_done=[bool(row['done']) for row in rows],
+                           held_pwm1=held, te_done=None))
+    return series
+
+
+def test_device_defaults_to_cpu_and_guard_fails_closed():
+    base = ['--c2c-root', 'c', '--recovered-root', 'r', '--checkpoint', 'k', '--out', 'o']
+    assert c4b.parse_arguments(base).device == 'cpu'
+    assert c4b.parse_arguments(base + ['--device', 'cuda']).device == 'cuda'
+    with pytest.raises(SystemExit):
+        c4b.parse_arguments(base + ['--device', 'mps'])
+    assert c4b.device_guard('cpu', False) == 'cpu'
+    assert c4b.device_guard('cuda', True) == 'cuda'
+    with pytest.raises(SystemExit):
+        c4b.device_guard('cuda', False)
+    with pytest.raises(ValueError):
+        c4b.device_guard('mps', True)
+
+
+def test_chunk_open_finds_first_tick_and_row_and_skips_frozen_ticks():
+    flat = [chunk_row(1500)] * c.CHUNK
+    later = [chunk_row(1500)] * 5 + [chunk_row(2009)] + [chunk_row(1500)] * 2
+    series = series_from([flat, flat, later, later])
+    assert c4b.chunk_open(series) == (pytest.approx(.2), 5)
+    series[2]['chunk_pwm1'] = None  # no forward on that tick
+    assert c4b.chunk_open(series) == (pytest.approx(.3), 5)
+    assert c4b.chunk_open(series_from([flat] * 4)) == (None, None)
+
+
+@pytest.mark.parametrize('steps', [4, 8])
+def test_chunk_executor_series_matches_harness_chunk_executor(steps):
+    rng = np.random.default_rng(20261020 + steps)
+    predictions = []
+    for tick in range(20):
+        rows = [chunk_row(int(rng.integers(1400, 2100))) for _ in range(c.CHUNK)]
+        predictions.append(rows)
+    predictions[8][2] = chunk_row(1990, done=True)  # done row executed by both n=4 and n=8
+    counter = {'index': 0}
+
+    def predict(obs, jpegs):
+        value = predictions[counter['index']]
+        return [list(row) for row in value]
+
+    executor = ChunkExecutor(predict, n_action_steps=steps, temporal_ensemble_coeff=None)
+    expected = []
+    for tick in range(len(predictions)):
+        counter['index'] = tick
+        obs = observation(t=10. + 0.1 * tick)
+        value, done = executor.step(obs, [b''] * c.RGB_HISTORY)
+        expected.append(value['pwm']['1'])
+    series = series_from(predictions)
+    result = c4b.chunk_executor_series(series, steps)
+    first = next((round(.1 * i, 6) for i, v in enumerate(expected) if v >= c4b.OPEN_PWM1), None)
+    assert result['open_tau'] == first
+    assert result['pwm1_max'] == max(expected)
+    assert result['truncated_at_tau'] is None
+    assert result['ticks'] == len(predictions)
+
+
+def test_chunk_executor_series_latest4_recovers_a_te_diluted_open():
+    # One new chunk per tick predicts the open step only from row 0 of tick 3 on;
+    # the TE average stays below 1900 for the first ticks, latest4 opens at once.
+    closed = [chunk_row(1520)] * c.CHUNK
+    opened = [chunk_row(2009)] * c.CHUNK
+    predictions = [closed] * 4 + [opened] * 4
+    series = series_from(predictions)
+    ensemble = c4b.TemporalEnsemble()
+    te = [ensemble.step([list(row) for row in p])[0]['pwm']['1'] for p in predictions]
+    assert te[4] < c4b.OPEN_PWM1  # diluted on the first open tick
+    assert c4b.chunk_executor_series(series, 4)['open_tau'] == pytest.approx(.4)
+    assert c4b.chunk_executor_series(series, 8)['open_tau'] is None  # still executing tick-0 chunk
+
+
+def test_chunk_executor_series_truncates_when_forward_missing():
+    closed = [chunk_row(1520)] * c.CHUNK
+    series = series_from([closed] * 6)
+    series[4]['chunk_pwm1'] = None
+    result = c4b.chunk_executor_series(series, 4)
+    assert result['truncated_at_tau'] == pytest.approx(.4)
+    assert result['ticks'] == 4
+    with pytest.raises(ValueError):
+        c4b.chunk_executor_series(series, 9)
+
+
+def test_chunk_executor_series_holds_after_done():
+    rows = [chunk_row(1600, done=True)] + [chunk_row(2000)] * (c.CHUNK - 1)
+    series = series_from([rows] * 4, held=1515)
+    result = c4b.chunk_executor_series(series, 4)
+    assert result['done_tau'] == 0.
+    assert result['open_tau'] is None and result['pwm1_max'] == 1600
+
+
+def _world(label, outcome, v0_open, hist, hist_fail, chunk, latest4):
+    def arm(open_tau, chunk_tau=None, l4=None):
+        return dict(open_tau=open_tau, raw_open_tau=None, done_tau=None, te_pwm1_max=1500,
+                    chunk_open_tau=chunk_tau, chunk_open_row=None,
+                    executors=dict(latest4=dict(open_tau=l4, truncated_at_tau=None),
+                                   latest8=dict(open_tau=None, truncated_at_tau=None)))
+    arms = {name: arm(None) for name in c4b.ARMS}
+    arms['V0'] = arm(v0_open, chunk, latest4)
+    arms['V-hist'] = arm(hist)
+    if outcome == 'failure':
+        arms['V-hist-fail'] = arm(hist_fail)
+    return dict(label=label, outcome=outcome, arms=arms)
+
+
+def test_summarize_addendum_masked_rate_and_decisions():
+    failures = [_world('f%d' % i, 'failure', None, 3.4 if i < 7 else None,
+                       3.0 if i < 2 else None, 2.0 if i < 8 else None,
+                       2.5 if i < 6 else None) for i in range(10)]
+    successes = [_world('s%d' % i, 'success', 3.0, 3.0, None, 2.0, 2.0) for i in range(9)]
+    summary = c4b.summarize(failures + successes, 'x', c4b.ADDENDUM_ARMS, addendum=True)
+    assert summary['table']['V-hist-fail']['failure_n'] == 10
+    assert summary['table']['V-hist-fail']['success_n'] == 0
+    add = summary['addendum']
+    assert add['hist_fail_recovered'] == 2
+    assert add['executor_recovered'] == {'latest4': 6, 'latest8': 0}
+    assert add['h_a2_masked_by_te'] == dict(arm='V0', n=8, N=10, rate=.8)
+    assert add['decision']['h_a1']['verdict'] == 'supported'
+    assert add['decision']['h_a2'] == dict(verdict='supported', executors=['latest4'],
+                                           text='대체 실행기 회복 -> H-A2 지지')
+    # The original decision over the five registered control arms is unchanged.
+    assert summary['decision']['verdict'] == 'single_input_cause'
+    assert summary['decision']['arms'] == ['V-hist']
+
+
+def test_decide_addendum_refutations():
+    rec = {'V-hist': 7}
+    assert c4b.decide_addendum(rec, 6, {}, 3)['h_a1']['verdict'] == 'refuted_any_history'
+    assert c4b.decide_addendum({'V-hist': 5}, 0, {}, 3)['h_a1']['verdict'] == 'not_supported'
+    assert c4b.decide_addendum(rec, None, {}, 3)['h_a1']['verdict'] == 'incomplete'
+    assert c4b.decide_addendum(rec, 0, {'latest4': 5, 'latest8': 0}, 0)['h_a2']['verdict'] == 'refuted'
+    assert c4b.decide_addendum(rec, 0, {'latest4': 5, 'latest8': 0}, 4)['h_a2']['verdict'] == 'not_supported'
+
+
+def test_hist_fail_reference_is_same_kind_failure_never_self():
+    registration = json.loads(PREREG.read_text())
+    labels = [item['label'] for item in registration['targets']['failure']]
+    for item in registration['targets']['failure']:
+        reference = c4b.hist_fail_reference(registration, item['label'], item['kind'])
+        assert reference in labels and reference != item['label']
+        kinds = {x['label']: x['kind'] for x in registration['targets']['failure']}
+        assert kinds[reference] == item['kind']
+    # green has no failure world: no reference exists for green success worlds.
+    assert c4b.hist_fail_reference(registration, 'x', 'green') is None
+
+
+def test_addendum_file_matches_code_and_base_prereg(tmp_path):
+    value = c4b.load_addendum(ADDENDUM, PREREG)
+    registration = json.loads(PREREG.read_text())
+    assert value['device'] == 'cuda'
+    assert value['arms'] == list(c4b.ADDENDUM_ARMS)
+    assert value['offline_aggregates']['alternative_executors']['executors'] == \
+        {name: dict(n_action_steps=steps, temporal_ensemble_coeff=None)
+         for name, steps in c4b.ALT_EXECUTORS.items()}
+    failures = registration['targets']['failure']
+    assert value['hist_fail_reference'] == {
+        item['label']: c4b.hist_fail_reference(registration, item['label'], item['kind'])
+        for item in failures}
+    assert value['decision']['minimum_recovered'] == c4b.DECISION_MIN
+    bad = tmp_path / 'bad.json'
+    bad.write_text(json.dumps(dict(value, base_prereg=dict(value['base_prereg'], sha256='0' * 64))))
+    with pytest.raises(SystemExit):
+        c4b.load_addendum(bad, PREREG)
