@@ -13,7 +13,7 @@
 #
 # Usage (on gcp6, as user ugrp, nothing else on the GPU):
 #   bash repro_cuda.sh plan          # print commands only (default)
-#   bash repro_cuda.sh run           # run the core matrix sequentially (A1..A4, B1)
+#   bash repro_cuda.sh run           # run the core matrix sequentially (A1 A2 A3 B1 B2)
 #   bash repro_cuda.sh run sanitizer # additionally run S1 (compute-sanitizer memcheck, 1 world)
 # Every run writes to a NEW directory under $OUT_ROOT; existing dirs are never reused.
 set -uo pipefail

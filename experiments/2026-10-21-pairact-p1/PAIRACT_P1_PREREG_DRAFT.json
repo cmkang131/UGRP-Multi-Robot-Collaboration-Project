@@ -1,0 +1,55 @@
+{
+ "schema": "ugrp.pairact.p1.teacher_gate_tournament_prereg.v1",
+ "status": "DRAFT",
+ "author": "Claude worker (pairact P0/P1), 2026-10-20",
+ "freeze_rule": "오너가 open_decisions를 모두 정한 뒤 실행 전 커밋으로 status=FROZEN. 그 커밋 SHA를 run 기록에 남긴다. 결과를 본 뒤 지표·기준·world 집합·제외 규칙 변경 금지",
+ "scope": "MJWarp teacher 관문(공동 파지 + 3초 유지)만. 학생 ACT·운반·하차·실물 성공은 범위 밖. teacher 결과는 시연 생성 자격용이며 학습 결과로 세지 않음. CPU 결과(beampair7 40/40 등)와 합산하지 않음",
+ "arms_registered_order": [
+  {"arm": "r13", "candidate": "beamact5_r13", "root": "05046e9d245e46b4ee3d1c43308f7258a9fa41c5", "adapter": "d354468a303e1ebc961e58deedd35d05bed40098", "teacher": "fe6858eca7fa7b2ba6fb518c54f18a071995d5b4", "role": "현행 기준(이전 37/40). 같은 밤 재실행"},
+  {"arm": "c1", "candidate": "pairact_p1c1", "root": "6360e972e22401c42ec316883f40e2c485f88005", "adapter": "c25a616c9ebb1a46564b75a7be07a9db394e07b7", "teacher": "ee757b916335dd225723e742f76426bbf9018c21", "change": "r13 + search26_align_rect_guard_v1 (align 펄스 가드를 185x160 mm 직사각형으로)"},
+  {"arm": "c3", "candidate": "pairact_p1c3", "root": "7f8bb3c5b950c3743da6aff7ee2ff1eead94c915", "adapter": "9b4c29108705b157c4a73ab2be8c205ca0f22727", "teacher": "802a19a673bc481c86b8fea26156430ed3082d89", "change": "r13 + search26_align_relook_cap_v1 (relook 상한 2→4)"}
+ ],
+ "arm_c2": "없음. beampair_peer_yield_v1은 r13 스택에 이미 켜져 있음(adapter d354468a harness/beampair_peer_yield.py, root 05046e9d warp_flow_episode.py:333). 근거 dsh/pairact-p1-cand-2 685f78207 CAND2_PROPOSAL.md. 대체 cand-2'(align refresh v2)는 미구현 → open_decisions D1",
+ "profile_check": "adapter profiles('pairact_p1cN')와 profiles('beamact5_r13') 차이는 각 1개 키뿐(ast 추출로 로컬 확인)",
+ "world_set": {
+  "cases": "/home/ugrp/ugrp-sim/runs/beamact5/wide-start-8420000d-r4/wide-cases-r13.json (r13 gate cases_sha256 3d4e065db0299c0efa4c91676f537ac9b0e130773e598dfc5767d97a34ffdc63)",
+  "seeds": "8420000-8420039 (40 world)",
+  "arm_cases": "make_arm_cases.py로 candidate 필드만 바꾼 사본. 원본 불변. 각 사본 sha256을 cases.jsonl에 기록",
+  "executed_indices": "0-14,16-39 (39 world, r13 gate와 같음)",
+  "nominal_denominator": 40
+ },
+ "pre_exclusion": {
+  "world_15": "r3 승인 deviation(로그 폭주). 실행하지 않고 expected FAIL로 분모 40에 남김(r13과 같음). log ring 패치(search26_log_ring_v1)로 재포함하는 arm은 이번 tournament에 없음",
+  "static_check": "experiments/2026-10-21-pairact-p0/WORLD37_STATIC_PREREG_DRAFT.json의 규칙(A_overlap 또는 B_floor)을 실행 전 확정하고, static_stance_check.py를 40 case 전체에 1회 실행. flagged world는 모든 arm에서 같은 방식으로 제외 [D2]",
+  "forbidden": ["MJWarp 결과를 본 뒤 world 추가 제외", "제외 world를 성공으로 계산", "arm별로 다른 제외 집합"]
+ },
+ "primary_metric": "arm별 관문 통과 수(success_n, summary.json). 실패·cap_end·HOST_ERROR는 모두 실패",
+ "adoption": {
+  "rule_if_no_static_exclusion": "success ≥ 38 / 40 (world 15는 실패로 셈)",
+  "rule_if_static_exclusion": "[D3] 옵션 a: success ≥ 38 / 40 그대로(제외 world도 실패로 셈, 보수적). 옵션 b: success ≥ ceil(0.95 × N_eff), N_eff = 40 − 정적 제외 수. 두 분모를 함께 보고",
+  "winner": "채택 기준을 넘은 arm 중 success 최대. 동률이면 (1) 실패 world 수가 같을 때 world 27 통과 arm, (2) 그래도 같으면 동작 변경이 작은 순서 c3 → c1",
+  "no_winner": "어떤 후보 arm도 기준 미달이면 채택 없음. r13 재실행 결과와 함께 그대로 보고"
+ },
+ "secondary_metrics": ["world 27 결과와 align 시간·relook 수·alignment_axes_blocked 횟수", "c1: search20_log의 align_rect_guard_admit 횟수", "c3: alignment_relooks 분포", "새 실패 world(r13 PASS → 후보 FAIL) 목록", "wall 시간"],
+ "flake_note": "world 27은 같은 seed 단독 1/3 PASS(bit-reproducible 아님). arm당 1회 실행이라 27 단일 결과로 후보 효과를 주장하지 않음. 효과 주장은 아래 confirmation 결과로만",
+ "confirmation": {
+  "rule": "winner 1개만 새 world 40개로 1회 실행. 같은 채택 기준(≥38/40, 정적 제외 규칙 동일 적용). 통과해야 채택",
+  "new_worlds": "wide_start.py(commit 5d906886f, experiments/2026-10-17-beamact5/teacher/wide_start.py)를 wide-cases-r13 생성 때와 같은 인자로, --seed만 9420000으로 바꿔 생성. rng = seed + i*10000 + attempt 이므로 8420000 계열과 겹치지 않으려면 차이 ≥ 400000이 필요해 9420000으로 정함. r13 cases가 이 스크립트의 어떤 버전·인자로 만들어졌는지(-d, -r4 접미사)는 [확인 필요]",
+  "seed_overlap_check": "새 40 seed가 8420000-8420039, beampair 8328xxx, 학습/검증/보류 seed 범위와 겹치지 않는지 실행 전 기록",
+  "baseline_on_new_worlds": "r13 기준 arm도 새 world에서 같이 돌릴지 [D4]"
+ },
+ "run": {
+  "host": "ugrp-act-l4-gcp6 (단독, --gcp6-isolated-v1)",
+  "script": "experiments/2026-10-21-pairact-p1/run_p1.sh (branch dsh/pairact-p0-diag)",
+  "cap_s": 60,
+  "estimated_gpu": "arm당 약 44 min(r13 gate39 wall 2620 s 기준) → 3 arm 약 2.2 h + confirmation 약 0.75 h(1 arm) [확인 필요: 후보가 relook을 늘리면 c3가 더 길 수 있음]",
+  "off_peak": "UTC 16:30–00:30 안에서 실행"
+ },
+ "open_decisions": {
+  "D1": "cand-2' (search26_align_refresh_v2, r14 f1cf1926 기반) 구현·추가 여부. 추가하면 4 arm, 기반이 r14라 r13 대비 2개 변경",
+  "D2": "정적 제외 규칙 A_overlap / B_floor 선택",
+  "D3": "정적 제외 시 채택 분모 해석 a / b",
+  "D4": "confirmation에서 r13 기준 arm 동시 실행 여부"
+ },
+ "not_claimed": ["학생 정책 성공 아님", "운반·하차 성공 아님", "world 37 제외 여부는 정적 검사 실행 전 미정", "MJWarp에서 cand-1/cand-3 코드는 아직 실행되지 않음(로컬 순수 함수 테스트만)"]
+}
