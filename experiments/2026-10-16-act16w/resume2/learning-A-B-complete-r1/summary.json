@@ -1,0 +1,48 @@
+{
+  "status": "training_complete_student_eval_pending",
+  "optimizer_steps_by_arm": {
+    "A": 10000,
+    "B": 10000
+  },
+  "training_complete": {
+    "A": true,
+    "B": true
+  },
+  "image": {
+    "path": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training-r2/learning-A-B-complete-r1/learning-curves-progress.png",
+    "bytes": 146040,
+    "sha256": "27d1517bb1057cc27509dc656593f6bdd8458e60591647e48f917e5a92ed6b51"
+  },
+  "raw_log_snapshots": [
+    {
+      "source": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training-r2/A-smoke/progress.jsonl",
+      "snapshot": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training-r2/learning-A-B-complete-r1/A-smoke-progress.jsonl.zst",
+      "uncompressed_bytes": 8603,
+      "snapshot_content_sha256": "e3ca5b34fdee4d8ca8eb89206c8061574a5942135ba983ff1e5fc609e709683c",
+      "compressed_sha256": "03d455832716d1a9b818d3f9e7078f7bbecea42bb97164cb2df6f91646591545"
+    },
+    {
+      "source": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training-r2/A-main/progress.jsonl",
+      "snapshot": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training-r2/learning-A-B-complete-r1/A-main-progress.jsonl.zst",
+      "uncompressed_bytes": 273566,
+      "snapshot_content_sha256": "0a064bf2beb80d8b6136815bf5dcbe5210d337e4d5024b4e1b91755b59170cc8",
+      "compressed_sha256": "5c064502694c47a1cbe5d2685089619038ea3e9ae625c06520b218ff2ed25bc5"
+    },
+    {
+      "source": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training-r2/B-smoke/progress.jsonl",
+      "snapshot": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training-r2/learning-A-B-complete-r1/B-smoke-progress.jsonl.zst",
+      "uncompressed_bytes": 8621,
+      "snapshot_content_sha256": "408ba5138e0744e9a7fcd8e32844aae7a71d94bbbe36ac53997b03b3d872ba10",
+      "compressed_sha256": "fe2c0f807e7f11a7ee7bc7e0a24154348f15ffcf35b91131b9e48ed98e00defd"
+    },
+    {
+      "source": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training-r2/B-main/progress.jsonl",
+      "snapshot": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training-r2/learning-A-B-complete-r1/B-main-progress.jsonl.zst",
+      "uncompressed_bytes": 273814,
+      "snapshot_content_sha256": "354d86cc76097aa2d5518024dae611e0b048d69f735b5d789f4b011b038e17f2",
+      "compressed_sha256": "633e89a926c01a109e80e27546e221e78c404c7d81e91960077d2457dc07a1c9"
+    }
+  ],
+  "plot_script_sha256": "2c936b78faa4987dafc286d59c6b77a8e463963faf00a740d60f49c0f6f18243",
+  "scope": "actual logged optimizer losses only; no physical student evaluation or causal improvement claim"
+}

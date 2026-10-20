@@ -1,0 +1,210 @@
+{
+  "run": "act17-v7-gate-88320",
+  "source": {
+    "run": "/home/ugrp/ugrp-sim/runs/act17-v7/gate-r1/group-000/controller",
+    "world": 0,
+    "sim_range": [
+      0.0,
+      45.5
+    ],
+    "postprocessor_sha256": "dd4fbee65d7996ac5fdf1b1be73d3d44468673e7eb9580cdb545d73330d53868",
+    "source_sha": "5160938e5abfa0cdb05176aadb196e237684d67a",
+    "host": {
+      "project_id": "ugrp-sim-b-1014",
+      "instance": "ugrp-act-l4-gcp2",
+      "machine_type": "g2-standard-8",
+      "zone": "asia-northeast3-a"
+    },
+    "source_state": {
+      "path": "/home/ugrp/ugrp-sim/runs/act17-v7/gate-r1/group-000/controller/world-000-states.npz",
+      "sha256": "d0438038578a75c0b2c90e50c2675e4359b60fe1b4433b12238aa8bc7d04e28a"
+    },
+    "source_scene": {
+      "path": "/home/ugrp/ugrp-sim/runs/act17-v7/gate-r1/group-000/controller/world-000/scene.xml",
+      "sha256": "b29419577176991762090dc222683f4dd428c3bef76a9bbb02b9603b4e6ab89d"
+    },
+    "full_2hz_frames": 92,
+    "terminal_10hz_frames": 100,
+    "video_bytes": 87464,
+    "ffprobe": {
+      "streams": [
+        {
+          "index": 0,
+          "codec_name": "h264",
+          "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+          "profile": "High",
+          "codec_type": "video",
+          "codec_tag_string": "avc1",
+          "codec_tag": "0x31637661",
+          "width": 960,
+          "height": 240,
+          "coded_width": 960,
+          "coded_height": 240,
+          "closed_captions": 0,
+          "film_grain": 0,
+          "has_b_frames": 2,
+          "pix_fmt": "yuv420p",
+          "level": 22,
+          "color_range": "tv",
+          "color_space": "bt470bg",
+          "chroma_location": "center",
+          "field_order": "progressive",
+          "refs": 1,
+          "is_avc": "true",
+          "nal_length_size": "4",
+          "id": "0x1",
+          "r_frame_rate": "6/1",
+          "avg_frame_rate": "6/1",
+          "time_base": "1/12288",
+          "start_pts": 0,
+          "start_time": "0.000000",
+          "duration_ts": 188416,
+          "duration": "15.333333",
+          "bit_rate": "44649",
+          "bits_per_raw_sample": "8",
+          "nb_frames": "92",
+          "extradata_size": 48,
+          "disposition": {
+            "default": 1,
+            "dub": 0,
+            "original": 0,
+            "comment": 0,
+            "lyrics": 0,
+            "karaoke": 0,
+            "forced": 0,
+            "hearing_impaired": 0,
+            "visual_impaired": 0,
+            "clean_effects": 0,
+            "attached_pic": 0,
+            "timed_thumbnails": 0,
+            "non_diegetic": 0,
+            "captions": 0,
+            "descriptions": 0,
+            "metadata": 0,
+            "dependent": 0,
+            "still_image": 0
+          },
+          "tags": {
+            "language": "und",
+            "handler_name": "VideoHandler",
+            "vendor_id": "[0][0][0][0]",
+            "encoder": "Lavc60.31.102 libx264"
+          }
+        }
+      ],
+      "format": {
+        "filename": "/home/ugrp/ugrp-sim/runs/act17-v7/gate-playback-88320/playback-3x.mp4",
+        "nb_streams": 1,
+        "nb_programs": 0,
+        "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+        "format_long_name": "QuickTime / MOV",
+        "start_time": "0.000000",
+        "duration": "15.333333",
+        "size": "87464",
+        "bit_rate": "45633",
+        "probe_score": 100,
+        "tags": {
+          "major_brand": "isom",
+          "minor_version": "512",
+          "compatible_brands": "isomiso2avc1mp41",
+          "encoder": "Lavf60.16.100"
+        }
+      }
+    },
+    "overview": {
+      "original": {
+        "pos": [
+          0.55,
+          -2.0,
+          2.5
+        ],
+        "quat": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "pos": [
+        -0.5446087194433304,
+        -2.6078698031494465,
+        0.8889283018359388
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "geometry_bounds": [
+        [
+          -0.9283581025716018,
+          -2.9314485744894148,
+          -0.0722635580335563
+        ],
+        [
+          -0.16085933631505914,
+          -2.2842910318094787,
+          0.2621158281438027
+        ]
+      ],
+      "basis": "full recorded r1+target geom bounding spheres, existing fovy/aspect and one output-pixel border"
+    },
+    "scope": "overview reframed for full recorded r1/target geometry using evaluation states only; r1 own RGB is actual and unchanged, r2 not an actor; no native physics step"
+  },
+  "viewed_full_2Hz_SIM": [
+    0,
+    45.5
+  ],
+  "viewed_terminal_10Hz_SIM": [
+    35.6,
+    45.5
+  ],
+  "timeline": [
+    {
+      "SIM": [
+        0,
+        4.5
+      ],
+      "event": "카메라 팬/몸 회전으로 주변을 보고 target 재관측"
+    },
+    {
+      "SIM": [
+        5,
+        13
+      ],
+      "event": "자기 RGB target 하단에 두고 접근·정렬"
+    },
+    {
+      "SIM": [
+        13.5,
+        35
+      ],
+      "event": "집기 후 대상은 자기 영상 밖, 평가 개요에서 팔 동작·유지"
+    },
+    {
+      "SIM": [
+        35.5,
+        37.7
+      ],
+      "event": "낮춘 뒤 target 재관측"
+    },
+    {
+      "SIM": [
+        37.8,
+        43.4
+      ],
+      "event": "몸/카메라를 회전하며 주변 지형을 실제 관측"
+    },
+    {
+      "SIM": [
+        43.5,
+        45.5
+      ],
+      "event": "target 재관측 후 종료"
+    }
+  ],
+  "difference_from_sparse_review": "말미10Hz에서37.8초 회전과40.5/41.5초 경계 왕복이 구분됨; 성공 도중13.5초 target 화면 이탈도 있어 화면 이탈만으로 실패를 단정하지 않음",
+  "task_scope": "teacher success only, not ACT student success",
+  "video_check": "ffprobe only; no Mac GUI"
+}

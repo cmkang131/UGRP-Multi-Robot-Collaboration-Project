@@ -1,0 +1,107 @@
+{
+  "source_sha": "f0db6b1abb842ea65b71c433738210254f300a7c",
+  "raw": "/home/ugrp/ugrp-sim/runs/warp3/gate-references-r1",
+  "funnel": [
+    {
+      "gate": "independent_source_cases",
+      "passed": 40,
+      "rejected": 0
+    },
+    {
+      "gate": "selected_scene_C312_reference",
+      "passed": 40,
+      "rejected": 0
+    },
+    {
+      "gate": "exact_model_group_membership",
+      "passed": 40,
+      "rejected": 0
+    }
+  ],
+  "groups": [
+    {
+      "key": "3ebbf641e0ed75b27241a927d052c25924c6919a4dfd72e541d9234084f99609",
+      "indices": [
+        0,
+        4,
+        16,
+        17,
+        25,
+        32,
+        36
+      ]
+    },
+    {
+      "key": "5058664b890c08662e7f538534f96f70d5b2913ed120c5cff6384cd254c9dc74",
+      "indices": [
+        1,
+        13,
+        21
+      ]
+    },
+    {
+      "key": "33f2aaea86fd195a57630a531a459e15de095a5412eceb5a24be406f50508804",
+      "indices": [
+        2,
+        6,
+        8,
+        10,
+        12,
+        14,
+        18,
+        22,
+        26,
+        30,
+        34,
+        38
+      ]
+    },
+    {
+      "key": "4e1c8095eee6549c30c60ec087704d4c420eda356f9775283958f3f4799a6b41",
+      "indices": [
+        3,
+        7,
+        11,
+        15,
+        19,
+        23,
+        27,
+        31,
+        35,
+        39
+      ]
+    },
+    {
+      "key": "93e9663d8e833140f9eeedba3223490eb29797b7e8468be62266564683ac582b",
+      "indices": [
+        5,
+        9,
+        20,
+        29,
+        33,
+        37
+      ]
+    },
+    {
+      "key": "dfc01477493ddcd86e53d68cac150b25d9ba3fc88a970513fb9515558daa44e6",
+      "indices": [
+        24
+      ]
+    },
+    {
+      "key": "14da49bd39ca41e1d993fc3b3e3f700f502be004c2832f1a050f7be146a97345",
+      "indices": [
+        28
+      ]
+    }
+  ],
+  "rejections": [],
+  "bootstrap_rejections": "distinct-export and distinct-export-r2 are setup HOST_ERROR, separate from40 independent teacher cases",
+  "reproduce": "prepare_references.py; group_models.py; per-case source and XML hashes in inventory.json",
+  "distinct_starts": {
+    "nworld": 16,
+    "unique_qpos": 16,
+    "unique_first_rgb": 16,
+    "source_sha": "e200c1e5a475cd510031f26fc7e9ed821db81a9b"
+  }
+}

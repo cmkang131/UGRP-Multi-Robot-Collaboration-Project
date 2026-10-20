@@ -1,0 +1,22 @@
+{
+  "schema": "ugrp.act18.cleanup.v5",
+  "utc": "2026-10-18T09:20:00Z",
+  "reason": "Lead HOLD 지시(GPU 실험 금지·작업 안전 중단) → gcp2 정지.",
+  "vm": {
+    "instance": "ugrp-act-l4-gcp2",
+    "project_id": "ugrp-sim-b-1014",
+    "status": "TERMINATED",
+    "stopped_utc": "2026-10-18T09:20:00Z"
+  },
+  "before_stop": {
+    "act18_processes": "none",
+    "gpu_utilization_percent": 0,
+    "gpu_memory_MiB": 0,
+    "leases": "no act18 lease"
+  },
+  "preserved": [
+    "co-r1/co-r2/B4/B1-B3/offline 분석 원본",
+    "B5 실패 로그(과학적 결과 아님)"
+  ],
+  "hold": "Lead 재개 지시 전까지 새 GPU 실험 없음"
+}

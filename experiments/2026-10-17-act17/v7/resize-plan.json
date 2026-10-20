@@ -1,0 +1,43 @@
+{
+  "status": "APPROVED_AND_RESIZED_BY_COORDINATOR",
+  "executed": true,
+  "project": "ugrp-sim-b-1014",
+  "account": "changmin5781@gmail.com",
+  "zone": "asia-northeast3-a",
+  "instance": "ugrp-act-l4-gcp2",
+  "disk": "ugrp-act-l4-gcp2",
+  "disk_type": "pd-balanced",
+  "old_size_GiB": 180,
+  "proposed_size_GiB": 200,
+  "reason": "Remaining236 recordings plus complete model retention project free5.55GiB below AGENTS8GiB; even before a live raw-buffer allowance",
+  "command": [
+    "gcloud",
+    "compute",
+    "disks",
+    "resize",
+    "ugrp-act-l4-gcp2",
+    "--size=200GB",
+    "--zone=asia-northeast3-a",
+    "--account=changmin5781@gmail.com",
+    "--project=ugrp-sim-b-1014"
+  ],
+  "postconditions": [
+    "Verify boot disk reports190GiB and existing filesystem grows",
+    "Keep native physics, camera, seeds and dataset counts unchanged",
+    "Verify available bytes cover full remaining reservation and8GiB floor",
+    "Keep idle20 and budget-stop unchanged"
+  ],
+  "billing_note": "Additional public list price1766.375KRW/month, about58.07KRW/day before credits/taxes; persists while stopped",
+  "reference": "https://cloud.google.com/compute/disks-image-pricing",
+  "pricing_evidence": "disk-price.json",
+  "previous_proposal_GiB": 190,
+  "approved_size_GiB": 200,
+  "approval": "ops-alert.md: 조정자 → act17, 180→200GiB 승인·실행, FS확인 후236기록",
+  "live_cloud_disk_size_confirmed_GiB": 200,
+  "filesystem_expansion_verified": true,
+  "root_device": "nvme0n1p1",
+  "root_partition_GiB": 199,
+  "filesystem_available_bytes": 32170356736,
+  "automatic_boot_expansion": true,
+  "guest_manual_growpart_or_resize2fs_executed": false
+}

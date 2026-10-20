@@ -1,0 +1,43 @@
+{
+  "scope": "recording starts only; native own RGB; pixel labels evaluation-only; no student success claim",
+  "source_summary": "/home/ugrp/ugrp-sim/runs/act16w-resume2-start-instance-audit-r2/summary.json",
+  "source_summary_sha256": "c28c5f3ceec8b83878a44d02a036dff2270cb569b42c4f41087f6253d7109d1b",
+  "seeds": [
+    86823,
+    86827,
+    86843,
+    86863
+  ],
+  "image": {
+    "path": "/home/ugrp/ugrp-sim/runs/act16w-resume2-start-instance-review/record-starts-r2.png",
+    "bytes": 298327,
+    "sha256": "62325d1c8213dc536417f19ab3a1dc671e41c1cbe8f4f17fd3a6c2da0e82ad78"
+  },
+  "reproduce": [
+    "ffmpeg",
+    "-nostdin",
+    "-v",
+    "error",
+    "-i",
+    "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-02/capture/world-000/capture/000000.jpg",
+    "-i",
+    "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-02/capture/world-001/capture/000000.jpg",
+    "-i",
+    "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-02/capture/world-005/capture/000000.jpg",
+    "-i",
+    "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-02/capture/world-010/capture/000000.jpg",
+    "-filter_complex",
+    "[0:v]drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf:textfile=/home/ugrp/ugrp-sim/runs/act16w-resume2-start-instance-review/label-0.txt:x=8:y=8:fontsize=16:fontcolor=white:box=1:boxcolor=black@0.8[v0];[1:v]drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf:textfile=/home/ugrp/ugrp-sim/runs/act16w-resume2-start-instance-review/label-1.txt:x=8:y=8:fontsize=16:fontcolor=white:box=1:boxcolor=black@0.8[v1];[2:v]drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf:textfile=/home/ugrp/ugrp-sim/runs/act16w-resume2-start-instance-review/label-2.txt:x=8:y=8:fontsize=16:fontcolor=white:box=1:boxcolor=black@0.8[v2];[3:v]drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf:textfile=/home/ugrp/ugrp-sim/runs/act16w-resume2-start-instance-review/label-3.txt:x=8:y=8:fontsize=16:fontcolor=white:box=1:boxcolor=black@0.8[v3];[v0][v1][v2][v3]xstack=inputs=4:layout=0_0|w0_0|0_h0|w0_h0[out]",
+    "-map",
+    "[out]",
+    "-frames:v",
+    "1",
+    "-threads",
+    "1",
+    "/home/ugrp/ugrp-sim/runs/act16w-resume2-start-instance-review/record-starts-r2.png"
+  ],
+  "first_attempt": "ffmpeg drawtext inline punctuation parse error; no image produced; fixed by textfile",
+  "directly_inspected_utc": "2026-10-16T13:19:19.377044+00:00",
+  "observation": "All4 exact native starts show2 yellow boxes; seeds86827 and86843 have one partly clipped by image boundary. Static scene review only, not failure-cause or motion evidence.",
+  "local_image": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/act16w-start-instances/record-starts-r2.png"
+}

@@ -103,6 +103,15 @@ SHA256 `69bdd4f62546e3e38ea024cf94b6bc12b86cef39b8a187ee155b7f11794a1c69`.
 후보722개 중 확인0·관문 실패로 새 물리0, 성공영상 없음. 회색벽/청록문은 평가용GT, 제어입력 아님.
 - 2026-10-06 S2 v117 `ef820ab2` / s1042: REAL pre-grasp 확인 뒤 hover 하강·SIM lifted=true, pickup-site ROI clipped/unknown으로 probe gate 미통과. own-RGB4배속 영상 `/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-analysis/views/s1042-probe/execution.mp4` (34.05s,681frames,sha256 `5ed6f0714aaab173ece3a9630964dfcb76252969e6f08fdd0ec35b0425ad2041`). full/실물 성공 증거 아님. 기록: `experiments/2026-10-06-s2-realism/completed-v117.json`.
 
+
+## 2026-10-16 warp1 — MJWarp solo 교사 DEV
+
+새 backend `mjwarp_batch_v1`(기본 off), source `4cf44ad1`, frozen teacher `6f057f7e`의 첫 사전 지정 시드8317100이다. N1 교사 파지·들기·놓기1/1(40.7SIM초), 입력 감사 두 금지 카운터0을 확인했다. [3배속 영상](../experiments/2026-10-16-warp1/videos/warp1-mjwarp-n1-8317100-3x.mp4)·[전체 해시/ffprobe/범위](../experiments/2026-10-16-warp1/video.json). 왼쪽은 저장 qpos에서 사후 재구성한 평가용 C3.16 overview, 가운데는 실제 제어 입력으로 기록된 r1 RGB2Hz다. r2는 solo 작업이라 N/A다. TOP은 제어 입력이 아니다.
+
+고른 이유는 source plan0의 첫 완료 케이스이기 때문이다. ≥40회 관문·학생·일반 성공률을 보이지 못한다. 최적화 sleep/SAP 후보와는 별도 코호트이며, N1 pause가 포함된 wall 시간은 처리량으로 쓰지 않는다. 반투명 구역의 C/Warp RGB 차이도 남아 있다. 원본/경로/한계는 [warp1 기록](../experiments/2026-10-16-warp1/README.md)에 있다.
+
+같은 작업의 별도 기본 off `native_sleep_policy_compat_v1`, source `8d157d6c`는 N1 시드8317100 1회와 N16 동일 시드 복제16세계에서 모두40.6SIM초 파지·들기·놓기를 완료했다. [native N16 world0 3배속](../experiments/2026-10-16-warp1/videos/warp1-native-mjwarp-n16-world0-8317100-3x.mp4)·[해시/ffprobe](../experiments/2026-10-16-warp1/video-native.json). 첫 사전 지정 시드의 world0 전체2Hz 및 마지막10SIM초10Hz를 검토했다. 독립 시드는1개이며 ≥40회 관문·학생 검증이 아니다. 추가 시드8317104의17SIM초 자원 cap_end는 별도 원장에 남겼다. 기본 no-sleep/C 결과와 합산하지 않는다.
+
 ## 2026-10-15 beampair1 long_beam 근거리 교사
 
 `d79f04a39e3eec9d418e5c44929182e0ec79f51c` + dependency `26f84d0f0ada1c33473c83cca2d3415ce51bd247`, gcp1/n4-highcpu-64, v7·청록/파랑 끝·weld OFF. 짧은 탐색6/6 공동 들기(3초), 정식40회 관문 미실행. 대표 seed71001 own r1/r2 1Hz 검토 영상은 gcp1 `/home/ugrp/ugrp-sim/outputs/beampair1-r3-analysis-v2/representative/beampair1-d79f04a3-71001.mp4` (SHA256 `dd4c7644280bd101e4a0ef6bb3670a34ec31581b9f0cc71c41b573a9b0f81b2c`). [프레임/원본/인코더 기록](../experiments/2026-10-15-beampair1/representative.json). 근거리 접근·정렬·집기·들기만이며 운반·놓기·학생·실물 성공이 아니다. Mac에는 영상 원본을 회수하지 않았다.

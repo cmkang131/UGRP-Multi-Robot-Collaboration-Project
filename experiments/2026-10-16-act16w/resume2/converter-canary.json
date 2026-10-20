@@ -1,0 +1,66 @@
+{
+  "status": "complete",
+  "passed": true,
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "source_sha": "e5da530c488fd61a76e96d5d40aff40b94de83d7",
+  "ACT_source": "3f99d58c5ada0862e669ef4065c0ba957f1b4547",
+  "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-converter-canary-r1",
+  "TRAIN_seeds": [
+    86821,
+    86822
+  ],
+  "validation_or_final_samples_opened": 0,
+  "research_data_admitted": false,
+  "actual_ACT16_optimizer_steps": 0,
+  "optimizer_updates": 0,
+  "student_actions": 0,
+  "rows": 715,
+  "valid_horizons": [
+    2904,
+    2704
+  ],
+  "tensor_shapes": {
+    "observation.images.own_history": [
+      3,
+      480,
+      640
+    ],
+    "observation.state": [
+      252
+    ],
+    "action": [
+      8,
+      14
+    ],
+    "action_is_pad": [
+      8
+    ]
+  },
+  "input_keys": [
+    "action",
+    "action_is_pad",
+    "observation.images.own_history",
+    "observation.state"
+  ],
+  "done_priors": {
+    "grasp": {
+      "positive_n": 2,
+      "rows_N": 539,
+      "positive_fraction": 0.0037105751391465678
+    },
+    "release": {
+      "positive_n": 2,
+      "rows_N": 176,
+      "positive_fraction": 0.011363636363636364
+    }
+  },
+  "manifest_sha256": "65ee9604340faea42d7e4c308eca024d1a9ca42d7e096a86ecd299c7c10ec972",
+  "full_D0_normalization_changed": false,
+  "full40_gate_replaced": false,
+  "summary_sha256": "cb47f5813eca7bb1134ca62f1919be740407e6a952ab158a4000c10c74113ad6"
+}

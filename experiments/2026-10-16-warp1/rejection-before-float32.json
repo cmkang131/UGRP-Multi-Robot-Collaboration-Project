@@ -1,0 +1,10 @@
+{
+  "stage": "before upstream float32 numeric candidate",
+  "distribution": [{"category":"physics_time_dominates","count":1,"physics_wall_s":1123.829311257,"loop_wall_s":1133.643469264,"raw":"/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix4/progress.json","blocking_object":"GPU solver/contact path (not yet causally split)","minimum_gap_m":null,"minimum_gap_status":"performance, not collision rejection"}],
+  "hypothesis": "Inherited C float64 tolerance1e-8 overrides pinned upstream float32 clamp1e-6 and can waste iterations. Official io.py comment explicitly explains this. Compare matched short A/B before claiming cause.",
+  "new_candidate": "float32_solver_default_v1, default OFF; keep upstream converted value rather than invent a tolerance",
+  "unchanged_success_criteria": "frozen Score; clearance12mm, tilt10deg, bilateral0.5N, hold3s, release criteria unchanged",
+  "pooling": "separate from source_tolerance1e-8 and C cohorts",
+  "sources": ["https://mujoco.readthedocs.io/en/latest/mjwarp/index.html#options", "pinned57b4692 io.py433-437"],
+  "funnel": [{"gate":"N16 prefix reached","entered":16,"passed":16,"rejected":0,"observed_control_ticks_per_world":34}]
+}

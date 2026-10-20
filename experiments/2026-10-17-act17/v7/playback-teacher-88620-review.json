@@ -1,0 +1,283 @@
+{
+  "run": "act17-v7-teacher-88620-r2",
+  "metadata": {
+    "run": "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/group-3000/controller",
+    "world": 1,
+    "sim_range": [
+      0.0,
+      40.5
+    ],
+    "postprocessor_sha256": "cb4cf24890ddfc63f5ea66983447650af6243bac5bb51537b5f9c662e21dbea6",
+    "source_sha": "75d54e08d4bcc5f1e22657b1a02bcd06e304f0e9",
+    "host": {
+      "project_id": "ugrp-sim-b-1014",
+      "instance": "ugrp-act-l4-gcp2",
+      "machine_type": "g2-standard-8",
+      "zone": "asia-northeast3-a"
+    },
+    "source_state": {
+      "path": "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/group-3000/controller/world-001-states.npz",
+      "sha256": "b147573ab36dc0da3d53f4fc98bbbda82f12f4b4b3b7607834c561529166af09"
+    },
+    "source_scene": {
+      "path": "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/group-3000/controller/world-001/scene.xml",
+      "sha256": "03b117ae10352e60f5d6542d8935701cf81315c032980daf2eea054a05af1dd2"
+    },
+    "full_2hz_frames": 82,
+    "terminal_10hz_frames": 100,
+    "video_bytes": 70831,
+    "ffprobe": {
+      "streams": [
+        {
+          "index": 0,
+          "codec_name": "h264",
+          "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+          "profile": "High",
+          "codec_type": "video",
+          "codec_tag_string": "avc1",
+          "codec_tag": "0x31637661",
+          "width": 960,
+          "height": 240,
+          "coded_width": 960,
+          "coded_height": 240,
+          "closed_captions": 0,
+          "film_grain": 0,
+          "has_b_frames": 2,
+          "pix_fmt": "yuv420p",
+          "level": 22,
+          "color_range": "tv",
+          "color_space": "bt470bg",
+          "chroma_location": "center",
+          "field_order": "progressive",
+          "refs": 1,
+          "is_avc": "true",
+          "nal_length_size": "4",
+          "id": "0x1",
+          "r_frame_rate": "6/1",
+          "avg_frame_rate": "6/1",
+          "time_base": "1/12288",
+          "start_pts": 0,
+          "start_time": "0.000000",
+          "duration_ts": 167936,
+          "duration": "13.666667",
+          "bit_rate": "40433",
+          "bits_per_raw_sample": "8",
+          "nb_frames": "82",
+          "extradata_size": 48,
+          "disposition": {
+            "default": 1,
+            "dub": 0,
+            "original": 0,
+            "comment": 0,
+            "lyrics": 0,
+            "karaoke": 0,
+            "forced": 0,
+            "hearing_impaired": 0,
+            "visual_impaired": 0,
+            "clean_effects": 0,
+            "attached_pic": 0,
+            "timed_thumbnails": 0,
+            "non_diegetic": 0,
+            "captions": 0,
+            "descriptions": 0,
+            "metadata": 0,
+            "dependent": 0,
+            "still_image": 0
+          },
+          "tags": {
+            "language": "und",
+            "handler_name": "VideoHandler",
+            "vendor_id": "[0][0][0][0]",
+            "encoder": "Lavc60.31.102 libx264"
+          }
+        }
+      ],
+      "format": {
+        "filename": "/home/ugrp/ugrp-sim/runs/act17-v7/teacher-playback-88620-r2/playback-3x.mp4",
+        "nb_streams": 1,
+        "nb_programs": 0,
+        "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+        "format_long_name": "QuickTime / MOV",
+        "start_time": "0.000000",
+        "duration": "13.666667",
+        "size": "70831",
+        "bit_rate": "41462",
+        "probe_score": 100,
+        "tags": {
+          "major_brand": "isom",
+          "minor_version": "512",
+          "compatible_brands": "isomiso2avc1mp41",
+          "encoder": "Lavf60.16.100"
+        }
+      }
+    },
+    "overview": {
+      "original": {
+        "pos": [
+          0.55,
+          -2.0,
+          2.5
+        ],
+        "quat": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "pos": [
+        -0.0007500687514092885,
+        -2.4585322220087926,
+        0.896028396471725
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "geometry_bounds": [
+        [
+          -0.43651014864087684,
+          -2.6356844537792736,
+          -0.07225462134501402
+        ],
+        [
+          0.43501001113805826,
+          -2.281379990238311,
+          0.2642643775168612
+        ]
+      ],
+      "basis": "full recorded r1+target geom bounding spheres, existing fovy/aspect and one output-pixel border"
+    },
+    "compiled_geometry": {
+      "inventory": "/home/ugrp/ugrp-sim/runs/act17-v7/record-references-r1/per-world-references.json",
+      "inventory_sha256": "9132a1fd9c97a3036991b4a4f55645cfc0b94b18324ab3819cdefc4f6e7715f2",
+      "geometry_file": "/home/ugrp/ugrp-sim/runs/act17-v7/record-references-r1/case-020/compiled-geometry312.npz",
+      "geometry_sha256": "87b573b4747da65ad317041a75ad44403fd48632818d409cbd16707344cdecda",
+      "qualified_source_sha": "f0db6b1abb842ea65b71c433738210254f300a7c",
+      "scope": "compiled geometry applied only to saved-state evaluation overview; recorded own RGB unchanged"
+    },
+    "scope": "overview reframed for full recorded r1/target geometry using evaluation states only; r1 own RGB is actual and unchanged, r2 not an actor; no native physics step"
+  },
+  "viewed_full_SIM": [
+    0,
+    40.5
+  ],
+  "full_view_hz": 2,
+  "viewed_terminal_SIM": [
+    30.8,
+    40.7
+  ],
+  "terminal_view_hz": 10,
+  "viewed_all_sheets": true,
+  "review_method": "GCP ffmpeg frame strips read as files; ffprobe verification only; Mac player/GUI/render0",
+  "timeline": [
+    {
+      "SIM": [
+        0,
+        8
+      ],
+      "observation": "청록 상자를 향해 다가가며 상자가 화면 아래로 커진다"
+    },
+    {
+      "SIM": [
+        8.5,
+        30
+      ],
+      "observation": "청록 상자가 화면 아래로 사라지고 자기 화면에는 대부분 파란 바닥만 보인다. overview 차체의 큰 이동은 드물다"
+    },
+    {
+      "SIM": [
+        30.5,
+        32.9
+      ],
+      "observation": "물러난 뒤 배경 빨강 상자와 주변 벽을 다시 본다"
+    },
+    {
+      "SIM": [
+        33,
+        35.9
+      ],
+      "observation": "시야를 옆으로 돌려 벽과 파랑/회색 경계를 보고 되돌아온다"
+    },
+    {
+      "SIM": [
+        36,
+        38.4
+      ],
+      "observation": "시야가 반대편으로 돌아 화면이 파란 바닥을 향한 뒤 원 방향으로 복귀한다"
+    },
+    {
+      "SIM": [
+        38.5,
+        40.7
+      ],
+      "observation": "청록 상자 일부가 아래에 보이고 배경 빨강 상자가 위에 보인 채 거의 정지한다"
+    }
+  ],
+  "difference_from_sparse_review": "10Hz에서33.0초 부근의 시야 전환과36.5–38.4초 반대편 왕복을 순서대로 구분했다. 자기 영상만으로 들기 성공/실제 높이를 판정하지 않는다.",
+  "purpose": "same initial VAL seed88620 teacher reference; teacher score success and student task success kept separate",
+  "files": [
+    {
+      "name": "full-2hz-00.jpg",
+      "bytes": 145205,
+      "sha256": "0861f38c483766beff73958243faf9b1b15e4fde25410fce9df18d398b0dce00"
+    },
+    {
+      "name": "full-2hz-01.jpg",
+      "bytes": 142614,
+      "sha256": "bec1a7fdc479f959aa08b36c411bd6f891583bae008f06414bef3d7ab2845b50"
+    },
+    {
+      "name": "full-2hz-02.jpg",
+      "bytes": 141280,
+      "sha256": "d36907433f7766191ee9be8b2b5a2d3f87d3a473a67a2ea655f68739187dbe7e"
+    },
+    {
+      "name": "full-2hz-03.jpg",
+      "bytes": 143716,
+      "sha256": "508e203352a3f6a9c978bdf9fd39c312557ab9b5174fc66d038c3af8fc28ccff"
+    },
+    {
+      "name": "full-2hz-04.jpg",
+      "bytes": 102611,
+      "sha256": "ffa9e3c5a46852434513506d766fbd85dbf3cedbf846774ef9100e74bdf0bc22"
+    },
+    {
+      "name": "last10s-10hz-00.jpg",
+      "bytes": 65191,
+      "sha256": "ac972eb6522ee7f0cbc382d18de636d4e78df64d31fafb669ce97ae08bf7e9bc"
+    },
+    {
+      "name": "last10s-10hz-01.jpg",
+      "bytes": 63750,
+      "sha256": "6106c1d7794e4404185bbfdf443498b499fc60eb363d3f624b06e6af3226baca"
+    },
+    {
+      "name": "last10s-10hz-02.jpg",
+      "bytes": 63181,
+      "sha256": "a460442a8f152d3d7d6823f81755bc40773bdaee645d71a19201314815eb2807"
+    },
+    {
+      "name": "last10s-10hz-03.jpg",
+      "bytes": 58898,
+      "sha256": "a6d890246b36c173c6411b06933c252ae308722aadc5b3d48b5379f65bc54d1d"
+    },
+    {
+      "name": "last10s-10hz-04.jpg",
+      "bytes": 61054,
+      "sha256": "523c45abc4553ca741d040b210d4e2f876b8fd233441a5173914ecfdf6f1e237"
+    },
+    {
+      "name": "playback-3x.mp4",
+      "bytes": 70831,
+      "sha256": "e893b520393ef04dda6bf6c651bc2af817c708cd091aa773d9054eb6a69f2ede"
+    },
+    {
+      "name": "playback-meta.json",
+      "bytes": 4830,
+      "sha256": "1ef584a7156f576f8f6140ae11d1e494acfb339a71c971f8e99ef06d48ce2101"
+    }
+  ]
+}

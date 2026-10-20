@@ -1,0 +1,39 @@
+{
+  "checked_utc": "2026-10-16T20:35:00+00:00",
+  "VM": {
+    "lastStartTimestamp": "2026-10-16T05:37:32.766-07:00",
+    "machineType": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-b-1014/zones/asia-northeast3-a/machineTypes/g2-standard-8",
+    "name": "ugrp-act-l4-gcp2",
+    "scheduling": {
+      "automaticRestart": true,
+      "onHostMaintenance": "TERMINATE",
+      "preemptible": false,
+      "provisioningModel": "STANDARD"
+    },
+    "status": "RUNNING",
+    "zone": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-b-1014/zones/asia-northeast3-a"
+  },
+  "budget_stop": {
+    "eventTrigger": {
+      "pubsubTopic": "projects/ugrp-sim-b-1014/topics/budget-stop"
+    },
+    "name": "projects/ugrp-sim-b-1014/locations/us-central1/functions/budget-stop",
+    "serviceConfig": {
+      "environmentVariables": {
+        "TARGET_PROJECT": "ugrp-sim-b-1014"
+      }
+    },
+    "state": "ACTIVE"
+  },
+  "idle_guard": {
+    "service_type": "oneshot",
+    "service_last_result": "success",
+    "timer_active": true,
+    "timer_interval_s": 60,
+    "idle_threshold_s": 1200,
+    "threshold_source": "/usr/local/sbin/ugrp-idle-guard line9",
+    "modified": false
+  },
+  "wall_cap": null,
+  "CPU_VM_started": false
+}

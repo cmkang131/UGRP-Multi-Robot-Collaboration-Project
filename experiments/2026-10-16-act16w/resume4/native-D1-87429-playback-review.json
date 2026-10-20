@@ -1,0 +1,83 @@
+{
+  "status": "reviewed",
+  "utc": "2026-10-16T19:36:18.614055+00:00",
+  "arm": "D1",
+  "seed": 87429,
+  "whole_2Hz_SIM_range": [
+    0,
+    90
+  ],
+  "whole_2Hz_frames": 181,
+  "terminal_10Hz_SIM_range": [
+    80.1,
+    90
+  ],
+  "terminal_10Hz_frames": 100,
+  "viewed_sheets": [
+    "full-2hz-00.jpg",
+    "full-2hz-01.jpg",
+    "full-2hz-02.jpg",
+    "full-2hz-03.jpg",
+    "full-2hz-04.jpg",
+    "full-2hz-05.jpg",
+    "full-2hz-06.jpg",
+    "full-2hz-07.jpg",
+    "full-2hz-08.jpg",
+    "full-2hz-09.jpg",
+    "full-2hz-10.jpg",
+    "last10s-10hz-00.jpg",
+    "last10s-10hz-01.jpg",
+    "last10s-10hz-02.jpg",
+    "last10s-10hz-03.jpg",
+    "last10s-10hz-04.jpg"
+  ],
+  "video_bytes": 128036,
+  "ffprobe_verified_on_L4": true,
+  "transfer_all_18_files_sha_verified": true,
+  "local": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/act16w4-native-D1-87429",
+  "remote": "/home/ugrp/ugrp-sim/runs/act16w-native-playback-D1-87429",
+  "timeline": [
+    {
+      "SIM": [
+        0,
+        4.5
+      ],
+      "observation": "red box grows toward image right during approach"
+    },
+    {
+      "SIM": [
+        5,
+        14.5
+      ],
+      "observation": "red box leaves RGB; robot turns toward wall/base"
+    },
+    {
+      "SIM": [
+        15,
+        90
+      ],
+      "observation": "wall/base/floor repeat; target does not return, overview shows no pickup"
+    },
+    {
+      "SIM": [
+        80.1,
+        90
+      ],
+      "observation": "10Hz shows minor repeated boundary motion and no target recovery"
+    }
+  ],
+  "sparse_review_difference": "first30 missed persistence through90; terminal10Hz resolves small boundary movement but no recovered target",
+  "raw_score": {
+    "task_success": false,
+    "stable_lift": false,
+    "stable_release": false,
+    "issued_done": false,
+    "cap_end": true
+  },
+  "independent_D1_recount": "0/8; alignment rejects8/8; done1 cap7; stable lift0; raw recomputation matches",
+  "limits": [
+    "overview reconstructed for evaluation only",
+    "images alone do not establish forces or blockage",
+    "no ACT success; teacher reference is separate"
+  ]
+}

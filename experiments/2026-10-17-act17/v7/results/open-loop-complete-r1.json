@@ -1,0 +1,1057 @@
+{
+  "source_sha": "e1b7de0f789305e12a3612e7cbf392b8e4ac21ee",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "complete": true,
+  "status": "complete",
+  "cohort": "act17-v7-native",
+  "arms": {
+    "M": {
+      "checkpoint_sha256": "b5a2c5d2be233df065d900ed58216f05a715f18f0c9de6227eeac49922b97b9f",
+      "rows": 14528,
+      "actual_optimizer_TRAIN_last100": {
+        "N": 100,
+        "loss_mean": 0.42456659495830534,
+        "first_step": 9010,
+        "last_step": 10000
+      },
+      "prior_z0_VAL_loss_sample_weighted": {
+        "total_loss": 0.2347290246575119,
+        "legacy_l1_loss": 0.6222635653148926,
+        "movement_l1_loss": 0.14621808255985708,
+        "done_bce_loss": 0.0885109420482376
+      },
+      "stages": {
+        "all": {
+          "rows": 14528,
+          "errors": {
+            "h0_raw:wheel_full_scale": {
+              "n": 58112,
+              "median": 0.010709149177407864,
+              "p90": 0.0511086364286331
+            },
+            "h0_raw:pulse_ms": {
+              "n": 58112,
+              "median": 1.8946486082513676,
+              "p90": 12.401783131062611
+            },
+            "h0_raw:servo_PWM_counts": {
+              "n": 72640,
+              "median": 23.783752521498613,
+              "p90": 64.57378484307202
+            },
+            "h0_raw:gripper_PWM_counts": {
+              "n": 14528,
+              "median": 27.064400627038353,
+              "p90": 53.03678445174333
+            },
+            "h0_projected:wheel_full_scale": {
+              "n": 58112,
+              "median": 0.0,
+              "p90": 0.04833292225486787
+            },
+            "h0_projected:pulse_ms": {
+              "n": 58112,
+              "median": 0.0,
+              "p90": 14.346519095147915
+            },
+            "h0_projected:servo_PWM_counts": {
+              "n": 72640,
+              "median": 22.99999284744264,
+              "p90": 60.000004768371525
+            },
+            "h0_projected:gripper_PWM_counts": {
+              "n": 14528,
+              "median": 27.0,
+              "p90": 53.00000000000005
+            },
+            "valid_chunk:wheel_full_scale": {
+              "n": 455936,
+              "median": 0.010428292323603414,
+              "p90": 0.049314822529894886
+            },
+            "valid_chunk:pulse_ms": {
+              "n": 455936,
+              "median": 1.8456562445854736,
+              "p90": 12.308606272004472
+            },
+            "valid_chunk:servo_PWM_counts": {
+              "n": 569920,
+              "median": 23.763302115990093,
+              "p90": 62.56843065868778
+            },
+            "valid_chunk:gripper_PWM_counts": {
+              "n": 113984,
+              "median": 26.56800581958091,
+              "p90": 50.63288857899419
+            }
+          }
+        },
+        "approach": {
+          "rows": 3659,
+          "errors": {
+            "h0_raw:wheel_full_scale": {
+              "n": 14636,
+              "median": 0.020171141484880167,
+              "p90": 0.06959434962646815
+            },
+            "h0_raw:pulse_ms": {
+              "n": 14636,
+              "median": 5.105642858953333,
+              "p90": 21.900073981643306
+            },
+            "h0_raw:servo_PWM_counts": {
+              "n": 18295,
+              "median": 20.63787416892681,
+              "p90": 49.83276735830214
+            },
+            "h0_raw:gripper_PWM_counts": {
+              "n": 3659,
+              "median": 10.960333978600856,
+              "p90": 32.0228630414142
+            },
+            "h0_projected:wheel_full_scale": {
+              "n": 14636,
+              "median": 0.018028683492761016,
+              "p90": 0.04942619833725345
+            },
+            "h0_projected:pulse_ms": {
+              "n": 14636,
+              "median": 4.8990634876750825,
+              "p90": 21.80636070398511
+            },
+            "h0_projected:servo_PWM_counts": {
+              "n": 18295,
+              "median": 20.000000834465016,
+              "p90": 49.99999046325687
+            },
+            "h0_projected:gripper_PWM_counts": {
+              "n": 3659,
+              "median": 11.00000000000001,
+              "p90": 32.00000000000003
+            },
+            "valid_chunk:wheel_full_scale": {
+              "n": 117088,
+              "median": 0.01993645571120875,
+              "p90": 0.0833195360107183
+            },
+            "valid_chunk:pulse_ms": {
+              "n": 117088,
+              "median": 5.6370639742208875,
+              "p90": 23.241232605509794
+            },
+            "valid_chunk:servo_PWM_counts": {
+              "n": 146360,
+              "median": 20.806324887056498,
+              "p90": 51.23412019420328
+            },
+            "valid_chunk:gripper_PWM_counts": {
+              "n": 29272,
+              "median": 10.884715491308484,
+              "p90": 30.19518899650314
+            }
+          }
+        },
+        "alignment": {
+          "rows": 889,
+          "errors": {
+            "h0_raw:wheel_full_scale": {
+              "n": 3556,
+              "median": 0.030204184956852315,
+              "p90": 0.3006493126155924
+            },
+            "h0_raw:pulse_ms": {
+              "n": 3556,
+              "median": 4.537002641451084,
+              "p90": 14.113245895683917
+            },
+            "h0_raw:servo_PWM_counts": {
+              "n": 4445,
+              "median": 23.506953153053402,
+              "p90": 63.732290254026715
+            },
+            "h0_raw:gripper_PWM_counts": {
+              "n": 889,
+              "median": 21.253273358761927,
+              "p90": 36.62508918241931
+            },
+            "h0_projected:wheel_full_scale": {
+              "n": 3556,
+              "median": 0.027464832792246346,
+              "p90": 0.3499999940395355
+            },
+            "h0_projected:pulse_ms": {
+              "n": 3556,
+              "median": 4.320120805706608,
+              "p90": 23.55707891739925
+            },
+            "h0_projected:servo_PWM_counts": {
+              "n": 4445,
+              "median": 20.000000000000018,
+              "p90": 53.999999713897736
+            },
+            "h0_projected:gripper_PWM_counts": {
+              "n": 889,
+              "median": 21.000000000000018,
+              "p90": 37.000000000000036
+            },
+            "valid_chunk:wheel_full_scale": {
+              "n": 28448,
+              "median": 0.023629874295844122,
+              "p90": 0.22924320276757074
+            },
+            "valid_chunk:pulse_ms": {
+              "n": 28448,
+              "median": 3.093006491432638,
+              "p90": 13.052020427366953
+            },
+            "valid_chunk:servo_PWM_counts": {
+              "n": 35560,
+              "median": 23.730195029560356,
+              "p90": 69.78462528486534
+            },
+            "valid_chunk:gripper_PWM_counts": {
+              "n": 7112,
+              "median": 19.799447433969164,
+              "p90": 41.06601949619754
+            }
+          }
+        },
+        "grasp": {
+          "rows": 6476,
+          "errors": {
+            "h0_raw:wheel_full_scale": {
+              "n": 25904,
+              "median": 0.006790668187855495,
+              "p90": 0.035352519300844716
+            },
+            "h0_raw:pulse_ms": {
+              "n": 25904,
+              "median": 1.5925965586584683,
+              "p90": 2.5498663398518135
+            },
+            "h0_raw:servo_PWM_counts": {
+              "n": 32380,
+              "median": 24.87740526255569,
+              "p90": 60.91013022588194
+            },
+            "h0_raw:gripper_PWM_counts": {
+              "n": 6476,
+              "median": 28.27532026923271,
+              "p90": 54.47973266630012
+            },
+            "h0_projected:wheel_full_scale": {
+              "n": 25904,
+              "median": 0.0,
+              "p90": 0.03397051300105752
+            },
+            "h0_projected:pulse_ms": {
+              "n": 25904,
+              "median": 0.0,
+              "p90": 1.8215959623034361
+            },
+            "h0_projected:servo_PWM_counts": {
+              "n": 32380,
+              "median": 24.000014781951904,
+              "p90": 56.99998145103454
+            },
+            "h0_projected:gripper_PWM_counts": {
+              "n": 6476,
+              "median": 28.0,
+              "p90": 54.00000363588336
+            },
+            "valid_chunk:wheel_full_scale": {
+              "n": 202752,
+              "median": 0.006176703892723859,
+              "p90": 0.034869512084056815
+            },
+            "valid_chunk:pulse_ms": {
+              "n": 202752,
+              "median": 1.5098509399139488,
+              "p90": 2.542207192472337
+            },
+            "valid_chunk:servo_PWM_counts": {
+              "n": 253440,
+              "median": 25.04700816488625,
+              "p90": 61.17316872017998
+            },
+            "valid_chunk:gripper_PWM_counts": {
+              "n": 50688,
+              "median": 27.953646544113088,
+              "p90": 48.862984201464585
+            }
+          }
+        },
+        "release": {
+          "rows": 3504,
+          "errors": {
+            "h0_raw:wheel_full_scale": {
+              "n": 14016,
+              "median": 0.017916402819573213,
+              "p90": 0.05835481757020476
+            },
+            "h0_raw:pulse_ms": {
+              "n": 14016,
+              "median": 1.7243738690748773,
+              "p90": 5.8784249082325095
+            },
+            "h0_raw:servo_PWM_counts": {
+              "n": 17520,
+              "median": 25.63965277106295,
+              "p90": 91.52909135171556
+            },
+            "h0_raw:gripper_PWM_counts": {
+              "n": 3504,
+              "median": 34.53796415998289,
+              "p90": 69.77461032441381
+            },
+            "h0_projected:wheel_full_scale": {
+              "n": 14016,
+              "median": 0.0,
+              "p90": 0.3499999940395355
+            },
+            "h0_projected:pulse_ms": {
+              "n": 14016,
+              "median": 0.0,
+              "p90": 42.85714477300644
+            },
+            "h0_projected:servo_PWM_counts": {
+              "n": 17520,
+              "median": 22.999974489212036,
+              "p90": 83.00000309944153
+            },
+            "h0_projected:gripper_PWM_counts": {
+              "n": 3504,
+              "median": 35.0,
+              "p90": 69.99999999999996
+            },
+            "valid_chunk:wheel_full_scale": {
+              "n": 107648,
+              "median": 0.015187876370895727,
+              "p90": 0.04919139030770778
+            },
+            "valid_chunk:pulse_ms": {
+              "n": 107648,
+              "median": 1.6594585253919178,
+              "p90": 3.767042168786485
+            },
+            "valid_chunk:servo_PWM_counts": {
+              "n": 134560,
+              "median": 24.814359082834578,
+              "p90": 74.75607954605877
+            },
+            "valid_chunk:gripper_PWM_counts": {
+              "n": 26912,
+              "median": 34.60943573179351,
+              "p90": 77.20356113933224
+            }
+          }
+        }
+      }
+    },
+    "F": {
+      "checkpoint_sha256": "dc64dd5fee4c153f02babc89e562a7d139a9f5cbfefd7e601d6c2eb9717e21ae",
+      "rows": 14528,
+      "actual_optimizer_TRAIN_last100": {
+        "N": 100,
+        "loss_mean": 0.4839840394258499,
+        "first_step": 9010,
+        "last_step": 10000
+      },
+      "prior_z0_VAL_loss_sample_weighted": {
+        "total_loss": 0.2226861315391679,
+        "legacy_l1_loss": 0.6173760223280359,
+        "movement_l1_loss": 0.14144911062349833,
+        "done_bce_loss": 0.08123702085871996
+      },
+      "stages": {
+        "all": {
+          "rows": 14528,
+          "errors": {
+            "h0_raw:wheel_full_scale": {
+              "n": 58112,
+              "median": 0.007615268138655325,
+              "p90": 0.052657867195478054
+            },
+            "h0_raw:pulse_ms": {
+              "n": 58112,
+              "median": 2.05548390355358,
+              "p90": 14.844557090203075
+            },
+            "h0_raw:servo_PWM_counts": {
+              "n": 72640,
+              "median": 17.924771339040912,
+              "p90": 68.19153631754006
+            },
+            "h0_raw:gripper_PWM_counts": {
+              "n": 14528,
+              "median": 28.282846699466734,
+              "p90": 64.6768236953161
+            },
+            "h0_projected:wheel_full_scale": {
+              "n": 58112,
+              "median": 0.0,
+              "p90": 0.049806102042483126
+            },
+            "h0_projected:pulse_ms": {
+              "n": 58112,
+              "median": 0.0,
+              "p90": 17.33346836226953
+            },
+            "h0_projected:servo_PWM_counts": {
+              "n": 72640,
+              "median": 17.0,
+              "p90": 60.00000000000006
+            },
+            "h0_projected:gripper_PWM_counts": {
+              "n": 14528,
+              "median": 28.000000000000025,
+              "p90": 64.99999999999994
+            },
+            "valid_chunk:wheel_full_scale": {
+              "n": 455936,
+              "median": 0.007331026456953372,
+              "p90": 0.04906554268067523
+            },
+            "valid_chunk:pulse_ms": {
+              "n": 455936,
+              "median": 1.9568451815373915,
+              "p90": 12.008959113369052
+            },
+            "valid_chunk:servo_PWM_counts": {
+              "n": 569920,
+              "median": 18.399186852214658,
+              "p90": 61.06906920844434
+            },
+            "valid_chunk:gripper_PWM_counts": {
+              "n": 113984,
+              "median": 28.380513200032958,
+              "p90": 55.236779389274645
+            }
+          }
+        },
+        "approach": {
+          "rows": 3659,
+          "errors": {
+            "h0_raw:wheel_full_scale": {
+              "n": 14636,
+              "median": 0.02013018535577185,
+              "p90": 0.08211811271187103
+            },
+            "h0_raw:pulse_ms": {
+              "n": 14636,
+              "median": 5.960741802447323,
+              "p90": 24.826324098851025
+            },
+            "h0_raw:servo_PWM_counts": {
+              "n": 18295,
+              "median": 21.42954189549756,
+              "p90": 50.03811498806704
+            },
+            "h0_raw:gripper_PWM_counts": {
+              "n": 3659,
+              "median": 18.922706857943506,
+              "p90": 29.685277775459912
+            },
+            "h0_projected:wheel_full_scale": {
+              "n": 14636,
+              "median": 0.01877954103106222,
+              "p90": 0.0500000059604645
+            },
+            "h0_projected:pulse_ms": {
+              "n": 14636,
+              "median": 5.867492540826856,
+              "p90": 24.857918993196165
+            },
+            "h0_projected:servo_PWM_counts": {
+              "n": 18295,
+              "median": 21.000002384185755,
+              "p90": 49.999992847442634
+            },
+            "h0_projected:gripper_PWM_counts": {
+              "n": 3659,
+              "median": 19.000000000000018,
+              "p90": 30.00000000000003
+            },
+            "valid_chunk:wheel_full_scale": {
+              "n": 117088,
+              "median": 0.020104921247395185,
+              "p90": 0.0770852974777759
+            },
+            "valid_chunk:pulse_ms": {
+              "n": 117088,
+              "median": 5.948152212574138,
+              "p90": 22.994495757858278
+            },
+            "valid_chunk:servo_PWM_counts": {
+              "n": 146360,
+              "median": 22.73881609755493,
+              "p90": 53.32383439591998
+            },
+            "valid_chunk:gripper_PWM_counts": {
+              "n": 29272,
+              "median": 20.28986077339434,
+              "p90": 30.7745086620103
+            }
+          }
+        },
+        "alignment": {
+          "rows": 889,
+          "errors": {
+            "h0_raw:wheel_full_scale": {
+              "n": 3556,
+              "median": 0.028307739929555376,
+              "p90": 0.3309023670840977
+            },
+            "h0_raw:pulse_ms": {
+              "n": 3556,
+              "median": 3.8337870560428273,
+              "p90": 26.790975609644484
+            },
+            "h0_raw:servo_PWM_counts": {
+              "n": 4445,
+              "median": 20.25712321687906,
+              "p90": 63.912490124359394
+            },
+            "h0_raw:gripper_PWM_counts": {
+              "n": 889,
+              "median": 11.626762481557806,
+              "p90": 18.009246156999662
+            },
+            "h0_projected:wheel_full_scale": {
+              "n": 3556,
+              "median": 0.02720377015488129,
+              "p90": 0.3499999940395355
+            },
+            "h0_projected:pulse_ms": {
+              "n": 3556,
+              "median": 3.3985157402046298,
+              "p90": 40.00000208616257
+            },
+            "h0_projected:servo_PWM_counts": {
+              "n": 4445,
+              "median": 17.000000000000014,
+              "p90": 54.59999284744252
+            },
+            "h0_projected:gripper_PWM_counts": {
+              "n": 889,
+              "median": 12.00000000000001,
+              "p90": 18.000000000000014
+            },
+            "valid_chunk:wheel_full_scale": {
+              "n": 28448,
+              "median": 0.022268008037113346,
+              "p90": 0.2516023418704173
+            },
+            "valid_chunk:pulse_ms": {
+              "n": 28448,
+              "median": 2.9384521462250586,
+              "p90": 14.11406444098898
+            },
+            "valid_chunk:servo_PWM_counts": {
+              "n": 35560,
+              "median": 21.8828531872281,
+              "p90": 67.73177264990996
+            },
+            "valid_chunk:gripper_PWM_counts": {
+              "n": 7112,
+              "median": 13.567917385150396,
+              "p90": 24.64694665436545
+            }
+          }
+        },
+        "grasp": {
+          "rows": 6476,
+          "errors": {
+            "h0_raw:wheel_full_scale": {
+              "n": 25904,
+              "median": 0.004063568685619027,
+              "p90": 0.03854812287884782
+            },
+            "h0_raw:pulse_ms": {
+              "n": 25904,
+              "median": 1.5164748363140788,
+              "p90": 3.0342706648556423
+            },
+            "h0_raw:servo_PWM_counts": {
+              "n": 32380,
+              "median": 13.486005478616281,
+              "p90": 62.99724222595251
+            },
+            "h0_raw:gripper_PWM_counts": {
+              "n": 6476,
+              "median": 35.159495123285694,
+              "p90": 71.5848224489981
+            },
+            "h0_projected:wheel_full_scale": {
+              "n": 25904,
+              "median": 0.0,
+              "p90": 0.03651448967385912
+            },
+            "h0_projected:pulse_ms": {
+              "n": 25904,
+              "median": 0.0,
+              "p90": 2.5618864548261913
+            },
+            "h0_projected:servo_PWM_counts": {
+              "n": 32380,
+              "median": 12.99998903274535,
+              "p90": 51.99998435974123
+            },
+            "h0_projected:gripper_PWM_counts": {
+              "n": 6476,
+              "median": 35.0,
+              "p90": 71.99999999999996
+            },
+            "valid_chunk:wheel_full_scale": {
+              "n": 202752,
+              "median": 0.003975862469682054,
+              "p90": 0.04166777509428178
+            },
+            "valid_chunk:pulse_ms": {
+              "n": 202752,
+              "median": 1.3517532162585244,
+              "p90": 3.0001476633633835
+            },
+            "valid_chunk:servo_PWM_counts": {
+              "n": 253440,
+              "median": 14.442035709357148,
+              "p90": 58.48698201780387
+            },
+            "valid_chunk:gripper_PWM_counts": {
+              "n": 50688,
+              "median": 35.67611814917285,
+              "p90": 63.50610370589091
+            }
+          }
+        },
+        "release": {
+          "rows": 3504,
+          "errors": {
+            "h0_raw:wheel_full_scale": {
+              "n": 14016,
+              "median": 0.013869538933723917,
+              "p90": 0.12505784819569338
+            },
+            "h0_raw:pulse_ms": {
+              "n": 14016,
+              "median": 2.2892077554545973,
+              "p90": 11.988654863073476
+            },
+            "h0_raw:servo_PWM_counts": {
+              "n": 17520,
+              "median": 19.90520321224884,
+              "p90": 97.51419331453411
+            },
+            "h0_raw:gripper_PWM_counts": {
+              "n": 3504,
+              "median": 35.369880984886166,
+              "p90": 83.7443942087581
+            },
+            "h0_projected:wheel_full_scale": {
+              "n": 14016,
+              "median": 0.0,
+              "p90": 0.3499999940395355
+            },
+            "h0_projected:pulse_ms": {
+              "n": 14016,
+              "median": 0.0,
+              "p90": 42.85714477300644
+            },
+            "h0_projected:servo_PWM_counts": {
+              "n": 17520,
+              "median": 18.99998760223387,
+              "p90": 92.99999475479126
+            },
+            "h0_projected:gripper_PWM_counts": {
+              "n": 3504,
+              "median": 35.0,
+              "p90": 83.99999999999996
+            },
+            "valid_chunk:wheel_full_scale": {
+              "n": 107648,
+              "median": 0.009151787358257495,
+              "p90": 0.0432184808426999
+            },
+            "valid_chunk:pulse_ms": {
+              "n": 107648,
+              "median": 2.1297192508109397,
+              "p90": 4.268136925124776
+            },
+            "valid_chunk:servo_PWM_counts": {
+              "n": 134560,
+              "median": 18.772588942700008,
+              "p90": 78.76922598549096
+            },
+            "valid_chunk:gripper_PWM_counts": {
+              "n": 26912,
+              "median": 30.386321615106404,
+              "p90": 68.26932381729027
+            }
+          }
+        }
+      }
+    },
+    "S": {
+      "checkpoint_sha256": "020989d6ca11380167e7b2eea7dc214bd3f7c4454dcaa56f32a3280d54cfaf59",
+      "rows": 14528,
+      "actual_optimizer_TRAIN_last100": {
+        "N": 100,
+        "loss_mean": 0.28335268184542656,
+        "first_step": 9010,
+        "last_step": 10000
+      },
+      "prior_z0_VAL_loss_sample_weighted": {
+        "total_loss": 0.2894680316227648,
+        "legacy_l1_loss": 0.6063645062270668,
+        "movement_l1_loss": 0.13760133210307043,
+        "done_bce_loss": 0.15186669879003922
+      },
+      "stages": {
+        "all": {
+          "rows": 14528,
+          "errors": {
+            "h0_raw:wheel_full_scale": {
+              "n": 58112,
+              "median": 0.014280709065979752,
+              "p90": 0.044937174285149234
+            },
+            "h0_raw:pulse_ms": {
+              "n": 58112,
+              "median": 1.5128422789732787,
+              "p90": 10.717369102997653
+            },
+            "h0_raw:servo_PWM_counts": {
+              "n": 72640,
+              "median": 23.805602851642234,
+              "p90": 60.30248434924923
+            },
+            "h0_raw:gripper_PWM_counts": {
+              "n": 14528,
+              "median": 25.73784056476816,
+              "p90": 44.734832177981026
+            },
+            "h0_projected:wheel_full_scale": {
+              "n": 58112,
+              "median": 0.0,
+              "p90": 0.039999994039535525
+            },
+            "h0_projected:pulse_ms": {
+              "n": 58112,
+              "median": 0.0,
+              "p90": 11.433508140102397
+            },
+            "h0_projected:servo_PWM_counts": {
+              "n": 72640,
+              "median": 22.999993324279806,
+              "p90": 56.99998140335083
+            },
+            "h0_projected:gripper_PWM_counts": {
+              "n": 14528,
+              "median": 26.0,
+              "p90": 45.0
+            },
+            "valid_chunk:wheel_full_scale": {
+              "n": 455936,
+              "median": 0.014180950723010198,
+              "p90": 0.041222791392141966
+            },
+            "valid_chunk:pulse_ms": {
+              "n": 455936,
+              "median": 1.4703314794082851,
+              "p90": 10.915516670852341
+            },
+            "valid_chunk:servo_PWM_counts": {
+              "n": 569920,
+              "median": 23.11015816690476,
+              "p90": 60.273290137803365
+            },
+            "valid_chunk:gripper_PWM_counts": {
+              "n": 113984,
+              "median": 25.14170301711452,
+              "p90": 43.040000909108244
+            }
+          }
+        },
+        "approach": {
+          "rows": 3659,
+          "errors": {
+            "h0_raw:wheel_full_scale": {
+              "n": 14636,
+              "median": 0.019853370077805705,
+              "p90": 0.06708239619361817
+            },
+            "h0_raw:pulse_ms": {
+              "n": 14636,
+              "median": 5.4322070779879095,
+              "p90": 23.37370399933375
+            },
+            "h0_raw:servo_PWM_counts": {
+              "n": 18295,
+              "median": 21.243434926729588,
+              "p90": 53.1300980467215
+            },
+            "h0_raw:gripper_PWM_counts": {
+              "n": 3659,
+              "median": 13.87784397602232,
+              "p90": 24.748075312839248
+            },
+            "h0_projected:wheel_full_scale": {
+              "n": 14636,
+              "median": 0.019151598171229217,
+              "p90": 0.0500000059604645
+            },
+            "h0_projected:pulse_ms": {
+              "n": 14636,
+              "median": 5.272018970642231,
+              "p90": 23.702811470607458
+            },
+            "h0_projected:servo_PWM_counts": {
+              "n": 18295,
+              "median": 21.000002384185755,
+              "p90": 53.00000715255737
+            },
+            "h0_projected:gripper_PWM_counts": {
+              "n": 3659,
+              "median": 14.000000000000012,
+              "p90": 25.00000000000002
+            },
+            "valid_chunk:wheel_full_scale": {
+              "n": 117088,
+              "median": 0.019919113933398624,
+              "p90": 0.06560448532189757
+            },
+            "valid_chunk:pulse_ms": {
+              "n": 117088,
+              "median": 5.375794278059173,
+              "p90": 22.71722976998962
+            },
+            "valid_chunk:servo_PWM_counts": {
+              "n": 146360,
+              "median": 21.20941500822046,
+              "p90": 55.85126642472397
+            },
+            "valid_chunk:gripper_PWM_counts": {
+              "n": 29272,
+              "median": 13.78038408334492,
+              "p90": 26.266356995847943
+            }
+          }
+        },
+        "alignment": {
+          "rows": 889,
+          "errors": {
+            "h0_raw:wheel_full_scale": {
+              "n": 3556,
+              "median": 0.02142154286775778,
+              "p90": 0.33840620229299745
+            },
+            "h0_raw:pulse_ms": {
+              "n": 3556,
+              "median": 2.9150808522938783,
+              "p90": 11.290573109442384
+            },
+            "h0_raw:servo_PWM_counts": {
+              "n": 4445,
+              "median": 17.53300317077017,
+              "p90": 52.441684929224586
+            },
+            "h0_raw:gripper_PWM_counts": {
+              "n": 889,
+              "median": 9.756872541886953,
+              "p90": 15.201421336188758
+            },
+            "h0_projected:wheel_full_scale": {
+              "n": 3556,
+              "median": 0.01971091423433821,
+              "p90": 0.3499999940395355
+            },
+            "h0_projected:pulse_ms": {
+              "n": 3556,
+              "median": 1.9820596994886892,
+              "p90": 40.00000208616257
+            },
+            "h0_projected:servo_PWM_counts": {
+              "n": 4445,
+              "median": 15.999998658895494,
+              "p90": 50.9999937772751
+            },
+            "h0_projected:gripper_PWM_counts": {
+              "n": 889,
+              "median": 10.000000000000009,
+              "p90": 15.000000000000014
+            },
+            "valid_chunk:wheel_full_scale": {
+              "n": 28448,
+              "median": 0.02036339768144277,
+              "p90": 0.16215507774479745
+            },
+            "valid_chunk:pulse_ms": {
+              "n": 28448,
+              "median": 2.0478573849562824,
+              "p90": 8.623273528506441
+            },
+            "valid_chunk:servo_PWM_counts": {
+              "n": 35560,
+              "median": 18.099349227851306,
+              "p90": 66.72885078459822
+            },
+            "valid_chunk:gripper_PWM_counts": {
+              "n": 7112,
+              "median": 9.295000606525772,
+              "p90": 16.368864600743855
+            }
+          }
+        },
+        "grasp": {
+          "rows": 6476,
+          "errors": {
+            "h0_raw:wheel_full_scale": {
+              "n": 25904,
+              "median": 0.012836955119942296,
+              "p90": 0.028348781425693855
+            },
+            "h0_raw:pulse_ms": {
+              "n": 25904,
+              "median": 1.1494481898785456,
+              "p90": 2.392028260338439
+            },
+            "h0_raw:servo_PWM_counts": {
+              "n": 32380,
+              "median": 23.87010662022082,
+              "p90": 54.219597214431595
+            },
+            "h0_raw:gripper_PWM_counts": {
+              "n": 6476,
+              "median": 32.616388135741055,
+              "p90": 45.59527434312338
+            },
+            "h0_projected:wheel_full_scale": {
+              "n": 25904,
+              "median": 0.0,
+              "p90": 0.02800694793323102
+            },
+            "h0_projected:pulse_ms": {
+              "n": 25904,
+              "median": 0.0,
+              "p90": 0.7539704195196831
+            },
+            "h0_projected:servo_PWM_counts": {
+              "n": 32380,
+              "median": 23.0,
+              "p90": 50.99999151229856
+            },
+            "h0_projected:gripper_PWM_counts": {
+              "n": 6476,
+              "median": 33.0,
+              "p90": 46.0
+            },
+            "valid_chunk:wheel_full_scale": {
+              "n": 202752,
+              "median": 0.012479132399262079,
+              "p90": 0.033654818407909966
+            },
+            "valid_chunk:pulse_ms": {
+              "n": 202752,
+              "median": 1.04821464357246,
+              "p90": 2.404041864816841
+            },
+            "valid_chunk:servo_PWM_counts": {
+              "n": 253440,
+              "median": 23.262045389185694,
+              "p90": 51.843829201309184
+            },
+            "valid_chunk:gripper_PWM_counts": {
+              "n": 50688,
+              "median": 30.207915703147375,
+              "p90": 43.92939493591367
+            }
+          }
+        },
+        "release": {
+          "rows": 3504,
+          "errors": {
+            "h0_raw:wheel_full_scale": {
+              "n": 14016,
+              "median": 0.014391087136635616,
+              "p90": 0.054342832603108154
+            },
+            "h0_raw:pulse_ms": {
+              "n": 14016,
+              "median": 1.439416250119218,
+              "p90": 8.5591404537985
+            },
+            "h0_raw:servo_PWM_counts": {
+              "n": 17520,
+              "median": 28.871057234855336,
+              "p90": 81.24470911851266
+            },
+            "h0_raw:gripper_PWM_counts": {
+              "n": 3504,
+              "median": 32.90495016479505,
+              "p90": 56.5024624608272
+            },
+            "h0_projected:wheel_full_scale": {
+              "n": 14016,
+              "median": 0.0017721690187675332,
+              "p90": 0.039999994039535525
+            },
+            "h0_projected:pulse_ms": {
+              "n": 14016,
+              "median": 0.00546436756294344,
+              "p90": 10.94387219754245
+            },
+            "h0_projected:servo_PWM_counts": {
+              "n": 17520,
+              "median": 27.000007152557348,
+              "p90": 68.99999284744263
+            },
+            "h0_projected:gripper_PWM_counts": {
+              "n": 3504,
+              "median": 33.0,
+              "p90": 56.70000000000029
+            },
+            "valid_chunk:wheel_full_scale": {
+              "n": 107648,
+              "median": 0.014201684945607966,
+              "p90": 0.03288767865741284
+            },
+            "valid_chunk:pulse_ms": {
+              "n": 107648,
+              "median": 1.3918790900211808,
+              "p90": 3.845296408622194
+            },
+            "valid_chunk:servo_PWM_counts": {
+              "n": 134560,
+              "median": 26.789901043691945,
+              "p90": 74.242903573335
+            },
+            "valid_chunk:gripper_PWM_counts": {
+              "n": 26912,
+              "median": 31.390204428225765,
+              "p90": 52.20437145405853
+            }
+          }
+        }
+      }
+    }
+  },
+  "physics_steps": 0,
+  "training_updates": 0,
+  "dataset_manifest_sha256": "44c1c46073aa08ea028324ffe924b67d862a2f01b56f4db11afad17000a9b198",
+  "scope": "VAL expert states, not closed-loop student success",
+  "reproduce": [
+    "/home/ugrp/ugrp-sim/src/e1b7de0f789305e12a3612e7cbf392b8e4ac21ee/scripts/act17_open_loop_v7.py",
+    "--models-root",
+    "/home/ugrp/ugrp-sim/runs/act17-v7/training-r1",
+    "--dataset",
+    "/home/ugrp/ugrp-sim/runs/act17-v7/dataset-r1",
+    "--out",
+    "/home/ugrp/ugrp-sim/runs/act17-v7/open-loop-r1"
+  ],
+  "wall_s": 1427.1270257510005
+}

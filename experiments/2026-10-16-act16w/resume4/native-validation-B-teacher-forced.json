@@ -1,0 +1,39 @@
+{
+  "status": "complete",
+  "complete": true,
+  "source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "checkpoint_sha256": "fcf12d01877340bdf225519547d34be071b5b05ce0aceeae2aadc51f9492004c",
+  "validation_seeds": [
+    87424,
+    87429,
+    87434,
+    87439,
+    87444,
+    87449,
+    87454,
+    87459
+  ],
+  "scope": "teacher-forced prediction on validation5; not task success, not final40, no checkpoint/policy selection",
+  "history_mode": "wheel_pulse_train_mean",
+  "counts": {
+    "rows": 3026,
+    "valid_horizons": 23760,
+    "transition_rows": 121,
+    "done_positives_h0": 16
+  },
+  "wall_s": 35.77468252900144,
+  "metrics": {
+    "wheel_MAE": 0.05339614733481375,
+    "persistence_wheel_MAE": 0.040185183939219826,
+    "continuous13_MAE": 0.042904457267351086,
+    "transition_h0_wheel_MAE": 0.14806729075775832,
+    "transition_h0_persistence_MAE": 0.3167355317961086,
+    "done_Brier_h0": 0.02834821810602058
+  }
+}

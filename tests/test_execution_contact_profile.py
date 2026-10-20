@@ -83,6 +83,21 @@ def test_batch_parsers_default_native_and_accept_explicit_replay():
         assert policy.LEGACY in next(a.choices for a in p._actions if a.dest == 'contact_profile')
 
 
+def test_teacher_transport_keeps_native_default_and_applies_explicit_replay(monkeypatch, tmp_path):
+    """Restore the main default and prove an explicit override reaches world construction."""
+    monkeypatch.syspath_prepend(str(ROOT/'scripts'))
+    import warp_act_backend as backend
+    from sim import zone_cargo_contact as cargo
+    def builder():
+        return cargo.apply('<mujoco><option/><equality/></mujoco>', policy.CPU_DEFAULT)
+    native = backend.Transport({}, 'sha', 'off', tmp_path)
+    assert native.contact_profile == policy.WARP_DEFAULT
+    assert ET.fromstring(native.build_world(builder)).find('option').get('noslip_iterations') == '0'
+    replay = backend.Transport({}, 'sha', 'off', tmp_path, contact_profile=policy.LEGACY)
+    assert replay.contact_profile == policy.LEGACY
+    assert ET.fromstring(replay.build_world(builder)).find('option').get('noslip_iterations') == '10'
+
+
 def test_loaded_external_xml_diagnostic_native_override():
     mujoco = pytest.importorskip('mujoco')
     m = mujoco.MjModel.from_xml_string('<mujoco><option noslip_iterations="10"/></mujoco>')

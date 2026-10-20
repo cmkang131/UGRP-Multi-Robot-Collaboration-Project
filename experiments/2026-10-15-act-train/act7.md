@@ -2,7 +2,7 @@
 
 기준 `d4abe49f`, PR #504. 교사 실행 동안 `scripts/sim/harness`의 캐시와 패키지 경로를
 `6f057f7e` 의존 checkout으로 격리하고 정상·예외 종료 모두 원래 모듈과 경로를 복원한다.
-[동명 파일 목록](act7-module-collisions.json)은 1,671개(모듈 1,614개, 내용 차이 8개)다.
+[동명 파일 목록](act7-module-collisions.json)은 1,673개(모듈 1,616개, 내용 차이 10개)다.
 모든 모듈의 실제 패키지 검색 경로와 실제 교사 import 175개의 의존 경로를 확인했다.
 
 `git archive`로 만든 임시 폴더의 전체 선택 파일을 고정 Git blob과 대조했다.

@@ -1,0 +1,70 @@
+{
+  "UTC": "2026-10-16T02:51:48.774567+00:00",
+  "old_scheduler_pid": 17430,
+  "state": {
+    "task": "warp3",
+    "scheduler_pid": 17430,
+    "active_groups": [
+      1,
+      4,
+      5
+    ],
+    "pending_groups": [
+      6
+    ],
+    "completed_groups": [
+      0,
+      2,
+      3
+    ],
+    "events": [
+      {
+        "utc": "2026-10-16T01:30:26.364422+00:00",
+        "group": 4,
+        "pid": 8651,
+        "signal": "SIGCONT"
+      },
+      {
+        "utc": "2026-10-16T02:12:06.905733+00:00",
+        "group": 1,
+        "pid": 8648,
+        "signal": "SIGCONT"
+      },
+      {
+        "utc": "2026-10-16T02:46:07.695541+00:00",
+        "group": 5,
+        "pid": 8652,
+        "signal": "SIGCONT"
+      }
+    ]
+  },
+  "lease": {
+    "task": "warp3",
+    "pid": 17430,
+    "start": "2026-10-15T22:02:08.673132+00:00",
+    "expected_end": "2026-10-16T05:59:25.154+00:00",
+    "source_sha": "f0db6b1abb842ea65b71c433738210254f300a7c",
+    "stage": "teacher gate R1: 29 worlds active in groups0/2/3; other11 worlds paused, no terminal results yet",
+    "pids": [
+      7804,
+      8648,
+      8649,
+      8650,
+      8651,
+      8652,
+      8653
+    ],
+    "remaining_not_submitted": 0,
+    "paused_pids": [
+      8653
+    ],
+    "active_pids": [
+      8648,
+      8651,
+      8652
+    ],
+    "scheduling_note": "three largest model groups active; smaller groups paused, source/SIM state preserved",
+    "scheduler_pid": 17430,
+    "pid_scope": "finite stage2 gate scheduler; active/paused worker PIDs listed separately"
+  }
+}

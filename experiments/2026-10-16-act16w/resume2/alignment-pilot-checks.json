@@ -1,0 +1,152 @@
+{
+  "status": "complete",
+  "scope": "two completed teacher pilots; post-action C kinematics only, no C physics or student run",
+  "source_sha": "c567a4724df2604d275f8abaaf4885388af8e4da",
+  "rows": [
+    {
+      "status": "complete",
+      "source_sha": "c567a4724df2604d275f8abaaf4885388af8e4da",
+      "host": {
+        "project_id": "ugrp-sim-b-1014",
+        "instance": "ugrp-act-l4-gcp2",
+        "machine_type": "g2-standard-8",
+        "zone": "asia-northeast3-a"
+      },
+      "seed": 86821,
+      "target_item_id": "red_1",
+      "samples": 281,
+      "geometric_alignment_passed": true,
+      "alignment_rejection": 0,
+      "max_ready_dwell_SIM_s": 0.8999999999999986,
+      "min_xy_error_m": 0.000540798672404488,
+      "thresholds": {
+        "station_m": 0.2002,
+        "xy_tol_m": 0.004,
+        "yaw_tol_rad": 0.04,
+        "stable_SIM_s": 0.3
+      },
+      "threshold_source": {
+        "teacher_sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "teacher_file_sha256": "6b1cccf16d727449e059acebbba866cc4048f42918d8791ef8b1ba1729bcbdb6",
+        "pad_file_sha256": "a1fdbac20bdae169a998acd43d5f18d33c55184805430d056bb73e5cbf68939d",
+        "evidence": "qualified pad_window_v2 physical pad window and existing _seek readiness; values unchanged"
+      },
+      "scope": "post-action saved-state geometric readiness during grasp; visibility and IK are not tested, task success is unchanged; no C-physics robustness run",
+      "raw": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/act16w-resume2-pilot-86821/controller/world-000/scene.xml",
+          "sha256": "07da4d3af18700dea1c38bddb5c6d903c871a2eb3a2e7c9b53ee905588cbd2c9"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/act16w-resume2-pilot-86821/controller/world-000-states.npz",
+          "sha256": "dcb50712c367dbf1f45e86af367fe8cf9be3f64a5897e8ec6f3a0e90ec42d324"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/act16w-resume2-pilot-86821/controller/world-000/plan.json",
+          "sha256": "e297dc6e4a07e2f97f2679b8e0f7d08898d02553f5846d48ce29cf27eca6fc3a"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/act16w-resume2-pilot-86821/controller/world-000/teacher-commands.jsonl.zst",
+          "sha256": "d678f61ac3553fb6f5e4e95922945b46dde66a3f551c3cd188968052f345f54a"
+        }
+      ],
+      "reproduce": [
+        "/home/ugrp/ugrp-sim/src/c567a4724df2604d275f8abaaf4885388af8e4da/scripts/audit_act16w_alignment.py",
+        "--enabled",
+        "--world-root",
+        "/home/ugrp/ugrp-sim/runs/act16w-resume2-pilot-86821/controller/world-000",
+        "--states",
+        "/home/ugrp/ugrp-sim/runs/act16w-resume2-pilot-86821/controller/world-000-states.npz",
+        "--actions",
+        "/home/ugrp/ugrp-sim/runs/act16w-resume2-pilot-86821/controller/world-000/teacher-commands.jsonl.zst",
+        "--action-format",
+        "teacher",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/act16w-resume2-alignment-probe-r3-86821.json"
+      ],
+      "original_diagnostic": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-resume2-alignment-probe-r3-86821.json",
+        "sha256": "3829f0517676c4be9e5e7163d49884c26d2929b5139a4e7f32047a4fefb31e5c"
+      }
+    },
+    {
+      "status": "complete",
+      "source_sha": "c567a4724df2604d275f8abaaf4885388af8e4da",
+      "host": {
+        "project_id": "ugrp-sim-b-1014",
+        "instance": "ugrp-act-l4-gcp2",
+        "machine_type": "g2-standard-8",
+        "zone": "asia-northeast3-a"
+      },
+      "seed": 86822,
+      "target_item_id": "green_1",
+      "samples": 256,
+      "geometric_alignment_passed": true,
+      "alignment_rejection": 0,
+      "max_ready_dwell_SIM_s": 0.7999999999999989,
+      "min_xy_error_m": 0.0010866085546898702,
+      "thresholds": {
+        "station_m": 0.2002,
+        "xy_tol_m": 0.004,
+        "yaw_tol_rad": 0.04,
+        "stable_SIM_s": 0.3
+      },
+      "threshold_source": {
+        "teacher_sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "teacher_file_sha256": "6b1cccf16d727449e059acebbba866cc4048f42918d8791ef8b1ba1729bcbdb6",
+        "pad_file_sha256": "a1fdbac20bdae169a998acd43d5f18d33c55184805430d056bb73e5cbf68939d",
+        "evidence": "qualified pad_window_v2 physical pad window and existing _seek readiness; values unchanged"
+      },
+      "scope": "post-action saved-state geometric readiness during grasp; visibility and IK are not tested, task success is unchanged; no C-physics robustness run",
+      "raw": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/act16w-resume2-pilot-86822/controller/world-000/scene.xml",
+          "sha256": "66f5143adc9888dd1b6ee911ee34691b2901fe0a6151bc3cb5b1bb317818ed91"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/act16w-resume2-pilot-86822/controller/world-000-states.npz",
+          "sha256": "8675b9c9b72b408f53897d48ca0641bfa4c86f25433b3d63b9d98f2b5d0728ee"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/act16w-resume2-pilot-86822/controller/world-000/plan.json",
+          "sha256": "1307b946f6362cc8fdcbc37134e3da6e82ebf8e699a3d6ca77dd97c9d1999429"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/act16w-resume2-pilot-86822/controller/world-000/teacher-commands.jsonl.zst",
+          "sha256": "ba194a3b8b4cceee4f49385e68fb0e4a1edffce4c77605172e40274126b9a41b"
+        }
+      ],
+      "reproduce": [
+        "/home/ugrp/ugrp-sim/src/c567a4724df2604d275f8abaaf4885388af8e4da/scripts/audit_act16w_alignment.py",
+        "--enabled",
+        "--world-root",
+        "/home/ugrp/ugrp-sim/runs/act16w-resume2-pilot-86822/controller/world-000",
+        "--states",
+        "/home/ugrp/ugrp-sim/runs/act16w-resume2-pilot-86822/controller/world-000-states.npz",
+        "--actions",
+        "/home/ugrp/ugrp-sim/runs/act16w-resume2-pilot-86822/controller/world-000/teacher-commands.jsonl.zst",
+        "--action-format",
+        "teacher",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/act16w-resume2-alignment-probe-r3-86822.json"
+      ],
+      "original_diagnostic": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-resume2-alignment-probe-r3-86822.json",
+        "sha256": "4e3f6574eec67dccfc61f6881da37487cb7f07447587d900a6eb91bb2f71e216"
+      }
+    }
+  ],
+  "reporting_probe_integration_fixes": [
+    {
+      "attempt": 1,
+      "reason": "saved scene XML relative assets must resolve in original qualified cwd via from_xml_string",
+      "physics_steps": 0
+    },
+    {
+      "attempt": 2,
+      "reason": "teacher state file is parent/world-000-states.npz; explicit --states now binds it",
+      "physics_steps": 0
+    }
+  ],
+  "teacher_failure_rounds": 0
+}

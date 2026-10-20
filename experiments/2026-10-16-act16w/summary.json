@@ -1,0 +1,121 @@
+{
+  "schema": "ugrp.act16w.summary.v1",
+  "status": "BLOCKED_PREREQUISITE_WAIT_EXPIRED",
+  "complete": false,
+  "authorization": "2026-10-16 user: autonomous MJWarp ACT16 record/train/evaluate after warp1 and scene signals",
+  "source_base": "06870b6d1ad9233c6e5d63eee2c8c7b81efc66f5",
+  "act_library_source": "3f99d58c5ada0862e669ef4065c0ba957f1b4547",
+  "prerequisites": {
+    "upstream_job": "warp3",
+    "poll_s": 300,
+    "max_wait_s": 36000,
+    "checks": 123,
+    "deadline_utc": "2026-10-16T04:14:16.449463+00:00",
+    "last_check": "2026-10-16T04:15:54.225115+00:00",
+    "actual_last_check_elapsed_s": 36097.79513788223,
+    "state": "WAIT_EXPIRED",
+    "scene_decision_received": true,
+    "distinct_starts_received": true,
+    "upstream_teacher_reported_success": 29,
+    "upstream_teacher_planned_N": 40,
+    "upstream_completed_raw_N": 29,
+    "upstream_remaining_running": 11,
+    "upstream_full_gate_passed": false,
+    "record_api_ready": false,
+    "latest_upstream_signal": "warp3: TEACHER_GATE 29/40 RUNNING | 2026-10-16T04:00Z remaining11 all active; closed raw29/29 with5952 hash checks; foreign L4 lease now beamact3-A only; disk24.5GiB/idle timer active; CI e97464a3 33/33 PASS; API/warm still not admitted.",
+    "receipt": "wait-final-receipt.json",
+    "upstream_handoff": "upstream-handoff.json",
+    "predecessor_warp1_receipt": "warp1-queue-receipt.json"
+  },
+  "teacher_gate": {
+    "attempted": 0,
+    "success": 0,
+    "qualified": false,
+    "rounds": 0
+  },
+  "data": {
+    "recorded_episodes": 0,
+    "admitted": false,
+    "status": "not_recorded"
+  },
+  "training": {
+    "optimizer_steps": 0,
+    "gpu_wall_s": 0,
+    "gpu_budget_s": 28800,
+    "status": "not_started",
+    "curves": "training-curves.json",
+    "A_vs_B": "not_measured",
+    "curriculum_effect": "not_measured",
+    "dagger_effect": "not_measured"
+  },
+  "evaluation": {
+    "attempted": 0,
+    "success": 0,
+    "research_result": false,
+    "status": "not_started"
+  },
+  "release": {
+    "status": "not_created_no_checkpoint",
+    "assets": []
+  },
+  "checks": {
+    "nonphysics_passed": 25,
+    "skipped": 1,
+    "skip_reason": "torch not installed on Mac; no environment created",
+    "trainer_syntax_and_cli_help": "PASS; CUDA execution not tested"
+  },
+  "rejection_table": "experiments/2026-10-16-act16w/rejection_table.json",
+  "remaining": [
+    "warp3 exact-scene teacher full>=95%>=40 and RECORD_API_READY",
+    "merge and freeze qualified backend/recording/actor adapters",
+    "same-camera fresh data and h5 relabel integration",
+    "matched A/B then curriculum and DAgger training within8h budget",
+    "new40 evaluation, funnels and gcp2 playback",
+    "Release upload, full download/hash/loading checks"
+  ],
+  "publication": {
+    "push_verified": true,
+    "pr": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/539",
+    "pr_blocker": null,
+    "base_branch_published": true,
+    "draft": true,
+    "receipt_source_commit": "2139522b44b67751e4e05126ade95a1399b6a805"
+  },
+  "scene": {
+    "scope": "coordinator ACT scene selection; no runtime verified by act16w",
+    "source_line": "2026-10-16 03:45:27 KST SCENE_DECISION: 장면 walls_floor_contrast_v5_indigo110_s80(벽 남보라·채도80) + v1 바닥 질감 + 렌더 화질 no_mip_v1, 소스 PR #527 a68106fd(렌더)/63f14fda(경계 facade)/기록 7be46a16 | 근거 scenetex5: 기존 색 검출 PNG/JPEG90/PIL82 88/88/88·바닥 ORB 중앙 14.5→23·매칭 10→17·경계 오차 v1 이하·벽/바닥 IoU 중앙 .90–.99 | 남은 것은 장면이 아니라 경계 알고리즘(scene_colour_transition_v1: 주황 구역 마스크가 직선 시드를 지움, 색 지지 부족, LK S>100 제외) → reloc16에서 고침 | 이 장면은 새 장면 버전이며 v1·v2·v3 결과와 합산 금지 | 조정자 결정(사용자 '알아서 계속' 위임, 5라운드 끝)",
+    "profile": "walls_floor_contrast_v5_indigo110_s80",
+    "floor": "v1",
+    "quality": "no_mip_v1",
+    "render_source_sha": "a68106fd86c314d7c1d10cd321475b0c86c93310",
+    "facade_source_sha": "63f14fda073c051b454a71877770e2a6654cf5af",
+    "record_source": "7be46a16",
+    "line_sha256": "77f9292a282815fd0e524ffed8390c0bdcafdb4aba9477626aa12ba2074dff66"
+  },
+  "backend_review": {
+    "finding_source": "e9c97e2eb6ea994e37cf82d0ebe391c517f81be7",
+    "static_fix_seen_at": "2fd1490a6f00459a0e32c4e89adc8421a8dba1a4",
+    "runtime_distinct_start_verification": "warp1 reports N16 fields10 pass with3 unique starts; not independently executed by act16w"
+  },
+  "dagger": {
+    "status": "target_helper_prepared_not_executed",
+    "scope": "pre-hover single-step oracle only",
+    "valid_horizons": 1,
+    "future_horizons_masked": 7,
+    "oracle_query_after_potential_student_close": "blocked without calling oracle",
+    "rollouts": 0
+  },
+  "backend_source_merged": "90a25999c16faca91667bd54cdd12270f44b8632",
+  "cost": {
+    "own_L4_hours": 0,
+    "additional_VM_compute_USD": 0,
+    "scope": "no VM start/create/lease/compute submitted by act16w; project-wide costs not assessed"
+  },
+  "ended_at": "2026-10-16T04:53:58.572085+00:00",
+  "resource_cleanup": {
+    "watcher": "exited0",
+    "cloud_leases_created": 0,
+    "cloud_processes_started": 0,
+    "vm_stop_attempts": 0
+  }
+}

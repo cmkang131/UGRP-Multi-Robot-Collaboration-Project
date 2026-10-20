@@ -1,0 +1,57 @@
+{
+  "status": "reviewed",
+  "utc": "2026-10-16T19:17:44.896667+00:00",
+  "arm": "D1",
+  "seed": 87429,
+  "SIM_range": [
+    0,
+    30
+  ],
+  "frequency_Hz": 2,
+  "frames": 61,
+  "sheets": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/act16w4-native-D1-87429-first30/first30-2hz-00.jpg",
+      "sha256": "bb764425922025bb7ab10ad47f02a75dc8bad10e72795efd4746b0fe4b42ea5b"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/act16w4-native-D1-87429-first30/first30-2hz-01.jpg",
+      "sha256": "e9fbbb192ed12375bebd33579f52d3e7aa7a5c146be9a06b33fc3492a2ac9478"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/act16w4-native-D1-87429-first30/first30-2hz-02.jpg",
+      "sha256": "31127e2494afec37c2ad16c3111690c7ffb2e1768fb4eb75a2b68401ad1c55db"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/act16w4-native-D1-87429-first30/first30-2hz-03.jpg",
+      "sha256": "da436611f4cb684dae9d4139e0ca6b812c788380945002b63bd1758220499c49"
+    }
+  ],
+  "original_world": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-D1/validation/group-04/evaluation/owner/world-000",
+  "initial_JPEG_sha256": "8b4dd119f0da533e31e4f514214f6ead608198b2b2e2f37482e6994cd41c2db8",
+  "initial_JPEG_matches_prior_native87429": true,
+  "timeline": [
+    {
+      "SIM": [
+        0,
+        4.5
+      ],
+      "observation": "red box grows and moves from left-of-centre to the right edge"
+    },
+    {
+      "SIM": [
+        5,
+        11.5
+      ],
+      "observation": "red box is absent; view changes to wall/base/floor boundary"
+    },
+    {
+      "SIM": [
+        12,
+        30
+      ],
+      "observation": "repeated low wall/base/floor view, no red box recovery"
+    }
+  ],
+  "scope": "first30 own RGB only; no complete episode/terminal10Hz or task-success judgement; original physics/training source c27 unchanged"
+}

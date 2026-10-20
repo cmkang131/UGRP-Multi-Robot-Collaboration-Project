@@ -1,0 +1,221 @@
+{
+  "status": "complete",
+  "physics_backend": "mjwarp_batch_v1",
+  "source_sha": "4199a22b6113a42df584346a4938a3a04879946b",
+  "teacher_sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "nworld": 16,
+  "seed": 8317100,
+  "world_seeds": [
+    8317100,
+    8317100,
+    8317100,
+    8317100,
+    8317100,
+    8317100,
+    8317100,
+    8317100,
+    8317100,
+    8317100,
+    8317100,
+    8317100,
+    8317100,
+    8317100,
+    8317100,
+    8317100
+  ],
+  "unique_seeds": 1,
+  "cap_s": 0.1,
+  "training_rgb": false,
+  "training_recording_supported": false,
+  "student_evaluation_supported": false,
+  "native_sleep_policy_compat_v1": true,
+  "float32_solver_default_v1": false,
+  "sap_segmented_v1": false,
+  "teacher_vectorized": false,
+  "scope": "transitional scalar frozen teacher on batched physics/commands/RGB",
+  "gate_eligible": false,
+  "scene_status": "HOLD_SCENE",
+  "reproduce": [
+    "/home/ugrp/ugrp-sim/src/4199a22b6113a42df584346a4938a3a04879946b/scripts/run_warp_act_teacher.py",
+    "--teacher-source",
+    "/home/ugrp/ugrp-sim/src/warp1-teacher-snapshot-6f057f7e",
+    "--plan",
+    "/home/ugrp/ugrp-sim/src/4199a22b6113a42df584346a4938a3a04879946b/experiments/2026-10-16-warp3/distinct-start-plans.json",
+    "--scene-v5-v1",
+    "--native-sleep-policy-compat-v1",
+    "--vm-hourly-usd",
+    "1.096",
+    "--physics-backend",
+    "mjwarp_batch_v1",
+    "--compiled-reference-v1",
+    "/home/ugrp/ugrp-sim/runs/warp3/distinct-export-r3/compiled-312.json",
+    "--compiled-geometry-312-v1",
+    "/home/ugrp/ugrp-sim/runs/warp3/distinct-export-r3/compiled-geometry312.npz",
+    "--nworld",
+    "16",
+    "--world-episodes",
+    "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15",
+    "--out",
+    "/home/ugrp/ugrp-sim/runs/warp3/numpy-prefix-n16",
+    "--numpy-teacher-v1",
+    "--batch-sleep-v1",
+    "--cap-s",
+    "0.1"
+  ],
+  "plan_sha256": "71101c95b81e33c7416ce0b00953b6707c91ace0800dfa490bae4890a41e10c8",
+  "mujoco": "3.16.0",
+  "hourly_usd": 1.096,
+  "price_basis": "user/inherited VM estimate; actual billing not measured",
+  "numpy_teacher_v1": true,
+  "batch_sleep_v1": true,
+  "teacher_scheduling": "independent per-world Python state machines",
+  "teacher_numerics": "NumPy 51-pitch IK + GPU batched rays/transforms",
+  "model_counts": {
+    "nq": 264,
+    "nv": 246,
+    "nu": 30,
+    "nbody": 162,
+    "ngeom": 1390
+  },
+  "camera": {
+    "resolution": [
+      640,
+      480
+    ],
+    "hz": 10,
+    "K": [
+      [
+        619.5194540517232,
+        0.0,
+        287.68910608896766
+      ],
+      [
+        0.0,
+        622.1654884818748,
+        218.69686648455726
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "D": [
+      -0.0199819517209417,
+      -0.1707593617153504,
+      -0.2568318201202376,
+      0.9650933421665181
+    ],
+    "mount_pos": [
+      0.052982009925558314,
+      0.0,
+      0.028152173913043477
+    ],
+    "mount_quat": [
+      0.4545194776720437,
+      0.5416752204197018,
+      -0.5416752204197018,
+      -0.4545194776720437
+    ],
+    "remap_sha256": "eb9b67fbe2cd9323054c779f34e925507caec635b6e74306241469c5d9c32e42",
+    "renderer": "MJWarp batch RGB; known partial-alpha difference from C remains",
+    "quality_requested": "no_mip_v1"
+  },
+  "capacities": {
+    "nconmax": 32,
+    "njmax": 256,
+    "naconmax": 512,
+    "nvmax": 64,
+    "control_steps": 400,
+    "graph_chunk": 16,
+    "graph_repeats": 25
+  },
+  "model_batch": {
+    "mode": "same_static_model",
+    "varying_fields": [],
+    "world_sleep": {
+      "upstream_sha256": "5b50688a8949afa30df1ae6ce2195132fdf50cf6ed821746badd8e06b92d91b0",
+      "generated_sha256": "d7fe71f4f51dbbf7fdfa3c452cc2dfa8591118c57b6e87b3209015ea49cdabc3",
+      "before": "weight = dof_length[dof_idx]",
+      "after": "weight = dof_length[worldid * 246 + dof_idx]",
+      "scope": "one world-specific exact array lookup; all sleep/wake predicates unchanged",
+      "length_sha256": "96766c65f7abe0751298a6af67ca67ee5899688fac94859e0e912e65dbd89274"
+    }
+  },
+  "sleep_compact": {
+    "enabled": true,
+    "native_initial_active_dofs": [
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52
+    ],
+    "active_robot_plus_target_dofs": [
+      58,
+      58,
+      58,
+      58,
+      58,
+      58,
+      58,
+      58,
+      58,
+      58,
+      58,
+      58,
+      58,
+      58,
+      58,
+      58
+    ],
+    "nvmax": 64,
+    "capacity_basis": "next power of2 of actual native active count and static robot+target DOFs; overflow rejects unexpected activation"
+  },
+  "setup_compile_s": 155.03434997099998,
+  "runtime_native_ray_kinematics_guard": true,
+  "prototype_reset": {
+    "unique_plans": 16,
+    "cache_hits": 0,
+    "scope": "exact-plan initial MjData copy; per-world native buffers/command arrays are independent"
+  },
+  "wall_s": 158.81542247099992,
+  "loop_wall_s": 3.7810756960000163,
+  "aggregate_completed_sim_s": 1.6000000000000014,
+  "completed": 16,
+  "attempted": 16,
+  "physical_success": 0,
+  "cap_end": 16,
+  "timing": {
+    "render": 0.0914395649999733,
+    "readback_remap_jpeg_kinematics": 3.113477724000063,
+    "teacher_visibility_rgb_eval_logging": 0.17624029099999916,
+    "command_decode_upload": 0.07205981299989617,
+    "physics": 3.378180618999977
+  },
+  "physical_batch_sim_s": 1.6,
+  "attempted_control_sim_s": 1.6,
+  "vm_cost_estimate_usd": 0.048350473063393316,
+  "sim_s_per_wall_s": 0.42316000224291583,
+  "sim_s_per_usd": 33.09171345443111,
+  "useful_completed_sim_s_per_usd": 0.0,
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/warp3/numpy-prefix-n16/rejection_table.json",
+  "lite_scope": "compatibility and solver numeric metadata omitted; full original remains on gcp2 L4:/home/ugrp/ugrp-sim/runs/warp3/numpy-prefix-n16/summary.json"
+}

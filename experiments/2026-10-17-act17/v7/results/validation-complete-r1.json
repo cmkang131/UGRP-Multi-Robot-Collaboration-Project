@@ -1,0 +1,2097 @@
+{
+  "status": "complete",
+  "complete": true,
+  "source_sha": "de6170d93433fe340806a0881a45f23b19e6af4e",
+  "cohort": "act17-v7-native",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "models": {
+    "M": {
+      "path": "/home/ugrp/ugrp-sim/runs/act17-v7/training-r1/M/actor",
+      "sha256": "b5a2c5d2be233df065d900ed58216f05a715f18f0c9de6227eeac49922b97b9f"
+    },
+    "F": {
+      "path": "/home/ugrp/ugrp-sim/runs/act17-v7/training-r1/F/actor",
+      "sha256": "dc64dd5fee4c153f02babc89e562a7d139a9f5cbfefd7e601d6c2eb9717e21ae"
+    },
+    "S": {
+      "path": "/home/ugrp/ugrp-sim/runs/act17-v7/training-r1/S/actor",
+      "sha256": "020989d6ca11380167e7b2eea7dc214bd3f7c4454dcaa56f32a3280d54cfaf59"
+    }
+  },
+  "split": "validation",
+  "N_requested": 24,
+  "started_utc": "2026-10-17T07:46:26.991259+00:00",
+  "teacher_actions_executed": 0,
+  "policy_privileged_inputs": 0,
+  "active": [],
+  "finished": [
+    {
+      "candidates": [
+        "M",
+        "F",
+        "S"
+      ],
+      "indices": [
+        21
+      ],
+      "returncode": 0,
+      "out": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-2/evaluation"
+    },
+    {
+      "candidates": [
+        "M",
+        "F",
+        "S"
+      ],
+      "indices": [
+        23
+      ],
+      "returncode": 0,
+      "out": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-0/evaluation"
+    },
+    {
+      "candidates": [
+        "M",
+        "F",
+        "S"
+      ],
+      "indices": [
+        22,
+        44,
+        47
+      ],
+      "returncode": 0,
+      "out": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-1/evaluation"
+    },
+    {
+      "candidates": [
+        "M",
+        "F",
+        "S"
+      ],
+      "indices": [
+        20,
+        45,
+        46
+      ],
+      "returncode": 0,
+      "out": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-3/evaluation"
+    }
+  ],
+  "pending": [],
+  "wall_s": 1767.2111433480004,
+  "rows": [
+    {
+      "seed": 88621,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "red_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "red_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false,
+      "candidate": "M",
+      "grasp_done_requested": false,
+      "release_done_requested": false,
+      "issued_done_times": {},
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-2/evaluation"
+    },
+    {
+      "seed": 88621,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "red_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "red_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false,
+      "candidate": "F",
+      "grasp_done_requested": false,
+      "release_done_requested": false,
+      "issued_done_times": {},
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-2/evaluation"
+    },
+    {
+      "seed": 88621,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "red_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "red_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false,
+      "candidate": "S",
+      "grasp_done_requested": false,
+      "release_done_requested": false,
+      "issued_done_times": {},
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-2/evaluation"
+    },
+    {
+      "seed": 88623,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "yellow_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "yellow_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false,
+      "candidate": "M",
+      "grasp_done_requested": false,
+      "release_done_requested": false,
+      "issued_done_times": {},
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-0/evaluation"
+    },
+    {
+      "seed": 88623,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "yellow_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "yellow_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false,
+      "candidate": "F",
+      "grasp_done_requested": false,
+      "release_done_requested": false,
+      "issued_done_times": {},
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-0/evaluation"
+    },
+    {
+      "seed": 88623,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "yellow_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "yellow_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false,
+      "candidate": "S",
+      "grasp_done_requested": false,
+      "release_done_requested": false,
+      "issued_done_times": {},
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-0/evaluation"
+    },
+    {
+      "seed": 88622,
+      "cap_end": false,
+      "issued_sequence_complete": true,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "lift_not_stable",
+      "task_success": false,
+      "assigned_item_id": "green_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "green_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false,
+      "candidate": "M",
+      "grasp_done_requested": true,
+      "release_done_requested": true,
+      "issued_done_times": {
+        "grasp": 20.900000000000155,
+        "release": 24.700000000000152
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-1/evaluation"
+    },
+    {
+      "seed": 88644,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "cyan_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "cyan_1",
+          "task_success": false
+        },
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "cyan_2",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false,
+      "candidate": "M",
+      "grasp_done_requested": false,
+      "release_done_requested": false,
+      "issued_done_times": {},
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-1/evaluation"
+    },
+    {
+      "seed": 88647,
+      "cap_end": false,
+      "issued_sequence_complete": true,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "lift_not_stable",
+      "task_success": false,
+      "assigned_item_id": "yellow_2",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "yellow_1",
+          "task_success": false
+        },
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "yellow_2",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false,
+      "candidate": "M",
+      "grasp_done_requested": true,
+      "release_done_requested": true,
+      "issued_done_times": {
+        "grasp": 12.000000000000153,
+        "release": 17.40000000000015
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-1/evaluation"
+    },
+    {
+      "seed": 88622,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "green_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "green_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false,
+      "candidate": "F",
+      "grasp_done_requested": false,
+      "release_done_requested": false,
+      "issued_done_times": {},
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-1/evaluation"
+    },
+    {
+      "seed": 88644,
+      "cap_end": false,
+      "issued_sequence_complete": true,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "lift_not_stable",
+      "task_success": false,
+      "assigned_item_id": "cyan_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "cyan_1",
+          "task_success": false
+        },
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "cyan_2",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false,
+      "candidate": "F",
+      "grasp_done_requested": true,
+      "release_done_requested": true,
+      "issued_done_times": {
+        "grasp": 7.900000000000151,
+        "release": 12.700000000000152
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-1/evaluation"
+    },
+    {
+      "seed": 88647,
+      "cap_end": false,
+      "issued_sequence_complete": true,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "lift_not_stable",
+      "task_success": false,
+      "assigned_item_id": "yellow_2",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "yellow_1",
+          "task_success": false
+        },
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "yellow_2",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false,
+      "candidate": "F",
+      "grasp_done_requested": true,
+      "release_done_requested": true,
+      "issued_done_times": {
+        "grasp": 8.800000000000152,
+        "release": 13.600000000000152
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-1/evaluation"
+    },
+    {
+      "seed": 88622,
+      "cap_end": false,
+      "issued_sequence_complete": true,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "lift_not_stable",
+      "task_success": false,
+      "assigned_item_id": "green_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "green_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false,
+      "candidate": "S",
+      "grasp_done_requested": true,
+      "release_done_requested": true,
+      "issued_done_times": {
+        "grasp": 7.000000000000152,
+        "release": 12.600000000000152
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-1/evaluation"
+    },
+    {
+      "seed": 88644,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "cyan_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "cyan_1",
+          "task_success": false
+        },
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "cyan_2",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false,
+      "candidate": "S",
+      "grasp_done_requested": false,
+      "release_done_requested": false,
+      "issued_done_times": {},
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-1/evaluation"
+    },
+    {
+      "seed": 88647,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "yellow_2",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "yellow_1",
+          "task_success": false
+        },
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "yellow_2",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false,
+      "candidate": "S",
+      "grasp_done_requested": false,
+      "release_done_requested": false,
+      "issued_done_times": {},
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-1/evaluation"
+    },
+    {
+      "seed": 88620,
+      "cap_end": false,
+      "issued_sequence_complete": true,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "lift_not_stable",
+      "task_success": false,
+      "assigned_item_id": "cyan_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "cyan_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false,
+      "candidate": "M",
+      "grasp_done_requested": true,
+      "release_done_requested": true,
+      "issued_done_times": {
+        "grasp": 19.90000000000015,
+        "release": 23.700000000000152
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-3/evaluation"
+    },
+    {
+      "seed": 88645,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "lift_not_stable",
+      "task_success": false,
+      "assigned_item_id": "red_2",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "red_1",
+          "task_success": false
+        },
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "red_2",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false,
+      "candidate": "M",
+      "grasp_done_requested": true,
+      "release_done_requested": false,
+      "issued_done_times": {
+        "grasp": 12.600000000000152
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-3/evaluation"
+    },
+    {
+      "seed": 88646,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "green_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "green_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false,
+      "candidate": "M",
+      "grasp_done_requested": false,
+      "release_done_requested": false,
+      "issued_done_times": {},
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-3/evaluation"
+    },
+    {
+      "seed": 88620,
+      "cap_end": false,
+      "issued_sequence_complete": true,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "lift_not_stable",
+      "task_success": false,
+      "assigned_item_id": "cyan_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "cyan_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false,
+      "candidate": "F",
+      "grasp_done_requested": true,
+      "release_done_requested": true,
+      "issued_done_times": {
+        "grasp": 7.900000000000151,
+        "release": 12.800000000000153
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-3/evaluation"
+    },
+    {
+      "seed": 88645,
+      "cap_end": false,
+      "issued_sequence_complete": true,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "lift_not_stable",
+      "task_success": false,
+      "assigned_item_id": "red_2",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "red_1",
+          "task_success": false
+        },
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "red_2",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false,
+      "candidate": "F",
+      "grasp_done_requested": true,
+      "release_done_requested": true,
+      "issued_done_times": {
+        "grasp": 14.200000000000152,
+        "release": 19.000000000000153
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-3/evaluation"
+    },
+    {
+      "seed": 88646,
+      "cap_end": false,
+      "issued_sequence_complete": true,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "lift_not_stable",
+      "task_success": false,
+      "assigned_item_id": "green_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "green_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false,
+      "candidate": "F",
+      "grasp_done_requested": true,
+      "release_done_requested": true,
+      "issued_done_times": {
+        "grasp": 6.400000000000151,
+        "release": 12.400000000000153
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-3/evaluation"
+    },
+    {
+      "seed": 88620,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "cyan_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "cyan_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false,
+      "candidate": "S",
+      "grasp_done_requested": false,
+      "release_done_requested": false,
+      "issued_done_times": {},
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-3/evaluation"
+    },
+    {
+      "seed": 88645,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "red_2",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "red_1",
+          "task_success": false
+        },
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "red_2",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false,
+      "candidate": "S",
+      "grasp_done_requested": false,
+      "release_done_requested": false,
+      "issued_done_times": {},
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-3/evaluation"
+    },
+    {
+      "seed": 88646,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "green_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "green_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false,
+      "candidate": "S",
+      "grasp_done_requested": false,
+      "release_done_requested": false,
+      "issued_done_times": {},
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-3/evaluation"
+    }
+  ],
+  "candidates": {
+    "M": {
+      "n": 0,
+      "N": 8
+    },
+    "F": {
+      "n": 0,
+      "N": 8
+    },
+    "S": {
+      "n": 0,
+      "N": 8
+    }
+  },
+  "raw_outcomes": {
+    "M": {
+      "issued_sequence_complete": 3,
+      "lift_success": 0,
+      "release_success": 0,
+      "task_success": 0,
+      "cap_end": 5
+    },
+    "F": {
+      "issued_sequence_complete": 5,
+      "lift_success": 0,
+      "release_success": 0,
+      "task_success": 0,
+      "cap_end": 3
+    },
+    "S": {
+      "issued_sequence_complete": 1,
+      "lift_success": 0,
+      "release_success": 0,
+      "task_success": 0,
+      "cap_end": 7
+    }
+  }
+}

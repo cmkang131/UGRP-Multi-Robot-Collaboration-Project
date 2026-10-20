@@ -1,0 +1,13 @@
+{
+  "registered_utc": "2026-10-16T11:00:43.913479+00:00",
+  "before_student_training_steps": 0,
+  "before_student_evaluation_runs": 0,
+  "status": "native saved-state check passed on2 completed teacher pilots; student diagnostics not yet run",
+  "enabled_by": "audit_act16w_alignment.py --enabled (reporting only, default off)",
+  "validation_tie_break": "number of validation runs that never maintain qualified geometric station/yaw readiness for existing0.3SIMs during grasp; lower is better, then A/off on tie",
+  "threshold_source": "unchanged6f057f7e pad_window_v2 physical pad window and _seek predicate, .004m XY/.04rad yaw/.3SIMs dwell; station from MOUNT_X_M+PAD_MID_M",
+  "data": "post-action MJWarp states.npz and actual actor skill log, GCP2 C kinematics only; no physics step or rendering",
+  "scope": "geometric diagnostic only; visibility/IK qualification excluded and physical task-success definition unchanged",
+  "selection_boundary": "A/B completed10000 plus validation5 required; no final91620-91659 data accessed for metric design",
+  "check": "alignment-pilot-checks.json"
+}

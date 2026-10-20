@@ -1,0 +1,39 @@
+{
+  "approved": true,
+  "reviewer": "act16w4",
+  "reviewed_utc": "2026-10-16T17:26:06.640025+00:00",
+  "validation_sha256": {
+    "A": "601b7ef48058a5e50495c53b2f2f7fc9b7fc599efd9c055a0d14b161a2783fcb",
+    "B": "9e79711302b6b9ea0c3fa18ddf4046e0be97ab93cc89d6d5ff501405bff285f5"
+  },
+  "playback_receipts": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/native-A-87429-playback-review.json",
+      "sha256": "1399396b146c428e2a5eef2e8d7b2f42902c88b57fefc8dd0906460d6bf6086c"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/native-B-87429-playback-review.json",
+      "sha256": "4dea763689f3cd3da240bf538ec72619c8886f8cbfabd5b6b8b0ae7226dcf334"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/native-teacher-87244-playback-reference.json",
+      "sha256": "4df80ba929b9a5d706355eae113ce2634636bec418c4feada4830be019b66e0c"
+    }
+  ],
+  "actual_student_success_examples": 0,
+  "success_reference_scope": "teacher87244 only; no native student success exists in A/B VAL8",
+  "selection_rule_unchanged": true,
+  "expected_history_selected": "A/off because both n0/8 and geometric alignment rejection8/8",
+  "observations": "Matched87429: A emits completed grasp/release without stable lift; B remains grasp after view loss and reaches90SIM cap_end. No manual controller or policy change.",
+  "raw_recount_receipts": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/independent-validation-A.json",
+      "sha256": "95da2933fcdbaa57df1b2f3ce0cab3ac51bc644a5ab89c08a17000b9b0e88076"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/independent-validation-B.json",
+      "sha256": "ff9404332514338545b0ab123eafef730fca951afa3044d6fc5d3d6fd516d462"
+    }
+  ],
+  "final_outcomes_seen": false
+}

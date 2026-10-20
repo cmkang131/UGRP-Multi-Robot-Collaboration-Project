@@ -1,0 +1,55 @@
+{
+  "reviewed_utc": "2026-10-16T10:48:33.303972+00:00",
+  "status": "source-level limitation; empirical performance effect unmeasured",
+  "selected_target_ids": {
+    "cyan": [
+      "cyan_1",
+      "cyan_2"
+    ],
+    "red": [
+      "red_1"
+    ],
+    "green": [
+      "green_1"
+    ],
+    "yellow": [
+      "yellow_1",
+      "yellow_2"
+    ]
+  },
+  "teacher": {
+    "source_sha": "f0db6b1abb842ea65b71c433738210254f300a7c",
+    "file": "scripts/warp_act_episode.py",
+    "lines": [
+      115,
+      121
+    ],
+    "target_assignment": "plan item_id identifies object for visibility-gated teacher measurement"
+  },
+  "student": {
+    "source_sha": "3f99d58c5ada0862e669ef4065c0ba957f1b4547",
+    "file": "harness/grasp_act_contract.py",
+    "lines": [
+      13,
+      28,
+      98,
+      111
+    ],
+    "box_tokens": "object_kind plus role west; item_id/instance slot is absent",
+    "own_RGB_and_issued_history": "retained; no world coordinates proposed"
+  },
+  "observed_example": {
+    "seed": 86827,
+    "target_item_id": "yellow_2",
+    "student_context": {
+      "skill": "grasp",
+      "object_kind": "yellow",
+      "role": "west"
+    },
+    "proof": "native-new-group-snapshots.json",
+    "image_observation": "two yellow boxes can be visible in the same own-camera frame"
+  },
+  "counterfactual_scope": "For identical scene, own RGB and own issued history, swapping only the assigned yellow_1/yellow_2 ID leaves current student task tokens unchanged. This is a source-level task-instruction ambiguity; no such paired physical experiment was run.",
+  "not_claimed": "This does not establish a cause of act15/act16 failure or prove impossible learning on the sampled start distribution. No student rollout is complete.",
+  "current_action": "Record separately; preserve predeclared history A/B comparison and frozen input. No teacher/scene/execution change or extra policy truth input. An explicit permitted instance-slot token would need a separately registered input contract and matched comparison."
+}

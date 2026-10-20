@@ -1,0 +1,1891 @@
+{
+  "schema": "ugrp.act18.summary.v1",
+  "experiment": "2026-10-17-act18",
+  "title": "v7 near-field ACT TRAIN fit: matched LeRobot ACT 100k chunk8/chunk100",
+  "status": "NOT_READY",
+  "verdict": "R8·R100은 TRAIN4 0/4로 학습 적합도 관문을 통과하지 못했고 VAL8·FINAL40은 제출하지 않았다. post-close 가중 2,000-step bf16 fine-tune 프로브(act18-tune)는 물리 lift를 4/4로 올렸지만 grasp_done/done 신호가 여전히 0/4여서 TRAIN4 0/4였다. 어떤 모델도 기본 제어기로 채택하지 않고, R8/R100 100k 두 모델만 NOT_READY 라벨의 재현·비교용으로 Release에 보존했으며 공개 재다운로드·전체 SHA·CPU 로딩만 검증했다. 실제 물리 임무 성공은 0/4다.",
+  "source": {
+    "training_source_sha": "52e486316c25be122dc1e872b10ef8cd1e8b98e8",
+    "post_training_source_sha": "ab89b3c549791be19c93110b917a7fe1370ec15e",
+    "release_verification_checkout_sha": "e91d418097d3104c457211dc8c44b8b7d2534d80",
+    "protocol_sha256": "1db4e22345fdf29cdd80d07bbf61f23aa6101a6859e125f974f550577be1fb4e",
+    "dataset_manifest_sha256": "44c1c46073aa08ea028324ffe924b67d862a2f01b56f4db11afad17000a9b198",
+    "act_library_source_sha": "3f99d58c5ada0862e669ef4065c0ba957f1b4547",
+    "lerobot_act_sha256": "8d622935319af7d03f1efd95d51e726af2921010f7e4f5ec3742f62280493111"
+  },
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a",
+    "account": "changmin5781@gmail.com"
+  },
+  "conditions": {
+    "physics_backend": "mjwarp_batch_v1",
+    "contact_profile": "warp_native_contact_v1",
+    "noslip_iterations": 0,
+    "weld": false,
+    "scene_profile": "walls_floor_contrast_v5_indigo110_s80",
+    "end_color_scene": "grasp_act_teal_blue_v1",
+    "cargo_version": "v6",
+    "scenario_version": "v7",
+    "nearfield_executor": "ACT",
+    "student_inputs": "자기 RGB + 자기 발행 명령 이력 + 고정 스킬/종류 토큰",
+    "current_full_v1": true,
+    "static_map_use": "none",
+    "top_camera_control": false,
+    "precision": "fp32",
+    "no_new_recording": true,
+    "no_pooling_with_act17": true,
+    "no_pooling_with_bf16_probe": true,
+    "wall_cap": null
+  },
+  "runs": [
+    {
+      "name": "training-r1",
+      "kind": "matched 100k training",
+      "status": "complete",
+      "complete": true,
+      "host_instance": "ugrp-act-l4-gcp2",
+      "started_utc": "2026-10-17T09:25:41.361420+00:00",
+      "wall_s": 30823.2,
+      "raw": {
+        "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/training-r1",
+        "summary_sha256": "92a055a02c09f6cbc65bef994b292316da51c6ce0ffec71a7c882bccececff88",
+        "R8_summary_sha256": "043e556cd45059af40de8ab2df75742eb1a81800032409adbac056ba14b2ba28",
+        "R100_summary_sha256": "27bd38f983d8b95cfd74cdfc7e81896465ed3315e20fe98c41240e00c32bb2fc"
+      },
+      "candidates": {
+        "R8": {
+          "chunk": 8,
+          "steps_completed": 100000,
+          "wall_s": 30812.2,
+          "readback_verified": true,
+          "checkpoint_sha256": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a",
+          "checkpoint_sha256_by_step": {
+            "step10000": "1ce3cdc76f0aac540ce8c40515bd94b17180b1576e387e48c105cde21ecb78a9",
+            "step50000": "9dc25d5238f9fee16af4d6373170175e984061a08a1deca24d50b6ffaf32f50b",
+            "step100000": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a"
+          },
+          "peak_gpu_bytes": 2015069184
+        },
+        "R100": {
+          "chunk": 100,
+          "steps_completed": 100000,
+          "wall_s": 30779.2,
+          "readback_verified": true,
+          "checkpoint_sha256": "44b11c3c147fb633fffa9e9cb6a0a48c5801f0b8fd2bdd9e33ea14a16804a544",
+          "checkpoint_sha256_by_step": {
+            "step10000": "90574e120686a59460f453a2b36a1a50ac644a5e7120f97e1433fb2fc83e95a7",
+            "step50000": "e9d3d448244dd38f82cf62878d334acdfe055fb101fbbfcd1364650ac42cd804",
+            "step100000": "44b11c3c147fb633fffa9e9cb6a0a48c5801f0b8fd2bdd9e33ea14a16804a544"
+          },
+          "peak_gpu_bytes": 2234192896
+        }
+      }
+    },
+    {
+      "name": "R8-TRAIN-open",
+      "kind": "open-loop TRAIN fit diagnostic (no policy execution)",
+      "status": "complete",
+      "complete": true,
+      "rows": 1430,
+      "wall_s": 15.76,
+      "raw": {
+        "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/finish-r3/R8-TRAIN-open",
+        "summary_sha256": "4534f50211728f8b8e747aa8f68a978a375b52f5e49a6b84311d0abde7f40517"
+      },
+      "key": {
+        "wheel_raw_median": 0.0014603734326967543,
+        "wheel_raw_p90": 0.007535878512068723,
+        "servo_PWM_raw_p90": 16.286428474092464,
+        "teacher_moving": 2482,
+        "projected_stop_while_teacher_moves": 123,
+        "raw_opposite_sign_while_teacher_moves": 44
+      }
+    },
+    {
+      "name": "R100-TRAIN-open",
+      "kind": "open-loop TRAIN fit diagnostic (no policy execution)",
+      "status": "complete",
+      "complete": true,
+      "rows": 1430,
+      "wall_s": 14.72,
+      "raw": {
+        "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/finish-r3/R100-TRAIN-open",
+        "summary_sha256": "7083e7ababdc9bc8148936b624ea7108cacb966830c548fc3ca6ee3f4cfea357"
+      },
+      "key": {
+        "wheel_raw_median": 0.0022513620781590103,
+        "wheel_raw_p90": 0.020174357421399003,
+        "servo_PWM_raw_p90": 29.560609789270142,
+        "teacher_moving": 2482,
+        "projected_stop_while_teacher_moves": 124,
+        "raw_opposite_sign_while_teacher_moves": 49
+      }
+    },
+    {
+      "name": "R8-train (TRAIN4 gate)",
+      "kind": "deterministic4-world native evaluation",
+      "status": "NOT_READY",
+      "complete": true,
+      "n": 0,
+      "N": 4,
+      "wall_s": 840.5,
+      "raw": {
+        "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/finish-r3/R8-train",
+        "summary_sha256": "f25299593965bf6f8a163b54d7d94fa98281daa510fcaf3e2d2392038df2896f",
+        "stage_recount": {
+          "path": "/home/ugrp/ugrp-sim/runs/act18/finish-r3/R8-train/raw-recount.json",
+          "sha256": "a03d021b464214f7476076e00b3ade0eec1b0e0c5bbb4de41c22f83e44e6e95c"
+        },
+        "independent_recount": {
+          "path": "/home/ugrp/ugrp-sim/runs/act18/recount-r1/R8-train.json",
+          "sha256": "ed026f48e7d044a90a45a0f6168c43bcefde9a15a4ede03d1eff99dae6de0058"
+        }
+      },
+      "funnel": [
+        {
+          "gate": "requested",
+          "passed": 4,
+          "rejected": 0
+        },
+        {
+          "gate": "grasp_done",
+          "passed": 0,
+          "rejected": 4
+        },
+        {
+          "gate": "stable_lift",
+          "passed": 0,
+          "rejected": 0
+        },
+        {
+          "gate": "stable_release",
+          "passed": 0,
+          "rejected": 0
+        },
+        {
+          "gate": "task_success",
+          "passed": 0,
+          "rejected": 0
+        }
+      ],
+      "rows": [
+        {
+          "seed": 88600,
+          "kind": "cyan",
+          "cap_end": true,
+          "physical_lift": false,
+          "stable_release": false
+        },
+        {
+          "seed": 88601,
+          "kind": "red",
+          "cap_end": true,
+          "physical_lift": true,
+          "stable_release": false
+        },
+        {
+          "seed": 88602,
+          "kind": "green",
+          "cap_end": true,
+          "physical_lift": false,
+          "stable_release": false
+        },
+        {
+          "seed": 88603,
+          "kind": "yellow",
+          "cap_end": true,
+          "physical_lift": true,
+          "stable_release": false
+        }
+      ],
+      "montage": {
+        "path": "outputs/e2e18-admin/playback/act18-R8-TRAIN4/failure-montage-1hz.png",
+        "sha256": "a4466db727d50ef2f36a2fb4972c45d1a88093b574291d714f9c56fa80b05d9b",
+        "vm_path": "/home/ugrp/ugrp-sim/runs/act18/montages/R8-TRAIN4-1hz.png",
+        "window": "last10 SIM seconds, 10Hz ring sampled at 1Hz, 4 rows x 10 columns",
+        "mac_copy_tracked": false,
+        "note": "outputs/ is git-excluded; VM copy kept at vm_path with same sha256"
+      }
+    },
+    {
+      "name": "R100-train (TRAIN4 gate)",
+      "kind": "deterministic4-world native evaluation",
+      "status": "NOT_READY",
+      "complete": true,
+      "n": 0,
+      "N": 4,
+      "wall_s": 750.5,
+      "raw": {
+        "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/finish-r3/R100-train",
+        "summary_sha256": "aca288d10c9c629f0fd37bee2ec8f4ec7a57fd29987b10c39c4cfd87cb77407d",
+        "stage_recount": {
+          "path": "/home/ugrp/ugrp-sim/runs/act18/finish-r3/R100-train/raw-recount.json",
+          "sha256": "7a64de7e570f83d6f04256e02d17b6688564000f9e7f54874024322677a4ae84"
+        },
+        "independent_recount": {
+          "path": "/home/ugrp/ugrp-sim/runs/act18/recount-r1/R100-train.json",
+          "sha256": "0aad9f3c7b5785787eb6a695ecb37c2b45408e7659542e0ed5793099273e943a"
+        }
+      },
+      "funnel": [
+        {
+          "gate": "requested",
+          "passed": 4,
+          "rejected": 0
+        },
+        {
+          "gate": "grasp_done",
+          "passed": 0,
+          "rejected": 4
+        },
+        {
+          "gate": "stable_lift",
+          "passed": 0,
+          "rejected": 0
+        },
+        {
+          "gate": "stable_release",
+          "passed": 0,
+          "rejected": 0
+        },
+        {
+          "gate": "task_success",
+          "passed": 0,
+          "rejected": 0
+        }
+      ],
+      "rows": [
+        {
+          "seed": 88600,
+          "kind": "cyan",
+          "cap_end": true,
+          "physical_lift": false,
+          "stable_release": false
+        },
+        {
+          "seed": 88601,
+          "kind": "red",
+          "cap_end": true,
+          "physical_lift": false,
+          "stable_release": false
+        },
+        {
+          "seed": 88602,
+          "kind": "green",
+          "cap_end": true,
+          "physical_lift": false,
+          "stable_release": false
+        },
+        {
+          "seed": 88603,
+          "kind": "yellow",
+          "cap_end": true,
+          "physical_lift": false,
+          "stable_release": false
+        }
+      ],
+      "montage": {
+        "path": "outputs/e2e18-admin/playback/act18-R100-TRAIN4/failure-montage-1hz.png",
+        "sha256": "6a6013eceea0c16fe87fee615b1bc4840219a4fc15a51a88ed520c3c7e88213c",
+        "vm_path": "/home/ugrp/ugrp-sim/runs/act18/montages/R100-TRAIN4-1hz.png",
+        "window": "last10 SIM seconds, 10Hz ring sampled at 1Hz, 4 rows x 10 columns",
+        "mac_copy_tracked": false,
+        "note": "outputs/ is git-excluded; VM copy kept at vm_path with same sha256"
+      }
+    },
+    {
+      "name": "finish-r3 (post-training owner)",
+      "kind": "finite TRAIN fit -> gated VAL -> conditional FINAL -> package",
+      "status": "COMPARISON_COMPLETE",
+      "complete": true,
+      "started_utc": "2026-10-17T10:09:20.681185+00:00",
+      "raw": {
+        "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/finish-r3",
+        "summary_sha256": "54feb0b97b1a639873fabd6e91a43a26e7a8118a614c169081cc53869a742a6a"
+      },
+      "gates": {
+        "train4": "4/4 required before VAL8",
+        "R8": {
+          "TRAIN": "0/4",
+          "VAL": "NOT_SUBMITTED_TRAIN_FIT_FAILED"
+        },
+        "R100": {
+          "TRAIN": "0/4",
+          "VAL": "NOT_SUBMITTED_TRAIN_FIT_FAILED"
+        },
+        "FINAL40_submitted": false,
+        "winner": null
+      },
+      "packages": {
+        "R8": {
+          "pending_entry_sha256": "17b1649c0e03152cf866ca22de3696e65a1d5d391cd9ea20ddb3ccfa23b8c261"
+        },
+        "R100": {
+          "pending_entry_sha256": "b3f4aec754a2652f6a76d8a5c94239dd9c61ea7f5605a0497bb77d5756c5ea92"
+        }
+      }
+    },
+    {
+      "name": "finish-r1",
+      "kind": "superseded post-training owner",
+      "status": "never_completed",
+      "note": "학습 완료 전 정지·재시작으로 대체됨. 실패 원인 분석 대상 아님.",
+      "raw": {
+        "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/finish-r1",
+        "summary_sha256": "8d95cb6a852345b5320df9008c2f6fc7ccc4d31c8a7e869c5f7b8ce342f50f84"
+      }
+    },
+    {
+      "name": "finish-r2",
+      "kind": "post-training owner HOST_ERROR",
+      "status": "HOST_ERROR",
+      "error": "RuntimeError('training owner disappeared before complete receipt')",
+      "raw": {
+        "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/finish-r2",
+        "summary_sha256": "bd58ebb5fddf89c47240e05bdb6808f6a70804d19b13714c727981b681955afa"
+      }
+    },
+    {
+      "name": "baseline-F-TRAIN4-r1",
+      "kind": "pre-training baseline F10k TRAIN4 diagnostic",
+      "status": "HOST_ERROR(recount defect)",
+      "complete": false,
+      "wall_s": 1646.5,
+      "n_fixed": 0,
+      "N": 4,
+      "note": "원 recount가 eval-owner에 없는 input_audit 키를 요구해 HOST_ERROR. 8d21fbe1a 수정 뒤 raw-fixed recount 0/4.",
+      "raw": {
+        "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/baseline-F-TRAIN4-r1",
+        "summary_sha256": "1d2be421eabb4a44077f8112414fe050d52da2376ba98939a8e5c97be25b1686",
+        "fixed_recount": {
+          "path": "/home/ugrp/ugrp-sim/runs/act18/baseline-F-TRAIN4-r1/raw-recount-fixed-8d21fbe1a.json",
+          "sha256": "95a95ac2425648465ab2d16f8ad133c8f4626e8e9c17354297b3a6720a5c0a1e"
+        }
+      }
+    },
+    {
+      "name": "bf16-probe-r1",
+      "kind": "gcp5 fp32/bf16 paired 2000-step probe (not pooled)",
+      "status": "complete",
+      "host": "gcp5",
+      "records": [
+        "experiments/2026-10-17-act18/bf16-probe.json",
+        "experiments/2026-10-17-act18/bf16-probe-decision.json",
+        "experiments/2026-10-17-act18/bf16-probe-progress-fp32.jsonl",
+        "experiments/2026-10-17-act18/bf16-probe-progress-bf16.jsonl"
+      ],
+      "conclusion": "수용(단계 중앙값 0.1675->0.1523s, 1.10배, VAL8 손실 0.7358->0.6448). 이 100k fp32 학습과 합산하지 않음."
+    },
+    {
+      "name": "faildiag-r3",
+      "kind": "TRAIN4 stop-onset/posture diagnosis (no physics)",
+      "status": "complete",
+      "records": {
+        "json": "experiments/2026-10-17-act18/results/faildiag-r3.json",
+        "json_sha256": "4dff82efa5e3821f83d5fd65cc04265ebe37b29396b749f787734db6c1328610",
+        "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/faildiag-r3"
+      },
+      "montages": [
+        {
+          "candidate": "R8",
+          "kind": "stop-window-10hz",
+          "path": "outputs/e2e18-admin/playback/act18-faildiag/R8-stop-window-10hz.png",
+          "sha256": "a8974c98b537d494a9ad6d5e59a9d66b20a5f060e452d03ddd7eaf3115753dee",
+          "vm_path": "/home/ugrp/ugrp-sim/runs/act18/faildiag-r3/R8-stop-window-10hz.png"
+        },
+        {
+          "candidate": "R8",
+          "kind": "align1hz",
+          "path": "outputs/e2e18-admin/playback/act18-faildiag/R8-align1hz.png",
+          "sha256": "3371564f7fad06f6b4af99c685c9f281dc834a89bc82916fc8f9d87ad67a2ed8",
+          "vm_path": "/home/ugrp/ugrp-sim/runs/act18/faildiag-r3/R8-align1hz.png"
+        },
+        {
+          "candidate": "R100",
+          "kind": "stop-window-10hz",
+          "path": "outputs/e2e18-admin/playback/act18-faildiag/R100-stop-window-10hz.png",
+          "sha256": "e8523233380f28786e4e6b4df397469d1ce4d7ede09ed6748f22d85ddb3a70a9",
+          "vm_path": "/home/ugrp/ugrp-sim/runs/act18/faildiag-r3/R100-stop-window-10hz.png"
+        },
+        {
+          "candidate": "R100",
+          "kind": "align1hz",
+          "path": "outputs/e2e18-admin/playback/act18-faildiag/R100-align1hz.png",
+          "sha256": "a15623bcaa9727ede23a56d2a541b5aca43f8b3b9c944167a1a8ead7cea42176",
+          "vm_path": "/home/ugrp/ugrp-sim/runs/act18/faildiag-r3/R100-align1hz.png"
+        }
+      ],
+      "findings": {
+        "R8": "base 마지막 이동 9.9–13.8s(교사 align 시작 직후), 그리퍼 close 10.5–14.4s, 물리 이동 0.023–0.125m, 손가락힘 3.7–5.2N, 물리 lift 2/4, done 0/4",
+        "R100": "base 마지막 이동 21.6–24.7s(88603은 바퀴 명령 지속·물리 이동 0), 88601 물리 이동·손가락힘 0, lift 0/4",
+        "common": "align 1Hz 몽타주에서 목표 상자가 t≈10–15s 화면 하단으로 이탈, 이후 정적; cap_end 8/8"
+      }
+    },
+    {
+      "name": "tune-r1-eval-rejection",
+      "kind": "TUNE probe evaluation guard rejection (fixed)",
+      "status": "HOST_ERROR",
+      "error": "ValueError('complete registered100k reference model required')",
+      "wall_s": 2.0,
+      "note": "tune-r1 학습은 정상 완료했으나 evaluator guard가 100k 참조 모델만 허용해 세계 실행 전 거부. c7e652e80에서 등록된 short probe 허용(init sha·chunk·protocol·training_complete·packaging_eligible=false 검증) + 패키징 거부로 수정.",
+      "raw": {
+        "training_summary": {
+          "path": "/home/ugrp/ugrp-sim/runs/act18/tune-r1/act18-tune/summary.json",
+          "sha256": "874df2b98f8ac75eaabd067c1de6616a9958ffafb2b03f9542c0d462ba68c2b0"
+        },
+        "stage_summary": {
+          "path": "/home/ugrp/ugrp-sim/runs/act18/tune-r1/tune-TRAIN4/summary.json",
+          "sha256": "6e77466c97d931eebaac53f22584b4eef9611ccba166b6da81c5207aa09d5dd1"
+        }
+      }
+    },
+    {
+      "name": "tune-r2 (act18-tune)",
+      "kind": "post-close weighted 2000-step bf16 fine-tune probe (not packaged, not pooled)",
+      "status": "NOT_READY",
+      "complete": true,
+      "steps": 2000,
+      "wall_s": 269.8,
+      "readback_verified": true,
+      "checkpoint": {
+        "path": "/home/ugrp/ugrp-sim/runs/act18/tune-r2/act18-tune/step-2000",
+        "model_sha256": "89c53c3c4b31270097d59b5d474c57bb93547cac267f79f1a16d4ea098eb0369",
+        "adapter_sha256": "dda7ea2ff92d0d3f22d4ab7bc12c5032e355bb8559be9397fb623c30f5823827"
+      },
+      "setup": {
+        "init_checkpoint": "training-r1/R8/step-100000",
+        "init_model_sha256": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a",
+        "precision": "bf16_autocast_v1",
+        "sampling": "weighted_post_close_v1",
+        "post_close_weight": 4.0,
+        "pre_close_weight": 2.0,
+        "post_close_phases": [
+          "grasp:lift",
+          "grasp:lift_settle",
+          "grasp:lookback_pose",
+          "grasp:lookback",
+          "grasp:lookback_settle",
+          "grasp:verify_lift",
+          "grasp:hold"
+        ],
+        "pre_close_phases": [
+          "grasp:hover",
+          "grasp:descent",
+          "grasp:close"
+        ],
+        "note": "episode 균등 유지+행 가중; completion prior는 가중 측도로 재계산. 마지막 short step만 저장, packaging_eligible=false"
+      },
+      "raw": {
+        "training_summary": {
+          "path": "/home/ugrp/ugrp-sim/runs/act18/tune-r2/act18-tune/summary.json",
+          "sha256": "fc6d9135e87bef92cd00af6f9a652d83ef5c5fa69502a1e0132859e254ef3b56"
+        },
+        "open_loop": {
+          "path": "/home/ugrp/ugrp-sim/runs/act18/tune-r2/tune-TRAIN-open/summary.json",
+          "sha256": "85a1f31ad10e47e25a73f74ceda7ec6c0f55e9bd57de23640d41d45269d9b8ac"
+        },
+        "train4_summary": {
+          "path": "/home/ugrp/ugrp-sim/runs/act18/tune-r2/tune-TRAIN4/summary.json",
+          "sha256": "512e00713357b7756373241c1f55417956ff8836993f9aba20f4dd294c8a4099"
+        },
+        "train4_stage_recount": {
+          "path": "/home/ugrp/ugrp-sim/runs/act18/tune-r2/tune-TRAIN4/raw-recount.json",
+          "sha256": "d5cb8181bdb2d6e80cbe8f1bed583a10afa4f137cfe675a6a8fc3a8f9989ea51"
+        },
+        "independent_recount": {
+          "path": "/home/ugrp/ugrp-sim/runs/act18/recount-r1/act18-tune-TRAIN4.json",
+          "sha256": "59f3b6ae18ed389b1d41e7580c03f26780484ee26c623174d8394c838e80d0a8"
+        }
+      },
+      "results": {
+        "train4": {
+          "n": 0,
+          "N": 4,
+          "wall_s": 856.6,
+          "rows": [
+            {
+              "seed": 88600,
+              "kind": "cyan",
+              "cap_end": true,
+              "physical_lift": true,
+              "grasp_done": false
+            },
+            {
+              "seed": 88601,
+              "kind": "red",
+              "cap_end": true,
+              "physical_lift": true,
+              "grasp_done": false
+            },
+            {
+              "seed": 88602,
+              "kind": "green",
+              "cap_end": true,
+              "physical_lift": true,
+              "grasp_done": false
+            },
+            {
+              "seed": 88603,
+              "kind": "yellow",
+              "cap_end": true,
+              "physical_lift": true,
+              "grasp_done": false
+            }
+          ],
+          "funnel": [
+            {
+              "gate": "requested",
+              "passed": 4
+            },
+            {
+              "gate": "grasp_done",
+              "passed": 0
+            },
+            {
+              "gate": "stable_lift",
+              "passed": 0
+            },
+            {
+              "gate": "stable_release",
+              "passed": 0
+            },
+            {
+              "gate": "task_success",
+              "passed": 0
+            }
+          ]
+        },
+        "val8": "NOT_SUBMITTED_TRAIN_FIT_FAILED",
+        "open_loop": {
+          "rows": 1430,
+          "wall_s": 15.7,
+          "wheel_raw_median": 0.0010943577041958585,
+          "wheel_raw_p90": 0.00749645846112242,
+          "servo_PWM_raw_p90": 18.84,
+          "teacher_moving": 2482,
+          "projected_stop_while_teacher_moves": 111,
+          "raw_opposite_sign_while_teacher_moves": 61
+        },
+        "comparison_to_R8": {
+          "physical_lift": "tune 4/4 vs R8 2/4",
+          "grasp_done": "tune 0/4 vs R8 0/4",
+          "base_last_move_s": "tune 10.1–15.1 vs R8 9.9–13.8",
+          "path_length_m": "tune 0.114–0.121 vs R8 0.023–0.125",
+          "finger_force_max_N": "tune 5.21–5.23 vs R8 3.72–5.19"
+        }
+      },
+      "conclusion": "물리 lift는 4/4로 개선됐지만 done/grasp_done 신호는 여전히 0/4이고 base가 조기 정지해 TRAIN4 0/4. 프로브는 패키징·배포·합산하지 않는다."
+    },
+    {
+      "name": "guard-fix",
+      "kind": "code fix",
+      "status": "complete",
+      "commit": "c7e652e808dc11170baea281bb88f758d36ca909",
+      "change": "evaluator guard가 등록된 short probe(init sha·chunk·protocol sha·training_complete·step=steps_override·packaging_eligible=false)만 허용; package_act18_model.py는 packaging_eligible=false를 명시 거부",
+      "tests": "tests/test_act18_tune.py 9 passed (probe registration allow/deny 포함)",
+      "note": "같은 HOST_ERROR 재발 방지용. 자세한 구현은 act18_policy.registered_tune_probe()"
+    },
+    {
+      "name": "doneprobe-r1",
+      "kind": "default-off done-probability instrumentation and two TRAIN4 re-runs",
+      "status": "complete",
+      "commit": "a5d712667c8aaa5c0f43573562226b9d6eb6aeb7",
+      "setup": {
+        "flag": "--record-done-prob (default OFF; env UGRP_ACT18_DONE_PROB)",
+        "model_tune": "tune-r2/act18-tune/step-2000",
+        "model_R8": "training-r1/R8/step-100000",
+        "ensemble_coeff": 0.01,
+        "decode_threshold": 0.65
+      },
+      "raw": {
+        "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/doneprobe-r1",
+        "logs": {
+          "tune_group000": "01d201ec60b5ffe4dd065eacb26b097a5930372dae993bd2f3183015575f9e85",
+          "tune_group001": "d0bf69273b0d5f51d6e4a2f5d1a5dc3cf40cc57cf480b2b7c382d0764262ed10",
+          "R8_group000": "773d3bc2ea3db2a219dcd84c67b0e3df354416a339bf3d3a144f5181ff71840a",
+          "R8_group001": "7eae8dfda52f7b0e8986c4d0768c0afa5b4b34c54ec1f34559d8458be13869c4"
+        },
+        "stage_summaries": {
+          "tune": "f9c27cd7cb3098f8240424c9cea3aad1978dc88d1cec637e98a8944a5fff6396",
+          "R8": "42daf507f3ffb0fb267664d15d4db64e9a157f56c44ec84ce5bb2e94de86cac7"
+        },
+        "analysis": {
+          "tune_group000": "d88209f0972524bff8daa6cdff5ba632c93cf20c2ba64dedd369615ae8f7ff68",
+          "tune_group001": "3838d5af0f7990108ffa86b8063700ff20473c8ee977076faef44dfc099ff935",
+          "R8_group000": "55e05aa9475e862bb58be679e2b800892e2453f46b040afdc88fe8ae0b265664",
+          "R8_group001": "e561c5c7bb5e37a259c0eaafd58d609ff50ebdf3ffa53d730d5dae4767827db8"
+        }
+      },
+      "results": {
+        "tune_train4": "0/4",
+        "R8_train4": "0/4",
+        "done_prob_max": 0.000577,
+        "conclusion": "done head not learned: raw and exact temporal-ensemble probability never exceed ~6e-4; no threshold .65/.5/.3/.2/.1 fires"
+      },
+      "evidence_local": "experiments/2026-10-17-act18/results/doneprobe-r1"
+    },
+    {
+      "name": "recipe-audit-A",
+      "kind": "ALOHA/act-plus-plus recipe audit and done-label audit (no GPU)",
+      "status": "complete",
+      "document": "experiments/2026-10-17-act18/RECIPE_AUDIT.md",
+      "done_label": {
+        "train_episodes": 200,
+        "train_rows": 72572,
+        "positive_rows": 200,
+        "raw_fraction": 0.002756,
+        "episode_uniform_prior": 0.002766,
+        "positive_batch_prob_batch8": 0.0219,
+        "balanced_bce_weights": {
+          "positive": 180.8,
+          "negative": 0.5014
+        }
+      },
+      "findings": {
+        "bug_level": [
+          "done head supervision is unlearnable under current sampling/loss"
+        ],
+        "deviations": [
+          "action/state representation (wheel pulses, no measured qpos)",
+          "base velocity not smoothed/normalized like act-plus-plus",
+          "10Hz vs 50Hz horizon scaling",
+          "fixed 100k/no best-val selection",
+          "single dataset (no co-training)",
+          "evaluation requires issued_done while standard ACT has none"
+        ],
+        "normal": [
+          "batch 8",
+          "lr 1e-5/AdamW wd 1e-4",
+          "KL 10/ResNet18/d512/FF3200",
+          "mean/std floor .01",
+          "no ACT image augmentation",
+          "single current frame",
+          "temporal ensemble k=.01 direction matches official code"
+        ]
+      },
+      "phase_B_proposals": [
+        "B1 done-only 5k fine-tune with positive-balanced batches and pos_weight (~30 min GPU)",
+        "B2 standard-aligned 20k from scratch chunk100 with fixed done supervision (~65 min GPU)"
+      ],
+      "phase_C_memo": "co-training via act-plus-plus dataset_dir list + sample_weights (Mobile ALOHA 2401.02117)"
+    },
+    {
+      "name": "b1-r1 (act18-doneb1)",
+      "kind": "done-only supervised 5k bf16 fine-tune of R100 (Lead-approved B1)",
+      "status": "NOT_READY",
+      "complete": true,
+      "prereg": "experiments/2026-10-17-act18/B1_PREREG.json",
+      "source_commit": "a142046ac580c0d510d6ea6636be26585dd3dbcb",
+      "training": {
+        "steps": 5000,
+        "wall_s": 661.6,
+        "precision": "bf16_autocast_v1",
+        "init_checkpoint": "training-r1/R100/step-100000",
+        "done_positive_batch_fraction": 0.5,
+        "done_positive_batches": 2559,
+        "batches_seen": 5000,
+        "checkpoint_sha256": "f03a03ea3774a221e8fbfbce1ba8c03edb65f83e13a263c600926f5546782d89",
+        "latest": {
+          "loss": 0.16601169109344482,
+          "done_bce_loss": 0.025426743552088737,
+          "movement_l1_loss": 0.07113176584243774
+        }
+      },
+      "gate": {
+        "stage": "train4",
+        "n": 0,
+        "N": 4,
+        "wall_s": 734.4,
+        "status": "NOT_READY",
+        "raw": {
+          "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/b1-r1",
+          "summary_sha256": "bb75c15013beaf421d3675c61e29ca267c1081136ba519239e8a8c7c1cc59f00",
+          "stage_recount_sha256": "d047dc424d5950eb5a8a9f8aabee2e81c6cdbb0f1dc37bf19869a3cb0ba7ebac",
+          "done_logs": {
+            "group000": "7995acf59b0e4a8a3916d4137c0fc605cd1691d0cb86f350db2f9c9c8acfbae7",
+            "group001": "f6a25be75c8d9049c8aad73fa7804a9c7d244a3a3773231e40354c5f019a69a9"
+          },
+          "analysis": {
+            "group000": "cf5d463ad3e2d2366da02d42053fb12e674142f407f843a44bf7db7e0bd8e4c7",
+            "group001": "b1440ac60edc8dcf04f3f193ea307617f09fa6417930065c616ffdc90c884603"
+          }
+        },
+        "rows": [
+          {
+            "seed": 88600,
+            "kind": "cyan",
+            "cap_end": true,
+            "physical_lift": false
+          },
+          {
+            "seed": 88601,
+            "kind": "red",
+            "cap_end": true,
+            "physical_lift": false
+          },
+          {
+            "seed": 88602,
+            "kind": "green",
+            "cap_end": true,
+            "physical_lift": false
+          },
+          {
+            "seed": 88603,
+            "kind": "yellow",
+            "cap_end": true,
+            "physical_lift": false
+          }
+        ]
+      },
+      "done_probe": {
+        "all_chunk_step_max": 0.999229,
+        "steps_ge_065": 9356,
+        "horizon": {
+          "mean_at_h0": 0.0001,
+          "mean_at_h99": [
+            0.574,
+            0.454
+          ],
+          "ensemble_exec_max": 0.21
+        },
+        "executed_threshold_fire": {
+          "threshold_065": null,
+          "threshold_05": null,
+          "threshold_03": null,
+          "threshold_02": null,
+          "threshold_01": "t≈50-84s only"
+        },
+        "conclusion": "done supervision is learned only at far chunk horizons (h≈99); the executed current-step (h=0) probability stays ~1e-4 and never reaches .65. Threshold-only fixes cannot work; horizon contract / label or termination contract needs a precondition change."
+      },
+      "pooling": {
+        "no_pooling_with": [
+          "R8",
+          "R100",
+          "act18-tune"
+        ],
+        "packaged": false,
+        "released": false
+      }
+    },
+    {
+      "name": "b2-r1 (act18-std)",
+      "kind": "standard-aligned 20k bf16 from scratch (chunk20=2.0s, base smoothing5, best-val, done positive batches)",
+      "status": "NOT_READY",
+      "complete": true,
+      "prereg": "experiments/2026-10-17-act18/B2_PREREG.json",
+      "training": {
+        "steps": 20000,
+        "wall_s": 2565.7,
+        "precision": "bf16_autocast_v1",
+        "chunk": 20,
+        "base_smooth_window": 5,
+        "val_select": "32 non-VAL8 validation episodes, 256 fixed rows",
+        "done_positive_batch_fraction": 0.5,
+        "done_positive_batches": 10075,
+        "batches_seen": 20000,
+        "val_final": 0.13919566571712494,
+        "val_history_best": {
+          "step": 20000,
+          "val_loss": 0.13919566571712494
+        },
+        "checkpoint_sha256": "75a56028f517a63b444119127c19ca36daf363615876d9da36301cfa9faa6a95",
+        "adapter_sha256": "9b89aaaa335edb0a29784ab6e36f276b0052e5612d46caaaec4e54dda3d8f6d5",
+        "summary_sha256": "df7e307d098bc388ac4242b80ba48ab91524e3be63cf97b7da99c38d2d99dd8a"
+      },
+      "gate": {
+        "stage": "train4",
+        "n": 0,
+        "N": 4,
+        "wall_s": 804.5,
+        "status": "NOT_READY",
+        "raw": {
+          "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/b2-r1",
+          "summary_sha256": "8b9d5ec8418e82b1f1eb3648e23b1337648dc92719e111b837aa72569471bd07",
+          "stage_recount_sha256": "f15b77c4ac4adc6ffd29bc7eceeac55e010b738e17a8c85717b93e33201f550a",
+          "independent_recount": "/home/ugrp/ugrp-sim/runs/act18/recount-r1/act18-std-TRAIN4.json",
+          "done_logs": {
+            "group000": "d4706a80494161d4513f0178ed866941ed5a592e8a0ce3c6be41e36842b7ba20",
+            "group001": "e7ed0eb9fd0acf6af68e5054fffbb720c395e4f3e81fd24b65cf9b487260e01e"
+          },
+          "analysis": {
+            "group000": "97e0cffcd1d2b4f2e6eaf9c6c797b6c7d79b501d87ea53ab7a46367f37fc390d",
+            "group001": "70b4aa18438d81b28d7ca4c048be0677ef820d623d564b6bc067b2f17332442e"
+          }
+        },
+        "rows": [
+          {
+            "seed": 88600,
+            "kind": "cyan",
+            "cap_end": true,
+            "physical_lift": false
+          },
+          {
+            "seed": 88601,
+            "kind": "red",
+            "cap_end": true,
+            "physical_lift": false
+          },
+          {
+            "seed": 88602,
+            "kind": "green",
+            "cap_end": true,
+            "physical_lift": true
+          },
+          {
+            "seed": 88603,
+            "kind": "yellow",
+            "cap_end": true,
+            "physical_lift": false
+          }
+        ]
+      },
+      "behavior": {
+        "base_last_move_s": [
+          10.4,
+          11.8,
+          9.5,
+          18.9
+        ],
+        "gripper_close_s": [
+          11.0,
+          12.4,
+          10.1,
+          19.5
+        ],
+        "path_m": [
+          0.028,
+          0.011,
+          0.128,
+          0.0
+        ],
+        "finger_force_max": [
+          3.095,
+          3.124,
+          5.276,
+          0.0
+        ],
+        "physical_stop_s": [
+          15.4,
+          16.7,
+          15.2,
+          null
+        ]
+      },
+      "done_probe": {
+        "max_raw": 0.0014,
+        "max_ensemble": 0.0013,
+        "fires_at_065": false,
+        "fires_at_01": false,
+        "conclusion": "standard alignment did not change the early-stop/done failure pattern; from-scratch 20k did not learn done (unlike B1 5k fine-tune from 100k)"
+      },
+      "cause_table": {
+        "action_format": "not tested by B2 (wheel pulse/dt/PWM + decode clamps unchanged) — still suspect",
+        "base_smoothing": "applied 5-tap; no change in early-stop pattern",
+        "chunk_horizon": "chunk20 (2.0s) applied; no change",
+        "best_val": "worked (selected final 0.139), not the bottleneck",
+        "done_supervision": "positive batches 50% but from-scratch 20k still yields ~1e-3 done probability; B1 fine-tune showed done learning needs a pre-trained base",
+        "data_scale": "TRAIN200 single dataset unchanged; co-training untested (Phase C)"
+      },
+      "pooling": {
+        "no_pooling_with": [
+          "R8",
+          "R100",
+          "act18-tune",
+          "act18-doneb1"
+        ],
+        "packaged": false,
+        "released": false
+      }
+    },
+    {
+      "name": "b3a-r1 (act18-b3)",
+      "kind": "current-step-only done horizon 5k bf16 fine-tune from B2 checkpoint",
+      "status": "NOT_READY",
+      "complete": true,
+      "prereg": "experiments/2026-10-17-act18/B3_PREREG.json",
+      "training": {
+        "steps": 5000,
+        "wall_s": 635.0,
+        "precision": "bf16_autocast_v1",
+        "chunk": 20,
+        "init_checkpoint": "b2-r1/act18-std/step-20000",
+        "lr": 1e-05,
+        "done_positive_batch_fraction": 0.5,
+        "done_positive_batches": 2559,
+        "batches_seen": 5000,
+        "done_horizon": "current_only",
+        "checkpoint_sha256": "b86f97b65ce537aeeb10a613b76213c23006d33dc47bcab47dd5036bc0752110",
+        "summary_sha256": "5f9bfcea14c860d62b2ce4a9ded993cf71b9b17590b169dd90be6b065b8ef456",
+        "latest": {
+          "loss": 1.072548508644104,
+          "done_bce_loss": 0.9486606121063232,
+          "movement_l1_loss": 0.10301923751831055,
+          "gradient_norm": 752.8187866210938
+        }
+      },
+      "gate": {
+        "stage": "train4",
+        "n": 0,
+        "N": 4,
+        "wall_s": 872.5,
+        "status": "NOT_READY",
+        "raw": {
+          "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/b3-r1",
+          "summary_sha256": "370b81b166ab1c860a4f58b0cda7f9717b3f22421d98c08a476011fa4dcae7c7",
+          "stage_recount_sha256": "83a27c839e6a84f5f8b69b7a0c761ae601216c2d924303e41e081a13031bb61e",
+          "independent_recount": "/home/ugrp/ugrp-sim/runs/act18/recount-r1/act18-b3-TRAIN4.json",
+          "done_logs": {
+            "group000": "394ecf08ee62369cb961cf679ffe5aae5fa90f3ce98343df0c6bee8e47f00972",
+            "group001": "d1ea3df090d9652dad9b05e4956969da30f3b1fa03843b3dfecc161c4d43cec7"
+          },
+          "analysis": {
+            "group000": "72b34ba0c45826642053e77dd53df05b5f3f03b99f1f86a8e1a202b346f64754",
+            "group001": "15bc23c5a59cdd5c7e9a7633348fae933a599df05ae43714f92b657c866ec0ab"
+          }
+        },
+        "rows": [
+          {
+            "seed": 88600,
+            "kind": "cyan",
+            "cap_end": true,
+            "physical_lift": false
+          },
+          {
+            "seed": 88601,
+            "kind": "red",
+            "cap_end": true,
+            "physical_lift": false
+          },
+          {
+            "seed": 88602,
+            "kind": "green",
+            "cap_end": true,
+            "physical_lift": true
+          },
+          {
+            "seed": 88603,
+            "kind": "yellow",
+            "cap_end": true,
+            "physical_lift": false
+          }
+        ]
+      },
+      "done_probe": {
+        "max_raw": 0.0009,
+        "max_ensemble": 0.0006,
+        "fires_at_065": false,
+        "fires_at_01": false,
+        "instability": "done_bce 0.949 and pre-clip grad norm 752 at final step (B2 movement L1 worsened 0.090->0.103)"
+      },
+      "behavior": {
+        "base_last_move_s": [
+          91.6,
+          11.4,
+          9.6,
+          19.3
+        ],
+        "path_m": [
+          0.0,
+          0.015,
+          0.125,
+          0.0
+        ],
+        "finger_force_max": [
+          0.0,
+          3.105,
+          5.298,
+          0.0
+        ],
+        "physical_lift": [
+          false,
+          false,
+          true,
+          false
+        ]
+      },
+      "conclusion": "h=0-only done labels made optimisation unstable and still did not learn done (max <1e-3); early-stop pattern unchanged."
+    },
+    {
+      "name": "b3b-r2 (act18-b3 stability retry)",
+      "kind": "current-step-only done horizon 5k bf16 fine-tune from B2 checkpoint, lr 2e-6",
+      "status": "NOT_READY",
+      "complete": true,
+      "approval": "Lead 자율 트랙: 막히면 3회 이내 재시도 허용 — 1차 재시도(B3a의 불안정 격리).",
+      "training": {
+        "steps": 5000,
+        "wall_s": 635.4,
+        "precision": "bf16_autocast_v1",
+        "chunk": 20,
+        "init_checkpoint": "b2-r1/act18-std/step-20000",
+        "lr": 2e-06,
+        "done_positive_batch_fraction": 0.5,
+        "done_positive_batches": 2559,
+        "batches_seen": 5000,
+        "checkpoint_sha256": "0057a23aca62a168b260eb94d7dd1617b57466124e59791d77d43a21657219bb",
+        "summary_sha256": "09853a94c92d78300bb9489dd37d196e9732aa640990af6f7426851b7a02169e",
+        "latest": {
+          "loss": 0.20543336868286133,
+          "done_bce_loss": 0.022759197279810905,
+          "movement_l1_loss": 0.09891295433044434,
+          "gradient_norm": 53.35765838623047
+        }
+      },
+      "gate": {
+        "stage": "train4",
+        "n": 0,
+        "N": 4,
+        "wall_s": 826.5,
+        "status": "NOT_READY",
+        "raw": {
+          "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/b3-r1",
+          "summary_sha256": "9931dd17f8b1b4e66560d78a87947ce13590d20b20601c6bcfc705909896d1b8",
+          "stage_recount_sha256": "42fd14bc45931a474c53f79b00af80425915d99413176c75e01eb084f58e82ee",
+          "independent_recount": "/home/ugrp/ugrp-sim/runs/act18/recount-r1/act18-b3b-TRAIN4.json",
+          "done_logs": {
+            "group000": "d4eff62cc82b72fe9ac6fc8457a844ed3a892e849dac6b9c048e53c431fcc3af",
+            "group001": "7929fe1e4872dfce2e43c437ab8eebe08d6531bcb0804c1b9afb350858528875"
+          },
+          "analysis": {
+            "group000": "7feebe95be809354fd8bd46f801f3dc83a7f5b83087663467304bfc2992db1c3",
+            "group001": "668a486948a1519d23e99327dae5ce34f75e133c28518db595d4c36cd99e51cb"
+          }
+        },
+        "rows": [
+          {
+            "seed": 88600,
+            "kind": "cyan",
+            "cap_end": true,
+            "physical_lift": false
+          },
+          {
+            "seed": 88601,
+            "kind": "red",
+            "cap_end": true,
+            "physical_lift": true
+          },
+          {
+            "seed": 88602,
+            "kind": "green",
+            "cap_end": true,
+            "physical_lift": true
+          },
+          {
+            "seed": 88603,
+            "kind": "yellow",
+            "cap_end": true,
+            "physical_lift": false
+          }
+        ]
+      },
+      "done_probe": {
+        "max_raw": 0.0018,
+        "max_ensemble": 0.0007,
+        "fires_at_065": false,
+        "fires_at_01": false
+      },
+      "conclusion": "stable optimisation (grad 53, done_bce 0.023) still cannot raise current-step done probability above ~2e-3: single-frame current-step done is not learnable from the recorded label; history/sequence input or label redefinition is required."
+    },
+    {
+      "name": "doneh-r1 (act18-doneh hybrid)",
+      "kind": "B2 ACT action policy (unchanged) + own-command-history GRU done module (hybrid, not an ACT-learned done head)",
+      "status": "NOT_READY",
+      "complete": true,
+      "prereg": "experiments/2026-10-17-act18/B4_PREREG.json",
+      "transparency": "ACT가 done을 학습한 것이 아니라 자기 발행 명령 이력 기반 done 모듈을 결합한 조건. 외부 issued_done 형식·성공 정의는 변경하지 않음.",
+      "head_training": {
+        "offline_auc": 0.9967019656699889,
+        "model_sha256": "82b797b9bd3273d769068fe1628ec2a64dac0c5f1ab503685bc5f933fb1bb8f0",
+        "metadata_sha256": "fa963bb8468f8fa1540fe3064811093536a49411630d43d17038f0475bc6d701",
+        "features": "own issued command history only (skill one-hot + 14 causal command features)",
+        "architecture": "GRU history16 hidden64 + linear, threshold .65 persistence 1",
+        "vm_path": "/home/ugrp/ugrp-sim/runs/act18/doneh-r1/head"
+      },
+      "action_policy": {
+        "checkpoint": "b2-r1/act18-std/step-20000",
+        "model_sha256": "75a56028f517a63b444119127c19ca36daf363615876d9da36301cfa9faa6a95"
+      },
+      "gate": {
+        "stage": "train4",
+        "n": 0,
+        "N": 4,
+        "wall_s": 399.8,
+        "status": "NOT_READY",
+        "raw": {
+          "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/doneh-r1",
+          "summary_sha256": "39ea94e041784d2bfcef45789c78dad00c9b19898b75a711c7e738c86c707aca",
+          "stage_recount_sha256": "4385b8a33d872935790616056ae7960d515c01a09d45ed17eb9518fd36d4f4b3",
+          "independent_recount": "/home/ugrp/ugrp-sim/runs/act18/recount-r1/act18-doneh-TRAIN4.json",
+          "head_logs": {
+            "group000": "39cf463d3882cdf8fc81389642f0bbdd3202cece914e3d2915c2c561bbb5546d",
+            "group001": "88fd8cf61acd36cc6c13a220e7498d7b9737b8e33282119389a2648a81e0980b"
+          },
+          "done_logs": {
+            "group000": "9b48c548d48d49759713f1bfe35f0a4fda0ac6c7c516f0bb5f2d2dd9d90b525f",
+            "group001": "5425cec7ecddda6c415573d4b3e0cb15334a60bd8a799986df1320f2db8ba2de"
+          }
+        },
+        "rows": [
+          {
+            "seed": 88600,
+            "kind": "cyan",
+            "cap_end": false,
+            "issued_done": true,
+            "physical_lift": false,
+            "reason": "lift_not_stable"
+          },
+          {
+            "seed": 88601,
+            "kind": "red",
+            "cap_end": false,
+            "issued_done": true,
+            "physical_lift": false,
+            "reason": "lift_not_stable"
+          },
+          {
+            "seed": 88602,
+            "kind": "green",
+            "cap_end": false,
+            "issued_done": true,
+            "physical_lift": false,
+            "reason": "lift_not_stable"
+          },
+          {
+            "seed": 88603,
+            "kind": "yellow",
+            "cap_end": false,
+            "issued_done": true,
+            "physical_lift": false,
+            "reason": "lift_not_stable"
+          }
+        ]
+      },
+      "done_firing": {
+        "module_rows": 1743,
+        "fired_ticks": 122,
+        "p_median": 0.001,
+        "p_p90": 0.4565,
+        "p_max": 0.9906,
+        "grasp_done_ticks_s": [
+          31.3,
+          31.3,
+          31.4,
+          31.6
+        ],
+        "release_done_ticks_s": [
+          34.8,
+          34.9,
+          35.3
+        ],
+        "teacher_grasp_done_s": [
+          27.7,
+          28.8,
+          26.5,
+          31.3
+        ],
+        "teacher_release_done_s": [
+          36.5,
+          37.6,
+          35.2,
+          40.1
+        ],
+        "grasp_error_s": "+0.3..+4.9 late",
+        "release_error_s": "-0.4..-4.8 early",
+        "note": "done 모듈은 명령 패턴 기반이라 물리 lift 없이도 발화했다. 모듈 발화는 성공이 아니며, 외부 성공 판정은 여전히 물리 Score+issued_done 둘 다 요구해 0/4."
+      },
+      "conclusion": "done 신호는 확보(4/4 issued_done, cap_end 0/4)했고 에피소드가 짧아졌다(400s). 남은 실패 원인은 전적으로 **행동/물리 축**(lift 0/4, lift_not_stable)이다 — 다음은 교사 vs 모델 명령 분포·클램프 offline 분해(행동축 분석).",
+      "pooling": {
+        "no_pooling_with": [
+          "R8",
+          "R100",
+          "act18-tune",
+          "act18-doneb1",
+          "act18-std",
+          "act18-b3"
+        ],
+        "packaged": false,
+        "released": false
+      }
+    },
+    {
+      "name": "actionaxis-r1",
+      "kind": "offline action-axis decomposition (teacher vs B2 model vs frozen decode clamps)",
+      "status": "complete",
+      "document": "experiments/2026-10-17-act18/results/actionaxis-r1/action-axis.json",
+      "setup": {
+        "checkpoint": "b2-r1/act18-std/step-20000 (model sha 75a56028...)",
+        "sampled_rows": 1200,
+        "dataset": "act17-v7/dataset-r1 TRAIN200",
+        "device": "cpu"
+      },
+      "teacher_raw": {
+        "rows": 290288,
+        "wheel_zero_fraction": 0.5581,
+        "wheel_abs_quantiles": [
+          0.0,
+          0.0,
+          0.35,
+          0.35,
+          0.35
+        ],
+        "wheel_in_deadzone_fraction": 0.0,
+        "wheel_below_min_fraction": 0.0,
+        "wheel_above_max_fraction": 0.0,
+        "duration_nonzero_quantiles_encoded": [
+          0.286,
+          0.514,
+          0.667
+        ],
+        "duration_too_small_fraction": 0.0,
+        "gripper_closed_fraction": 0.6026
+      },
+      "model": {
+        "teacher_moving_fraction": 0.4725,
+        "teacher_moving_but_model_decodes_stop_fraction": 0.0723,
+        "model_decoded_stop_fraction": 0.5617,
+        "model_raw_in_deadzone_fraction": 0.5758,
+        "wheel_mae_median": 0.0114,
+        "duration_mae_median": 0.0091,
+        "gripper_closed_fraction_teacher": 0.6025,
+        "gripper_closed_fraction_model": 0.6033
+      },
+      "executed_B4": {
+        "rows": 1744,
+        "all_wheels_zero_fraction": 0.3538,
+        "wheel_abs_nonzero_median": 0.31,
+        "duration_nonzero_median_s": 0.028,
+        "gripper_closed_fraction": 0.2856
+      },
+      "conclusion": "교사 명령은 deadzone/min/max 클램프에 전혀 걸리지 않고(비영 wheel 전부 0.35, dt 0.043–0.10s), B2 모델의 open-loop 예측도 wheel/duration MAE 중앙값 0.011/0.009, gripper close 비율 일치(0.603 vs 0.603)로 행동 형식·클램프가 lift 실패의 주원인이 아님을 지지한다. 다만 실행 명령은 wheel 0.31·pulse 0.028s로 교사(0.35·0.043–0.10s)보다 약하고, teacher-moving 행의 7.2%가 디코드에서 정지로 바뀐다. 잔여 lift 실패 원인은 closed-loop 상태 분포/조기 정지와 데이터 규모 쪽이다."
+    },
+    {
+      "name": "closedloop-r1",
+      "kind": "closed-loop phase-space diagnosis: student issued commands vs teacher commands at matched skill/elapsed bins",
+      "status": "complete",
+      "document": "experiments/2026-10-17-act18/results/closedloop-r1/closedloop-b4.json",
+      "inputs": {
+        "run": "doneh-r1/DONEH-TRAIN4 closed-loop raw",
+        "teacher": "act17-v7 dataset-r1 TRAIN200"
+      },
+      "findings": {
+        "grasp": {
+          "teacher": "10-15s에 base 이동 0.91->0.26, gripper closed 0.05->0.63->0.98로 hold/lift 전환",
+          "model": "10-30s base 이동 0.73-0.75 유지, gripper 0.24-0.25, wheel 0.35->0.25->0.16로 약화",
+          "divergence_onset": "grasp 10-15s"
+        },
+        "release": {
+          "teacher": "0-2s 이동 1.0, 5-10s 이동 0.53(물러나기)",
+          "model": "이동 0.05, wheel 0.08(사실상 정지) -> release 동작 누락"
+        },
+        "halt_onset": {
+          "model": {
+            "g000-w0": 32.7,
+            "g000-w1": 29.5,
+            "g001-w0": 43.7,
+            "g001-w1": 9.6
+          },
+          "teacher": 31.7
+        },
+        "caveat": "같은 B2 체크포인트의 별도 실행(B2 run3 vs B4)이 t≈2.2s에서 분기 — closed-loop GPU 비결정성. B2 raw와 B4 raw 직접 비교가 아니라 B4 단일 실행 내 교사 대비로 해석."
+      },
+      "eval_contract": "EVAL_CONTRACT_CANDIDATES.md (사용자 결정용; 실행 금지)"
+    },
+    {
+      "name": "co-r1 (interrupted)",
+      "kind": "Phase C co-training 100k (v7 TRAIN200 + act16w TRAIN32, condition token, BF16) — HOST_ERROR",
+      "status": "HOST_ERROR",
+      "complete": false,
+      "reason": "guest OS shutdown by VM-local ugrp-idle-guard.service (journal: \"idle 20 min, shutting down\") at 2026-10-18T01:42:06Z while training was active; the guard whitelist did not include act18 scripts, so the running 100k trainer did not count as activity",
+      "evidence": {
+        "audit": "compute.instances.guestTerminate (system) 2026-10-17T18:42:45-07:00",
+        "journal": [
+          "Oct 18 01:42:06 ... systemd[1]: Starting ugrp-idle-guard.service - UGRP idle guard...",
+          "Oct 18 01:42:06 ... ugrp-idle-guard[12231]: idle 20 min, shutting down",
+          "Oct 18 01:42:06 ... systemd-logind[1178]: The system will power off now!"
+        ],
+        "guard": "/usr/local/sbin/ugrp-idle-guard (whitelist of act17/act16w scripts; act18_train.py absent)",
+        "fix": "systemctl disable ugrp-idle-guard.timer; whitelist patched with act18_[a-z_]+[.]py|run_co[.]sh (documented in EXPERIMENT notes)"
+      },
+      "training": {
+        "started_utc": "2026-10-17T23:39:49Z",
+        "interrupted_utc": "2026-10-18T01:42:06Z",
+        "last_progress_step": 51600,
+        "wall_s": 7343.7,
+        "summary_sha256": "b56aa6a7ccf14a97b8801081b14ab5f8cebd3ca270df69a89e1804f22877eb43",
+        "progress_sha256": "8ebca0a6e373982f49beff43d961964af184b70d12ddd4dcbf90143ff62624bb",
+        "checkpoints": {
+          "step20000": "f34d6f76e1ed82a2bb0e2c6270b22dd2a3bf9a30f2e5215703178fab01a3e502",
+          "step40000": "772f11b8cd486abb957a20229ee2e953c6ce308e0bb73eb59cea1432caa9084f"
+        },
+        "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/co-r1",
+        "done_head": {
+          "model_sha256": "e3c0b09860cd259a8e09d412bcbbac9e93240fbd5e5c2b4476bef24c6ecd0d8c",
+          "metadata_sha256": "b02a6de48fe6392197f3148f7c398372f49a963dbfcb572c50de85fb9b038339",
+          "validation_auc": 0.9995942643296292
+        }
+      },
+      "gate": {
+        "stage": "train4",
+        "status": "NOT_RUN",
+        "n": null,
+        "N": null
+      },
+      "pooling": "금지: co-r1은 HOST_ERROR. co-r2는 step-40000에서 이어간 labelled continuation(cotrain_continuation_v1)이며 co-r1과 합산하지 않는다."
+    },
+    {
+      "name": "co-r2 (labelled continuation)",
+      "kind": "Phase C co-training continuation: warm start step-40000 + 30k new steps (cumulative 70k), best-val step-68000, condition-token co-training, BF16",
+      "status": "NOT_READY",
+      "complete": true,
+      "label": "cotrain_continuation_v1 (co-r1 HOST_ERROR 후속; NOT a resume of optimizer/RNG; co-r1과 pooling 금지)",
+      "prereg": "experiments/2026-10-17-act18/CO_PREREG.json",
+      "resume_label": "experiments/2026-10-17-act18/results/co-r2/resume-label-and-gate-log.txt",
+      "training": {
+        "started_utc": "2026-10-18T01:58:40Z",
+        "finished_utc": "2026-10-18T03:11:02Z",
+        "resume_from": "co-r1/act18-co/step-40000",
+        "new_steps": 30000,
+        "cumulative_steps": 70000,
+        "best_val": {
+          "step": 68000,
+          "loss": 0.0947116781026125
+        },
+        "checkpoint": "step-70000-best",
+        "model_sha256": "8643b0e5b9b3a0f51b00316affdccf48c8e5179f4a3d3797ec84e681f5f99eca",
+        "summary_sha256": "e89a595e85a5c4a8fdb9ac9cd4041e7d1c563c8e7ca4297b2cf24e6d1c649f81",
+        "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/co-r2"
+      },
+      "done_head": {
+        "model_sha256": "e3c0b09860cd259a8e09d412bcbbac9e93240fbd5e5c2b4476bef24c6ecd0d8c",
+        "validation_auc": 0.9995942643296292,
+        "trained_on": "v7 TRAIN200 + act16w TRAIN32 command streams"
+      },
+      "gate": {
+        "stage": "train4",
+        "n": 0,
+        "N": 4,
+        "wall_s": 385.7,
+        "status": "NOT_READY",
+        "raw": {
+          "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/co-r2",
+          "summary_sha256": "bd3553a65c480ddd678a31f675d3a82fe848b03bca3b6f004838b09684464b33",
+          "stage_recount_sha256": "0ac0ae9226c55a8e36a8fdefb2b4a8fbb29201f6592d6394770577dea2ae9ec0",
+          "independent_recount": "/home/ugrp/ugrp-sim/runs/act18/co-r2/analysis/summary.txt (independent 0/4 = stage 0/4)"
+        },
+        "rows": [
+          {
+            "seed": 88600,
+            "kind": "cyan",
+            "issued_done": true,
+            "cap_end": false,
+            "physical_lift": false,
+            "release": false
+          },
+          {
+            "seed": 88601,
+            "kind": "red",
+            "issued_done": true,
+            "cap_end": false,
+            "physical_lift": false,
+            "release": false
+          },
+          {
+            "seed": 88602,
+            "kind": "green",
+            "issued_done": true,
+            "cap_end": false,
+            "physical_lift": true,
+            "release": false
+          },
+          {
+            "seed": 88603,
+            "kind": "yellow",
+            "issued_done": true,
+            "cap_end": false,
+            "physical_lift": false,
+            "release": false
+          }
+        ]
+      },
+      "done_firing": {
+        "rows": 1519,
+        "fired_ticks": 138,
+        "p_median": 0.140232,
+        "p_p90": 0.563766,
+        "p_max": 0.993409,
+        "grasp_done_s": {
+          "88600": 46.7,
+          "88601": 20.6,
+          "88602": 20.5,
+          "88603": 38.8
+        },
+        "teacher_grasp_done_s": {
+          "88600": 27.7,
+          "88601": 28.8,
+          "88602": 26.5,
+          "88603": 31.3
+        },
+        "errors_s": {
+          "88600": 19.0,
+          "88601": -8.2,
+          "88602": -6.0,
+          "88603": 7.5
+        },
+        "summary": "2 early(-6.0,-8.2s)/2 late(+7.5,+19.0s); first firings 20.5-20.6s(g001) and 38.8-46.7s(g000)",
+        "release_done_s": {
+          "88600": 51.9,
+          "88601": 23.8,
+          "88602": 23.7,
+          "88603": 46.5
+        }
+      },
+      "physical": {
+        "train4_lift": "1/4(88602, max_stable_lift 8.9s)",
+        "release": "0/4",
+        "cap_end": "0/4",
+        "issued_complete": "4/4"
+      },
+      "conclusion": "Phase C continuation도 TRAIN4 0/4. done 신호는 4/4 작동했지만 발화 시점이 조기/지연으로 갈렸고(2 early/2 late), 물리 lift 1/4·release 0/4 — 행동/물리 축은 co-training 70k으로도 해소되지 않았다. 조건 토큰 co-training 자체는 정상 학습(val 0.0947, B2 20k 0.123보다 낮은 val loss)됐으므로, 남은 축은 데이터 규모/closed-loop 제어로 좁혀진다.",
+      "pooling": "금지: co-r1(중단)·단일데이터 후보(R8/R100/tune/B1-B4)와 합산하지 않는다.",
+      "packaging": false,
+      "release": false
+    },
+    {
+      "name": "b5-r1 (HOLD)",
+      "kind": "B5 closed-loop transition candidate act18-loop — 실행 중 Lead HOLD 지시로 중단",
+      "status": "SUPERVISOR_STOP",
+      "complete": false,
+      "hold_reason": "Lead 우선순위 변경(zone dialogue study #223/#224 최우선): 새 GPU 실험 금지·현재 작업 안전 중단 지시. HOST_ERROR 아님.",
+      "progress": {
+        "training": "B5 5k 학습은 시작 전 코드 검증에서 중단(act18-loop가 그 시점 PILOT_CANDIDATES에 없음) — 0 GPU step, 과학적 결과 아님",
+        "overlay_only_gate": "co-r2 best+overlay 게이트 child HOST_ERROR로 평가 산출 없음(로그만 보존)",
+        "artifacts": "/home/ugrp/ugrp-sim/runs/act18/b5-r1 (queue/train.log/실패 게이트 로그) — 원본 보존, 유효 결과 아님"
+      },
+      "prereg": "experiments/2026-10-17-act18/B5_PREREG.json (구현·설계 보존)",
+      "note": "B5 코드·프리레그는 유지. 재개 지시 시 snapshot f39cd8e10 계열에서 이어가면 됨."
+    },
+    {
+      "name": "b5-r2",
+      "kind": "B5 closed-loop transition candidate act18-loop: 5k transition-weighted fine-tune from co-r2 best + frozen overlay (own command history only)",
+      "status": "NOT_READY",
+      "complete": true,
+      "prereg": "experiments/2026-10-17-act18/B5_PREREG.json",
+      "init": {
+        "checkpoint": "co-r2/act18-co/step-70000-best",
+        "step": 70000,
+        "label": "cotrain_continuation_v1"
+      },
+      "training": {
+        "steps": 5000,
+        "candidate": "act18-loop",
+        "agent": "transition_weighted_finetune_v1",
+        "transition_weight": 3.0,
+        "co_data": "v7 TRAIN200 + act16w TRAIN32",
+        "precision": "bf16_autocast_v1",
+        "checkpoint_sha256": "11db39fb58fddc4c756d688b65769a0669ac866982727f8283e228ad6fbb96ab",
+        "summary_sha256": "3413b57c0a90c140d68ae3a9ec8950387cf157f7a303b8305900b3d5b21b776f",
+        "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/b5-r2"
+      },
+      "overlay": {
+        "kind": "closed_loop_transition_overlay_v1",
+        "hold_wheel_scale": 0.25,
+        "hold_ticks": 20,
+        "retreat_ticks": 15,
+        "retreat_wheel": 0.31,
+        "scope": "own issued base command post-processing only"
+      },
+      "gates": {
+        "overlay_only": {
+          "checkpoint": "co-r2/act18-co/step-70000-best",
+          "n": 0,
+          "N": 4,
+          "wall_s": 323.5,
+          "summary_sha256": "567516a658a5c4c0b1ee2e9e36766a4bea9446bb63dac684641d5dc1152ee2a7",
+          "issued_done": "4/4",
+          "cap_end": "0/4",
+          "physical_lift": "1/4 (88600)",
+          "release": "0/4",
+          "loop_events": {
+            "hold_brake": 60,
+            "release_retreat": 13
+          },
+          "done_grasp_s": {
+            "88600": 31.3,
+            "88601": 20.1,
+            "88602": 20.1,
+            "88603": 34.1
+          }
+        },
+        "b5": {
+          "n": 0,
+          "N": 4,
+          "wall_s": 559.9,
+          "summary_sha256": "365ae315569a5571a9bcd7a3ca3fac71356cda154461807ced14db97edbfe5f7",
+          "raw_recount_sha256": "7a425b1ad40bde030f41a08f6ea2b54bc07e661fd1547c59147a49be0f3d33c7",
+          "issued_done": "4/4",
+          "cap_end": "0/4",
+          "physical_lift": "0/4",
+          "release": "0/4",
+          "loop_events": {
+            "hold_brake": 76,
+            "release_retreat": 19
+          },
+          "head": {
+            "rows": 1995,
+            "fired": 120,
+            "p_median": 0.298,
+            "p90": 0.606,
+            "p_max": 0.993
+          },
+          "done_grasp_s": {
+            "88600": 73.8,
+            "88601": 18.7,
+            "88602": 18.7,
+            "88603": 45.3
+          },
+          "done_release_s": {
+            "88600": 85.6,
+            "88601": 23.5,
+            "88602": 30.7,
+            "88603": 56.6
+          }
+        }
+      },
+      "compare": {
+        "co_r2_best": {
+          "n": "0/4",
+          "lift": "1/4 (88602)",
+          "release": "0/4",
+          "issued_done": "4/4",
+          "done_grasp_s": {
+            "88600": 46.7,
+            "88601": 20.6,
+            "88602": 20.5,
+            "88603": 38.8
+          }
+        },
+        "delta": "overlay만: lift 1/4(다른 시드 88600), B5: lift 0/4 — TRAIN4 개선 없음, done 시점은 더 불안정"
+      },
+      "conclusion": "B5(전환 가중 5k + overlay)도 TRAIN4 0/4. overlay는 개입(hold_brake 76·retreat 19)했지만 물리 lift가 0/4로 악화됐고(overlay만 1/4, co-r2 1/4), done 발화는 18.7–73.8s로 분산이 커졌다. 전환 제어만으로는 grasp lift/release 실패를 해소하지 못함 — 남은 축: 물리 grasp 기하/데이터 규모/행동형식.",
+      "pooling": "co-r2/B4/tune/R8/R100과 합산 금지. 패키징/Release 금지."
+    }
+  ],
+  "release": {
+    "tag": "models-20261017-act18-v7-r1",
+    "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/tag/models-20261017-act18-v7-r1",
+    "prerelease": true,
+    "draft": false,
+    "assets": [
+      {
+        "name": "act18-v7-r8-step100000-20261017.zip",
+        "bytes": 191989583,
+        "sha256": "6ac5a49ecb871120cbbd0ac240d499f8a4eddddcffb3af84b48a322b9308a2c7"
+      },
+      {
+        "name": "act18-v7-r100-step100000-20261017.zip",
+        "bytes": 192343472,
+        "sha256": "79be292ed14a8612e7d214bef56df1d19719d80da634a0f1d935323d4bda6719"
+      },
+      {
+        "name": "SHA256SUMS",
+        "bytes": 206
+      },
+      {
+        "name": "act18-model-artifacts.json",
+        "bytes": 92153
+      },
+      {
+        "name": "public-verification.json",
+        "bytes": 3776
+      }
+    ],
+    "verification": {
+      "record": "experiments/2026-10-17-act18/results/release-r1/public-verification.json",
+      "sha256": "fc74c8967ea43f9341b13a8c6bff36e0ea934d6822b60d24020f94be35ed9f7a",
+      "checkout_source_sha": "e91d418097d3104c457211dc8c44b8b7d2534d80",
+      "registry_sha256": "b5e7b094b6c8e11a9f2ae73a1ceed8302d0627c296ea3697d1b04ab71f270253",
+      "R8": {
+        "verified_files": 24,
+        "verified_bytes": 207592611,
+        "loading": "ready=true, chunk=8, cpu"
+      },
+      "R100": {
+        "verified_files": 24,
+        "verified_bytes": 207969467,
+        "loading": "ready=true, chunk=100, cpu"
+      },
+      "metadata_redownload": "experiments/2026-10-17-act18/results/release-r1/github-assets-verified.json",
+      "scope": "익명 공개 재다운로드·전체 archive/file SHA·bundled CPU 로딩만; 물리 성공 아님"
+    },
+    "registry": "configs/model_artifacts.json (artifacts act18-v7-r8-step100000-20261017, act18-v7-r100-step100000-20261017; NOT_READY 라벨)"
+  },
+  "gates": {
+    "train4": {
+      "required": "4/4 before VAL8",
+      "R8": "0/4",
+      "R100": "0/4"
+    },
+    "validation8": {
+      "status": "NOT_SUBMITTED",
+      "reason": "TRAIN4 4/4 미달"
+    },
+    "final40": {
+      "status": "NOT_SUBMITTED",
+      "reason": "VAL8 8/8 미달"
+    },
+    "tune_train4": {
+      "required": "4/4 before VAL8",
+      "candidate": "act18-tune",
+      "result": "0/4",
+      "status": "NOT_READY"
+    }
+  },
+  "deviations": [
+    {
+      "item": "R100 gcp5 이동",
+      "decision": "이동하지 않음",
+      "reason": "BF16_PROBE 결과 bf16이 1.10배 빨랐지만, R8이 gcp2에서 fp32로 학습 중이라 정밀도가 섞이고(합산 금지), act18_train.py가 옵티마이저/RNG 재개를 지원하지 않아 42,400 step(≈13,484s)을 폐기해야 하며, gcp5 예산 1,000KRW 정지 위험이 있었다. HANDOVER 지시대로 gcp2 matched fp32 pair 유지.",
+      "evidence": "bf16-probe-decision.json / bf16-probe.json"
+    },
+    {
+      "item": "training precision",
+      "decision": "fp32",
+      "reason": "이 학습은 09:25Z 시작으로 bf16 기본값 도입(c7900c0ac) 전 소스(52e486316)다. autocast/precision 코드가 없어 fp32로 끝까지 실행했고 bf16 결과와 합산하지 않는다."
+    },
+    {
+      "item": "model artifacts 라벨",
+      "decision": "전부 NOT_READY",
+      "reason": "두 후보 TRAIN4 0/4. 재현·비교용 보존이며 기본 제어기 아님."
+    }
+  ],
+  "unverified": [
+    "실제 물리 임무 성공: R8/R100 TRAIN4 0/4, act18-tune TRAIN4 0/4 (VAL8·FINAL40 전부 미실행, 일반화 성공률 없음)",
+    "100k bf16 학습: 미실행(2,000 step 짝 프로브 + 2,000 step tune 프로브만)",
+    "R100 gcp5 이전·재개: 미실행(deviation)",
+    "다른 호스트·정밀도·조건과 합산: 금지",
+    "raw 학습자료(시연)의 원격 백업: 별도(Release에는 포함하지 않음)",
+    "act18-tune 모델 패키징·Release: 하지 않음(프로브, packaging_eligible=false)",
+    "done 신호: 현재 학습으로 습득 불가(최대 확률 6e-4). 개선안(B1/B2)은 미실행·승인 대기",
+    "B1 done horizon 계약: 현재스텝 h=0 확률 ~1e-4, 미래 h≈99만 0.999 — 실행 계약과 학습 라벨 불일치(후보 실험 필요)",
+    "B2 표준 정렬(20k)도 TRAIN4 0/4: chunk20·base smooth·best-val는 병리를 바꾸지 못함. 잔여 축=행동 형식(펄스/PWM+디코드 클램프)·done 학습·데이터 규모.",
+    "B3a/B3b 현재스텝(h=0) done 라벨: 안정 최적화에서도 done 확률 ~1e-3, 문턱 미발화 — 단일 프레임으로 현재 완료시점 식별 불가. done-history/시퀀스 입력 또는 라벨 재정의(사용자 승인) 필요.",
+    "B4 done 모듈은 명령패턴 기반 발화로 물리 lift 없이도 done을 냈다(발화≠성공). 행동/물리 lift 0/4가 남은 원인이며 행동축 offline 분해가 다음 단계.",
+    "closed-loop 진단은 4-world 단일 실행(B4)과 TRAIN200 교사 분포 비교이며, GPU 비결정성으로 실행 간 궤적이 분기할 수 있다.",
+    "co-r2는 step-40000 warm-start continuation(새 30k 스텝, cumulative 70k)이다. optimizer state는 복원되지 않았고, co-r1(중단)과 합산하지 않는다.",
+    "co-r2는 step-40000 warm-start continuation(cumulative 70k)이며, 동일 조건의 100k full run이 아니다. optimizer/RNG state는 복원하지 않았고 co-r1과 pooling 금지."
+  ],
+  "cleanup": {
+    "schema": "ugrp.act18.cleanup.v1",
+    "utc": "2026-10-17T19:20:47Z",
+    "vm": {
+      "instance": "ugrp-act-l4-gcp2",
+      "project_id": "ugrp-sim-b-1014",
+      "account": "changmin5781@gmail.com",
+      "zone": "asia-northeast3-a",
+      "status": "TERMINATED",
+      "stopped_utc": "2026-10-17T19:20:47Z",
+      "confirmed_by": "gcloud compute instances describe --format=value(status)"
+    },
+    "before_stop": {
+      "act18_processes": "none",
+      "gpu_utilization_percent": 0,
+      "gpu_memory_MiB": 0,
+      "leases_before": [
+        "leases/act18.json (stale pid 11757, removed)"
+      ],
+      "leases_after": "no act18 lease",
+      "runs_act18_bytes": 2300000000,
+      "disk_free_bytes_approx": 16106127360,
+      "note": "disk and raw evidence preserved; VM stopped only"
+    },
+    "vm_scratch_removed": [
+      "/tmp/act18_faildiag.py",
+      "/tmp/act18_montage.py",
+      "/tmp/act18_failure_montage.py"
+    ],
+    "local": {
+      "worktree": "/Users/changmin/projects/ugrp-wt/act16w",
+      "removed_untracked_with_hashes": [
+        {
+          "path": "COORDINATOR_NOTE.md",
+          "bytes": 8744,
+          "sha256": "2018f5765e37eb6125e3a6874e9a261df45276b7b58575c237af23471d832f24",
+          "reason": "stale coordinator scratch note"
+        },
+        {
+          "path": "experiments/2026-10-16-act16w/resume2/capacity-refresh.jsonl",
+          "bytes": 295293,
+          "sha256": "8be40f623578cd851d10ba4f4c088178b10644b1da3f293be233e16d05b88b11",
+          "reason": "act16w thread residual progress capture; hash recorded then removed for clean worktree"
+        },
+        {
+          "path": "experiments/2026-10-16-act16w/resume2/progress.jsonl",
+          "bytes": 32367,
+          "sha256": "92ccb6448cf8961b45f2c4e125dc08e08eb372a6f44e53096bc5f0a49331e71e",
+          "reason": "same"
+        },
+        {
+          "path": "experiments/2026-10-16-act16w/resume2/record-progress-latest.json",
+          "bytes": 36150,
+          "sha256": "b04c6bc59c37d3fab2e7f4645c0305925751af9d6f6897fe71c80c4619f0703e",
+          "reason": "same"
+        },
+        {
+          "path": "experiments/2026-10-16-act16w/resume2/record-progress.jsonl",
+          "bytes": 5562499,
+          "sha256": "62a0039e8073fdd99d9f53ae5ed2cd3bdae24e28c97c93ee4c49ab278927a3e3",
+          "reason": "same"
+        }
+      ],
+      "scratch_removed": [
+        "/private/tmp/act18-dsh"
+      ],
+      "note": "Mac weights not written; no VM credentials copied"
+    }
+  },
+  "memory_input_design": "experiments/2026-10-17-act18/MEMORY_INPUT_DESIGN.md",
+  "cleanup_stage2": {
+    "schema": "ugrp.act18.cleanup.v2",
+    "utc": "2026-10-17T20:10:40Z",
+    "reason": "done-probe 계측 2회(TRAIN4 8세계)와 분석 완료 후 유휴 → Lead 지시로 정지. Phase A는 로컬 CPU 작업.",
+    "vm": {
+      "instance": "ugrp-act-l4-gcp2",
+      "project_id": "ugrp-sim-b-1014",
+      "account": "changmin5781@gmail.com",
+      "zone": "asia-northeast3-a",
+      "status": "TERMINATED",
+      "stopped_utc": "2026-10-17T20:10:40Z",
+      "confirmed_by": "gcloud compute instances describe --format=value(status)"
+    },
+    "before_stop": {
+      "act18_processes": "none",
+      "gpu_utilization_percent": 0,
+      "gpu_memory_MiB": 0,
+      "leases": "no act18 lease",
+      "runs_act18_bytes_approx": 2684354560.0,
+      "note": "doneprobe-r1 원본·분석 JSON·stage 원본을 디스크에 보존"
+    },
+    "relaunch": "Phase B 승인 시 재기동"
+  },
+  "done_track": {
+    "design_notes": [
+      "experiments/2026-10-17-act18/DONE_HISTORY_DESIGN.md",
+      "experiments/2026-10-17-act18/ACTION_FORMAT_DESIGN.md",
+      "experiments/2026-10-17-act18/PHASE_C_PLAN.md"
+    ],
+    "terminal_exec_offline": "B1 로그 기반 청크 내 터미널 예측(.65)은 t=9.2/20.1/21.5/41.7s 발화로 교사 close(12.9–17.7s)·hold(23.6–31.3s) 대비 3.5–19s 어긋남 — 신뢰 불가, 평가계약 변경 없이 메모만.",
+    "next_candidate": "B4/co-r2 결과: done 신호는 작동하나 물리 lift/release 실패가 남음. 다음 후보(승인 필요): (1) 데이터 규모 확대(co-training 추가/더 많은 시연) (2) closed-loop 제어(종료 시점·base 정지 조건) 진단 후 후보 (3) 평가계약(물리 성공 정의) 사용자 결정. 패키징/배포 금지."
+  },
+  "cleanup_stage3": {
+    "schema": "ugrp.act18.cleanup.v3",
+    "utc": "2026-10-17T23:10:41Z",
+    "reason": "B4 done-head TRAIN4(및 action-axis/offline doneclass CPU 분석) 완료 후 유휴 → gcp2 정지.",
+    "vm": {
+      "instance": "ugrp-act-l4-gcp2",
+      "project_id": "ugrp-sim-b-1014",
+      "status": "TERMINATED",
+      "stopped_utc": "2026-10-17T23:10:41Z",
+      "confirmed_by": "gcloud describe --format=value(status)"
+    },
+    "before_stop": {
+      "act18_processes": "none",
+      "gpu_utilization_percent": 0,
+      "gpu_memory_MiB": 0,
+      "leases": "no act18 lease",
+      "note": "B1/B2/B3/B4 원본·doneclass/actionaxis 결과를 디스크에 보존"
+    },
+    "vm_scratch_removed": [
+      "/tmp/act18_done_offline.py",
+      "/tmp/act18_action_offline.py",
+      "/tmp/act18_done_probe_analysis.py",
+      "/tmp/act18_faildiag.py"
+    ],
+    "local": {
+      "scratch_removed": [
+        "/private/tmp/act18-dsh"
+      ],
+      "worktree": "/Users/changmin/projects/ugrp-wt/act16w",
+      "worktree_status": "clean (git status empty)"
+    }
+  },
+  "incident": {
+    "service": "ugrp-idle-guard",
+    "vm": "ugrp-act-l4-gcp2",
+    "shutdown_utc": "2026-10-18T01:42:06Z",
+    "cause": "VM-local idle guard whitelist missed act18 scripts",
+    "action": "guard timer disabled and whitelist patched; resumed from step-40000 with explicit continuation label; no pooling",
+    "recorded_by": "act18 (Lead-instructed investigation)",
+    "resumed_run": "co-r2"
+  },
+  "cleanup_stage4": {
+    "schema": "ugrp.act18.cleanup.v4",
+    "utc": "2026-10-18T03:42:26Z",
+    "reason": "Phase C co-training continuation(co-r2) TRAIN4 0/4 판정 후 유휴 → gcp2 정지.",
+    "vm": {
+      "instance": "ugrp-act-l4-gcp2",
+      "project_id": "ugrp-sim-b-1014",
+      "status": "TERMINATED",
+      "stopped_utc": "2026-10-18T03:42:26Z",
+      "confirmed_by": "gcloud describe --format=value(status)"
+    },
+    "before_stop": {
+      "act18_processes": "none",
+      "gpu_utilization_percent": 0,
+      "gpu_memory_MiB": 0,
+      "leases": "no act18 lease",
+      "disk_free": "88G",
+      "note": "co-r1(중단)·co-r2(continuation)·B1-B4·doneclass·closedloop 원본 디스크 보존"
+    },
+    "idle_guard": {
+      "service": "ugrp-idle-guard",
+      "action": "timer disabled + whitelist patched(act18_[a-z_]+[.]py|run_co[.]sh)",
+      "incident": "co-r1을 2026-10-18T01:42:06Z에 guest shutdown 시킴(HOST_ERROR 기록)"
+    },
+    "restored_snapshots": [
+      "/home/ugrp/ugrp-sim/src/f0db6b1abb842ea65b71c433738210254f300a7c (qualified-source)",
+      "/home/ugrp/ugrp-sim/src/warp1-teacher-snapshot-6f057f7e (teacher-source)"
+    ],
+    "local": {
+      "scratch_removed": [
+        "/private/tmp/act18-*.sh"
+      ],
+      "worktree": "/Users/changmin/projects/ugrp-wt/act16w",
+      "worktree_status": "clean"
+    }
+  },
+  "cleanup_stage5": {
+    "schema": "ugrp.act18.cleanup.v5",
+    "utc": "2026-10-18T09:20:00Z",
+    "reason": "Lead HOLD 지시(GPU 실험 금지·작업 안전 중단) → gcp2 정지.",
+    "vm": {
+      "instance": "ugrp-act-l4-gcp2",
+      "project_id": "ugrp-sim-b-1014",
+      "status": "TERMINATED",
+      "stopped_utc": "2026-10-18T09:20:00Z"
+    },
+    "before_stop": {
+      "act18_processes": "none",
+      "gpu_utilization_percent": 0,
+      "gpu_memory_MiB": 0,
+      "leases": "no act18 lease"
+    },
+    "preserved": [
+      "co-r1/co-r2/B4/B1-B3/offline 분석 원본",
+      "B5 실패 로그(과학적 결과 아님)"
+    ],
+    "hold": "Lead 재개 지시 전까지 새 GPU 실험 없음"
+  },
+  "hold": {
+    "active": true,
+    "started_utc": "2026-10-18T09:20:00Z",
+    "reason": "Lead 우선순위 변경: zone dialogue study (#223/#224) 완전 시뮬 실행이 최우선. ACT/GPU 실험 hold.",
+    "resume_from": "experiments/2026-10-17-act18/B5_PREREG.json + snapshot f39cd8e10",
+    "pending_b5": "B5 training/gates 미실행(과학적 결과 없음). 재개 시 pilot 등록/코드 검증부터.",
+    "resume_ready": {
+      "commit": "a215c6d9e 이후",
+      "note": "act18-loop pilot 등록(PILOT_CANDIDATES/PILOT_KINDS) 수정 완료 — B5 재개 시 학습부터 가능. overlay-only 게이트 실패는 미해결(재개 시 조사)."
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "source_sha": "1b79f6eec91b2de124949677adf030eb05c0c462",
+  "raw": "/home/ugrp/ugrp-sim/runs/act18/diagnosis-r1/audit",
+  "reproduce": [
+    "scripts/act18_diagnose.py",
+    "--enabled",
+    "--dataset",
+    "/home/ugrp/ugrp-sim/runs/act17-v7/dataset-r1",
+    "--models-root",
+    "/home/ugrp/ugrp-sim/runs/act17-v7/training-r1",
+    "--out",
+    "/home/ugrp/ugrp-sim/runs/act18/diagnosis-r1/audit"
+  ],
+  "funnel": [
+    {
+      "gate": "TRAIN_h0_rows",
+      "passed": 72572,
+      "rejected": 0
+    },
+    {
+      "gate": "fixed_TRAIN_audit_selection",
+      "passed": 5739,
+      "rejected": 66833,
+      "reason_category": "preregistered_diagnostic_subset"
+    }
+  ],
+  "failures": [
+    {
+      "candidate": "F",
+      "reason_category": "expert_state_command_mismatch",
+      "blocked_object": "not_attributed_by_command_only_audit",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_measured",
+      "N": 17648,
+      "teacher_moving": 14096,
+      "teacher_stopped": 3552,
+      "projected_stop_while_teacher_moves": 2650,
+      "raw_opposite_sign_while_teacher_moves": 1252,
+      "projected_opposite_sign_while_teacher_moves": 876,
+      "projected_moves_while_teacher_stops": 0
+    },
+    {
+      "candidate": "S",
+      "reason_category": "expert_state_command_mismatch",
+      "blocked_object": "not_attributed_by_command_only_audit",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_measured",
+      "N": 17648,
+      "teacher_moving": 14096,
+      "teacher_stopped": 3552,
+      "projected_stop_while_teacher_moves": 1468,
+      "raw_opposite_sign_while_teacher_moves": 1458,
+      "projected_opposite_sign_while_teacher_moves": 839,
+      "projected_moves_while_teacher_stops": 0
+    }
+  ],
+  "note": "component confusion counts overlap; no causal attribution from marginal histogram"
+}

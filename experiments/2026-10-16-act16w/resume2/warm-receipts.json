@@ -1,0 +1,299 @@
+{
+  "act16w-resume2-warm-r1": {
+    "summary.json": {
+      "value": {
+        "status": "complete",
+        "host": {
+          "project_id": "ugrp-sim-b-1014",
+          "instance": "ugrp-act-l4-gcp2",
+          "machine_type": "g2-standard-8",
+          "zone": "asia-northeast3-a"
+        },
+        "started_utc": "2026-10-16T05:47:00.019842+00:00",
+        "training_include": false,
+        "data_admitted": false,
+        "cap_sim_s": 3,
+        "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-warm-r1",
+        "active_pid": 100408,
+        "controller_status": "complete",
+        "timing": {
+          "render": 0.13234550399283762,
+          "readback_remap_jpeg_kinematics": 0.3024779189909168,
+          "teacher_visibility_rgb_eval_logging": 0.2088559589938086,
+          "command_decode_upload": 1.7494653550020303,
+          "physics": 75.5728046309996
+        },
+        "loop_wall_s": 77.88079668299906,
+        "sim_s": 3.0,
+        "wall_per_SIM": 25.960265560999687,
+        "wall_s": 106.6657928220011,
+        "foreign_leases_preserved": [
+          "beamact3-B.json",
+          "warp7.json",
+          "warp3.json"
+        ],
+        "vm_stop_attempted": false
+      },
+      "sha256": "a585e4132389c3920f730ae3f8ef36da59d5966a5539f8fd9ac81a62592861aa",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-warm-r1/summary.json"
+    },
+    "capture-audit.json": {
+      "value": {
+        "status": "complete",
+        "passed": true,
+        "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-warm-r1",
+        "controller_source": "f0db6b1abb842ea65b71c433738210254f300a7c",
+        "adapter_sha256": "dac11004c5278a120e1d989b04389185fd3a794657487ad971d5992a7f518726",
+        "training_include": false,
+        "data_admitted": false,
+        "worlds": [
+          {
+            "world": 0,
+            "seed": 86820,
+            "frames": 30,
+            "paired_targets": 30,
+            "exact_controller_jpegs": 30,
+            "unique_jpeg_hashes": 30,
+            "issued_pwm_transitions": 2,
+            "done_targets": 0,
+            "physical_success": false,
+            "lift_success": false,
+            "release_success": false,
+            "cap_end": true,
+            "input_audit": {
+              "invisible_measurements": 0,
+              "held_world_reads": 0,
+              "blocked_hidden": 0,
+              "blocked_held": 0,
+              "measurements_by_phase": {
+                "start": 1,
+                "fold": 6,
+                "approach": 23
+              },
+              "scope": "decision input boundary only; evaluation excluded"
+            },
+            "duration_sim_s": 3.0,
+            "native_camera": {
+              "width": 640,
+              "height": 480,
+              "period_s": 0.1,
+              "hz": 10.0,
+              "camera": "robot_cam",
+              "pinhole_hfov_deg": 54.5351624215943,
+              "pinhole_vfov_deg": 42.1489488115246,
+              "raw_fisheye_fov": "nonlinear K/D; no single angular FOV",
+              "K": [
+                [
+                  619.5194540517232,
+                  0.0,
+                  287.68910608896766
+                ],
+                [
+                  0.0,
+                  622.1654884818748,
+                  218.69686648455726
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "fisheye_D": [
+                -0.0199819517209417,
+                -0.1707593617153504,
+                -0.2568318201202376,
+                0.9650933421665181
+              ],
+              "mount": "masterpi-camera-user-observation-target-review-v3",
+              "position_m": [
+                0.052982009925558314,
+                0.0,
+                0.028152173913043477
+              ],
+              "quat_wxyz": [
+                0.4545194776720437,
+                0.5416752204197018,
+                -0.5416752204197018,
+                -0.4545194776720437
+              ],
+              "schema": "ugrp.grasp_act.student.v6",
+              "sources": {
+                "sim/masterpi_camera_profile.py": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+                "sim/masterpi_camera_review_v3.py": "6d8d739085c44f3196e4b4c514ca7e6c515e82394b1180a712b935df0a1b9362",
+                "sim/s2_realism_camera_binding.py": "86922a48dc7e6a3350f478bf2331a9be114da00ec380b3145e834746ed59bbe0",
+                "harness/grasp_act_contract.py": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+              }
+            },
+            "source": "/home/ugrp/ugrp-sim/runs/act16w-resume2-warm-r1/controller/world-000",
+            "original_result_sha256": "fcb16c5f305a8fa1ae9bf1da418c2353c26568098713fa63fb66a7fd4175be07"
+          }
+        ],
+        "summary_sha256": "12a0d7e7b663e07cb587b79994b2630b9733257f9babeeb7a4dc6695fba29544",
+        "scope": "exact native JPEG/clock/own issued history and teacher target audit; separate dataset admission required"
+      },
+      "sha256": "7f7cd1c889c636ffbae07085fb041e6076162d44566a0424eb185bd446ec0f69",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-warm-r1/capture-audit.json"
+    }
+  },
+  "act16w-resume2-warm-r2": {
+    "summary.json": {
+      "value": {
+        "status": "complete",
+        "host": {
+          "project_id": "ugrp-sim-b-1014",
+          "instance": "ugrp-act-l4-gcp2",
+          "machine_type": "g2-standard-8",
+          "zone": "asia-northeast3-a"
+        },
+        "started_utc": "2026-10-16T05:50:51.069562+00:00",
+        "training_include": false,
+        "data_admitted": false,
+        "cap_sim_s": 3,
+        "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-warm-r2",
+        "active_pid": 101906,
+        "controller_status": "complete",
+        "timing": {
+          "render": 0.1581933750094322,
+          "readback_remap_jpeg_kinematics": 0.3266508099841303,
+          "teacher_visibility_rgb_eval_logging": 0.19988042800468975,
+          "command_decode_upload": 1.7658735870099918,
+          "physics": 137.36027070101045
+        },
+        "loop_wall_s": 139.9247285679994,
+        "sim_s": 3.0,
+        "wall_per_SIM": 46.641576189333136,
+        "wall_s": 202.4803630819988,
+        "foreign_leases_preserved": [
+          "beamact3-B.json",
+          "warp7.json",
+          "warp3.json"
+        ],
+        "vm_stop_attempted": false
+      },
+      "sha256": "cb88c6e4dd65c893433ef17d4cd5210b6426c0e0e56e980062dc94c016a5f978",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-warm-r2/summary.json"
+    },
+    "capture-audit.json": {
+      "value": {
+        "status": "complete",
+        "passed": true,
+        "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-warm-r2",
+        "controller_source": "f0db6b1abb842ea65b71c433738210254f300a7c",
+        "adapter_sha256": "dac11004c5278a120e1d989b04389185fd3a794657487ad971d5992a7f518726",
+        "training_include": false,
+        "data_admitted": false,
+        "worlds": [
+          {
+            "world": 0,
+            "seed": 86820,
+            "frames": 30,
+            "paired_targets": 30,
+            "exact_controller_jpegs": 30,
+            "unique_jpeg_hashes": 30,
+            "issued_pwm_transitions": 2,
+            "done_targets": 0,
+            "physical_success": false,
+            "lift_success": false,
+            "release_success": false,
+            "cap_end": true,
+            "input_audit": {
+              "invisible_measurements": 0,
+              "held_world_reads": 0,
+              "blocked_hidden": 0,
+              "blocked_held": 0,
+              "measurements_by_phase": {
+                "start": 1,
+                "fold": 6,
+                "approach": 23
+              },
+              "scope": "decision input boundary only; evaluation excluded"
+            },
+            "duration_sim_s": 3.0,
+            "native_camera": {
+              "width": 640,
+              "height": 480,
+              "period_s": 0.1,
+              "hz": 10.0,
+              "camera": "robot_cam",
+              "pinhole_hfov_deg": 54.5351624215943,
+              "pinhole_vfov_deg": 42.1489488115246,
+              "raw_fisheye_fov": "nonlinear K/D; no single angular FOV",
+              "K": [
+                [
+                  619.5194540517232,
+                  0.0,
+                  287.68910608896766
+                ],
+                [
+                  0.0,
+                  622.1654884818748,
+                  218.69686648455726
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "fisheye_D": [
+                -0.0199819517209417,
+                -0.1707593617153504,
+                -0.2568318201202376,
+                0.9650933421665181
+              ],
+              "mount": "masterpi-camera-user-observation-target-review-v3",
+              "position_m": [
+                0.052982009925558314,
+                0.0,
+                0.028152173913043477
+              ],
+              "quat_wxyz": [
+                0.4545194776720437,
+                0.5416752204197018,
+                -0.5416752204197018,
+                -0.4545194776720437
+              ],
+              "schema": "ugrp.grasp_act.student.v6",
+              "sources": {
+                "sim/masterpi_camera_profile.py": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+                "sim/masterpi_camera_review_v3.py": "6d8d739085c44f3196e4b4c514ca7e6c515e82394b1180a712b935df0a1b9362",
+                "sim/s2_realism_camera_binding.py": "86922a48dc7e6a3350f478bf2331a9be114da00ec380b3145e834746ed59bbe0",
+                "harness/grasp_act_contract.py": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+              }
+            },
+            "source": "/home/ugrp/ugrp-sim/runs/act16w-resume2-warm-r2/controller/world-000",
+            "original_result_sha256": "6033c96510fa22f669a19de0842f28db9d771d4ba81a82bd57d022f7516b1426"
+          }
+        ],
+        "summary_sha256": "135293319acb0d8a0207b3e70bf0a78adeabde4624ca7b9db769f3834410845f",
+        "scope": "exact native JPEG/clock/own issued history and teacher target audit; separate dataset admission required"
+      },
+      "sha256": "9befb05c935d1fc40912d19deb01e4a4227de1a6a34524b3ef594b86ccd55605",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-warm-r2/capture-audit.json"
+    },
+    "controller/launch-adapter.json": {
+      "value": {
+        "mode": "whole_control_graph_v1",
+        "original_chunk": 16,
+        "original_repeats": 25,
+        "physics_steps": 400,
+        "period_s": 0.1,
+        "timestep_s": 0.00025,
+        "state_equal_after_capture": {
+          "qpos": true,
+          "qvel": true,
+          "ctrl": true,
+          "time": true,
+          "tree_asleep": true,
+          "qacc_warmstart": true
+        },
+        "teacher_source_unchanged": true,
+        "physics_parameters_changed": false,
+        "adapter_sha256": "1177838b99bfb4304cc456471d034040315fb2e0df4f04de816fd5009bc0a4b2"
+      },
+      "sha256": "215b5cc647b1a449f2bd08a48a08912e2c6e99f7cc1cae1c5caa2895a8bb3048",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-warm-r2/controller/launch-adapter.json"
+    }
+  }
+}

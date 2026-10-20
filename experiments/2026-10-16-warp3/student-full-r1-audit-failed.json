@@ -1,0 +1,28 @@
+{
+  "status": "HOST_ERROR",
+  "run": "/home/ugrp/ugrp-sim/runs/warp3/student-full-r1",
+  "scope": "one DEV ACT15 case; not held-out cohort or teacher gate",
+  "postprocessor_sha256": "0d07b50f2d4b93a376c16f68391a4cbac1b00d93a5d9fd326f2e77c762cde1b6",
+  "api_completed": false,
+  "raw_status": "HOST_ERROR",
+  "physical_n": 0,
+  "physical_N": 0,
+  "cap_end": 0,
+  "HOST_ERROR": 1,
+  "student_scores": [],
+  "actual_policy_steps": 0,
+  "summary_sha256": "f9e94714e08c0ace55ba947b1aa8925be1017f457c1fee796d36b13a433dab19",
+  "raw_manifest": "/home/ugrp/ugrp-sim/runs/warp3/student-full-r1-audit-raw-manifest.json",
+  "raw_manifest_sha256": "667e9305e7aea6a97e79faaf5a626b8373455e763708cc61dcb9a861f6ff3fd5",
+  "raw_hash_files": 272,
+  "raw_hash_mismatch": 0,
+  "actor_source_and_artifacts_unchanged": true,
+  "review_2hz_frames": 159,
+  "terminal_10hz_frames": 100,
+  "native_dimensions": [
+    640,
+    480
+  ],
+  "postprocess_error": "CalledProcessError(1, ['/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python', '/home/ugrp/ugrp-sim/runs/warp3/make_student_playback-87076dc3e.py', '--run', '/home/ugrp/ugrp-sim/runs/warp3/student-full-r1/owner', '--world', '0', '--out', '/home/ugrp/ugrp-sim/runs/warp3/playback-student-full-r1'])",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/runs/warp3/close_student_audit.py\", line 82, in main\n    subprocess.run(cmd,check=True,timeout=max(1,deadline-time.time()))\n  File \"/usr/lib/python3.12/subprocess.py\", line 571, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command '['/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python', '/home/ugrp/ugrp-sim/runs/warp3/make_student_playback-87076dc3e.py', '--run', '/home/ugrp/ugrp-sim/runs/warp3/student-full-r1/owner', '--world', '0', '--out', '/home/ugrp/ugrp-sim/runs/warp3/playback-student-full-r1']' returned non-zero exit status 1.\n"
+}

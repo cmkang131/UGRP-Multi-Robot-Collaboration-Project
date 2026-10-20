@@ -1,0 +1,60 @@
+{
+  "status": "reviewed",
+  "utc": "2026-10-16T18:08:41.209555+00:00",
+  "arm": "C",
+  "seed": 87429,
+  "scope": "first30 only; not complete episode or terminal10Hz; no task success inference",
+  "frames": 61,
+  "SIM_range": [
+    0,
+    30
+  ],
+  "frequency_Hz": 2,
+  "original_world": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-C/validation/group-04/evaluation/owner/world-000",
+  "sheets": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/act16w4-native-C-87429-first30/first30-2hz-00.jpg",
+      "sha256": "1a5d48dd4b7165e9fb6b987f182fd11a5264754b5213d2ca54883a5c78268897"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/act16w4-native-C-87429-first30/first30-2hz-01.jpg",
+      "sha256": "2bded49e76927c847bcfbd72f9b8230d8a42b0af4d5232b991fa1bccbb213fad"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/act16w4-native-C-87429-first30/first30-2hz-02.jpg",
+      "sha256": "8edc3644ccbe963858c521bcb3e52821e119f05b085288fee75eb58f5e2fe112"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/act16w4-native-C-87429-first30/first30-2hz-03.jpg",
+      "sha256": "a961ab41d709ca44098c5e52d0080a8979a95f21b30984007a02f30c94f3b5d5"
+    }
+  ],
+  "timeline": [
+    {
+      "SIM": [
+        0,
+        4.5
+      ],
+      "observation": "red target moves from left of centre toward right edge while increasing in apparent size"
+    },
+    {
+      "SIM": [
+        5,
+        8.5
+      ],
+      "observation": "target leaves right edge; view shifts to grey wall base and indigo wall"
+    },
+    {
+      "SIM": [
+        9,
+        30
+      ],
+      "observation": "repeated wall/base view with small floor wedge; no visible target recovery"
+    }
+  ],
+  "limits": [
+    "2Hz does not resolve faster oscillation",
+    "no overview, force or success judgement from these images",
+    "complete2Hz and terminal10Hz review still pending"
+  ]
+}

@@ -1,0 +1,194 @@
+{
+  "status": "A_B_TRAINED_VALIDATION_RUNNING",
+  "started_utc": "2026-10-16T05:45:57.126020+00:00",
+  "previous_attempt": "../summary.json",
+  "record_api_source": "0362037280c6cbc4677f70366db43b9892b23690",
+  "qualified_controller_source": "f0db6b1abb842ea65b71c433738210254f300a7c",
+  "teacher_library_source": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+  "source_relationship": "6f057f7e frozen solo teacher; f0db qualified MJWarp transport/scene/NumPy adapter; 0362037 recording/RPC API wraps unchanged f0db controller",
+  "upstream_gate": {
+    "n": 40,
+    "N": 40,
+    "independent_confirmation": false,
+    "reason": "8317100-8317139 overlap warp1 debugging",
+    "sha256": "7e9c80c0f26e4fb95d43afc6ba146195b9ca5061fa5da717944579babc464b1e"
+  },
+  "seeds": {
+    "D0_train": [
+      86820,
+      86864
+    ],
+    "D0_validation": [
+      86865,
+      86869
+    ],
+    "dagger": "20 D0 TRAIN starts, deterministic kind-stratified freeze at data admission",
+    "final_evaluation": [
+      91620,
+      91659
+    ],
+    "upstream_excluded": [
+      8317100,
+      8317139
+    ]
+  },
+  "scene": "walls_floor_contrast_v5_indigo110_s80 + v1 floor + no_mip_v1",
+  "gpu_budget_s": null,
+  "warm_sim_s": 3,
+  "warm_scope": "recording API/throughput diagnostic, not data admission or teacher success",
+  "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2",
+  "teacher_gate_independent": {
+    "n": 40,
+    "N": 40,
+    "complete": true,
+    "passed": true,
+    "includes": {
+      "bulk": 38,
+      "pilot": 2,
+      "pilot_seeds": [
+        86821,
+        86822
+      ]
+    }
+  },
+  "recorded_admitted_episodes": 40,
+  "optimizer_steps": 20000,
+  "evaluation_N": 0,
+  "rejection_table": "experiments/2026-10-16-act16w/resume2/rejection_table.json",
+  "warm_receipts": "warm-receipts.json",
+  "warm_attempts": 2,
+  "warm_unique_seeds": 1,
+  "warm_native_frames": 60,
+  "warm_exact_paired_targets": 60,
+  "warm_cap_end": 2,
+  "warm_HOST_ERROR": 0,
+  "warm_wall_per_SIM": [
+    25.960265560999687,
+    46.641576189333136
+  ],
+  "warm_source_note": "Different shared loads; no causal speed comparison. whole_control_graph_v1 not adopted.",
+  "first30_speed_gate": {
+    "pilots_world_latency_wall_per_SIM": [
+      96.69375166666667,
+      94.415973
+    ],
+    "formal_latency_pass": false,
+    "recorded_exception": "pilot-queue.json:speed_gate_override"
+  },
+  "nonphysics_tests": {
+    "passed": 27,
+    "command": "python3 -m pytest -q tests/test_act16w_runtime.py tests/test_warp_act_core.py tests/test_warp_act_api.py"
+  },
+  "next": "finish A/B10000 then validation5, C h4, D1 h5, frozen final40; no wall cap; retain idle20/budget-stop",
+  "recording_selection": "record-selection.json",
+  "selected_fresh_records_planned": 40,
+  "train_records_planned": 35,
+  "validation_records_planned": 5,
+  "model_reference_candidates": 50,
+  "compatible_groups": 7,
+  "selected_groups": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "cuda_preflight": "cuda-preflight.json",
+  "gpu_task_first_utc": "2026-10-16T05:47:00.019842+00:00",
+  "gpu_task_hard_end_utc": null,
+  "speed_exception": "pilot-queue.json:speed_gate_override",
+  "running_pilots": [],
+  "sap_candidate": "not_adopted_no_verified_speed_gain",
+  "actual_model_image_hw": [
+    480,
+    640
+  ],
+  "model_image_note": "4 own native640x480 JPEG history frames resized individually320x240 then2x2 montage640x480. Both train/inference use this; upstream224 prose is not the measured ACT16 input.",
+  "teacher_recording_confirmation": {
+    "provisional_success_n": 24,
+    "native_audited_success_n": 24,
+    "N_requested": 40,
+    "completed": 24,
+    "pending": 16,
+    "complete": false
+  },
+  "student_training_steps": {
+    "A": 10000,
+    "B": 10000,
+    "readback_verified": true,
+    "source_sha": "78485f10596b4512e731fdcd8ee25eafd6d8fcad"
+  },
+  "student_evaluation_runs": "native validation5 per arm running; no finalized count",
+  "bulk_first_attempt": "HOST_ERROR before physics: gate host schema7 vs4; separate integration fix tested11passed",
+  "updated_utc": "2026-10-16T13:11:04.028217+00:00",
+  "pilot_completed": 2,
+  "pilot_success": 2,
+  "bulk_raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2",
+  "bulk_source": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+  "oracle_interface_probe": "oracle-interface-probe.json",
+  "actual_DAgger_rounds": 0,
+  "final40_setup_references": {
+    "complete": true,
+    "rollouts": 0,
+    "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-final40-references"
+  },
+  "legacy_seed_reservation_not_used": [
+    87020,
+    87039
+  ],
+  "resource_findings_at_start": {
+    "Mac_free_GiB": 27,
+    "L4_free_GiB": 12,
+    "L4_hard_stop_utc": "2026-10-16T05:59:25.154+00:00",
+    "foreign_leases": [
+      "beamact3-B",
+      "warp3",
+      "warp7"
+    ]
+  },
+  "research_training_steps": 20000,
+  "recording_active_worlds": 0,
+  "recording_pending_worlds": 0,
+  "parallel_scheduler_source": "a6d08b6ac397cd0e3a29f3ff9c9490895d863a20",
+  "first30_own_rgb_review": "first30-own-rgb-preview.json",
+  "strict_native_audits_stage1": {
+    "worlds": 11,
+    "paired_frames": 4813,
+    "max_period_error_s": 5.689893001203927e-15,
+    "clock_tolerance_s": 1e-05,
+    "proof": "strict-audits-stage1.json"
+  },
+  "input_contract_limitation": "same-colour-task-input-review.json",
+  "alignment_diagnostic": "alignment-diagnostic-protocol.json",
+  "strict_native_audits": {
+    "proof": "strict-audits-final40.json",
+    "worlds": 40,
+    "exact_pairs": 17706
+  },
+  "cap_decision": "cap-decision.json",
+  "initial_same_kind_visibility": {
+    "pixel_2plus_n": 4,
+    "N": 40,
+    "qualified_probe_2plus_n": 3,
+    "proof": "record-start-instance-audit.json",
+    "scope": "exact native recording starts only; no student evaluation"
+  },
+  "dataset_rows": {
+    "rows_total": 17706,
+    "rows_selected": 14546,
+    "TRAIN_optimizer_population": 12734,
+    "VAL_only": 1812,
+    "proof": "dataset-row-accounting.json"
+  },
+  "student_kind_stratification_required": true,
+  "analysis_host": "owned gcp2 L4 CPU; CPU VM not started or used",
+  "checkpoint_release": {
+    "staged": 2,
+    "uploaded": 2,
+    "verified": 2,
+    "verified_internal_files": 38,
+    "public_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/tag/models-20261016-act16w-v1",
+    "proof": "public-model-verification-ab.json",
+    "scope": "archive/all file hashes/CPU loading; no student task-success claim"
+  },
+  "teacher_forced_validation": "A/B-teacher-forced-validation.json;1812 VAL rows, not closed-loop success"
+}

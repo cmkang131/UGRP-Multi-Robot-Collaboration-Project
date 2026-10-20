@@ -1,0 +1,681 @@
+{
+  "funnel": [
+    {
+      "gate": "requested",
+      "passed": 40,
+      "rejected": 0
+    },
+    {
+      "gate": "scored_runs",
+      "passed": 40,
+      "rejected": 0,
+      "unfinished": 0
+    },
+    {
+      "gate": "sequence_done",
+      "passed": 16,
+      "rejected": 24
+    },
+    {
+      "gate": "stable_lift",
+      "passed": 0,
+      "rejected": 16
+    },
+    {
+      "gate": "stable_release",
+      "passed": 0,
+      "rejected": 0
+    },
+    {
+      "gate": "task_success",
+      "passed": 0,
+      "rejected": 0
+    }
+  ],
+  "rejections": [
+    {
+      "seed": 91648,
+      "category": "student_task_failure",
+      "reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": -0.00039036844936061045,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_cyan_1_geom",
+      "minimum_gap_elapsed_SIM_s": 11.100000000000001,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91648.json",
+        "sha256": "4149077044f27c891f01892b2ba41db38eec65bf51938cfdb3c84a120f1d4449"
+      }
+    },
+    {
+      "seed": 91644,
+      "category": "cap_end",
+      "reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": 0.031157022773380613,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_cyan_1_geom",
+      "minimum_gap_elapsed_SIM_s": 9.8,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91644.json",
+        "sha256": "d488f0b2f84604926bca7a9025aca52ea281f5895125c86c5ff7d1224b28b661"
+      }
+    },
+    {
+      "seed": 91625,
+      "category": "cap_end",
+      "reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": 0.0075951646418955495,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_red_1_geom",
+      "minimum_gap_elapsed_SIM_s": 12.4,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91625.json",
+        "sha256": "93cb1f80f1eebd46b76855cafa8b49c32ce922e1ad6ca335d5eaaaf15d189c81"
+      }
+    },
+    {
+      "seed": 91628,
+      "category": "cap_end",
+      "reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": 0.04166619673993134,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_cyan_1_geom",
+      "minimum_gap_elapsed_SIM_s": 20.8,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91628.json",
+        "sha256": "14e8bf74d25bff6222743d8d6193f5b3c5343cb269366fb71f1587049b1a759e"
+      }
+    },
+    {
+      "seed": 91641,
+      "category": "cap_end",
+      "reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": -0.0008126516664302708,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_red_1_geom",
+      "minimum_gap_elapsed_SIM_s": 15.200000000000001,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91641.json",
+        "sha256": "d4785d3595a8f9d498d99fddf7df379e468a92a893db524a3a3a0b26a16deb00"
+      }
+    },
+    {
+      "seed": 91649,
+      "category": "cap_end",
+      "reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": -0.000694661081322768,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_cyan_1_geom",
+      "minimum_gap_elapsed_SIM_s": 4.9,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91649.json",
+        "sha256": "2f39ef3338c517d6c7d86a92f3ea336a5534c9716c8ea44ee35435b8374678e2"
+      }
+    },
+    {
+      "seed": 91653,
+      "category": "student_task_failure",
+      "reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": -0.001627528730930685,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_red_1_geom",
+      "minimum_gap_elapsed_SIM_s": 11.600000000000001,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91653.json",
+        "sha256": "d868e87fc4c5a25707ebc285ebc7f247d51b1569f0820b5de7c914751de20fce"
+      }
+    },
+    {
+      "seed": 91657,
+      "category": "student_task_failure",
+      "reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": 0.029801260643741098,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_red_1_geom",
+      "minimum_gap_elapsed_SIM_s": 24.0,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91657.json",
+        "sha256": "dd5ee1c48932b1cceb35e13bb24040ebe61c6716b76fd8677b19229e17ef06a3"
+      }
+    },
+    {
+      "seed": 91629,
+      "category": "cap_end",
+      "reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": 0.006369208147405037,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_cyan_1_geom",
+      "minimum_gap_elapsed_SIM_s": 11.5,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91629.json",
+        "sha256": "9c46c1ed4ebf3b87c92f7a903e060c94e95d9e9f7fa5190ca999ec567a89db10"
+      }
+    },
+    {
+      "seed": 91633,
+      "category": "cap_end",
+      "reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": 0.05269085833524066,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_red_2_geom",
+      "minimum_gap_elapsed_SIM_s": 82.4,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91633.json",
+        "sha256": "3e279372291b0457caf180fa6410ab216e9ec7e852d23b9d942f0b96a80e425a"
+      }
+    },
+    {
+      "seed": 91636,
+      "category": "cap_end",
+      "reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": -0.0006261701148908703,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_red_1_geom",
+      "minimum_gap_elapsed_SIM_s": 14.100000000000001,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91636.json",
+        "sha256": "74e2f8214dabbfb318ded25ec872c76002cd907c515dc3b9df467c8649eea166"
+      }
+    },
+    {
+      "seed": 91640,
+      "category": "cap_end",
+      "reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": 0.0030039391614328725,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_cyan_1_geom",
+      "minimum_gap_elapsed_SIM_s": 8.200000000000001,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91640.json",
+        "sha256": "5ad274f788b17698a1610a3fb97321a102eaf0473251101626cb06258d4f6d4c"
+      }
+    },
+    {
+      "seed": 91645,
+      "category": "cap_end",
+      "reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": -0.0036002992479013327,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_red_2_geom",
+      "minimum_gap_elapsed_SIM_s": 35.300000000000004,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91645.json",
+        "sha256": "bedb66f872434877bfa0ea7e09afc8ee12e9f7f7b1d4b127f3273b708f761c8b"
+      }
+    },
+    {
+      "seed": 91620,
+      "category": "cap_end",
+      "reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": 0.006246697730401063,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_cyan_1_geom",
+      "minimum_gap_elapsed_SIM_s": 11.5,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91620.json",
+        "sha256": "8127215e5aa1f773210b29242f6992dedea83a563d9ce018a2afb3eb9c916d22"
+      }
+    },
+    {
+      "seed": 91621,
+      "category": "cap_end",
+      "reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": -0.0010737184114267188,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_red_1_geom",
+      "minimum_gap_elapsed_SIM_s": 16.3,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91621.json",
+        "sha256": "9cdee7ce0fd9c95dd3ee7d1080444ce59cfd9f4e74ac6b6f58f37c6993f0eba4"
+      }
+    },
+    {
+      "seed": 91630,
+      "category": "cap_end",
+      "reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": -0.0004551512484052659,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_green_1_geom",
+      "minimum_gap_elapsed_SIM_s": 8.9,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91630.json",
+        "sha256": "687cf411f513b1412b6cd4a9f9ae9b205a38256dd13f0def39338fc738ec624d"
+      }
+    },
+    {
+      "seed": 91637,
+      "category": "cap_end",
+      "reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": -0.002189519598040355,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_red_1_geom",
+      "minimum_gap_elapsed_SIM_s": 16.900000000000002,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91637.json",
+        "sha256": "76f5d160460fa898364f9ffd2e3c6eacce1c639874049fea30b7b43459e29b4d"
+      }
+    },
+    {
+      "seed": 91638,
+      "category": "student_task_failure",
+      "reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": 0.15479824554630695,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "zone_wall_west",
+      "minimum_gap_elapsed_SIM_s": 0.8,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91638.json",
+        "sha256": "3630428fedb411c291104ee62801d618b914aa4aa4649b8bc7ace2f9ccfe03f6"
+      }
+    },
+    {
+      "seed": 91652,
+      "category": "cap_end",
+      "reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": -0.0006274135964872266,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_cyan_1_geom",
+      "minimum_gap_elapsed_SIM_s": 16.1,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91652.json",
+        "sha256": "baf85fedb3acf0779978c7a908345405209f767c9b9e7fdc5ddaffe29c276d69"
+      }
+    },
+    {
+      "seed": 91656,
+      "category": "cap_end",
+      "reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": 0.03187856549607151,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_cyan_2_geom",
+      "minimum_gap_elapsed_SIM_s": 18.3,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91656.json",
+        "sha256": "c5b72a3317136c499fcfe0f4f8c385f6f972a797c7def38a905a3091d1c43e1e"
+      }
+    },
+    {
+      "seed": 91622,
+      "category": "cap_end",
+      "reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": 1.962593995924466e-05,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_green_1_geom",
+      "minimum_gap_elapsed_SIM_s": 15.200000000000001,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91622.json",
+        "sha256": "988c24675ebe8aec19f0f4c7d5658d6dd5d6acb347d1d738cf21c07256faa26c"
+      }
+    },
+    {
+      "seed": 91624,
+      "category": "student_task_failure",
+      "reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": -0.0009928092973669842,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_cyan_1_geom",
+      "minimum_gap_elapsed_SIM_s": 11.100000000000001,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91624.json",
+        "sha256": "66782cadfb08515dac59e9bc557ab11668902cf998dc57dd655f7191945616bc"
+      }
+    },
+    {
+      "seed": 91626,
+      "category": "student_task_failure",
+      "reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": -0.0006524520440179304,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_green_1_geom",
+      "minimum_gap_elapsed_SIM_s": 9.4,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91626.json",
+        "sha256": "51141b5652b40d1d4023f80a26f652811af3c5163dcf5d24e46dece3d504f16d"
+      }
+    },
+    {
+      "seed": 91632,
+      "category": "cap_end",
+      "reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": -0.0009397794187712894,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_cyan_1_geom",
+      "minimum_gap_elapsed_SIM_s": 5.5,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91632.json",
+        "sha256": "3d82cc0eb60b506be825fa85c8e596ad4c32390d9647b479d26472af762d8869"
+      }
+    },
+    {
+      "seed": 91634,
+      "category": "cap_end",
+      "reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": 0.020781099240293997,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_green_1_geom",
+      "minimum_gap_elapsed_SIM_s": 13.600000000000001,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91634.json",
+        "sha256": "4f796a711be1bd0b4b250c5dd7c2dbe631cb4762d090ffd01902f3937261a90e"
+      }
+    },
+    {
+      "seed": 91642,
+      "category": "student_task_failure",
+      "reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": -0.0016487388956763222,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_green_1_geom",
+      "minimum_gap_elapsed_SIM_s": 10.3,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91642.json",
+        "sha256": "77edc98423c28e8df339a54d8a3d4969491c1eeeeead0b29bc71dd105377502e"
+      }
+    },
+    {
+      "seed": 91646,
+      "category": "student_task_failure",
+      "reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": -0.0005759941626068825,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_green_1_geom",
+      "minimum_gap_elapsed_SIM_s": 8.0,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91646.json",
+        "sha256": "235e25c3b59577a1ab358842f50f88711d3a09b3c9837ff626950f83e711092d"
+      }
+    },
+    {
+      "seed": 91650,
+      "category": "cap_end",
+      "reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": -3.363216115081066e-05,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_green_1_geom",
+      "minimum_gap_elapsed_SIM_s": 13.0,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91650.json",
+        "sha256": "112e5a8e11f00ebcbd0c98328d1bec8c0347b9e741c248d192de159f83b7d819"
+      }
+    },
+    {
+      "seed": 91654,
+      "category": "cap_end",
+      "reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": -0.0013523598066142745,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_green_1_geom",
+      "minimum_gap_elapsed_SIM_s": 11.3,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91654.json",
+        "sha256": "09c9cf311617c2923f509a82f8b3c42bb4e9594959f1d8d81d914c2bf5c432e5"
+      }
+    },
+    {
+      "seed": 91658,
+      "category": "student_task_failure",
+      "reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": -0.0011841114949974678,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_green_1_geom",
+      "minimum_gap_elapsed_SIM_s": 10.8,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91658.json",
+        "sha256": "43edef5c885547c1908ce8135971df0d32dec7d454a9a2d065e6c685581f7dfd"
+      }
+    },
+    {
+      "seed": 91623,
+      "category": "student_task_failure",
+      "reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": 0.00988780141793178,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_yellow_2_geom",
+      "minimum_gap_elapsed_SIM_s": 10.100000000000001,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91623.json",
+        "sha256": "843c7b3bd829b1ae1b9db6ecc168a63c7b4512012f49c62079ab5923ae2e8aea"
+      }
+    },
+    {
+      "seed": 91627,
+      "category": "student_task_failure",
+      "reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": -0.001050108270245937,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_yellow_1_geom",
+      "minimum_gap_elapsed_SIM_s": 8.5,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91627.json",
+        "sha256": "dc3afc67028dc142205f793958a33fd9ae22d0a53c3736377e1d09867923867b"
+      }
+    },
+    {
+      "seed": 91631,
+      "category": "student_task_failure",
+      "reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": -0.0006719168530055036,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_yellow_1_geom",
+      "minimum_gap_elapsed_SIM_s": 14.200000000000001,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91631.json",
+        "sha256": "03d634b594545909f628044663483b797c4630969355ee4b0359f8033543a734"
+      }
+    },
+    {
+      "seed": 91635,
+      "category": "cap_end",
+      "reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": 0.06216923066502602,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_yellow_2_geom",
+      "minimum_gap_elapsed_SIM_s": 18.900000000000002,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91635.json",
+        "sha256": "c15417c25513f4469ad6ec4589bb484845e2e30a83529f84b238b8a6285b70fc"
+      }
+    },
+    {
+      "seed": 91639,
+      "category": "student_task_failure",
+      "reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": 0.08426078267296687,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "zone_wall_north",
+      "minimum_gap_elapsed_SIM_s": 0.0,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91639.json",
+        "sha256": "a7e65fa4581bb9b110c6a55f69d39c78eff37223395a1b0f57f25d483e1890f4"
+      }
+    },
+    {
+      "seed": 91643,
+      "category": "student_task_failure",
+      "reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": -0.0005876240860464043,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_yellow_2_geom",
+      "minimum_gap_elapsed_SIM_s": 12.100000000000001,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91643.json",
+        "sha256": "7aad8bda6014b9fae58d24dea8177933c8eef8f07d8c867d5e244e26b989ac37"
+      }
+    },
+    {
+      "seed": 91647,
+      "category": "student_task_failure",
+      "reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": -0.0005989078492015935,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_yellow_2_geom",
+      "minimum_gap_elapsed_SIM_s": 10.8,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91647.json",
+        "sha256": "73a2cbd4a78117cbca0f8ae9be3e3824655d27f2330ba073a84ffe5c32eeef80"
+      }
+    },
+    {
+      "seed": 91651,
+      "category": "cap_end",
+      "reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": -0.0013687838780308168,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_yellow_2_geom",
+      "minimum_gap_elapsed_SIM_s": 10.3,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91651.json",
+        "sha256": "fc0a7f7d717c4c65a68e56201fbe8b6c8af43549ecd7a702c786ef9ced7319a5"
+      }
+    },
+    {
+      "seed": 91655,
+      "category": "student_task_failure",
+      "reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": -0.00039223391603163496,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_yellow_1_geom",
+      "minimum_gap_elapsed_SIM_s": 69.3,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91655.json",
+        "sha256": "29af3c7b3b44443703f3412d99cd38862e0fa6bbf15820ca66e3e871f3c112bc"
+      }
+    },
+    {
+      "seed": 91659,
+      "category": "cap_end",
+      "reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+      "blocking_object": "not_attributed_no_blockage_causality_claim",
+      "minimum_gap_m": -0.0016372713365532246,
+      "minimum_gap_status": "saved poses/exact compiled geometry; not GPU force or proven blocker",
+      "nearest_non_floor_object": "cargo_yellow_1_geom",
+      "minimum_gap_elapsed_SIM_s": 3.5,
+      "gap_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-final-91659.json",
+        "sha256": "a7ac31465c8cd504bbd4bd2b40c98265375604aa2eae303e2f13ca95ff2571c8"
+      }
+    }
+  ],
+  "unfinished_seeds": [],
+  "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+  "reproduce": [
+    "/home/ugrp/ugrp-sim/src/c27a9d537eaae873c7e7bc2ceaeeada69696cc48/scripts/act16w_eval_batch.py",
+    "--enabled",
+    "--checkpoint",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1/A/main/step-010000/actor",
+    "--references-root",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40-references",
+    "--groups",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40-groups/model-groups.json",
+    "--protocol",
+    "/home/ugrp/ugrp-sim/src/c27a9d537eaae873c7e7bc2ceaeeada69696cc48/experiments/2026-10-16-act16w/resume3/protocol.json",
+    "--capacity-receipt",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-capacity.json",
+    "--out",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40",
+    "--split",
+    "final",
+    "--selection",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final-selection.json",
+    "--name",
+    "native-final40",
+    "--max-worlds",
+    "40",
+    "--speed-gate-override",
+    "User-required native MJWarp cohort; actual per-world latency recorded; no wall cap or speed-pass claim."
+  ],
+  "original_table": {
+    "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40/rejection_table.json",
+    "sha256": "ed053b943e4d6c7c5b7dad71ef161da7c4633274ba211664548bebd0b0ab0010"
+  },
+  "post_action_supplement": {
+    "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40-geometry-summary.json",
+    "sha256": "bcf102bff7c1a6c706db3793d39a93423ccd8c8c75e5b367a06755d5bb1e33c5",
+    "original_unchanged": true
+  },
+  "independent_stage_counts": {
+    "bilateral_load_observed": 2,
+    "lift_success": 1,
+    "release_success": 0,
+    "issued_sequence_complete": 16,
+    "task_success": 0
+  }
+}

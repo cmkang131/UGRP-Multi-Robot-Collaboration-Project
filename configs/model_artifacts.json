@@ -461,6 +461,1910 @@
       ]
     },
     {
+      "id": "act16w-a-step10000-20261016",
+      "status": "available",
+      "description": "ACT16 A experimental 10000-step model",
+      "source_sha": "78485f10596b4512e731fdcd8ee25eafd6d8fcad",
+      "training_source_sha": "78485f10596b4512e731fdcd8ee25eafd6d8fcad",
+      "packaging_source_sha": "2c72c882489fdfac216f617860feffc69694b7b3",
+      "release": {
+        "tag": "models-20261016-act16w-v1",
+        "asset": "act16w-a-step10000-20261016.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261016-act16w-v1/act16w-a-step10000-20261016.zip"
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "bytes": 512,
+          "sha256": "80b821814dfe86e3da7dcf40633ea94a7658dd645c1bd174c52729fc2833139a"
+        },
+        {
+          "path": "act/SHA256.json",
+          "bytes": 265,
+          "sha256": "4a994aa3df9881a6ae46831cf5f9b1c269ced83919a617d6ac83696823efba30"
+        },
+        {
+          "path": "act/adapter.json",
+          "bytes": 15360,
+          "sha256": "ca290ab06720a61fd1a6d3d5fe1e70069666e1ad68f7e362d7e7298037427175"
+        },
+        {
+          "path": "act/config.json",
+          "bytes": 1278,
+          "sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+        },
+        {
+          "path": "act/model.safetensors",
+          "bytes": 207363320,
+          "sha256": "91082c3dc9da1fe741eb0e92498091f38db96251860de165378a3133d69306ea"
+        },
+        {
+          "path": "comparison-protocol.json",
+          "bytes": 3930,
+          "sha256": "0884d382608a4957c786031acce88d80e9b375dbe8786b6ee638b034f6e830c2"
+        },
+        {
+          "path": "dataset-manifest.json",
+          "bytes": 83626,
+          "sha256": "c65e74daea6b1d616b84aa0028dbff22d4128a551c5c4d7f5479d732acff8fed"
+        },
+        {
+          "path": "environment.json",
+          "bytes": 372,
+          "sha256": "b9d1e7b57f4afcaa61ba75afa10b0c1780c47c428168b1b1293c2937b7796c0e"
+        },
+        {
+          "path": "inference/act16w_input.py",
+          "bytes": 6421,
+          "sha256": "f49bcdbd91b4762e09cfb896467f5cc3712795bbe79066d41697560f4e4142ff"
+        },
+        {
+          "path": "inference/act16w_runtime.py",
+          "bytes": 7751,
+          "sha256": "f64eeed09ffb8810dc111e5516ca01684f9f9fc7b2c4b80b70b1dac846bf5bca"
+        },
+        {
+          "path": "inference/act_library/harness/__init__.py",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_contract.py",
+          "bytes": 9352,
+          "sha256": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_data.py",
+          "bytes": 22381,
+          "sha256": "8206d215ee14b3cc5935b9353d29ae28a2ac046061f23674dffeb3d6048d497f"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_loss.py",
+          "bytes": 3829,
+          "sha256": "d9dd54c32613f56b63d1f8a641b1156a1e7f925afd36e0c5ff68f3febd53dc52"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_policy.py",
+          "bytes": 10405,
+          "sha256": "0cfa080f086ea991368e3c686960cf54cab9a8f9796e1077557f17a639f79c6c"
+        },
+        {
+          "path": "inference/load_model.py",
+          "bytes": 466,
+          "sha256": "78ccbeb7a3fc5e22480c7b90661b59132f97cbef87672c378c4f29771b3007bc"
+        },
+        {
+          "path": "native-camera.json",
+          "bytes": 1314,
+          "sha256": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f"
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 1595,
+          "sha256": "465a7a99a841d22eb6280751fa17cfca36e31bdc2c9bab727bb9b15fc913cf51"
+        },
+        {
+          "path": "training-summary.json",
+          "bytes": 3639,
+          "sha256": "f258775837690efa0cd0874015ea774e28a22efc1eda4b8f7aba94c2bf45c098"
+        }
+      ],
+      "limitations": [
+        "experimental; not a default controller",
+        "BOX task tokens do not distinguish same-colour item instances; effect unmeasured",
+        "matched10000 steps complete"
+      ],
+      "verification": {
+        "state": "VERIFIED",
+        "checked_utc": "2026-10-16T14:00:10.961183+00:00",
+        "public_download": true,
+        "archive_and_all_file_hashes": true,
+        "verified_files": 19,
+        "CPU_model_loading": {
+          "ready": true,
+          "device": "cpu",
+          "history_mode": "off",
+          "scope": "hash-checked model loading only; no physics success claim"
+        },
+        "fresh_clone_sha": "f41e659d4a7581717b2925319acd43d52511d220",
+        "proof": "experiments/2026-10-16-act16w/resume2/public-model-verification-ab.json",
+        "scope": "public archive and all19 inventory files verified; fresh clone CPU loading only; native student evaluation running, no task-success claim"
+      },
+      "archive": {
+        "sha256": "c47f0b8714d5d9796a4d294e6389f542ff80d66b1a54d868df96fb60b59e9f93",
+        "bytes": 191908974
+      }
+    },
+    {
+      "id": "act16w-b-step10000-20261016",
+      "status": "available",
+      "description": "ACT16 B experimental 10000-step model",
+      "source_sha": "78485f10596b4512e731fdcd8ee25eafd6d8fcad",
+      "training_source_sha": "78485f10596b4512e731fdcd8ee25eafd6d8fcad",
+      "packaging_source_sha": "2c72c882489fdfac216f617860feffc69694b7b3",
+      "release": {
+        "tag": "models-20261016-act16w-v1",
+        "asset": "act16w-b-step10000-20261016.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261016-act16w-v1/act16w-b-step10000-20261016.zip"
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "bytes": 512,
+          "sha256": "b153b62187aa361f235b9c47fb0d068ba34f40d1d089fcc816de296ab86c12dc"
+        },
+        {
+          "path": "act/SHA256.json",
+          "bytes": 265,
+          "sha256": "555be79e3ca39787c1f2ce440a88d4c6156b1e09e0e24cda431bd59c03c8bd83"
+        },
+        {
+          "path": "act/adapter.json",
+          "bytes": 16744,
+          "sha256": "6e02a27ec18bc11f42af5a90af23d43981bc51c822b6e23992ccc9cf34fa5292"
+        },
+        {
+          "path": "act/config.json",
+          "bytes": 1278,
+          "sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+        },
+        {
+          "path": "act/model.safetensors",
+          "bytes": 207363320,
+          "sha256": "be6e30fff78a14336d24d9b2c5f08d965a5ba77edd05015ae23105b01564154d"
+        },
+        {
+          "path": "comparison-protocol.json",
+          "bytes": 3930,
+          "sha256": "0884d382608a4957c786031acce88d80e9b375dbe8786b6ee638b034f6e830c2"
+        },
+        {
+          "path": "dataset-manifest.json",
+          "bytes": 83626,
+          "sha256": "c65e74daea6b1d616b84aa0028dbff22d4128a551c5c4d7f5479d732acff8fed"
+        },
+        {
+          "path": "environment.json",
+          "bytes": 372,
+          "sha256": "b9d1e7b57f4afcaa61ba75afa10b0c1780c47c428168b1b1293c2937b7796c0e"
+        },
+        {
+          "path": "inference/act16w_input.py",
+          "bytes": 6421,
+          "sha256": "f49bcdbd91b4762e09cfb896467f5cc3712795bbe79066d41697560f4e4142ff"
+        },
+        {
+          "path": "inference/act16w_runtime.py",
+          "bytes": 7751,
+          "sha256": "f64eeed09ffb8810dc111e5516ca01684f9f9fc7b2c4b80b70b1dac846bf5bca"
+        },
+        {
+          "path": "inference/act_library/harness/__init__.py",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_contract.py",
+          "bytes": 9352,
+          "sha256": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_data.py",
+          "bytes": 22381,
+          "sha256": "8206d215ee14b3cc5935b9353d29ae28a2ac046061f23674dffeb3d6048d497f"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_loss.py",
+          "bytes": 3829,
+          "sha256": "d9dd54c32613f56b63d1f8a641b1156a1e7f925afd36e0c5ff68f3febd53dc52"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_policy.py",
+          "bytes": 10405,
+          "sha256": "0cfa080f086ea991368e3c686960cf54cab9a8f9796e1077557f17a639f79c6c"
+        },
+        {
+          "path": "inference/load_model.py",
+          "bytes": 466,
+          "sha256": "78ccbeb7a3fc5e22480c7b90661b59132f97cbef87672c378c4f29771b3007bc"
+        },
+        {
+          "path": "native-camera.json",
+          "bytes": 1314,
+          "sha256": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f"
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 1595,
+          "sha256": "1e99284a1d27795ca4316f969e541d94860a9c9d3f08c073f39df3dc5b828ec1"
+        },
+        {
+          "path": "training-summary.json",
+          "bytes": 3657,
+          "sha256": "19a57aa80637f2badcb5679f2025b50cac5c00cf0398b4d12d938966f0c753cb"
+        }
+      ],
+      "limitations": [
+        "experimental; not a default controller",
+        "BOX task tokens do not distinguish same-colour item instances; effect unmeasured",
+        "matched10000 steps complete"
+      ],
+      "verification": {
+        "state": "VERIFIED",
+        "checked_utc": "2026-10-16T14:00:10.961183+00:00",
+        "public_download": true,
+        "archive_and_all_file_hashes": true,
+        "verified_files": 19,
+        "CPU_model_loading": {
+          "ready": true,
+          "device": "cpu",
+          "history_mode": "wheel_pulse_train_mean",
+          "scope": "hash-checked model loading only; no physics success claim"
+        },
+        "fresh_clone_sha": "f41e659d4a7581717b2925319acd43d52511d220",
+        "proof": "experiments/2026-10-16-act16w/resume2/public-model-verification-ab.json",
+        "scope": "public archive and all19 inventory files verified; fresh clone CPU loading only; native student evaluation running, no task-success claim"
+      },
+      "archive": {
+        "sha256": "ad9c740d6fb67e0defeab780462b1aa0ecf9b2e0f3e95a47b217a645a7af2c7b",
+        "bytes": 191908425
+      }
+    },
+    {
+      "id": "act16w-native-v1-a-step10000-20261016",
+      "status": "available",
+      "description": "Native-contact MJWarp solo BOX ACT16 A, fixed10000 steps; experimental comparison model",
+      "source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+      "training_source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+      "packaging_source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+      "release": {
+        "tag": "models-20261016-act16w-native-v1",
+        "asset": "act16w-native-v1-a-step10000-20261016.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261016-act16w-native-v1/act16w-native-v1-a-step10000-20261016.zip"
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "bytes": 512,
+          "sha256": "80b821814dfe86e3da7dcf40633ea94a7658dd645c1bd174c52729fc2833139a"
+        },
+        {
+          "path": "act/SHA256.json",
+          "bytes": 265,
+          "sha256": "8b2806540f87928d0e55f29e8b6a9e15c994180cc1f2106cd9a9ee82dfc15beb"
+        },
+        {
+          "path": "act/adapter.json",
+          "bytes": 15330,
+          "sha256": "5a33b2f0a76c22af78919e4eb2dd318fda0fa0c1b0731a2494f94b4ef3fc4d73"
+        },
+        {
+          "path": "act/config.json",
+          "bytes": 1278,
+          "sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+        },
+        {
+          "path": "act/model.safetensors",
+          "bytes": 207363320,
+          "sha256": "4955436e15054d76adf3ea7a339896dc1e500e4ed930aeb0c873ec23899f7719"
+        },
+        {
+          "path": "comparison-protocol.json",
+          "bytes": 5143,
+          "sha256": "49be968d2ec8a5cd6c4d3eb058bc92d026989b498daf51b09da387a24aca0c08"
+        },
+        {
+          "path": "dataset-manifest.json",
+          "bytes": 83708,
+          "sha256": "3d0a1c4907f0c91a5674d23e52c9fbf339f03952ce3bcf92dee21f7e8ab7dbd2"
+        },
+        {
+          "path": "environment.json",
+          "bytes": 372,
+          "sha256": "b9d1e7b57f4afcaa61ba75afa10b0c1780c47c428168b1b1293c2937b7796c0e"
+        },
+        {
+          "path": "inference/act16w_input.py",
+          "bytes": 6421,
+          "sha256": "f49bcdbd91b4762e09cfb896467f5cc3712795bbe79066d41697560f4e4142ff"
+        },
+        {
+          "path": "inference/act16w_runtime.py",
+          "bytes": 9353,
+          "sha256": "e08ae134705b9844ca69e72365afdb86d13cb6d44d9dfd999f55aee7ef19b201"
+        },
+        {
+          "path": "inference/act_library/harness/__init__.py",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_contract.py",
+          "bytes": 9352,
+          "sha256": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_data.py",
+          "bytes": 22381,
+          "sha256": "8206d215ee14b3cc5935b9353d29ae28a2ac046061f23674dffeb3d6048d497f"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_loss.py",
+          "bytes": 3829,
+          "sha256": "d9dd54c32613f56b63d1f8a641b1156a1e7f925afd36e0c5ff68f3febd53dc52"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_policy.py",
+          "bytes": 10405,
+          "sha256": "0cfa080f086ea991368e3c686960cf54cab9a8f9796e1077557f17a639f79c6c"
+        },
+        {
+          "path": "inference/load_model.py",
+          "bytes": 466,
+          "sha256": "78ccbeb7a3fc5e22480c7b90661b59132f97cbef87672c378c4f29771b3007bc"
+        },
+        {
+          "path": "native-camera.json",
+          "bytes": 1314,
+          "sha256": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f"
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 1871,
+          "sha256": "7a93f6c0306d07eeed69dc08d872866044351a7399864a0e859087ed878215da"
+        },
+        {
+          "path": "training-summary.json",
+          "bytes": 3688,
+          "sha256": "7e6c2a802bef3b6dd3fb4411a5fff09900af62ef7f837f533c963c153c79df79"
+        }
+      ],
+      "limitations": [
+        "experimental solo BOX near-field policy; not a default controller or a beam/transport result",
+        "distribution/loading checks do not establish physical task success; measured task results are in PR539 experiment records",
+        "same-colour item identity is absent from task tokens; assigned and any-same-kind metrics reported separately"
+      ],
+      "verification": {
+        "state": "VERIFIED",
+        "utc": "2026-10-16T19:22:19.212489+00:00",
+        "fresh_checkout_sha": "805a3b4400f1d633df24e813c5b2b8cae43b32e8",
+        "public_anonymous_download": true,
+        "archive_sha256": "aa2ef32718ccc5bf03990c061c467e93ebbcee9b40fff3cd0d8a40a8d556504e",
+        "verified_files": 19,
+        "loading": {
+          "ready": true,
+          "device": "cpu",
+          "history_mode": "off",
+          "scope": "hash-checked model loading only; no physics success claim"
+        },
+        "loading_exit_code": 0,
+        "receipt": "experiments/2026-10-16-act16w/resume4/native-public-model-verification.json",
+        "scope": "fresh clean checkout, public re-download/full archive+file hashes, existing ACT environment CPU loading only; no clean-environment or physics-success claim"
+      },
+      "archive": {
+        "sha256": "aa2ef32718ccc5bf03990c061c467e93ebbcee9b40fff3cd0d8a40a8d556504e",
+        "bytes": 191908847
+      },
+      "evaluation": {
+        "contact_profile": "warp_native_contact_v1",
+        "validation": {
+          "n": 0,
+          "N": 8,
+          "kind_each": "0/2",
+          "cap_end": 4
+        },
+        "final": {
+          "evaluated": true,
+          "n": 0,
+          "N": 40,
+          "kind_each": "0/10",
+          "stable_lift": 1,
+          "stable_release": 0,
+          "cap_end": 24
+        },
+        "physical_ready": false,
+        "results_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261016-act16w-native-v1/native-final40-results-v1.json",
+        "results_sha256": "1c58b2c2701636c9ddb34a1fff2f97911d523d04e10979eb9c571494bd136c54",
+        "scope": "closed native trials only; no noslip10 pooling or C CPU robustness claim"
+      }
+    },
+    {
+      "id": "act16w-native-v1-b-step10000-20261016",
+      "status": "available",
+      "description": "Native-contact MJWarp solo BOX ACT16 B, fixed10000 steps; experimental comparison model",
+      "source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+      "training_source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+      "packaging_source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+      "release": {
+        "tag": "models-20261016-act16w-native-v1",
+        "asset": "act16w-native-v1-b-step10000-20261016.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261016-act16w-native-v1/act16w-native-v1-b-step10000-20261016.zip"
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "bytes": 512,
+          "sha256": "b153b62187aa361f235b9c47fb0d068ba34f40d1d089fcc816de296ab86c12dc"
+        },
+        {
+          "path": "act/SHA256.json",
+          "bytes": 265,
+          "sha256": "0ee9b2be8d952dc0c01619742129da75290508e749838f0cb31a7ae3a3fd2e38"
+        },
+        {
+          "path": "act/adapter.json",
+          "bytes": 16714,
+          "sha256": "8ed8904de56b7c0e1f7554d3a4dd13edb99c6d7d033922ac5d853bb54157e1e5"
+        },
+        {
+          "path": "act/config.json",
+          "bytes": 1278,
+          "sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+        },
+        {
+          "path": "act/model.safetensors",
+          "bytes": 207363320,
+          "sha256": "fcf12d01877340bdf225519547d34be071b5b05ce0aceeae2aadc51f9492004c"
+        },
+        {
+          "path": "comparison-protocol.json",
+          "bytes": 5143,
+          "sha256": "49be968d2ec8a5cd6c4d3eb058bc92d026989b498daf51b09da387a24aca0c08"
+        },
+        {
+          "path": "dataset-manifest.json",
+          "bytes": 83708,
+          "sha256": "3d0a1c4907f0c91a5674d23e52c9fbf339f03952ce3bcf92dee21f7e8ab7dbd2"
+        },
+        {
+          "path": "environment.json",
+          "bytes": 372,
+          "sha256": "b9d1e7b57f4afcaa61ba75afa10b0c1780c47c428168b1b1293c2937b7796c0e"
+        },
+        {
+          "path": "inference/act16w_input.py",
+          "bytes": 6421,
+          "sha256": "f49bcdbd91b4762e09cfb896467f5cc3712795bbe79066d41697560f4e4142ff"
+        },
+        {
+          "path": "inference/act16w_runtime.py",
+          "bytes": 9353,
+          "sha256": "e08ae134705b9844ca69e72365afdb86d13cb6d44d9dfd999f55aee7ef19b201"
+        },
+        {
+          "path": "inference/act_library/harness/__init__.py",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_contract.py",
+          "bytes": 9352,
+          "sha256": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_data.py",
+          "bytes": 22381,
+          "sha256": "8206d215ee14b3cc5935b9353d29ae28a2ac046061f23674dffeb3d6048d497f"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_loss.py",
+          "bytes": 3829,
+          "sha256": "d9dd54c32613f56b63d1f8a641b1156a1e7f925afd36e0c5ff68f3febd53dc52"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_policy.py",
+          "bytes": 10405,
+          "sha256": "0cfa080f086ea991368e3c686960cf54cab9a8f9796e1077557f17a639f79c6c"
+        },
+        {
+          "path": "inference/load_model.py",
+          "bytes": 466,
+          "sha256": "78ccbeb7a3fc5e22480c7b90661b59132f97cbef87672c378c4f29771b3007bc"
+        },
+        {
+          "path": "native-camera.json",
+          "bytes": 1314,
+          "sha256": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f"
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 1871,
+          "sha256": "a4c41eabadfb9f16f2a962ee04bd86bfcef0b4a7dbf08f3ad7cd40d88e49d44d"
+        },
+        {
+          "path": "training-summary.json",
+          "bytes": 3706,
+          "sha256": "61e69228993bd310cd714e0804aa58a3f8aa69e8844ce4cc5693a1f39b6767c9"
+        }
+      ],
+      "limitations": [
+        "experimental solo BOX near-field policy; not a default controller or a beam/transport result",
+        "distribution/loading checks do not establish physical task success; measured task results are in PR539 experiment records",
+        "same-colour item identity is absent from task tokens; assigned and any-same-kind metrics reported separately"
+      ],
+      "verification": {
+        "state": "VERIFIED",
+        "utc": "2026-10-16T19:22:19.212489+00:00",
+        "fresh_checkout_sha": "805a3b4400f1d633df24e813c5b2b8cae43b32e8",
+        "public_anonymous_download": true,
+        "archive_sha256": "fc451f79c65e399a2c2e960e75b154c088da4dc599b255c54e2c5629d0b3d9dc",
+        "verified_files": 19,
+        "loading": {
+          "ready": true,
+          "device": "cpu",
+          "history_mode": "wheel_pulse_train_mean",
+          "scope": "hash-checked model loading only; no physics success claim"
+        },
+        "loading_exit_code": 0,
+        "receipt": "experiments/2026-10-16-act16w/resume4/native-public-model-verification.json",
+        "scope": "fresh clean checkout, public re-download/full archive+file hashes, existing ACT environment CPU loading only; no clean-environment or physics-success claim"
+      },
+      "archive": {
+        "sha256": "fc451f79c65e399a2c2e960e75b154c088da4dc599b255c54e2c5629d0b3d9dc",
+        "bytes": 191907722
+      },
+      "evaluation": {
+        "contact_profile": "warp_native_contact_v1",
+        "validation": {
+          "n": 0,
+          "N": 8,
+          "kind_each": "0/2",
+          "cap_end": 6
+        },
+        "final": {
+          "evaluated": false,
+          "reason": "not selected by preregistered validation tie rule"
+        },
+        "physical_ready": false,
+        "results_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261016-act16w-native-v1/native-final40-results-v1.json",
+        "results_sha256": "1c58b2c2701636c9ddb34a1fff2f97911d523d04e10979eb9c571494bd136c54",
+        "scope": "closed native trials only; no noslip10 pooling or C CPU robustness claim"
+      }
+    },
+    {
+      "id": "act16w-native-v1-c-step10000-20261016",
+      "status": "available",
+      "description": "Native-contact MJWarp solo BOX ACT16 C, fixed10000 steps; experimental comparison model",
+      "source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+      "training_source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+      "packaging_source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+      "release": {
+        "tag": "models-20261016-act16w-native-v1",
+        "asset": "act16w-native-v1-c-step10000-20261016.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261016-act16w-native-v1/act16w-native-v1-c-step10000-20261016.zip"
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "bytes": 512,
+          "sha256": "05ac6794fc0acb4aa958ac9a81acd9acc4450d400007b125bec1236c51a8c4bb"
+        },
+        {
+          "path": "act/SHA256.json",
+          "bytes": 265,
+          "sha256": "18e23dd1f5ff4dc8ff0f04c32a5cab7c40402d4ed821048bbb63d689f1666e89"
+        },
+        {
+          "path": "act/adapter.json",
+          "bytes": 15392,
+          "sha256": "b268012bb291e18e5259d8b3f81828474762ca78766c88be4a21e7ee30768f26"
+        },
+        {
+          "path": "act/config.json",
+          "bytes": 1278,
+          "sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+        },
+        {
+          "path": "act/model.safetensors",
+          "bytes": 207363320,
+          "sha256": "3ba01de734afd7d90fe58b253d720342e3deb8da371c8f7997af5753f9268d7b"
+        },
+        {
+          "path": "comparison-protocol.json",
+          "bytes": 5143,
+          "sha256": "49be968d2ec8a5cd6c4d3eb058bc92d026989b498daf51b09da387a24aca0c08"
+        },
+        {
+          "path": "dataset-manifest.json",
+          "bytes": 83708,
+          "sha256": "3d0a1c4907f0c91a5674d23e52c9fbf339f03952ce3bcf92dee21f7e8ab7dbd2"
+        },
+        {
+          "path": "environment.json",
+          "bytes": 372,
+          "sha256": "b9d1e7b57f4afcaa61ba75afa10b0c1780c47c428168b1b1293c2937b7796c0e"
+        },
+        {
+          "path": "inference/act16w_input.py",
+          "bytes": 6421,
+          "sha256": "f49bcdbd91b4762e09cfb896467f5cc3712795bbe79066d41697560f4e4142ff"
+        },
+        {
+          "path": "inference/act16w_runtime.py",
+          "bytes": 9353,
+          "sha256": "e08ae134705b9844ca69e72365afdb86d13cb6d44d9dfd999f55aee7ef19b201"
+        },
+        {
+          "path": "inference/act_library/harness/__init__.py",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_contract.py",
+          "bytes": 9352,
+          "sha256": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_data.py",
+          "bytes": 22381,
+          "sha256": "8206d215ee14b3cc5935b9353d29ae28a2ac046061f23674dffeb3d6048d497f"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_loss.py",
+          "bytes": 3829,
+          "sha256": "d9dd54c32613f56b63d1f8a641b1156a1e7f925afd36e0c5ff68f3febd53dc52"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_policy.py",
+          "bytes": 10405,
+          "sha256": "0cfa080f086ea991368e3c686960cf54cab9a8f9796e1077557f17a639f79c6c"
+        },
+        {
+          "path": "inference/load_model.py",
+          "bytes": 466,
+          "sha256": "78ccbeb7a3fc5e22480c7b90661b59132f97cbef87672c378c4f29771b3007bc"
+        },
+        {
+          "path": "native-camera.json",
+          "bytes": 1314,
+          "sha256": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f"
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 1871,
+          "sha256": "9b4b9b8c41a421a3b454186a8a7040458145a77752f0775c8c002f0b2592ad74"
+        },
+        {
+          "path": "training-summary.json",
+          "bytes": 3750,
+          "sha256": "5b5b07a0acdc368a4105e1cffcf6a50edb4fe8620beefae15a51099c0f60b70d"
+        }
+      ],
+      "limitations": [
+        "experimental solo BOX near-field policy; not a default controller or a beam/transport result",
+        "distribution/loading checks do not establish physical task success; measured task results are in PR539 experiment records",
+        "same-colour item identity is absent from task tokens; assigned and any-same-kind metrics reported separately"
+      ],
+      "verification": {
+        "state": "VERIFIED",
+        "utc": "2026-10-16T19:22:19.212489+00:00",
+        "fresh_checkout_sha": "805a3b4400f1d633df24e813c5b2b8cae43b32e8",
+        "public_anonymous_download": true,
+        "archive_sha256": "df62ae504d35646628fb29d2edc8a69199db28088ae122fc44b454d5d9aef3d0",
+        "verified_files": 19,
+        "loading": {
+          "ready": true,
+          "device": "cpu",
+          "history_mode": "off",
+          "scope": "hash-checked model loading only; no physics success claim"
+        },
+        "loading_exit_code": 0,
+        "receipt": "experiments/2026-10-16-act16w/resume4/native-public-model-verification.json",
+        "scope": "fresh clean checkout, public re-download/full archive+file hashes, existing ACT environment CPU loading only; no clean-environment or physics-success claim"
+      },
+      "archive": {
+        "sha256": "df62ae504d35646628fb29d2edc8a69199db28088ae122fc44b454d5d9aef3d0",
+        "bytes": 191909857
+      },
+      "evaluation": {
+        "contact_profile": "warp_native_contact_v1",
+        "validation": {
+          "n": 0,
+          "N": 8,
+          "kind_each": "0/2",
+          "cap_end": 3
+        },
+        "final": {
+          "evaluated": false,
+          "reason": "not selected by preregistered validation tie rule"
+        },
+        "physical_ready": false,
+        "results_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261016-act16w-native-v1/native-final40-results-v1.json",
+        "results_sha256": "1c58b2c2701636c9ddb34a1fff2f97911d523d04e10979eb9c571494bd136c54",
+        "scope": "closed native trials only; no noslip10 pooling or C CPU robustness claim"
+      }
+    },
+    {
+      "id": "act16w-native-v1-d1-step10000-20261016",
+      "status": "available",
+      "description": "Native-contact MJWarp solo BOX ACT16 D1, fixed10000 steps; experimental comparison model",
+      "source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+      "training_source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+      "packaging_source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+      "release": {
+        "tag": "models-20261016-act16w-native-v1",
+        "asset": "act16w-native-v1-d1-step10000-20261016.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261016-act16w-native-v1/act16w-native-v1-d1-step10000-20261016.zip"
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "bytes": 513,
+          "sha256": "400169fff5fb47d2f624374f0db6f0682235649726c9184210f40ac74dc3ada1"
+        },
+        {
+          "path": "act/SHA256.json",
+          "bytes": 265,
+          "sha256": "fcadba1b53a6333250f04482660bd979d3d501af0e248031fff1e29e35697dd7"
+        },
+        {
+          "path": "act/adapter.json",
+          "bytes": 15392,
+          "sha256": "d42444b1f2577cb9815141652c183fe427aaad7fdcb713a555ad66e1b4fea913"
+        },
+        {
+          "path": "act/config.json",
+          "bytes": 1278,
+          "sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+        },
+        {
+          "path": "act/model.safetensors",
+          "bytes": 207363320,
+          "sha256": "bcad967c260dfd55e3c166df8f246e285b55bc978fd6d82f444a537277f27aee"
+        },
+        {
+          "path": "comparison-protocol.json",
+          "bytes": 5143,
+          "sha256": "49be968d2ec8a5cd6c4d3eb058bc92d026989b498daf51b09da387a24aca0c08"
+        },
+        {
+          "path": "dataset-manifest.json",
+          "bytes": 110744,
+          "sha256": "2c132339c61e433bf914ecff428e7055ff37c531559f205a485758215e892e3d"
+        },
+        {
+          "path": "environment.json",
+          "bytes": 372,
+          "sha256": "b9d1e7b57f4afcaa61ba75afa10b0c1780c47c428168b1b1293c2937b7796c0e"
+        },
+        {
+          "path": "inference/act16w_input.py",
+          "bytes": 6421,
+          "sha256": "f49bcdbd91b4762e09cfb896467f5cc3712795bbe79066d41697560f4e4142ff"
+        },
+        {
+          "path": "inference/act16w_runtime.py",
+          "bytes": 9353,
+          "sha256": "e08ae134705b9844ca69e72365afdb86d13cb6d44d9dfd999f55aee7ef19b201"
+        },
+        {
+          "path": "inference/act_library/harness/__init__.py",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_contract.py",
+          "bytes": 9352,
+          "sha256": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_data.py",
+          "bytes": 22381,
+          "sha256": "8206d215ee14b3cc5935b9353d29ae28a2ac046061f23674dffeb3d6048d497f"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_loss.py",
+          "bytes": 3829,
+          "sha256": "d9dd54c32613f56b63d1f8a641b1156a1e7f925afd36e0c5ff68f3febd53dc52"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_policy.py",
+          "bytes": 10405,
+          "sha256": "0cfa080f086ea991368e3c686960cf54cab9a8f9796e1077557f17a639f79c6c"
+        },
+        {
+          "path": "inference/load_model.py",
+          "bytes": 466,
+          "sha256": "78ccbeb7a3fc5e22480c7b90661b59132f97cbef87672c378c4f29771b3007bc"
+        },
+        {
+          "path": "native-camera.json",
+          "bytes": 1314,
+          "sha256": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f"
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 1873,
+          "sha256": "f79c2f0fec2bcdbe4ab6f0a5828fb80b80dc44dd1cdf6e2c00fcd8bb7f9dba33"
+        },
+        {
+          "path": "training-summary.json",
+          "bytes": 3752,
+          "sha256": "7ca8671fe52f7fbb561f23b6550205923bf5f18c42e3a583b3a7efdac7fb1f2a"
+        }
+      ],
+      "limitations": [
+        "experimental solo BOX near-field policy; not a default controller or a beam/transport result",
+        "distribution/loading checks do not establish physical task success; measured task results are in PR539 experiment records",
+        "same-colour item identity is absent from task tokens; assigned and any-same-kind metrics reported separately"
+      ],
+      "verification": {
+        "state": "VERIFIED",
+        "utc": "2026-10-16T19:22:19.212489+00:00",
+        "fresh_checkout_sha": "805a3b4400f1d633df24e813c5b2b8cae43b32e8",
+        "public_anonymous_download": true,
+        "archive_sha256": "e3a5f06743ff9374fb4c4df6fa233d27a5d68e1d5d364046cf00e1be714c2bc0",
+        "verified_files": 19,
+        "loading": {
+          "ready": true,
+          "device": "cpu",
+          "history_mode": "off",
+          "scope": "hash-checked model loading only; no physics success claim"
+        },
+        "loading_exit_code": 0,
+        "receipt": "experiments/2026-10-16-act16w/resume4/native-public-model-verification.json",
+        "scope": "fresh clean checkout, public re-download/full archive+file hashes, existing ACT environment CPU loading only; no clean-environment or physics-success claim"
+      },
+      "archive": {
+        "sha256": "e3a5f06743ff9374fb4c4df6fa233d27a5d68e1d5d364046cf00e1be714c2bc0",
+        "bytes": 191913259
+      },
+      "evaluation": {
+        "contact_profile": "warp_native_contact_v1",
+        "validation": {
+          "n": 0,
+          "N": 8,
+          "kind_each": "0/2",
+          "cap_end": 7
+        },
+        "final": {
+          "evaluated": false,
+          "reason": "not selected by preregistered validation tie rule"
+        },
+        "physical_ready": false,
+        "results_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261016-act16w-native-v1/native-final40-results-v1.json",
+        "results_sha256": "1c58b2c2701636c9ddb34a1fff2f97911d523d04e10979eb9c571494bd136c54",
+        "scope": "closed native trials only; no noslip10 pooling or C CPU robustness claim"
+      }
+    },
+    {
+      "id": "act17-v7-native-r1-m-step10000-20261017",
+      "status": "available",
+      "candidate": "M",
+      "source_sha": "e1b7de0f789305e12a3612e7cbf392b8e4ac21ee",
+      "packaging_source_sha": "de6170d93433fe340806a0881a45f23b19e6af4e",
+      "files": [
+        {
+          "path": "README.md",
+          "bytes": 344,
+          "sha256": "9c262690c1ca43e31653ac06772c35cf0a49fc02806b7b152143d2db4ed0c2e7"
+        },
+        {
+          "path": "act/SHA256.json",
+          "bytes": 265,
+          "sha256": "8d86a671c0f116726c3825bc6395f0aea01e0f1f995e1315b9cfdcfdbfbbdc70"
+        },
+        {
+          "path": "act/adapter.json",
+          "bytes": 18314,
+          "sha256": "cee3d0400fd81ccf772d0c0948ddc63dd814d04607dde19a0131c9f63aaa39dc"
+        },
+        {
+          "path": "act/config.json",
+          "bytes": 1278,
+          "sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+        },
+        {
+          "path": "act/model.safetensors",
+          "bytes": 207363320,
+          "sha256": "b5a2c5d2be233df065d900ed58216f05a715f18f0c9de6227eeac49922b97b9f"
+        },
+        {
+          "path": "comparison-protocol.json",
+          "bytes": 10496,
+          "sha256": "9bcf20f4ee91a95ae84ce548b8dc0c99c44de4b0351e1f156749ec93a1d89adc"
+        },
+        {
+          "path": "dataset-manifest.json.zst",
+          "bytes": 36944,
+          "sha256": "cf634e32d4e2b59238285badff26652fffb77b9c431dd707383a5a12e7b24c94"
+        },
+        {
+          "path": "environment.json",
+          "bytes": 403,
+          "sha256": "9beb26ed688a836a1eda32ff5b5fd78341fbde44f353178d84d1fa5453fd0316"
+        },
+        {
+          "path": "inference/act16w_runtime.py",
+          "bytes": 9353,
+          "sha256": "e08ae134705b9844ca69e72365afdb86d13cb6d44d9dfd999f55aee7ef19b201"
+        },
+        {
+          "path": "inference/act17_compact_records.py",
+          "bytes": 4903,
+          "sha256": "b95194baac7f3fcdd67fd1b986499db669d10f88cac99c2457f111bdb7c00c96"
+        },
+        {
+          "path": "inference/act17_data.py",
+          "bytes": 16667,
+          "sha256": "b3823f91cd97a987cc7a32012c01ea7d2f953ec5ebd1182593fd380da34b54f4"
+        },
+        {
+          "path": "inference/act17_open_loop.py",
+          "bytes": 9884,
+          "sha256": "16a283b8f1442338a40a897f4cdcf44eefa20da0f715efdb4de22d8b58bcb9d0"
+        },
+        {
+          "path": "inference/act17_policy.py",
+          "bytes": 5277,
+          "sha256": "2089868718126c8eeb6851c6fe2b5c435367d79b5c049c6bac0da7a95eadde27"
+        },
+        {
+          "path": "inference/act_library/harness/__init__.py",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_contract.py",
+          "bytes": 9352,
+          "sha256": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_data.py",
+          "bytes": 22381,
+          "sha256": "8206d215ee14b3cc5935b9353d29ae28a2ac046061f23674dffeb3d6048d497f"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_loss.py",
+          "bytes": 3829,
+          "sha256": "d9dd54c32613f56b63d1f8a641b1156a1e7f925afd36e0c5ff68f3febd53dc52"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_policy.py",
+          "bytes": 10405,
+          "sha256": "0cfa080f086ea991368e3c686960cf54cab9a8f9796e1077557f17a639f79c6c"
+        },
+        {
+          "path": "inference/load_model.py",
+          "bytes": 1335,
+          "sha256": "621d5fea143747a131f171445728d4ae249b82370381ed07c651fe138ee66180"
+        },
+        {
+          "path": "inference/runtime/LICENSE.lerobot",
+          "bytes": 27627,
+          "sha256": "0583375a0ec642ec79c447781f34322b0cfa66baff31258214d040f1f6d86d7c"
+        },
+        {
+          "path": "inference/runtime/modeling_act.py",
+          "bytes": 35219,
+          "sha256": "8d622935319af7d03f1efd95d51e726af2921010f7e4f5ec3742f62280493111"
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 1863,
+          "sha256": "bdc77308dce81d43d84197f3bc0746752e2e2f52c04cd65cbffebde7d7537c94"
+        },
+        {
+          "path": "training-summary.json",
+          "bytes": 3080,
+          "sha256": "ea90e0a587736bd1c6e8fda16291ceda6fb7dc1442c7b74dcb55bb18c97c7180"
+        }
+      ],
+      "archive": {
+        "bytes": 191949602,
+        "sha256": "2730f3c571139e8b98d40d1dee9f20d4fd5de7ea7dbf62bdfb59548d240d091c"
+      },
+      "release": {
+        "tag": "models-20261017-act17-v7-r1",
+        "asset": "act17-v7-native-r1-m-step10000-20261017.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261017-act17-v7-r1/act17-v7-native-r1-m-step10000-20261017.zip"
+      },
+      "limitations": [
+        "experimental own-RGB BOX near-field only",
+        "loading and physical success separate"
+      ],
+      "verification": {
+        "state": "VERIFIED",
+        "utc": "2026-10-17T07:56:50.977660+00:00",
+        "source_sha": "b8028ebea396b742aa3c0fd5973930ccebbb8edf",
+        "record": "experiments/2026-10-17-act17/v7/results/release-r1/public-verification.json",
+        "record_sha256": "22b2e794c6fce455cc948500f2ce871559c22c262da978adc596a439b764521b",
+        "public_redownload": true,
+        "full_archive_and_inventory_hashes": true,
+        "bundled_CPU_loading": true,
+        "scope": "fresh checkout, anonymous public download/full archive+file hashes, bundled CPU loading in existing pinned ACT environment; no task-success or raw-data-backup claim"
+      },
+      "description": "Experimental v7 native own-RGB BOX ACT M; R1 10000 updates, not a default controller; task evaluation separate",
+      "evaluation": {
+        "state": "NOT_READY",
+        "cohort": "act17-v7-native",
+        "source_sha": "de6170d93433fe340806a0881a45f23b19e6af4e",
+        "split": "validation8",
+        "counts": {
+          "task_success": 0,
+          "any_same_kind_success": 0,
+          "cap_end": 5,
+          "sequence_complete": 3,
+          "grasp_done_requested": 4,
+          "lift_success": 0,
+          "release_success": 0,
+          "N": 8,
+          "by_kind": {
+            "cyan": {
+              "N": 2,
+              "assigned_success": 0,
+              "any_same_kind_success": 0
+            },
+            "red": {
+              "N": 2,
+              "assigned_success": 0,
+              "any_same_kind_success": 0
+            },
+            "green": {
+              "N": 2,
+              "assigned_success": 0,
+              "any_same_kind_success": 0
+            },
+            "yellow": {
+              "N": 2,
+              "assigned_success": 0,
+              "any_same_kind_success": 0
+            }
+          }
+        },
+        "record": "experiments/2026-10-17-act17/v7/results/validation-independent-r1.json",
+        "record_sha256": "fa214161a670417e98e16d1abfc941cf68fc966f33330cd1a88b3de5a883d001",
+        "final40_submitted": false,
+        "scope": "native assigned and any-same-kind task success0/8; no stable lift/release; distribution verification is separate"
+      }
+    },
+    {
+      "id": "act17-v7-native-r1-f-step10000-20261017",
+      "status": "available",
+      "candidate": "F",
+      "source_sha": "e1b7de0f789305e12a3612e7cbf392b8e4ac21ee",
+      "packaging_source_sha": "de6170d93433fe340806a0881a45f23b19e6af4e",
+      "files": [
+        {
+          "path": "README.md",
+          "bytes": 344,
+          "sha256": "1d7f85cf84fab9d4d2adf1728638f8703fd3dedea39b60580a3b21d909c155d5"
+        },
+        {
+          "path": "act/SHA256.json",
+          "bytes": 265,
+          "sha256": "1428c6823a9d4e383f7bca68c105a41189b76314fc2ebcefc77a5b16b6a292c7"
+        },
+        {
+          "path": "act/adapter.json",
+          "bytes": 18322,
+          "sha256": "d1848ebd181a3cd92511cf3aa3dfc72387cc17d932acd3ee5939c1140bf1ad77"
+        },
+        {
+          "path": "act/config.json",
+          "bytes": 1278,
+          "sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+        },
+        {
+          "path": "act/model.safetensors",
+          "bytes": 207363320,
+          "sha256": "dc64dd5fee4c153f02babc89e562a7d139a9f5cbfefd7e601d6c2eb9717e21ae"
+        },
+        {
+          "path": "comparison-protocol.json",
+          "bytes": 10496,
+          "sha256": "9bcf20f4ee91a95ae84ce548b8dc0c99c44de4b0351e1f156749ec93a1d89adc"
+        },
+        {
+          "path": "dataset-manifest.json.zst",
+          "bytes": 36944,
+          "sha256": "cf634e32d4e2b59238285badff26652fffb77b9c431dd707383a5a12e7b24c94"
+        },
+        {
+          "path": "environment.json",
+          "bytes": 403,
+          "sha256": "9beb26ed688a836a1eda32ff5b5fd78341fbde44f353178d84d1fa5453fd0316"
+        },
+        {
+          "path": "inference/act16w_runtime.py",
+          "bytes": 9353,
+          "sha256": "e08ae134705b9844ca69e72365afdb86d13cb6d44d9dfd999f55aee7ef19b201"
+        },
+        {
+          "path": "inference/act17_compact_records.py",
+          "bytes": 4903,
+          "sha256": "b95194baac7f3fcdd67fd1b986499db669d10f88cac99c2457f111bdb7c00c96"
+        },
+        {
+          "path": "inference/act17_data.py",
+          "bytes": 16667,
+          "sha256": "b3823f91cd97a987cc7a32012c01ea7d2f953ec5ebd1182593fd380da34b54f4"
+        },
+        {
+          "path": "inference/act17_open_loop.py",
+          "bytes": 9884,
+          "sha256": "16a283b8f1442338a40a897f4cdcf44eefa20da0f715efdb4de22d8b58bcb9d0"
+        },
+        {
+          "path": "inference/act17_policy.py",
+          "bytes": 5277,
+          "sha256": "2089868718126c8eeb6851c6fe2b5c435367d79b5c049c6bac0da7a95eadde27"
+        },
+        {
+          "path": "inference/act_library/harness/__init__.py",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_contract.py",
+          "bytes": 9352,
+          "sha256": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_data.py",
+          "bytes": 22381,
+          "sha256": "8206d215ee14b3cc5935b9353d29ae28a2ac046061f23674dffeb3d6048d497f"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_loss.py",
+          "bytes": 3829,
+          "sha256": "d9dd54c32613f56b63d1f8a641b1156a1e7f925afd36e0c5ff68f3febd53dc52"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_policy.py",
+          "bytes": 10405,
+          "sha256": "0cfa080f086ea991368e3c686960cf54cab9a8f9796e1077557f17a639f79c6c"
+        },
+        {
+          "path": "inference/load_model.py",
+          "bytes": 1335,
+          "sha256": "621d5fea143747a131f171445728d4ae249b82370381ed07c651fe138ee66180"
+        },
+        {
+          "path": "inference/runtime/LICENSE.lerobot",
+          "bytes": 27627,
+          "sha256": "0583375a0ec642ec79c447781f34322b0cfa66baff31258214d040f1f6d86d7c"
+        },
+        {
+          "path": "inference/runtime/modeling_act.py",
+          "bytes": 35219,
+          "sha256": "8d622935319af7d03f1efd95d51e726af2921010f7e4f5ec3742f62280493111"
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 1860,
+          "sha256": "711d72e07e06f8e5edaa0e7341960b985003526f394c9911f4efb4ead66aa3cd"
+        },
+        {
+          "path": "training-summary.json",
+          "bytes": 3085,
+          "sha256": "5b8d154d3fc5bff90f5f5c8dcc78e86820a738bb94273134e2dbeb9a4adf7dc4"
+        }
+      ],
+      "archive": {
+        "bytes": 191950523,
+        "sha256": "ebcaa85db3b632ca8458060f66f4e8d0828ff70a5b4940d52b34fcf8bb66c63f"
+      },
+      "release": {
+        "tag": "models-20261017-act17-v7-r1",
+        "asset": "act17-v7-native-r1-f-step10000-20261017.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261017-act17-v7-r1/act17-v7-native-r1-f-step10000-20261017.zip"
+      },
+      "limitations": [
+        "experimental own-RGB BOX near-field only",
+        "loading and physical success separate"
+      ],
+      "verification": {
+        "state": "VERIFIED",
+        "utc": "2026-10-17T07:56:50.977660+00:00",
+        "source_sha": "b8028ebea396b742aa3c0fd5973930ccebbb8edf",
+        "record": "experiments/2026-10-17-act17/v7/results/release-r1/public-verification.json",
+        "record_sha256": "22b2e794c6fce455cc948500f2ce871559c22c262da978adc596a439b764521b",
+        "public_redownload": true,
+        "full_archive_and_inventory_hashes": true,
+        "bundled_CPU_loading": true,
+        "scope": "fresh checkout, anonymous public download/full archive+file hashes, bundled CPU loading in existing pinned ACT environment; no task-success or raw-data-backup claim"
+      },
+      "description": "Experimental v7 native own-RGB BOX ACT F; R1 10000 updates, not a default controller; task evaluation separate",
+      "evaluation": {
+        "state": "NOT_READY",
+        "cohort": "act17-v7-native",
+        "source_sha": "de6170d93433fe340806a0881a45f23b19e6af4e",
+        "split": "validation8",
+        "counts": {
+          "task_success": 0,
+          "any_same_kind_success": 0,
+          "cap_end": 3,
+          "sequence_complete": 5,
+          "grasp_done_requested": 5,
+          "lift_success": 0,
+          "release_success": 0,
+          "N": 8,
+          "by_kind": {
+            "cyan": {
+              "N": 2,
+              "assigned_success": 0,
+              "any_same_kind_success": 0
+            },
+            "red": {
+              "N": 2,
+              "assigned_success": 0,
+              "any_same_kind_success": 0
+            },
+            "green": {
+              "N": 2,
+              "assigned_success": 0,
+              "any_same_kind_success": 0
+            },
+            "yellow": {
+              "N": 2,
+              "assigned_success": 0,
+              "any_same_kind_success": 0
+            }
+          }
+        },
+        "record": "experiments/2026-10-17-act17/v7/results/validation-independent-r1.json",
+        "record_sha256": "fa214161a670417e98e16d1abfc941cf68fc966f33330cd1a88b3de5a883d001",
+        "final40_submitted": false,
+        "scope": "native assigned and any-same-kind task success0/8; no stable lift/release; distribution verification is separate"
+      }
+    },
+    {
+      "id": "act17-v7-native-r1-s-step10000-20261017",
+      "status": "available",
+      "candidate": "S",
+      "source_sha": "e1b7de0f789305e12a3612e7cbf392b8e4ac21ee",
+      "packaging_source_sha": "de6170d93433fe340806a0881a45f23b19e6af4e",
+      "files": [
+        {
+          "path": "README.md",
+          "bytes": 344,
+          "sha256": "1d170c73aaff9988d09b39f15918b971562c7aa0be73fa819af7641c4c471f6a"
+        },
+        {
+          "path": "act/SHA256.json",
+          "bytes": 265,
+          "sha256": "f7f60d262b3b185e7e8e1334f3ac7f9aee218d8bbe5540c27a4de8c449d93d31"
+        },
+        {
+          "path": "act/adapter.json",
+          "bytes": 18318,
+          "sha256": "e6bf766987389af4fca623109686905556dee91bde3b0d41f890b0bd6296b42f"
+        },
+        {
+          "path": "act/config.json",
+          "bytes": 1278,
+          "sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+        },
+        {
+          "path": "act/model.safetensors",
+          "bytes": 207363320,
+          "sha256": "020989d6ca11380167e7b2eea7dc214bd3f7c4454dcaa56f32a3280d54cfaf59"
+        },
+        {
+          "path": "comparison-protocol.json",
+          "bytes": 10496,
+          "sha256": "9bcf20f4ee91a95ae84ce548b8dc0c99c44de4b0351e1f156749ec93a1d89adc"
+        },
+        {
+          "path": "dataset-manifest.json.zst",
+          "bytes": 36944,
+          "sha256": "cf634e32d4e2b59238285badff26652fffb77b9c431dd707383a5a12e7b24c94"
+        },
+        {
+          "path": "environment.json",
+          "bytes": 403,
+          "sha256": "9beb26ed688a836a1eda32ff5b5fd78341fbde44f353178d84d1fa5453fd0316"
+        },
+        {
+          "path": "inference/act16w_runtime.py",
+          "bytes": 9353,
+          "sha256": "e08ae134705b9844ca69e72365afdb86d13cb6d44d9dfd999f55aee7ef19b201"
+        },
+        {
+          "path": "inference/act17_compact_records.py",
+          "bytes": 4903,
+          "sha256": "b95194baac7f3fcdd67fd1b986499db669d10f88cac99c2457f111bdb7c00c96"
+        },
+        {
+          "path": "inference/act17_data.py",
+          "bytes": 16667,
+          "sha256": "b3823f91cd97a987cc7a32012c01ea7d2f953ec5ebd1182593fd380da34b54f4"
+        },
+        {
+          "path": "inference/act17_open_loop.py",
+          "bytes": 9884,
+          "sha256": "16a283b8f1442338a40a897f4cdcf44eefa20da0f715efdb4de22d8b58bcb9d0"
+        },
+        {
+          "path": "inference/act17_policy.py",
+          "bytes": 5277,
+          "sha256": "2089868718126c8eeb6851c6fe2b5c435367d79b5c049c6bac0da7a95eadde27"
+        },
+        {
+          "path": "inference/act_library/harness/__init__.py",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_contract.py",
+          "bytes": 9352,
+          "sha256": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_data.py",
+          "bytes": 22381,
+          "sha256": "8206d215ee14b3cc5935b9353d29ae28a2ac046061f23674dffeb3d6048d497f"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_loss.py",
+          "bytes": 3829,
+          "sha256": "d9dd54c32613f56b63d1f8a641b1156a1e7f925afd36e0c5ff68f3febd53dc52"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_policy.py",
+          "bytes": 10405,
+          "sha256": "0cfa080f086ea991368e3c686960cf54cab9a8f9796e1077557f17a639f79c6c"
+        },
+        {
+          "path": "inference/load_model.py",
+          "bytes": 1335,
+          "sha256": "621d5fea143747a131f171445728d4ae249b82370381ed07c651fe138ee66180"
+        },
+        {
+          "path": "inference/runtime/LICENSE.lerobot",
+          "bytes": 27627,
+          "sha256": "0583375a0ec642ec79c447781f34322b0cfa66baff31258214d040f1f6d86d7c"
+        },
+        {
+          "path": "inference/runtime/modeling_act.py",
+          "bytes": 35219,
+          "sha256": "8d622935319af7d03f1efd95d51e726af2921010f7e4f5ec3742f62280493111"
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 1858,
+          "sha256": "a45c446027f6a59543b75755b1374ffcae2d450a577d19e14ac7f5d2cd0412c7"
+        },
+        {
+          "path": "training-summary.json",
+          "bytes": 3077,
+          "sha256": "aaf40f42d1a67c96d23b453edf69aa42df506772b74dee75571007f4a4139138"
+        }
+      ],
+      "archive": {
+        "bytes": 191949461,
+        "sha256": "31c80ad5ca82b4c1775bbe524c89fd2decae9a9da9f3e96929cbf2fc3443f205"
+      },
+      "release": {
+        "tag": "models-20261017-act17-v7-r1",
+        "asset": "act17-v7-native-r1-s-step10000-20261017.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261017-act17-v7-r1/act17-v7-native-r1-s-step10000-20261017.zip"
+      },
+      "limitations": [
+        "experimental own-RGB BOX near-field only",
+        "loading and physical success separate"
+      ],
+      "verification": {
+        "state": "VERIFIED",
+        "utc": "2026-10-17T07:56:50.977660+00:00",
+        "source_sha": "b8028ebea396b742aa3c0fd5973930ccebbb8edf",
+        "record": "experiments/2026-10-17-act17/v7/results/release-r1/public-verification.json",
+        "record_sha256": "22b2e794c6fce455cc948500f2ce871559c22c262da978adc596a439b764521b",
+        "public_redownload": true,
+        "full_archive_and_inventory_hashes": true,
+        "bundled_CPU_loading": true,
+        "scope": "fresh checkout, anonymous public download/full archive+file hashes, bundled CPU loading in existing pinned ACT environment; no task-success or raw-data-backup claim"
+      },
+      "description": "Experimental v7 native own-RGB BOX ACT S; R1 10000 updates, not a default controller; task evaluation separate",
+      "evaluation": {
+        "state": "NOT_READY",
+        "cohort": "act17-v7-native",
+        "source_sha": "de6170d93433fe340806a0881a45f23b19e6af4e",
+        "split": "validation8",
+        "counts": {
+          "task_success": 0,
+          "any_same_kind_success": 0,
+          "cap_end": 7,
+          "sequence_complete": 1,
+          "grasp_done_requested": 1,
+          "lift_success": 0,
+          "release_success": 0,
+          "N": 8,
+          "by_kind": {
+            "cyan": {
+              "N": 2,
+              "assigned_success": 0,
+              "any_same_kind_success": 0
+            },
+            "red": {
+              "N": 2,
+              "assigned_success": 0,
+              "any_same_kind_success": 0
+            },
+            "green": {
+              "N": 2,
+              "assigned_success": 0,
+              "any_same_kind_success": 0
+            },
+            "yellow": {
+              "N": 2,
+              "assigned_success": 0,
+              "any_same_kind_success": 0
+            }
+          }
+        },
+        "record": "experiments/2026-10-17-act17/v7/results/validation-independent-r1.json",
+        "record_sha256": "fa214161a670417e98e16d1abfc941cf68fc966f33330cd1a88b3de5a883d001",
+        "final40_submitted": false,
+        "scope": "native assigned and any-same-kind task success0/8; no stable lift/release; distribution verification is separate"
+      }
+    },
+    {
+      "id": "act18-v7-r8-step100000-20261017",
+      "status": "available",
+      "candidate": "R8",
+      "source_sha": "52e486316c25be122dc1e872b10ef8cd1e8b98e8",
+      "packaging_source_sha": "ab89b3c549791be19c93110b917a7fe1370ec15e",
+      "files": [
+        {
+          "path": "README.md",
+          "bytes": 227,
+          "sha256": "e4b784552829a6d0e6e93844539858fc27d54355934afe2cb91ac0c253faee45"
+        },
+        {
+          "path": "act/SHA256.json",
+          "bytes": 265,
+          "sha256": "f13e2e488d61a9026803b0fc3f606ad3d040699df49b3f4d403eee06ee004f57"
+        },
+        {
+          "path": "act/adapter.json",
+          "bytes": 18226,
+          "sha256": "2b84ac1110a211ddaf5d69d846fafc0e8bae8dd99698e7ef8182857ba1528005"
+        },
+        {
+          "path": "act/config.json",
+          "bytes": 1278,
+          "sha256": "d3fc9b81361077295e3436ec23cf10b8ea834c6d4bfc1a0405908a79a32ae884"
+        },
+        {
+          "path": "act/model.safetensors",
+          "bytes": 207363320,
+          "sha256": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a"
+        },
+        {
+          "path": "comparison-protocol.json",
+          "bytes": 4281,
+          "sha256": "1db4e22345fdf29cdd80d07bbf61f23aa6101a6859e125f974f550577be1fb4e"
+        },
+        {
+          "path": "dataset-manifest.json.zst",
+          "bytes": 36944,
+          "sha256": "cf634e32d4e2b59238285badff26652fffb77b9c431dd707383a5a12e7b24c94"
+        },
+        {
+          "path": "environment.json",
+          "bytes": 372,
+          "sha256": "b9d1e7b57f4afcaa61ba75afa10b0c1780c47c428168b1b1293c2937b7796c0e"
+        },
+        {
+          "path": "inference/act16w_runtime.py",
+          "bytes": 9353,
+          "sha256": "e08ae134705b9844ca69e72365afdb86d13cb6d44d9dfd999f55aee7ef19b201"
+        },
+        {
+          "path": "inference/act17_compact_records.py",
+          "bytes": 4903,
+          "sha256": "b95194baac7f3fcdd67fd1b986499db669d10f88cac99c2457f111bdb7c00c96"
+        },
+        {
+          "path": "inference/act17_data.py",
+          "bytes": 16676,
+          "sha256": "1166455bedc6ff9ebde70c973701a13525d91abb4c93bf41534fb70767a1e9de"
+        },
+        {
+          "path": "inference/act17_open_loop.py",
+          "bytes": 9884,
+          "sha256": "16a283b8f1442338a40a897f4cdcf44eefa20da0f715efdb4de22d8b58bcb9d0"
+        },
+        {
+          "path": "inference/act17_policy.py",
+          "bytes": 5277,
+          "sha256": "2089868718126c8eeb6851c6fe2b5c435367d79b5c049c6bac0da7a95eadde27"
+        },
+        {
+          "path": "inference/act18_policy.py",
+          "bytes": 7143,
+          "sha256": "eb1baf2de1156dbd35e41c82ec87482b161843b75f82e1ae5694b6d77c1de37b"
+        },
+        {
+          "path": "inference/act_library/harness/__init__.py",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_contract.py",
+          "bytes": 9352,
+          "sha256": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_data.py",
+          "bytes": 22381,
+          "sha256": "8206d215ee14b3cc5935b9353d29ae28a2ac046061f23674dffeb3d6048d497f"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_loss.py",
+          "bytes": 3829,
+          "sha256": "d9dd54c32613f56b63d1f8a641b1156a1e7f925afd36e0c5ff68f3febd53dc52"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_policy.py",
+          "bytes": 10405,
+          "sha256": "0cfa080f086ea991368e3c686960cf54cab9a8f9796e1077557f17a639f79c6c"
+        },
+        {
+          "path": "inference/load_model.py",
+          "bytes": 1317,
+          "sha256": "6ae1549a3bc4d0e5ced29e71b5f37470f700af49ed474d705344cf9881e760f1"
+        },
+        {
+          "path": "inference/runtime/LICENSE.lerobot",
+          "bytes": 27627,
+          "sha256": "0583375a0ec642ec79c447781f34322b0cfa66baff31258214d040f1f6d86d7c"
+        },
+        {
+          "path": "inference/runtime/modeling_act.py",
+          "bytes": 35219,
+          "sha256": "8d622935319af7d03f1efd95d51e726af2921010f7e4f5ec3742f62280493111"
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 1698,
+          "sha256": "c879a8a650350e0582e68dd7175098630b9d895592df42fcf51d1846351e4695"
+        },
+        {
+          "path": "training-summary.json",
+          "bytes": 2634,
+          "sha256": "043e556cd45059af40de8ab2df75742eb1a81800032409adbac056ba14b2ba28"
+        }
+      ],
+      "archive": {
+        "bytes": 191989583,
+        "sha256": "6ac5a49ecb871120cbbd0ac240d499f8a4eddddcffb3af84b48a322b9308a2c7"
+      },
+      "release": {
+        "tag": "models-20261017-act18-v7-r1",
+        "asset": "act18-v7-r8-step100000-20261017.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261017-act18-v7-r1/act18-v7-r8-step100000-20261017.zip"
+      },
+      "description": "ACT18 v7 fp32 100k near-field own-RGB BOX ACT R8; TRAIN4 0/4 NOT_READY, preservation/reproduction only, NOT a controller",
+      "limitations": [
+        "experimental own-RGB BOX near-field only",
+        "TRAIN4 0/4 NOT_READY: VAL8 and FINAL40 not submitted; do not use as a controller",
+        "100k bf16 training not run (only a 2000-step paired probe)",
+        "loading and physical success are separate",
+        "not pooled with act17, bf16 probe or other hosts"
+      ],
+      "evaluation": {
+        "state": "NOT_READY",
+        "cohort": "act18-v7-reference",
+        "training_source_sha": "52e486316c25be122dc1e872b10ef8cd1e8b98e8",
+        "split": "train4",
+        "seeds": [
+          88600,
+          88601,
+          88602,
+          88603
+        ],
+        "counts": {
+          "N": 4,
+          "task_success": 0,
+          "grasp_done_requested": 0,
+          "physical_lift_rows": 2,
+          "stable_lift_gate": 0,
+          "stable_release_gate": 0,
+          "cap_end": 4
+        },
+        "funnel": [
+          {
+            "gate": "requested",
+            "passed": 4,
+            "rejected": 0
+          },
+          {
+            "gate": "grasp_done",
+            "passed": 0,
+            "rejected": 4
+          },
+          {
+            "gate": "stable_lift",
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "stable_release",
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "task_success",
+            "passed": 0,
+            "rejected": 0
+          }
+        ],
+        "reason": "TRAIN4 4/4 required before VAL8; not met, so VAL8/FINAL40 were not submitted",
+        "raw": {
+          "vm_stage": "/home/ugrp/ugrp-sim/runs/act18/finish-r3/R8-train",
+          "vm_stage_summary": "/home/ugrp/ugrp-sim/runs/act18/finish-r3/R8-train/summary.json",
+          "vm_stage_recount": "/home/ugrp/ugrp-sim/runs/act18/finish-r3/R8-train/raw-recount.json",
+          "vm_independent_recount": "/home/ugrp/ugrp-sim/runs/act18/recount-r1/R8-train.json"
+        }
+      },
+      "verification": {
+        "state": "VERIFIED",
+        "utc": "2026-10-17T18:38:41.927402+00:00",
+        "source_sha": "e91d418097d3104c457211dc8c44b8b7d2534d80",
+        "record": "experiments/2026-10-17-act18/results/release-r1/public-verification.json",
+        "record_sha256": "fc74c8967ea43f9341b13a8c6bff36e0ea934d6822b60d24020f94be35ed9f7a",
+        "public_redownload": true,
+        "full_archive_and_inventory_hashes": true,
+        "bundled_CPU_loading": true,
+        "verified_files": 24,
+        "verified_bytes": 207592611,
+        "loading": {
+          "ready": true,
+          "device": "cpu",
+          "chunk": 8,
+          "bundled_inference_library": true,
+          "bundled_act_runtime": true,
+          "scope": "model loading only; no physical success claim"
+        },
+        "scope": "fresh checkout, anonymous public download/full archive+file hashes, bundled CPU loading in existing pinned ACT environment; NOT a physical task-success or raw-data-backup claim"
+      }
+    },
+    {
+      "id": "act18-v7-r100-step100000-20261017",
+      "status": "available",
+      "candidate": "R100",
+      "source_sha": "52e486316c25be122dc1e872b10ef8cd1e8b98e8",
+      "packaging_source_sha": "ab89b3c549791be19c93110b917a7fe1370ec15e",
+      "files": [
+        {
+          "path": "README.md",
+          "bytes": 229,
+          "sha256": "d46b4ee36c6e687f03522146fdcd7b09bc502de9accb6c7219381dab78e2163b"
+        },
+        {
+          "path": "act/SHA256.json",
+          "bytes": 265,
+          "sha256": "c3d33d379290401492a84d6f43a8b45e9d9e5e51936f7e9e3e40af9b86b2d2f3"
+        },
+        {
+          "path": "act/adapter.json",
+          "bytes": 18232,
+          "sha256": "d540e85a49c475911a4e2132335618df92cfb724ebf4be277cd0e45467ac4bbf"
+        },
+        {
+          "path": "act/config.json",
+          "bytes": 1280,
+          "sha256": "b1ea970c3f775121fe337311656d7b1063611257e7973c12a57b23270750cf49"
+        },
+        {
+          "path": "act/model.safetensors",
+          "bytes": 207740160,
+          "sha256": "44b11c3c147fb633fffa9e9cb6a0a48c5801f0b8fd2bdd9e33ea14a16804a544"
+        },
+        {
+          "path": "comparison-protocol.json",
+          "bytes": 4281,
+          "sha256": "1db4e22345fdf29cdd80d07bbf61f23aa6101a6859e125f974f550577be1fb4e"
+        },
+        {
+          "path": "dataset-manifest.json.zst",
+          "bytes": 36944,
+          "sha256": "cf634e32d4e2b59238285badff26652fffb77b9c431dd707383a5a12e7b24c94"
+        },
+        {
+          "path": "environment.json",
+          "bytes": 372,
+          "sha256": "b9d1e7b57f4afcaa61ba75afa10b0c1780c47c428168b1b1293c2937b7796c0e"
+        },
+        {
+          "path": "inference/act16w_runtime.py",
+          "bytes": 9353,
+          "sha256": "e08ae134705b9844ca69e72365afdb86d13cb6d44d9dfd999f55aee7ef19b201"
+        },
+        {
+          "path": "inference/act17_compact_records.py",
+          "bytes": 4903,
+          "sha256": "b95194baac7f3fcdd67fd1b986499db669d10f88cac99c2457f111bdb7c00c96"
+        },
+        {
+          "path": "inference/act17_data.py",
+          "bytes": 16676,
+          "sha256": "1166455bedc6ff9ebde70c973701a13525d91abb4c93bf41534fb70767a1e9de"
+        },
+        {
+          "path": "inference/act17_open_loop.py",
+          "bytes": 9884,
+          "sha256": "16a283b8f1442338a40a897f4cdcf44eefa20da0f715efdb4de22d8b58bcb9d0"
+        },
+        {
+          "path": "inference/act17_policy.py",
+          "bytes": 5277,
+          "sha256": "2089868718126c8eeb6851c6fe2b5c435367d79b5c049c6bac0da7a95eadde27"
+        },
+        {
+          "path": "inference/act18_policy.py",
+          "bytes": 7143,
+          "sha256": "eb1baf2de1156dbd35e41c82ec87482b161843b75f82e1ae5694b6d77c1de37b"
+        },
+        {
+          "path": "inference/act_library/harness/__init__.py",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_contract.py",
+          "bytes": 9352,
+          "sha256": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_data.py",
+          "bytes": 22381,
+          "sha256": "8206d215ee14b3cc5935b9353d29ae28a2ac046061f23674dffeb3d6048d497f"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_loss.py",
+          "bytes": 3829,
+          "sha256": "d9dd54c32613f56b63d1f8a641b1156a1e7f925afd36e0c5ff68f3febd53dc52"
+        },
+        {
+          "path": "inference/act_library/harness/grasp_act_policy.py",
+          "bytes": 10405,
+          "sha256": "0cfa080f086ea991368e3c686960cf54cab9a8f9796e1077557f17a639f79c6c"
+        },
+        {
+          "path": "inference/load_model.py",
+          "bytes": 1317,
+          "sha256": "6ae1549a3bc4d0e5ced29e71b5f37470f700af49ed474d705344cf9881e760f1"
+        },
+        {
+          "path": "inference/runtime/LICENSE.lerobot",
+          "bytes": 27627,
+          "sha256": "0583375a0ec642ec79c447781f34322b0cfa66baff31258214d040f1f6d86d7c"
+        },
+        {
+          "path": "inference/runtime/modeling_act.py",
+          "bytes": 35219,
+          "sha256": "8d622935319af7d03f1efd95d51e726af2921010f7e4f5ec3742f62280493111"
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 1702,
+          "sha256": "2beccf21222e3f8667592a30d384459c493b10482cc2a00a374987f28479c9a7"
+        },
+        {
+          "path": "training-summary.json",
+          "bytes": 2636,
+          "sha256": "27bd38f983d8b95cfd74cdfc7e81896465ed3315e20fe98c41240e00c32bb2fc"
+        }
+      ],
+      "archive": {
+        "bytes": 192343472,
+        "sha256": "79be292ed14a8612e7d214bef56df1d19719d80da634a0f1d935323d4bda6719"
+      },
+      "release": {
+        "tag": "models-20261017-act18-v7-r1",
+        "asset": "act18-v7-r100-step100000-20261017.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261017-act18-v7-r1/act18-v7-r100-step100000-20261017.zip"
+      },
+      "description": "ACT18 v7 fp32 100k near-field own-RGB BOX ACT R100; TRAIN4 0/4 NOT_READY, preservation/reproduction only, NOT a controller",
+      "limitations": [
+        "experimental own-RGB BOX near-field only",
+        "TRAIN4 0/4 NOT_READY: VAL8 and FINAL40 not submitted; do not use as a controller",
+        "100k bf16 training not run (only a 2000-step paired probe)",
+        "loading and physical success are separate",
+        "not pooled with act17, bf16 probe or other hosts"
+      ],
+      "evaluation": {
+        "state": "NOT_READY",
+        "cohort": "act18-v7-reference",
+        "training_source_sha": "52e486316c25be122dc1e872b10ef8cd1e8b98e8",
+        "split": "train4",
+        "seeds": [
+          88600,
+          88601,
+          88602,
+          88603
+        ],
+        "counts": {
+          "N": 4,
+          "task_success": 0,
+          "grasp_done_requested": 0,
+          "physical_lift_rows": 0,
+          "stable_lift_gate": 0,
+          "stable_release_gate": 0,
+          "cap_end": 4
+        },
+        "funnel": [
+          {
+            "gate": "requested",
+            "passed": 4,
+            "rejected": 0
+          },
+          {
+            "gate": "grasp_done",
+            "passed": 0,
+            "rejected": 4
+          },
+          {
+            "gate": "stable_lift",
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "stable_release",
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "task_success",
+            "passed": 0,
+            "rejected": 0
+          }
+        ],
+        "reason": "TRAIN4 4/4 required before VAL8; not met, so VAL8/FINAL40 were not submitted",
+        "raw": {
+          "vm_stage": "/home/ugrp/ugrp-sim/runs/act18/finish-r3/R100-train",
+          "vm_stage_summary": "/home/ugrp/ugrp-sim/runs/act18/finish-r3/R100-train/summary.json",
+          "vm_stage_recount": "/home/ugrp/ugrp-sim/runs/act18/finish-r3/R100-train/raw-recount.json",
+          "vm_independent_recount": "/home/ugrp/ugrp-sim/runs/act18/recount-r1/R100-train.json"
+        }
+      },
+      "verification": {
+        "state": "VERIFIED",
+        "utc": "2026-10-17T18:38:41.927402+00:00",
+        "source_sha": "e91d418097d3104c457211dc8c44b8b7d2534d80",
+        "record": "experiments/2026-10-17-act18/results/release-r1/public-verification.json",
+        "record_sha256": "fc74c8967ea43f9341b13a8c6bff36e0ea934d6822b60d24020f94be35ed9f7a",
+        "public_redownload": true,
+        "full_archive_and_inventory_hashes": true,
+        "bundled_CPU_loading": true,
+        "verified_files": 24,
+        "verified_bytes": 207969467,
+        "loading": {
+          "ready": true,
+          "device": "cpu",
+          "chunk": 100,
+          "bundled_inference_library": true,
+          "bundled_act_runtime": true,
+          "scope": "model loading only; no physical success claim"
+        },
+        "scope": "fresh checkout, anonymous public download/full archive+file hashes, bundled CPU loading in existing pinned ACT environment; NOT a physical task-success or raw-data-backup claim"
+      }
+    },
+    {
       "id": "grasp-act-solo-smoke-f609979c",
       "status": "available",
       "description": "Fixed smoke step 300 own-RGB solo ACT pilot; not a default controller",

@@ -1,0 +1,485 @@
+{
+  "utc": "2026-10-17T08:01:39.932984+00:00",
+  "status": "complete_first30_observation_audit",
+  "evaluation_complete": false,
+  "groups": [
+    {
+      "group": "MFS-0",
+      "planned_native_worlds": 3,
+      "witness_world": 0,
+      "seed": 88623,
+      "observed_SIM_s": 30.0,
+      "wall_s": 544.669607737,
+      "wall_per_SIM_world": 6.051884530411111,
+      "source_JPEG_paths": [
+        "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-0/evaluation/actor-inputs/world-000/rgb/r1/000000.jpg",
+        "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-0/evaluation/actor-inputs/world-000/rgb/r1/000300.jpg"
+      ],
+      "source_write_mtime_ns": [
+        1792223239393440701,
+        1792223784063048438
+      ],
+      "method": "actual original evaluator JPEG write timestamps, before closed-job compaction; compile/reset excluded",
+      "mode": "record_only"
+    },
+    {
+      "group": "MFS-1",
+      "planned_native_worlds": 9,
+      "witness_world": 1,
+      "seed": 88644,
+      "observed_SIM_s": 30.0,
+      "wall_s": 708.334908207,
+      "wall_per_SIM_world": 2.623462622988889,
+      "source_JPEG_paths": [
+        "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-1/evaluation/actor-inputs/world-001/rgb/r1/000000.jpg",
+        "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-1/evaluation/actor-inputs/world-001/rgb/r1/000300.jpg"
+      ],
+      "source_write_mtime_ns": [
+        1792223279656332855,
+        1792223987991241062
+      ],
+      "method": "actual original evaluator JPEG write timestamps, before closed-job compaction; compile/reset excluded",
+      "mode": "record_only"
+    },
+    {
+      "group": "MFS-2",
+      "planned_native_worlds": 3,
+      "witness_world": 0,
+      "seed": 88621,
+      "observed_SIM_s": 30.0,
+      "wall_s": 532.492822196,
+      "wall_per_SIM_world": 5.9165869132888895,
+      "source_JPEG_paths": [
+        "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-2/evaluation/actor-inputs/world-000/rgb/r1/000000.jpg",
+        "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-2/evaluation/actor-inputs/world-000/rgb/r1/000300.jpg"
+      ],
+      "source_write_mtime_ns": [
+        1792223233037111328,
+        1792223765529933524
+      ],
+      "method": "actual original evaluator JPEG write timestamps, before closed-job compaction; compile/reset excluded",
+      "mode": "record_only"
+    },
+    {
+      "group": "MFS-3",
+      "planned_native_worlds": 9,
+      "witness_world": 1,
+      "seed": 88645,
+      "observed_SIM_s": 30.0,
+      "wall_s": 743.168220011,
+      "wall_per_SIM_world": 2.7524748889296298,
+      "source_JPEG_paths": [
+        "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-3/evaluation/actor-inputs/world-001/rgb/r1/000000.jpg",
+        "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-3/evaluation/actor-inputs/world-001/rgb/r1/000300.jpg"
+      ],
+      "source_write_mtime_ns": [
+        1792223263132027562,
+        1792224006300247573
+      ],
+      "method": "actual original evaluator JPEG write timestamps, before closed-job compaction; compile/reset excluded",
+      "mode": "record_only"
+    }
+  ],
+  "median_wall_per_SIM_world": 4.334530901109259,
+  "median_raw_batch_wall_per_SIM": 20.883408599066666,
+  "world_prefixes": [
+    {
+      "group": "MFS-0",
+      "candidate": "M",
+      "seed": 88623,
+      "rows": 301,
+      "observed_SIM_s": 30.0,
+      "skill_counts": {
+        "grasp": 301
+      },
+      "contract_schemas": [
+        "ugrp.grasp_act.student.v6"
+      ],
+      "LLM_calls": 0,
+      "GT_policy_fields": 0,
+      "note": "shorter prefix may be an already terminal world; task status comes from completed evaluator"
+    },
+    {
+      "group": "MFS-0",
+      "candidate": "F",
+      "seed": 88623,
+      "rows": 301,
+      "observed_SIM_s": 30.0,
+      "skill_counts": {
+        "grasp": 301
+      },
+      "contract_schemas": [
+        "ugrp.grasp_act.student.v6"
+      ],
+      "LLM_calls": 0,
+      "GT_policy_fields": 0,
+      "note": "shorter prefix may be an already terminal world; task status comes from completed evaluator"
+    },
+    {
+      "group": "MFS-0",
+      "candidate": "S",
+      "seed": 88623,
+      "rows": 301,
+      "observed_SIM_s": 30.0,
+      "skill_counts": {
+        "grasp": 301
+      },
+      "contract_schemas": [
+        "ugrp.grasp_act.student.v6"
+      ],
+      "LLM_calls": 0,
+      "GT_policy_fields": 0,
+      "note": "shorter prefix may be an already terminal world; task status comes from completed evaluator"
+    },
+    {
+      "group": "MFS-1",
+      "candidate": "M",
+      "seed": 88622,
+      "rows": 262,
+      "observed_SIM_s": 26.1,
+      "skill_counts": {
+        "grasp": 224,
+        "release": 38
+      },
+      "contract_schemas": [
+        "ugrp.grasp_act.student.v6"
+      ],
+      "LLM_calls": 0,
+      "GT_policy_fields": 0,
+      "note": "shorter prefix may be an already terminal world; task status comes from completed evaluator"
+    },
+    {
+      "group": "MFS-1",
+      "candidate": "M",
+      "seed": 88644,
+      "rows": 301,
+      "observed_SIM_s": 30.0,
+      "skill_counts": {
+        "grasp": 301
+      },
+      "contract_schemas": [
+        "ugrp.grasp_act.student.v6"
+      ],
+      "LLM_calls": 0,
+      "GT_policy_fields": 0,
+      "note": "shorter prefix may be an already terminal world; task status comes from completed evaluator"
+    },
+    {
+      "group": "MFS-1",
+      "candidate": "M",
+      "seed": 88647,
+      "rows": 189,
+      "observed_SIM_s": 18.8,
+      "skill_counts": {
+        "grasp": 135,
+        "release": 54
+      },
+      "contract_schemas": [
+        "ugrp.grasp_act.student.v6"
+      ],
+      "LLM_calls": 0,
+      "GT_policy_fields": 0,
+      "note": "shorter prefix may be an already terminal world; task status comes from completed evaluator"
+    },
+    {
+      "group": "MFS-1",
+      "candidate": "F",
+      "seed": 88622,
+      "rows": 301,
+      "observed_SIM_s": 30.0,
+      "skill_counts": {
+        "grasp": 301
+      },
+      "contract_schemas": [
+        "ugrp.grasp_act.student.v6"
+      ],
+      "LLM_calls": 0,
+      "GT_policy_fields": 0,
+      "note": "shorter prefix may be an already terminal world; task status comes from completed evaluator"
+    },
+    {
+      "group": "MFS-1",
+      "candidate": "F",
+      "seed": 88644,
+      "rows": 142,
+      "observed_SIM_s": 14.100000000000001,
+      "skill_counts": {
+        "grasp": 94,
+        "release": 48
+      },
+      "contract_schemas": [
+        "ugrp.grasp_act.student.v6"
+      ],
+      "LLM_calls": 0,
+      "GT_policy_fields": 0,
+      "note": "shorter prefix may be an already terminal world; task status comes from completed evaluator"
+    },
+    {
+      "group": "MFS-1",
+      "candidate": "F",
+      "seed": 88647,
+      "rows": 151,
+      "observed_SIM_s": 15.0,
+      "skill_counts": {
+        "grasp": 103,
+        "release": 48
+      },
+      "contract_schemas": [
+        "ugrp.grasp_act.student.v6"
+      ],
+      "LLM_calls": 0,
+      "GT_policy_fields": 0,
+      "note": "shorter prefix may be an already terminal world; task status comes from completed evaluator"
+    },
+    {
+      "group": "MFS-1",
+      "candidate": "S",
+      "seed": 88622,
+      "rows": 141,
+      "observed_SIM_s": 14.0,
+      "skill_counts": {
+        "grasp": 85,
+        "release": 56
+      },
+      "contract_schemas": [
+        "ugrp.grasp_act.student.v6"
+      ],
+      "LLM_calls": 0,
+      "GT_policy_fields": 0,
+      "note": "shorter prefix may be an already terminal world; task status comes from completed evaluator"
+    },
+    {
+      "group": "MFS-1",
+      "candidate": "S",
+      "seed": 88644,
+      "rows": 301,
+      "observed_SIM_s": 30.0,
+      "skill_counts": {
+        "grasp": 301
+      },
+      "contract_schemas": [
+        "ugrp.grasp_act.student.v6"
+      ],
+      "LLM_calls": 0,
+      "GT_policy_fields": 0,
+      "note": "shorter prefix may be an already terminal world; task status comes from completed evaluator"
+    },
+    {
+      "group": "MFS-1",
+      "candidate": "S",
+      "seed": 88647,
+      "rows": 301,
+      "observed_SIM_s": 30.0,
+      "skill_counts": {
+        "grasp": 301
+      },
+      "contract_schemas": [
+        "ugrp.grasp_act.student.v6"
+      ],
+      "LLM_calls": 0,
+      "GT_policy_fields": 0,
+      "note": "shorter prefix may be an already terminal world; task status comes from completed evaluator"
+    },
+    {
+      "group": "MFS-2",
+      "candidate": "M",
+      "seed": 88621,
+      "rows": 301,
+      "observed_SIM_s": 30.0,
+      "skill_counts": {
+        "grasp": 301
+      },
+      "contract_schemas": [
+        "ugrp.grasp_act.student.v6"
+      ],
+      "LLM_calls": 0,
+      "GT_policy_fields": 0,
+      "note": "shorter prefix may be an already terminal world; task status comes from completed evaluator"
+    },
+    {
+      "group": "MFS-2",
+      "candidate": "F",
+      "seed": 88621,
+      "rows": 301,
+      "observed_SIM_s": 30.0,
+      "skill_counts": {
+        "grasp": 301
+      },
+      "contract_schemas": [
+        "ugrp.grasp_act.student.v6"
+      ],
+      "LLM_calls": 0,
+      "GT_policy_fields": 0,
+      "note": "shorter prefix may be an already terminal world; task status comes from completed evaluator"
+    },
+    {
+      "group": "MFS-2",
+      "candidate": "S",
+      "seed": 88621,
+      "rows": 301,
+      "observed_SIM_s": 30.0,
+      "skill_counts": {
+        "grasp": 301
+      },
+      "contract_schemas": [
+        "ugrp.grasp_act.student.v6"
+      ],
+      "LLM_calls": 0,
+      "GT_policy_fields": 0,
+      "note": "shorter prefix may be an already terminal world; task status comes from completed evaluator"
+    },
+    {
+      "group": "MFS-3",
+      "candidate": "M",
+      "seed": 88620,
+      "rows": 252,
+      "observed_SIM_s": 25.1,
+      "skill_counts": {
+        "grasp": 214,
+        "release": 38
+      },
+      "contract_schemas": [
+        "ugrp.grasp_act.student.v6"
+      ],
+      "LLM_calls": 0,
+      "GT_policy_fields": 0,
+      "note": "shorter prefix may be an already terminal world; task status comes from completed evaluator"
+    },
+    {
+      "group": "MFS-3",
+      "candidate": "M",
+      "seed": 88645,
+      "rows": 301,
+      "observed_SIM_s": 30.0,
+      "skill_counts": {
+        "grasp": 141,
+        "release": 160
+      },
+      "contract_schemas": [
+        "ugrp.grasp_act.student.v6"
+      ],
+      "LLM_calls": 0,
+      "GT_policy_fields": 0,
+      "note": "shorter prefix may be an already terminal world; task status comes from completed evaluator"
+    },
+    {
+      "group": "MFS-3",
+      "candidate": "M",
+      "seed": 88646,
+      "rows": 301,
+      "observed_SIM_s": 30.0,
+      "skill_counts": {
+        "grasp": 301
+      },
+      "contract_schemas": [
+        "ugrp.grasp_act.student.v6"
+      ],
+      "LLM_calls": 0,
+      "GT_policy_fields": 0,
+      "note": "shorter prefix may be an already terminal world; task status comes from completed evaluator"
+    },
+    {
+      "group": "MFS-3",
+      "candidate": "F",
+      "seed": 88620,
+      "rows": 143,
+      "observed_SIM_s": 14.200000000000001,
+      "skill_counts": {
+        "grasp": 94,
+        "release": 49
+      },
+      "contract_schemas": [
+        "ugrp.grasp_act.student.v6"
+      ],
+      "LLM_calls": 0,
+      "GT_policy_fields": 0,
+      "note": "shorter prefix may be an already terminal world; task status comes from completed evaluator"
+    },
+    {
+      "group": "MFS-3",
+      "candidate": "F",
+      "seed": 88645,
+      "rows": 205,
+      "observed_SIM_s": 20.400000000000002,
+      "skill_counts": {
+        "grasp": 157,
+        "release": 48
+      },
+      "contract_schemas": [
+        "ugrp.grasp_act.student.v6"
+      ],
+      "LLM_calls": 0,
+      "GT_policy_fields": 0,
+      "note": "shorter prefix may be an already terminal world; task status comes from completed evaluator"
+    },
+    {
+      "group": "MFS-3",
+      "candidate": "F",
+      "seed": 88646,
+      "rows": 139,
+      "observed_SIM_s": 13.8,
+      "skill_counts": {
+        "grasp": 79,
+        "release": 60
+      },
+      "contract_schemas": [
+        "ugrp.grasp_act.student.v6"
+      ],
+      "LLM_calls": 0,
+      "GT_policy_fields": 0,
+      "note": "shorter prefix may be an already terminal world; task status comes from completed evaluator"
+    },
+    {
+      "group": "MFS-3",
+      "candidate": "S",
+      "seed": 88620,
+      "rows": 301,
+      "observed_SIM_s": 30.0,
+      "skill_counts": {
+        "grasp": 301
+      },
+      "contract_schemas": [
+        "ugrp.grasp_act.student.v6"
+      ],
+      "LLM_calls": 0,
+      "GT_policy_fields": 0,
+      "note": "shorter prefix may be an already terminal world; task status comes from completed evaluator"
+    },
+    {
+      "group": "MFS-3",
+      "candidate": "S",
+      "seed": 88645,
+      "rows": 301,
+      "observed_SIM_s": 30.0,
+      "skill_counts": {
+        "grasp": 301
+      },
+      "contract_schemas": [
+        "ugrp.grasp_act.student.v6"
+      ],
+      "LLM_calls": 0,
+      "GT_policy_fields": 0,
+      "note": "shorter prefix may be an already terminal world; task status comes from completed evaluator"
+    },
+    {
+      "group": "MFS-3",
+      "candidate": "S",
+      "seed": 88646,
+      "rows": 301,
+      "observed_SIM_s": 30.0,
+      "skill_counts": {
+        "grasp": 301
+      },
+      "contract_schemas": [
+        "ugrp.grasp_act.student.v6"
+      ],
+      "LLM_calls": 0,
+      "GT_policy_fields": 0,
+      "note": "shorter prefix may be an already terminal world; task status comes from completed evaluator"
+    }
+  ],
+  "source_sha": "de6170d93433fe340806a0881a45f23b19e6af4e",
+  "physics_steps": 0,
+  "training_updates": 0,
+  "scope": "read existing actual own-observation prefixes and timestamp metadata only; no performance/task-success inference"
+}

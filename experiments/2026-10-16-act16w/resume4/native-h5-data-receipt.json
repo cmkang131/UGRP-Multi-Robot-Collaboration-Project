@@ -1,0 +1,127 @@
+{
+  "status": "data_recorded_and_audited",
+  "collector_checkpoint_C_sha256": "3ba01de734afd7d90fe58b253d720342e3deb8da371c8f7997af5753f9268d7b",
+  "collector_and_training_source": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+  "coverage_analysis_source": "34d53cfaadc093ac957bbfffc780a76f372041f9",
+  "observations": 5427,
+  "N": 20,
+  "valid_h0": 290,
+  "valid_noninitial": 270,
+  "noninitial_world_N": 7,
+  "target_visible_valid_N": 221,
+  "teacher_phase_counts": {
+    "start": 20,
+    "fold": 42,
+    "approach": 181,
+    "align": 47
+  },
+  "prefix_cap_end_N": 14,
+  "only_initial_label_world_N": 13,
+  "accepted_ratio": 0.05343652109821264,
+  "max_valid_elapsed_SIM_s": 12.0,
+  "scope": "completed registered TRAIN20, structural data acceptance and coverage only; expert recovery success and h5 task effect still unmeasured",
+  "valid_after_different_student_command": 270,
+  "valid_noninitial_by_kind": {
+    "cyan": 88,
+    "red": 32,
+    "green": 30,
+    "yellow": 120
+  },
+  "input_audit": {
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "teacher_actions_executed": 0
+  },
+  "rejections": {
+    "potential_hold_after_student_issued_close": 5137
+  },
+  "exclusion_limit": "potential issued close predicate, not measured physical holding; unchanged conservative data exclusion retained",
+  "robot_pose_distributions_evaluation_only": {
+    "same_elapsed_robot_xy_distance_m": {
+      "N": 270,
+      "quantiles": {
+        "min": 3.898749792896584e-05,
+        "p50": 0.007829478856696425,
+        "p95": 0.08431861690912475,
+        "max": 0.09029012699871912
+      }
+    },
+    "same_elapsed_robot_yaw_abs_rad": {
+      "N": 270,
+      "quantiles": {
+        "min": 8.80112756640461e-06,
+        "p50": 0.035191066920398584,
+        "p95": 0.22016298397647685,
+        "max": 0.24886294304462248
+      }
+    },
+    "nearest_recorded_teacher_xy_distance_m": {
+      "N": 270,
+      "quantiles": {
+        "min": 1.3495418260655313e-05,
+        "p50": 0.0031952871736990324,
+        "p95": 0.034436544354520086,
+        "max": 0.035549669217114395
+      }
+    }
+  },
+  "initial_robot_pose_exact_N": 20,
+  "data": {
+    "dataset_manifest_sha256": "2c132339c61e433bf914ecff428e7055ff37c531559f205a485758215e892e3d",
+    "base_manifest_sha256": "3d0a1c4907f0c91a5674d23e52c9fbf339f03952ce3bcf92dee21f7e8ab7dbd2",
+    "files_freshly_hashed": 242,
+    "unchanged_D0_shared_files": 161,
+    "actual_rows": {
+      "train": 12150,
+      "validation": 3026
+    },
+    "actual_episode_counts": {
+      "train": 52,
+      "validation": 8
+    },
+    "new_rows_by_skill": {
+      "grasp": 290
+    },
+    "h0_valid_future7_padded": true,
+    "D0_normalization_sha256": "bf3caa29012419663820ca13c7e7dd1d6f86199356044d2dbc84be132a923132",
+    "D1_normalization_sha256": "bf3caa29012419663820ca13c7e7dd1d6f86199356044d2dbc84be132a923132",
+    "done_priors_annotation": {
+      "original_dataset_audit_done_priors_are_inherited_D0": {
+        "grasp": {
+          "positive_n": 32,
+          "rows_N": 9055,
+          "positive_fraction": 0.00353395913859746
+        },
+        "release": {
+          "positive_n": 32,
+          "rows_N": 2805,
+          "positive_fraction": 0.01140819964349376
+        }
+      },
+      "actual_D1_training_done_class_counts": {
+        "grasp": {
+          "positive_n": 32,
+          "rows_N": 9345,
+          "positive_fraction": 0.0034242910647405028
+        },
+        "release": {
+          "positive_n": 32,
+          "rows_N": 2805,
+          "positive_fraction": 0.01140819964349376
+        }
+      },
+      "explanation": "unchanged completion_priors algorithm recomputes loss weights from actual D1 TRAIN; original audit file retained; input normalization is byte-identical D0"
+    }
+  },
+  "recovery_expert_success_measured": false,
+  "h5_task_effect": "pending D1 fixed10000 plus matched VAL8",
+  "final40_accessed": false,
+  "noslip10_pooled": false,
+  "references": [
+    "native-dagger-coverage-audit.json",
+    "native-dagger-robot-pose-coverage-summary.json",
+    "native-dagger-dataset-files-independent.json",
+    "native-dagger-rejection_table.json"
+  ],
+  "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection"
+}

@@ -1,0 +1,363 @@
+{
+  "schema": "ugrp.act16w.stage-rejections.v1",
+  "cohorts_never_pooled": true,
+  "stages": [
+    {
+      "stage": "native_setup",
+      "scope": "HOST_ERROR before rollouts",
+      "file": "rejection_table.json",
+      "sha256": "66390faf6413b3ab31a81a7f2e911a66ddc9cc9dfc04268977a7a5ab138c7b7d",
+      "funnel": [
+        {
+          "gate": "registered",
+          "passed": 40,
+          "rejected": 0
+        },
+        {
+          "gate": "teacher_started",
+          "passed": 0,
+          "rejected": 0,
+          "pending": 40
+        }
+      ],
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-gate-r1.log"
+    },
+    {
+      "stage": "native_gate",
+      "scope": "40 teacher trials",
+      "file": "native-gate-rejection_table.json",
+      "sha256": "8268877aee9d264b9eaf17d1339d927ee5ec4b28510716b5fb7416458405421c",
+      "funnel": [
+        {
+          "gate": "requested",
+          "passed": 40,
+          "rejected": 0
+        },
+        {
+          "gate": "raw_results",
+          "passed": 40,
+          "rejected": 0
+        },
+        {
+          "gate": "stable_lift",
+          "passed": 40,
+          "rejected": 0
+        },
+        {
+          "gate": "stable_release",
+          "passed": 40,
+          "rejected": 0
+        },
+        {
+          "gate": "success",
+          "passed": 40,
+          "rejected": 0
+        }
+      ],
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-gate-r2"
+    },
+    {
+      "stage": "native_record",
+      "scope": "40 fresh camera recording trials",
+      "file": "native-record-rejection_table.json",
+      "sha256": "add6c7df2221b4e0ca5f9841d79a1b17630929cc2dbee1d9afb865603fc52005",
+      "funnel": [
+        {
+          "gate": "requested",
+          "passed": 40,
+          "rejected": 0
+        },
+        {
+          "gate": "raw_results",
+          "passed": 40,
+          "rejected": 0
+        },
+        {
+          "gate": "stable_lift",
+          "passed": 40,
+          "rejected": 0
+        },
+        {
+          "gate": "stable_release",
+          "passed": 40,
+          "rejected": 0
+        },
+        {
+          "gate": "success",
+          "passed": 40,
+          "rejected": 0
+        }
+      ],
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-record-r1"
+    },
+    {
+      "stage": "DAgger_prefixes",
+      "scope": "TRAIN20 prefixes and label rows, not task evaluation",
+      "file": "native-dagger-rejection_table.json",
+      "sha256": "100983a375c7de0ab9c14c10179e1e428ffc768a8019554ef140dae4b91b893e",
+      "funnel": [
+        {
+          "gate": "registered_TRAIN_starts",
+          "passed": 20,
+          "rejected": 0
+        },
+        {
+          "gate": "collected_starts",
+          "passed": 20,
+          "rejected": 0
+        },
+        {
+          "gate": "current_state_valid_teacher_targets",
+          "passed": 290,
+          "rejected": 5137
+        }
+      ],
+      "raw": [
+        "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-04/collection",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-01/collection",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-02/collection",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-03/collection",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-00/collection"
+      ]
+    },
+    {
+      "stage": "VAL_A",
+      "scope": "fixed matched VAL8",
+      "file": "native-validation-A-rejection_table-enriched.json",
+      "sha256": "a82ff3bbceda9590590c05b54f40289aae0800a7a5e0d18c7b41315c384b5f5f",
+      "funnel": [
+        {
+          "gate": "requested",
+          "passed": 8,
+          "rejected": 0
+        },
+        {
+          "gate": "scored_runs",
+          "passed": 8,
+          "rejected": 0,
+          "unfinished": 0
+        },
+        {
+          "gate": "sequence_done",
+          "passed": 4,
+          "rejected": 4
+        },
+        {
+          "gate": "stable_lift",
+          "passed": 0,
+          "rejected": 4
+        },
+        {
+          "gate": "stable_release",
+          "passed": 0,
+          "rejected": 0
+        },
+        {
+          "gate": "task_success",
+          "passed": 0,
+          "rejected": 0
+        }
+      ],
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation"
+    },
+    {
+      "stage": "VAL_B",
+      "scope": "fixed matched VAL8",
+      "file": "native-validation-B-rejection_table-enriched.json",
+      "sha256": "953f91a1bab984c597f41e92580c0889d6717d4c28e9b032ab2a03299d181def",
+      "funnel": [
+        {
+          "gate": "requested",
+          "passed": 8,
+          "rejected": 0
+        },
+        {
+          "gate": "scored_runs",
+          "passed": 8,
+          "rejected": 0,
+          "unfinished": 0
+        },
+        {
+          "gate": "sequence_done",
+          "passed": 2,
+          "rejected": 6
+        },
+        {
+          "gate": "stable_lift",
+          "passed": 0,
+          "rejected": 2
+        },
+        {
+          "gate": "stable_release",
+          "passed": 0,
+          "rejected": 0
+        },
+        {
+          "gate": "task_success",
+          "passed": 0,
+          "rejected": 0
+        }
+      ],
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-B/validation"
+    },
+    {
+      "stage": "VAL_C",
+      "scope": "fixed matched VAL8",
+      "file": "native-validation-C-rejection_table-enriched.json",
+      "sha256": "2164b2fac6356fba8687f6e6d570f027579d1461bafdb0304c9c651e7f5f8f4e",
+      "funnel": [
+        {
+          "gate": "requested",
+          "passed": 8,
+          "rejected": 0
+        },
+        {
+          "gate": "scored_runs",
+          "passed": 8,
+          "rejected": 0,
+          "unfinished": 0
+        },
+        {
+          "gate": "sequence_done",
+          "passed": 5,
+          "rejected": 3
+        },
+        {
+          "gate": "stable_lift",
+          "passed": 0,
+          "rejected": 5
+        },
+        {
+          "gate": "stable_release",
+          "passed": 0,
+          "rejected": 0
+        },
+        {
+          "gate": "task_success",
+          "passed": 0,
+          "rejected": 0
+        }
+      ],
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-C/validation"
+    },
+    {
+      "stage": "VAL_D1",
+      "scope": "fixed matched VAL8",
+      "file": "native-validation-D1-rejection_table-enriched.json",
+      "sha256": "ea44d6b1e4cc2c81ddfe7f9176ae94bc12d7f67035fa31c725cb2ac2e0e593cc",
+      "funnel": [
+        {
+          "gate": "requested",
+          "passed": 8,
+          "rejected": 0
+        },
+        {
+          "gate": "scored_runs",
+          "passed": 8,
+          "rejected": 0,
+          "unfinished": 0
+        },
+        {
+          "gate": "sequence_done",
+          "passed": 1,
+          "rejected": 7
+        },
+        {
+          "gate": "stable_lift",
+          "passed": 0,
+          "rejected": 1
+        },
+        {
+          "gate": "stable_release",
+          "passed": 0,
+          "rejected": 0
+        },
+        {
+          "gate": "task_success",
+          "passed": 0,
+          "rejected": 0
+        }
+      ],
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-D1/validation"
+    },
+    {
+      "stage": "final40",
+      "scope": "selected A, fresh heldout40",
+      "file": "native-rejection-table-final40-enriched.json",
+      "sha256": "65cf1be39fa7b0e14994acd007b4454d54202d3df194108fc98a0a67c7442101",
+      "funnel": [
+        {
+          "gate": "requested",
+          "passed": 40,
+          "rejected": 0
+        },
+        {
+          "gate": "scored_runs",
+          "passed": 40,
+          "rejected": 0,
+          "unfinished": 0
+        },
+        {
+          "gate": "sequence_done",
+          "passed": 16,
+          "rejected": 24
+        },
+        {
+          "gate": "stable_lift",
+          "passed": 0,
+          "rejected": 16
+        },
+        {
+          "gate": "stable_release",
+          "passed": 0,
+          "rejected": 0
+        },
+        {
+          "gate": "task_success",
+          "passed": 0,
+          "rejected": 0
+        }
+      ],
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40"
+    }
+  ],
+  "final_physical_funnel": {
+    "funnel": [
+      {
+        "gate": "scored",
+        "passed": 40,
+        "rejected": 0
+      },
+      {
+        "gate": "bilateral_load_observed",
+        "passed": 2,
+        "rejected": 38
+      },
+      {
+        "gate": "lift_success",
+        "passed": 1,
+        "rejected": 1
+      },
+      {
+        "gate": "release_success",
+        "passed": 0,
+        "rejected": 1
+      },
+      {
+        "gate": "task_success",
+        "passed": 0,
+        "rejected": 0
+      }
+    ],
+    "independent_sequence_done": 16,
+    "scope": "cumulative physical order; original done-first conjunction funnel retained separately",
+    "source": {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/independent-final40.json",
+      "sha256": "e0a52c571566f1c1662d34deb9c1d918ec183468865b9158e0b09039c9a98e2d"
+    }
+  },
+  "geometric_diagnostic_limit": "40/40 geometric proxy rejections include stable-lift91637; not a proven necessary condition or causal rejection",
+  "noslip_reference": "noslip-baseline-recount.json",
+  "prior_wait_record": "../rejection_table.json",
+  "raw_originals_unchanged": true
+}

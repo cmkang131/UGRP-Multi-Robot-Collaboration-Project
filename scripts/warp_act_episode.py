@@ -79,7 +79,7 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
               'rgb_lift_mode': rgb_lift_mode,
               'negative_probe': bool(solo_lift_negative_probe_v1),
               'solo_lift_lookback_margin_v1': bool(solo_lift_lookback_margin_v1),
-              'gate_eligible': False,  # unapproved warp1 pilot, not a teacher gate
+              'gate_eligible': bool(getattr(hooks,'gate_approved',False)),
               'physical_success': None, 'placement_task': 'set down at own picked location',
               'plan_sha256': hashlib.sha256((out/'plan.json').read_bytes()).hexdigest()}
     if training_rgb:
@@ -95,19 +95,21 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
     start = time.monotonic()
     audit, visibility_stats, score = InputAudit(), VisibilityStats(), Score()
     ops = primitives()
+    if getattr(hooks,'numpy_teacher_v1',False):
+        from warp_act_numpy import solve_grip_site_ik
+        ops.ik=solve_grip_site_ik
     try:
         # Scene hardware/camera/physics are exactly the existing pair setup.
+        if getattr(hooks,'scene_v5_v1',False):
+            from warp_act_scene import make_scene
         scene = make_scene({**plan, 'end_color_scene': 'off'})
         scene.config['setup_only']['spawns'].update(plan['spawns'])
         os.environ['UGRP_SIM_OBSERVER_WIDTH'] = '320'
         os.environ['UGRP_SIM_OBSERVER_HEIGHT'] = '240'
         sampling = camera_config() if training_rgb else {'width': 640, 'height': 480}
-        world = hooks.build_world(build_world, scene, drive_profile=PROFILE, seed=plan['seed'], width=sampling['width'],
+        world,scene = hooks.make_world(plan,scene,build_world,bind_camera,drive_profile=PROFILE, seed=plan['seed'], width=sampling['width'],
                             height=sampling['height'], render=hooks.native_render, warehouse_layout=scene.engine_layout,
                             warehouse_cargo_ids=None, roller_collision='mesh', idle_robot_contacts='off')
-        for controller in world.controllers.values():
-            bind_camera(controller)
-        scene.setup(world)
         (out/'scene.xml').write_text(world.scene_xml)
         write(out/'scene.json', scene.manifest)
         rid, item = plan['robot_id'], plan['item_id']
@@ -138,11 +140,17 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
                 self.body_gids = {}
 
         eyes = ObjectEyes()
+        if getattr(hooks,'numpy_teacher_v1',False):
+            eyes.region_visible=lambda data,rid,gids: hooks.visibility.region_visible(world_index,gids)
         bid = model.body(body_name).id
         gids = [g for g in range(model.ngeom) if model.geom_bodyid[g] == bid and model.geom_contype[g]]
         if not gids:
             raise ValueError('production cargo collision geoms required')
         target_set = set(gids)
+        visibility_gids=set(gids)
+        if getattr(hooks,'numpy_teacher_v1',False):
+            for body in range(model.nbody):visibility_gids.update(eyes._body_geoms(body))
+            visibility_gids.update(g for g in range(model.ngeom) if 'wall' in (model.geom(g).name or ''))
         finger_ids = {model.geom(rid+'__'+s+'_finger').id: i for i, s in enumerate(('left', 'right'))}
         initial_xy = data.body(body_name).xpos[:2].copy()  # EVALUATION ONLY
         last_eval_pos, last_eval_t = None, None
@@ -278,7 +286,9 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
         negative_eval = {'N': 0, 'max_clearance_m': 0., 'max_pickup_offset_m': 0.}
         tick = 0
         yield {'kind': 'setup', 'world': world, 'port': port, 'gids': gids,
-               'finger_ids': finger_ids, 'body_name': body_name, 'origin': origin}
+               'finger_ids': finger_ids, 'body_name': body_name, 'origin': origin,
+               'visibility_gids':sorted(visibility_gids),
+               'visibility_reference':lambda: BandVisibility.region_visible(eyes,data,rid,gids)}
         while float(data.time)-origin < cap_s-1e-8:
             if (out/'SUPERVISOR_STOP.json').exists():
                 raise KeyboardInterrupt('supervisor stopped this run')
@@ -411,10 +421,6 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
                     break
             tick += 1
             yield {'kind': 'step', 'world': world, 'port': port, 'command': value}
-        write(out/'input-funnel.json', {'counts': input_funnel, 'raw': str(out/'teacher-commands.jsonl'),
-            'scope': 'frames→not-held→currently-visible→lazy relative measurement'})
-        write(out/'route-rejections.json', {'counts': route_counts, 'rows': route_rejections,
-            'budget_basis': 'frozen scripts.zone_teacher.plan_path default40000 nodes; no wall-clock planning cap'})
         report.update(status='cap_end' if teacher.result is None else 'complete',
             cap_end=teacher.result is None, sim_s=float(data.time)-origin, wall_s=time.monotonic()-start,
             teacher=teacher.diagnostic(), input_audit=audit.record(), visibility=visibility_stats.record(),
@@ -445,8 +451,13 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
             report['training_exclusion_reason'] = 'pending independent dataset admission' if report['training_candidate'] else 'pilot / failure / unqualified source or absent own-RGB handoff'
         write(out/'result.json', report)
     except GeneratorExit:
-        report.update(status='setup_export_only' if not recent else 'supervisor_stop',
-                      physical_success=None, gate_eligible=False)
+        marker=hooks.out/'SUPERVISOR_STOP.json'
+        stop=json.loads(marker.read_text()) if marker.exists() else {}
+        cap=stop.get('category')=='cap_end' or stop.get('reason')=='resource_cap4h'
+        report.update(status='setup_export_only' if not recent else 'cap_end' if cap else 'supervisor_stop',
+                      cap_end=bool(recent and cap),reason=stop.get('reason','frontend closed before task completion'),
+                      physical_success=None,gate_eligible=False)
+        if world is not None and 'origin' in locals():report['sim_s']=float(world.data.time)-origin
         raise
     except BaseException as error:
         report.update(status='interrupted' if isinstance(error, KeyboardInterrupt) else 'HOST_ERROR',
@@ -455,6 +466,9 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
         write(out/'result.json', report)
         raise
     finally:
+        # Flush the same input/rejection counters on setup errors and supervision,
+        # before closing/compressing traces. Completion is a separate status.
+        report.update(input_audit=audit.record(),visibility=visibility_stats.record())
         folder = out/'failure-rgb-buffer'
         folder.mkdir(exist_ok=True)
         for index, jpg in recent:
@@ -470,6 +484,18 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
             recorder.close()
         for stream in streams:
             stream.close()
+        if 'input_funnel' in locals():
+            trace_path=out/('teacher-raw/commands.jsonl' if training_rgb else 'teacher-commands.jsonl')
+            # Frozen run_grasp_act_teacher.compress_logs: >65536 bytes only.
+            # Streams are closed here, so this is the exact final byte size.
+            raw_path=Path(str(trace_path)+'.zst') if trace_path.stat().st_size>65536 else trace_path
+            write(out/'input-funnel.json', {'counts':input_funnel,
+                'raw':str(raw_path),
+                'scope':'frames→not-held→currently-visible→lazy relative measurement',
+                'run_status':report.get('status')})
+            write(out/'route-rejections.json', {'counts':route_counts,'rows':route_rejections,
+                'run_status':report.get('status'),
+                'budget_basis':'frozen scripts.zone_teacher.plan_path default40000 nodes; no wall-clock planning cap'})
         if world is not None:
             world.close()
         write(out/'result.json', report)

@@ -1,0 +1,115 @@
+{
+  "schema": "ugrp.act17.rejection_table.v1",
+  "source_sha": "18900c0de85e48f81e45e5a2cc4357f10512787f",
+  "scope": "all original student failures plus auditable expert-label availability; no physical outcome changed",
+  "funnel": [
+    {
+      "gate": "saved_failed_evaluations",
+      "passed": 72,
+      "rejected": 0
+    },
+    {
+      "gate": "screen_exit_with_expert_label_in_preceding_second",
+      "passed": 14,
+      "rejected": 58
+    }
+  ],
+  "reason_distribution": {
+    "unidirectional": 7,
+    "stopped_rotation": 8,
+    "unidirectional_teacher_unavailable": 43,
+    "oscillation": 12,
+    "no_geometric_exit": 2
+  },
+  "rejections": [
+    {
+      "reason_category": "counterfactual_label_unavailable_in_pre_exit_second",
+      "reason": "original qualified oracle is pre-hover and permanently excludes after any lower-than-startup OPEN issued gripper PWM; no missing labels imputed",
+      "count": 58,
+      "blocked_object": "not_applicable_label_scope",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_measured_non_geometric"
+    }
+  ],
+  "raw": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act17-open-loop-r1/summary.json",
+      "sha256": "13d662f4b69300752b4437223a6ea4b766b46d8bc12ae6cf82db2c967e6a9646"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act17-closed-loop-r1/summary.json",
+      "sha256": "0a3e27f1ad9eedc22440b5f7f698751d06c628526f06594426b04e1beab94443"
+    }
+  ],
+  "reproduce": [
+    "python scripts/act17_open_loop.py --out /home/ugrp/ugrp-sim/runs/act17-open-loop-r1",
+    "python scripts/act17_closed_loop.py --out /home/ugrp/ugrp-sim/runs/act17-closed-loop-r1",
+    "python scripts/act17_finalize.py /home/ugrp/ugrp-sim/runs/act17-diagnostic-summary-r1"
+  ],
+  "open_loop_funnel": {
+    "unit": "model x D0 selected teacher frame",
+    "funnel": [
+      {
+        "gate": "requested_saved_frames_4_models",
+        "passed": 59544,
+        "rejected": 0
+      },
+      {
+        "gate": "hashed_dataset_and_matching_phase_metadata",
+        "passed": 59544,
+        "rejected": 0
+      },
+      {
+        "gate": "h0_prediction_and_existing_finite_decoder",
+        "passed": 59544,
+        "rejected": 0
+      },
+      {
+        "gate": "stratified_error_recorded",
+        "passed": 59544,
+        "rejected": 0
+      }
+    ],
+    "TRAIN_rows_per_model": 11860,
+    "VAL_rows_per_model": 3026,
+    "model_count": 4
+  },
+  "oracle_frame_funnel": {
+    "unit": "saved student observation",
+    "funnel": [
+      {
+        "gate": "saved_states",
+        "passed": 47663,
+        "rejected": 0
+      },
+      {
+        "gate": "original_prehover_oracle_valid",
+        "passed": 1025,
+        "rejected": 46638
+      }
+    ],
+    "reason_category": "potential_hold_after_student_issued_close",
+    "blocked_object": "not_applicable_label_admission",
+    "minimum_gap_m": null,
+    "minimum_gap_status": "not_measured_non_geometric"
+  },
+  "new_candidate_funnel": {
+    "unit": "candidate",
+    "funnel": [
+      {
+        "gate": "prepared_off_replan1_ensemble1",
+        "passed": 3,
+        "rejected": 0
+      },
+      {
+        "gate": "current_stack_admission",
+        "passed": 0,
+        "rejected": 3
+      }
+    ],
+    "reason_category": "current_stack_mismatch",
+    "blocked_object": "not_applicable_manifest",
+    "minimum_gap_m": null,
+    "minimum_gap_status": "not_measured_non_geometric"
+  }
+}

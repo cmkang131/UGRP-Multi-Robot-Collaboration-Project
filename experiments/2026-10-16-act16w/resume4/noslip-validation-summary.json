@@ -1,0 +1,31 @@
+{
+  "status": "VALIDATION_A_B_COMPLETE",
+  "complete": true,
+  "source_sha": "dce0c8032a31b908622c2600caefe3539a5371c3",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "started_utc": "2026-10-16T13:22:08.098415+00:00",
+  "wall_cap": null,
+  "model_selection": false,
+  "final_evaluation_accessed": false,
+  "training_steps": {
+    "A": 10000,
+    "B": 10000
+  },
+  "checkpoints": {
+    "A": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training-r2/A-main/step-010000/actor",
+    "B": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training-r2/B-main/step-010000/actor"
+  },
+  "active_children": [
+    {
+      "name": "A-native",
+      "pid": 33802
+    }
+  ],
+  "next": "post-action alignment + video review, then select history for C; final40 remains unopened",
+  "ended_utc": "2026-10-16T14:37:43.000087+00:00"
+}

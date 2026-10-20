@@ -1,0 +1,19 @@
+{
+  "checked_UTC": "2026-10-16T00:23:22.525252+00:00",
+  "scope": "installed source inspection only; no render behavior or controller changed",
+  "sources": {
+    "mujoco_warp/_src/render_util.py": "d4f82fb0433f4441b91816aa8426c49951e7af43e441baa9773c947e31431fe0",
+    "mujoco_warp/_src/render.py": "169f08765eab2f755403af0045292c6f1fa0908eabdcc2855b3ef1fc719490c4",
+    "warp/_src/texture.py": "3717a6793248eb371bf600c685c6da2b6321065e68c25c23ec3bf8104bf731d4"
+  },
+  "no_mip": {
+    "mjwarp_constructor": "render_util.py:69 uses TextureFilterMode.LINEAR and omits num_mip_levels",
+    "warp_default": "Texture2D num_mip_levels=1",
+    "result": "linear, one mip level in this pinned installed renderer; no OpenGL quality wrapper needed"
+  },
+  "partial_alpha": {
+    "known_warp1_difference": true,
+    "observation": "nonzero translucent zone appears opaque in actual Warp own-RGB prefix",
+    "cause_claim": "not a new physical failure cause; outcome gate still running"
+  }
+}

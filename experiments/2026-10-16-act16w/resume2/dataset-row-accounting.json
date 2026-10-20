@@ -1,0 +1,100 @@
+{
+  "manifest": {
+    "path": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/dataset/manifest.json",
+    "sha256": "c65e74daea6b1d616b84aa0028dbff22d4128a551c5c4d7f5479d732acff8fed"
+  },
+  "rows_total": 17706,
+  "rows_selected": 14546,
+  "by_split": {
+    "train_rows_total": 15499,
+    "train_rows_selected": 12734,
+    "validation_rows_total": 2207,
+    "validation_rows_selected": 1812
+  },
+  "by_split_kind": [
+    {
+      "split": "train",
+      "kind": "cyan",
+      "episodes": 9,
+      "rows_total": 3943,
+      "rows_selected": 3232
+    },
+    {
+      "split": "train",
+      "kind": "green",
+      "episodes": 11,
+      "rows_total": 4924,
+      "rows_selected": 4055
+    },
+    {
+      "split": "train",
+      "kind": "red",
+      "episodes": 4,
+      "rows_total": 1776,
+      "rows_selected": 1460
+    },
+    {
+      "split": "train",
+      "kind": "yellow",
+      "episodes": 11,
+      "rows_total": 4856,
+      "rows_selected": 3987
+    },
+    {
+      "split": "validation",
+      "kind": "cyan",
+      "episodes": 1,
+      "rows_total": 450,
+      "rows_selected": 371
+    },
+    {
+      "split": "validation",
+      "kind": "green",
+      "episodes": 1,
+      "rows_total": 454,
+      "rows_selected": 375
+    },
+    {
+      "split": "validation",
+      "kind": "red",
+      "episodes": 2,
+      "rows_total": 875,
+      "rows_selected": 717
+    },
+    {
+      "split": "validation",
+      "kind": "yellow",
+      "episodes": 1,
+      "rows_total": 428,
+      "rows_selected": 349
+    }
+  ],
+  "excluded_rows_by_skill_phase": [
+    {
+      "skill": "release",
+      "teacher_phase": "complete",
+      "raw_local_skill_sample": "False",
+      "count": 800
+    },
+    {
+      "skill": "release",
+      "teacher_phase": "lookaround",
+      "raw_local_skill_sample": "False",
+      "count": 2360
+    }
+  ],
+  "definitions": {
+    "rows_total": "all audited native observation/teacher-command pairs before local skill selection",
+    "rows_selected": "converted local-skill timesteps; include_initial_approach_v1 adds start/fold/approach grasp prefix; last_local_row_v1 sets done on last selected row per skill interval; contiguous training_windows have8 horizons with boundary padding",
+    "optimizer_population": "TRAIN only12734 timesteps; uniform sampling with replacement at batch8,10000 steps; VAL1812 never optimizer input"
+  },
+  "independent40_includes": {
+    "bulk": 38,
+    "pilot": 2,
+    "pilot_seeds": [
+      86821,
+      86822
+    ]
+  },
+  "scope": "post-hoc dataset row accounting; no new sampling/input change"
+}

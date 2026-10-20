@@ -28,12 +28,23 @@ CUBE_FACES = (('fileright', 1, 2), ('fileleft', 1, 2), ('fileup', 0, 2),
               ('filedown', 0, 2), ('filefront', 0, 1), ('fileback', 0, 1))
 
 
-def manifest(assets=ASSETS):
+EXTENSION_SHA256 = "aaff061ac5665adf9fe37d9b5df84417071541ff5d31316fc6c231f7a8852aff"
+
+def extension_manifest():
+    raw=(ASSETS.parent/"gatesv5_release_extension.json").read_bytes()
+    if hashlib.sha256(raw).hexdigest()!=EXTENSION_SHA256:raise ValueError("release geometry extension hash mismatch")
+    return json.loads(raw)
+
+def manifest(assets=ASSETS, *, extension=False):
     path = Path(assets) / 'manifest.json'
     raw = path.read_bytes()
     if hashlib.sha256(raw).hexdigest() != MANIFEST_SHA256:
         raise ValueError('natural texture manifest hash mismatch')
-    return json.loads(raw)
+    record=json.loads(raw)
+    if extension:
+        extra=extension_manifest()
+        record["walls"].update(extra["walls"]);record["images"].update(extra["images"])
+    return record
 
 
 def checked_file(key, record, assets):
@@ -44,7 +55,7 @@ def checked_file(key, record, assets):
     return path.resolve()
 
 
-def apply(root, *, assets=ASSETS):
+def apply(root, *, assets=ASSETS, extension=False):
     """Apply after floor_light_v1 lights; refuse unknown geometry or other dressing."""
     if any(g.get('name', '').startswith(('tape_v1_', 'natural_v1_')) for g in root.iter()):
         raise ValueError('natural texture cannot be combined with another wall dressing')
@@ -60,7 +71,7 @@ def apply(root, *, assets=ASSETS):
     material = asset.find("material[@name='groundmat']")
     if ground is None or material is None:
         raise ValueError('natural texture needs ground and groundmat')
-    record = manifest(assets)
+    record = manifest(assets, extension=extension)
     checked_file('floor', record, assets)
     # from_xml_string resolves relative directories from the scene's cwd.
     # Keep the repository root as that base (also when exporting scene XML).

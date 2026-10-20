@@ -1,0 +1,86 @@
+{
+  "scope": "TRAIN prefix evaluator-only diagnostics, not final task performance",
+  "rows": [
+    {
+      "seed": 87431,
+      "world": 2,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-02/collection",
+      "result": {
+        "status": "cap_end",
+        "cap_end": true,
+        "reason": "dagger_prefix_cap_end",
+        "issued_done": false,
+        "teacher_criteria_diagnostic": {
+          "lift_success": false,
+          "release_success": false,
+          "physical_success": false,
+          "max_stable_lift_s": 0.0,
+          "max_stable_release_s": 0.0,
+          "criteria": {
+            "min_clearance_m": 0.012,
+            "max_tilt_deg": 10.0,
+            "lift_hold_s": 3.0,
+            "finger_min_n": 0.5,
+            "release_settle_s": 2.0,
+            "release_speed_m_s": 0.01,
+            "release_max_tilt_deg": 3.0,
+            "release_clearance_m": 0.005,
+            "placement_offset_m": 0.05,
+            "weld": "off"
+          }
+        }
+      },
+      "max_clearance_m": -0.00010775512456893954,
+      "max_min_bilateral_force_N": 0.0,
+      "actions_N": 300
+    },
+    {
+      "seed": 87422,
+      "world": 1,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-00/collection",
+      "result": {
+        "status": "complete",
+        "cap_end": false,
+        "issued_done": true,
+        "evaluation": {
+          "world": 1,
+          "seed": 87422,
+          "generation": 0,
+          "t": 26.200000000000152,
+          "elapsed_sim_s": 24.5,
+          "min_z": -0.00018539236934157072,
+          "support_z": 0.0,
+          "tilt_deg": 0.13122123336572936,
+          "finger_forces": [
+            0.0,
+            0.0
+          ],
+          "speed": 0.0,
+          "open_issued": true,
+          "placement_offset": 8.381649082357186e-05,
+          "weld_active": false,
+          "lift_success": false,
+          "release_success": false,
+          "physical_success": false,
+          "max_stable_lift_s": 0.0,
+          "max_stable_release_s": 0.0,
+          "criteria": {
+            "min_clearance_m": 0.012,
+            "max_tilt_deg": 10.0,
+            "lift_hold_s": 3.0,
+            "finger_min_n": 0.5,
+            "release_settle_s": 2.0,
+            "release_speed_m_s": 0.01,
+            "release_max_tilt_deg": 3.0,
+            "release_clearance_m": 0.005,
+            "placement_offset_m": 0.05,
+            "weld": "off"
+          }
+        }
+      },
+      "max_clearance_m": -0.00010775512456893954,
+      "max_min_bilateral_force_N": 0.0,
+      "actions_N": 245
+    }
+  ]
+}

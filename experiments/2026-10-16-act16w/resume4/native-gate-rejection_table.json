@@ -1,0 +1,44 @@
+{
+  "funnel": [
+    {
+      "gate": "requested",
+      "passed": 40,
+      "rejected": 0
+    },
+    {
+      "gate": "raw_results",
+      "passed": 40,
+      "rejected": 0
+    },
+    {
+      "gate": "stable_lift",
+      "passed": 40,
+      "rejected": 0
+    },
+    {
+      "gate": "stable_release",
+      "passed": 40,
+      "rejected": 0
+    },
+    {
+      "gate": "success",
+      "passed": 40,
+      "rejected": 0
+    }
+  ],
+  "rejections": [],
+  "reason_distribution": {},
+  "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-gate-r2",
+  "reproduce": [
+    "/home/ugrp/ugrp-sim/src/e40ff44ce97219d075b1a58eabd48007b6f8b2ac/scripts/act16w_native_stage.py",
+    "--enabled",
+    "--stage",
+    "gate",
+    "--references",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-gate-references-r1",
+    "--out",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-gate-r2",
+    "--baseline",
+    "/home/ugrp/ugrp-sim/runs/act16w-resume2-validation-r1"
+  ]
+}

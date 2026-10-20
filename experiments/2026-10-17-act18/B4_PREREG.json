@@ -1,0 +1,39 @@
+{
+  "schema": "ugrp.act18.b4_prereg.v1",
+  "experiment": "2026-10-17-act18",
+  "phase": "B4",
+  "candidate": "act18-doneh",
+  "pre_registered_utc": "2026-10-18T08:20:00Z",
+  "approval": "Lead 2026-10-18 (자율 트랙): DONECLASS AUC 0.9967·40/40 발화·median |오차| 0.2s 확인 후 B4 승인. 조건: prereg 동결, 투명성(ACT가 done을 학습한 것이 아니라 자기 명령 이력 모듈을 결합), TRAIN4 4/4만→VAL8, 패키징·pooling·계약변경 금지, 완료 후 gcp2 정지.",
+  "transparency": "이 후보는 ACT가 done을 학습한 모델이 아니다. B2의 ACT 행동 정책(act18-std step-20000)은 가중치·구조 그대로 두고, 자기 발행 명령 이력만 받는 별도 GRU done 모듈(오프라인 학습)을 결합한 hybrid 후보다. 외부 issued_done 형식·성공 정의는 변경하지 않는다.",
+  "module": {
+    "train_data": "act17-v7/dataset-r1 TRAIN200 (manifest sha256 44c1c46073aa08ea028324ffe924b67d862a2f01b56f4db11afad17000a9b198)",
+    "features": "skill one-hot + 14 causal features from own issued command history only (wheel magnitude/duration activity, 5 PWM channels, cumulative path proxy, ticks since last movement/gripper close, closed-tick count)",
+    "architecture": "GRU(history 16, hidden 64) + linear head",
+    "training": "epochs 8, lr 1e-3, seed 20261017, pos_weight=(1-prior)/prior",
+    "offline_validation": "VAL40 episodes: AUC 0.9967, firing at .9 persistence1 40/40, median |timing error| 0.2 s (offline probe `runs/act18/doneclass-r1/offline.json`)",
+    "frozen_before_physics": true
+  },
+  "integration": {
+    "checkpoint": "b2-r1/act18-std/step-20000 (act18-std pilot, model sha256 75a56028f517a63b444119127c19ca36daf363615876d9da36301cfa9faa6a95)",
+    "decision": "매 틱(done 모듈 실행 시점)의 p가 0.65 이상이면 그 틱을 done으로 처리하고 wheel/duration을 0으로(기존 decode_action의 done 처리와 동일). persistence 1틱.",
+    "scope": "평가 실행기 내부 종료 신호만. 외부 issued_done 로그/스코어 계약/성공 정의는 변경 없음.",
+    "logging": "헤드 확률·발화 틱 JSONL(--done-head-log)과 ACT done 확률(--record-done-prob) 모두 원본 보존"
+  },
+  "risks": [
+    "trainer-harness feature shift: 모듈은 저장 시연의 교사 명령 이력으로 학습됐고 실행 시에는 정책 자기 명령을 입력받는다. 자기 명령 분포가 다르면 확률/발화가 이동할 수 있다 — 실행 시 발화 분포를 반드시 기록.",
+    "조기 종료: offline 오차가 ≤0.7s 조기였고, 실행에서는 grasp 완료 직전 발화 시 release 단계로 너무 일찍 넘어갈 수 있다. TRAIN4 원본에서 발화-물리 lift/hold 정렬을 확인."
+  ],
+  "evaluation": {
+    "stage": "train4",
+    "gate": "TRAIN4 4/4만 판정. 통과 시에만 VAL8. FINAL40 없음.",
+    "report_items": ["done 발화 시각 vs 물리 lift/hold 시점", "조기/지연 발화 분포", "물리 lift 성공 수", "self-command 분포 p 분포(shift 확인)", "TRAIN4 n/N·원본/SHA"],
+    "fail_rule": "실패 시 평가계약(물리 성공 정의) 후보 메모를 사용자 결정용으로 완성해 대기(계약 변경 실행 금지)."
+  },
+  "pooling": {
+    "no_pooling_with": ["R8", "R100", "act18-tune", "act18-doneb1", "act18-std", "act18-b3"],
+    "packaging": "금지(헤드 모듈은 배포 자산 아님; 모델 패키징 대상 아님)",
+    "release": "금지"
+  },
+  "stop_after": "TRAIN4(및 통과 시 VAL8) 결과·원본/SHA 기록 후 gcp2 즉시 정지·CLEAN."
+}

@@ -1,0 +1,32 @@
+{
+  "schema": "ugrp.act18.cleanup.v3",
+  "utc": "2026-10-17T23:10:41Z",
+  "reason": "B4 done-head TRAIN4(및 action-axis/offline doneclass CPU 분석) 완료 후 유휴 → gcp2 정지.",
+  "vm": {
+    "instance": "ugrp-act-l4-gcp2",
+    "project_id": "ugrp-sim-b-1014",
+    "status": "TERMINATED",
+    "stopped_utc": "2026-10-17T23:10:41Z",
+    "confirmed_by": "gcloud describe --format=value(status)"
+  },
+  "before_stop": {
+    "act18_processes": "none",
+    "gpu_utilization_percent": 0,
+    "gpu_memory_MiB": 0,
+    "leases": "no act18 lease",
+    "note": "B1/B2/B3/B4 원본·doneclass/actionaxis 결과를 디스크에 보존"
+  },
+  "vm_scratch_removed": [
+    "/tmp/act18_done_offline.py",
+    "/tmp/act18_action_offline.py",
+    "/tmp/act18_done_probe_analysis.py",
+    "/tmp/act18_faildiag.py"
+  ],
+  "local": {
+    "scratch_removed": [
+      "/private/tmp/act18-dsh"
+    ],
+    "worktree": "/Users/changmin/projects/ugrp-wt/act16w",
+    "worktree_status": "clean (git status empty)"
+  }
+}

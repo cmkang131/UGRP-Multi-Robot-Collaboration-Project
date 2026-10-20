@@ -1,0 +1,649 @@
+{
+  "status": "complete",
+  "complete": true,
+  "physics_steps": 0,
+  "policy_or_scores_changed": false,
+  "rows": [
+    {
+      "arm": "A",
+      "seed": 87434,
+      "closest": {
+        "all_external": {
+          "tick": 97,
+          "elapsed_SIM_s": 9.700000000000001,
+          "gap_m": -0.000634873321075132,
+          "robot_geom": "r1__v3_wheel_fl_roller_8_body_contact",
+          "external_geom": "floor",
+          "censored_at_model_extent": false
+        },
+        "non_floor_external": {
+          "tick": 145,
+          "elapsed_SIM_s": 14.5,
+          "gap_m": -0.00025246396821245517,
+          "robot_geom": "r1__left_finger",
+          "external_geom": "cargo_green_1_geom",
+          "censored_at_model_extent": false
+        }
+      },
+      "samples": 901,
+      "source_sha": "82702ea74d641d68377eeb331142298ca4ff49b1",
+      "full_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1/gaps-A-87434.json",
+        "sha256": "52b0aaf5b4a3627b037b05e6110bb14f26c76518514458fd7cd3e0ac4f028c62"
+      },
+      "reproduce": [
+        "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+        "/home/ugrp/ugrp-sim/src/82702ea74d641d68377eeb331142298ca4ff49b1/scripts/audit_act16w_saved_gaps.py",
+        "--enabled",
+        "--world-root",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-00/evaluation/owner/world-000",
+        "--references",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-record-references-r1/per-world-references.json",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1/gaps-A-87434.json"
+      ],
+      "reused_completed_report": false
+    },
+    {
+      "arm": "A",
+      "seed": 87454,
+      "closest": {
+        "all_external": {
+          "tick": 9,
+          "elapsed_SIM_s": 0.9,
+          "gap_m": -0.0006151080542094048,
+          "robot_geom": "r1__v3_wheel_fr_roller_7_body_contact",
+          "external_geom": "floor",
+          "censored_at_model_extent": false
+        },
+        "non_floor_external": {
+          "tick": 109,
+          "elapsed_SIM_s": 10.9,
+          "gap_m": 0.009199442341812969,
+          "robot_geom": "r1__front_plate",
+          "external_geom": "cargo_green_1_geom",
+          "censored_at_model_extent": false
+        }
+      },
+      "samples": 208,
+      "source_sha": "82702ea74d641d68377eeb331142298ca4ff49b1",
+      "full_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1/gaps-A-87454.json",
+        "sha256": "1d1aaea3c4de1b060d1a030dbf48cd138529fd8bf56123c77e675503b2ca78e5"
+      },
+      "reproduce": [
+        "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+        "/home/ugrp/ugrp-sim/src/82702ea74d641d68377eeb331142298ca4ff49b1/scripts/audit_act16w_saved_gaps.py",
+        "--enabled",
+        "--world-root",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-00/evaluation/owner/world-001",
+        "--references",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-record-references-r1/per-world-references.json",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1/gaps-A-87454.json"
+      ],
+      "reused_completed_report": false
+    },
+    {
+      "arm": "A",
+      "seed": 87424,
+      "closest": {
+        "all_external": {
+          "tick": 41,
+          "elapsed_SIM_s": 4.1000000000000005,
+          "gap_m": -0.0009667294677660051,
+          "robot_geom": "r1__front_plate",
+          "external_geom": "cargo_cyan_1_geom",
+          "censored_at_model_extent": false
+        },
+        "non_floor_external": {
+          "tick": 41,
+          "elapsed_SIM_s": 4.1000000000000005,
+          "gap_m": -0.0009667294677660051,
+          "robot_geom": "r1__front_plate",
+          "external_geom": "cargo_cyan_1_geom",
+          "censored_at_model_extent": false
+        }
+      },
+      "samples": 901,
+      "source_sha": "82702ea74d641d68377eeb331142298ca4ff49b1",
+      "full_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1/gaps-A-87424.json",
+        "sha256": "e9eed913eca3c8d7652c5c4bba4f70976e610f9218db998e27362b624978ec93"
+      },
+      "reproduce": [
+        "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+        "/home/ugrp/ugrp-sim/src/82702ea74d641d68377eeb331142298ca4ff49b1/scripts/audit_act16w_saved_gaps.py",
+        "--enabled",
+        "--world-root",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-01/evaluation/owner/world-000",
+        "--references",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-record-references-r1/per-world-references.json",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1/gaps-A-87424.json"
+      ],
+      "reused_completed_report": false
+    },
+    {
+      "arm": "A",
+      "seed": 87444,
+      "closest": {
+        "all_external": {
+          "tick": 175,
+          "elapsed_SIM_s": 17.5,
+          "gap_m": -0.001200252930132394,
+          "robot_geom": "r1__v3_wheel_fr_roller_2_body_contact",
+          "external_geom": "cargo_red_1_geom",
+          "censored_at_model_extent": false
+        },
+        "non_floor_external": {
+          "tick": 175,
+          "elapsed_SIM_s": 17.5,
+          "gap_m": -0.001200252930132394,
+          "robot_geom": "r1__v3_wheel_fr_roller_2_body_contact",
+          "external_geom": "cargo_red_1_geom",
+          "censored_at_model_extent": false
+        }
+      },
+      "samples": 344,
+      "source_sha": "82702ea74d641d68377eeb331142298ca4ff49b1",
+      "full_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1/gaps-A-87444.json",
+        "sha256": "7de5e3a1db5d621ac2d9433190c2a15d2297a0adf8896afe388dfa3556a521db"
+      },
+      "reproduce": [
+        "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+        "/home/ugrp/ugrp-sim/src/82702ea74d641d68377eeb331142298ca4ff49b1/scripts/audit_act16w_saved_gaps.py",
+        "--enabled",
+        "--world-root",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-01/evaluation/owner/world-001",
+        "--references",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-record-references-r1/per-world-references.json",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1/gaps-A-87444.json"
+      ],
+      "reused_completed_report": false
+    },
+    {
+      "arm": "A",
+      "seed": 87449,
+      "closest": {
+        "all_external": {
+          "tick": 449,
+          "elapsed_SIM_s": 44.900000000000006,
+          "gap_m": -0.0006411719210965153,
+          "robot_geom": "r1__v3_wheel_rr_roller_6_body_contact",
+          "external_geom": "floor",
+          "censored_at_model_extent": false
+        },
+        "non_floor_external": {
+          "tick": 59,
+          "elapsed_SIM_s": 5.9,
+          "gap_m": -0.0005696451060156457,
+          "robot_geom": "r1__v3_wheel_fr_roller_8_body_contact",
+          "external_geom": "cargo_cyan_2_geom",
+          "censored_at_model_extent": false
+        }
+      },
+      "samples": 901,
+      "source_sha": "82702ea74d641d68377eeb331142298ca4ff49b1",
+      "full_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1/gaps-A-87449.json",
+        "sha256": "28c8c2d8ea38f237d4bd8e418371e0f19b00647b9c01763d95e86e6e095e676d"
+      },
+      "reproduce": [
+        "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+        "/home/ugrp/ugrp-sim/src/82702ea74d641d68377eeb331142298ca4ff49b1/scripts/audit_act16w_saved_gaps.py",
+        "--enabled",
+        "--world-root",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-01/evaluation/owner/world-002",
+        "--references",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-record-references-r1/per-world-references.json",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1/gaps-A-87449.json"
+      ],
+      "reused_completed_report": false
+    },
+    {
+      "arm": "A",
+      "seed": 87439,
+      "closest": {
+        "all_external": {
+          "tick": 148,
+          "elapsed_SIM_s": 14.8,
+          "gap_m": -0.0008472248986904991,
+          "robot_geom": "r1__v3_wheel_fr_roller_3_body_contact",
+          "external_geom": "cargo_yellow_2_geom",
+          "censored_at_model_extent": false
+        },
+        "non_floor_external": {
+          "tick": 148,
+          "elapsed_SIM_s": 14.8,
+          "gap_m": -0.0008472248986904991,
+          "robot_geom": "r1__v3_wheel_fr_roller_3_body_contact",
+          "external_geom": "cargo_yellow_2_geom",
+          "censored_at_model_extent": false
+        }
+      },
+      "samples": 351,
+      "source_sha": "82702ea74d641d68377eeb331142298ca4ff49b1",
+      "full_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1/gaps-A-87439.json",
+        "sha256": "511c0d80286877bc88a06d1ad730b627e4ff0684ab17768117d357a629525fee"
+      },
+      "reproduce": [
+        "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+        "/home/ugrp/ugrp-sim/src/82702ea74d641d68377eeb331142298ca4ff49b1/scripts/audit_act16w_saved_gaps.py",
+        "--enabled",
+        "--world-root",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-02/evaluation/owner/world-000",
+        "--references",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-record-references-r1/per-world-references.json",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1/gaps-A-87439.json"
+      ],
+      "reused_completed_report": false
+    },
+    {
+      "arm": "A",
+      "seed": 87459,
+      "closest": {
+        "all_external": {
+          "tick": 34,
+          "elapsed_SIM_s": 3.4000000000000004,
+          "gap_m": -0.0006187903154605922,
+          "robot_geom": "r1__v3_wheel_fl_roller_7_body_contact",
+          "external_geom": "floor",
+          "censored_at_model_extent": false
+        },
+        "non_floor_external": {
+          "tick": 198,
+          "elapsed_SIM_s": 19.8,
+          "gap_m": -0.0003025133856993311,
+          "robot_geom": "r1__front_plate",
+          "external_geom": "cargo_yellow_2_geom",
+          "censored_at_model_extent": false
+        }
+      },
+      "samples": 901,
+      "source_sha": "82702ea74d641d68377eeb331142298ca4ff49b1",
+      "full_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1/gaps-A-87459.json",
+        "sha256": "721bfd41ba68f9419985fddb4cfa50d5f7675e5312a53c2e2e8963e3b79cde0a"
+      },
+      "reproduce": [
+        "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+        "/home/ugrp/ugrp-sim/src/82702ea74d641d68377eeb331142298ca4ff49b1/scripts/audit_act16w_saved_gaps.py",
+        "--enabled",
+        "--world-root",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-02/evaluation/owner/world-001",
+        "--references",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-record-references-r1/per-world-references.json",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1/gaps-A-87459.json"
+      ],
+      "reused_completed_report": false
+    },
+    {
+      "arm": "A",
+      "seed": 87429,
+      "closest": {
+        "all_external": {
+          "tick": 19,
+          "elapsed_SIM_s": 1.9000000000000001,
+          "gap_m": -0.0006109968266041132,
+          "robot_geom": "r1__v3_wheel_fl_roller_0_body_contact",
+          "external_geom": "floor",
+          "censored_at_model_extent": false
+        },
+        "non_floor_external": {
+          "tick": 222,
+          "elapsed_SIM_s": 22.200000000000003,
+          "gap_m": 0.10768402892877316,
+          "robot_geom": "r1__front_plate",
+          "external_geom": "cargo_red_2_geom",
+          "censored_at_model_extent": false
+        }
+      },
+      "samples": 223,
+      "source_sha": "82702ea74d641d68377eeb331142298ca4ff49b1",
+      "full_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-A-87429.json",
+        "sha256": "db3cfe1396a87e82906a84310c1315af05ba71f28a08c26794fd20acd58de8f5"
+      },
+      "reproduce": [
+        "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+        "/home/ugrp/ugrp-sim/src/82702ea74d641d68377eeb331142298ca4ff49b1/scripts/audit_act16w_saved_gaps.py",
+        "--enabled",
+        "--world-root",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-04/evaluation/owner/world-000",
+        "--references",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-record-references-r1/per-world-references.json",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-A-87429.json"
+      ],
+      "reused_completed_report": true
+    },
+    {
+      "arm": "B",
+      "seed": 87434,
+      "closest": {
+        "all_external": {
+          "tick": 55,
+          "elapsed_SIM_s": 5.5,
+          "gap_m": -0.0005484265687318536,
+          "robot_geom": "r1__v3_wheel_fr_roller_7_body_contact",
+          "external_geom": "floor",
+          "censored_at_model_extent": false
+        },
+        "non_floor_external": {
+          "tick": 0,
+          "elapsed_SIM_s": 0.0,
+          "gap_m": 0.40385713201341983,
+          "robot_geom": "r1__v3_wheel_rr_roller_4_body_contact",
+          "external_geom": "zone_wall_west",
+          "censored_at_model_extent": false
+        }
+      },
+      "samples": 87,
+      "source_sha": "82702ea74d641d68377eeb331142298ca4ff49b1",
+      "full_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1/gaps-B-87434.json",
+        "sha256": "ab9e4e39507eda034e491fd90e50b0b317e1b5ab00e921e56b5bb46c15e2151c"
+      },
+      "reproduce": [
+        "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+        "/home/ugrp/ugrp-sim/src/82702ea74d641d68377eeb331142298ca4ff49b1/scripts/audit_act16w_saved_gaps.py",
+        "--enabled",
+        "--world-root",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-B/validation/group-00/evaluation/owner/world-000",
+        "--references",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-record-references-r1/per-world-references.json",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1/gaps-B-87434.json"
+      ],
+      "reused_completed_report": false
+    },
+    {
+      "arm": "B",
+      "seed": 87454,
+      "closest": {
+        "all_external": {
+          "tick": 198,
+          "elapsed_SIM_s": 19.8,
+          "gap_m": -0.0006166559688193618,
+          "robot_geom": "r1__v3_wheel_fl_roller_2_body_contact",
+          "external_geom": "floor",
+          "censored_at_model_extent": false
+        },
+        "non_floor_external": {
+          "tick": 103,
+          "elapsed_SIM_s": 10.3,
+          "gap_m": 0.008908768653605736,
+          "robot_geom": "r1__right_finger",
+          "external_geom": "cargo_green_1_geom",
+          "censored_at_model_extent": false
+        }
+      },
+      "samples": 901,
+      "source_sha": "82702ea74d641d68377eeb331142298ca4ff49b1",
+      "full_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1/gaps-B-87454.json",
+        "sha256": "37560b8c4c1af78713d6d740fc8659e682c0f6fd90cee38d81fe15487ac68869"
+      },
+      "reproduce": [
+        "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+        "/home/ugrp/ugrp-sim/src/82702ea74d641d68377eeb331142298ca4ff49b1/scripts/audit_act16w_saved_gaps.py",
+        "--enabled",
+        "--world-root",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-B/validation/group-00/evaluation/owner/world-001",
+        "--references",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-record-references-r1/per-world-references.json",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1/gaps-B-87454.json"
+      ],
+      "reused_completed_report": false
+    },
+    {
+      "arm": "B",
+      "seed": 87424,
+      "closest": {
+        "all_external": {
+          "tick": 81,
+          "elapsed_SIM_s": 8.1,
+          "gap_m": -0.0016837200408129191,
+          "robot_geom": "r1__left_finger",
+          "external_geom": "cargo_cyan_1_geom",
+          "censored_at_model_extent": false
+        },
+        "non_floor_external": {
+          "tick": 81,
+          "elapsed_SIM_s": 8.1,
+          "gap_m": -0.0016837200408129191,
+          "robot_geom": "r1__left_finger",
+          "external_geom": "cargo_cyan_1_geom",
+          "censored_at_model_extent": false
+        }
+      },
+      "samples": 901,
+      "source_sha": "82702ea74d641d68377eeb331142298ca4ff49b1",
+      "full_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1/gaps-B-87424.json",
+        "sha256": "88e64447101e88ca6ccb947a94a78cc15a75767365503f8b65928bbbaa0b4053"
+      },
+      "reproduce": [
+        "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+        "/home/ugrp/ugrp-sim/src/82702ea74d641d68377eeb331142298ca4ff49b1/scripts/audit_act16w_saved_gaps.py",
+        "--enabled",
+        "--world-root",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-B/validation/group-01/evaluation/owner/world-000",
+        "--references",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-record-references-r1/per-world-references.json",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1/gaps-B-87424.json"
+      ],
+      "reused_completed_report": false
+    },
+    {
+      "arm": "B",
+      "seed": 87444,
+      "closest": {
+        "all_external": {
+          "tick": 385,
+          "elapsed_SIM_s": 38.5,
+          "gap_m": -0.0006728721684323966,
+          "robot_geom": "r1__v3_wheel_rr_roller_6_body_contact",
+          "external_geom": "floor",
+          "censored_at_model_extent": false
+        },
+        "non_floor_external": {
+          "tick": 73,
+          "elapsed_SIM_s": 7.300000000000001,
+          "gap_m": 0.20308966002436302,
+          "robot_geom": "r1__v3_wheel_rr_roller_4_body_contact",
+          "external_geom": "zone_wall_south",
+          "censored_at_model_extent": false
+        }
+      },
+      "samples": 901,
+      "source_sha": "82702ea74d641d68377eeb331142298ca4ff49b1",
+      "full_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1/gaps-B-87444.json",
+        "sha256": "c62c51b773c74f2f6d46fe3bb95ce178f119f46eca3b58d7e6040b0ab24262da"
+      },
+      "reproduce": [
+        "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+        "/home/ugrp/ugrp-sim/src/82702ea74d641d68377eeb331142298ca4ff49b1/scripts/audit_act16w_saved_gaps.py",
+        "--enabled",
+        "--world-root",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-B/validation/group-01/evaluation/owner/world-001",
+        "--references",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-record-references-r1/per-world-references.json",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1/gaps-B-87444.json"
+      ],
+      "reused_completed_report": false
+    },
+    {
+      "arm": "B",
+      "seed": 87449,
+      "closest": {
+        "all_external": {
+          "tick": 198,
+          "elapsed_SIM_s": 19.8,
+          "gap_m": -0.0006008855481033069,
+          "robot_geom": "r1__v3_wheel_fr_roller_4_body_contact",
+          "external_geom": "floor",
+          "censored_at_model_extent": false
+        },
+        "non_floor_external": {
+          "tick": 112,
+          "elapsed_SIM_s": 11.200000000000001,
+          "gap_m": 0.001418735251535284,
+          "robot_geom": "r1__left_finger",
+          "external_geom": "cargo_cyan_2_geom",
+          "censored_at_model_extent": false
+        }
+      },
+      "samples": 901,
+      "source_sha": "82702ea74d641d68377eeb331142298ca4ff49b1",
+      "full_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1/gaps-B-87449.json",
+        "sha256": "5671b82e71626105292ea4e5df04ad9b6fb857b76f9a26185fdd0193b3dcaa9d"
+      },
+      "reproduce": [
+        "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+        "/home/ugrp/ugrp-sim/src/82702ea74d641d68377eeb331142298ca4ff49b1/scripts/audit_act16w_saved_gaps.py",
+        "--enabled",
+        "--world-root",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-B/validation/group-01/evaluation/owner/world-002",
+        "--references",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-record-references-r1/per-world-references.json",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1/gaps-B-87449.json"
+      ],
+      "reused_completed_report": false
+    },
+    {
+      "arm": "B",
+      "seed": 87439,
+      "closest": {
+        "all_external": {
+          "tick": 194,
+          "elapsed_SIM_s": 19.400000000000002,
+          "gap_m": -0.0017508508896463778,
+          "robot_geom": "r1__right_finger",
+          "external_geom": "cargo_yellow_2_geom",
+          "censored_at_model_extent": false
+        },
+        "non_floor_external": {
+          "tick": 194,
+          "elapsed_SIM_s": 19.400000000000002,
+          "gap_m": -0.0017508508896463778,
+          "robot_geom": "r1__right_finger",
+          "external_geom": "cargo_yellow_2_geom",
+          "censored_at_model_extent": false
+        }
+      },
+      "samples": 901,
+      "source_sha": "82702ea74d641d68377eeb331142298ca4ff49b1",
+      "full_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1/gaps-B-87439.json",
+        "sha256": "e6e88ed753e4ce45d062fee01c1ffa02443ba122c3441f3dfc3614801a3a0fca"
+      },
+      "reproduce": [
+        "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+        "/home/ugrp/ugrp-sim/src/82702ea74d641d68377eeb331142298ca4ff49b1/scripts/audit_act16w_saved_gaps.py",
+        "--enabled",
+        "--world-root",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-B/validation/group-02/evaluation/owner/world-000",
+        "--references",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-record-references-r1/per-world-references.json",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1/gaps-B-87439.json"
+      ],
+      "reused_completed_report": false
+    },
+    {
+      "arm": "B",
+      "seed": 87459,
+      "closest": {
+        "all_external": {
+          "tick": 121,
+          "elapsed_SIM_s": 12.100000000000001,
+          "gap_m": -0.0006699502017238931,
+          "robot_geom": "r1__v3_wheel_rr_roller_6_body_contact",
+          "external_geom": "floor",
+          "censored_at_model_extent": false
+        },
+        "non_floor_external": {
+          "tick": 161,
+          "elapsed_SIM_s": 16.1,
+          "gap_m": 0.01348592832255191,
+          "robot_geom": "r1__v3_wheel_fl_roller_6_body_contact",
+          "external_geom": "cargo_yellow_2_geom",
+          "censored_at_model_extent": false
+        }
+      },
+      "samples": 255,
+      "source_sha": "82702ea74d641d68377eeb331142298ca4ff49b1",
+      "full_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1/gaps-B-87459.json",
+        "sha256": "8ad7dc294377cdec67654b4c237f192298c4a4c20d736ef91c3eecbc905f15db"
+      },
+      "reproduce": [
+        "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+        "/home/ugrp/ugrp-sim/src/82702ea74d641d68377eeb331142298ca4ff49b1/scripts/audit_act16w_saved_gaps.py",
+        "--enabled",
+        "--world-root",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-B/validation/group-02/evaluation/owner/world-001",
+        "--references",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-record-references-r1/per-world-references.json",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1/gaps-B-87459.json"
+      ],
+      "reused_completed_report": false
+    },
+    {
+      "arm": "B",
+      "seed": 87429,
+      "closest": {
+        "all_external": {
+          "tick": 145,
+          "elapsed_SIM_s": 14.5,
+          "gap_m": -0.0018164457509610204,
+          "robot_geom": "r1__left_finger",
+          "external_geom": "cargo_red_2_geom",
+          "censored_at_model_extent": false
+        },
+        "non_floor_external": {
+          "tick": 145,
+          "elapsed_SIM_s": 14.5,
+          "gap_m": -0.0018164457509610204,
+          "robot_geom": "r1__left_finger",
+          "external_geom": "cargo_red_2_geom",
+          "censored_at_model_extent": false
+        }
+      },
+      "samples": 901,
+      "source_sha": "82702ea74d641d68377eeb331142298ca4ff49b1",
+      "full_report": {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-B-87429.json",
+        "sha256": "ee1a829a69f7922eda8180322f00ee5ec21cdddf0498b76a0580a8696e04a958"
+      },
+      "reproduce": [
+        "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+        "/home/ugrp/ugrp-sim/src/82702ea74d641d68377eeb331142298ca4ff49b1/scripts/audit_act16w_saved_gaps.py",
+        "--enabled",
+        "--world-root",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-B/validation/group-04/evaluation/owner/world-000",
+        "--references",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-record-references-r1/per-world-references.json",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-B-87429.json"
+      ],
+      "reused_completed_report": true
+    }
+  ],
+  "scope": "C3.16 geometric queries on saved MJWarp poses; no blockage causality or C physics robustness claim"
+}

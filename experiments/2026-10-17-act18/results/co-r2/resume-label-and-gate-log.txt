@@ -1,0 +1,26 @@
+{
+  "schema": "ugrp.act18.co_resume_label.v1",
+  "interrupted_run": "co-r1",
+  "interruption": "HOST_ERROR guest shutdown by VM-local ugrp-idle-guard.service at 2026-10-18T01:42:06Z (journal: 'idle 20 min, shutting down'); act18 scripts were absent from the guard whitelist. Guard timer disabled and whitelist patched before continuation.",
+  "interrupted_step": 51600,
+  "last_available_checkpoint": 40000,
+  "resume_from": "co-r1/act18-co/step-40000",
+  "resume_extra_steps": 30000,
+  "cumulative_steps": 70000,
+  "label": "cotrain_continuation_v1",
+  "pooling": "forbidden with co-r1 and single-dataset candidates",
+  "optimizer_state": "not restored (AdamW stateless boundary); RNG/order restarted"
+}
+
+2026-10-18T03:13:46Z GATE_CHECKPOINT /home/ugrp/ugrp-sim/runs/act18/co-r2/act18-co/step-70000-best
+2026-10-18T03:13:51Z CO2_TRAIN4_RESULT 
+CO2_GATE_DONE
+2026-10-18T03:16:03Z GATE_CHECKPOINT /home/ugrp/ugrp-sim/runs/act18/co-r2/act18-co/step-70000-best
+2026-10-18T03:18:45Z CO2_TRAIN4_RESULT None None
+CO2_GATE_DONE
+2026-10-18T03:24:05Z GATE_CHECKPOINT /home/ugrp/ugrp-sim/runs/act18/co-r2/act18-co/step-70000-best
+2026-10-18T03:26:36Z CO2_TRAIN4_RESULT None None
+CO2_GATE_DONE
+2026-10-18T03:28:10Z GATE_CHECKPOINT /home/ugrp/ugrp-sim/runs/act18/co-r2/act18-co/step-70000-best
+2026-10-18T03:37:06Z CO2_TRAIN4_RESULT 0 4
+CO2_GATE_DONE

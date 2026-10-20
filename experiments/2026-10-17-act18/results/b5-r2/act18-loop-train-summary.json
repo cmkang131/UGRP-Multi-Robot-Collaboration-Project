@@ -1,0 +1,125 @@
+{
+  "source_sha": "ade8a30b95a6939666186e4f027a5c16b0a613cb",
+  "cohort": "act18-v7-reference",
+  "candidate": "act18-loop",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "contact_profile": "warp_native_contact_v1",
+  "chunk": 20,
+  "seed": 20261017,
+  "steps_requested": 5000,
+  "batch_size": 8,
+  "lr": 1e-05,
+  "kl_weight": 10.0,
+  "normalization_sha256": "d08f8672434791ad68cf99fb36a87d76e6d089c908da7b2a27effbf729ba6ee6",
+  "dataset_manifest_sha256": "44c1c46073aa08ea028324ffe924b67d862a2f01b56f4db11afad17000a9b198",
+  "protocol_sha256": "1db4e22345fdf29cdd80d07bbf61f23aa6101a6859e125f974f550577be1fb4e",
+  "lerobot_act_sha256": "8d622935319af7d03f1efd95d51e726af2921010f7e4f5ec3742f62280493111",
+  "act_library_source_sha": "3f99d58c5ada0862e669ef4065c0ba957f1b4547",
+  "done_loss": "balanced_bce_v1",
+  "image_mode": "current_full_v1",
+  "sampling": "cotrain_transition_v1",
+  "train_inference_transform_identical": true,
+  "gradient_checkpointing": false,
+  "training_precision": "bf16_autocast_v1",
+  "training_precision_scope": "fp32 weights/optimizer/grad clip; forward+loss bf16 autocast",
+  "static_map_use": "none",
+  "wall_cap": null,
+  "optimizer_recipe": "LeRobot AdamW defaults; no implicit resume",
+  "state_dim": 254,
+  "cotraining": {
+    "v7_root": "/home/ugrp/ugrp-sim/runs/act17-v7/dataset-r1",
+    "native_root": "/home/ugrp/ugrp-sim/runs/act16w-native-dataset-r1/records/dataset",
+    "native_manifest_sha256": "3d0a1c4907f0c91a5674d23e52c9fbf339f03952ce3bcf92dee21f7e8ab7dbd2",
+    "native_weight": 0.5,
+    "state_token_dim": 2,
+    "state_token_order": [
+      "v7",
+      "act16w"
+    ],
+    "base_smooth_window": 5,
+    "condition_token": {
+      "default": [
+        1.0,
+        0.0
+      ],
+      "order": [
+        "v7",
+        "act16w"
+      ],
+      "dim": 2
+    },
+    "note": "v7 TRAIN200 + act16w TRAIN32; condition token appended to state; done head trained separately"
+  },
+  "probe": {
+    "kind": "transition_weighted_finetune_v1",
+    "init_checkpoint": {
+      "path": "/home/ugrp/ugrp-sim/runs/act18/co-r2/act18-co/step-70000-best",
+      "step": 70000,
+      "candidate": "act18-co",
+      "chunk": 20,
+      "model_sha256": "8643b0e5b9b3a0f51b00316affdccf48c8e5179f4a3d3797ec84e681f5f99eca",
+      "adapter_sha256": "f5553123ef49827f93bda3287d48580e9cb8eb503ec1ee1ef4c7f3bf3f6148c8"
+    },
+    "steps_override": 5000,
+    "post_close_weight": null,
+    "pre_close_weight": null,
+    "sampling": "cotrain_transition_v1",
+    "post_close_phases": [
+      "grasp:lift",
+      "grasp:lift_settle",
+      "grasp:lookback_pose",
+      "grasp:lookback",
+      "grasp:lookback_settle",
+      "grasp:verify_lift",
+      "grasp:hold"
+    ],
+    "pre_close_phases": [
+      "grasp:hover",
+      "grasp:descent",
+      "grasp:close"
+    ],
+    "other_rows_weight": 1.0,
+    "packaging_eligible": false,
+    "done_positive_batch_fraction": null,
+    "base_smooth_window": null,
+    "val_select": false,
+    "done_current_step_only": false,
+    "lr_override": null,
+    "note": "short default-off pilot probe; never packaged or pooled with R8/R100"
+  },
+  "status": "complete",
+  "complete": true,
+  "steps_completed": 5000,
+  "started_utc": "2026-10-18T09:47:24.483931+00:00",
+  "TRAIN_rows": 84432,
+  "TRAIN_starts": 232,
+  "readback_verified": true,
+  "checkpoints": [
+    {
+      "step": 5000,
+      "path": "/home/ugrp/ugrp-sim/runs/act18/b5-r2/act18-loop/step-5000",
+      "sha256": "11db39fb58fddc4c756d688b65769a0669ac866982727f8283e228ad6fbb96ab",
+      "readback_verified": true
+    }
+  ],
+  "batches_seen": 5000,
+  "latest": {
+    "step": 5000,
+    "loss": 0.11786414682865143,
+    "legacy_l1_loss": 0.6222560405731201,
+    "movement_l1_loss": 0.0486454963684082,
+    "done_bce_loss": 0.00016809771477710456,
+    "kld_loss": 0.006905056536197662,
+    "gradient_norm": 3.5272138118743896,
+    "wall_s": 824.3702195669999
+  },
+  "checkpoint": "/home/ugrp/ugrp-sim/runs/act18/b5-r2/act18-loop/step-5000",
+  "checkpoint_sha256": "11db39fb58fddc4c756d688b65769a0669ac866982727f8283e228ad6fbb96ab",
+  "peak_gpu_bytes": 2053371392,
+  "wall_s": 827.2944091799999
+}

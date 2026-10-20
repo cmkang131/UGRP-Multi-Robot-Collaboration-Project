@@ -1,0 +1,181 @@
+{
+  "status": "reviewed",
+  "utc": "2026-10-16T18:51:25.967286+00:00",
+  "seed": 87431,
+  "policy": "C fixed10000, TRAIN-only DAgger prefix",
+  "whole_2Hz_SIM_range": [
+    0.0,
+    30.0
+  ],
+  "whole_2Hz_frames": 61,
+  "terminal_10Hz_SIM_range": [
+    20.1,
+    30.0
+  ],
+  "terminal_10Hz_frames": 100,
+  "viewed_sheets": [
+    "full-2hz-00.jpg",
+    "full-2hz-01.jpg",
+    "full-2hz-02.jpg",
+    "full-2hz-03.jpg",
+    "last10s-10hz-00.jpg",
+    "last10s-10hz-01.jpg",
+    "last10s-10hz-02.jpg",
+    "last10s-10hz-03.jpg",
+    "last10s-10hz-04.jpg"
+  ],
+  "timeline": [
+    {
+      "SIM": [
+        0,
+        5.5
+      ],
+      "observation": "two yellow boxes visible initially; nearer image box grows toward lower right during approach"
+    },
+    {
+      "SIM": [
+        6,
+        10
+      ],
+      "observation": "large yellow box reaches the lower-right edge; far yellow box leaves the upper view"
+    },
+    {
+      "SIM": [
+        10.5,
+        30
+      ],
+      "observation": "own RGB is floor only; no target reappearance or landmark scan, overview leaves robot beside the assigned box"
+    },
+    {
+      "SIM": [
+        20.1,
+        30
+      ],
+      "observation": "10Hz remains feature-poor floor, with no visible recovered target; imagery alone cannot establish holding or exact motion"
+    }
+  ],
+  "transfer_sha_verified": [
+    {
+      "name": "full-2hz-00.jpg",
+      "bytes": 147253,
+      "sha256": "3d201e9b3c2ac329b2accafde655ef920d0144fdb81a15a0a55610b36dc0b501"
+    },
+    {
+      "name": "full-2hz-01.jpg",
+      "bytes": 139701,
+      "sha256": "2102e46991d61c748003be1f9d315e40a9f9e48dcf76f325f877d6e308d97ccb"
+    },
+    {
+      "name": "full-2hz-02.jpg",
+      "bytes": 138670,
+      "sha256": "d6bd4fee7bf89dff4d1a951ed7c5d295c9932de224d0edfd197edd748e668ddc"
+    },
+    {
+      "name": "full-2hz-03.jpg",
+      "bytes": 82754,
+      "sha256": "033670516ee88b9c726129fd9c62bdea0d1ce78e2ca723bd39ee4504fca4dd92"
+    },
+    {
+      "name": "last10s-10hz-00.jpg",
+      "bytes": 60635,
+      "sha256": "676e3b2573200985cd7e991884f3579638e7481380f8bc471ded851e72c89214"
+    },
+    {
+      "name": "last10s-10hz-01.jpg",
+      "bytes": 60677,
+      "sha256": "55c1c14da58a453b847a5f037b5f773a4a73d9858dfeec6c59a5221a02c6b678"
+    },
+    {
+      "name": "last10s-10hz-02.jpg",
+      "bytes": 60653,
+      "sha256": "8bb08736069c89afe47315d4355180df39f7f7e6f6bcb1043971836c776cf420"
+    },
+    {
+      "name": "last10s-10hz-03.jpg",
+      "bytes": 60569,
+      "sha256": "b272c969d019564837d37c5549a7b4fb84600aae82a52e4282be5b87f0e9b1ad"
+    },
+    {
+      "name": "last10s-10hz-04.jpg",
+      "bytes": 60687,
+      "sha256": "578abf782be28092618c1b58be2a808f44441c665db9834172f90322bf5df25c"
+    },
+    {
+      "name": "playback-3x.mp4",
+      "bytes": 61042,
+      "sha256": "18642547d9b06b939a3ae1dc3f0afef08795be951598f3f55b9eaffbccddba56"
+    },
+    {
+      "name": "playback-meta.json",
+      "bytes": 4298,
+      "sha256": "76912a39d47296dee694f57e19f403333ae8f22c15012b8f59da1bd20927f937"
+    }
+  ],
+  "video_bytes": 61042,
+  "ffprobe_verified_on_L4": true,
+  "label_coverage": {
+    "seed": 87431,
+    "kind": "yellow",
+    "observations": 300,
+    "valid_h0": 121,
+    "valid_noninitial": 120,
+    "valid_after_different_student_command": 120,
+    "teacher_phase_counts": {
+      "start": 1,
+      "fold": 6,
+      "approach": 67,
+      "align": 47
+    },
+    "target_visible_valid_N": 105,
+    "last_valid_elapsed_SIM_s": 12.0,
+    "planned_prefix_cap_end": true
+  },
+  "raw_evaluator_diagnostics": {
+    "seed": 87431,
+    "world": 2,
+    "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-02/collection",
+    "result": {
+      "status": "cap_end",
+      "cap_end": true,
+      "reason": "dagger_prefix_cap_end",
+      "issued_done": false,
+      "teacher_criteria_diagnostic": {
+        "lift_success": false,
+        "release_success": false,
+        "physical_success": false,
+        "max_stable_lift_s": 0.0,
+        "max_stable_release_s": 0.0,
+        "criteria": {
+          "min_clearance_m": 0.012,
+          "max_tilt_deg": 10.0,
+          "lift_hold_s": 3.0,
+          "finger_min_n": 0.5,
+          "release_settle_s": 2.0,
+          "release_speed_m_s": 0.01,
+          "release_max_tilt_deg": 3.0,
+          "release_clearance_m": 0.005,
+          "placement_offset_m": 0.05,
+          "weld": "off"
+        }
+      }
+    },
+    "max_clearance_m": -0.00010775512456893954,
+    "max_min_bilateral_force_N": 0.0,
+    "actions_N": 300
+  },
+  "blocking_object": "not_attributed_no_blockage_causality_claim",
+  "nearest_non_floor_object": "cargo_yellow_1_geom",
+  "minimum_gap_m": 0.003099927453755313,
+  "gap_report": {
+    "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-gaps-87431.json",
+    "sha256": "4553ac1f29e7c3e748591ca3700befd96f48b2e23dd35385839636242593aea3"
+  },
+  "limits": [
+    "TRAIN coverage examples, not final evaluation or a task-success denominator",
+    "floor-only RGB alone does not prove holding; evaluator diagnostics are separate",
+    "saved geometric distances are not GPU forces or proof of a blocker",
+    "no new threshold, teacher query, student command or policy change"
+  ],
+  "sparse_review_difference": "full sequence locates the image exit and lack of recovery; terminal10Hz exposes the brief view change in87422 and floor-only tail in87431",
+  "local": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/act16w4-native-dagger-87431"
+}

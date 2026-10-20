@@ -1,0 +1,44 @@
+{
+  "utc": "2026-10-17T06:18:48.603780+00:00",
+  "source_sha": "e1b7de0f789305e12a3612e7cbf392b8e4ac21ee",
+  "scope": "first running training check only; no task success or final model",
+  "parent_status": "running",
+  "rows": [
+    {
+      "candidate": "M",
+      "status": "running",
+      "steps_completed": 1220,
+      "latest": {
+        "step": 1220,
+        "loss": 2.1073203086853027,
+        "legacy_l1_loss": 0.7970563769340515,
+        "movement_l1_loss": 0.3921275734901428,
+        "done_bce_loss": 0.16227056086063385,
+        "kld_loss": 0.15529221296310425,
+        "gradient_norm": 60.0328369140625,
+        "wall_s": 554.9253078889997
+      },
+      "TRAIN_rows": 72572,
+      "TRAIN_starts": 200,
+      "train_inference_transform_identical": true
+    },
+    {
+      "candidate": "F",
+      "status": "running",
+      "steps_completed": 2200,
+      "latest": {
+        "step": 2200,
+        "loss": 1.3141744136810303,
+        "legacy_l1_loss": 0.7126250267028809,
+        "movement_l1_loss": 0.28268083930015564,
+        "done_bce_loss": 0.137099951505661,
+        "kld_loss": 0.08943935483694077,
+        "gradient_norm": 53.9454345703125,
+        "wall_s": 559.3034322680005
+      },
+      "TRAIN_rows": 72572,
+      "TRAIN_starts": 200,
+      "train_inference_transform_identical": true
+    }
+  ]
+}

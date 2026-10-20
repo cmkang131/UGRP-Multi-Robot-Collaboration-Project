@@ -1,0 +1,537 @@
+{
+  "schema": "ugrp.act18.closedloop_diag.v1",
+  "run_root": "/home/ugrp/ugrp-sim/runs/act18/b2-r1/B2-TRAIN4-run3",
+  "dataset": "/home/ugrp/ugrp-sim/runs/act17-v7/dataset-r1",
+  "teacher": {
+    "grasp": {
+      "ticks": 55042,
+      "last_move_elapsed_s": 31.700000000000003,
+      "moving_fraction": 0.43848333999491296,
+      "by_elapsed": {
+        "0-2s": {
+          "ticks": 4200,
+          "moving": 2730,
+          "wheel_abs_sum": 3817.449934989214,
+          "wheel_n": 10907,
+          "displacement": 220.1105865401592,
+          "gripper_closed": 0,
+          "moving_fraction": 0.65,
+          "gripper_closed_fraction": 0.0,
+          "moving_wheel_abs_mean": 0.3499999940395355
+        },
+        "2-5s": {
+          "ticks": 5800,
+          "moving": 5660,
+          "wheel_abs_sum": 7893.199865579605,
+          "wheel_n": 22552,
+          "displacement": 432.5894823494412,
+          "gripper_closed": 0,
+          "moving_fraction": 0.9758620689655172,
+          "gripper_closed_fraction": 0.0,
+          "moving_wheel_abs_mean": 0.3499999940395355
+        },
+        "5-10s": {
+          "ticks": 10000,
+          "moving": 9050,
+          "wheel_abs_sum": 12622.749785035849,
+          "wheel_n": 36065,
+          "displacement": 633.6757944748521,
+          "gripper_closed": 453,
+          "moving_fraction": 0.905,
+          "gripper_closed_fraction": 0.0453,
+          "moving_wheel_abs_mean": 0.3499999940395355
+        },
+        "10-15s": {
+          "ticks": 10000,
+          "moving": 2569,
+          "wheel_abs_sum": 3592.3999388217926,
+          "wheel_n": 10264,
+          "displacement": 154.0715954965516,
+          "gripper_closed": 6315,
+          "moving_fraction": 0.2569,
+          "gripper_closed_fraction": 0.6315,
+          "moving_wheel_abs_mean": 0.3499999940395355
+        },
+        "15-20s": {
+          "ticks": 10000,
+          "moving": 1009,
+          "wheel_abs_sum": 1412.5999759435654,
+          "wheel_n": 4036,
+          "displacement": 60.49452124287719,
+          "gripper_closed": 9805,
+          "moving_fraction": 0.1009,
+          "gripper_closed_fraction": 0.9805,
+          "moving_wheel_abs_mean": 0.3499999940395355
+        },
+        "20-30s": {
+          "ticks": 14688,
+          "moving": 3099,
+          "wheel_abs_sum": 4338.599926114082,
+          "wheel_n": 12396,
+          "displacement": 185.94000514563436,
+          "gripper_closed": 14682,
+          "moving_fraction": 0.21098856209150327,
+          "gripper_closed_fraction": 0.9995915032679739,
+          "moving_wheel_abs_mean": 0.3499999940395355
+        },
+        "30-45s": {
+          "ticks": 354,
+          "moving": 18,
+          "wheel_abs_sum": 25.199999570846558,
+          "wheel_n": 72,
+          "displacement": 1.0800000298874712,
+          "gripper_closed": 354,
+          "moving_fraction": 0.05084745762711865,
+          "gripper_closed_fraction": 1.0,
+          "moving_wheel_abs_mean": 0.3499999940395355
+        }
+      }
+    },
+    "release": {
+      "ticks": 17530,
+      "last_move_elapsed_s": 8.600000000000001,
+      "moving_fraction": 0.45636052481460354,
+      "by_elapsed": {
+        "0-2s": {
+          "ticks": 4019,
+          "moving": 4000,
+          "wheel_abs_sum": 5599.999904632568,
+          "wheel_n": 16000,
+          "displacement": 240.00000664167905,
+          "gripper_closed": 4019,
+          "moving_fraction": 0.9952724558347847,
+          "gripper_closed_fraction": 1.0,
+          "moving_wheel_abs_mean": 0.3499999940395355
+        },
+        "2-5s": {
+          "ticks": 6021,
+          "moving": 0,
+          "wheel_abs_sum": 0.0,
+          "wheel_n": 0,
+          "displacement": 0.0,
+          "gripper_closed": 6021,
+          "moving_fraction": 0.0,
+          "gripper_closed_fraction": 1.0,
+          "moving_wheel_abs_mean": null
+        },
+        "5-10s": {
+          "ticks": 7490,
+          "moving": 4000,
+          "wheel_abs_sum": 5599.999904632568,
+          "wheel_n": 16000,
+          "displacement": 240.00000664167905,
+          "gripper_closed": 2084,
+          "moving_fraction": 0.5340453938584779,
+          "gripper_closed_fraction": 0.27823765020026703,
+          "moving_wheel_abs_mean": 0.3499999940395355
+        }
+      }
+    }
+  },
+  "worlds": {
+    "group-000-w0": {
+      "seed": null,
+      "kind": null,
+      "closed_loop": {
+        "grasp": {
+          "ticks": 900,
+          "last_move_elapsed_s": 8.700000000000001,
+          "moving_fraction": 0.09111111111111111,
+          "by_elapsed": {
+            "0-2s": {
+              "ticks": 21,
+              "moving": 15,
+              "wheel_abs_sum": 21.11459528430964,
+              "wheel_n": 59,
+              "displacement": 0.9371784766364801,
+              "gripper_closed": 0,
+              "moving_fraction": 0.7142857142857143,
+              "gripper_closed_fraction": 0.0,
+              "moving_wheel_abs_mean": 0.3578744963442312
+            },
+            "2-5s": {
+              "ticks": 29,
+              "moving": 29,
+              "wheel_abs_sum": 41.573710902808,
+              "wheel_n": 116,
+              "displacement": 2.285883660385405,
+              "gripper_closed": 0,
+              "moving_fraction": 1.0,
+              "gripper_closed_fraction": 0.0,
+              "moving_wheel_abs_mean": 0.35839405950696557
+            },
+            "5-10s": {
+              "ticks": 50,
+              "moving": 38,
+              "wheel_abs_sum": 50.46463597625129,
+              "wheel_n": 142,
+              "displacement": 2.2621644072884,
+              "gripper_closed": 4,
+              "moving_fraction": 0.76,
+              "gripper_closed_fraction": 0.08,
+              "moving_wheel_abs_mean": 0.3553847603961358
+            },
+            "10-15s": {
+              "ticks": 50,
+              "moving": 0,
+              "wheel_abs_sum": 0.0,
+              "wheel_n": 0,
+              "displacement": 0.0,
+              "gripper_closed": 50,
+              "moving_fraction": 0.0,
+              "gripper_closed_fraction": 1.0,
+              "moving_wheel_abs_mean": null
+            },
+            "15-20s": {
+              "ticks": 50,
+              "moving": 0,
+              "wheel_abs_sum": 0.0,
+              "wheel_n": 0,
+              "displacement": 0.0,
+              "gripper_closed": 50,
+              "moving_fraction": 0.0,
+              "gripper_closed_fraction": 1.0,
+              "moving_wheel_abs_mean": null
+            },
+            "20-30s": {
+              "ticks": 100,
+              "moving": 0,
+              "wheel_abs_sum": 0.0,
+              "wheel_n": 0,
+              "displacement": 0.0,
+              "gripper_closed": 100,
+              "moving_fraction": 0.0,
+              "gripper_closed_fraction": 1.0,
+              "moving_wheel_abs_mean": null
+            },
+            "30-45s": {
+              "ticks": 150,
+              "moving": 0,
+              "wheel_abs_sum": 0.0,
+              "wheel_n": 0,
+              "displacement": 0.0,
+              "gripper_closed": 150,
+              "moving_fraction": 0.0,
+              "gripper_closed_fraction": 1.0,
+              "moving_wheel_abs_mean": null
+            },
+            "30+s": {
+              "ticks": 450,
+              "moving": 0,
+              "wheel_abs_sum": 0.0,
+              "wheel_n": 0,
+              "displacement": 0.0,
+              "gripper_closed": 450,
+              "moving_fraction": 0.0,
+              "gripper_closed_fraction": 1.0,
+              "moving_wheel_abs_mean": null
+            }
+          }
+        }
+      }
+    },
+    "group-000-w1": {
+      "seed": null,
+      "kind": null,
+      "closed_loop": {
+        "grasp": {
+          "ticks": 900,
+          "last_move_elapsed_s": 17.2,
+          "moving_fraction": 0.18444444444444444,
+          "by_elapsed": {
+            "0-2s": {
+              "ticks": 21,
+              "moving": 14,
+              "wheel_abs_sum": 19.306967809374726,
+              "wheel_n": 56,
+              "displacement": 1.1124482425862663,
+              "gripper_closed": 0,
+              "moving_fraction": 0.6666666666666666,
+              "gripper_closed_fraction": 0.0,
+              "moving_wheel_abs_mean": 0.34476728231026293
+            },
+            "2-5s": {
+              "ticks": 29,
+              "moving": 29,
+              "wheel_abs_sum": 38.08780653064901,
+              "wheel_n": 106,
+              "displacement": 2.1268046295590866,
+              "gripper_closed": 0,
+              "moving_fraction": 1.0,
+              "gripper_closed_fraction": 0.0,
+              "moving_wheel_abs_mean": 0.3593189295344246
+            },
+            "5-10s": {
+              "ticks": 50,
+              "moving": 50,
+              "wheel_abs_sum": 64.38252131376139,
+              "wheel_n": 180,
+              "displacement": 3.8970148397803124,
+              "gripper_closed": 0,
+              "moving_fraction": 1.0,
+              "gripper_closed_fraction": 0.0,
+              "moving_wheel_abs_mean": 0.35768067396534103
+            },
+            "10-15s": {
+              "ticks": 50,
+              "moving": 50,
+              "wheel_abs_sum": 73.42806155702138,
+              "wheel_n": 200,
+              "displacement": 4.62898045580457,
+              "gripper_closed": 0,
+              "moving_fraction": 1.0,
+              "gripper_closed_fraction": 0.0,
+              "moving_wheel_abs_mean": 0.3671403077851069
+            },
+            "15-20s": {
+              "ticks": 50,
+              "moving": 23,
+              "wheel_abs_sum": 28.91095174225069,
+              "wheel_n": 84,
+              "displacement": 1.1124251529213132,
+              "gripper_closed": 19,
+              "moving_fraction": 0.46,
+              "gripper_closed_fraction": 0.38,
+              "moving_wheel_abs_mean": 0.3441779969315558
+            },
+            "20-30s": {
+              "ticks": 100,
+              "moving": 0,
+              "wheel_abs_sum": 0.0,
+              "wheel_n": 0,
+              "displacement": 0.0,
+              "gripper_closed": 100,
+              "moving_fraction": 0.0,
+              "gripper_closed_fraction": 1.0,
+              "moving_wheel_abs_mean": null
+            },
+            "30-45s": {
+              "ticks": 150,
+              "moving": 0,
+              "wheel_abs_sum": 0.0,
+              "wheel_n": 0,
+              "displacement": 0.0,
+              "gripper_closed": 150,
+              "moving_fraction": 0.0,
+              "gripper_closed_fraction": 1.0,
+              "moving_wheel_abs_mean": null
+            },
+            "30+s": {
+              "ticks": 450,
+              "moving": 0,
+              "wheel_abs_sum": 0.0,
+              "wheel_n": 0,
+              "displacement": 0.0,
+              "gripper_closed": 450,
+              "moving_fraction": 0.0,
+              "gripper_closed_fraction": 1.0,
+              "moving_wheel_abs_mean": null
+            }
+          }
+        }
+      }
+    },
+    "group-001-w0": {
+      "seed": null,
+      "kind": null,
+      "closed_loop": {
+        "grasp": {
+          "ticks": 900,
+          "last_move_elapsed_s": 10.100000000000001,
+          "moving_fraction": 0.10666666666666667,
+          "by_elapsed": {
+            "0-2s": {
+              "ticks": 21,
+              "moving": 15,
+              "wheel_abs_sum": 19.214577836161226,
+              "wheel_n": 56,
+              "displacement": 1.0194927199159545,
+              "gripper_closed": 0,
+              "moving_fraction": 0.7142857142857143,
+              "gripper_closed_fraction": 0.0,
+              "moving_wheel_abs_mean": 0.3431174613600219
+            },
+            "2-5s": {
+              "ticks": 29,
+              "moving": 29,
+              "wheel_abs_sum": 33.0961298694232,
+              "wheel_n": 93,
+              "displacement": 1.7157580916295556,
+              "gripper_closed": 0,
+              "moving_fraction": 1.0,
+              "gripper_closed_fraction": 0.0,
+              "moving_wheel_abs_mean": 0.35587236418734625
+            },
+            "5-10s": {
+              "ticks": 50,
+              "moving": 50,
+              "wheel_abs_sum": 66.11190689304043,
+              "wheel_n": 187,
+              "displacement": 3.095398088329491,
+              "gripper_closed": 0,
+              "moving_fraction": 1.0,
+              "gripper_closed_fraction": 0.0,
+              "moving_wheel_abs_mean": 0.35353960905369214
+            },
+            "10-15s": {
+              "ticks": 50,
+              "moving": 2,
+              "wheel_abs_sum": 2.48,
+              "wheel_n": 8,
+              "displacement": 0.05003370412664859,
+              "gripper_closed": 39,
+              "moving_fraction": 0.04,
+              "gripper_closed_fraction": 0.78,
+              "moving_wheel_abs_mean": 0.31
+            },
+            "15-20s": {
+              "ticks": 50,
+              "moving": 0,
+              "wheel_abs_sum": 0.0,
+              "wheel_n": 0,
+              "displacement": 0.0,
+              "gripper_closed": 50,
+              "moving_fraction": 0.0,
+              "gripper_closed_fraction": 1.0,
+              "moving_wheel_abs_mean": null
+            },
+            "20-30s": {
+              "ticks": 100,
+              "moving": 0,
+              "wheel_abs_sum": 0.0,
+              "wheel_n": 0,
+              "displacement": 0.0,
+              "gripper_closed": 100,
+              "moving_fraction": 0.0,
+              "gripper_closed_fraction": 1.0,
+              "moving_wheel_abs_mean": null
+            },
+            "30-45s": {
+              "ticks": 150,
+              "moving": 0,
+              "wheel_abs_sum": 0.0,
+              "wheel_n": 0,
+              "displacement": 0.0,
+              "gripper_closed": 150,
+              "moving_fraction": 0.0,
+              "gripper_closed_fraction": 1.0,
+              "moving_wheel_abs_mean": null
+            },
+            "30+s": {
+              "ticks": 450,
+              "moving": 0,
+              "wheel_abs_sum": 0.0,
+              "wheel_n": 0,
+              "displacement": 0.0,
+              "gripper_closed": 450,
+              "moving_fraction": 0.0,
+              "gripper_closed_fraction": 1.0,
+              "moving_wheel_abs_mean": null
+            }
+          }
+        }
+      }
+    },
+    "group-001-w1": {
+      "seed": null,
+      "kind": null,
+      "closed_loop": {
+        "grasp": {
+          "ticks": 900,
+          "last_move_elapsed_s": 7.800000000000002,
+          "moving_fraction": 0.0811111111111111,
+          "by_elapsed": {
+            "0-2s": {
+              "ticks": 21,
+              "moving": 15,
+              "wheel_abs_sum": 19.71298330873391,
+              "wheel_n": 57,
+              "displacement": 1.075472397211258,
+              "gripper_closed": 0,
+              "moving_fraction": 0.7142857142857143,
+              "gripper_closed_fraction": 0.0,
+              "moving_wheel_abs_mean": 0.34584181243392825
+            },
+            "2-5s": {
+              "ticks": 29,
+              "moving": 29,
+              "wheel_abs_sum": 42.43414282065698,
+              "wheel_n": 116,
+              "displacement": 2.649498686967973,
+              "gripper_closed": 0,
+              "moving_fraction": 1.0,
+              "gripper_closed_fraction": 0.0,
+              "moving_wheel_abs_mean": 0.36581157604014636
+            },
+            "5-10s": {
+              "ticks": 50,
+              "moving": 29,
+              "wheel_abs_sum": 37.94696305253594,
+              "wheel_n": 108,
+              "displacement": 1.690742785044346,
+              "gripper_closed": 13,
+              "moving_fraction": 0.58,
+              "gripper_closed_fraction": 0.26,
+              "moving_wheel_abs_mean": 0.35136076900496244
+            },
+            "10-15s": {
+              "ticks": 50,
+              "moving": 0,
+              "wheel_abs_sum": 0.0,
+              "wheel_n": 0,
+              "displacement": 0.0,
+              "gripper_closed": 50,
+              "moving_fraction": 0.0,
+              "gripper_closed_fraction": 1.0,
+              "moving_wheel_abs_mean": null
+            },
+            "15-20s": {
+              "ticks": 50,
+              "moving": 0,
+              "wheel_abs_sum": 0.0,
+              "wheel_n": 0,
+              "displacement": 0.0,
+              "gripper_closed": 50,
+              "moving_fraction": 0.0,
+              "gripper_closed_fraction": 1.0,
+              "moving_wheel_abs_mean": null
+            },
+            "20-30s": {
+              "ticks": 100,
+              "moving": 0,
+              "wheel_abs_sum": 0.0,
+              "wheel_n": 0,
+              "displacement": 0.0,
+              "gripper_closed": 100,
+              "moving_fraction": 0.0,
+              "gripper_closed_fraction": 1.0,
+              "moving_wheel_abs_mean": null
+            },
+            "30-45s": {
+              "ticks": 150,
+              "moving": 0,
+              "wheel_abs_sum": 0.0,
+              "wheel_n": 0,
+              "displacement": 0.0,
+              "gripper_closed": 150,
+              "moving_fraction": 0.0,
+              "gripper_closed_fraction": 1.0,
+              "moving_wheel_abs_mean": null
+            },
+            "30+s": {
+              "ticks": 450,
+              "moving": 0,
+              "wheel_abs_sum": 0.0,
+              "wheel_n": 0,
+              "displacement": 0.0,
+              "gripper_closed": 450,
+              "moving_fraction": 0.0,
+              "gripper_closed_fraction": 1.0,
+              "moving_wheel_abs_mean": null
+            }
+          }
+        }
+      }
+    }
+  }
+}

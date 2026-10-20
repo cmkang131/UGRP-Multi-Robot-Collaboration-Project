@@ -1,0 +1,44 @@
+{
+  "task": "act17",
+  "pid": 17637,
+  "start": "2026-10-17T05:24:51.485098+00:00",
+  "expected_end": "finite record-close -> raw audit -> JPEG dataset conversion; no training/evaluation",
+  "concurrency": 0,
+  "status": "complete",
+  "record_n": 236,
+  "record_N": 236,
+  "free_bytes": 30369484800,
+  "stage": "dataset-r1-convert",
+  "finished": [
+    {
+      "stage": "bulk-independent-r1",
+      "argv": [
+        "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+        "/home/ugrp/ugrp-sim/src/2ac6e70270703acbf9ef736217977048a9cd84fa/scripts/act17_v7_audit.py",
+        "--run",
+        "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/act17-v7/bulk-independent-r1.json"
+      ],
+      "returncode": 0
+    },
+    {
+      "stage": "dataset-r1-convert",
+      "argv": [
+        "/home/ugrp/ugrp-rl1b-act-env/bin/python",
+        "/home/ugrp/ugrp-sim/src/2ac6e70270703acbf9ef736217977048a9cd84fa/scripts/act17_data.py",
+        "--protocol",
+        "/home/ugrp/ugrp-sim/src/2ac6e70270703acbf9ef736217977048a9cd84fa/experiments/2026-10-17-act17/v7/protocol.json",
+        "--gate",
+        "/home/ugrp/ugrp-sim/runs/act17-v7/gate-independent-r1.json",
+        "--records",
+        "/home/ugrp/ugrp-sim/runs/act17-v7/record-pilot-r1",
+        "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/act17-v7/dataset-r1"
+      ],
+      "returncode": 0
+    }
+  ],
+  "complete": true
+}

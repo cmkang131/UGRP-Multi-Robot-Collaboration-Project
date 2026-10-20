@@ -1,0 +1,41 @@
+{
+  "status": "complete",
+  "arms": {
+    "A": {
+      "steps": 10000,
+      "complete": true,
+      "readback_verified": true,
+      "history_mask": "off",
+      "curriculum_starts_sha256": null,
+      "dataset_manifest_sha256": "3d0a1c4907f0c91a5674d23e52c9fbf339f03952ce3bcf92dee21f7e8ab7dbd2",
+      "main_wall_s": 3164.3540772549986,
+      "receipt": "experiments/2026-10-16-act16w/resume4/native-A-training-summary.json",
+      "sha256": "7e6c2a802bef3b6dd3fb4411a5fff09900af62ef7f837f533c963c153c79df79"
+    },
+    "B": {
+      "steps": 10000,
+      "complete": true,
+      "readback_verified": true,
+      "history_mask": "wheel_pulse_train_mean",
+      "curriculum_starts_sha256": null,
+      "dataset_manifest_sha256": "3d0a1c4907f0c91a5674d23e52c9fbf339f03952ce3bcf92dee21f7e8ab7dbd2",
+      "main_wall_s": 3164.6981861019995,
+      "receipt": "experiments/2026-10-16-act16w/resume4/native-B-training-summary.json",
+      "sha256": "61e69228993bd310cd714e0804aa58a3f8aa69e8844ce4cc5693a1f39b6767c9"
+    },
+    "C": {
+      "steps": 10000,
+      "complete": true,
+      "readback_verified": true,
+      "history_mask": "off",
+      "curriculum_starts_sha256": "7e69d22634e0ac354f2af272ea77a3d6dca24abe1658880e3b4919e0060b4205",
+      "dataset_manifest_sha256": "3d0a1c4907f0c91a5674d23e52c9fbf339f03952ce3bcf92dee21f7e8ab7dbd2",
+      "main_wall_s": 1680.519566476003,
+      "receipt": "experiments/2026-10-16-act16w/resume4/native-C-training-summary.json",
+      "sha256": "5b5b07a0acdc368a4105e1cffcf6a50edb4fe8620beefae15a51099c0f60b70d"
+    }
+  },
+  "steps_sum": 30000,
+  "wall_scope": "main optimizer process elapsed; A/B parallel, summing these is not GPU allocated time or billed hours",
+  "model_upload_state": "staged, native public release not yet created; public verification pending"
+}

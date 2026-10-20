@@ -1,0 +1,74 @@
+{
+  "schema": "ugrp.act18.co_prereg.v1",
+  "experiment": "2026-10-17-act18",
+  "phase": "C",
+  "candidate": "act18-co",
+  "pre_registered_utc": "2026-10-18T08:45:00Z",
+  "approval": "Lead 2026-10-18 자율 트랙: Phase C co-training 승인. bf16, 100k 단계, 20k마다 체크포인트, best-val(검증 시드 제외), done은 B4 방식(자기 명령이력 GRU)으로 co-training 데이터 재학습 결합. 새 후보 act18-co prereg, 합산·pooling 금지, hybrid 라벨, 패키징 금지. 시간 예산: 학습 13:30, TRAIN4 게이트 14:15 (초과 시 중간 보고).",
+  "datasets": {
+    "v7": {
+      "root": "/home/ugrp/ugrp-sim/runs/act17-v7/dataset-r1",
+      "manifest_sha256": "44c1c46073aa08ea028324ffe924b67d862a2f01b56f4db11afad17000a9b198",
+      "episodes": "TRAIN200 (validation 40은 best-val 선택에만 사용, VAL8 시드는 제외)",
+      "image_mode": "current_full_v1",
+      "rows_train": 72572
+    },
+    "act16w_native": {
+      "root": "/home/ugrp/ugrp-sim/runs/act16w-native-dataset-r1/records/dataset",
+      "manifest_sha256_recorded_in_run_receipt": true,
+      "episodes": "TRAIN32 (validation 8은 done-head 오프라인 검증에만 사용)",
+      "image_mode": "current_full_v1 via newest history frame (원본 4-history 슬롯의 마지막 프레임)",
+      "rows_train": 14886,
+      "skill_rows": {"grasp": 9055, "release": 2805},
+      "done_rows": {"grasp": 32, "release": 32}
+    },
+    "third_nearfield_source": "별도 세 번째 녹화는 없음(새 녹화 금지). '근거리'는 v7 near-field 시연 데이터이며 act16w native 40-world 세트와 함께 co-training에 포함한다."
+  },
+  "mixture": {
+    "sampler": "cotrain_v1: 배치 슬롯마다 dataset 확률(native_weight=.5) → 그 안에서 episode uniform → row uniform (act-plus-plus BatchSampler 방식)",
+    "native_weight": 0.5,
+    "condition_token": "observation.state 뒤에 2-dim dataset-origin one-hot append ([v7, act16w]); 기존 252차원 state는 보존. 평가 시 default token=[1,0] (v7).",
+    "normalization": "두 TRAIN 소스의 row를 합쳐 state/action mean·std(floor .01) 재계산; 토큰은 정규화하지 않음",
+    "not_pooling": "co-training 데이터 혼합은 결과 pooling과 구분한다. R8/R100/tune/B1-B4와 비교·합산하지 않는다."
+  },
+  "training": {
+    "from_scratch": true,
+    "steps": 100000,
+    "precision": "bf16_autocast_v1",
+    "batch_size": 8,
+    "lr": 1e-05,
+    "kl_weight": 10,
+    "chunk": 20,
+    "base_smooth_window": 5,
+    "state_dim": 254,
+    "checkpoint_every": 20000,
+    "val_select": "v7 validation 중 protocol validation8_seeds 제외 32에피소드·고정 256행, 1000 step마다, VAL8 시드는 선택에 미사용",
+    "seed": 20261017
+  },
+  "done_head": {
+    "kind": "own-command-history GRU (B4 방식) 재학습",
+    "train_data": "v7 TRAIN200 + act16w TRAIN32의 기록된 issued command stream",
+    "features": "skill4 one-hot + 14 causal command features (act18_done_head.FEATURE_SPEC 'skill4_onehot+command14_v2')",
+    "architecture": "GRU history16 hidden64 + linear, threshold .65 persistence1",
+    "validation_offline": "v7 VAL40 + act16w VAL8 조합 AUC를 metadata에 기록(모듈 선택은 사전 고정 설정으로만)",
+    "label": "hybrid: ACT 행동정책은 co-training으로 학습, 완료 신호는 명령이력 모듈(ACT가 done을 학습한 것이 아님)"
+  },
+  "evaluation": {
+    "stage": "train4",
+    "checkpoint": "best-val이 step-100000-best를 만들면 그 경로, 없으면 step-100000",
+    "instrumentation": "--record-done-prob + --done-head-log",
+    "gate": "TRAIN4 4/4만 판정. 통과 시에만 VAL8. FINAL40은 VAL8 통과·Lead 보고 후.",
+    "report_items": ["TRAIN4 n/N·funnel·원본/SHA", "물리 lift 수", "done 발화 시각 vs lift/hold", "조기종료 분포", "self-command p 분포", "VAL8(통과 시)"]
+  },
+  "risks": [
+    "state 폭(252→254) 변경으로 기존 체크포인트와 warm-start 불가 — from scratch 100k로만 해석",
+    "co-training 데이터 혼합으로 조건이 달라져 기존 단일데이터 결과와 합산 불가",
+    "act16w 이미지 슬롯(history4)을 newest 1장으로 축소해 정보 손실",
+    "done 모듈은 명령패턴 기반이라 물리 성공 없이 발화할 수 있음(B4와 동일 한계)"
+  ],
+  "pooling": {"no_pooling_with": ["R8", "R100", "act18-tune", "act18-doneb1", "act18-std", "act18-b3", "act18-doneh"],
+              "packaging": "금지", "release": "금지"},
+  "time_budget": {"training_done_kst": "13:30", "train4_gate_done_kst": "14:15",
+                  "on_overrun": "중간 결과·원본/SHA 보고"},
+  "stop_after": "TRAIN4(및 통과 시 VAL8) 결과 기록 후 gcp2 즉시 정지·CLEAN."
+}

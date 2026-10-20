@@ -1,0 +1,73 @@
+{
+  "arms": {
+    "A": {
+      "scope": "entire completed22.2SIM episode",
+      "rows": 222,
+      "SIM_s": 22.200000000000003,
+      "source": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-04/evaluation/actor-actions.jsonl",
+      "prefix_sha256": "e0ac1d227785eda087f19aa2f48830cfbe1cdf0d4a5131cb7f6ecb45ef3fc949",
+      "skills": {
+        "grasp": 175,
+        "release": 47
+      },
+      "issued_zero_wheel_steps": 91,
+      "zero_wheel_SIM_ranges": [
+        [
+          0.0,
+          0.8
+        ],
+        [
+          12.0,
+          12.700000000000001
+        ],
+        [
+          13.700000000000001,
+          17.5
+        ],
+        [
+          17.6,
+          17.900000000000002
+        ],
+        [
+          18.0,
+          18.3
+        ],
+        [
+          19.0,
+          22.200000000000003
+        ]
+      ],
+      "terminal_actions": 1,
+      "model_provider_calls": 0,
+      "model_tokens": 0,
+      "scope_limit": "issued wheel zero only, not measured motion or success; no aggregate validation verdict"
+    },
+    "B": {
+      "scope": "first30SIM ongoing prefix",
+      "rows": 300,
+      "SIM_s": 30.0,
+      "source": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-B/validation/group-04/evaluation/actor-actions.jsonl",
+      "prefix_sha256": "6d54c62b051ee4ded01748378a97430a2b2cb0d4d1ecdc70fe7d0abc00197d92",
+      "skills": {
+        "grasp": 300
+      },
+      "issued_zero_wheel_steps": 180,
+      "zero_wheel_SIM_ranges": [
+        [
+          0.0,
+          0.8
+        ],
+        [
+          12.8,
+          30.0
+        ]
+      ],
+      "terminal_actions": 0,
+      "model_provider_calls": 0,
+      "model_tokens": 0,
+      "scope_limit": "issued wheel zero only, not measured motion or success; no aggregate validation verdict"
+    }
+  },
+  "complete_validation": false,
+  "final_outcomes_seen": false
+}

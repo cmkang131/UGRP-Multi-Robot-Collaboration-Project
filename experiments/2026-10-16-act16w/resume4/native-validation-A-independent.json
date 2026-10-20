@@ -1,0 +1,346 @@
+{
+  "status": "complete",
+  "complete": true,
+  "utc": "2026-10-16T17:24:31.432887+00:00",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "source_sha": "8e5f18480fee862e44531eb5643c07ee09fef68c",
+  "contact_profile": "warp_native_contact_v1",
+  "noslip10_pooled": false,
+  "n": 0,
+  "N": 8,
+  "n_any_same_kind": 0,
+  "kinds": {
+    "cyan": {
+      "n": 0,
+      "N": 2
+    },
+    "red": {
+      "n": 0,
+      "N": 2
+    },
+    "green": {
+      "n": 0,
+      "N": 2
+    },
+    "yellow": {
+      "n": 0,
+      "N": 2
+    }
+  },
+  "funnel": [
+    {
+      "gate": "requested",
+      "passed": 8,
+      "rejected": 0
+    },
+    {
+      "gate": "sequence_done",
+      "passed": 4,
+      "rejected": 4
+    },
+    {
+      "gate": "stable_lift",
+      "passed": 0,
+      "rejected": 4
+    },
+    {
+      "gate": "stable_release",
+      "passed": 0,
+      "rejected": 0
+    },
+    {
+      "gate": "task_success",
+      "passed": 0,
+      "rejected": 0
+    }
+  ],
+  "cap_end": 4,
+  "resource_cap_end": 0,
+  "independent_stage_counts": {
+    "bilateral_load_observed": 0,
+    "lift_success": 0,
+    "release_success": 0,
+    "issued_sequence_complete": 4,
+    "task_success": 0
+  },
+  "bilateral_load_threshold_n": 0.5,
+  "threshold_source": "unchanged frozen3f99d58c LiftScore.CRITERIA finger_each_n; additional descriptive metric, no new task acceptance rule",
+  "rows": [
+    {
+      "seed": 87434,
+      "kind": "green",
+      "item_id": "green_1",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": true,
+      "resource_cap_end": false,
+      "issued_sequence_complete": false,
+      "lift_success": false,
+      "release_success": false,
+      "physical_success": false,
+      "drop_detected": false,
+      "max_grasp_bilateral_finger_n": 0.0,
+      "max_grasp_clearance_m": -0.00010775512456893954,
+      "bilateral_load_observed": false,
+      "raw_world": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-00/evaluation/owner/world-000"
+    },
+    {
+      "seed": 87454,
+      "kind": "green",
+      "item_id": "green_1",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": false,
+      "resource_cap_end": false,
+      "issued_sequence_complete": true,
+      "lift_success": false,
+      "release_success": false,
+      "physical_success": false,
+      "drop_detected": false,
+      "max_grasp_bilateral_finger_n": 0.0,
+      "max_grasp_clearance_m": -0.00010775512456893954,
+      "bilateral_load_observed": false,
+      "raw_world": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-00/evaluation/owner/world-001"
+    },
+    {
+      "seed": 87424,
+      "kind": "cyan",
+      "item_id": "cyan_2",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": true,
+      "resource_cap_end": false,
+      "issued_sequence_complete": false,
+      "lift_success": false,
+      "release_success": false,
+      "physical_success": false,
+      "drop_detected": false,
+      "max_grasp_bilateral_finger_n": 0.0,
+      "max_grasp_clearance_m": -0.00010775512456893954,
+      "bilateral_load_observed": false,
+      "raw_world": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-01/evaluation/owner/world-000"
+    },
+    {
+      "seed": 87444,
+      "kind": "cyan",
+      "item_id": "cyan_2",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": false,
+      "resource_cap_end": false,
+      "issued_sequence_complete": true,
+      "lift_success": false,
+      "release_success": false,
+      "physical_success": false,
+      "drop_detected": false,
+      "max_grasp_bilateral_finger_n": 0.0,
+      "max_grasp_clearance_m": -0.00010775512456893954,
+      "bilateral_load_observed": false,
+      "raw_world": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-01/evaluation/owner/world-001"
+    },
+    {
+      "seed": 87449,
+      "kind": "red",
+      "item_id": "red_1",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": true,
+      "resource_cap_end": false,
+      "issued_sequence_complete": false,
+      "lift_success": false,
+      "release_success": false,
+      "physical_success": false,
+      "drop_detected": false,
+      "max_grasp_bilateral_finger_n": 0.0,
+      "max_grasp_clearance_m": -0.00010775512472716714,
+      "bilateral_load_observed": false,
+      "raw_world": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-01/evaluation/owner/world-002"
+    },
+    {
+      "seed": 87439,
+      "kind": "yellow",
+      "item_id": "yellow_1",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": false,
+      "resource_cap_end": false,
+      "issued_sequence_complete": true,
+      "lift_success": false,
+      "release_success": false,
+      "physical_success": false,
+      "drop_detected": false,
+      "max_grasp_bilateral_finger_n": 0.0,
+      "max_grasp_clearance_m": -1.3986750796904368e-05,
+      "bilateral_load_observed": false,
+      "raw_world": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-02/evaluation/owner/world-000"
+    },
+    {
+      "seed": 87459,
+      "kind": "yellow",
+      "item_id": "yellow_2",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": true,
+      "resource_cap_end": false,
+      "issued_sequence_complete": false,
+      "lift_success": false,
+      "release_success": false,
+      "physical_success": false,
+      "drop_detected": false,
+      "max_grasp_bilateral_finger_n": 0.0,
+      "max_grasp_clearance_m": -1.6905736411020056e-06,
+      "bilateral_load_observed": false,
+      "raw_world": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-02/evaluation/owner/world-001"
+    },
+    {
+      "seed": 87429,
+      "kind": "red",
+      "item_id": "red_2",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": false,
+      "resource_cap_end": false,
+      "issued_sequence_complete": true,
+      "lift_success": false,
+      "release_success": false,
+      "physical_success": false,
+      "drop_detected": false,
+      "max_grasp_bilateral_finger_n": 0.0,
+      "max_grasp_clearance_m": -0.00010775512456893954,
+      "bilateral_load_observed": false,
+      "raw_world": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-04/evaluation/owner/world-000"
+    }
+  ],
+  "raw_receipts": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/summary.json",
+      "sha256": "601b7ef48058a5e50495c53b2f2f7fc9b7fc599efd9c055a0d14b161a2783fcb"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-00/evaluation/summary.json",
+      "sha256": "4a9c70da976c22583e6850df108ca7a601c0a934c8c0718e687eb65554bffad4"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-00/plans.json",
+      "sha256": "0bbd70b965ac724af9b4d9f61e529f306c8702d2836491ed30ca2d6b4a4cefc9"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-00/evaluation/actor-actions.jsonl",
+      "sha256": "c5ec27aceb471f03ce56c9d63c030ab305b9d24a25ca806402d360ce7fc028f9"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-00/evaluation/owner/evaluation-only.jsonl",
+      "sha256": "81c2db80485fd3d640b3771c45d13d65f90f4d66c2401952aa75310358896afc"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-00/evaluation/owner/same-kind-evaluation-only.jsonl",
+      "sha256": "04882d3e56e4eecdd0c5d774ed37f2290a5e8061bc9a6166ff89bd5ada4bd29e"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-00/evaluation/owner/world-000/result.json",
+      "sha256": "f0bd0620382ec8454e9fe6ab32ed3854e28c6607915fac072535fa1fefbe1786"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-00/evaluation/owner/world-001/result.json",
+      "sha256": "7b5b962f452db96d9cc737d2a59a9728dfa016dde720c67014d455aedf1c28c8"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-01/evaluation/summary.json",
+      "sha256": "258ce90df99ce43db197032cc0a7ad52f22f3ee6feea8b3aed6cf6118716de07"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-01/plans.json",
+      "sha256": "ce7136d65b6194525fcd2cce2ddfeca4a5f2df3fd8fe721d2d93068407f4441c"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-01/evaluation/actor-actions.jsonl",
+      "sha256": "009e7de42c4bdf60266a3fb20fba1a6e8be381aaa2697d59f3f05b839870e3db"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-01/evaluation/owner/evaluation-only.jsonl",
+      "sha256": "bc0f898abad3ad43f7b28ba5063a334a0ffda97e96e080ae8169ed9bfef7db37"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-01/evaluation/owner/same-kind-evaluation-only.jsonl",
+      "sha256": "2fbe2fbca01537ad5ccdc69ca91a8ee6ab93c1576f901ae8ab151b03616d4b58"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-01/evaluation/owner/world-000/result.json",
+      "sha256": "9066456a9d9aed083f49b1232c04a23edb1ad1170b1453d1dddaeb7d9a283fb8"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-01/evaluation/owner/world-001/result.json",
+      "sha256": "59762a81e0c8daecfc470cca70f0c39b25ddd60d8da188635c408ff67a4d5b89"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-01/evaluation/owner/world-002/result.json",
+      "sha256": "d5dc5a9b85613616e82706e5a9a20d6c0e4b71100f189d24535f29417c332334"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-02/evaluation/summary.json",
+      "sha256": "68f19093b7186cea7c5ab07ee08bb7eed1e5f99a338bd0f90c57392cd4c3b829"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-02/plans.json",
+      "sha256": "6f39a71d293deb9d0a8d47f996530bf0657bec0f40488b2fa15851b112720c5f"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-02/evaluation/actor-actions.jsonl",
+      "sha256": "334bef0ee1eff7379efbd677e144ea4fff9fb7b4e3a8c17cd21a44eb7595781c"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-02/evaluation/owner/evaluation-only.jsonl",
+      "sha256": "05682522b3a83e2b47b7b4c646b0ea4e13f059314e2126b571b927c435fb9a6e"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-02/evaluation/owner/same-kind-evaluation-only.jsonl",
+      "sha256": "1d832a00e01fcbd83d293ec7b7e287935bffe7a8b4f118cb049b2f50eaf9d165"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-02/evaluation/owner/world-000/result.json",
+      "sha256": "704673c915d4e9dff565745066b66e70a75eaf674059b7c79a2a8afb57f2762f"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-02/evaluation/owner/world-001/result.json",
+      "sha256": "cd3c0b0ad7f8c1737afcaf109d3b62cff54b07ebca5a10e92fadf603c6b77495"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-04/evaluation/summary.json",
+      "sha256": "4a522c197751fcb38af734273c0c8e37332d292cf7fae78a1bca57da10863a14"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-04/plans.json",
+      "sha256": "507c130df09c29417047fd6f455504a5a8307bfea577882f00ce20d338b11bf6"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-04/evaluation/actor-actions.jsonl",
+      "sha256": "e0ac1d227785eda087f19aa2f48830cfbe1cdf0d4a5131cb7f6ecb45ef3fc949"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-04/evaluation/owner/evaluation-only.jsonl",
+      "sha256": "d352e6b60f67efcbcd35f3feb0c7686dd2448af3bbedcc7bac8e1a32d3c6c3c6"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-04/evaluation/owner/same-kind-evaluation-only.jsonl",
+      "sha256": "7c5ad6e6bc2f3530d0804700a28b034e019465564f85f40452d6561617402fd5"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-04/evaluation/owner/world-000/result.json",
+      "sha256": "4521e699f599b4122f12c9ed8e507f3447ca1a575c8855479a7920f8b031ab3c"
+    }
+  ],
+  "raw_recomputed_metrics_match_original": true,
+  "limitation": "chunk done timestamps unavailable; failure-message wording not independently reconstructed",
+  "reproduce": [
+    "/home/ugrp/ugrp-sim/src/8e5f18480fee862e44531eb5643c07ee09fef68c/scripts/audit_act16w_native_student.py",
+    "--evaluation",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation",
+    "--out",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/independent-validation-A.json"
+  ]
+}

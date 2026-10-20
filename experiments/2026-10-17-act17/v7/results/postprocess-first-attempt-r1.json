@@ -1,0 +1,43 @@
+{
+  "status": "HOST_ERROR",
+  "complete": false,
+  "source_sha": "75d54e08d4bcc5f1e22657b1a02bcd06e304f0e9",
+  "start_utc": "2026-10-17T08:10:07.705718+00:00",
+  "steps": [
+    {
+      "name": "teacher-playback-88620-r2",
+      "argv": [
+        "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+        "/home/ugrp/ugrp-sim/src/75d54e08d4bcc5f1e22657b1a02bcd06e304f0e9/scripts/act16w_playback.py",
+        "--run",
+        "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/group-3000/controller",
+        "--world",
+        "1",
+        "--compiled-references",
+        "/home/ugrp/ugrp-sim/runs/act17-v7/record-references-r1/per-world-references.json",
+        "--qualified-source",
+        "/home/ugrp/ugrp-sim/src/f0db6b1abb842ea65b71c433738210254f300a7c",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/act17-v7/teacher-playback-88620-r2"
+      ],
+      "status": "complete",
+      "returncode": 0
+    },
+    {
+      "name": "closed-loop-r1",
+      "argv": [
+        "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+        "/home/ugrp/ugrp-sim/src/75d54e08d4bcc5f1e22657b1a02bcd06e304f0e9/scripts/act17_closed_loop.py",
+        "--v7-root",
+        "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/act17-v7/closed-loop-r1"
+      ],
+      "status": "HOST_ERROR",
+      "returncode": 1
+    }
+  ],
+  "physics_steps": 0,
+  "training_updates": 0,
+  "error": "RuntimeError('closed-loop-r1 failed; preserve original attempt')"
+}

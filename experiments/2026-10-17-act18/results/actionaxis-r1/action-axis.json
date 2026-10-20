@@ -1,0 +1,53 @@
+{
+  "schema": "ugrp.act18.action_axis.v1",
+  "source_sha": "f9d8a8c685326328ef4022b8d733249ba5cabb6e",
+  "checkpoint": {
+    "path": "/home/ugrp/ugrp-sim/runs/act18/b2-r1/act18-std/step-20000",
+    "sha256": "75a56028f517a63b444119127c19ca36daf363615876d9da36301cfa9faa6a95"
+  },
+  "dataset": {
+    "path": "/home/ugrp/ugrp-sim/runs/act17-v7/dataset-r1",
+    "manifest_sha256": "44c1c46073aa08ea028324ffe924b67d862a2f01b56f4db11afad17000a9b198"
+  },
+  "chunk": 20,
+  "base_smooth_window": 5,
+  "teacher_raw": {
+    "rows": 290288,
+    "wheel_zero_fraction": 0.5580526924984842,
+    "wheel_abs_quantiles": [
+      0.0,
+      0.0,
+      0.3499999940395355,
+      0.3499999940395355,
+      0.3499999940395355
+    ],
+    "wheel_in_deadzone_fraction": 0.0,
+    "wheel_below_min_fraction": 0.0,
+    "wheel_above_max_fraction": 0.0,
+    "duration_zero_fraction": 0.5580526924984842,
+    "duration_quantiles": [
+      0.2857142984867096,
+      0.5138223409652714,
+      0.6666666865348816
+    ],
+    "duration_too_small_fraction": 0.0,
+    "gripper_closed_fraction": 0.6025877748994103
+  },
+  "model": {
+    "sampled_rows": 1200,
+    "teacher_moving_fraction": 0.4725,
+    "teacher_moving_but_model_decodes_stop_fraction": 0.07231040564373897,
+    "teacher_stopped_fraction": 0.5275,
+    "model_decoded_stop_fraction": 0.5616666666666666,
+    "model_raw_in_deadzone_fraction": 0.5758333333333333,
+    "model_raw_below_min_fraction": 0.066875,
+    "model_raw_above_max_fraction": 0.01,
+    "wheel_abs_median_teacher": 0.0,
+    "wheel_abs_median_model": 0.021831770496927704,
+    "wheel_mae_median": 0.01142467430637703,
+    "duration_mae_median": 0.009127304244314988,
+    "gripper_closed_fraction_teacher": 0.6025,
+    "gripper_closed_fraction_model": 0.6033333333333334
+  },
+  "note": "teacher targets are the smoothed/reconstructed training targets; teacher_raw is the recorded first-step command distribution"
+}

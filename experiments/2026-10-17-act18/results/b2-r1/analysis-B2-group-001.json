@@ -1,0 +1,144 @@
+{
+  "schema": "ugrp.act18.done_probe.v1",
+  "evaluation": "/home/ugrp/ugrp-sim/runs/act18/b2-r1/B2-TRAIN4-run3/group-001/evaluation",
+  "logs": [
+    "/home/ugrp/ugrp-sim/runs/act18/b2-r1/B2-done-run3-group-001.jsonl"
+  ],
+  "threshold": 0.65,
+  "ensemble_coeff": 0.01,
+  "worlds": [
+    {
+      "world": 0,
+      "seed": 88601,
+      "kind": "red",
+      "table": {
+        "ticks": 900,
+        "raw_max": 0.001288,
+        "ensemble_max": 0.0010586645320544692,
+        "thresholds": {
+          "0.65": {
+            "raw_first": null,
+            "raw_count": 0,
+            "ensemble_first": null,
+            "ensemble_count": 0
+          },
+          "0.5": {
+            "raw_first": null,
+            "raw_count": 0,
+            "ensemble_first": null,
+            "ensemble_count": 0
+          },
+          "0.3": {
+            "raw_first": null,
+            "raw_count": 0,
+            "ensemble_first": null,
+            "ensemble_count": 0
+          },
+          "0.2": {
+            "raw_first": null,
+            "raw_count": 0,
+            "ensemble_first": null,
+            "ensemble_count": 0
+          },
+          "0.1": {
+            "raw_first": null,
+            "raw_count": 0,
+            "ensemble_first": null,
+            "ensemble_count": 0
+          }
+        },
+        "ensemble_argmax": {
+          "t": 16.800000000000153,
+          "skill": "grasp",
+          "value": 0.0010586645320544692
+        },
+        "raw_argmax": {
+          "t": 8.500000000000153,
+          "skill": "grasp",
+          "value": 0.001288
+        }
+      },
+      "physics": {
+        "physical_lift_first_t": null,
+        "finger_force_max_first_t": 14.400000000000153,
+        "speed_max": 0.0424,
+        "min_clearance": -0.00106,
+        "rows": 901
+      },
+      "alignment": {
+        "done_threshold_fire_t": null,
+        "done_ok_after_lift": null,
+        "done_early_before_grip": null,
+        "raw_threshold_fire_t": null,
+        "ensemble_fire_ticks": 0
+      }
+    },
+    {
+      "world": 1,
+      "seed": 88602,
+      "kind": "green",
+      "table": {
+        "ticks": 900,
+        "raw_max": 0.001049,
+        "ensemble_max": 0.0011650506354162417,
+        "thresholds": {
+          "0.65": {
+            "raw_first": null,
+            "raw_count": 0,
+            "ensemble_first": null,
+            "ensemble_count": 0
+          },
+          "0.5": {
+            "raw_first": null,
+            "raw_count": 0,
+            "ensemble_first": null,
+            "ensemble_count": 0
+          },
+          "0.3": {
+            "raw_first": null,
+            "raw_count": 0,
+            "ensemble_first": null,
+            "ensemble_count": 0
+          },
+          "0.2": {
+            "raw_first": null,
+            "raw_count": 0,
+            "ensemble_first": null,
+            "ensemble_count": 0
+          },
+          "0.1": {
+            "raw_first": null,
+            "raw_count": 0,
+            "ensemble_first": null,
+            "ensemble_count": 0
+          }
+        },
+        "ensemble_argmax": {
+          "t": 13.900000000000153,
+          "skill": "grasp",
+          "value": 0.0011650506354162417
+        },
+        "raw_argmax": {
+          "t": 9.400000000000151,
+          "skill": "grasp",
+          "value": 0.001049
+        }
+      },
+      "physics": {
+        "physical_lift_first_t": 17.300000000000153,
+        "finger_force_max_first_t": 13.100000000000152,
+        "speed_max": 0.1071,
+        "min_clearance": -0.00112,
+        "rows": 901
+      },
+      "alignment": {
+        "done_threshold_fire_t": null,
+        "done_ok_after_lift": null,
+        "done_early_before_grip": null,
+        "raw_threshold_fire_t": null,
+        "ensemble_fire_ticks": 0
+      }
+    }
+  ],
+  "note": "raw=frozen single-step completion probability; ensemble=exact temporal ensemble replay"
+}

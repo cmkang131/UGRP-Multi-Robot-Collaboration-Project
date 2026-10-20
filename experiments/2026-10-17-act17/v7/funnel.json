@@ -1,0 +1,266 @@
+{
+  "schema": "ugrp.act17.v7.all_stages.v2",
+  "cohort": "act17-v7-native",
+  "status": "NOT_READY",
+  "student_success_measured": true,
+  "sources": {
+    "gate": "be39af6fc05ae79ee7550ed98c411dce35e68d7a",
+    "pilot": "5160938e5abfa0cdb05176aadb196e237684d67a",
+    "bulk": "376fa86c08cb8de5e2d442600baad1340534eec2",
+    "converter": "2ac6e70270703acbf9ef736217977048a9cd84fa",
+    "training": "e1b7de0f789305e12a3612e7cbf392b8e4ac21ee",
+    "validation": {
+      "path": "results/validation-independent-r1.json",
+      "sha256": "fa214161a670417e98e16d1abfc941cf68fc966f33330cd1a88b3de5a883d001"
+    }
+  },
+  "funnels": {
+    "camera_off_gate": {
+      "unit": "runs",
+      "requested": 40,
+      "completed": 40,
+      "passed": 40,
+      "rejected": 0
+    },
+    "recordings": {
+      "unit": "runs",
+      "requested": 240,
+      "completed": 240,
+      "passed": 240,
+      "rejected": 0,
+      "pilot": 4,
+      "bulk": 236
+    },
+    "frames": {
+      "unit": "observation_rows",
+      "rows": [
+        {
+          "gate": "raw_observation_rows",
+          "passed": 106060,
+          "rejected": 0
+        },
+        {
+          "gate": "successful_audited_observations",
+          "passed": 106060,
+          "rejected": 0
+        },
+        {
+          "gate": "paired_local_skill_rows",
+          "passed": 87100,
+          "rejected": 18960
+        }
+      ]
+    },
+    "targets": {
+      "unit": "future_action_vectors",
+      "rows": [
+        {
+          "gate": "future_slots",
+          "passed": 696800,
+          "rejected": 0
+        },
+        {
+          "gate": "valid_nonpadding_future_targets",
+          "passed": 683360,
+          "rejected": 13440
+        }
+      ]
+    },
+    "models": {
+      "unit": "models",
+      "requested": 3,
+      "admitted": 3,
+      "started": 3,
+      "complete": 3,
+      "failed": 0,
+      "pending": 0,
+      "readback_verified": 3
+    },
+    "VAL8": {
+      "unit": "candidate_runs",
+      "requested": 24,
+      "admitted": 24,
+      "complete": 24,
+      "unsubmitted": 0,
+      "passed": 0,
+      "started": 24,
+      "pending": 0,
+      "candidates": {
+        "M": {
+          "task_success": 0,
+          "any_same_kind_success": 0,
+          "cap_end": 5,
+          "sequence_complete": 3,
+          "grasp_done_requested": 4,
+          "lift_success": 0,
+          "release_success": 0,
+          "N": 8,
+          "by_kind": {
+            "cyan": {
+              "N": 2,
+              "assigned_success": 0,
+              "any_same_kind_success": 0
+            },
+            "red": {
+              "N": 2,
+              "assigned_success": 0,
+              "any_same_kind_success": 0
+            },
+            "green": {
+              "N": 2,
+              "assigned_success": 0,
+              "any_same_kind_success": 0
+            },
+            "yellow": {
+              "N": 2,
+              "assigned_success": 0,
+              "any_same_kind_success": 0
+            }
+          }
+        },
+        "F": {
+          "task_success": 0,
+          "any_same_kind_success": 0,
+          "cap_end": 3,
+          "sequence_complete": 5,
+          "grasp_done_requested": 5,
+          "lift_success": 0,
+          "release_success": 0,
+          "N": 8,
+          "by_kind": {
+            "cyan": {
+              "N": 2,
+              "assigned_success": 0,
+              "any_same_kind_success": 0
+            },
+            "red": {
+              "N": 2,
+              "assigned_success": 0,
+              "any_same_kind_success": 0
+            },
+            "green": {
+              "N": 2,
+              "assigned_success": 0,
+              "any_same_kind_success": 0
+            },
+            "yellow": {
+              "N": 2,
+              "assigned_success": 0,
+              "any_same_kind_success": 0
+            }
+          }
+        },
+        "S": {
+          "task_success": 0,
+          "any_same_kind_success": 0,
+          "cap_end": 7,
+          "sequence_complete": 1,
+          "grasp_done_requested": 1,
+          "lift_success": 0,
+          "release_success": 0,
+          "N": 8,
+          "by_kind": {
+            "cyan": {
+              "N": 2,
+              "assigned_success": 0,
+              "any_same_kind_success": 0
+            },
+            "red": {
+              "N": 2,
+              "assigned_success": 0,
+              "any_same_kind_success": 0
+            },
+            "green": {
+              "N": 2,
+              "assigned_success": 0,
+              "any_same_kind_success": 0
+            },
+            "yellow": {
+              "N": 2,
+              "assigned_success": 0,
+              "any_same_kind_success": 0
+            }
+          }
+        }
+      }
+    },
+    "FINAL40": {
+      "unit": "runs",
+      "requested": 40,
+      "admitted": 0,
+      "complete": 0,
+      "passed": null,
+      "gate": "all M/F/S VAL8 complete and selected model8/8; fixed F>M>S tie priority",
+      "reason": "no M/F/S candidate passed VAL8"
+    }
+  },
+  "dataset": {
+    "status": "PASS",
+    "cohort": "act17-v7-native",
+    "conversion_source_sha": "2ac6e70270703acbf9ef736217977048a9cd84fa",
+    "starts": {
+      "train": 200,
+      "validation": 40
+    },
+    "rows": {
+      "train": 72572,
+      "validation": 14528
+    },
+    "stage_counts": {
+      "train:approach": 18221,
+      "train:alignment": 4412,
+      "train:grasp": 32409,
+      "train:release": 17530,
+      "validation:approach": 3659,
+      "validation:alignment": 889,
+      "validation:grasp": 6476,
+      "validation:release": 3504
+    },
+    "frame_counts": {
+      "raw_observation_rows": 106060,
+      "successful_audited_observation_rows": 106060,
+      "paired_rows": 87100,
+      "future_slots": 696800,
+      "valid_future_targets": 683360
+    },
+    "teacher_rejected_episodes": 0,
+    "normalization": {
+      "path": "normalization.json",
+      "sha256": "d08f8672434791ad68cf99fb36a87d76e6d089c908da7b2a27effbf729ba6ee6"
+    },
+    "student_GT_inputs": false
+  },
+  "rejections": [
+    {
+      "reason_category": "outside_paired_local_skill_boundary",
+      "count": 18960,
+      "blocked_object": "not_applicable_dataset_scope",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "non_geometric",
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/dataset-r1/rejection_table.json"
+    },
+    {
+      "reason_category": "padding_after_local_skill_boundary",
+      "count": 13440,
+      "blocked_object": "not_applicable_padding",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "non_geometric",
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/dataset-r1/rejection_table.json"
+    }
+  ],
+  "historical_events": {
+    "raw": "funnel-pre-resize.json",
+    "disk_block": "resolved by coordinator180->200GiB",
+    "preflight_metadata_error": "resolved actual XML validation; preparation3/3",
+    "runtime_loader_probe": "wrong old-schema loader rejected; matching old loader CPU readback passed, no v7 deployment claim",
+    "postrecord_wait_wrapper": "initial wait wrapper interrupted before any child stage; replaced approximate reserve with exact existing budget. Original HOST_ERROR KeyboardInterrupt retained in results/postrecord-r1-superseded.json; replacement completed."
+  },
+  "raw_root": "/home/ugrp/ugrp-sim/runs/act17-v7",
+  "reproduction": {
+    "gate": "scripts/act17_v7_audit.py --run RAW/gate-r1 --out NEW.json",
+    "bulk": "scripts/act17_v7_audit.py --run RAW/record-bulk-r1 --out NEW.json",
+    "conversion": "results/retrieved-r1/dataset-r1/rejection_table.json",
+    "training": "results/retrieved-r1/training-r1/queue.json"
+  },
+  "scope": "all24 requested native VAL runs fully observed; per-run cap_end counted separately; no student success, no FINAL; teacher/offline/distribution proofs remain separate"
+}

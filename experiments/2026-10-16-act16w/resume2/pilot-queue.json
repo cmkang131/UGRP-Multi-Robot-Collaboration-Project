@@ -1,0 +1,52 @@
+{
+  "schema": "ugrp.act16w.record_pilots.v1",
+  "status": "PREPARED_FOR_POST_CAP_START",
+  "source_sha": "1739ac8ff807784a2414e5d7805cc6aa019e74a1",
+  "controller_sha": "f0db6b1abb842ea65b71c433738210254f300a7c",
+  "teacher_sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+  "record_api_sha": "0362037280c6cbc4677f70366db43b9892b23690",
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/act16w/experiments/2026-10-16-act16w/resume2/rejection_table.json",
+  "runs": [
+    {
+      "seed": 86821,
+      "kind": "red",
+      "cap_sim_s": 90,
+      "training_include": false
+    },
+    {
+      "seed": 86822,
+      "kind": "green",
+      "cap_sim_s": 90,
+      "training_include": false
+    }
+  ],
+  "nworld_per_run": 1,
+  "max_parallel": 2,
+  "full_data_recording_approved": false,
+  "speed_gate": {
+    "first_elapsed_SIM_s": 30,
+    "warning_wall_per_SIM": 3.5,
+    "blocking_wall_per_SIM": 6.0,
+    "continue_existing_runs_after_speed_gate_fail": true,
+    "new_submissions_after_fail": false
+  },
+  "resource_budget": {
+    "own_remaining_gpu_process_wall_s_conservative": 28490.853844096,
+    "per_pilot_resource_wall_cap_s": 7200,
+    "per_pilot_storage_reserve_MiB": 128,
+    "Mac_retrieval": "summaries/montage/failure frames only"
+  },
+  "authorization": "user resume2: qualified API, run recording admission within task; no additional permission needed for pilot; no automatic bulk promotion",
+  "planned_at": "2026-10-16T05:59:04.361669+00:00",
+  "speed_gate_override": {
+    "enabled": true,
+    "scope": "MJWarp recording dispatch only; native data/pilot/teacher>=95% gates unchanged",
+    "reason": "MJWarp is an explicitly approved throughput backend. N1 pilot latency is not the planned batched throughput; qualified f0db40/40 already uses the same slow physics. Report both world latency and aggregate world-SIM throughput, keep native camera/physics unchanged, and enforce task8h rather than silently abandoning the requested MJWarp recording. AGENTS speed-gate-override permits a recorded reason. This is a task-worker operational choice under user autonomous continuation, not a newly confirmed user threshold.",
+    "formal_first30_latency_gate_pass_claim": false,
+    "basis": "AGENTS.md Azure/GCP speed gate explicit --speed-gate-override reason; official MJWarp docs When To Use MJWarp optimized for throughput, not latency",
+    "task_first_GPU_utc": "2026-10-16T05:47:00.019842+00:00",
+    "task_hard_end_utc": "2026-10-16T13:47:00.019842+00:00",
+    "task_graceful_drain_utc": "2026-10-16T13:45:00.019842+00:00",
+    "recorded_utc": "2026-10-16T06:19:10.482332+00:00"
+  }
+}

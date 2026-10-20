@@ -1,0 +1,170 @@
+{
+  "status": "reviewed",
+  "utc": "2026-10-16T18:16:40.478067+00:00",
+  "arm": "C",
+  "seed": 87429,
+  "whole_2Hz_SIM_range": [
+    0,
+    73
+  ],
+  "whole_2Hz_frames": 147,
+  "terminal_10Hz_SIM_range": [
+    63.5,
+    73.4
+  ],
+  "terminal_10Hz_frames": 100,
+  "viewed_sheets": [
+    "full-2hz-00.jpg",
+    "full-2hz-01.jpg",
+    "full-2hz-02.jpg",
+    "full-2hz-03.jpg",
+    "full-2hz-04.jpg",
+    "full-2hz-05.jpg",
+    "full-2hz-06.jpg",
+    "full-2hz-07.jpg",
+    "full-2hz-08.jpg",
+    "last10s-10hz-00.jpg",
+    "last10s-10hz-01.jpg",
+    "last10s-10hz-02.jpg",
+    "last10s-10hz-03.jpg",
+    "last10s-10hz-04.jpg"
+  ],
+  "video_bytes": 118611,
+  "ffprobe_verified_on_L4": true,
+  "local": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/act16w4-native-C-87429",
+  "remote": "/home/ugrp/ugrp-sim/runs/act16w-native-playback-C-87429",
+  "transfer_files": [
+    {
+      "name": "full-2hz-00.jpg",
+      "bytes": 142645,
+      "sha256": "32eca1032fa9d7f024c55ef44e15c11835a08cc6f1e15b91c7ba88b34ae57c09"
+    },
+    {
+      "name": "full-2hz-01.jpg",
+      "bytes": 138241,
+      "sha256": "26574b5374bc700a0d2e8ba351baf559e5517200d8638811a2358280ae46f9d9"
+    },
+    {
+      "name": "full-2hz-02.jpg",
+      "bytes": 134914,
+      "sha256": "b916907c2a05c63d448398780c76afbb88671a90f0cd463d876b33ad4d605cda"
+    },
+    {
+      "name": "full-2hz-03.jpg",
+      "bytes": 136144,
+      "sha256": "5afc6aaf8d515ebbcbb4ad1aaca47ae645daf7e0f3322d654e4e7e22a63288da"
+    },
+    {
+      "name": "full-2hz-04.jpg",
+      "bytes": 136581,
+      "sha256": "057367134a08c734f7644ff4bdeede435662e1ad890fd4b6c2259a72aba64d7b"
+    },
+    {
+      "name": "full-2hz-05.jpg",
+      "bytes": 137372,
+      "sha256": "2e273c07062f8054157475831416d2ac6cad3f625ba8deae9e596fa68e3f2259"
+    },
+    {
+      "name": "full-2hz-06.jpg",
+      "bytes": 137980,
+      "sha256": "1ffee89866b0da506a66490aee02d66d9bf1f45464d9529183f8a154492a49f4"
+    },
+    {
+      "name": "full-2hz-07.jpg",
+      "bytes": 138072,
+      "sha256": "d3aec7947d78f06087cbf22ff112364d80e4415da439f35b50e16a486de0a919"
+    },
+    {
+      "name": "full-2hz-08.jpg",
+      "bytes": 54653,
+      "sha256": "ae87387034152bb6e9be2b8e337881eea1578f701ec763eb38a9b404bed79301"
+    },
+    {
+      "name": "last10s-10hz-00.jpg",
+      "bytes": 61803,
+      "sha256": "001c0301635a82f2e933edf9d9a0026f30b629d4385ac98f19b78a8dc09c4c7b"
+    },
+    {
+      "name": "last10s-10hz-01.jpg",
+      "bytes": 61944,
+      "sha256": "b657f0a4c5325525a34b52022818ee2c744bd68c17967e8f18e77357dc21215e"
+    },
+    {
+      "name": "last10s-10hz-02.jpg",
+      "bytes": 61699,
+      "sha256": "f3725e91cd25a368fcceeac48190c98a9ae42ed08ff113fe38699e2613286391"
+    },
+    {
+      "name": "last10s-10hz-03.jpg",
+      "bytes": 62799,
+      "sha256": "8de8058f878c461d37201fa2a4b3e3a2c43549a25f6997f9d374c257ae428b4b"
+    },
+    {
+      "name": "last10s-10hz-04.jpg",
+      "bytes": 63258,
+      "sha256": "9924cf76cbab8c968ec8920e64be4c8320652f1b8f270677c46ae3964f4bffaa"
+    },
+    {
+      "name": "playback-3x.mp4",
+      "bytes": 118611,
+      "sha256": "5a795a501e4491d95a2beb605488e51e7996cc76f6232edfd98544b5e8d09510"
+    },
+    {
+      "name": "playback-meta.json",
+      "bytes": 4312,
+      "sha256": "6fe70e19ff5b5f81f1e31cf489eee2302d9bf5de282fc560d86059d87c032946"
+    }
+  ],
+  "timeline": [
+    {
+      "SIM": [
+        0,
+        4.5
+      ],
+      "observation": "red box grows and moves toward image right; evaluation overview shows approach and body turn"
+    },
+    {
+      "SIM": [
+        5,
+        8.5
+      ],
+      "observation": "red box leaves image right; camera increasingly faces wall base"
+    },
+    {
+      "SIM": [
+        9,
+        73
+      ],
+      "observation": "no red box returns in own RGB; wall/base/floor boundary repeats throughout, overview keeps both red boxes on floor"
+    },
+    {
+      "SIM": [
+        63.5,
+        73.4
+      ],
+      "observation": "10Hz reveals rapid repeated wall/base boundary movement, rather than a sustained target search or recovery"
+    }
+  ],
+  "original_closed_case_score": {
+    "source": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-C/validation/group-04/evaluation/summary.json",
+    "n": 0,
+    "N": 1,
+    "task_success": false,
+    "any_same_kind_success": false,
+    "lift_success": false,
+    "release_success": false,
+    "issued_done": true,
+    "cap_end": false,
+    "elapsed_SIM_s": 73.4,
+    "grasp_action_steps": 159,
+    "release_action_steps": 575
+  },
+  "comparison": "A/B/C87429 lose the box and fail; matched teacher87429 succeeds separately, not an ACT success",
+  "sparse_review_difference": "first30 alone missed continued oscillation through73.4 and eventual command done without a stable lift; terminal10Hz resolves rapid boundary movement",
+  "limits": [
+    "overview reconstructed from evaluation states only; not actor input",
+    "no physical lift or collision attribution from imagery alone",
+    "full C8 independent raw recount still pending",
+    "no student success inferred from command done"
+  ]
+}

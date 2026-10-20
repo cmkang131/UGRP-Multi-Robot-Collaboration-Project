@@ -1,0 +1,51 @@
+{
+  "status": "running_partial_receipt",
+  "complete": false,
+  "arm": "C",
+  "source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+  "dataset_manifest_sha256": "3d0a1c4907f0c91a5674d23e52c9fbf339f03952ce3bcf92dee21f7e8ab7dbd2",
+  "same_D0_as_A": true,
+  "history_mode": "off",
+  "curriculum_starts_sha256": "7e69d22634e0ac354f2af272ea77a3d6dca24abe1658880e3b4919e0060b4205",
+  "selected_actual_log_points": [
+    {
+      "step": 301,
+      "loss": 6.529250144958496,
+      "legacy_l1_loss": 0.5004851222038269,
+      "movement_l1_loss": 0.3465311527252197,
+      "done_bce_loss": 3.7213592529296875,
+      "kld_loss": 0.24613597989082336,
+      "gradient_norm": 347.6700134277344,
+      "wall_s": 12.8928995890019,
+      "eligible_rows": 1367
+    },
+    {
+      "step": 3080,
+      "loss": 0.665656566619873,
+      "legacy_l1_loss": 0.5517168641090393,
+      "movement_l1_loss": 0.14558476209640503,
+      "done_bce_loss": 0.0016809776425361633,
+      "kld_loss": 0.051839087158441544,
+      "gradient_norm": 30.826875686645508,
+      "wall_s": 519.0460177000023,
+      "eligible_rows": 4253
+    },
+    {
+      "step": 5850,
+      "loss": 0.39682233333587646,
+      "legacy_l1_loss": 0.7148494720458984,
+      "movement_l1_loss": 0.22965115308761597,
+      "done_bce_loss": 0.0005825045518577099,
+      "kld_loss": 0.01665886491537094,
+      "gradient_norm": 20.623764038085938,
+      "wall_s": 1008.324570134002,
+      "eligible_rows": 7219
+    }
+  ],
+  "log_prefix": {
+    "path": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1/C/main/progress.jsonl",
+    "bytes": 156535,
+    "sha256": "3b52cb21a4939d84267c6d4a57c4399596cd47b3cbdf0f2169a406b9f73d1c13"
+  },
+  "scope": "actual changing eligible_rows while same complete D0/norm; no final model or task success claim"
+}

@@ -1,0 +1,28 @@
+{
+  "argv": [
+    "/home/ugrp/ugrp-rl1b-act-env/bin/python",
+    "-m",
+    "pip",
+    "install",
+    "--disable-pip-version-check",
+    "--index-url",
+    "https://pypi.org/simple",
+    "--no-deps",
+    "--target",
+    "/home/ugrp/ugrp-sim/tooling/act16w-plotting",
+    "--report",
+    "/home/ugrp/ugrp-sim/runs/act16w-resume2-admission/plotting-install-report.json",
+    "matplotlib",
+    "contourpy",
+    "cycler",
+    "fonttools",
+    "kiwisolver",
+    "pyparsing",
+    "python-dateutil",
+    "six",
+    "packaging",
+    "pillow"
+  ],
+  "target": "/home/ugrp/ugrp-sim/tooling/act16w-plotting",
+  "scope": "plotting tool directory only; no shared virtualenv or numpy/torch modification; enable with analysis-only PYTHONPATH"
+}
