@@ -159,6 +159,8 @@ leader 배정/ack, evaluator 성공·각 실패 성분·aux·60s deadlock·환�
 - 할당 호출은 로봇 자기 첫 프레임 1장을 포함한다(t=0, 주행 전 1회). 조건별 라운드 수:
   no_comm 1, structured/peer_en 2(+충돌 시 3), leader_en 2 → 로봇당 1–3 호출.
 - `nworld=1`만 허용(결정 binding이 run 전역). seed당 run 1개.
+- `no_comm`은 후보를 기본 규칙 1개로 제한했다(LLM은 그 후보를 선택·확인). prereg에서
+  "두 후보 + 기본 규칙 검증"으로 바꿀 수 있으나, 그러면 조건 baseline이 LLM 추첨이 된다.
 - 실패·HOST_ERROR도 분모; `L1LITE_ALLOCATION_FAILED`는 실행 실패로 기록.
 - calibration·scene·r5 상수는 r5 그대로이며 새 상수 없음(1.5 m stage2, 0.52 m claim 등 불변).
 - 아직 실행 전이므로 **어떤 n/N도 주장하지 않는다**(테스트 통과 수만 보고).

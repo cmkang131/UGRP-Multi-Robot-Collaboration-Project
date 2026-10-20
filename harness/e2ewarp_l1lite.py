@@ -50,7 +50,7 @@ CONDITIONS = ('no_comm', 'peer_en', 'leader_en', 'structured')
 STRUCTURED_ACTS = ('my_constraint', 'claim_slot', 'ack')
 #: One message per robot per decision round; 3 rounds is the protocol design
 #: value (round 1 claim, round 2 answer, round 3 last chance), not a measured
-#: constant.  Exhausting it records a duplicate/deadlock error, never success.
+#: constant.  Exhausting it records the duplicate-slot error, never success.
 MAX_ROUNDS = 3
 #: The gate's SIM budget is 60 s; an allocation that never produced an
 #: ``ARRIVED`` claim for both robots by then is reported as the 60 SIM s
