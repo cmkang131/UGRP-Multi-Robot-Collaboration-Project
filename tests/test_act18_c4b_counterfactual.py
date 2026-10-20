@@ -177,3 +177,35 @@ def test_write_json_round_trip(tmp_path):
     path = tmp_path / 'x.json'
     c4b.write_json(path, {'b': 1, 'a': 2})
     assert json.loads(path.read_text()) == {'a': 2, 'b': 1}
+
+
+def test_exploratory_hist_failure_arm_requires_reference():
+    base = observation()
+    with pytest.raises(ValueError):
+        c4b.apply_variant('V-hist-fail', base, same_row=dict(observation=base),
+                          cross_row=dict(observation=base))
+    other = observation(t=12.)
+    other['issued'] = [dict(row, pwm={str(s): 1650 for s in c.SERVOS}) for row in other['issued']]
+    changed = c4b.apply_variant('V-hist-fail', base, same_row=dict(observation=base),
+                                cross_row=dict(observation=base),
+                                fail_row=dict(observation=other))
+    assert all(row['pwm']['1'] == 1650 for row in changed['issued'])
+    assert c4b.EXTRA_ARMS == ('V-hist-fail',)
+    assert 'V-hist-fail' not in c4b.CONTROL_ARMS
+
+
+def test_device_defaults_to_cpu_and_cuda_is_opt_in():
+    base = ['--c2c-root', 'c', '--recovered-root', 'r', '--checkpoint', 'k', '--out', 'o']
+    assert c4b.parse_arguments(base).device == 'cpu'
+    assert c4b.parse_arguments(base + ['--device', 'cuda']).device == 'cuda'
+    with pytest.raises(SystemExit):
+        c4b.parse_arguments(base + ['--device', 'mps'])
+
+
+def test_device_guard_fails_closed_without_cuda():
+    assert c4b.device_guard('cpu', False) == 'cpu'
+    assert c4b.device_guard('cuda', True) == 'cuda'
+    with pytest.raises(SystemExit):
+        c4b.device_guard('cuda', False)
+    with pytest.raises(ValueError):
+        c4b.device_guard('mps', True)

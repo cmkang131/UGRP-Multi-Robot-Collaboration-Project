@@ -1,10 +1,15 @@
-"""ACT18 C4b — offline counterfactual replay of the C2c release window (CPU only).
+"""ACT18 C4b — offline counterfactual replay of the C2c release window.
 
 Replays the frozen R8 step-100000 ACT policy over the *recorded* C2c observations of
 the release skill, replacing exactly one policy input at a time, and records the
-deployed temporal-ensemble pwm1 output. No physics, no simulator, no training, no
-GPU. The recorded observations make the replay deterministic: every variant tick
-keeps the original observations except for the one substituted input.
+deployed temporal-ensemble pwm1 output. No physics, no simulator, no training. The
+recorded observations make the replay deterministic: every variant tick keeps the
+original observations except for the one substituted input.
+
+``--device cuda`` runs the identical arithmetic on the GPU (default ``cpu``); arms,
+window and pre-registration are unchanged. The pre-registered V0 gate still decides
+whether a replay is reported, and the receipt records the device and torch build —
+GPU and CPU replays are separate conditions and are never pooled.
 
 Default OFF (``--enabled`` required). The pre-registration JSON must be written and
 committed before results; the replay verifies the registered world table against
@@ -35,6 +40,10 @@ KIND_ORDER = ('cyan', 'green', 'red', 'yellow')
 TE_COEFF = .01
 OPEN_PWM1 = 1900
 ARMS = ('V0', 'V-pe', 'V-se', 'V-img-same', 'V-img-cross', 'V-hist')
+# Post-hoc exploratory arm (not in the preregistration, never used for the decision):
+# the same-kind FAILURE world's issued history. It separates "success-like history
+# content" from "any different 16-command history" for a V-hist recovery.
+EXTRA_ARMS = ('V-hist-fail',)
 CONTROL_ARMS = ARMS[1:]
 CHECKPOINT_SHA256 = 'e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a'
 RECOVERED_MANIFEST_SHA256 = '6515c3c9be1be026da7ac9eb331def3c937959f99867479b8ed1c9758358f2d2'
@@ -362,7 +371,7 @@ def replace_history(observation, reference_row):
     return changed
 
 
-def apply_variant(arm, observation, *, same_row, cross_row):
+def apply_variant(arm, observation, *, same_row, cross_row, fail_row=None):
     """One-input substitution; everything else stays recorded."""
     if arm == 'V0':
         return observation
@@ -376,6 +385,10 @@ def apply_variant(arm, observation, *, same_row, cross_row):
         return replace_images(observation, cross_row)
     if arm == 'V-hist':
         return replace_history(observation, same_row)
+    if arm == 'V-hist-fail':
+        if fail_row is None:
+            raise ValueError('V-hist-fail requires a failure reference row')
+        return replace_history(observation, fail_row)
     raise ValueError('unknown arm: %r' % (arm,))
 
 
@@ -388,6 +401,8 @@ def open_tau(series, threshold=OPEN_PWM1):
 
 def decide(recovered):
     """Apply the pre-registered failure decision rules; counts is arm -> n_recovered."""
+    if set(recovered) != set(CONTROL_ARMS):
+        return dict(verdict='incomplete', arms=[], text='전 변형 실행 아님(중간 파일)')
     hit = [arm for arm in CONTROL_ARMS if recovered[arm] >= 6]
     if not hit:
         return dict(verdict='no_recovery', arms=[], text='모델 용량/데이터')
@@ -452,6 +467,13 @@ def replay_world(world, arms, run_root, recovered_root, actor, checkpoint_sha):
     cross_obs, _ = world_inputs(run_root, cross_world)
     same_t0, _ = release_window(same_obs)
     cross_t0, _ = release_window(cross_obs)
+    fail_world = world.get('reference_fail_world')
+    fail_obs = fail_t0 = None
+    if 'V-hist-fail' in arms:
+        if fail_world is None:
+            raise ValueError('V-hist-fail requested without a failure reference')
+        fail_obs, _ = world_inputs(run_root, fail_world)
+        fail_t0, _ = release_window(fail_obs)
     same_base = (Path(recovered_root) / same_world['run'] / same_world['stage'] /
                  same_world['group'] / 'evaluation' / 'actor-inputs' /
                  ('world-%03d' % same_world['world']))
@@ -467,6 +489,7 @@ def replay_world(world, arms, run_root, recovered_root, actor, checkpoint_sha):
         observation = row['observation']
         same_row = rindex(same_obs, same_t0, index)
         cross_row = rindex(cross_obs, cross_t0, index)
+        fail_row = rindex(fail_obs, fail_t0, index) if fail_obs is not None else None
         for arm in arms:
             ensemble = ensembles[arm]
             if ensemble.done_requested:
@@ -474,7 +497,8 @@ def replay_world(world, arms, run_root, recovered_root, actor, checkpoint_sha):
                 raw = None
                 averaged = None
             else:
-                changed = apply_variant(arm, observation, same_row=same_row, cross_row=cross_row)
+                changed = apply_variant(arm, observation, same_row=same_row,
+                                        cross_row=cross_row, fail_row=fail_row)
                 if arm == 'V-img-same':
                     jpegs = load_jpegs(same_base, changed['rgb'], cache)
                 elif arm == 'V-img-cross':
@@ -496,6 +520,7 @@ def replay_world(world, arms, run_root, recovered_root, actor, checkpoint_sha):
                                         float(averaged[-1]), 6)))
     result = dict(label=world['label'], seed=world['seed'], kind=world['kind'],
                   cohort=world['cohort'], outcome=world['outcome'],
+                  reference_fail=world.get('reference_fail'),
                   window_ticks=len(window), release_entry_t=t0,
                   recorded_open_tau=world['recorded_open_tau'],
                   reference_same=world['reference_same'],
@@ -550,11 +575,11 @@ def fidelity_check(replay):
                 open_status_ok=status_ok, worlds=len(replay), details=details)
 
 
-def summarize(replay, checkpoint_sha):
+def summarize(replay, checkpoint_sha, arms=ARMS):
     failures = [world for world in replay if world['outcome'] == 'failure']
     successes = [world for world in replay if world['outcome'] == 'success']
     table = {}
-    for arm in ARMS:
+    for arm in arms:
         table[arm] = dict(
             failure_open=sum(1 for world in failures if world['arms'][arm]['open_tau'] is not None),
             success_open=sum(1 for world in successes if world['arms'][arm]['open_tau'] is not None),
@@ -564,12 +589,22 @@ def summarize(replay, checkpoint_sha):
             failure_te_pwm1_max=[world['arms'][arm]['te_pwm1_max'] for world in failures])
     recovered = {}
     for arm in CONTROL_ARMS:
-        recovered[arm] = sum(1 for world in failures
-                             if world['arms'][arm]['open_tau'] is not None
-                             and world['arms']['V0']['open_tau'] is None)
+        if arm in table:
+            recovered[arm] = sum(1 for world in failures
+                                 if world['arms'][arm]['open_tau'] is not None
+                                 and world['arms']['V0']['open_tau'] is None)
     return dict(checkpoint_sha256=checkpoint_sha,
                 failure_n=len(failures), success_n=len(successes),
                 table=table, recovered=recovered, decision=decide(recovered))
+
+
+def device_guard(requested, available):
+    """Fail closed: never silently fall back to the CPU when cuda was asked for."""
+    if requested not in ('cpu', 'cuda'):
+        raise ValueError('unknown device: %r' % (requested,))
+    if requested == 'cuda' and not available:
+        raise SystemExit('--device cuda requested but torch.cuda.is_available() is False')
+    return requested
 
 
 def parse_arguments(argv=None):
@@ -584,6 +619,10 @@ def parse_arguments(argv=None):
     parser.add_argument('--arms', default=','.join(ARMS))
     parser.add_argument('--worlds', default='')
     parser.add_argument('--threads', type=int, default=2)
+    # CPU is the registered/default condition. cuda runs the same replay on the GPU
+    # (JPEG decode and every substituted input stay identical; only the module
+    # forward moves), which is the only thing that can change.
+    parser.add_argument('--device', default='cpu', choices=('cpu', 'cuda'))
     parser.add_argument('--created-utc', default='')
     return parser.parse_args(argv)
 
@@ -599,8 +638,10 @@ def main(argv=None):
         raise SystemExit('unexpected C4a recovered manifest hash')
     arms = tuple(part.strip() for part in args.arms.split(',') if part.strip())
     for arm in arms:
-        if arm not in ARMS:
+        if arm not in ARMS + EXTRA_ARMS:
             raise SystemExit('unknown arm %r' % (arm,))
+    if 'V-hist-fail' in arms and 'V0' not in arms:
+        raise SystemExit('V-hist-fail needs the V0 fidelity baseline in the same run')
     if args.emit_prereg:
         note = dict(created_utc=args.created_utc or time.strftime('%Y-%m-%dT%H:%M:%SZ',
                                                                  time.gmtime()),
@@ -646,10 +687,12 @@ def main(argv=None):
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     import torch
+    if args.device == 'cuda' and not torch.cuda.is_available():
+        raise SystemExit('--device cuda requested but torch.cuda.is_available() is False')
     torch.set_num_threads(max(1, args.threads))
     from act18_policy import Actor
     started = time.time()
-    actor = Actor.load(str(args.checkpoint), device='cpu')
+    actor = Actor.load(str(args.checkpoint), device=args.device)
     cache = {}
     replay = []
     for number, label in enumerate(selected, 1):
@@ -658,6 +701,13 @@ def main(argv=None):
         world['reference_cross'] = reference_labels['img_cross'][label]
         world['reference_worlds'] = {world['reference_same']: all_worlds[world['reference_same']],
                                      world['reference_cross']: all_worlds[world['reference_cross']]}
+        if 'V-hist-fail' in arms:
+            failures = [item for item in registration['targets']['failure']
+                        if item['kind'] == world['kind'] and item['label'] != label]
+            if not failures:
+                raise SystemExit('no same-kind failure reference for %s' % label)
+            world['reference_fail'] = failures[0]['label']
+            world['reference_fail_world'] = all_worlds[world['reference_fail']]
         world_started = time.time()
         result = replay_world(world, arms, args.c2c_root, args.recovered_root, actor,
                               CHECKPOINT_SHA256)
@@ -675,14 +725,19 @@ def main(argv=None):
         write_json(out / 'replay.json', dict(worlds=replay))
     wall = time.time() - started
     fidelity = fidelity_check(replay)
-    summary = summarize(replay, CHECKPOINT_SHA256)
+    summary = summarize(replay, CHECKPOINT_SHA256, arms)
     receipt = dict(schema='ugrp.act18.c4b_counterfactual.v1',
                    prereg=str(args.prereg), prereg_sha256=sha256(args.prereg),
-                   args=vars(args) | dict(c2c_root=str(args.c2c_root),
-                                          recovered_root=str(args.recovered_root),
-                                          checkpoint=str(args.checkpoint), out=str(args.out)),
+                   args={key: (str(value) if isinstance(value, Path) else value)
+                         for key, value in vars(args).items()},
                    checkpoint_sha256=CHECKPOINT_SHA256,
                    recovered_manifest_sha256=RECOVERED_MANIFEST_SHA256,
+                   device=dict(name=args.device, torch=torch.__version__,
+                               torch_cuda=torch.version.cuda,
+                               gpu=(torch.cuda.get_device_name(0)
+                                    if args.device == 'cuda' else None),
+                               condition=('gpu_replay' if args.device == 'cuda'
+                                          else 'cpu_replay')),
                    arms=list(arms), worlds=len(replay), wall_s=round(wall, 1),
                    forwards=sum(world['arms'][arm]['forwards'] for world in replay for arm in arms),
                    created_utc=time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
