@@ -18,6 +18,11 @@ from pathlib import Path
 LEDGER_SCHEMA = 'ugrp.pairact_r1.collect_ledger.v1'
 REPORT_SCHEMA = 'ugrp.pairact_r1.collect_report.v1'
 MODES = ('measurement', 'training')
+# measurement = recording-off yield/bin run (A only, 'yield measurement, not demonstrations');
+# training = recording on through the opt-in teacher/adapter candidate below (-c stack)
+CANDIDATE_BY_MODE = {'measurement': 'pairact_p2_r13', 'training': 'pairact_p3_collect'}
+COLLECT_ENV = ('PAIRACT_P3_COLLECT_PREREG', 'PAIRACT_P3_COLLECT_PREREG_SHA256', 'PAIRACT_P3_RECORDING_CHECK',
+               'PAIRACT_P3_RECORDING_PROBE')
 NOISE_MODES = ('off', 'on')
 WARMUP_ATTEMPTS = 4
 P_FLOOR = .05
@@ -384,7 +389,7 @@ def report(prereg, st, *, prereg_sha):
         stop=stop_reason(prereg, st),
         A=dict(label='교사 시연 수집: 성공 n / 시도 N (데이터 필터용, 학습 결과 아님)',
                text=f"교사 시연 수집: 성공 {t['successes']} / 시도 {t['attempts']} (데이터 필터용, 학습 결과 아님); "
-                    f"학습 채택 {t['eligible']}" + (' [측정 모드: 녹화 없음, 텐서 없음]' if mode == 'measurement' else ''),
+                    f"학습 채택 {t['eligible']}" + (' [수율 측정, 시연 아님: 녹화 없음, 텐서 없음]' if mode == 'measurement' else ''),
                **t, bins=table),
         validation=dict(attempts=sum(r['outcome'] != 'host_error' for r in val),
                         successes=sum(r['success'] for r in val), eligible=sum(r['eligible'] for r in val)),
@@ -400,6 +405,30 @@ def report(prereg, st, *, prereg_sha):
         data_range_limited=any(r['need'] > 0 for r in table),
         failures=dict(Counter(f"{r['failure_stage']}:{r['reason']}" for r in bad)),
         not_pooled_with=['B teacher gate n/40', 'C student n/20', 'P2 smoke', 'r13 gate', 'CPU results'])
+
+
+# ------------------------------------------------ recording-mode check inputs
+
+CHECK_ROW_KEYS = ('status', 'physical_success', 'execution_host', 'source_sha', 'teacher_profile', 'action_contract',
+                  'self_pose_source', 'episode_plan_sha256', 'observation_sampling', 'teacher_stability',
+                  'teacher_search', 'approach_goal_set', 'nominal_blocked_handoff', 'approach_progress',
+                  'approach_recovery', 'approach_coordination', 'handoff_observation')
+
+
+def probe_slots(st, n=3):
+    """First n admitted train successes (ledger order): the starts re-run with recording probe."""
+    rows = [r for r in st['attempt_rows'] if r['split'] == 'train' and r['eligible']][:n]
+    if len(rows) < n:
+        raise ValueError(f'need {n} measured successes for the recording-mode check, have {len(rows)}')
+    return rows
+
+
+def check_row(result, seed, search15_keys=()):
+    """One row for teacher harness.grasp_act_admission.recording_mode_equivalence (index = seed)."""
+    row = {k: result.get(k) for k in CHECK_ROW_KEYS if k in result}
+    row.update({k: result[k] for k in search15_keys if k in result})
+    row.update(index=int(seed), exit=0 if result.get('status') == 'complete' else 1)
+    return row
 
 
 # ------------------------------------------------------- convert hand-off

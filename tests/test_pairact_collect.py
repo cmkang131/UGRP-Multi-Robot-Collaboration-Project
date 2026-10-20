@@ -274,7 +274,7 @@ def test_report_separates_validation_and_bins(tmp_path, prereg):
     assert rep['validation']['attempts'] == 20 and rep['A']['attempts'] == 60
     assert sum(b['attempts'] for b in rep['A']['bins']) == 60
     assert rep['ks']['distance']['n1'] > 0 and rep['ks']['distance']['n2'] > 0
-    assert '측정 모드' in rep['A']['text'] and 'C student n/20' in rep['not_pooled_with']
+    assert '수율 측정, 시연 아님' in rep['A']['text'] and 'C student n/20' in rep['not_pooled_with']
 
 
 def test_collect_cases_geometry_respects_bins(prereg):
@@ -316,3 +316,40 @@ def test_prereg_seed_ranges_match_seeds_json(prereg):
     m = u.module_from_spec(sp)
     sp.loader.exec_module(m)
     assert m.check(spec) == []
+
+
+# ------------------------------------------------- recording (-c stack) hand-off
+
+def test_collect_env_only_in_training_and_needs_check(tmp_path, monkeypatch):
+    monkeypatch.setenv('PAIRACT_P3_COLLECT_PREREG', '/stale')
+    env = runner.collect_env('measurement', PREREG, 'sha')
+    assert not any(k in env for k in pc.COLLECT_ENV)          # measurement: recording off, stale env cleared
+    with pytest.raises(ValueError, match='recording-check'):
+        runner.collect_env('training', PREREG, 'sha')
+    check = tmp_path / 'check.json'
+    check.write_text('{}')
+    env = runner.collect_env('training', PREREG, 'sha', check)
+    assert env['PAIRACT_P3_COLLECT_PREREG_SHA256'] == 'sha' and env['PAIRACT_P3_RECORDING_PROBE'] == '0'
+    assert env['PAIRACT_P3_RECORDING_CHECK'] == str(check.resolve())
+    probe = runner.collect_env('training', PREREG, 'sha', probe=True)
+    assert probe['PAIRACT_P3_RECORDING_PROBE'] == '1' and 'PAIRACT_P3_RECORDING_CHECK' not in probe
+    assert pc.CANDIDATE_BY_MODE == {'measurement': 'pairact_p2_r13', 'training': 'pairact_p3_collect'}
+
+
+def test_probe_slots_and_check_rows(tmp_path, prereg):
+    _, st, _ = collect(tmp_path, prereg, lambda s, c: result(success=s % 2 == 1), max_batches=2)
+    rows = pc.probe_slots(st)
+    assert [r['seed'] for r in rows] == [8340001, 8340003, 8340005]
+    with pytest.raises(ValueError, match='need 30'):
+        pc.probe_slots(st, n=30)
+    res = dict(result(), source_sha='t', teacher_profile='visible_only', search20='search20_v1',
+               observation_sampling={'rgb_size': [640, 480], 'rgb_hz': 10}, physical_success=True)
+    row = pc.check_row(res, 8340001, search15_keys=['search20'])
+    assert row['index'] == 8340001 and row['exit'] == 0 and row['search20'] == 'search20_v1'
+    assert row['observation_sampling']['rgb_size'] == [640, 480]
+
+
+def test_measurement_report_is_labelled_yield_not_demonstrations(tmp_path, prereg):
+    collect(tmp_path, prereg, lambda s, c: result(), max_batches=2)
+    rep = json.loads((tmp_path / 'report.json').read_text())
+    assert '수율 측정, 시연 아님' in rep['A']['text']

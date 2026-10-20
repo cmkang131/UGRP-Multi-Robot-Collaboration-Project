@@ -18,6 +18,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import json
+import os
 from pathlib import Path
 import shlex
 import subprocess
@@ -156,17 +157,30 @@ def run(run_root, prereg, prereg_sha, *, mode, noise, batch_size, max_batches, m
         ingest(ledger, k, last, slots, cases, summary, mode=mode, noise=noise, done_slots=done)
 
 
-def shell_episode(template):
+def collect_env(mode, prereg_path, prereg_sha, recording_check=None, probe=False):
+    """Env read by the -c adapter candidate pairact_p3_collect; measurement mode clears it."""
+    env = {k: v for k, v in os.environ.items() if k not in pc.COLLECT_ENV}
+    if mode == 'training':
+        if recording_check is None and not probe:
+            raise ValueError('training mode needs --recording-check (paired 640x480 recording-mode check)')
+        env.update(PAIRACT_P3_COLLECT_PREREG=str(Path(prereg_path).resolve()),
+                   PAIRACT_P3_COLLECT_PREREG_SHA256=prereg_sha, PAIRACT_P3_RECORDING_PROBE='1' if probe else '0')
+        if recording_check is not None:
+            env['PAIRACT_P3_RECORDING_CHECK'] = str(Path(recording_check).resolve())
+    return env
+
+
+def shell_episode(template, env=None):
     def go(cases, indices, out):
         cmd = template.format(cases=shlex.quote(str(cases)), indices=','.join(map(str, indices)),
                               out=shlex.quote(str(out)))
-        return subprocess.call(cmd, shell=True)
+        return subprocess.call(cmd, shell=True, env=env)
     return go
 
 
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument('command', choices=('collect', 'report', 'convert-input'))
+    p.add_argument('command', choices=('collect', 'report', 'convert-input', 'probe-cases', 'check-rows'))
     p.add_argument('--prereg', type=Path, required=True)
     p.add_argument('--run-root', type=Path, required=True)
     p.add_argument('--mode', choices=pc.MODES, default='measurement')
@@ -178,7 +192,10 @@ def main():
     p.add_argument('--dependency-root', type=Path)
     p.add_argument('--frozen-root', type=Path)
     p.add_argument('--adapter-root', type=Path, help='pinned adapter checkout (runtime placement filter family)')
-    p.add_argument('--candidate', default='pairact_p2_r13')
+    p.add_argument('--candidate', help='default: pairact_p2_r13 (measurement) / pairact_p3_collect (training)')
+    p.add_argument('--recording-check', type=Path, help='training: paired 640x480 recording-mode check json')
+    p.add_argument('--baseline-raws', nargs='*', default=[], help='check-rows: recording-off world raw dirs')
+    p.add_argument('--probe-raws', nargs='*', default=[], help='check-rows: recording-probe world raw dirs')
     p.add_argument('--teacher-sha')
     p.add_argument('--out', type=Path)
     a = p.parse_args()
@@ -197,6 +214,44 @@ def main():
             p.error('convert input needs a training-mode ledger (measurement runs have no tensors)')
         print(json.dumps(pc.convert_input(st, a.out, teacher_sha=a.teacher_sha)))
         return
+    if a.command == 'probe-cases':
+        # starts for the recording probe: first 3 measured successes, cases copied byte-for-byte from their batch
+        if not a.out:
+            p.error('--out required')
+        if a.out.exists():
+            p.error('refusing to overwrite')
+        st = pc.replay(prereg, pc.read_ledger(a.run_root / 'ledger.jsonl'))
+        cases = []
+        for r in pc.probe_slots(st):
+            batch = json.loads((a.run_root / 'batches' / f"b{r['batch']:03d}" / 'cases.json').read_text())
+            case = batch[r['slot']]
+            if case['plan']['seed'] != r['seed']:
+                raise ValueError('ledger/cases mismatch')
+            cases.append(dict(case, candidate=pc.CANDIDATE_BY_MODE['training']))
+        write(a.out, cases)
+        print(json.dumps(dict(out=str(a.out), seeds=[c['plan']['seed'] for c in cases],
+                              baseline_raws=[r['raw'] for r in pc.probe_slots(st)])))
+        return
+    if a.command == 'check-rows':
+        # inputs for the teacher's unchanged recording_mode_equivalence(baseline rows, probe rows)
+        if not a.out or not a.baseline_raws or len(a.baseline_raws) != len(a.probe_raws):
+            p.error('--out and equal-length --baseline-raws/--probe-raws required')
+        rows = {}
+        for name, raws in (('baseline', a.baseline_raws), ('recorded', a.probe_raws)):
+            rows[name] = []
+            for raw in raws:
+                res = raw_result(raw)
+                seed = json.loads((Path(raw) / 'plan.json').read_text())['seed'] if (Path(raw) / 'plan.json').exists() \
+                    else res.get('seed')
+                rows[name].append(pc.check_row(res, seed, search15_keys=[k for k in res if k.startswith(('search', 'peer_reobserve', 'obstacle_reobserve', 'pregrasp_sampling'))]))
+        write(a.out, rows)
+        print(json.dumps(dict(out=str(a.out), baseline=[r['index'] for r in rows['baseline']],
+                              recorded=[r['index'] for r in rows['recorded']])))
+        return
+    candidate = a.candidate or pc.CANDIDATE_BY_MODE[a.mode]
+    if candidate != pc.CANDIDATE_BY_MODE[a.mode]:
+        p.error(f'{a.mode} mode uses candidate {pc.CANDIDATE_BY_MODE[a.mode]}')
+    env = collect_env(a.mode, a.prereg, sha, a.recording_check)
     if not a.episode_cmd or '{out}' not in a.episode_cmd or '{cases}' not in a.episode_cmd:
         p.error('--episode-cmd with {cases} {indices} {out} required')
     sys.path.insert(0, str(ROOT / 'experiments/2026-10-21-pairact-r1'))
@@ -205,8 +260,8 @@ def main():
     deadline = dt.datetime.fromisoformat(a.deadline_utc.replace('Z', '+00:00')) if a.deadline_utc else None
     stop = run(a.run_root, prereg, sha, mode=a.mode, noise=a.noise, batch_size=a.batch_size,
                max_batches=a.max_batches, deadline=deadline,
-               make_cases=lambda slots: collect_cases.make_cases(geo, prereg, slots, candidate=a.candidate),
-               run_episode=shell_episode(a.episode_cmd))
+               make_cases=lambda slots: collect_cases.make_cases(geo, prereg, slots, candidate=candidate),
+               run_episode=shell_episode(a.episode_cmd, env))
     rep = json.loads((a.run_root / 'report.json').read_text())
     print(json.dumps(dict(stop=stop, A=rep['A']['text']), ensure_ascii=False))
 
