@@ -105,7 +105,10 @@ def slot_stage2_report(run):
                           and o.get('slot_bearing_offset_raw_deg') is not None
                           and limit is not None
                           and abs(float(o['slot_bearing_offset_raw_deg'])) > float(limit) + 1e-9)
-        arrival_armed_s = next((sim[i] for i, o in enumerate(own) if o.get('arrival_armed')), None)
+        armed_i = next((i for i, o in enumerate(own) if o.get('arrival_armed')), None)
+        arrival_armed_s = None if armed_i is None else sim[armed_i]
+        ground_at_arming = (None if armed_i is None
+                            else own[armed_i].get('slot_ground_distance_m'))
         claim_i = next((i for i, o in enumerate(own) if o.get('destination_arrived')), None)
         out[robot] = dict(
             slot=next((o.get('slot') for o in own if o.get('slot') is not None), None),
@@ -128,11 +131,13 @@ def slot_stage2_report(run):
             applied_offset_max_deg=(_num(max(v for _, v in applied), 3) if applied else None),
             clamp_ticks=clamp_ticks,
             arrival_armed_s=arrival_armed_s,
+            ground_at_arming_m=_num(ground_at_arming),
             claim_s=(None if claim_i is None else round(sim[claim_i], 3)),
             activation_to_arming_ticks=(None if active_i is None or arrival_armed_s is None
                                         else int(round((arrival_armed_s - sim[active_i]) * TICK_HZ))),
-            activation_to_arming_m=(None if active_i is None or arrival_armed_s is None
-                                    else None),
+            activation_to_arming_m=(None if active_i is None or ground_at_arming is None
+                                    else _num(float(own[active_i]['slot_ground_at_activation_m'])
+                                              - float(ground_at_arming))),
             note='own-camera only: bbox bottom row -> ground plane; never a map/GT input')
     return out
 
@@ -341,10 +346,20 @@ def acceptance(base, *, n_robots, preflight=None):
     mismatch = int(base.get('claim_mismatch_n') or 0)
     fp_final = mismatch                      # claim with a final pose outside the zone
     fp_render = None
+    fp_render_max_component_px = None
+    fp_render_frames = None
     if preflight is not None:
         measure = preflight if isinstance(preflight, dict) else load_json(preflight, {})
-        value = measure.get('zone_free_detections')
+        # render_check.py writes checks.zone_free.{detections_total,max_largest_component_px};
+        # accept the flat spellings too so an older measure file still parses.
+        checks = (measure.get('checks') or {}).get('zone_free') or {}
+        value = checks.get('detections_total', measure.get('zone_free_detections'))
         fp_render = None if value is None else int(value)
+        max_px = checks.get('max_largest_component_px',
+                            measure.get('zone_free_max_component_px'))
+        fp_render_max_component_px = None if max_px is None else int(max_px)
+        frames = checks.get('frame_n', measure.get('zone_free_frames'))
+        fp_render_frames = None if frames is None else int(frames)
     valid = bool(source_ok and stack_ok and boundaries_ok and status_ok)
     fp_ok = bool(fp_final == 0 and (fp_render is None or fp_render == 0))
     passed = bool(valid and gt_n == n_robots and claim_n == n_robots and mismatch == 0
@@ -358,6 +373,8 @@ def acceptance(base, *, n_robots, preflight=None):
         gt_arrival_n=gt_n, claim_n=claim_n, claim_mismatch_n=mismatch,
         claims_outside_gt_at_claim_time_n=int(base.get('claims_outside_gt_at_claim_time_n') or 0),
         fp_final_outside_claim_n=fp_final, fp_render_zone_free_detections=fp_render,
+        fp_render_max_component_px=fp_render_max_component_px,
+        fp_render_zone_free_frames=fp_render_frames,
         no_claim_n=int(base.get('no_claim_n') or 0),
         boundary_violations=base.get('boundary_violations') or [],
         pass_=passed,
