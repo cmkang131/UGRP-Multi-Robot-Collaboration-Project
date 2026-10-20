@@ -178,6 +178,58 @@ def clock_receipt(deadband):
         scope='own issued PWM history only; no measured joint or simulator state')
 
 
+# carry-cand-1 (A-c1, H-A1): evaluation-side issued-command deadband, default off.
+# Tournament A prereg draft: experiments/2026-10-17-act18/CARRY_TOURNAMENT_A_PREREG_DRAFT.json.
+COMMAND_DEADBAND_STATS=dict(commands=0,held_servo_values=0)
+
+
+def command_deadband(value,previous_pwm,band):
+    """Hold each servo at its previously issued PWM when |new - previous| < band.
+
+    ``previous_pwm`` is the robot's own last issued command (observation
+    ``issued[-1]``), so the deadbanded value is what is sent to the owner and what
+    the owner appends to the issued history the policy sees next tick. Wheels,
+    pulse widths and the timestamp are not touched. ``band=0`` returns ``value``.
+    """
+    if not band:
+        return value
+    pwm={}
+    for servo in (1,3,4,5,6):
+        key=str(servo);new=int(value['pwm'][key]);old=int(previous_pwm[key])
+        if abs(new-old)<band:
+            pwm[key]=old
+            if new!=old:COMMAND_DEADBAND_STATS['held_servo_values']+=1
+        else:
+            pwm[key]=new
+    COMMAND_DEADBAND_STATS['commands']+=1
+    result=dict(value);result['pwm']=pwm
+    return result
+
+
+def candidate_executor(base,*,command_deadband_pwm=0):
+    """Deployed te1 executor (n_action_steps 1, coeff .01) plus the default-off deadband."""
+    if command_deadband_pwm not in (0,10):
+        raise ValueError('registered command deadband 10 required')
+    class Executor(base):
+        def __init__(self,predict):
+            # Public ACT temporal ensemble; no additional motion guard/fallback.
+            super().__init__(predict,n_action_steps=1,temporal_ensemble_coeff=.01)
+        def step(self,observation,jpegs,*,interrupt=False):
+            value,done=super().step(observation,jpegs,interrupt=interrupt)
+            if command_deadband_pwm:
+                value=command_deadband(value,observation['issued'][-1]['pwm'],command_deadband_pwm)
+            return value,done
+    return Executor
+
+
+def command_deadband_receipt(band):
+    return dict(candidate='A-c1' if band else None,band=band,flag=f'--issued-command-deadband {band}',
+        rule='per servo: |issued_new - issued_prev| < band -> keep issued_prev (wheels untouched)',
+        commands=COMMAND_DEADBAND_STATS['commands'] if band else None,
+        held_servo_values=COMMAND_DEADBAND_STATS['held_servo_values'] if band else None,
+        scope='own issued command history only; applied to the sent command, so the owner issued history matches')
+
+
 def post_lift_max_pe(out):
     """Evaluation-only receipt from the recorded actor inputs and owner truth."""
     inputs=out/'actor-inputs.jsonl';truth=out/'owner/evaluation-only.jsonl'
@@ -216,6 +268,8 @@ def main():
     p.add_argument('--stage',choices=['train','validation','final','diag'],required=True)
     p.add_argument('--diag-prereg',type=Path)
     p.add_argument('--issued-clock-deadband',type=int,choices=[0,2],default=0)
+    # carry-cand-1: default 0 (off). 10 = hold servo PWM when |Δ| < 10 vs previous issued.
+    p.add_argument('--issued-command-deadband',type=int,choices=[0,10],default=0)
     p.add_argument('--baseline-act17',action='store_true')
     # User requirement: last10 SIM seconds at10Hz; recording only, no policy field.
     p.add_argument('--failure-camera-window-s',type=float,default=10.)
@@ -236,6 +290,8 @@ def main():
     a,args=p.parse_known_args()
     if not a.act18_reference_v1 or a.failure_camera_window_s!=10.:
         raise ValueError('explicit reference toggle and user10SIMs camera window required')
+    if a.issued_command_deadband and (a.done_head is not None or a.loop_overlay):
+        raise ValueError('--issued-command-deadband is registered with the plain te1 executor only')
     if a.done_head is not None and a.done_head_threshold!=.65:
         raise ValueError('frozen done-head threshold .65 required')
     done_log_path=done_prob_log_path() if a.record_done_prob is None else a.record_done_prob
@@ -275,6 +331,7 @@ def main():
         act16w_eval_rpc.EvaluationClient,pm.ChunkExecutor,rm.SoloSequence,contract.CHUNK,
         contract.IssuedClock)
     CLOCK_STATS.update(instances=0,resets=0,max_pwm_elapsed_s=0.)
+    COMMAND_DEADBAND_STATS.update(commands=0,held_servo_values=0)
     install_issued_clock(contract,a.issued_clock_deadband)
     actor_class=OldActor if a.baseline_act17 else Actor
     chunk=8 if a.baseline_act17 else meta['chunk']
@@ -309,10 +366,7 @@ def main():
                 elapsed=time.perf_counter()-started;inference['wall_s']+=elapsed
                 if first30:inference['first30']['wall_s']+=elapsed
     from act18_loop_overlay import LoopOverlay, overlay_receipt
-    class Executor(originals[3]):
-        def __init__(self,predict):
-            # Public ACT temporal ensemble; no additional motion guard/fallback.
-            super().__init__(predict,n_action_steps=1,temporal_ensemble_coeff=.01)
+    Executor=candidate_executor(originals[3],command_deadband_pwm=a.issued_command_deadband)
     class DoneHeadExecutor(Executor):
         def __init__(self,predict):
             super().__init__(predict)
@@ -450,6 +504,7 @@ def main():
                     static_map_use='none',handwritten_nearfield_fallback=False,policy_ground_truth_fields=0,
                     native_camera='own640x480 at10Hz; identical current_full_v1 transform',
                     issued_clock=clock,git_sha=source,
+                    issued_command_deadband=command_deadband_receipt(a.issued_command_deadband),
                     scope=('TRAIN fit only, not generalization' if a.stage=='train' else
                            'HO4 diagnostic holdout only; not a promotion gate; no pooling' if a.stage=='diag'
                            else 'held-out native ACT stage'))
@@ -473,6 +528,7 @@ def main():
                 loop_receipt=overlay_receipt()
             (out/'act18-evaluator.json').write_text(json.dumps(dict(source_sha=source,stage=a.stage,
                 git_sha=source,issued_clock=clock,diag_prereg=diag,loop_overlay=loop_receipt,
+                issued_command_deadband=command_deadband_receipt(a.issued_command_deadband),
                 allowed_seeds=sorted(allowed),checkpoint_sha256=digest,native_gate_sha256=sha256(gate_path),
                 failure_recording_only=True,recorded_bytes=sum(r['bytes'] for r in ring),
                 done_head=done_head_receipt),indent=2)+'\n')

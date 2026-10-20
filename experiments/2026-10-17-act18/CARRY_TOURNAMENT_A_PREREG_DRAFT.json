@@ -1,0 +1,266 @@
+{
+  "schema": "ugrp.act18.carry_tournament_a_prereg.v0-draft",
+  "experiment": "2026-10-17-act18",
+  "phase": "carry tournament A (single-robot ACT release)",
+  "status": "DRAFT - not registered. Freeze (status REGISTERED, sha256 recorded, committed) after the C4b-GPU result and before any tournament GPU run. Candidate list may change only by the freeze rule below.",
+  "owner": "Claude (patch author); execution DeepSeek; prereg/diff review Codex",
+  "plan": {
+    "path": "outputs/reports/claude-arch-parallel-20261019/carry-place-owner-plan-v1.md",
+    "sections": [
+      "A3",
+      "A4",
+      "D"
+    ]
+  },
+  "depends_on": {
+    "C4b_GPU_addendum": "experiments/2026-10-17-act18/C4_COUNTERFACTUAL_PREREG_ADDENDUM_GPU.json (branch dsh/act18-c4-counterfactual)",
+    "base_config": "C2c v7 clock (branch dsh/act18-c2c-v7clock, prereg C2C_V7CLOCK_PREREG.json sha256 572f82593fb2de916a46af91f883a6a2b42da8f6cbd96d731d342c15503cc4fd)"
+  },
+  "checkpoint": {
+    "path": "/home/ugrp/ugrp-sim/runs/act18/training-r1/R8/step-100000",
+    "model_sha256": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a",
+    "retraining": 0
+  },
+  "arms": {
+    "A-base": {
+      "branch": "dsh/act18-c2c-v7clock",
+      "flags": [
+        "--issued-clock-deadband 2"
+      ],
+      "executor": "te1 (n_action_steps 1, temporal_ensemble_coeff .01)",
+      "hypothesis": null
+    },
+    "A-c1": {
+      "branch": "dsh/act18-carry-cand-1",
+      "flags": [
+        "--issued-clock-deadband 2",
+        "--issued-command-deadband 10"
+      ],
+      "hypothesis": "H-A1",
+      "change": "per-servo issued-command deadband: |new - previous issued| < 10 keeps the previous issued PWM; wheels untouched; applies to the sent command and therefore to the owner issued history"
+    },
+    "A-c2": {
+      "branch": "dsh/act18-carry-cand-2",
+      "flags": [
+        "--issued-clock-deadband 2",
+        "--release-history-reset on"
+      ],
+      "hypothesis": "H-A1",
+      "change": "on the release-entry tick the 16 issued-history contents are filled once with the current own last issued command (timestamps kept); later commands append normally"
+    },
+    "A-c3": {
+      "branch": "dsh/act18-carry-cand-3",
+      "flags": [
+        "--issued-clock-deadband 2",
+        "--release-executor latest4"
+      ],
+      "hypothesis": "H-A2",
+      "change": "release skill only: ChunkExecutor n_action_steps 4, temporal_ensemble_coeff None (latest chunk first, unweighted); grasp keeps te1"
+    }
+  },
+  "candidate_freeze_rule": [
+    "C4b-GPU H-A1 verdict refuted_any_history or not_supported -> drop A-c1 and A-c2",
+    "C4b-GPU H-A2 verdict refuted -> drop A-c3",
+    "freed slots are filled from the strongest C4b-GPU signal; the final arm list is frozen in this file before the tournament GPU run",
+    "if C4b-GPU shows only V-img recovery or no recovery -> stop tournament A and open A-r1 (retraining) per plan D"
+  ],
+  "seeds": {
+    "HO4": [
+      88668,
+      88669,
+      88670,
+      88671
+    ],
+    "TRAIN4": [
+      88600,
+      88601,
+      88602,
+      88603
+    ],
+    "HO4_admission": "--stage diag --diag-prereg <frozen tournament prereg>; gate_eligible=false",
+    "TRAIN4_stage": "train (fitting diagnostic)",
+    "groups": "same physical grouping as C2c: HO4 g000 {88668}, g001 {88669}, g002 {88670,88671}; TRAIN4 {88600,88603}, {88601,88602}"
+  },
+  "replicates": {
+    "N_per_arm": 3,
+    "world_runs_per_arm": 24,
+    "reason": "L3 contact branching; 8 seeds x 3"
+  },
+  "run_order": {
+    "rule": "arm x seed crossed: arm order rotated each replicate (Latin square), cohort order alternated",
+    "order": [
+      {
+        "rep": 1,
+        "arm": "A-base",
+        "cohort": "HO4"
+      },
+      {
+        "rep": 1,
+        "arm": "A-base",
+        "cohort": "TRAIN4"
+      },
+      {
+        "rep": 1,
+        "arm": "A-c1",
+        "cohort": "TRAIN4"
+      },
+      {
+        "rep": 1,
+        "arm": "A-c1",
+        "cohort": "HO4"
+      },
+      {
+        "rep": 1,
+        "arm": "A-c2",
+        "cohort": "HO4"
+      },
+      {
+        "rep": 1,
+        "arm": "A-c2",
+        "cohort": "TRAIN4"
+      },
+      {
+        "rep": 1,
+        "arm": "A-c3",
+        "cohort": "TRAIN4"
+      },
+      {
+        "rep": 1,
+        "arm": "A-c3",
+        "cohort": "HO4"
+      },
+      {
+        "rep": 2,
+        "arm": "A-c1",
+        "cohort": "TRAIN4"
+      },
+      {
+        "rep": 2,
+        "arm": "A-c1",
+        "cohort": "HO4"
+      },
+      {
+        "rep": 2,
+        "arm": "A-c2",
+        "cohort": "HO4"
+      },
+      {
+        "rep": 2,
+        "arm": "A-c2",
+        "cohort": "TRAIN4"
+      },
+      {
+        "rep": 2,
+        "arm": "A-c3",
+        "cohort": "TRAIN4"
+      },
+      {
+        "rep": 2,
+        "arm": "A-c3",
+        "cohort": "HO4"
+      },
+      {
+        "rep": 2,
+        "arm": "A-base",
+        "cohort": "HO4"
+      },
+      {
+        "rep": 2,
+        "arm": "A-base",
+        "cohort": "TRAIN4"
+      },
+      {
+        "rep": 3,
+        "arm": "A-c2",
+        "cohort": "HO4"
+      },
+      {
+        "rep": 3,
+        "arm": "A-c2",
+        "cohort": "TRAIN4"
+      },
+      {
+        "rep": 3,
+        "arm": "A-c3",
+        "cohort": "TRAIN4"
+      },
+      {
+        "rep": 3,
+        "arm": "A-c3",
+        "cohort": "HO4"
+      },
+      {
+        "rep": 3,
+        "arm": "A-base",
+        "cohort": "HO4"
+      },
+      {
+        "rep": 3,
+        "arm": "A-base",
+        "cohort": "TRAIN4"
+      },
+      {
+        "rep": 3,
+        "arm": "A-c1",
+        "cohort": "TRAIN4"
+      },
+      {
+        "rep": 3,
+        "arm": "A-c1",
+        "cohort": "HO4"
+      }
+    ]
+  },
+  "evaluation": {
+    "full_evaluation_s": 90,
+    "executor_base": "te1",
+    "record_done_prob": true,
+    "new_run_root_only": true
+  },
+  "metrics": {
+    "primary": {
+      "name": "release physical success world-runs",
+      "definition": "per world-run: release_success == true and physical_success == true (no drop)",
+      "denominator": 24
+    },
+    "minimum_improvement": "arm - A-base >= +3/24 (same tournament, same seeds)",
+    "safety": {
+      "name": "G",
+      "definition": "grasp done issued and a 3 s stable lift before done (C2c definition)",
+      "rule": "arm G - A-base G < -2/24 -> arm eliminated (equal to -2 is allowed)"
+    },
+    "tie_break": [
+      "early open during grasp (pwm1 >= 1900 issued in the grasp skill) = 0 required",
+      "fewer drop_detected"
+    ],
+    "descriptive": [
+      "open issued in release",
+      "release done issued",
+      "open tau after release entry",
+      "Pre",
+      "cap_end"
+    ]
+  },
+  "decision": [
+    "winner = arm with the largest primary count that meets the minimum improvement and passes safety",
+    "no arm meets +3/24 -> no winner; open A-r1 (plan D)",
+    "every arm, winners and losers, is recorded in TOURNAMENT_LEDGER.md"
+  ],
+  "confirmation": {
+    "seeds": "[확인 필요] 4 unused VAL40 seeds not overlapping TRAIN200/HO4/VAL8/FINAL40",
+    "N": 2,
+    "world_runs": 8,
+    "rule": "winner vs A-base on the confirmation seeds: adopt if the winner's release success rate is not lower than A-base",
+    "gpu_hours_estimate": "~1 [확인 필요]"
+  },
+  "budget": {
+    "gpu_hours_per_arm": "~0.9 [확인 필요]",
+    "gpu_hours_total": "~3.5 for 4 arms (gcp2 L4, night, stop VM after use)"
+  },
+  "exclusions_and_limits": [
+    "HO4 is a diagnostic holdout, never a promotion gate; no pooling with VAL8/FINAL40/C2c/C4b",
+    "TRAIN4 is a fitting diagnostic, not generalization",
+    "flags are evaluation-side only and default off; contract, adapter, weights, data and labels unchanged",
+    "candidate flags are not combined with --done-head or --loop-overlay"
+  ]
+}
