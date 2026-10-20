@@ -43,7 +43,7 @@
       {"id": "B4", "distance_m": [0.9, 1.2], "yaw": "facing"},
       {"id": "B5", "distance_m": [0.9, 1.2], "yaw": "away"}
     ],
-    "draw_within_bin": "per robot: distance uniform in the bin range, yaw offset uniform in the bin half-circle, rng = random.Random(seed*16 + robot_index) [setup only]",
+    "draw_within_bin": "per robot: distance uniform in the bin range, yaw offset uniform in the bin half-circle, rng = random.Random('pairact_r1_collect_v1:<seed>:<bin id>:<robot index>') (str seed, sha512, independent of PYTHONHASHSEED) [setup only]",
     "min_success_per_bin": 20
   },
 
