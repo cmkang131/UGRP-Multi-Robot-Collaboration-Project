@@ -9,7 +9,7 @@
 | validation | 8341000–8341019 | 20 | teacher 시연. 오프라인 gate와 체크포인트 선택에만 씁니다 |
 | heldout | 8342000–8342019 | 20 | *시연을 수집하지 않습니다.* P5 closed-loop(학생·teacher 같은 seed)에만 씁니다 |
 
-- 시도 수는 seed 200/20으로 고정합니다. teacher 실패 seed를 다른 seed로 채우지 않습니다(r1에는 보충 범위 없음). 성공 수는 그대로 보고합니다.
+- ~~시도 수는 seed 200/20으로 고정합니다(보충 범위 없음).~~ *2026-10-21 대체*: 성공 필터 결정(`pairact-success-filter-decision.md`)에 따라 `COLLECT_PREREG_DRAFT.json`이 기준입니다. train 시도는 8340000부터 순서대로 소비하고, 부족하면 `seeds.json`의 `train_extension` 8340200–8340599로 넘어갑니다(시도 상한 600, 목표 성공 200·최소 150, 구간 6개 × 성공 ≥20). validation 20은 1회씩, heldout은 수집하지 않습니다.
 - 겹침 검사(수집 전 필수, 결과 JSON을 run root에 저장):
   ```
   python scripts/check_pairact_r1_seeds.py --scan-refs origin/main origin/codex/beamact1 \
@@ -48,7 +48,7 @@
 3. P2 evaluator(`harness/pair_carry_eval.py`, DESIGN §5) 성공: `placed_in_zone_B AND drop_events == 0 AND robot_robot_contacts == 0`. 벽 접촉은 기록만 합니다.
 4. 두 로봇 stream이 모두 sidecar 생성을 통과(phase 누락·미등록 phase 0)
 
-실패 에피소드는 `rejection_table.json`에 seed·실패 단계·사유를 남기고 학습에는 쓰지 않습니다. teacher 성공률(n/200, n/20)은 결과로 보고합니다.
+실패 에피소드는 수집 원장(`ledger.jsonl`, `scripts/run_pairact_collect.py`)과 `rejection_table.json`에 seed·실패 단계·사유를 남기고 학습에는 쓰지 않습니다. 원본은 지우지 않습니다. 판정·필터의 정본은 `COLLECT_PREREG_DRAFT.json`의 `success`·`filter`입니다. teacher 성공률(n/200, n/20)은 결과로 보고합니다.
 
 ## 6. 산출물 배치 (원본 덮어쓰기 금지, 새 run root)
 ```
