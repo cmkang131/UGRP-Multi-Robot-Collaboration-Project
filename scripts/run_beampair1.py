@@ -95,6 +95,11 @@ def record_partial_candidates(record, teacher, world, rows, now):
 
 
 def profiles(candidate):
+    # pairact P2: the unchanged r13 grasp profile; after the r13 joint hold the
+    # runner hands over to the default-off GT pair-carry demonstration teacher
+    # (wide door -> zone B -> set down). Not pooled with any gate result.
+    if candidate=='pairact_p2_r13':
+        return {**profiles('beamact5_r13'),'pair_carry':'pair_carry_gt_v1','carry_cap_s':110.}
     values=dict(teacher_profile='visible_only',self_pose_source='issued',
         teacher_stability='align_relook_v1',teacher_search='search_body_scan_v2',
         approach_goal_set='approach_goal_set_v1',nominal_blocked_handoff='nominal_blocked_handoff_v1',
