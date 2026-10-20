@@ -3,25 +3,54 @@
   "status": "DRAFT_NOT_REGISTERED",
   "stage": "P5 same-seed closed-loop evaluation",
   "commit_before_run": "this file + selected checkpoint SHA256 + OFFLINE_GATE selection.json must be committed before any P5 rollout",
-  "seeds": {"split": "heldout", "first": 8342000, "last": 8342019, "n": 20,
-            "rule": "never collected as demonstrations, never used for checkpoint selection"},
+  "seeds": {
+    "split": "heldout",
+    "first": 8342000,
+    "last": 8342019,
+    "n": 20,
+    "rule": "never collected as demonstrations, never used for checkpoint selection"
+  },
   "arms": [
-    {"id": "student", "policy": "pairact-r1 checkpoint chosen by harness.pairact_r1.select_checkpoint on validation",
-     "inputs": "own RGB 4 lags, own 16 issued commands, task tokens, own v7 clocks (deadband 2)",
-     "runtime": "PairActBarrier(place_sync off) + PairActChunkExecutor(done_recovery beamact4_done_recovery_v1)",
-     "forbidden": "teacher, GT pose, partner pose, stage or geometry inputs; any GT/teacher correction of student commands"},
-    {"id": "teacher", "policy": "P2 MJWarp GT pair-carry teacher (same source SHA as P3 collection)",
-     "note": "GT allowed; reported side by side as the reference, not as a learned result"}
+    {
+      "id": "student",
+      "policy": "pairact-r1 checkpoint chosen by harness.pairact_r1.select_checkpoint on validation",
+      "inputs": "own RGB 4 lags, own 16 issued commands, task tokens, own v7 clocks (deadband 2)",
+      "runtime": "PairActBarrier(place_sync off) + PairActChunkExecutor(done_recovery beamact4_done_recovery_v1)",
+      "forbidden": "teacher, GT pose, partner pose, stage or geometry inputs; any GT/teacher correction of student commands"
+    },
+    {
+      "id": "teacher",
+      "policy": "P2 MJWarp GT pair-carry teacher (same source SHA as P3 collection)",
+      "note": "GT allowed; reported side by side as the reference, not as a learned result"
+    }
   ],
   "start_distribution": "same generator as P3: each robot 0.3-1.2 m from its assigned beam end",
-  "episode_cap_sim_s": "[확인 필요] P2 teacher total phase caps + 60 s grasp cap; fix before registration",
+  "episode_cap_sim_s": {
+    "value": "[미정: 아래 규칙으로 P2 teacher smoke 결과에서 계산해 P5 실행 전 커밋]",
+    "rule": "cap = 60 (grasp cap, P1 gate와 같음) + carry_budget. carry_budget = ceil10(1.5 x max_k carry_s[k]) + 3.0 (release_instruction_after_s) + 1.5 (finish_after_s), 상한 120 s(runner carry cap 최대). carry_s[k] = P2 teacher smoke world k의 result.json carry.events에서 handover 시각부터 'done' 단계 진입 시각까지의 SIM s(교사 command_sequence_complete인 world만). ceil10은 10 s 단위 올림.",
+    "inputs": "P2 smoke (dsh/pairact-p2-carrypath-r SMOKE.md, world 1·11·17) summary.json + world-00k/raw/result.json(.zst)",
+    "if_no_complete_carry": "smoke에서 command_sequence_complete world가 0이면 cap을 정하지 않고 P5를 시작하지 않는다(보고 후 결정)",
+    "if_timeout": "어느 smoke world라도 carry_total_timeout이면 carry_budget = 120으로 두고 그 사실을 기록한다",
+    "why_max_and_1_5": "n=3이라 분포 꼬리를 추정할 수 없으므로 최댓값에 1.5배 여유를 둔다. 학생은 교사보다 느릴 수 있고(재시도·정지), cap이 짧으면 cap_end가 성공을 가린다",
+    "same_for_both_arms": "학생과 teacher arm 모두 같은 cap을 쓴다",
+    "status": "rule_only"
+  },
   "success": {
     "definition": "placed_in_zone_B AND drop_events == 0 AND robot_robot_contacts == 0 (harness/pair_carry_eval.py, GT evaluator only)",
     "student_extra": "student_gt_corrections == 0 and teacher_commands_issued_to_student == 0",
     "wall_contacts": "recorded, not a failure term"
   },
   "funnel": {
-    "order": ["approach", "alignment", "READY", "grasp", "hold_3s", "carry_1m", "door", "place"],
+    "order": [
+      "approach",
+      "alignment",
+      "READY",
+      "grasp",
+      "hold_3s",
+      "carry_1m",
+      "door",
+      "place"
+    ],
     "definitions": {
       "approach": "both robots within the registered grasp-approach radius of their assigned ends (beamact4 funnel)",
       "alignment": "both robots pass the nominal alignment check (beamact4 funnel)",
@@ -36,8 +65,13 @@
   },
   "report": {
     "primary": "student n/20 and teacher n/20 on the same 20 heldout seeds",
-    "secondary": ["funnel per arm", "termination reasons (cap_end, drop, contact, HOST_ERROR)",
-                  "first-failure stage per seed", "one-side done stuck count", "GO before alignment count"],
+    "secondary": [
+      "funnel per arm",
+      "termination reasons (cap_end, drop, contact, HOST_ERROR)",
+      "first-failure stage per seed",
+      "one-side done stuck count",
+      "GO before alignment count"
+    ],
     "independent_recount": "Codex recounts from eval-only rows"
   },
   "exclusions": {
@@ -47,5 +81,13 @@
   },
   "runs_per_arm": 1,
   "minimum_success_claim": ">= 1/20 student success meets the r1 minimum; 0/20 is reported with the funnel as the result",
-  "compute_estimate_gpu_h": "2-3 (pair-act-carry-plan.md P5) [확인 필요]"
+  "compute_estimate_gpu_h": "2-3 (pair-act-carry-plan.md P5) [확인 필요]",
+  "student_runtime_wiring": {
+    "root": "dsh/pairact-p2-carrypath-r run_warp_flow_teacher.py --student-eval pairact_r1_student_eval_v1 (default off)",
+    "worker": "dsh/pairact-p5-student scripts/pairact_r1_student_worker.py (isolated actor process, own camera + own issued command in, commands out)",
+    "release_instruction": "both robots' own grasp done flags continuously true for 3.0 SIM s -> skill release, destination B (no GT/teacher)",
+    "finish": "both robots' own release done flags continuously true for 1.5 SIM s, or the cap",
+    "setdown_boundary_for_drop": "evaluator counts carry_low only before the first row whose GT beam footprint is inside zone B (student has no teacher lower-start time); tilt/fall drops apply to the whole episode",
+    "teacher_and_gt_corrections": 0
+  }
 }
