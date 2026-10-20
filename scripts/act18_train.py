@@ -17,6 +17,7 @@ from act18_policy import (CANDIDATES, TUNE_CANDIDATE, PILOT_CANDIDATES, PILOT_KI
                           WeightedReferenceDataset, done_positive_indices, extend_targets,
                           make_policy, save_actor, Actor)
 from act18_diagnose import write
+import act18_carry_r1 as carry_r1
 
 B = Path('/home/ugrp/ugrp-sim')
 ROOT = Path(__file__).resolve().parents[1]
@@ -34,7 +35,7 @@ def validate_probe_options(candidate, init_checkpoint, steps, post_close_weight,
     if candidate in PILOT_CANDIDATES:
         if steps is None:
             raise ValueError(candidate+' requires --steps')
-        if candidate in (TUNE_CANDIDATE, 'act18-doneb1') and init_checkpoint is None:
+        if candidate in (TUNE_CANDIDATE, 'act18-doneb1', carry_r1.CANDIDATE) and init_checkpoint is None:
             raise ValueError(candidate+' requires --init-checkpoint')
     elif candidate == 'act18-co':
         if any(pilot_only):
@@ -135,6 +136,12 @@ def main():
     p.add_argument('--transition-weight', type=float)
     p.add_argument('--resume-from', type=Path)
     p.add_argument('--resume-extra-steps', type=int)
+    # A-r1 DRAFT (carry plan D, H-A1), default OFF; only with --candidate act18-carry-r1
+    # and --init-checkpoint <R8 step-100000>. Registered values: CARRY_RETRAIN_R1_CONFIG_DRAFT.json.
+    p.add_argument('--history-dither-pwm', type=int)
+    p.add_argument('--history-dither-prob', type=float)
+    p.add_argument('--history-dropout-prob', type=float)
+    p.add_argument('--release-weight', type=float)
     for name in ('dataset','protocol','out','queue'):
         p.add_argument('--'+name, type=Path, required=True)
     a = p.parse_args()
@@ -182,11 +189,25 @@ def main():
             raise ValueError('--lr override requires a pilot candidate')
         if not 1e-7 <= a.lr <= 1e-4:
             raise ValueError('--lr override must be within [1e-7, 1e-4]')
+    carry_options = dict(dither_max_pwm=a.history_dither_pwm, dither_prob=a.history_dither_prob,
+                         dropout_prob=a.history_dropout_prob, release_weight=a.release_weight)
+    carry = carry_r1.validate_options(**carry_options)
+    if carry and a.candidate != carry_r1.CANDIDATE:
+        raise ValueError('carry-r1 options require --candidate '+carry_r1.CANDIDATE)
+    if a.candidate == carry_r1.CANDIDATE:
+        if not carry or cotrain or resume or a.post_close_weight is not None or a.pre_close_weight is not None \
+                or a.done_positive_batch_fraction is not None or a.base_smooth_window is not None \
+                or a.done_current_step_only or a.transition_weight is not None:
+            raise ValueError('act18-carry-r1 takes only the carry-r1 options on top of an R8 init')
     done_positive_fraction = a.done_positive_batch_fraction
     weighted = a.post_close_weight is not None or a.pre_close_weight is not None
     sampling = (('cotrain_transition_v1' if a.transition_weight is not None else 'cotrain_v1')
                 if cotrain else ('weighted_post_close_v1' if weighted else 'uniform_episode_v1'))
-    if cotrain:
+    if a.candidate == carry_r1.CANDIDATE:
+        sampling = carry_r1.SAMPLING
+        data = carry_r1.carry_dataset_class()(a.dataset, 'train', chunk=CANDIDATES[a.candidate],
+                                              seed=protocol['seed'], **carry_options)
+    elif cotrain:
         from act18_cotrain_data import CoTrainingDataset
         data = CoTrainingDataset(a.dataset, a.cotrain_native, chunk=CANDIDATES[a.candidate],
                                  base_smooth_window=a.co_smooth_window, native_weight=a.cotrain_weight,
@@ -279,6 +300,9 @@ def main():
             raise ValueError('condition token mismatch')
     elif any(not __import__('numpy').array_equal(v,first_batch[k]) for k,v in own.items()):
         raise ValueError('real training/deployment transforms differ')
+    if a.candidate == carry_r1.CANDIDATE:
+        # The identity check above saw the unaugmented row; augmentation starts now.
+        data.augment=True
     a.out.mkdir(parents=True,exist_ok=False)
     config=dict(source_sha=source,cohort='act18-v7-reference',candidate=a.candidate,
         host=host,contact_profile='warp_native_contact_v1',chunk=data.chunk,seed=protocol['seed'],
@@ -305,7 +329,9 @@ def main():
             condition_token=dict(default=[1.0,0.0],order=['v7','act16w'],dim=2),
             note='v7 TRAIN200 + act16w TRAIN32; condition token appended to state; done head trained separately'))
     if a.candidate in PILOT_CANDIDATES:
-        if a.done_current_step_only:
+        if a.candidate == carry_r1.CANDIDATE:
+            probe_kind=carry_r1.KIND
+        elif a.done_current_step_only:
             probe_kind='done_horizon_current_only_v1'
         elif a.init_checkpoint is not None:
             probe_kind=('transition_weighted_finetune_v1' if a.transition_weight is not None
@@ -327,6 +353,9 @@ def main():
             base_smooth_window=a.base_smooth_window,
             val_select=a.val_select,
             done_current_step_only=a.done_current_step_only,lr_override=a.lr,
+            carry_r1=(dict(carry_options,history_scope='own issued PWM history only; targets unchanged',
+                           draft='experiments/2026-10-17-act18/CARRY_RETRAIN_R1_DRAFT.md')
+                      if a.candidate == carry_r1.CANDIDATE else None),
             note='short default-off pilot probe; never packaged or pooled with R8/R100')
         config.update(probe=probe)
     report=dict(**config,status='running',complete=False,steps_completed=0,

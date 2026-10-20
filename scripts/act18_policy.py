@@ -21,15 +21,18 @@ from act17_policy import observation_batch
 # align..close demonstration segments. It is never a packaged comparison model
 # (adapter training_complete stays False because its step != protocol steps).
 CANDIDATES = {'R8': 8, 'R100': 100, 'act18-tune': 8, 'act18-doneb1': 100,
-              'act18-std': 20, 'act18-b3': 20, 'act18-co': 20, 'act18-loop': 20}
+              'act18-std': 20, 'act18-b3': 20, 'act18-co': 20, 'act18-loop': 20,
+              # A-r1 DRAFT (carry plan D): history-robust R8 fine-tune, default off.
+              'act18-carry-r1': 8}
 TUNE_CANDIDATE = 'act18-tune'
 # Registered short pilot checkpoints (never 100k reference models, never packaged):
 # 'act18-tune' = post-close weighted 2k probe on R8; 'act18-doneb1' = done-only
 # 5k probe on R100 (pre-registered 2026-10-18 for Lead-approved B1).
-PILOT_CANDIDATES = ('act18-tune', 'act18-doneb1', 'act18-std', 'act18-b3', 'act18-loop')
+PILOT_CANDIDATES = ('act18-tune', 'act18-doneb1', 'act18-std', 'act18-b3', 'act18-loop',
+                    'act18-carry-r1')
 PILOT_KINDS = ('init_aligned_finetune_v1', 'done_positive_balanced_finetune_v1',
                'standard_aligned_scratch_v1', 'done_horizon_current_only_v1',
-               'transition_weighted_finetune_v1')
+               'transition_weighted_finetune_v1', 'carry_history_robust_finetune_v1')
 # Segment table frozen before the probe run (Lead 2026-10-18 instruction):
 # the post-close phases are where the student halts, pre-close phases are the
 # immediately preceding approach/alignment tail. Phase labels are the recorded
@@ -173,7 +176,8 @@ def registered_pilot_checkpoint(provenance, protocol_sha256):
     candidate = provenance.get('candidate')
     kind = probe.get('kind')
     init_kinds = ('init_aligned_finetune_v1', 'done_positive_balanced_finetune_v1',
-                  'done_horizon_current_only_v1', 'transition_weighted_finetune_v1')
+                  'done_horizon_current_only_v1', 'transition_weighted_finetune_v1',
+                  'carry_history_robust_finetune_v1')
     if kind in init_kinds and not isinstance(receipt, dict):
         # B2 was trained from scratch with the done fix and predates the
         # standard-scratch kind label; its standard flags still register it.
