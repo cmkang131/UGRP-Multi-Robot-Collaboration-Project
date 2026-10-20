@@ -21,6 +21,11 @@ def propagate_owned(point,issued,dt,*,mode="off"):
     return [co*x+si*y,-si*x+co*y,z]
 
 
+def _log_ring_summary(teacher):
+    from sim.grasp_act_log_ring import summary
+    return summary(teacher)
+
+
 class VisibleOnlyGraspTeacher(GraspTeacher):
     def __init__(self,*args,**kwargs):
         self.teacher_stability=kwargs.pop('teacher_stability','off')
@@ -86,6 +91,8 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         self.still_peer={}
         self.nominal_handoff_log=[]
         self.approach_choice=(0.,STATION_M);self.goal_set_log=[]
+        from sim.grasp_act_log_ring import install as install_log_ring
+        install_log_ring(self)
         self.approach_blocked_since=None;self.approach_plan_valid=False
         self.frozen_plan=None   # opt-in committed plan + frozen feasible constraints
         self.sc=None;self.search_log=[];self.ever_seen=False
@@ -1181,6 +1188,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                 'search17_log':self.search17_log,'search18_log':self.search18_log,'search19_log':self.search19_log,'search23_log':self.search23_log,'search22_log':self.search22_log,'search21_log':self.search21_log,'search20_log':self.search20_log,'search20_compute':self.search20_compute,'free_space_log':self.search18_space.events,'reobserve_log':self.reobserver.events,'sampled_stance':self.sampled_stance,
                 'candidate_angle_counts':dict(Counter(str(round(c['offset_deg'],3)) for c in candidates)),
                 'candidate_rejection_counts':dict(Counter(c['reason'] for c in candidates)),
+                **({'log_ring':_log_ring_summary(self)} if self.search15_modes.get('search26_log_ring','off')!='off' else {}),
                 'reobserve_pending':None if self.reobserver.active is None else {
                     'kind':self.reobserver.active['kind'],'start':self.reobserver.active['start'],
                     'termination':self.outcome or 'still_active'},

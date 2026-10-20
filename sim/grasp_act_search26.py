@@ -71,6 +71,9 @@ new candidate selects them.
   at align and stalled (alignment_no_progress) while wheel commands were all
   zero; the teacher needs to report whether it is waiting on a stale-memory
   pick-cloud collision or on missing visible error.
+- ``search26_log_ring``: logging-only ring buffer for ``goal_set_log`` and
+  ``search22_log`` (world 15 log blow-up, README-r3 sec. 3.1). See
+  ``sim/grasp_act_log_ring.py``. Default off; control reads only the newest row.
 - ``search26_align_pulse``: alignment breakaway pulse.  In the align phase
   every issued wheel pulse is widened to the full 0.1 s control period (the
   existing period only; the 0.35 board speed and duty ratios are unchanged).
@@ -102,6 +105,7 @@ new stance candidate uses only the existing calibrated envelope, the existing
 jaw predicate, and the existing margins.
 """
 MODES = {'search26_circles': 'search26_downfirst_circles_v1',
+         'search26_log_ring': 'search26_log_ring_v1',
          'search26_align_pulse': 'search26_align_pulse_v1',
          'search26_align_diag': 'search26_align_diag_v1',
          'search26_wide_rescue': 'search26_wide_rescue_v1',

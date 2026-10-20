@@ -1,0 +1,38 @@
+{
+ "schema": "ugrp.pairact.p0.static_stance_prereg.v1",
+ "status": "DRAFT",
+ "author": "Claude worker (pairact P0), 2026-10-20",
+ "decision_owner": "Claude 오너, 실행 전 커밋으로 확정. 결과를 본 뒤 규칙 변경이나 world 제외 금지",
+ "purpose": "MJWarp teacher 관문 전에, 고정 인증 파지 자세(91개)가 setup 기하만으로 실행 불가능한 world를 미리 분모에서 뺍니다. 근거: beamact5 r2 validation-r2-6.json의 world 37(최적 cyan_1 틈 4.87 mm < 런타임 바닥 여유 11.07 mm, admission은 5 mm 기준으로 12자세 승인)과 beampair9 static census(8328068/8328183, 91자세 모두 상자와 겹침)",
+ "script": "experiments/2026-10-21-pairact-p0/static_stance_check.py (branch dsh/pairact-p0-diag)",
+ "inputs": {
+  "cases": "/home/ugrp/ugrp-sim/runs/beamact5/wide-start-8420000d-r4/wide-cases-r13.json (P1 tournament과 같은 파일, sha256은 실행 시 기록)",
+  "scenario": "<adapter d354468a tree>/experiments/2026-10-15-beampair1/scenario-v7.json",
+  "teacher_root": "<teacher fe6858ec tree>",
+  "family": "sim.grasp_act_search24.reachability_map(long_beam grip z), 91 poses (+/-15 deg x 13 distances)",
+  "geometry": "real 185x160 mm chassis body_clearance vs authored static obstacles + cargo rectangles (wide_start.build_admission와 같음)"
+ },
+ "thresholds_m": {
+  "overlap": "gap > 0 (beampair9 겹침 기준)",
+  "admission": "gap >= 0.005 (FRESH_MARGIN_M, 현행 placement_graspable_filter_v1과 같은 기준이라 현재 40 world 모두 통과)",
+  "floor": "gap >= 0.005 + K*0.002 = 0.01107 (K=sqrt(-2 ln 0.01), 런타임 관측 바닥 여유)"
+ },
+ "binding_rule_options": {
+  "A_overlap": "어느 한 끝이라도 overlap-free 자세가 0이면 제외. beampair9 방식과 같습니다. setup 기하상 world 37은 admission을 통과했으므로(12자세 >= 5 mm) 이 규칙으로는 제외되지 않을 것으로 예상합니다 [확인 필요: 실행 전]",
+  "B_floor": "어느 한 끝이라도 floor 여유(11.07 mm) 이상 자세가 0이면 제외. world 37의 런타임 근거(4.87 mm)에 대응하는 margin-aware 규칙입니다. 다만 setup 기하와 런타임 관측이 달라 37이 실제로 걸리는지는 [확인 필요]",
+  "recommendation": "B_floor. 단 이 규칙은 margin-aware-readmission-proposal.md의 (A)와 성격이 같아 시작 집합 해석이 바뀝니다. 창민/오너 승인 사항으로 표시합니다"
+ },
+ "binding_rule": "UNSET (오너가 A_overlap 또는 B_floor 중 하나를 실행 전 커밋으로 확정)",
+ "procedure": [
+  "1. 규칙 확정 커밋(SHA 기록) 후 static_stance_check.py를 gcp6 CPU에서 40 case 전체에 1회 실행",
+  "2. 출력 JSON의 flagged[<rule>] 목록 = 사전 제외 world. 출력 sha256을 P1 prereg에 기록",
+  "3. 제외된 world는 분모에서 빼고 nominal 분모와 실효 분모를 둘 다 보고(예: 38/39). 제외 world를 MJWarp에서 돌리지 않음",
+  "4. world 15는 이 규칙과 무관하게 r3 deviation(로그 폭주)으로 별도 처리. log ring 패치(search26_log_ring_v1)로 재포함할지는 P1 prereg에서 별도 결정"
+ ],
+ "forbidden": [
+  "결과를 본 뒤 규칙/임계 변경",
+  "MJWarp 실패를 본 뒤 world 추가 제외",
+  "제외 world를 성공으로 계산"
+ ],
+ "not_claimed": ["world 37이 실제로 제외된다는 주장 없음(실행 전)", "91자세 밖의 조작 불가능 증명 아님"]
+}
