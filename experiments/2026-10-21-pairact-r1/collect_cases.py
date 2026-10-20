@@ -14,12 +14,14 @@ cargo, line-of-sight, parking and placement-graspable admission checks are the s
 code.  Nothing here runs physics, renders or reads evaluation truth.
 
     python experiments/2026-10-21-pairact-r1/collect_cases.py --prereg P --slots slots.json \
-        --out cases.json --dependency-root TEACHER --frozen-root ROOT [--candidate pairact_p2_r13]
+        --out cases.json --dependency-root TEACHER --frozen-root ROOT --adapter-root ADAPTER \
+        [--candidate pairact_p2_r13]
 """
 from __future__ import annotations
 
 import argparse
 from collections import Counter
+from contextlib import contextmanager
 import hashlib
 import json
 import math
@@ -39,8 +41,28 @@ CANDIDATE = 'pairact_p2_r13'
 PROPOSALS = 5000
 
 
+@contextmanager
+def adapter_packages(adapter_root):
+    """Import harness/sim/scripts from the pinned adapter checkout (its run_beampair1 pins the
+    teacher dependency used by the runtime --placement-graspable-filter-v1), then restore ours."""
+    names = ('harness', 'sim', 'scripts')
+    owned = lambda n: n.split('.')[0] in names
+    saved = {n: m for n, m in sys.modules.items() if owned(n)}
+    path = sys.path[:]
+    for n in saved:
+        del sys.modules[n]
+    sys.path.insert(0, str(Path(adapter_root).resolve()))
+    try:
+        yield
+    finally:
+        for n in [n for n in sys.modules if owned(n)]:
+            del sys.modules[n]
+        sys.modules.update(saved)
+        sys.path[:] = path
+
+
 class Geometry:
-    def __init__(self, dependency=None, frozen_root=None, *, setup_validity=True):
+    def __init__(self, dependency=None, frozen_root=None, *, setup_validity=True, adapter_root=None):
         import wide_start as ws
         from harness.static_keepouts import keepout_rects
         from harness.zone_final_environment import resolve
@@ -62,7 +84,12 @@ class Geometry:
                        for p in cargo]
         self.validity = self.validity_meta = None
         if setup_validity:
-            self.validity, self.validity_meta = ws.build_admission(dependency, frozen_root, self.scenario, self.static)
+            if adapter_root is None:
+                raise ValueError('adapter root required: the admission family must match the runtime adapter pin')
+            with adapter_packages(adapter_root):
+                self.validity, self.validity_meta = ws.build_admission(dependency, frozen_root, self.scenario,
+                                                                       self.static)
+                self.validity_meta = dict(self.validity_meta, adapter_root=str(adapter_root))
 
     def robot_gap(self, point):
         from harness.static_keepouts import rect_distance
@@ -158,13 +185,15 @@ def main():
     p.add_argument('--out', type=Path, required=True)
     p.add_argument('--dependency-root', type=Path)
     p.add_argument('--frozen-root', type=Path)
+    p.add_argument('--adapter-root', type=Path)
     p.add_argument('--no-setup-validity', action='store_true', help='CPU preview only; never for collection')
     p.add_argument('--candidate', default=CANDIDATE)
     a = p.parse_args()
     if a.out.exists():
         raise SystemExit('refusing to overwrite existing cases file')
     prereg = json.loads(a.prereg.read_text())
-    geo = Geometry(a.dependency_root, a.frozen_root, setup_validity=not a.no_setup_validity)
+    geo = Geometry(a.dependency_root, a.frozen_root, setup_validity=not a.no_setup_validity,
+                   adapter_root=a.adapter_root)
     cases = make_cases(geo, prereg, json.loads(a.slots.read_text()), candidate=a.candidate)
     a.out.write_text(json.dumps(cases, indent=1) + '\n')
     print(json.dumps({'out': str(a.out), 'sha256': hashlib.sha256(a.out.read_bytes()).hexdigest(), 'n': len(cases)}))

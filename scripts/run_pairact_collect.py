@@ -177,6 +177,7 @@ def main():
     p.add_argument('--episode-cmd', help='shell template with {cases} {indices} {out}')
     p.add_argument('--dependency-root', type=Path)
     p.add_argument('--frozen-root', type=Path)
+    p.add_argument('--adapter-root', type=Path, help='pinned adapter checkout (runtime placement filter family)')
     p.add_argument('--candidate', default='pairact_p2_r13')
     p.add_argument('--teacher-sha')
     p.add_argument('--out', type=Path)
@@ -200,7 +201,7 @@ def main():
         p.error('--episode-cmd with {cases} {indices} {out} required')
     sys.path.insert(0, str(ROOT / 'experiments/2026-10-21-pairact-r1'))
     import collect_cases
-    geo = collect_cases.Geometry(a.dependency_root, a.frozen_root, setup_validity=True)
+    geo = collect_cases.Geometry(a.dependency_root, a.frozen_root, setup_validity=True, adapter_root=a.adapter_root)
     deadline = dt.datetime.fromisoformat(a.deadline_utc.replace('Z', '+00:00')) if a.deadline_utc else None
     stop = run(a.run_root, prereg, sha, mode=a.mode, noise=a.noise, batch_size=a.batch_size,
                max_batches=a.max_batches, deadline=deadline,

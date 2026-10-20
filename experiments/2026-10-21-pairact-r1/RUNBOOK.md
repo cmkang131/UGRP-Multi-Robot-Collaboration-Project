@@ -50,7 +50,7 @@ EP="python /home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py 
  --rejection-table /home/ugrp/ugrp-sim/runs/beamact5/gate-40-r13/rejection_table.json --batch-per-world-speed-v1"
 python $COL/scripts/run_pairact_collect.py collect --prereg $COL/experiments/2026-10-21-pairact-r1/COLLECT_PREREG_DRAFT.json \
   --run-root $RUNP3 --mode measurement --noise off --batch-size 20 --max-batches 4 \
-  --deadline-utc <오늘 날짜>T00:00Z --dependency-root $SRC/teacher --frozen-root $SRC/root \
+  --deadline-utc <오늘 날짜>T00:00Z --dependency-root $SRC/teacher --frozen-root $SRC/root --adapter-root $SRC/adapter \
   --candidate pairact_p2_r13 --episode-cmd "$EP"
 ```
 - 첫 배치는 validation 20 seed(8341000–019, 구간 index%6, 목표·상한 미포함)입니다. 그다음부터 train seed 8340000부터 순서대로, 구간 B0–B5 round-robin(구간마다 시도 4회 전까지) → 결손 가중 할당입니다.
