@@ -1,0 +1,279 @@
+{
+ "schema": "ugrp.e2e_min.carry_pose.v1",
+ "servo_map": "1 gripper, 3 wrist, 4 elbow, 5 shoulder, 6 yaw",
+ "candidates": [
+  "act_lift_end",
+  "teacher_hold_max_pitch",
+  "carry_look_v1"
+ ],
+ "reference": "search_grip_ref",
+ "poses": {
+  "act_lift_end": {
+   "1": 1499,
+   "3": 738,
+   "4": 1828,
+   "5": 2216,
+   "6": 1493
+  },
+  "teacher_hold_max_pitch": {
+   "1": 1500,
+   "3": 837,
+   "4": 1930,
+   "5": 2173,
+   "6": 1510
+  },
+  "carry_look_v1": {
+   "1": 1499,
+   "3": 550,
+   "4": 1828,
+   "5": 1620,
+   "6": 1493
+  },
+  "search_grip_ref": {
+   "1": 1499,
+   "3": 740,
+   "4": 2320,
+   "5": 1320,
+   "6": 1500
+  }
+ },
+ "camera": {
+  "act_lift_end": {
+   "origin_m": [
+    0.2046,
+    -0.0017,
+    0.1184
+   ],
+   "pitch_down_deg": 57.16,
+   "tool_pitch_deg": -64.62
+  },
+  "teacher_hold_max_pitch": {
+   "origin_m": [
+    0.206,
+    0.0025,
+    0.119
+   ],
+   "pitch_down_deg": 53.56,
+   "tool_pitch_deg": -61.02
+  },
+  "carry_look_v1": {
+   "origin_m": [
+    0.1456,
+    -0.0011,
+    0.2283
+   ],
+   "pitch_down_deg": 20.44,
+   "tool_pitch_deg": -27.9
+  },
+  "search_grip_ref": {
+   "origin_m": [
+    0.1308,
+    0.0,
+    0.2114
+   ],
+   "pitch_down_deg": 20.62,
+   "tool_pitch_deg": -28.08
+  }
+ },
+ "search": {
+  "pwm": {
+   "1": 2000,
+   "3": 740,
+   "4": 2320,
+   "5": 1320,
+   "6": 1500
+  },
+  "camera": {
+   "origin_m": [
+    0.1308,
+    0.0,
+    0.2114
+   ],
+   "pitch_down_deg": 20.62,
+   "tool_pitch_deg": -28.08
+  }
+ },
+ "provenance": {
+  "act_lift_end": {
+   "source": "C2c-HO4 actor-actions.jsonl at summary issued_done_times.grasp",
+   "run_root": "/home/ubuntu/UGRP/outputs/runs/act18-c2c-v7clock-20261019T2315Z",
+   "worlds": 11,
+   "per_servo_median": {
+    "1": 1501,
+    "3": 726,
+    "4": 1828,
+    "5": 2212,
+    "6": 1498
+   },
+   "rows": [
+    {
+     "run": "C2c-ho4-rep1/R8-diag/group-000/evaluation",
+     "seed": 88668,
+     "t": 31.7,
+     "pwm": {
+      "1": 1501,
+      "3": 729,
+      "4": 1826,
+      "5": 2211,
+      "6": 1526
+     }
+    },
+    {
+     "run": "C2c-ho4-rep1/R8-diag/group-001/evaluation",
+     "seed": 88669,
+     "t": 29.7,
+     "pwm": {
+      "1": 1497,
+      "3": 749,
+      "4": 1842,
+      "5": 2211,
+      "6": 1495
+     }
+    },
+    {
+     "run": "C2c-ho4-rep1/R8-diag/group-002/evaluation",
+     "seed": 88670,
+     "t": 29.7,
+     "pwm": {
+      "1": 1501,
+      "3": 696,
+      "4": 1798,
+      "5": 2226,
+      "6": 1498
+     }
+    },
+    {
+     "run": "C2c-ho4-rep1/R8-diag/group-002/evaluation",
+     "seed": 88671,
+     "t": 27.4,
+     "pwm": {
+      "1": 1506,
+      "3": 677,
+      "4": 1757,
+      "5": 2244,
+      "6": 1499
+     }
+    },
+    {
+     "run": "C2c-ho4-rep2/R8-diag/group-000/evaluation",
+     "seed": 88668,
+     "t": 31.9,
+     "pwm": {
+      "1": 1505,
+      "3": 723,
+      "4": 1837,
+      "5": 2201,
+      "6": 1553
+     }
+    },
+    {
+     "run": "C2c-ho4-rep2/R8-diag/group-001/evaluation",
+     "seed": 88669,
+     "t": 29.6,
+     "pwm": {
+      "1": 1497,
+      "3": 747,
+      "4": 1841,
+      "5": 2212,
+      "6": 1501
+     }
+    },
+    {
+     "run": "C2c-ho4-rep2/R8-diag/group-002/evaluation",
+     "seed": 88671,
+     "t": 27.5,
+     "pwm": {
+      "1": 1499,
+      "3": 722,
+      "4": 1815,
+      "5": 2220,
+      "6": 1491
+     }
+    },
+    {
+     "run": "C2c-ho4-rep3/R8-diag/group-000/evaluation",
+     "seed": 88668,
+     "t": 31.8,
+     "pwm": {
+      "1": 1503,
+      "3": 726,
+      "4": 1820,
+      "5": 2210,
+      "6": 1516
+     }
+    },
+    {
+     "run": "C2c-ho4-rep3/R8-diag/group-001/evaluation",
+     "seed": 88669,
+     "t": 29.5,
+     "pwm": {
+      "1": 1503,
+      "3": 722,
+      "4": 1887,
+      "5": 2175,
+      "6": 1492
+     }
+    },
+    {
+     "run": "C2c-ho4-rep3/R8-diag/group-002/evaluation",
+     "seed": 88670,
+     "t": 29.7,
+     "pwm": {
+      "1": 1499,
+      "3": 739,
+      "4": 1830,
+      "5": 2214,
+      "6": 1490
+     }
+    },
+    {
+     "run": "C2c-ho4-rep3/R8-diag/group-002/evaluation",
+     "seed": 88671,
+     "t": 27.4,
+     "pwm": {
+      "1": 1499,
+      "3": 738,
+      "4": 1828,
+      "5": 2216,
+      "6": 1493
+     }
+    }
+   ]
+  },
+  "teacher_hold_max_pitch": {
+   "source": "/home/ubuntu/UGRP/outputs/runs/act18-clockaudit-20261019T151956Z/dataset-columns.jsonl",
+   "dataset_sha256": "d6f330d7ee8e3e30be2fb58a67b8f9744b6e90c85bbfc8061da85e5e9f548a99",
+   "hold_phases": [
+    "hold",
+    "lift_settle",
+    "lookback",
+    "lookback_pose",
+    "lookback_settle",
+    "verify_lift"
+   ],
+   "rows": 110,
+   "phases": [
+    "hold",
+    "lift_settle",
+    "lookback",
+    "lookback_pose",
+    "lookback_settle",
+    "verify_lift"
+   ],
+   "distinct_hold_vectors": 198
+  },
+  "carry_look_v1": {
+   "rule": "gripper/elbow/yaw of act_lift_end; shoulder+wrist grid search toward the SEARCH camera pose",
+   "pwm_range": [
+    550,
+    2450
+   ],
+   "tool_pitch_deg": [
+    -90.0,
+    0.0
+   ],
+   "step": 10
+  },
+  "search_grip_ref": "SEARCH arm + act_lift_end gripper (gripper_hold_arm_search_v1)"
+ }
+}

@@ -40,12 +40,18 @@ def source_module():
     return backend, core, schedule
 
 
-def build_context(seed, out, stack, *, nav_scene=False, nav_spawns=None, nav_keep=('r1', 'r2')):
+def build_context(seed, out, stack, *, nav_scene=False, nav_spawns=None, nav_keep=('r1', 'r2'),
+                  nav_cubes=None, nav_arm_pwm=None):
     """Privileged initial construction only. No CPU integration/settling.
 
     ``nav_scene`` builds the contract-v1 two-robot navigation gate: cargo is not
     spawned, r3 is pruned from the XML and only the two wide-door lane spawns are
     initialised. Setup-only values never reach a controller.
+
+    E2E-min (default off, harness/e2e_min_world.py): ``nav_cubes`` keeps the
+    named colour boxes at setup-only xy (beam still removed) and records their
+    eval-only qpos rows; ``nav_arm_pwm`` replaces SEARCH as the initial servo
+    pose of a robot (render tests only).  Both None = unchanged nav gate world.
     """
     from harness.e2ewarp_nav_gate import NAV_SCENARIO, eval_geometry, pair_lane_spawns
     import mujoco
@@ -77,7 +83,14 @@ def build_context(seed, out, stack, *, nav_scene=False, nav_spawns=None, nav_kee
     if nav_scene:
         # Navigation gate: no cargo bodies and no cargo setup rows (gate 2 loads).
         scene.cargo = []
-        scene.config['setup_only']['objects'] = {}
+        if nav_cubes is None:
+            scene.config['setup_only']['objects'] = {}
+        else:
+            from harness.e2e_min_world import select_cube_objects
+            scene.config['setup_only']['objects'] = select_cube_objects(
+                scene.config['setup_only']['objects'], nav_cubes)
+    elif nav_cubes is not None or nav_arm_pwm is not None:
+        raise ValueError('E2E-min cubes/arm pose require the nav scene')
     hw, _ = load_fitted_hardware()
     # The zone scene builder itself requires the three production robots, so the
     # XML is authored with all three and r3 is pruned after every scene/hardware
@@ -103,6 +116,9 @@ def build_context(seed, out, stack, *, nav_scene=False, nav_spawns=None, nav_kee
     if nav_scene:
         from harness.e2ewarp_nav_gate import prune_robots
         xml = prune_robots(xml, keep=nav_keep)
+    if nav_cubes is not None:
+        from harness.e2e_min_world import audit_cube_bodies
+        audit_cube_bodies(xml, nav_cubes)
     model = mujoco.MjModel.from_xml_string(xml)
     data = mujoco.MjData(model)
     assert_model_profile(model, stack['contact_profile'], data.eq_active)
@@ -131,7 +147,10 @@ def build_context(seed, out, stack, *, nav_scene=False, nav_spawns=None, nav_kee
             gripper_act=[model.actuator(rid+'__servo_gripper_'+n).id for n in ('left', 'right')],
             servo_command_pulses=SEARCH.copy())
         robot.pulse_to_joint_targets = lambda p, r=robot: MasterPiDynamicsV2.pulse_to_joint_targets(r, p)
-        targets = robot.pulse_to_joint_targets(SEARCH)
+        from harness.e2e_min_world import arm_pwm
+        initial_pwm = arm_pwm(nav_arm_pwm, rid, SEARCH)
+        robot.servo_command_pulses = dict(initial_pwm)
+        targets = robot.pulse_to_joint_targets(initial_pwm)
         for key, jid in robot.arm_joint.items():
             value = np.clip(targets[key], *model.jnt_range[jid])
             data.qpos[int(model.jnt_qposadr[jid])] = value
@@ -146,7 +165,7 @@ def build_context(seed, out, stack, *, nav_scene=False, nav_spawns=None, nav_kee
         model.cam_intrinsic[cid] = mujoco_pixel_intrinsic(640, 480)
         robots[rid] = robot
         ports[rid] = SimpleNamespace(_motor_commands=(0.,)*4, _wheel_deadlines=[None]*4,
-            _servo_applied=SEARCH.copy(), _servo_targets={}, _servo_tick_time=0.)
+            _servo_applied=dict(initial_pwm), _servo_targets={}, _servo_tick_time=0.)
     for item in scene.config['setup_only']['objects'].values():
         jid = model.joint(item['joint_name']).id
         adr = int(model.jnt_qposadr[jid])
@@ -158,6 +177,13 @@ def build_context(seed, out, stack, *, nav_scene=False, nav_spawns=None, nav_kee
     (out/'scene.xml').write_text(xml)
     if nav_scene:
         geometry = eval_geometry(scene, spawns, robot_qpos_adr)
+        if nav_cubes is not None:
+            from harness.e2e_min_world import cargo_pair_audit, cube_geometry
+            geometry.update(cube_geometry(model, nav_cubes, scene.config['setup_only']['objects']))
+            geometry['cargo_contact_pairs'] = cargo_pair_audit(xml)
+        if nav_arm_pwm is not None:
+            geometry['initial_arm_pwm'] = {r: {str(k): int(v) for k, v in p.items()}
+                                           for r, p in nav_arm_pwm.items()}
         (out/'eval-geometry.json').write_text(json.dumps(geometry, ensure_ascii=False, indent=1) + '\n')
     cargo = [i for i in range(model.ngeom) if model.body(int(model.geom_bodyid[i])).name.startswith('cargo_')]
     fingers = {model.geom(r+'__'+s+'_finger').id: 2*k+j for k, r in enumerate(robots) for j, s in enumerate(('left', 'right'))}
