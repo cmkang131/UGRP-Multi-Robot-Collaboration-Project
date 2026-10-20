@@ -178,6 +178,73 @@ def clock_receipt(deadband):
         scope='own issued PWM history only; no measured joint or simulator state')
 
 
+# carry-cand-2 (A-c2, H-A1): one-shot own-history normalisation at release entry,
+# default off. Tournament A prereg draft lives on dsh/act18-carry-cand-1:
+# experiments/2026-10-17-act18/CARRY_TOURNAMENT_A_PREREG_DRAFT.json.
+HISTORY_RESET_STATS=dict(entries=0,policy_ticks_changed=0)
+
+
+def reset_history(observation,template):
+    """Policy-visible issued history with entries up to the release-entry command
+    replaced by that command (timestamps kept). Reads only ``observation['issued']``
+    and the template, which itself came from the same robot's issued history."""
+    cutoff=template['t']
+    issued=[]
+    for item in observation['issued']:
+        if item['t']<=cutoff+1e-9:
+            issued.append(dict(t=item['t'],wheels=list(template['wheels']),
+                               duration_s=list(template['duration_s']),pwm=dict(template['pwm'])))
+        else:
+            issued.append(item)
+    value=dict(observation);value['issued']=issued
+    return value
+
+
+class ReleaseHistoryReset:
+    """Fill the 16-command history once, on the release-entry tick, with the current
+    own command repeated (a stationary history). Later commands append normally, so
+    the synthetic part leaves the window after 16 ticks. Own issued history only."""
+    def __init__(self):
+        self.template=None
+    def apply(self,observation):
+        if observation['skill']!='release':
+            self.template=None
+            return observation
+        if self.template is None or observation['t']<self.template['entry_t']:
+            last=observation['issued'][-1]
+            self.template=dict(t=last['t'],wheels=list(last['wheels']),duration_s=list(last['duration_s']),
+                               pwm=dict(last['pwm']),entry_t=observation['t'])
+            HISTORY_RESET_STATS['entries']+=1
+        value=reset_history(observation,self.template)
+        if value['issued']!=observation['issued']:
+            HISTORY_RESET_STATS['policy_ticks_changed']+=1
+        return value
+
+
+def candidate_executor(base,*,release_history_reset=False):
+    """Deployed te1 executor (n_action_steps 1, coeff .01) plus the default-off reset."""
+    class Executor(base):
+        def __init__(self,predict):
+            # Public ACT temporal ensemble; no additional motion guard/fallback.
+            super().__init__(predict,n_action_steps=1,temporal_ensemble_coeff=.01)
+            self.history_reset=ReleaseHistoryReset() if release_history_reset else None
+        def step(self,observation,jpegs,*,interrupt=False):
+            if self.history_reset is not None:
+                observation=self.history_reset.apply(observation)
+            return super().step(observation,jpegs,interrupt=interrupt)
+    return Executor
+
+
+def history_reset_receipt(enabled):
+    return dict(candidate='A-c2' if enabled else None,enabled=bool(enabled),
+        flag=f'--release-history-reset {"on" if enabled else "off"}',
+        rule='release-entry tick: 16 issued contents := own last issued command (timestamps kept), once',
+        entries=HISTORY_RESET_STATS['entries'] if enabled else None,
+        policy_ticks_changed=HISTORY_RESET_STATS['policy_ticks_changed'] if enabled else None,
+        logging='actor-inputs.jsonl keeps the owner observation; the policy-visible history is a deterministic function of it',
+        scope='own issued command history only; no measured joint, simulator or teacher state')
+
+
 def post_lift_max_pe(out):
     """Evaluation-only receipt from the recorded actor inputs and owner truth."""
     inputs=out/'actor-inputs.jsonl';truth=out/'owner/evaluation-only.jsonl'
@@ -216,6 +283,8 @@ def main():
     p.add_argument('--stage',choices=['train','validation','final','diag'],required=True)
     p.add_argument('--diag-prereg',type=Path)
     p.add_argument('--issued-clock-deadband',type=int,choices=[0,2],default=0)
+    # carry-cand-2: default off. on = fill the 16 issued history once at release entry.
+    p.add_argument('--release-history-reset',choices=['off','on'],default='off')
     p.add_argument('--baseline-act17',action='store_true')
     # User requirement: last10 SIM seconds at10Hz; recording only, no policy field.
     p.add_argument('--failure-camera-window-s',type=float,default=10.)
@@ -236,6 +305,9 @@ def main():
     a,args=p.parse_known_args()
     if not a.act18_reference_v1 or a.failure_camera_window_s!=10.:
         raise ValueError('explicit reference toggle and user10SIMs camera window required')
+    history_reset=a.release_history_reset=='on'
+    if history_reset and (a.done_head is not None or a.loop_overlay):
+        raise ValueError('--release-history-reset is registered with the plain te1 executor only')
     if a.done_head is not None and a.done_head_threshold!=.65:
         raise ValueError('frozen done-head threshold .65 required')
     done_log_path=done_prob_log_path() if a.record_done_prob is None else a.record_done_prob
@@ -275,6 +347,7 @@ def main():
         act16w_eval_rpc.EvaluationClient,pm.ChunkExecutor,rm.SoloSequence,contract.CHUNK,
         contract.IssuedClock)
     CLOCK_STATS.update(instances=0,resets=0,max_pwm_elapsed_s=0.)
+    HISTORY_RESET_STATS.update(entries=0,policy_ticks_changed=0)
     install_issued_clock(contract,a.issued_clock_deadband)
     actor_class=OldActor if a.baseline_act17 else Actor
     chunk=8 if a.baseline_act17 else meta['chunk']
@@ -309,10 +382,7 @@ def main():
                 elapsed=time.perf_counter()-started;inference['wall_s']+=elapsed
                 if first30:inference['first30']['wall_s']+=elapsed
     from act18_loop_overlay import LoopOverlay, overlay_receipt
-    class Executor(originals[3]):
-        def __init__(self,predict):
-            # Public ACT temporal ensemble; no additional motion guard/fallback.
-            super().__init__(predict,n_action_steps=1,temporal_ensemble_coeff=.01)
+    Executor=candidate_executor(originals[3],release_history_reset=history_reset)
     class DoneHeadExecutor(Executor):
         def __init__(self,predict):
             super().__init__(predict)
@@ -450,6 +520,7 @@ def main():
                     static_map_use='none',handwritten_nearfield_fallback=False,policy_ground_truth_fields=0,
                     native_camera='own640x480 at10Hz; identical current_full_v1 transform',
                     issued_clock=clock,git_sha=source,
+                    release_history_reset=history_reset_receipt(history_reset),
                     scope=('TRAIN fit only, not generalization' if a.stage=='train' else
                            'HO4 diagnostic holdout only; not a promotion gate; no pooling' if a.stage=='diag'
                            else 'held-out native ACT stage'))
@@ -473,6 +544,7 @@ def main():
                 loop_receipt=overlay_receipt()
             (out/'act18-evaluator.json').write_text(json.dumps(dict(source_sha=source,stage=a.stage,
                 git_sha=source,issued_clock=clock,diag_prereg=diag,loop_overlay=loop_receipt,
+                release_history_reset=history_reset_receipt(history_reset),
                 allowed_seeds=sorted(allowed),checkpoint_sha256=digest,native_gate_sha256=sha256(gate_path),
                 failure_recording_only=True,recorded_bytes=sum(r['bytes'] for r in ring),
                 done_head=done_head_receipt),indent=2)+'\n')
