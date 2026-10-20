@@ -36,11 +36,20 @@ Gate modes (2026-10-19 user approval; default OFF):
   user-approved acquisition limit, not a calibrated constant. The mode is bound
   into the queue and into the run environment; results from the two modes are
   separate conditions and are never pooled.
+- ``v230_r5`` (2026-10-20 decision; default OFF): ``v230_r4``'s order-sheet slot
+  with a **two-stage** activation. Through the wide door the follower aims at the
+  component centre (offset 0, the aim r2 passed the door with); the slot turns on
+  only when the visible destination component's bottom row projects onto the
+  floor at <= 1.5 m with the measured camera model, and the applied offset is
+  then clamped to +-15 deg. The 0.52 m projection claim and the 1.0 m path
+  fail-safe are unchanged. r4 pushed r1 into the divider's north jamb before the
+  door, so the slot timing (not the claim) is the only changed input.
 """
 from __future__ import annotations
 
 from harness.e2ewarp_selfnav import (ACQUIRE_CONFIRM_TICKS, ACQUIRE_MIN_HEIGHT_NORM,
-                                     ARRIVAL_ODOM_PROJECTION, SLOT_LEFT, SLOT_RIGHT, SLOTS)
+                                     ARRIVAL_ODOM_PROJECTION, SLOT_LEFT, SLOT_OFFSET_LIMIT_DEG,
+                                     SLOT_RIGHT, SLOT_STAGE2_GROUND_M, SLOTS)
 
 import hashlib
 import json
@@ -101,6 +110,18 @@ GATE_MODE_V230_R3 = 'v230_r3'
 #: GT and no changed claim definition.  Default OFF; only this mode writes the
 #: slot markers into the queue and the order sheet.
 GATE_MODE_V230_R4 = 'v230_r4'
+#: 2026-10-20 r5 (`v230_r5`): r4's order-sheet slot, but the slot aim is applied
+#: only after the visible destination component's bottom row projects onto the
+#: floor at <= 1.5 m (two-stage).  Through the wide door the follower aims at the
+#: component centre (offset 0); after activation the applied offset is clamped to
+#: +-15 deg.  Claim, band, cap and C constants are r4-identical.  The 1.5 m is a
+#: design value from the authored geometry (door x=2.2, zone B near edge x=4.3),
+#: not a fit to the r4 result.  Default OFF; only this mode writes the stage-2
+#: markers into the queue.
+GATE_MODE_V230_R5 = 'v230_r5'
+#: Modes that carry the order-sheet slot (r4/r5).  r4 keeps its frozen
+#: always-on slot; r5 resolves the slot through the stage-2 ground gate.
+SLOT_GATE_MODES = (GATE_MODE_V230_R4, GATE_MODE_V230_R5)
 #: r1 keeps the authored north lane (LANE_Y -2.375) and r2 the south lane
 #: (-2.875).  Facing the destination (+x east), robot-left is +y (north), so the
 #: north-lane robot owns the left half of the marking and the south-lane robot
@@ -164,13 +185,28 @@ GATE_MODES = {
                             acquire_confirm_ticks=ACQUIRE_CONFIRM_TICKS,
                             forward_reacquire=True,
                             slots=True),
+    # r5 = r4 + the two-stage slot timing (see SLOT_STAGE2_GROUND_M and
+    # SLOT_OFFSET_LIMIT_DEG in harness/e2ewarp_selfnav.py).  Everything else is
+    # identical to r4, so any r4/r5 difference is the slot activation timing.
+    GATE_MODE_V230_R5: dict(zone_profile='gpu_calib_v230',
+                            acquisition_mode='forward_then_search',
+                            forward_cap_m=FORWARD_ACQUISITION_CAP_M,
+                            zone_min_component=600,
+                            bearing_convention='positive_left',
+                            acquire_min_height_norm=ACQUIRE_MIN_HEIGHT_NORM,
+                            acquire_confirm_ticks=ACQUIRE_CONFIRM_TICKS,
+                            forward_reacquire=True,
+                            slots=True,
+                            slot_stage2_ground_m=SLOT_STAGE2_GROUND_M,
+                            slot_offset_limit_deg=SLOT_OFFSET_LIMIT_DEG),
 }
 DEFAULT_GATE_MODE = GATE_MODE_V1
 #: Modes that carry the C acquisition-quality block.  Every other mode stays
 #: byte-identical to its frozen condition (no new queue markers are written).
-ACQUISITION_QUALITY_MODES = (GATE_MODE_V230_R2, GATE_MODE_V230_R3, GATE_MODE_V230_R4)
-#: Modes that admit (and require) the r3/r4 projection arrival claim.
-PROJECTION_GATE_MODES = (GATE_MODE_V230_R3, GATE_MODE_V230_R4)
+ACQUISITION_QUALITY_MODES = (GATE_MODE_V230_R2, GATE_MODE_V230_R3, GATE_MODE_V230_R4,
+                             GATE_MODE_V230_R5)
+#: Modes that admit (and require) the r3/r4/r5 projection arrival claim.
+PROJECTION_GATE_MODES = (GATE_MODE_V230_R3, GATE_MODE_V230_R4, GATE_MODE_V230_R5)
 
 
 def gate_robots(solo_robot=None):
@@ -373,9 +409,9 @@ def navigation_factory(robot_id, static=None, **kwargs):
         raise ValueError('NAV_ARRIVAL_REQUIRES_V230_R3')
     if arrival['mode'] == ARRIVAL_ODOM_PROJECTION and mode['name'] not in PROJECTION_GATE_MODES:
         raise ValueError('NAV_ARRIVAL_REQUIRES_V230_R3')
-    if mode['name'] == GATE_MODE_V230_R4:
-        # The r4 order sheet must name this robot's slot; a run that lost it
-        # would silently be r3 with different markers.
+    if mode['name'] in SLOT_GATE_MODES:
+        # The r4/r5 order sheet must name this robot's slot; a run that lost it
+        # would silently be r3 (or r4 with different markers).
         slots = (static or {}).get('slots') or {}
         if not isinstance(slots, dict) or slots.get(robot_id) not in SLOTS:
             raise ValueError('NAV_SLOT_REQUIRED:' + str(robot_id))
@@ -394,6 +430,10 @@ def navigation_factory(robot_id, static=None, **kwargs):
         if arrival['mode'] == ARRIVAL_ODOM_PROJECTION:
             extra.update(arrival_projection_m=arrival['projection_m'],
                          arrival_projection_path_cap_m=arrival['projection_path_cap_m'])
+        if mode['name'] == GATE_MODE_V230_R5:
+            # r5 two-stage slot: fixed code constants, bound into the run so a
+            # process cannot silently run r4 timing under an r5 queue.
+            extra.update(slot_stage2_ground_m=mode['slot_stage2_ground_m'])
     return SelfCentricNavigation(
         robot_id, static, option=OPTION,
         detector=GpuCalibZoneDetector(profile=mode['zone_profile'],
@@ -439,10 +479,15 @@ def gate_queue_fields(seed, calibration=None, sim_budget_s=SIM_BUDGET_S, robots=
             # fail-safe path cap.  v230_r2 queues stay byte-identical.
             fields.update(nav_arrival_odom_projection_m=float(arrival['projection_m']),
                           nav_arrival_projection_path_cap_m=float(arrival['projection_path_cap_m']))
-        if mode['name'] == GATE_MODE_V230_R4:
-            # Order-sheet per-robot slot (r4 only).  v1/fwd24/r2/r3 queues carry
+        if mode['name'] in SLOT_GATE_MODES:
+            # Order-sheet per-robot slot (r4/r5).  v1/fwd24/r2/r3 queues carry
             # no slot marker at all, so their bytes are unchanged.
             fields.update(nav_slots=slot_assignment(robots))
+        if mode['name'] == GATE_MODE_V230_R5:
+            # r5-only two-stage slot markers (threshold and clamp are frozen code
+            # constants; r4 queues stay byte-identical without them).
+            fields.update(nav_slot_stage2_ground_m=float(mode['slot_stage2_ground_m']),
+                          nav_slot_offset_limit_deg=float(mode['slot_offset_limit_deg']))
     return fields
 
 
@@ -542,14 +587,29 @@ def validate_gate_queue(queue):
             raise ValueError('NAV_ARRIVAL_REQUIRES_V230_R2')
         if arrival_selection()['mode'] not in ('bottom_band',):
             raise ValueError('NAV_ARRIVAL_REQUIRES_V230_R2')
-    # r4 order-sheet slots and the solo diagnostic are r4-only markers.
-    if mode['name'] == GATE_MODE_V230_R4:
+    # r4/r5 order-sheet slots and the solo diagnostic are slot-mode markers.
+    if mode['name'] in SLOT_GATE_MODES:
         if dict(queue.get('nav_slots') or {}) != slot_assignment(robots):
             raise ValueError('NAV_SLOTS_REQUIRED')
     elif queue.get('nav_slots') is not None:
         raise ValueError('NAV_SLOTS_REQUIRE_V230_R4')
+    if mode['name'] == GATE_MODE_V230_R5:
+        # The two-stage threshold and clamp are frozen code constants; the queue
+        # must carry the exact values and no other mode may carry them.
+        try:
+            stage2 = float(queue['nav_slot_stage2_ground_m'])
+            limit = float(queue['nav_slot_offset_limit_deg'])
+        except (KeyError, TypeError, ValueError):
+            raise ValueError('NAV_SLOT_STAGE2_MARKERS_REQUIRED') from None
+        if abs(stage2 - float(mode['slot_stage2_ground_m'])) > 1e-9:
+            raise ValueError('NAV_SLOT_STAGE2_GROUND_MISMATCH')
+        if abs(limit - float(mode['slot_offset_limit_deg'])) > 1e-9:
+            raise ValueError('NAV_SLOT_OFFSET_LIMIT_MISMATCH')
+    elif (queue.get('nav_slot_stage2_ground_m') is not None
+          or queue.get('nav_slot_offset_limit_deg') is not None):
+        raise ValueError('NAV_SLOT_STAGE2_REQUIRE_V230_R5')
     if len(robots) == 1:
-        if mode['name'] != GATE_MODE_V230_R4:
+        if mode['name'] not in SLOT_GATE_MODES:
             raise ValueError('NAV_SOLO_REQUIRES_V230_R4')
         if queue.get('nav_solo_robot') != robots[0]:
             raise ValueError('NAV_SOLO_MARKER_MISMATCH')

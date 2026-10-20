@@ -63,6 +63,25 @@ Contract v1 (2026-10-18, user decisions):
   direction `u` stay the component-centre bearing exactly as in r3, so the
   claim definition is untouched.  The slot is order metadata (which half of the
   destination this robot owns), never map geometry and never GT.
+- **Approved gate mode v230_r5 (2026-10-20 decision; default OFF).** r4's r1
+  was pushed into the divider's north jamb *before* the wide door because the
+  left-half aim already steered north while the robot was still in the doorway.
+  r5 therefore makes the slot **two-stage**: through the door the follower aims
+  at the component **centre** (offset 0, the aim r2 passed the door with), and
+  the order-sheet slot only activates once the *visible destination component's
+  bottom row* projects onto the floor at **<= 1.5 m** from the base origin
+  (measured camera model `GATE_GROUND_PROJECTION`, identical to
+  `experiments/2026-10-19-nav-v230-r2/B_A_DERIVATION.json`).  The 1.5 m is a
+  design value derived from the authored geometry (wide door at x = 2.2, zone B
+  near edge at x = 4.3, i.e. 2.1 m apart, minus the chassis half-length and the
+  body/clearance allowance), so the gate opens about 0.6 m past the door plane;
+  it is not fitted to any r2/r3/r4 result.  After activation the applied offset
+  is **clamped to +-15 deg** (about 0.29 m of lateral spread over the ~1.1 m to
+  the arming row); the arming bearing and the 0.52 m projection claim are still
+  the component centre, exactly as in r3/r4.  Activation is one-shot and
+  fail-closed: a component without a bbox or with an unprojectable bottom row
+  never activates the slot.  Both new inputs are own-camera measurements; the
+  static map and GT are never read.
 - **Approved gate mode v230_r3 (2026-10-19 decision ①; default OFF).** The
   r2 Step B run failed because its claim counted the *path length* of the own
   issued pulses while arrival is a *position* judgement: both robots drove
@@ -98,6 +117,25 @@ ALLOWED_STATIC_KEYS = ('orders', 'goal', 'mission', 'robot_count', 'destination_
 SLOT_LEFT = 'left'
 SLOT_RIGHT = 'right'
 SLOTS = (SLOT_LEFT, SLOT_RIGHT)
+# ---- r5 two-stage slot (2026-10-20 decision; default OFF) -------------------
+# The slot aim is applied only after the destination component's bottom row
+# projects onto the floor at <= 1.5 m.  Derivation (design value, not fitted to
+# r2/r3/r4): the wide door plane is x = 2.2 and zone B's near paint edge is
+# x = 4.3 (`zone_wide_two_doors_final_v3`), 2.1 m apart.  Subtracting the
+# chassis half-length plus the body/clearance allowance leaves 1.5 m, so the
+# gate opens with the base origin about x = 2.8 m, i.e. ~0.6 m past the door
+# plane and clear of the jambs.  The row at 1.5 m under the measured camera
+# model is 137/480 (norm 0.286) at the principal column; the row->metre
+# sensitivity there is ~12 mm/px, and across the component's columns the
+# distance varies ~1.5 % (1.507-1.523 m at cols 200-360), so the choice of
+# column inside the bbox is not load-bearing.
+SLOT_STAGE2_GROUND_M = 1.5
+# The applied slot offset is clamped to +-15 deg (user-approved r5 limit).  The
+# 25 %/75 % aim produced -21.0 deg at the r4 r1 arming sample, which pointed at
+# the divider jamb rather than into the zone; over the ~1.1 m from activation to
+# the arming row (1.5 m -> 0.365 m ground distance) 15 deg is ~0.29 m of lateral
+# spread, enough to separate the pair while keeping the follower off the jamb.
+SLOT_OFFSET_LIMIT_DEG = 15.0
 # Existing calibrated finite-pulse vocabulary (percent x pulse width), taken from
 # harness.egocentric_goto.duty (scale .35, 0.10 s).  These are command limits,
 # not odometry calibration: metres/degrees per percent-second stay injected.
@@ -395,7 +433,7 @@ class SelfCentricNavigation:
                  arrival_projection_m=ARRIVAL_ODOM_PROJECTION_M,
                  arrival_projection_path_cap_m=ARRIVAL_PROJECTION_PATH_CAP_M,
                  arrival_bottom_contact_norm=ARRIVAL_BOTTOM_CONTACT_NORM,
-                 ground_projection=None, slot=None):
+                 ground_projection=None, slot=None, slot_stage2_ground_m=None):
         if robot_id not in ('r1', 'r2'):
             raise ValueError('contract v1 navigation is two-robot only (r1/r2)')
         if acquisition_mode not in ACQUISITION_MODES:
@@ -472,6 +510,19 @@ class SelfCentricNavigation:
             if slot not in SLOTS:
                 raise ValueError('unknown destination slot: ' + slot)
         self.slot = slot
+        # r5 two-stage slot (2026-10-20, default OFF): the constructor default
+        # ``None`` keeps the r4 behaviour byte-identical (the slot offset is
+        # applied from the first follow tick).  A positive threshold delays it
+        # until the own-camera component bottom row projects at <= that distance.
+        if slot_stage2_ground_m is not None:
+            slot_stage2_ground_m = float(slot_stage2_ground_m)
+            if not slot_stage2_ground_m > 0.0:
+                raise ValueError('slot stage-2 ground threshold must be positive')
+            if slot is None:
+                raise ValueError('slot stage 2 requires a destination slot')
+            if arrival_mode != ARRIVAL_ODOM_PROJECTION:
+                raise ValueError('slot stage 2 requires the odom_projection arrival claim')
+        self.slot_stage2_ground_m = slot_stage2_ground_m
         self.arrival_range_m = float(arrival_range_m)
         if self.arrival_range_m < 0.0:
             raise ValueError('arrival range threshold must be nonnegative')
@@ -538,6 +589,17 @@ class SelfCentricNavigation:
         self._arrival_path_m = 0.0
         self._arrival_proj_m = 0.0
         self._arrival_no_claim = False
+        # r5 two-stage slot state.  ``_slot_stage2_active`` latches once the own
+        # camera component bottom row projects at <= slot_stage2_ground_m; the
+        # applied offset stays 0 before that (component-centre aim through the
+        # door) and is clamped to +-SLOT_OFFSET_LIMIT_DEG after it.  All three
+        # diagnostics are recorded, never fed back into the gate.
+        self._slot_stage2_active = False
+        self._slot_stage2_sim_s = None
+        self._slot_ground_m = None
+        self._slot_ground_at_activation_m = None
+        self._slot_offset_raw_deg = None
+        self._slot_offset_applied_deg = None
 
     @property
     def ready(self):
@@ -564,6 +626,20 @@ class SelfCentricNavigation:
         if self.slot is not None:
             detections = self._slot_detections(detections)
         accepted = self._accepted_hit(detections)
+        # r5: the stage-2 activation is evaluated on the same accepted component
+        # the follower targets, from the current own frame only.  A missing bbox
+        # or an unprojectable row leaves the gate closed (fail closed).  The
+        # measured (raw) half aim is recorded here every tick so the diagnostic
+        # shows what the slot asked for even while the claim heading-hold drives.
+        if self.slot is not None and accepted is not None:
+            self._slot_offset_raw_deg = float(accepted.get('slot_bearing_offset_deg') or 0.0)
+        if self.slot_stage2_ground_m is not None and accepted is not None:
+            self._slot_ground_m = self._slot_ground_distance(accepted)
+            if (not self._slot_stage2_active and self._slot_ground_m is not None
+                    and self._slot_ground_m <= self.slot_stage2_ground_m):
+                self._slot_stage2_active = True
+                self._slot_stage2_sim_s = float(frame.sim_s)
+                self._slot_ground_at_activation_m = self._slot_ground_m
         self.memory.observe(frame.sim_s, detections)
         if self.memory.nearest(self.destination_kind) is not None:
             self._destination_seen = True
@@ -633,6 +709,24 @@ class SelfCentricNavigation:
             value['slot'] = self.slot
             adjusted.append(value)
         return adjusted
+
+    def _slot_ground_distance(self, detection):
+        """Ground distance (m) of the own component's bottom row, or ``None``.
+
+        r5 stage-2 gate: the pixel is the centre column of the component bbox and
+        its **bottom row** (``bottom - 1``: the detector reports an exclusive
+        bottom edge, so this is the last included row, i.e. the nearest visible
+        ground of the marking).  The projection is the same measured
+        pinhole+fisheye ground-plane model the ground-distance arrival option
+        uses (`GATE_GROUND_PROJECTION`, the B_A_DERIVATION camera).  A missing
+        bbox or a row that does not hit the floor returns ``None`` (fail closed:
+        the slot stays inactive rather than falling back to a guessed distance).
+        """
+        bbox = detection.get('bbox')
+        if bbox is None:
+            return None
+        left, _top, right, bottom = (int(v) for v in bbox)
+        return ground_distance_m((left + right - 1) / 2.0, bottom - 1, self.ground_projection)
 
     def _accepted_hit(self, detections):
         """Largest destination component that passes the C height pre-filter.
@@ -823,7 +917,19 @@ class SelfCentricNavigation:
             if reason == 'search_timeout':
                 return dict(reason=reason, landmark=None, forward=0.0, turn=0.0)
             return dict(reason=reason, landmark=None, forward=0.0, turn=self._search_turn())
-        bearing = wrap_deg(landmark.bearing_deg + landmark.slot_bearing_offset_deg)
+        # r5 two-stage slot: before the ground-distance activation the follower
+        # aims at the component centre exactly as r2 did through the door; after
+        # it the order-sheet half aim is applied, clamped to the approved +-15
+        # deg.  The r4 path (slot_stage2_ground_m is None) applies the measured
+        # offset unchanged, so an r4 run stays byte-identical.
+        offset = float(landmark.slot_bearing_offset_deg)
+        if self.slot_stage2_ground_m is not None:
+            if self._slot_stage2_active:
+                offset = clamp(offset, -SLOT_OFFSET_LIMIT_DEG, SLOT_OFFSET_LIMIT_DEG)
+            else:
+                offset = 0.0
+        self._slot_offset_applied_deg = offset
+        bearing = wrap_deg(landmark.bearing_deg + offset)
         turn = clamp(bearing / BEARING_FULL_DEG, -1.0, 1.0)
         if abs(bearing) > ALIGN_GATE_DEG:
             forward = 0.0  # rotate toward the destination before translating
@@ -867,6 +973,20 @@ class SelfCentricNavigation:
                     forward_reacquire=bool(self.forward_reacquire),
                     arrival_mode=self.arrival_mode,
                     slot=self.slot,
+                    slot_stage2_ground_m=(None if self.slot_stage2_ground_m is None
+                                          else round(self.slot_stage2_ground_m, 6)),
+                    slot_stage2_active=bool(self._slot_stage2_active),
+                    slot_stage2_sim_s=(None if self._slot_stage2_sim_s is None
+                                       else round(self._slot_stage2_sim_s, 3)),
+                    slot_ground_distance_m=(None if self._slot_ground_m is None
+                                            else round(self._slot_ground_m, 6)),
+                    slot_ground_at_activation_m=(None if self._slot_ground_at_activation_m is None
+                                                 else round(self._slot_ground_at_activation_m, 6)),
+                    slot_bearing_offset_raw_deg=(None if self._slot_offset_raw_deg is None
+                                                 else round(self._slot_offset_raw_deg, 3)),
+                    slot_bearing_offset_applied_deg=(None if self._slot_offset_applied_deg is None
+                                                     else round(self._slot_offset_applied_deg, 3)),
+                    slot_offset_limit_deg=round(SLOT_OFFSET_LIMIT_DEG, 3),
                     arrival_armed=bool(self._arrival_armed),
                     arrival_travel_m=round(self._arrival_travel_m, 6),
                     arrival_projection_m=round(self._arrival_proj_m, 6),

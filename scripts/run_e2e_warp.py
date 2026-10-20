@@ -28,8 +28,9 @@ from harness.e2ewarp_nav_mode import (MODE as NAV_MODE, ROBOTS as NAV_ROBOTS,
                                       leader_for_seed as nav_leader, nav_static,
                                       queue_fields as nav_queue_fields,
                                       validate_queue as nav_validate_queue)
-from harness.e2ewarp_nav_gate import (GATE_MODE_V230_R4, NAV_SCENARIO,
+from harness.e2ewarp_nav_gate import (NAV_SCENARIO,
                                       SIM_BUDGET_S as NAV_SIM_BUDGET_S,
+                                      SLOT_GATE_MODES as NAV_SLOT_GATE_MODES,
                                       gate_mode as nav_gate_mode,
                                       gate_queue_fields as nav_gate_fields,
                                       gate_robots as nav_gate_robots,
@@ -59,8 +60,8 @@ def stack_config():
 
 
 def nav_slots_enabled():
-    """True only for the explicit r4 gate mode (slots are r4-only markers)."""
-    return nav_gate_mode()['name'] == GATE_MODE_V230_R4
+    """True only for the explicit slot gate modes r4/r5 (slot order markers)."""
+    return nav_gate_mode()['name'] in NAV_SLOT_GATE_MODES
 
 
 def apply_arrival_args(a):
@@ -414,9 +415,16 @@ def run(a, queue):
             if nav and contact_ledger is not None:
                 from harness import e2ewarp_nav_contacts as nav_contacts
                 for w in range(a.nworld):
+                    now_s = (tick + 1) / 10.0
                     nav_contacts.record(contact_ledger,
                                         nav_contacts.read_contacts(hooks, w, robots=set(robots)),
-                                        (tick + 1) / 10.0)
+                                        now_s)
+                    # r5 eval-only channel: robot vs wall / divider jamb, by geom
+                    # name and MuJoCo distance (the floor is excluded).
+                    nav_contacts.record_scene(contact_ledger,
+                                              nav_contacts.read_scene_contacts(
+                                                  hooks, w, robots=set(robots)),
+                                              now_s)
             if (tick+1) % 10 == 0:
                 write(a.output/'progress.json', dict(sim_s=(tick+1)/10, client_requests=sum(p.calls for p in planners.values()),
                       model_calls=sum(len((r.get('upstream') or {}).get('attempts', [])) for p in planners.values() for r in p.rows),
@@ -488,7 +496,15 @@ def run(a, queue):
                     contact_ticks=contact_ledger['contact_ticks'],
                     contact_pairs_total=contact_ledger['contact_pairs_total'],
                     first_contact_s=contact_ledger['first_contact_s'],
-                    last_contact_s=contact_ledger['last_contact_s']))
+                    last_contact_s=contact_ledger['last_contact_s'],
+                    # r5: robot vs wall / divider-jamb channel (eval-only).
+                    scene_available=contact_ledger.get('scene_contacts_available'),
+                    scene_unavailable_reason=contact_ledger.get('scene_unavailable_reason'),
+                    scene_contact_ticks=contact_ledger.get('scene_contact_ticks'),
+                    scene_contact_pairs_total=contact_ledger.get('scene_contact_pairs_total'),
+                    scene_first_contact_s=contact_ledger.get('scene_first_contact_s'),
+                    scene_last_contact_s=contact_ledger.get('scene_last_contact_s'),
+                    scene_geom_totals=contact_ledger.get('scene_geom_totals')))
         if not (a.output/'first30.json').exists():
             incomplete = first30(allrows, decisions, sim_s, a.nworld, time.monotonic()-started)
             incomplete.update(scope='incomplete prefix; first30 not reached', completed_first30=False)
@@ -579,8 +595,8 @@ def main(argv=None):
         p.error('first30 smoke is restricted to 1–2 worlds')
     if a.nav_solo_robot and a.mode != NAV_MODE:
         p.error('--nav-solo-robot requires --mode nav')
-    if a.nav_solo_robot and nav_gate_mode()['name'] != GATE_MODE_V230_R4:
-        p.error('--nav-solo-robot requires E2EWARP_NAV_GATE_MODE=v230_r4')
+    if a.nav_solo_robot and nav_gate_mode()['name'] not in NAV_SLOT_GATE_MODES:
+        p.error('--nav-solo-robot requires E2EWARP_NAV_GATE_MODE=v230_r4/v230_r5')
     a.command = ['python', '-m', 'scripts.run_e2e_warp', *(argv if argv is not None else __import__('sys').argv[1:])]
     if a.prepare:
         if a.execute:
