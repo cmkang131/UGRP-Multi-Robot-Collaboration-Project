@@ -88,7 +88,30 @@ def parser():
     p.add_argument('--physics-profile-v1',action='store_true',help='record one discarded warmup step kernel timings; default OFF')
     p.add_argument('--mps-shared-v1',action='store_true',help='explicit private warp4 MPS runtime cohort; default OFF')
     p.add_argument('--vm-hourly-usd',type=float,required=True)
+    p.add_argument('--student-eval',type=Path,help='pairact P5: student ACT issues every command (teacher DESIGN §9); default OFF')
     return p
+
+
+STUDENT_EVAL_KEYS={'mode','python','source','model','config','device'}
+STUDENT_EVAL_MODE='pairact_r1_student_eval_v1'
+STUDENT_SHA='3c9337d5f5c9deefd49139b26ae7117022e3d5cc'   # dsh/pairact-p5-student worker tree
+
+
+def load_student_eval(path):
+    """Exact P5 config: the isolated worker's python/source/model/config. No GT key exists."""
+    if path is None:return None
+    cfg=json.loads(Path(path).read_text())
+    if set(cfg)!=STUDENT_EVAL_KEYS or cfg['mode']!=STUDENT_EVAL_MODE:
+        raise ValueError('student eval config must be exactly '+str(sorted(STUDENT_EVAL_KEYS)))
+    for key in ('python','source','model','config'):
+        if not Path(cfg[key]).is_absolute():raise ValueError(f'absolute {key} path required')
+    head=source_head(cfg['source'])
+    if head!=STUDENT_SHA:raise ValueError(f'student worker source {head} != pinned {STUDENT_SHA}')
+    return cfg
+
+
+def source_head(path):
+    return subprocess.check_output(['git','-C',str(path),'rev-parse','HEAD'],text=True).strip()
 
 
 def main():
@@ -99,6 +122,9 @@ def main():
         p.error('finite existing SIM cap and explicit positive hourly price required')
     if a.diagnostic_ticks is not None and a.diagnostic_ticks<=0:
         p.error('positive diagnostic control-tick budget required')
+    student_eval=load_student_eval(a.student_eval)
+    if student_eval is not None and a.flow!='beampair':
+        p.error('student eval is a beampair pair-carry flow option')
     if a.batch_per_world_speed_v1 and (not a.gcp3_isolated_v1 or a.rejection_table is None
             or not a.rejection_table.is_absolute() or not a.rejection_table.is_file()):
         p.error('warp8 speed recording requires isolated gcp3 and an absolute existing rejection table')
@@ -187,6 +213,10 @@ def main():
         cuda_runtime_profile=('gcp3_isolated_no_mps_v1' if a.gcp3_isolated_v1 else
             'warp4_private_mps_v1' if a.mps_shared_v1 else 'shared_contexts_baseline'),
         price_basis='inherited regional VM estimate; billing unverified',reproduce=sys.argv)
+    if student_eval is not None:
+        # P5: success below is the student's (joint hold reached AND the unchanged GT evaluator).
+        report.update(model_calls=None,student_eval=dict(student_eval,
+            config_sha256=hashlib.sha256(Path(student_eval['config']).read_bytes()).hexdigest()))
     write(a.out/'summary.json',report)
     lanes=[];bridges=[];contexts=[];results={};recent=[deque(maxlen=100) for _ in indices]
     disk_rings=[DiskRing(a.out/f'world-{i:03d}'/'tail-ring-10hz') for i in range(len(indices))]
@@ -195,7 +225,7 @@ def main():
         for i,case in enumerate(selected):
             lane,bridge=make_lane(a.adapter_source,a.teacher_source,case['plan'],a.out/f'world-{i:03d}',hooks,i,a.cap_s,
                 flow=a.flow,profile=case.get('profile'),canonical=canonical,
-                candidate=case.get('candidate','baseline'))
+                candidate=case.get('candidate','baseline'),student_eval=student_eval)
             lanes.append(lane);bridges.append(bridge)
             contexts.append(next(lane));report['started_N']+=1
         write(a.out/'single-model-audit.json',model_arrays_equal([c['world'].model for c in contexts]))
@@ -312,6 +342,10 @@ def main():
                 # never merged into the grasp gate ``success`` above.
                 carry_success=(raw.get('carry_eval') or {}).get('success'),
                 carry_failure=(raw.get('carry_eval') or {}).get('failure'),
+                **({'student_funnel':(raw.get('student_eval') or {}).get('funnel'),
+                    'teacher_steps':(raw.get('student_eval') or {}).get('teacher_steps'),
+                    'student_worker_requests':(raw.get('student_eval') or {}).get('worker_requests')}
+                   if student_eval is not None else {}),
                 input_audit=raw.get('input_audit'),raw=str(a.out/f'world-{i:03d}'/'raw')))
         # Recording-only native JPEG ring, including bootstrap exceptions and
         # supervisor interrupts. No extra render/capture calls enter control.

@@ -14,8 +14,8 @@ import copy
 from pathlib import Path
 import sys
 
-ADAPTER_SHA = '76532d0dd6aa770cea19c65a734b893159d898de'
-TEACHER_SHA = '208e61490cfc19aef2a95954841e76a929fc0666'
+ADAPTER_SHA = '6843fcaa94785e46ee52ef1889e392ca988d604d'
+TEACHER_SHA = '59299f903f4a2f9a2eabe5ff0e442e0ce25e8266'
 RELEASE_SHA = '8e81b7d96c0c73171635348c90631462adfe1eb0'
 
 
@@ -123,6 +123,7 @@ class Bridge:
         self.canonical = None
         self.command_tape = []
         self.recording_commands = False
+        self.student_eval = None
 
     def build(self, original, scene, **kwargs):
         from sim import masterpi_drive_friction_v7 as drive
@@ -246,6 +247,9 @@ class Bridge:
         namespace['__warp2_bridge__'] = self
         function, audit = compile_function(Path(runner.__file__).read_text(), 'run', namespace, runner=True)
         self.transforms.append(audit)
+        if self.student_eval is not None:
+            # pairact P5 (default off): the frozen runner's own student_eval option.
+            kwargs = {**kwargs, 'student_eval': dict(self.student_eval)}
         try:
             return (yield from function(*args, **kwargs))
         finally:
@@ -295,8 +299,9 @@ class Bridge:
             yield dict(kind='step', target=target)
 
 
-def make_lane(adapter_source, teacher_source, plan, out, hooks, index, cap_s, *, flow='beampair', profile=None, canonical=None, candidate='baseline'):
+def make_lane(adapter_source, teacher_source, plan, out, hooks, index, cap_s, *, flow='beampair', profile=None, canonical=None, candidate='baseline', student_eval=None):
     bridge = Bridge(hooks, index)
+    bridge.student_eval = student_eval
     bridge.output = Path(out)
     bridge.plan = plan
     bridge.certification_source=Path(teacher_source) if teacher_source else Path(adapter_source).parent/TEACHER_SHA
