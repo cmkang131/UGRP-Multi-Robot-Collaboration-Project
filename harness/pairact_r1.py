@@ -422,12 +422,12 @@ def pair_dataset_class():
 
     class PairActDataset(GraspDataset):
         def __init__(self, root, split, *, stage_manifest, seed=None, history=None, sampling=None, blank=False):
-            super().__init__(root, split, blank=blank)
             history = dict(history or {})
             validate_history_options(**history)
             sampling = validate_sampling(sampling)
             if split != 'train' and (any(v is not None for v in history.values()) or sampling):
                 raise ValueError('history augmentation / transition sampling are TRAIN only')
+            super().__init__(root, split, blank=blank)
             self.sampling = sampling
             self.history, self.augment = history, False
             self.rng = np.random.default_rng(seed)

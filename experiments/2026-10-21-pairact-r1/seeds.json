@@ -1,0 +1,23 @@
+{
+  "schema": "ugrp.pairact_r1.seeds.v1",
+  "status": "DRAFT_NOT_COLLECTED",
+  "splits": {
+    "train": {"first": 8340000, "last": 8340199},
+    "validation": {"first": 8341000, "last": 8341019},
+    "heldout": {"first": 8342000, "last": 8342019}
+  },
+  "use": {
+    "train": "teacher demonstrations; only teacher-success episodes enter TRAIN tensors",
+    "validation": "teacher demonstrations; offline gate and checkpoint selection only",
+    "heldout": "P5 closed-loop only (student and teacher, same seed); never collected for tensors, never used for selection"
+  },
+  "known_ranges": [
+    {"first": 71001, "last": 71007, "source": "experiments/2026-10-15-beampair1/README.md:48"},
+    {"first": 8316902, "last": 8316902, "source": "experiments/2026-10-15-beampair1/README.md:26"},
+    {"first": 8318600, "last": 8318639, "source": "experiments/2026-10-15-beampair1/README.md:96 (beampair1-5)"},
+    {"first": 8318700, "last": 8318739, "source": "experiments/2026-10-16-beampair6/README.md:7,45 (beampair6-8 gate40)"},
+    {"first": 8328000, "last": 8328199, "source": "origin/claude/beampair8:experiments/2026-10-16-beampair8/README.md:45 (beamact1-4 TRAIN/validation)"},
+    {"first": 8329000, "last": 8329019, "source": "origin/claude/beampair8 README:45; beamact3 README:17 (beamact2/3 heldout20)"},
+    {"first": 8420000, "last": 8420039, "source": "experiments/2026-10-17-beamact5/README.md:57 (wide gate40, P1 r13)"}
+  ]
+}

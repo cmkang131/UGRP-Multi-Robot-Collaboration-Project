@@ -208,3 +208,68 @@ def test_trainer_pairact_flags_are_default_off_and_validated(tmp_path):
     r = run(*common, '--seed', '20261020', '--beamact3-v1', 'A', '--done-loss', 'balanced_bce_v1',
             '--execution-host-profile', 'beamact1_gcp2', '--checkpoint-every', '500')
     assert r.returncode == 2 and 'registered steps' in r.stderr
+
+
+def _synthetic_dataset(tmp_path):
+    from harness.grasp_act_data import DATA_SCHEMA, IMAGE_HW, sha256, write_json
+    skills = ['grasp'] * 6 + ['release'] * 6
+    phases = ['align', 'align', 'ready', 'ready', 'grasp', 'grasp',
+              'carry:door_pass', 'carry:to_zone', 'carry:lower', 'carry:open', 'carry:done', 'carry:done']
+    n = len(skills)
+    data, raw = tmp_path / 'data', tmp_path / 'run' / 'raw'
+    (data / '8340000-r1').mkdir(parents=True); raw.mkdir(parents=True)
+    samples = [dict(sample_id=f'e:{i}:r1', robot_id='r1', role='teal', object_kind='long_beam', skill=s,
+                    t=round(i * .1, 3)) for i, s in enumerate(skills)]
+    teacher = raw / 'teacher-r1.jsonl'
+    teacher.write_text(''.join(json.dumps(dict(sample_id=s['sample_id'], teacher_phase=ph)) + '\n'
+                               for s, ph in zip(samples, phases)))
+    state = np.zeros((n, c.CONTEXT_DIM), np.float32)
+    for i, s in enumerate(skills):
+        state[i, c.HISTORY * 14 + c.SKILLS.index(s)] = 1
+    pad = np.zeros((n, c.CHUNK), bool)
+    for i in range(n):
+        pad[i, max(0, (6 if i < 6 else 12) - i):] = True
+    action = np.zeros((n, c.CHUNK, 14), np.float32); action[[5, 11], 0, -1] = 1
+    folder = data / '8340000-r1'
+    np.savez_compressed(folder / 'tensors.npz', state=state, action=action, action_is_pad=pad,
+                        image_index=np.zeros((n, 4), np.int64))
+    np.save(folder / 'images.npy', np.zeros((1, 3, *IMAGE_HW), np.uint8))
+    write_json(folder / 'samples.json', samples)
+    stats = dict(schema=DATA_SCHEMA, train_seeds=[8340000], state_mean=[0.] * c.CONTEXT_DIM,
+                 state_std=[1.] * c.CONTEXT_DIM, action_mean=[0.] * 14, action_std=[1.] * 14)
+    write_json(data / 'normalization.json', stats)
+    manifest = dict(schema=DATA_SCHEMA, complete=True, protocol=dict(train_seeds=[8340000]),
+                    normalization=dict(path='normalization.json', sha256=sha256(data / 'normalization.json')),
+                    episodes=[dict(path='8340000-r1', seed=8340000, split='train', robot_id='r1',
+                                   source_root=str(tmp_path / 'run'),
+                                   source_hashes={'raw/teacher-r1.jsonl': sha256(teacher)},
+                                   files={f.name: sha256(f) for f in folder.iterdir()})])
+    write_json(data / 'manifest.json', manifest)
+    return data
+
+
+def test_sidecar_builder_and_pair_dataset_end_to_end(tmp_path):
+    pytest.importorskip('torch')
+    from scripts.build_pairact_r1_stage_targets import build
+    data = _synthetic_dataset(tmp_path)
+    sidecar = build(data, tmp_path / 'targets')
+    assert sidecar['missing_stages'] == ['approach', 'recover']
+    cfg = p.load_config(CONFIG)
+    ds = p.pair_dataset_class()(data, 'train', stage_manifest=tmp_path / 'targets/stage-targets.json',
+                                seed=cfg['seed'], history=cfg['history_augmentation'], sampling=cfg['sampling'])
+    assert len(ds) == 12 and ds.row_weights.max() == 3.
+    clean = ds[0]
+    assert clean['stage_target'][0] == p.stage_index('alignment') and set(clean) >= {'observation.state'}
+    ds.augment = True
+    changed = [not np.array_equal(ds[i]['observation.state'], clean['observation.state']) for i in [0] * 5]
+    assert any(changed)
+    import torch
+    picks = ds.sample(torch.Generator().manual_seed(0), 64)
+    assert all(0 <= i < 12 for i in picks)
+    priors = ds.completion_priors()
+    assert set(priors) == {'grasp', 'release'}
+    with pytest.raises(ValueError, match='TRAIN only'):
+        p.pair_dataset_class()(data, 'validation', stage_manifest=tmp_path / 'targets/stage-targets.json',
+                               history=cfg['history_augmentation'])
+    with pytest.raises(FileExistsError):
+        build(data, tmp_path / 'targets')
