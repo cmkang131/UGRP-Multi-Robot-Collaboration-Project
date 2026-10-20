@@ -12,6 +12,7 @@ import importlib
 from importlib.machinery import PathFinder
 from importlib.util import module_from_spec
 import json
+import os
 from pathlib import Path
 import platform
 import subprocess
@@ -94,6 +95,34 @@ def record_partial_candidates(record, teacher, world, rows, now):
     return record(teacher,world,rows,now)
 
 
+COLLECT_CANDIDATE='pairact_p3_collect'
+COLLECT_ENV=('PAIRACT_P3_COLLECT_PREREG','PAIRACT_P3_COLLECT_PREREG_SHA256','PAIRACT_P3_RECORDING_CHECK',
+             'PAIRACT_P3_RECORDING_PROBE')
+
+
+def collect_probe():
+    value=os.environ.get('PAIRACT_P3_RECORDING_PROBE','0')
+    if value not in ('0','1'):raise ValueError('PAIRACT_P3_RECORDING_PROBE must be 0 or 1')
+    return value=='1'
+
+
+def collect_proof(host,selected):
+    """Teacher-side pairact_p3_collect admission (FROZEN prereg sha256 + kept 640x480 check).
+    Must run inside dependency_modules: the pinned teacher supplies the rule."""
+    prereg=os.environ.get('PAIRACT_P3_COLLECT_PREREG')
+    if not prereg:raise ValueError('FROZEN collect pre-registration required before recording')
+    from harness.grasp_act_admission import collect_recording_admission,RECORDING_CHECK_MODES
+    from sim.grasp_act_search15_modes import ALL_MODES
+    check_path=os.environ.get('PAIRACT_P3_RECORDING_CHECK')
+    check=json.loads(Path(check_path).read_text()) if check_path else None
+    return collect_recording_admission(prereg,os.environ.get('PAIRACT_P3_COLLECT_PREREG_SHA256'),check,
+        source_sha=DEPENDENCY_SHA,teacher_profile=selected['teacher_profile'],
+        modes={k:selected.get(k,'off') for k in RECORDING_CHECK_MODES},
+        search15_options={k:selected.get(k,'off') for k in ALL_MODES},execution_host=host,
+        recording_probe=collect_probe(),
+        check_sha256=hashlib.sha256(Path(check_path).read_bytes()).hexdigest() if check_path else None)
+
+
 def profiles(candidate):
     # pairact P2: the unchanged r13 grasp profile; after the r13 joint hold the
     # runner hands over to the default-off GT pair-carry demonstration teacher
@@ -103,6 +132,10 @@ def profiles(candidate):
     # same + opt-in set-down until GT floor contact (teacher DESIGN §2-1); separate candidate
     if candidate=='pairact_p2_r13_floor':
         return {**profiles('pairact_p2_r13'),'carry_lower':'floor_contact_v1'}
+    # pairact P3 collection (opt-in): the P2 profile unchanged; recording is switched on in run()
+    # only for this candidate, with the teacher's pairact_p3_collect admission (no gate change here)
+    if candidate=='pairact_p3_collect':
+        return dict(profiles('pairact_p2_r13'))
     values=dict(teacher_profile='visible_only',self_pose_source='issued',
         teacher_stability='align_relook_v1',teacher_search='search_body_scan_v2',
         approach_goal_set='approach_goal_set_v1',nominal_blocked_handoff='nominal_blocked_handoff_v1',
@@ -416,7 +449,11 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
         report=None
         try:
             with recording_json(runner):
-                report=runner.run(plan,out,cap_s=cap_s,record_training=False,noise=False,execution_host=host,**selected)
+                if candidate==COLLECT_CANDIDATE:
+                    report=runner.run(plan,out,cap_s=cap_s,record_training=True,noise=False,execution_host=host,
+                        recording_proof=collect_proof(host,selected),recording_probe=collect_probe(),**selected)
+                else:
+                    report=runner.run(plan,out,cap_s=cap_s,record_training=False,noise=False,execution_host=host,**selected)
         finally:
             scene_module.make_scene=original_make_scene;measurements_module.measurements=original_measure
             world_module.VisibleWorld=original_world;teacher_module.VisibleOnlyGraspTeacher=original_teacher
