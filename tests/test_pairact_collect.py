@@ -291,12 +291,16 @@ def test_collect_cases_geometry_respects_bins(prereg):
             case = cc.make_case(geo, prereg, dict(seed=seed, bin=b['id'], split='train'))
             plan = case['plan']
             assert plan['seed'] == seed and plan['collect_bin'] == b['id'] and case['candidate'] == 'pairact_p2_r13'
-            assert plan['roles']['r1'] == ('teal' if seed % 2 == 0 else 'blue')
+            assert plan['roles']['r1'] == cc.role_of(seed)
             for rid in ('r1', 'r2'):
                 d = math.dist(plan['spawns'][rid][:2], plan['assigned_end_xy'][rid])
                 assert abs(d - plan['start_layers'][rid]['target_distance_m']) < 1e-9
                 assert pc.bin_of(prereg, d, plan['start_layers'][rid]['yaw_bin']['offset_rad']) == b['id']
             assert case == cc.make_case(geo, prereg, dict(seed=seed, bin=b['id'], split='train'))
+    # role must not follow the round-robin bin (seed offset % 6) or seed parity
+    for k in range(6):
+        roles = {cc.role_of(8340000 + k + 6 * j) for j in range(20)}
+        assert roles == {'teal', 'blue'}
 
 
 def test_prereg_seed_ranges_match_seeds_json(prereg):

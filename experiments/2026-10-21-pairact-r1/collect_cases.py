@@ -8,7 +8,9 @@ with three changes only:
     uniform on the full circle (wide_start stratified it over 12 runs),
   * both robots' assigned-end distance and heading offset come from
     ``harness.pairact_collect.draw_start(prereg, seed, bin, robot_index)``,
-  * r1 takes teal on even seeds and blue on odd seeds.
+  * r1's end is ``role_of(seed)`` (str-seeded coin), not seed parity: parity would tie the
+    role to the round-robin bin (6 bins, consecutive seeds); burst_ticks likewise uses a
+    str-seeded draw instead of wide_start's ``1 + i % 12``.
 Position bearing stays radially outward (wide_start bearing bin 0), the clearance,
 cargo, line-of-sight, parking and placement-graspable admission checks are the same
 code.  Nothing here runs physics, renders or reads evaluation truth.
@@ -100,11 +102,15 @@ class Geometry:
         return min(gaps, key=lambda v: v[1])
 
 
+def role_of(seed):
+    return 'teal' if random.Random(f'pairact_r1_collect_v1:{seed}:role').random() < .5 else 'blue'
+
+
 def make_case(geo, prereg, slot, *, candidate=CANDIDATE):
     from harness.static_keepouts import pose_clear
     ws, seed, bin_id = geo.ws, int(slot['seed']), slot['bin']
     (d1, y1), (d2, y2) = draw_start(prereg, seed, bin_id, 0), draw_start(prereg, seed, bin_id, 1)
-    end1 = 'teal' if seed % 2 == 0 else 'blue'
+    end1 = role_of(seed)
     end2 = 'blue' if end1 == 'teal' else 'teal'
     cx, cy = geo.pickup['center_m']
     hx, hy = geo.pickup['half_extents_m']
@@ -160,7 +166,7 @@ def make_case(geo, prereg, slot, *, candidate=CANDIDATE):
             roles={'r1': end1, 'r2': end2}, target_item='beam_1', object_kind='long_beam',
             assignment_source='demo_rule_color_balanced', end_color_scene='grasp_act_teal_blue_v1',
             peer_case='wide_pair_start_v1', initial_pan={r: rng.randint(500, 2500) for r in ('r1', 'r2')},
-            burst_ticks=1 + seed % 12, proposal_attempts=proposal + 1, collect_bin=bin_id,
+            burst_ticks=1 + random.Random(f'pairact_r1_collect_v1:{seed}:burst').randrange(12), proposal_attempts=proposal + 1, collect_bin=bin_id,
             start_layers={'r1': dict(layer=bin_id, target_distance_m=d1, yaw_bin=dict(index=None, offset_rad=y1),
                                      bearing_bin=dict(index=0, angle_rad=out1)),
                           'r2': dict(layer=bin_id, target_distance_m=d2, yaw_bin=dict(index=None, offset_rad=y2),

@@ -8,7 +8,7 @@ an interrupted batch is retried once for its un-ingested slots in a new try dir.
 Nothing is overwritten: every try writes a new directory.
 
     python scripts/run_pairact_collect.py collect --prereg P --run-root R --mode measurement \
-        --batch-size 20 --max-batches 3 --dependency-root TEACHER --frozen-root ROOT \
+        --batch-size 20 --max-batches 3 --dependency-root TEACHER --frozen-root ROOT --adapter-root ADAPTER \
         --episode-cmd 'python WRAPPER --flow beampair ... --cases {cases} --indices {indices} --out {out}'
     python scripts/run_pairact_collect.py report --prereg P --run-root R
     python scripts/run_pairact_collect.py convert-input --prereg P --run-root R --teacher-sha SHA --out DIR

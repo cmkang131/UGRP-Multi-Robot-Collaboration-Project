@@ -34,6 +34,7 @@
     "distance": "planar distance from the robot spawn to the grasp point of its assigned beam end (start_layers.<rid>.target_distance_m)",
     "distance_edges_m": [0.3, 0.6, 0.9, 1.2],
     "yaw": "own heading offset relative to the assigned-end outward direction (wide_start convention). facing: wrapped offset within 90 deg of pi (robot looks at its end); away: otherwise",
+    "roles": "r1 end = teal if random.Random('pairact_r1_collect_v1:<seed>:role').random() < 0.5 else blue (not seed parity, which would tie roles to round-robin bins)",
     "position_bearing": "radially outward from the assigned end (wide_start bearing bin 0), unchanged from the r13 wide gate",
     "list": [
       {"id": "B0", "distance_m": [0.3, 0.6], "yaw": "facing"},
