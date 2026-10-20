@@ -107,8 +107,17 @@ def validate_recording_inputs(record_training,teacher_profile,self_pose_source):
         raise ValueError('recording requires visible_only and issued pose; GT labels forbidden')
 
 
-def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teacher_profile="legacy",self_pose_source="issued",recording_proof=None,recording_probe=False,execution_host=None,teacher_stability="off",teacher_search="off",approach_goal_set="off",nominal_blocked_handoff="off",approach_progress="off",approach_recovery="off",approach_coordination="off",handoff_observation="off",pregrasp_sampling="off",obstacle_reobserve="off",peer_reobserve="off",search17_candidates="off",search17_escape="off",search17_odometry="off",search18_footprint="off",search18_start_plan="off",search18_free_space="off",search19_motion="off",search19_footprint="off",search20="off",search21="off",search22="off",search23="off",search24_irm="off",search24_budget="off",search25_inflation="off",search25_memory="off",search25_view="off",search25_budget="off",search23_rects="off",search26_circles="off",search26_circles_farfirst="off",search26_static_peer="off",search26_peer_memory="off",search26_reobserve="off",search26_reobserve_refresh="off",search26_reobserve_refresh_open="off",search26_commit_plan="off",search26_wide_rescue="off",search26_align_diag="off",search26_align_pulse="off",search26_wide_stance="off"):
+def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teacher_profile="legacy",self_pose_source="issued",recording_proof=None,recording_probe=False,execution_host=None,teacher_stability="off",teacher_search="off",approach_goal_set="off",nominal_blocked_handoff="off",approach_progress="off",approach_recovery="off",approach_coordination="off",handoff_observation="off",pregrasp_sampling="off",obstacle_reobserve="off",peer_reobserve="off",search17_candidates="off",search17_escape="off",search17_odometry="off",search18_footprint="off",search18_start_plan="off",search18_free_space="off",search19_motion="off",search19_footprint="off",search20="off",search21="off",search22="off",search23="off",search24_irm="off",search24_budget="off",search25_inflation="off",search25_memory="off",search25_view="off",search25_budget="off",search23_rects="off",search26_circles="off",search26_circles_farfirst="off",search26_static_peer="off",search26_peer_memory="off",search26_reobserve="off",search26_reobserve_refresh="off",search26_reobserve_refresh_open="off",search26_commit_plan="off",search26_wide_rescue="off",search26_align_diag="off",search26_align_pulse="off",search26_wide_stance="off",pair_carry="off",carry_cap_s=110.):
     validate_recording_inputs(record_training,teacher_profile,self_pose_source)
+    from harness.pair_carry_teacher_warp import MODES as CARRY_MODES
+    if pair_carry not in CARRY_MODES:raise ValueError('unknown pair carry mode')
+    if pair_carry!='off':
+        # P2 GT carry continues ONLY the visible_only two-robot joint hold.
+        if teacher_profile!='visible_only' or sorted(plan.get('roles',{}).values())!=['blue','teal']:
+            raise ValueError('pair carry requires the visible_only one-robot-per-end joint hold')
+        if record_training:raise ValueError('pair carry recording is P3; recorder hook not wired (fail closed)')
+        if probe:raise ValueError('pair carry is not a probe mode')
+        if not 0<carry_cap_s<=120:raise ValueError('finite carry cap required')
     from sim.grasp_act_search15_modes import validate
     search15={'peer_reobserve':peer_reobserve,'search17_candidates':search17_candidates,'search17_escape':search17_escape,'search17_odometry':search17_odometry,'search18_footprint':search18_footprint,'search18_start_plan':search18_start_plan,'search18_free_space':search18_free_space,'search19_motion':search19_motion,'search19_footprint':search19_footprint,'search20':search20,'search21':search21,'search22':search22,'search23':search23,'search24_irm':search24_irm,'search24_budget':search24_budget,'search25_inflation':search25_inflation,'search25_memory':search25_memory,'search25_view':search25_view,'search25_budget':search25_budget,'search23_rects':search23_rects,'search26_circles':search26_circles,'search26_static_peer':search26_static_peer,'search26_peer_memory':search26_peer_memory,'search26_circles_farfirst':search26_circles_farfirst,'search26_reobserve':search26_reobserve,'search26_reobserve_refresh':search26_reobserve_refresh,'search26_reobserve_refresh_open':search26_reobserve_refresh_open,'search26_commit_plan':search26_commit_plan,'search26_wide_rescue':search26_wide_rescue,'search26_align_diag':search26_align_diag,'search26_align_pulse':search26_align_pulse,'search26_wide_stance':search26_wide_stance,'obstacle_reobserve':obstacle_reobserve,'pregrasp_sampling':pregrasp_sampling}
     validate(search15,recovery=approach_recovery,profile=teacher_profile,pose_source=self_pose_source,coordination=approach_coordination)
@@ -180,6 +189,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
         'start_nominal_goal_feasible':plan.get('start_nominal_goal_feasible','off'),
         'search_handoff':False,
         'input_audit':new_input_audit(strict,self_pose_source),
+        'pair_carry':pair_carry,'carry_cap_s':carry_cap_s if pair_carry!='off' else 0.,
         'criteria':{'min_z_m':.012,'max_tilt_deg':10.,'hold_s':3.} if strict else {'min_z_m':.012,'hold_s':1.}}
     write(out/'result.json',report)
     try:
@@ -247,7 +257,8 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
             report['observation_sampling']['own_review_hz']=1
             report['observation_sampling']['own_review_size']=[320,240]
         inst=next(x for x in scene.cargo if x.item_id=='beam_1');i=0;written=0;both_since=None;all_done_since=None;max_hold=0.
-        while float(world.data.time)-origin < cap_s-1e-8:
+        carry=None;carry_rows=[];carry_done_since=None
+        while float(world.data.time)-origin < (cap_s if carry is None else cap_s+carry_cap_s)-1e-8:
             now=float(world.data.time);at=time.monotonic()
             if search23!='off' and now-origin>=30.-1e-8 and 'first30_speed' not in report:
                 report['first30_speed']={'sim_s':now-origin,'wall_s':time.monotonic()-start,
@@ -257,7 +268,11 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
             truth=snapshot(world,inst,plan['roles'],scene)
             truth['visibility']={rid:visibility.measure(world.data,rid,end) for rid,end in plan['roles'].items()}
             perceived={}
-            if strict:
+            if carry is not None:
+                # GT carry: no visible measurements are produced or audited.
+                from harness.pair_carry_eval import eval_row
+                carry_rows.append(eval_row(truth))
+            elif strict:
                 truth['visible_measurements']={}
                 for rid,end in plan['roles'].items():
                     ms=measurements(world,visibility,rid,end,object_bodies)
@@ -296,19 +311,19 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
             if strict:both=both and truth['beam']['tilt_deg']<=10.
             both_since=(now if both_since is None else both_since) if both else None
             held_s=0. if both_since is None else now-both_since;max_hold=max(max_hold,held_s)
-            if strict:report['joint_held']=held_s>=3.
+            if strict and carry is None:report['joint_held']=held_s>=3.
             elif len(plan['roles'])==2 and held_s>=1.:report['joint_held']=True
             permit=all(x.phase in ('ready','pick','verify','done') for x in teachers.values())
-            if strict:
+            if strict and carry is None:
                 if approach_coordination=='observed_blocked_priority_v2':
                     blocked={rid:t.request_coordination(perceived[rid],now) for rid,t in teachers.items()}
                     if sync.request(blocked,now):
                         for t in teachers.values():t.activate_coordination(now)
                 ready={rid:t.prepare_signal(perceived[rid],now) for rid,t in teachers.items()}
                 permits=sync.tick(ready,now)
-            elif observable:
+            elif observable and carry is None:
                 permit=permit and all(x.phase!='ready' or truth['visibility'][rid]['visible_probes']>=3 for rid,x in teachers.items())
-            for rid,t in teachers.items():
+            for rid,t in (teachers.items() if carry is None else ()):
                 at=time.monotonic()
                 sample_id=f"{plan['episode_id']}:{i}:{rid}"
                 # Demonstration supervisor supplies the discrete wait command;
@@ -365,16 +380,45 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
                     if done:t.done_recorded=True
                 label['issued_native_wheels']=list(ports[rid]._motor_commands)
                 writers[rid][1].write(json.dumps(label)+'\n')
+            if carry is not None:
+                at=time.monotonic()
+                for rid,(clean,done) in carry.step(truth,now).items():
+                    applied=command(json.loads(json.dumps(clean)))
+                    label=carry_label(f"{plan['episode_id']}:{i}:{rid}",clean=clean,applied=applied,done=done,
+                        phase=carry.phase,outcome=carry.outcome,assignment_source=plan['assignment_source'])
+                    apply(ports[rid],applied,now,previous[rid]);previous[rid]=applied;history[rid].append(applied)
+                    models[rid].issue(applied)
+                    label['issued_native_wheels']=list(ports[rid]._motor_commands)
+                    writers[rid][1].write(json.dumps(label)+'\n')
+                timings['teacher']+=time.monotonic()-at
             written+=1
-            if strict and all(t.command_complete for t in teachers.values()):
+            if carry is not None:
+                if carry.done:
+                    # keep 1.5 SIM s of passive rows so the evaluator sees the rest state
+                    carry_done_since=now if carry_done_since is None else carry_done_since
+                    if now-carry_done_since>=1.5-1e-8:break
+            elif strict and all(t.command_complete for t in teachers.values()):
                 all_done_since=now if all_done_since is None else all_done_since
-                if not probe and (report['joint_held'] or now-all_done_since>=6.):break
+                if not probe and pair_carry!='off' and report['joint_held']:
+                    from harness.pair_carry_teacher_warp import start_from_runner
+                    from harness.pair_carry_recorder import carry_label
+                    carry=start_from_runner(plan,truth,now,scene,teachers,previous,carry_cap_s)
+                    report['carry_handover_sim_s']=now-origin
+                elif not probe and (report['joint_held'] or now-all_done_since>=6.):break
             if not strict and not probe and all(t.outcome is not None for t in teachers.values()):
                 all_done_since=now if all_done_since is None else all_done_since
                 if len(teachers)==1 or report['joint_held'] is True or now-all_done_since>=3.:break
             if not probe and any(t.outcome not in (None,'success') for t in teachers.values()):break
             i+=1;advance(origin+i*.1)
         finalize_outcomes(teachers,strict=strict,joint_held=report['joint_held'])
+        if carry is not None:
+            from harness.pair_carry_eval import evaluate
+            lower=next((e['t'] for e in carry.events if e.get('event')=='phase' and e.get('to')=='lower'),None)
+            report['carry']=carry.diagnostic()
+            report['carry_eval']=evaluate(carry_rows,carry.static_map,list(plan['roles']),lower_start_t=lower,handover_t=carry.t0)
+            write(out/'carry-eval.json',report['carry_eval'])
+        elif pair_carry!='off':
+            report['carry']={'started':False,'reason':'no_joint_hold_3s'}
         if strict:
             report['max_stable_hold_s']=max_hold
             write(out/'start-protocol.json',{'source':('BLOCKED/READY/GO/ACK boolean messages; no peer poses' if approach_coordination=='observed_blocked_priority_v2' else 'READY/GO/ACK only; no peer probes'),'delays_s':delays,'events':sync.events})
@@ -389,7 +433,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
         report['approach_handoff']=any(t.outcome=='approach_blocked_handoff' for t in teachers.values())
         report['data_admitted']=bool(record_training and not recording_probe and report['physical_success'] and not report['search_handoff'] and not report['approach_handoff'])
         report['wall_per_sim']=report['wall_s']/max(.001,report['sim_s'])
-        report['cap_end']=bool(report['sim_s']>=cap_s-1e-8)
+        report['cap_end']=bool(report['sim_s']>=(cap_s if carry is None else cap_s+carry_cap_s)-1e-8)
         report['end_reason']='cap_end' if report['cap_end'] else 'teacher_terminal'
         # Pair whole-beam clearance is deliberately a separate, not-yet-evaluated metric.
         write(out/'result.json',report)
@@ -430,6 +474,8 @@ def main():
     p.add_argument('--gate-plan',type=Path);p.add_argument('--recording-probe',action='store_true');p.add_argument('--recording-check',type=Path)
     from sim.grasp_act_search15_modes import add_arguments
     add_arguments(p)
+    p.add_argument('--pair-carry',choices=('off','pair_carry_gt_v1'),default='off')
+    p.add_argument('--carry-cap-s',type=float,default=110.)
     a=p.parse_args();proof=None
     validate_recording_inputs(a.record_training,a.teacher_profile,a.self_pose_source)
     from scripts.grasp_act_host import identity,same_machine
@@ -453,5 +499,5 @@ def main():
             proof['recording_check_sha256']=hashlib.sha256(a.recording_check.read_bytes()).hexdigest()
     if not 0<a.cap_s<=180:raise ValueError('finite cap required')
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]
-    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,noise=a.noise,record_training=a.record_training,probe=a.probe,teacher_profile=a.teacher_profile,self_pose_source=a.self_pose_source,recording_proof=proof,recording_probe=a.recording_probe,execution_host=host,teacher_stability=a.teacher_stability,teacher_search=a.teacher_search,approach_goal_set=a.approach_goal_set,nominal_blocked_handoff=a.nominal_blocked_handoff,approach_progress=a.approach_progress,approach_recovery=a.approach_recovery,approach_coordination=a.approach_coordination,handoff_observation=a.handoff_observation,pregrasp_sampling=a.pregrasp_sampling,obstacle_reobserve=a.obstacle_reobserve,peer_reobserve=a.peer_reobserve,search17_candidates=a.search17_candidates,search17_escape=a.search17_escape,search17_odometry=a.search17_odometry,search18_footprint=a.search18_footprint,search18_start_plan=a.search18_start_plan,search18_free_space=a.search18_free_space,search19_motion=a.search19_motion,search19_footprint=a.search19_footprint,search20=a.search20,search21=a.search21,search22=a.search22,search23=a.search23,search24_irm=a.search24_irm,search24_budget=a.search24_budget,search25_inflation=a.search25_inflation,search25_memory=a.search25_memory,search25_view=a.search25_view,search25_budget=a.search25_budget,search23_rects=a.search23_rects,search26_circles=a.search26_circles,search26_static_peer=a.search26_static_peer,search26_circles_farfirst=a.search26_circles_farfirst,search26_peer_memory=a.search26_peer_memory,search26_reobserve=a.search26_reobserve,search26_reobserve_refresh=a.search26_reobserve_refresh,search26_reobserve_refresh_open=a.search26_reobserve_refresh_open,search26_commit_plan=a.search26_commit_plan,search26_wide_rescue=a.search26_wide_rescue,search26_align_diag=a.search26_align_diag,search26_align_pulse=a.search26_align_pulse,search26_wide_stance=a.search26_wide_stance),ensure_ascii=False))
+    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,noise=a.noise,record_training=a.record_training,probe=a.probe,teacher_profile=a.teacher_profile,self_pose_source=a.self_pose_source,recording_proof=proof,recording_probe=a.recording_probe,execution_host=host,teacher_stability=a.teacher_stability,teacher_search=a.teacher_search,approach_goal_set=a.approach_goal_set,nominal_blocked_handoff=a.nominal_blocked_handoff,approach_progress=a.approach_progress,approach_recovery=a.approach_recovery,approach_coordination=a.approach_coordination,handoff_observation=a.handoff_observation,pregrasp_sampling=a.pregrasp_sampling,obstacle_reobserve=a.obstacle_reobserve,peer_reobserve=a.peer_reobserve,search17_candidates=a.search17_candidates,search17_escape=a.search17_escape,search17_odometry=a.search17_odometry,search18_footprint=a.search18_footprint,search18_start_plan=a.search18_start_plan,search18_free_space=a.search18_free_space,search19_motion=a.search19_motion,search19_footprint=a.search19_footprint,search20=a.search20,search21=a.search21,search22=a.search22,search23=a.search23,search24_irm=a.search24_irm,search24_budget=a.search24_budget,search25_inflation=a.search25_inflation,search25_memory=a.search25_memory,search25_view=a.search25_view,search25_budget=a.search25_budget,search23_rects=a.search23_rects,search26_circles=a.search26_circles,search26_static_peer=a.search26_static_peer,search26_circles_farfirst=a.search26_circles_farfirst,search26_peer_memory=a.search26_peer_memory,search26_reobserve=a.search26_reobserve,search26_reobserve_refresh=a.search26_reobserve_refresh,search26_reobserve_refresh_open=a.search26_reobserve_refresh_open,search26_commit_plan=a.search26_commit_plan,search26_wide_rescue=a.search26_wide_rescue,search26_align_diag=a.search26_align_diag,search26_align_pulse=a.search26_align_pulse,search26_wide_stance=a.search26_wide_stance,pair_carry=a.pair_carry,carry_cap_s=a.carry_cap_s),ensure_ascii=False))
 if __name__=='__main__':main()
