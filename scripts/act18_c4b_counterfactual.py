@@ -57,9 +57,16 @@ ADDENDUM_SCHEMA_V1 = 'ugrp.act18.c4b_gpu_addendum.v1'
 # v2 (registered before any GPU result) supersedes the v1 V-hist-fail donor rule:
 # the donor is a failure world with a DIFFERENT seed that maximises the mean
 # 16-tick history |dPWM| against the target (ties: label order). v1 is refused.
-ADDENDUM_SCHEMA = 'ugrp.act18.c4b_gpu_addendum.v2'
+ADDENDUM_SCHEMA_V2 = 'ugrp.act18.c4b_gpu_addendum.v2'
+# v3 adds the size-matched V-hist-scramble arm (same success donor history as V-hist,
+# entries reversed in time then rotated by SCRAMBLE_ROTATE ticks). v1/v2 are refused.
+ADDENDUM_SCHEMA = 'ugrp.act18.c4b_gpu_addendum.v3'
 HIST_FAIL_SUITABLE_RATIO = .5
-ADDENDUM_ARMS = ARMS + EXTRA_ARMS
+SCRAMBLE_ROTATE = 8
+# Registered size check: median |dPWM|(V-hist-scramble) / median |dPWM|(V-hist).
+SCRAMBLE_SIZE_RATIO_BOUNDS = (.8, 1.25)
+SCRAMBLE_MAX_RECOVERED = 2
+ADDENDUM_ARMS = ARMS + EXTRA_ARMS + ('V-hist-scramble',)
 FAILURE_ONLY_ARMS = ('V-hist-fail',)
 # Offline executors re-aggregated from the recorded raw chunks (no extra forward):
 # name -> n_action_steps of a no-ensemble harness ChunkExecutor (latest chunk first,
@@ -392,6 +399,22 @@ def replace_history(observation, reference_row):
     return changed
 
 
+def scramble_issued(issued, rotate=SCRAMBLE_ROTATE):
+    """Reverse the 16-entry history in time, then rotate the entry index by ``rotate``.
+
+    A pure permutation of the donor entries: every channel keeps exactly the donor's
+    multiset of values (same value distribution), only the temporal order changes."""
+    reversed_ = list(issued)[::-1]
+    count = len(reversed_)
+    return [reversed_[(index + rotate) % count] for index in range(count)]
+
+
+def scrambled_row(reference_row, rotate=SCRAMBLE_ROTATE):
+    observation = dict(reference_row['observation'])
+    observation['issued'] = scramble_issued(observation['issued'], rotate)
+    return dict(reference_row, observation=observation)
+
+
 def apply_variant(arm, observation, *, same_row, cross_row, fail_row=None):
     """One-input substitution; everything else stays recorded."""
     if arm == 'V0':
@@ -406,6 +429,8 @@ def apply_variant(arm, observation, *, same_row, cross_row, fail_row=None):
         return replace_images(observation, cross_row)
     if arm == 'V-hist':
         return replace_history(observation, same_row)
+    if arm == 'V-hist-scramble':
+        return replace_history(observation, scrambled_row(same_row))
     if arm == 'V-hist-fail':
         if fail_row is None:
             raise ValueError('V-hist-fail requires a failure reference row')
@@ -505,7 +530,8 @@ def decide(recovered):
 
 
 def decide_addendum(recovered, hist_fail_recovered, executor_recovered, v0_chunk_open,
-                    failure_n=10, minimum=DECISION_MIN, hist_fail_suitable=True):
+                    failure_n=10, minimum=DECISION_MIN, hist_fail_suitable=True,
+                    scramble_recovered=None, scramble_size_matched=None):
     """GPU addendum rules; the original ``decide`` over the 5 control arms is unchanged.
 
     H-A1 (history copycat): V-hist >= 6 and V-hist-fail < 6 -> supported (success
@@ -538,7 +564,22 @@ def decide_addendum(recovered, hist_fail_recovered, executor_recovered, v0_chunk
     else:
         h_a2 = dict(verdict='not_supported', executors=[],
                     text='raw chunk open 있으나 대체 실행기 회복 < %d/%d' % (minimum, failure_n))
-    return dict(h_a1=h_a1, h_a2=h_a2)
+    hist_v = recovered.get('V-hist')
+    if hist_v is None or scramble_recovered is None:
+        h_a1_scramble = dict(verdict='incomplete', text='V-hist 또는 V-hist-scramble 미실행')
+    elif scramble_size_matched is False:
+        h_a1_scramble = dict(verdict='withheld_size_mismatch',
+                             text='V-hist-scramble |dPWM| 크기가 V-hist와 맞지 않음 -> 결론 보류')
+    elif hist_v >= minimum and scramble_recovered <= SCRAMBLE_MAX_RECOVERED:
+        h_a1_scramble = dict(verdict='temporal_content',
+                             text='성공 이력의 시간 구조(내용)가 원인')
+    elif hist_v >= minimum and scramble_recovered >= minimum:
+        h_a1_scramble = dict(verdict='perturbation_ood_escape',
+                             text='큰 이력 교란 자체가 원인(OOD 탈출)')
+    else:
+        h_a1_scramble = dict(verdict='withheld', text='결론 보류')
+    h_a1_scramble.update(v_hist_recovered=hist_v, scramble_recovered=scramble_recovered)
+    return dict(h_a1=h_a1, h_a1_scramble=h_a1_scramble, h_a2=h_a2)
 
 
 def rindex(observations, t0, tick):
@@ -673,9 +714,11 @@ def replay_world(world, arms, run_root, recovered_root, actor, checkpoint_sha):
             chunk_open_tau=chunk_tau, chunk_open_row=chunk_row,
             executors=executors,
             history_delta=(history_delta_series(window, [
-                rindex(same_obs if arm == 'V-hist' else fail_obs,
-                       same_t0 if arm == 'V-hist' else fail_t0, index)
-                for index in range(len(window))]) if arm in ('V-hist', 'V-hist-fail') else None),
+                (scrambled_row if arm == 'V-hist-scramble' else (lambda row: row))(
+                    rindex(fail_obs if arm == 'V-hist-fail' else same_obs,
+                           fail_t0 if arm == 'V-hist-fail' else same_t0, index))
+                for index in range(len(window))])
+                if arm in ('V-hist', 'V-hist-fail', 'V-hist-scramble') else None),
             forwards=int(sum(1 for item in series[arm] if item['raw_pwm1'] is not None)),
             forward_wall_s=round(forward_times[arm], 3),
             series=series[arm])
@@ -783,6 +826,17 @@ def summarize(replay, checkpoint_sha, arms=ARMS, addendum=False):
                     for world in failures if arm in world['arms']]
         hist_dist = delta_distribution(deltas('V-hist'))
         fail_dist = delta_distribution(deltas('V-hist-fail'))
+        scramble_dist = delta_distribution(deltas('V-hist-scramble'))
+        scramble_ratio = scramble_matched = scramble_rec = None
+        if hist_dist and scramble_dist and hist_dist['median'] > 0:
+            scramble_ratio = round(scramble_dist['median'] / hist_dist['median'], 3)
+            low, high = SCRAMBLE_SIZE_RATIO_BOUNDS
+            scramble_matched = low <= scramble_ratio <= high
+        if 'V-hist-scramble' in arms and any('V-hist-scramble' in world['arms'] for world in failures):
+            scramble_rec = sum(1 for world in failures
+                               if 'V-hist-scramble' in world['arms']
+                               and world['arms']['V-hist-scramble']['open_tau'] is not None
+                               and world['arms']['V0']['open_tau'] is None)
         suitable = None
         if hist_dist and fail_dist:
             suitable = fail_dist['median'] >= HIST_FAIL_SUITABLE_RATIO * hist_dist['median']
@@ -792,7 +846,11 @@ def summarize(replay, checkpoint_sha, arms=ARMS, addendum=False):
                 donor=world.get('reference_fail'),
                 mean_abs_pwm=(world['arms']['V-hist-fail'].get('history_delta') or {}).get('mean_abs_pwm'))
                 for world in failures if 'V-hist-fail' in world['arms']},
-            history_delta=dict(V_hist=hist_dist, V_hist_fail=fail_dist,
+            scramble_recovered=scramble_rec,
+            history_delta=dict(V_hist=hist_dist, V_hist_fail=fail_dist, V_hist_scramble=scramble_dist,
+                               scramble_size_ratio=scramble_ratio,
+                               scramble_size_bounds=list(SCRAMBLE_SIZE_RATIO_BOUNDS),
+                               scramble_size_matched=scramble_matched,
                                ratio_rule='V-hist-fail median >= %.2f x V-hist median'
                                % HIST_FAIL_SUITABLE_RATIO,
                                hist_fail_control_suitable=suitable),
@@ -801,7 +859,9 @@ def summarize(replay, checkpoint_sha, arms=ARMS, addendum=False):
                                    N=len(failures), rate=masked_rate),
             decision=decide_addendum(recovered, hist_fail, executor_recovered, v0_chunk_open,
                                      failure_n=len(failures),
-                                     hist_fail_suitable=suitable is not False))
+                                     hist_fail_suitable=suitable is not False,
+                                     scramble_recovered=scramble_rec,
+                                     scramble_size_matched=scramble_matched))
     return result
 
 
@@ -817,8 +877,9 @@ def device_guard(requested, available):
 def load_addendum(path, prereg_path):
     """GPU addendum must name the exact base prereg it extends."""
     value = json.loads(Path(path).read_text())
-    if value.get('schema') == ADDENDUM_SCHEMA_V1:
-        raise SystemExit('addendum v1 is superseded by v2 (V-hist-fail donor rule); use the v2 file')
+    if value.get('schema') in (ADDENDUM_SCHEMA_V1, ADDENDUM_SCHEMA_V2):
+        raise SystemExit('addendum %s is superseded by v3 (V-hist-scramble arm); use the v3 file'
+                         % value['schema'].rsplit('.', 1)[-1])
     if value.get('schema') != ADDENDUM_SCHEMA:
         raise SystemExit('unregistered addendum schema')
     if value.get('base_prereg', {}).get('sha256') != sha256(prereg_path):
@@ -935,7 +996,7 @@ def main(argv=None):
     arms = (tuple(part.strip() for part in args.arms.split(',') if part.strip())
             or (ADDENDUM_ARMS if args.addendum else ARMS))
     for arm in arms:
-        if arm not in ARMS + EXTRA_ARMS:
+        if arm not in ADDENDUM_ARMS:
             raise SystemExit('unknown arm %r' % (arm,))
     if 'V-hist-fail' in arms and 'V0' not in arms:
         raise SystemExit('V-hist-fail needs the V0 fidelity baseline in the same run')

@@ -1,0 +1,351 @@
+{
+  "V-hist-fail": {
+    "definition": "the 16 issued-command contents := the donor failure world history at the same release-relative tick; target timestamps kept (same replace_history as V-hist)",
+    "delta_definition": "mean over the 80 window ticks of mean |issued PWM difference| over the 16 history entries x 5 servos, target vs donor at the same release-relative tick (history_delta_series / window_history_delta)",
+    "donor_rule": "candidates = failure worlds whose seed differs from the target seed (kind not constrained); donor = candidate with the largest mean history |dPWM| against the target; ties broken by world label order",
+    "recorded": "per target: donor label and its mean |dPWM| (summary addendum.hist_fail_donors); distributions of V-hist and V-hist-fail |dPWM| over the 10 failure worlds (summary addendum.history_delta)",
+    "runtime_check": "the replay recomputes the donor table from the C2c observations and aborts if any donor or |dPWM| (tol 1e-3) differs from hist_fail_donor",
+    "scope": "failure worlds only (10); not applicable to success worlds",
+    "status": "formal arm, donor rule v2"
+  },
+  "V-hist-scramble": {
+    "definition": "the 16 issued-command contents := the V-hist donor history (same-kind success reference img_same, same release-relative tick) permuted: entries reversed in time, then entry index rotated by k=8 (scrambled[i] = reversed[(i + 8) mod 16]); target timestamps kept",
+    "property": "a pure permutation of the donor entries: per channel the donor multiset of values (value distribution) is identical to V-hist; only temporal order changes",
+    "recorded": "per world |dPWM| of V-hist and V-hist-scramble, their distributions, the ratio and size_matched flag (summary addendum.history_delta)",
+    "scope": "all 19 worlds, like V-hist (failure 10 enter the decision; success 9 descriptive)",
+    "size_check": {
+      "on_fail": "h_a1_scramble verdict withheld_size_mismatch (no conclusion from the scramble rule)",
+      "rule": "scramble_size_ratio = median(V-hist-scramble) / median(V-hist) must lie in [0.80, 1.25]",
+      "statistic": "median over the 10 failure worlds of mean |dPWM| vs the target (same definition as V-hist-fail)"
+    },
+    "status": "formal arm (v3)"
+  },
+  "amends": {
+    "chain": {
+      "v1": "be8d00e1173344c7a8f8c36f8e9b18f769f45c3788fe3846b881535abc016256",
+      "v2": "857bd35f327ee7e77ce6192de49b8f8edc6a5c83f894b7b3513bc6cc6561a928"
+    },
+    "commit": "77129abb5",
+    "path": "experiments/2026-10-17-act18/C4_COUNTERFACTUAL_PREREG_ADDENDUM_GPU_V2.json",
+    "reason": "v2 V-hist-fail is expected to be flagged unsuitable (input-only median ratio 0.27); a size-matched content control is added",
+    "sha256": "857bd35f327ee7e77ce6192de49b8f8edc6a5c83f894b7b3513bc6cc6561a928",
+    "unchanged": "everything in v2 (including V-hist-fail, its donor table and its suitability rule); v3 only adds V-hist-scramble, its size check and its decision rule"
+  },
+  "arms": [
+    "V0",
+    "V-pe",
+    "V-se",
+    "V-img-same",
+    "V-img-cross",
+    "V-hist",
+    "V-hist-fail",
+    "V-hist-scramble"
+  ],
+  "base_prereg": {
+    "commit": "08a419f50",
+    "path": "experiments/2026-10-17-act18/C4_COUNTERFACTUAL_PREREG.json",
+    "sha256": "e124b872b2be5f6d03e87f13f8c14e528230e74a399c79821a8d531007d56cae",
+    "unchanged": [
+      "targets (10 failure + 9 success worlds)",
+      "window (release entry, 80 ticks)",
+      "variants V0/V-pe/V-se/V-img-same/V-img-cross/V-hist and their reference worlds",
+      "fidelity gate",
+      "decision_rules (failure >= 6/10)"
+    ]
+  },
+  "code": {
+    "branch": "dsh/act18-c4-counterfactual",
+    "script": "scripts/act18_c4b_counterfactual.py",
+    "tests": "tests/test_act18_c4b_counterfactual.py"
+  },
+  "created_utc": "2026-10-20T09:14:56Z",
+  "decision": {
+    "H-A1": [
+      "suitability: if median |dPWM|(V-hist-fail) < 0.5 x median |dPWM|(V-hist) over the 10 failure worlds, V-hist-fail is marked unsuitable as a control (verdict control_unsuitable); the H-A1 report then gives the V-hist recovery count alone together with the donor sizes, without a content-specificity claim",
+      "otherwise: V-hist >= 6 and V-hist-fail < 6 -> supported (success-history content)",
+      "otherwise: V-hist >= 6 and V-hist-fail >= 6 -> refuted as content-specific (any history change recovers)",
+      "otherwise: V-hist < 6 -> not supported"
+    ],
+    "H-A1-scramble": [
+      "size check fails -> withheld_size_mismatch",
+      "V-hist >= 6/10 and V-hist-scramble <= 2/10 -> temporal_content: the temporal structure (content) of the success history is the cause",
+      "V-hist >= 6/10 and V-hist-scramble >= 6/10 -> perturbation_ood_escape: a large history perturbation itself is the cause",
+      "otherwise -> withheld (no conclusion)",
+      "reported alongside the v2 H-A1 (V-hist-fail) verdict; neither replaces the other"
+    ],
+    "H-A2": [
+      "any alternative executor recovers >= 6/10 on V0 forwards -> supported (TE dilution)",
+      "no executor >= 6 and V0 chunk_open = 0/10 failure worlds -> refuted (no open in raw chunks)",
+      "otherwise -> not supported; masked_by_te rate is reported as the H-A2 indicator"
+    ],
+    "base_rules": "unchanged: decide() over V-pe/V-se/V-img-same/V-img-cross/V-hist with >= 6/10",
+    "carry_tournament_link": "H-A1 refuted or not supported -> drop carry-cand-1/2 from tournament A; H-A2 refuted -> drop carry-cand-3; freed slots filled from the strongest C4b-GPU signal before the tournament prereg is frozen (owner plan A3)",
+    "hist_fail_suitable_ratio": 0.5,
+    "minimum_recovered": 6,
+    "scramble_max_recovered": 2,
+    "scramble_rotate": 8,
+    "scramble_size_ratio_bounds": [
+      0.8,
+      1.25
+    ]
+  },
+  "device": "cuda",
+  "exclusions_and_limits": [
+    "offline replay; no physics; no closed loop (as in the base prereg)",
+    "V-hist-fail is not applicable to success worlds; success-world tables for it are empty by design",
+    "HO4 remains a diagnostic holdout (gate_eligible=false)",
+    "V-hist-fail donors are failure worlds, whose release histories are all near-stationary; even the largest different-seed donor is much smaller than the success-history substitution of V-hist (see precomputed_input_sizes)",
+    "v2 donors concentrate on two worlds (C2c-ho4-rep1/group-002/world-001 for 7 targets, C2c-ho4-rep3/group-001/world-000 for 3)",
+    "V-hist-scramble keeps every donor value, including open-level PWM values once the success donor has opened (late window ticks); in those ticks the scrambled history can still contain an open command, so a scramble recovery after the donor open time is not pure perturbation",
+    "the permutation changes the donor content by a median mean |dPWM| of 43.3 against the unscrambled donor (failure targets), about 22% of the V-hist substitution size: much of the donor history is stationary, so the content break is partial",
+    "for C2c-train4-rep2/group-000/world-000 (success, self-reference) V-hist == V0 (|dPWM| 0) while V-hist-scramble is 43.6; success worlds are descriptive only"
+  ],
+  "execution": {
+    "command": "python scripts/act18_c4b_counterfactual.py --enabled --device cuda --c2c-root <C2c run root> --recovered-root <C2c run root> --recovered-manifest <copy of remote-rgb-sha256.txt> --checkpoint <R8 step-100000 act dir> --prereg experiments/2026-10-17-act18/C4_COUNTERFACTUAL_PREREG.json --addendum experiments/2026-10-17-act18/C4_COUNTERFACTUAL_PREREG_ADDENDUM_GPU_V3.json --out <new run root>",
+    "forwards_estimate": 11440,
+    "host": "gcp2 ugrp-act-l4-gcp2 (L4); C2c run root and R8 checkpoint already on its disk",
+    "run_root": "new run root only: <vm>/runs/act18/c4b-gpu-<UTC>; never the CPU partial run root",
+    "vm_hours_estimate": "0.3-0.5 (extrapolated from CPU 0.81 s/forward; not measured) [확인 필요]",
+    "worlds": "all 19 registered worlds re-run on GPU (the CPU-completed world is re-run, not reused)"
+  },
+  "experiment": "C4b-GPU",
+  "hist_fail_donor": {
+    "C2c-ho4-rep1/group-000/world-000": {
+      "donor": "C2c-ho4-rep3/group-001/world-000",
+      "mean_abs_pwm": 53.176
+    },
+    "C2c-ho4-rep1/group-002/world-001": {
+      "donor": "C2c-ho4-rep3/group-001/world-000",
+      "mean_abs_pwm": 65.372
+    },
+    "C2c-ho4-rep3/group-000/world-000": {
+      "donor": "C2c-ho4-rep3/group-001/world-000",
+      "mean_abs_pwm": 54.26
+    },
+    "C2c-ho4-rep3/group-001/world-000": {
+      "donor": "C2c-ho4-rep1/group-002/world-001",
+      "mean_abs_pwm": 65.372
+    },
+    "C2c-train4-rep1/group-000/world-000": {
+      "donor": "C2c-ho4-rep1/group-002/world-001",
+      "mean_abs_pwm": 48.907
+    },
+    "C2c-train4-rep1/group-000/world-001": {
+      "donor": "C2c-ho4-rep1/group-002/world-001",
+      "mean_abs_pwm": 54.188
+    },
+    "C2c-train4-rep2/group-000/world-001": {
+      "donor": "C2c-ho4-rep1/group-002/world-001",
+      "mean_abs_pwm": 51.486
+    },
+    "C2c-train4-rep3/group-000/world-000": {
+      "donor": "C2c-ho4-rep1/group-002/world-001",
+      "mean_abs_pwm": 48.646
+    },
+    "C2c-train4-rep3/group-000/world-001": {
+      "donor": "C2c-ho4-rep1/group-002/world-001",
+      "mean_abs_pwm": 50.32
+    },
+    "C2c-train4-rep3/group-001/world-000": {
+      "donor": "C2c-ho4-rep1/group-002/world-001",
+      "mean_abs_pwm": 37.651
+    }
+  },
+  "metrics": {
+    "H-A2_masked_by_te": "number and rate of FAILURE worlds (V0 arm, N=10) whose raw chunk contains an open row (chunk_open_tau not null) while the deployed TE pwm1 never reaches 1900 in the window; also reported per arm and for success worlds (descriptive)",
+    "executor_recovered": "per alternative executor: failure worlds with open under that executor on the V0 forwards and no TE open under V0",
+    "hist_fail_recovered": "failure worlds with TE open under V-hist-fail and no TE open under V0",
+    "history_delta_distribution": "n, median, min, max and per-world values of mean |dPWM| for V-hist and V-hist-fail over the failure worlds"
+  },
+  "no_pooling": [
+    "the CPU partial result (1/19 world, outputs/runs/act18-c4b-counterfactual-20261020T0505Z) is a separate cpu_replay condition and is never pooled with or substituted into the GPU result",
+    "the V0 fidelity gate (19/19 open status, exact >= 0.95, max|d| <= 1) is applied to the GPU replay alone; GPU float differences that break it abort the report (no CPU fallback)",
+    "a CPU-vs-GPU comparison on the one CPU world may be shown as a descriptive footnote only"
+  ],
+  "offline_aggregates": {
+    "alternative_executors": {
+      "definition": "(b) open tick when the recorded raw chunks are executed by harness ChunkExecutor with temporal_ensemble_coeff=None (latest chunk first, unweighted): a new chunk is taken only when the queue is empty and its first n_action_steps rows are executed in order; a done row clears the queue and later ticks hold the last issued command. Reset at release entry.",
+      "executors": {
+        "latest4": {
+          "n_action_steps": 4,
+          "temporal_ensemble_coeff": null
+        },
+        "latest8": {
+          "n_action_steps": 8,
+          "temporal_ensemble_coeff": null
+        }
+      },
+      "notes": [
+        "latest4 = the carry-cand-3 release executor; latest8 = execute the full 8-row chunk without averaging",
+        "ticks after the deployed TE arm requested done have no forward; such series are truncated and truncated_at_tau is reported (counts per executor in the summary)",
+        "offline only: executed alternative commands do not change later recorded observations"
+      ]
+    },
+    "raw_chunk_open": {
+      "definition": "(a) first release-relative tick whose raw predicted chunk (any of its 8 rows, contract.decode_action) has pwm1 >= 1900, and the row index of the first such row",
+      "name": "chunk_open_tau / chunk_open_row"
+    },
+    "source": "the same forward outputs as the deployed-TE replay of every arm; no additional forward"
+  },
+  "precomputed_input_sizes": {
+    "V_hist_fail_v1_mean_abs_pwm": {
+      "C2c-ho4-rep1/group-000/world-000": 8.773,
+      "C2c-ho4-rep1/group-002/world-001": 54.188,
+      "C2c-ho4-rep3/group-000/world-000": 8.773,
+      "C2c-ho4-rep3/group-001/world-000": 36.686,
+      "C2c-train4-rep1/group-000/world-000": 42.282,
+      "C2c-train4-rep1/group-000/world-001": 54.188,
+      "C2c-train4-rep2/group-000/world-001": 51.486,
+      "C2c-train4-rep3/group-000/world-000": 42.135,
+      "C2c-train4-rep3/group-000/world-001": 50.32,
+      "C2c-train4-rep3/group-001/world-000": 36.686
+    },
+    "V_hist_fail_v1_median": 42.209,
+    "V_hist_fail_v2_median": 52.331,
+    "V_hist_mean_abs_pwm": {
+      "C2c-ho4-rep1/group-000/world-000": 194.224,
+      "C2c-ho4-rep1/group-002/world-001": 192.717,
+      "C2c-ho4-rep3/group-000/world-000": 194.15,
+      "C2c-ho4-rep3/group-001/world-000": 210.346,
+      "C2c-train4-rep1/group-000/world-000": 197.42,
+      "C2c-train4-rep1/group-000/world-001": 189.465,
+      "C2c-train4-rep2/group-000/world-001": 186.333,
+      "C2c-train4-rep3/group-000/world-000": 198.023,
+      "C2c-train4-rep3/group-000/world-001": 187.435,
+      "C2c-train4-rep3/group-001/world-000": 218.691
+    },
+    "V_hist_median": 194.187,
+    "V_hist_scramble": {
+      "expected": "ratio 1.016 lies inside the registered bounds, so the size check is expected to pass",
+      "failure_summary": {
+        "failure_median_V_hist": 194.187,
+        "failure_median_V_hist_scramble": 197.208,
+        "failure_median_scramble_vs_donor": 43.345,
+        "ratio": 1.016
+      },
+      "note": "input-only (no forward) at registration; the run recomputes it",
+      "per_world": {
+        "C2c-ho4-rep1/group-000/world-000": {
+          "V_hist": 194.224,
+          "V_hist_scramble": 197.252,
+          "outcome": "failure",
+          "scramble_vs_donor": 43.605
+        },
+        "C2c-ho4-rep1/group-001/world-000": {
+          "V_hist": 45.155,
+          "V_hist_scramble": 51.898,
+          "outcome": "success",
+          "scramble_vs_donor": 39.473
+        },
+        "C2c-ho4-rep1/group-002/world-000": {
+          "V_hist": 186.379,
+          "V_hist_scramble": 187.621,
+          "outcome": "success",
+          "scramble_vs_donor": 43.235
+        },
+        "C2c-ho4-rep1/group-002/world-001": {
+          "V_hist": 192.717,
+          "V_hist_scramble": 192.858,
+          "outcome": "failure",
+          "scramble_vs_donor": 43.345
+        },
+        "C2c-ho4-rep2/group-001/world-000": {
+          "V_hist": 45.155,
+          "V_hist_scramble": 51.898,
+          "outcome": "success",
+          "scramble_vs_donor": 39.15
+        },
+        "C2c-ho4-rep2/group-002/world-001": {
+          "V_hist": 156.979,
+          "V_hist_scramble": 154.527,
+          "outcome": "success",
+          "scramble_vs_donor": 32.751
+        },
+        "C2c-ho4-rep3/group-000/world-000": {
+          "V_hist": 194.15,
+          "V_hist_scramble": 197.163,
+          "outcome": "failure",
+          "scramble_vs_donor": 43.605
+        },
+        "C2c-ho4-rep3/group-001/world-000": {
+          "V_hist": 210.346,
+          "V_hist_scramble": 210.28,
+          "outcome": "failure",
+          "scramble_vs_donor": 39.15
+        },
+        "C2c-ho4-rep3/group-002/world-000": {
+          "V_hist": 186.379,
+          "V_hist_scramble": 187.621,
+          "outcome": "success",
+          "scramble_vs_donor": 19.835
+        },
+        "C2c-ho4-rep3/group-002/world-001": {
+          "V_hist": 156.979,
+          "V_hist_scramble": 154.527,
+          "outcome": "success",
+          "scramble_vs_donor": 43.345
+        },
+        "C2c-train4-rep1/group-000/world-000": {
+          "V_hist": 197.42,
+          "V_hist_scramble": 197.277,
+          "outcome": "failure",
+          "scramble_vs_donor": 43.605
+        },
+        "C2c-train4-rep1/group-000/world-001": {
+          "V_hist": 189.465,
+          "V_hist_scramble": 189.308,
+          "outcome": "failure",
+          "scramble_vs_donor": 43.345
+        },
+        "C2c-train4-rep1/group-001/world-001": {
+          "V_hist": 167.225,
+          "V_hist_scramble": 169.524,
+          "outcome": "success",
+          "scramble_vs_donor": 19.835
+        },
+        "C2c-train4-rep2/group-000/world-000": {
+          "V_hist": 0.0,
+          "V_hist_scramble": 43.605,
+          "outcome": "success",
+          "scramble_vs_donor": 43.605
+        },
+        "C2c-train4-rep2/group-000/world-001": {
+          "V_hist": 186.333,
+          "V_hist_scramble": 186.199,
+          "outcome": "failure",
+          "scramble_vs_donor": 43.345
+        },
+        "C2c-train4-rep2/group-001/world-001": {
+          "V_hist": 86.075,
+          "V_hist_scramble": 86.735,
+          "outcome": "success",
+          "scramble_vs_donor": 19.835
+        },
+        "C2c-train4-rep3/group-000/world-000": {
+          "V_hist": 198.023,
+          "V_hist_scramble": 197.878,
+          "outcome": "failure",
+          "scramble_vs_donor": 43.605
+        },
+        "C2c-train4-rep3/group-000/world-001": {
+          "V_hist": 187.435,
+          "V_hist_scramble": 187.299,
+          "outcome": "failure",
+          "scramble_vs_donor": 43.345
+        },
+        "C2c-train4-rep3/group-001/world-000": {
+          "V_hist": 218.691,
+          "V_hist_scramble": 218.876,
+          "outcome": "failure",
+          "scramble_vs_donor": 39.15
+        }
+      }
+    },
+    "expected_flag": "ratio_v2 < 0.5, so V-hist-fail is expected to be flagged unsuitable as a control under the rule below; this is known before results and does not change the rule",
+    "note": "computed from recorded inputs only (no forward, no result) at registration; the run recomputes them",
+    "ratio_v2": 0.269
+  },
+  "registered_before_results": true,
+  "schema": "ugrp.act18.c4b_gpu_addendum.v3",
+  "status": "REGISTERED (v3): committed before any C4b-GPU forward; adds the size-matched V-hist-scramble arm to v2"
+}

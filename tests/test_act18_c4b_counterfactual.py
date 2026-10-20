@@ -363,11 +363,21 @@ def test_hist_fail_reference_is_same_kind_failure_never_self():
 ADDENDUM_V2 = ROOT / 'experiments/2026-10-17-act18/C4_COUNTERFACTUAL_PREREG_ADDENDUM_GPU_V2.json'
 
 
-def test_addendum_v1_is_refused_and_v2_matches_code_and_base_prereg(tmp_path):
-    with pytest.raises(SystemExit, match='superseded'):
-        c4b.load_addendum(ADDENDUM, PREREG)
-    value = c4b.load_addendum(ADDENDUM_V2, PREREG)
-    assert value['amends']['sha256'] == c4b.sha256(ADDENDUM)
+ADDENDUM_V3 = ROOT / 'experiments/2026-10-17-act18/C4_COUNTERFACTUAL_PREREG_ADDENDUM_GPU_V3.json'
+
+
+def test_addendum_v1_v2_are_refused_and_v3_matches_code_and_base_prereg(tmp_path):
+    for old in (ADDENDUM, ADDENDUM_V2):
+        with pytest.raises(SystemExit, match='superseded'):
+            c4b.load_addendum(old, PREREG)
+    value = c4b.load_addendum(ADDENDUM_V3, PREREG)
+    assert value['amends']['sha256'] == c4b.sha256(ADDENDUM_V2)
+    assert value['amends']['chain']['v1'] == c4b.sha256(ADDENDUM)
+    assert json.loads(ADDENDUM_V2.read_text())['amends']['sha256'] == c4b.sha256(ADDENDUM)
+    assert value['decision']['scramble_rotate'] == c4b.SCRAMBLE_ROTATE == 8
+    assert tuple(value['decision']['scramble_size_ratio_bounds']) == c4b.SCRAMBLE_SIZE_RATIO_BOUNDS
+    assert value['decision']['scramble_max_recovered'] == c4b.SCRAMBLE_MAX_RECOVERED == 2
+    assert 'V-hist-scramble' in value['arms'] and 'V-hist-scramble' not in c4b.FAILURE_ONLY_ARMS
     assert value['device'] == 'cuda'
     assert value['arms'] == list(c4b.ADDENDUM_ARMS)
     assert value['offline_aggregates']['alternative_executors']['executors'] == \
@@ -428,3 +438,51 @@ def test_hist_fail_control_unsuitable_rule():
     add = c4b.summarize(large, 'x', c4b.ADDENDUM_ARMS, addendum=True)['addendum']
     assert add['history_delta']['hist_fail_control_suitable'] is True
     assert add['decision']['h_a1']['verdict'] == 'supported'
+
+
+def test_scramble_is_reverse_then_rotate_permutation_keeping_values():
+    issued = [command(round(10. - .1 * (15 - k), 6), pwm1=1500 + 13 * k) for k in range(c.HISTORY)]
+    scrambled = c4b.scramble_issued(issued)
+    reversed_ = issued[::-1]
+    assert scrambled == [reversed_[(i + 8) % 16] for i in range(16)]
+    assert scrambled[0]['pwm']['1'] == issued[7]['pwm']['1']
+    assert sorted(x['pwm']['1'] for x in scrambled) == sorted(x['pwm']['1'] for x in issued)
+    assert [x['pwm']['1'] for x in scrambled] != [x['pwm']['1'] for x in issued]
+    target = observation(t=20.)
+    donor = observation(t=12.)
+    donor['issued'] = issued
+    changed = c4b.apply_variant('V-hist-scramble', target, same_row=dict(observation=donor),
+                                cross_row=dict(observation=donor))
+    assert [row['t'] for row in changed['issued']] == [row['t'] for row in target['issued']]
+    assert [row['pwm'] for row in changed['issued']] == [row['pwm'] for row in scrambled]
+    assert donor['issued'] == issued  # donor not mutated
+    c.validate_observation(changed)
+
+
+def test_scramble_rules_and_size_check():
+    def world(label, hist_open, scramble_open, scramble_delta):
+        arms = {name: dict(open_tau=None, raw_open_tau=None, done_tau=None, te_pwm1_max=1500,
+                           chunk_open_tau=None,
+                           executors={n: dict(open_tau=None, truncated_at_tau=None)
+                                      for n in c4b.ALT_EXECUTORS}) for name in c4b.ADDENDUM_ARMS}
+        arms['V-hist'].update(open_tau=hist_open, history_delta=dict(mean_abs_pwm=194.))
+        arms['V-hist-fail'].update(history_delta=dict(mean_abs_pwm=150.))
+        arms['V-hist-scramble'].update(open_tau=scramble_open,
+                                       history_delta=dict(mean_abs_pwm=scramble_delta))
+        return dict(label=label, outcome='failure', reference_fail='d', arms=arms)
+
+    def verdict(n_hist, n_scramble, delta=197.):
+        replay = [world('f%d' % i, 3.4 if i < n_hist else None, 3.0 if i < n_scramble else None, delta)
+                  for i in range(10)]
+        add = c4b.summarize(replay, 'x', c4b.ADDENDUM_ARMS, addendum=True)['addendum']
+        return add, add['decision']['h_a1_scramble']['verdict']
+    add, value = verdict(7, 2)
+    assert value == 'temporal_content'
+    assert add['scramble_recovered'] == 2
+    assert add['history_delta']['scramble_size_ratio'] == pytest.approx(197. / 194., abs=1e-3)
+    assert add['history_delta']['scramble_size_matched'] is True
+    assert verdict(6, 6)[1] == 'perturbation_ood_escape'
+    assert verdict(7, 3)[1] == 'withheld'
+    assert verdict(5, 0)[1] == 'withheld'
+    assert verdict(7, 0, delta=100.)[1] == 'withheld_size_mismatch'
+    assert verdict(7, 0, delta=100.)[0]['history_delta']['scramble_size_matched'] is False
