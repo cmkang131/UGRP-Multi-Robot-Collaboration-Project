@@ -31,13 +31,16 @@ from harness.e2ewarp_nav_mode import (MODE as NAV_MODE, ROBOTS as NAV_ROBOTS,
 from harness.e2ewarp_nav_gate import (NAV_SCENARIO,
                                       SIM_BUDGET_S as NAV_SIM_BUDGET_S,
                                       SLOT_GATE_MODES as NAV_SLOT_GATE_MODES,
+                                      bind_slot_decisions as nav_bind_slot_decisions,
                                       gate_mode as nav_gate_mode,
                                       gate_queue_fields as nav_gate_fields,
                                       gate_robots as nav_gate_robots,
+                                      l1lite_enabled as nav_l1lite_enabled,
                                       nav_orders as nav_gate_orders,
                                       slot_assignment as nav_slot_assignment,
                                       validate_calibration_binding as nav_validate_calibration,
                                       validate_gate_queue as nav_validate_gate_queue)
+from harness import e2ewarp_l1lite as l1lite
 from harness.zone_study_contract import ROBOTS
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -62,6 +65,11 @@ def stack_config():
 def nav_slots_enabled():
     """True only for the explicit slot gate modes r4/r5 (slot order markers)."""
     return nav_gate_mode()['name'] in NAV_SLOT_GATE_MODES
+
+
+def l1lite_on():
+    """True only for the explicit opt-in L1-lite allocation marker."""
+    return nav_l1lite_enabled()
 
 
 def apply_arrival_args(a):
@@ -151,8 +159,18 @@ def prepare(a):
         # robot) and the order-sheet slots; both are r4-only and fail closed.
         robots = nav_gate_robots(getattr(a, 'nav_solo_robot', None))
         queue.update(nav_queue_fields(a.seed, robots))
+        if l1lite_on():
+            # L1-lite pair only, one world (the slot decision is bound once per
+            # run); the prepared queue carries the pinned constraint-table digest
+            # and no fixed slot mapping.
+            if a.nworld != 1:
+                raise ValueError('L1LITE_NWORLD_ONE')
+            if len(robots) != 2:
+                raise ValueError('L1LITE_PAIR_ONLY')
+            queue.update(l1lite.queue_fields(a.seed, robots))
         queue.update(nav_gate_fields(a.seed, sim_budget_s=a.nav_sim_budget_s, robots=robots))
         nav_validate_gate_queue(queue)
+        l1lite.validate_queue(queue, seed=a.seed, condition=a.condition, robots=robots)
     a.output.mkdir(parents=True, exist_ok=False)
     write(funnel, dict(raw=str(a.output.resolve()), reproduction=a.command,
         stages=[dict(stage='queue_prepared', cumulative_pass_n=a.nworld, rejected_n=0),
@@ -222,6 +240,9 @@ def run(a, queue):
         # Fail closed before any host admission or physics import.
         nav_validate_queue(queue, a.seed, robots)
         nav_validate_gate_queue(queue)
+        l1lite.validate_queue(queue, seed=a.seed, condition=a.condition, robots=robots)
+        if l1lite_on() and (len(robots) != 2 or a.nworld != 1):
+            raise ValueError('L1LITE_PAIR_ONE_WORLD_ONLY')
         nav_validate_calibration(queue)
     # Admission is complete before importing physics/render packages.
     relay, proof = admit(a, queue)
@@ -248,9 +269,15 @@ def run(a, queue):
     decisions, maprows, rejects, commands, evaluations, evalstates = [], [], [], [], [], []
     message_drops = []
     contact_ledger = None
+    l1lite_record, l1lite_failure = None, None
     status, error, tick, hooks = 'HOST_ERROR', None, 0, None
     started = time.monotonic()
     try:
+        # Build every world's scene first.  The opt-in L1-lite allocation below
+        # needs the robot's own first camera frame (its only image-bearing
+        # decision call) and must bind the decided slots before any navigation
+        # adapter is constructed.  Task construction has no side effects, so the
+        # default (non-L1-lite) order stays behaviour-identical.
         for w in range(a.nworld):
             # Same static model/seed per batch; worlds have independent control.
             # build_context derives the authored lane spawns and keeps only the
@@ -259,35 +286,6 @@ def run(a, queue):
             context = build_context(a.seed, a.output/f'world-{w:02d}', queue['stack_values'],
                                     nav_scene=nav, nav_keep=robots if nav else ('r1', 'r2'))
             contexts.append(context)
-            scenario = context['scene'].scene['params']['scenario_setup']
-            if nav:
-                # No static map: only order/condition metadata reaches the
-                # navigation component and the LLM prompt.  r4 adds the
-                # per-robot order-sheet slot (order metadata, not geometry).
-                static_fields = dict(orders=nav_gate_orders(scenario['orders']),
-                                     condition=a.condition, robot_count=len(robots),
-                                     destination_zone='B')
-                if nav_slots_enabled():
-                    static_fields['slots'] = nav_slot_assignment(robots)
-                static = nav_static(static_fields)
-            else:
-                static = dict(orders=scenario['orders'], static_map=context['static_map'],
-                              condition=a.condition, communication_schema=dict(
-                                  free=dict(body={'text': 'English sentence'}), structured=dict(body={'act': 'inform', 'state': 'unknown'})),
-                              input_boundary='own RGB and own issued commands only; no top/GT/contact')
-            channels.append(Channels(a.condition, a.seed, robots=robots) if nav
-                            else Channels(a.condition, a.seed))
-            for robot in robots:
-                key = w, robot
-                planners[key] = Planner(a.relay_url, a.output/f'world-{w:02d}'/'llm'/robot, static,
-                                       run_id=a.output.name, world_id=w, robot=robot)
-                if nav:
-                    tasks[key] = NavRobot(robot, static, components)
-                elif components:
-                    tasks[key] = MissionRobot(robot, static, components, actor)
-                else:
-                    tasks[key] = DiagnosticTask(scenario['orders'])
-                ownstates[key], rings[key] = {}, deque(maxlen=101)  # 10 SIM s at existing 10Hz + current
         hooks = transport(contexts, a.output, head(), queue['stack_values'])
         hooks.initialize(contexts)
         if nav:
@@ -298,6 +296,123 @@ def run(a, queue):
                 robots, base_boxes={r: nav_contacts.base_box(model, r) for r in robots},
                 note='MJWarp contact buffer read after each step; evaluation sink only')
             write(a.output/'contact-ledger.json', contact_ledger)
+        alloc_planners, alloc_channels = {}, {}
+        if nav and l1lite_on():
+            # L1-lite slot allocation (default OFF).  The LLM decides each
+            # robot's slot(s) from the v_l1lite order sheet, its own private
+            # constraint and the condition channel; the call carries the
+            # robot's own first camera frame.  The code then drives and the
+            # decision can never fall back to the fixed r5 mapping.
+            alloc_channels[0] = Channels(a.condition, a.seed, robots=robots,
+                                         message_schema='l1lite')
+            channels.append(alloc_channels[0])
+            brief = {r: l1lite.robot_brief(a.seed, r, a.condition) for r in robots}
+            frames0 = {r: OwnFrame(r, 0, 0, 0.0,
+                                   hooks.capture(0, contexts[0]['world'], r), ())
+                       for r in robots}
+
+            def alloc_ask(robot, dynamic, _w=0):
+                key = _w, robot
+                planner = alloc_planners.get(key)
+                if planner is None:
+                    planner = Planner(a.relay_url,
+                                      a.output/f'world-{_w:02d}'/'llm-alloc'/robot,
+                                      brief[robot], run_id=a.output.name,
+                                      world_id=_w, robot=robot)
+                    alloc_planners[key] = planner
+                    planners[key] = planner
+                answer, reason = planner.decide(frames0[robot], dynamic)
+                if answer is None:
+                    raise l1lite.L1LiteError(
+                        'L1LITE_NO_DECISION',
+                        detail=f'{robot}:{json.dumps(reason, sort_keys=True)}')
+                return answer
+
+            try:
+                l1lite_record = l1lite.allocate_slots(
+                    a.condition, a.seed, ask=alloc_ask,
+                    channels=alloc_channels[0])
+            except l1lite.L1LiteError as exc:
+                if exc.record is not None:
+                    write(a.output/'slot-decisions.json',
+                          l1lite.slot_records(exc.record))
+                raise
+            write(a.output/'slot-decisions.json', l1lite.slot_records(l1lite_record))
+            nav_bind_slot_decisions(l1lite_record['decisions'], robots=robots)
+            for robot in robots:
+                decisions.append(dict(
+                    phase='allocation', world=0, robot=robot, sim_s=0.0,
+                    act='slot_' + l1lite_record['decisions'][robot],
+                    message=None, reason=None))
+        for w in range(a.nworld):
+            scenario = contexts[w]['scene'].scene['params']['scenario_setup']
+            if nav:
+                # No static map: only order/condition metadata reaches the
+                # navigation component and the LLM prompt.  r4 adds the
+                # per-robot order-sheet slot (order metadata, not geometry).
+                if l1lite_record is not None:
+                    # Per-robot static: the decided slot only (a peer's slot is
+                    # never written into this robot's prompt or adapter) and the
+                    # v_l1lite order sheet (two unassigned deliveries).
+                    static_per_robot = {}
+                    for robot in robots:
+                        static_fields = dict(
+                            orders=l1lite.order_sheet()['orders'],
+                            condition=a.condition, robot_count=len(robots),
+                            destination_zone='B',
+                            slots={robot: l1lite_record['decisions'][robot]})
+                        static_per_robot[robot] = nav_static(static_fields)
+                    static = static_per_robot
+                else:
+                    static_fields = dict(orders=nav_gate_orders(scenario['orders']),
+                                         condition=a.condition, robot_count=len(robots),
+                                         destination_zone='B')
+                    if nav_slots_enabled():
+                        static_fields['slots'] = nav_slot_assignment(robots)
+                    static = nav_static(static_fields)
+            else:
+                static = dict(orders=scenario['orders'], static_map=contexts[w]['static_map'],
+                              condition=a.condition, communication_schema=dict(
+                                  free=dict(body={'text': 'English sentence'}), structured=dict(body={'act': 'inform', 'state': 'unknown'})),
+                              input_boundary='own RGB and own issued commands only; no top/GT/contact')
+            if w not in alloc_channels:
+                channels.append(Channels(a.condition, a.seed, robots=robots) if nav
+                                else Channels(a.condition, a.seed))
+            for robot in robots:
+                key = w, robot
+                if l1lite_record is not None:
+                    static_robot = static[robot]
+                else:
+                    static_robot = static
+                if key in alloc_planners:
+                    planners[key] = alloc_planners[key]
+                else:
+                    planners[key] = Planner(a.relay_url, a.output/f'world-{w:02d}'/'llm'/robot,
+                                            static_robot, run_id=a.output.name,
+                                            world_id=w, robot=robot)
+                if nav:
+                    tasks[key] = NavRobot(robot, static_robot, components)
+                    if l1lite_record is not None:
+                        # The allocation was the LLM decision; select the order
+                        # for the decided slot and let the code drive.  A missing
+                        # order candidate fails closed instead of guessing.
+                        slot = l1lite_record['decisions'][robot]
+                        candidate = next(
+                            (c for c in tasks[key].candidates()
+                             if (c.get('order') or {}).get('slot') == slot), None)
+                        if candidate is None:
+                            raise l1lite.L1LiteError(
+                                'L1LITE_ORDER_CANDIDATE_MISSING',
+                                detail=f'{robot}:{slot}')
+                        tasks[key].select(
+                            candidate, 0.0,
+                            reason=('L1-lite slot allocation (LLM) selected the order; '
+                                    'code drives (picking/placing excluded)'))
+                elif components:
+                    tasks[key] = MissionRobot(robot, static_robot, components, actor)
+                else:
+                    tasks[key] = DiagnosticTask(scenario['orders'])
+                ownstates[key], rings[key] = {}, deque(maxlen=101)  # 10 SIM s at existing 10Hz + current
         write(a.output/'runtime-applied.json', dict(flow='e2e_llm', stack_values=queue['stack_values'],
             stack_deviations=queue['stack_deviations'], host=queue['host'],
             contact_profile=dict(profile=queue['stack_values']['contact_profile'],
@@ -438,6 +553,12 @@ def run(a, queue):
         report.update(status=status, stop_intervals='all wheel commands held in smoke; no global registration',
                       scope=scope)
         write(a.output/'run-metrics.json', report)
+    except l1lite.L1LiteError as exc:
+        # Fail closed with a named allocation error.  No physics was driven for
+        # a fatal decision failure, and the status can never be a success.
+        l1lite_failure = dict(code=exc.code, detail=exc.detail)
+        status = 'L1LITE_ALLOCATION_FAILED'
+        error = exc.code + (':' + exc.detail if exc.detail else '')
     except BaseException as exc:
         error = traceback.format_exc()
         status = 'SUPERVISOR_STOP' if isinstance(exc, KeyboardInterrupt) else 'HOST_ERROR'
@@ -486,6 +607,25 @@ def run(a, queue):
             # Nav-only result: no evaluator, so no E2E/physical success field can
             # be set true even after an own-input arrival report.
             summary.update(nav_result_fields(robots))
+            if l1lite_on():
+                # Admin/eval-only allocation summary (never a robot input).
+                summary.update(slot_allocation=dict(
+                    enabled=True, condition=a.condition,
+                    table_sha256=l1lite.constraint_table_digest(),
+                    decisions=(None if l1lite_record is None
+                               else dict(l1lite_record['decisions'])),
+                    constraints=l1lite.all_constraints(a.seed),
+                    success_eligible=(None if l1lite_record is None
+                                      else bool(l1lite_record['success_eligible'])),
+                    errors=([] if l1lite_record is None
+                            else list(l1lite_record['errors'])),
+                    fatal=(l1lite_failure is not None),
+                    failure=l1lite_failure,
+                    utterances=(None if l1lite_record is None
+                                else l1lite_record['utterances']),
+                    rounds=(None if l1lite_record is None
+                            else l1lite_record['rounds']),
+                    artifact='slot-decisions.json'))
             if len(robots) == 1:
                 summary.update(nav_solo_robot=robots[0], nav_diagnostic=True,
                                gate_applicable=False)
@@ -530,7 +670,11 @@ def run(a, queue):
             except Exception:
                 summary.update(status='HOST_ERROR', error=traceback.format_exc(), E2E_success=False)
         if error and not rejects:
-            rejects.append(dict(sim_s=sim_s, **rejection('HOST_ERROR', category='runtime', blocked_object='not_observed')))
+            reason = (l1lite_failure['code'] if l1lite_failure
+                      else ('HOST_ERROR' if status == 'HOST_ERROR' else status))
+            rejects.append(dict(sim_s=sim_s, **rejection(
+                reason, category=('l1lite_allocation' if l1lite_failure else 'runtime'),
+                blocked_object='not_observed')))
             write(a.output/'rejections.json', rejects)
         summary['rejection_distribution'] = dict(Counter(r['reason'] for r in rejects))
         write(a.output/'rejection_table.json', dict(raw=str(a.output), reproduction=a.command,

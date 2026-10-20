@@ -199,13 +199,13 @@ class NavigationOnlyController:
             raise ValueError('navigation candidates must be a list')
         return candidates
 
-    def select(self, candidate, now):
+    def select(self, candidate, now, *, reason=None):
         if not isinstance(candidate, dict):
             raise ValueError('navigation candidate must be a mapping')
         self.instruction = copy.deepcopy(candidate)
         self.navigation.start(copy.deepcopy(candidate), 'navigate')
         self.events.append(dict(sim_s=float(now), before=self.phase, after='NAVIGATE',
-                                reason='LLM selected a navigation candidate'))
+                                reason=(reason or 'LLM selected a navigation candidate')))
         self.phase = 'NAVIGATE'
 
     def receive(self, rows):
@@ -244,8 +244,8 @@ class NavRobot:
         rows, self.pending_inbox = self.pending_inbox, []
         return rows
 
-    def select(self, candidate, now):
-        return self.component.select(candidate, now)
+    def select(self, candidate, now, *, reason=None):
+        return self.component.select(candidate, now, reason=reason)
 
     def command(self, now):
         from harness.grasp_act_contract import command

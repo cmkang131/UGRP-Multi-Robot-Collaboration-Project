@@ -83,14 +83,24 @@ class OwnFrame:
 
 
 class Channels:
-    """No shared robot state. Inbox is written only by an accepted LLM message."""
-    def __init__(self, condition, seed, *, robots=ROBOTS):
+    """No shared robot state. Inbox is written only by an accepted LLM message.
+
+    ``message_schema`` selects the validated body language only: ``legacy`` is
+    the frozen zone-study schema (default; every existing run/test is
+    byte-identical) and ``l1lite`` is the opt-in L1-lite enum/free-English
+    schema (``harness.e2ewarp_l1lite``).  Topology, leader rotation and the
+    four condition names are identical in both.
+    """
+    def __init__(self, condition, seed, *, robots=ROBOTS, message_schema='legacy'):
         if condition not in COMM_CONDITIONS:
             raise ValueError('four main communication conditions only')
+        if message_schema not in ('legacy', 'l1lite'):
+            raise ValueError('unknown message schema: ' + str(message_schema))
         robots = tuple(robots)
         if not robots or len(set(robots)) != len(robots) or not set(robots) <= set(ROBOTS):
             raise ValueError('invalid execution robot set')
         self.condition, self.seed, self.robots = condition, seed, robots
+        self.message_schema = message_schema
         self.leader = robots[seed % len(robots)]
         self.inboxes = {r: [] for r in robots}
         self.events = []
@@ -131,6 +141,14 @@ class Channels:
                                         + ','.join(str(r) for r in outside))
         # Existing validator supplies topology/schema only; its historic *_ko
         # names are never written as the external execution condition.
+        if self.message_schema == 'l1lite':
+            # Opt-in L1-lite body schema (enum or English prose); the lazy
+            # import keeps this module's import graph unchanged for the
+            # default legacy path.
+            from harness.e2ewarp_l1lite import validate_l1lite_message
+            validate_l1lite_message(self.condition, sender, recipients,
+                                    message['body'], seed=self.seed)
+            return
         check_message(legacy_condition(self.condition), sender, recipients, message['body'], seed=self.seed)
 
 

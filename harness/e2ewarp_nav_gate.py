@@ -128,6 +128,16 @@ SLOT_GATE_MODES = (GATE_MODE_V230_R4, GATE_MODE_V230_R5)
 #: the right half.  This mapping is derived from the already-authored lane
 #: assignment; it is not a new tuned constant.
 SLOT_BY_ROBOT = {'r1': SLOT_LEFT, 'r2': SLOT_RIGHT}
+#: L1-lite allocation (2026-10-20 plan §3; **default OFF**).  When
+#: ``E2EWARP_NAV_L1LITE=on_v1`` the order-sheet slot is no longer the fixed
+#: ``SLOT_BY_ROBOT`` mapping: the run binds the LLM's per-robot decision (one
+#: left, one right, or two identical when the run measures a collision) before
+#: any navigation adapter is built.  A process without the variable keeps the
+#: r5 bytes and the fixed mapping; the decision can never silently fall back to
+#: it.
+L1LITE_ENV = 'E2EWARP_NAV_L1LITE'
+L1LITE_ON = 'on_v1'
+_DECIDED_SLOTS = None
 ARRIVAL_ENV = 'E2EWARP_NAV_ARRIVAL'
 ARRIVAL_ODOM_M_ENV = 'E2EWARP_NAV_ARRIVAL_ODOM_M'
 ARRIVAL_GROUND_M_ENV = 'E2EWARP_NAV_ARRIVAL_GROUND_M'
@@ -219,13 +229,76 @@ def gate_robots(solo_robot=None):
     return (solo_robot,)
 
 
-def slot_assignment(robots=None):
-    """Per-robot order-sheet slot for the r4 mode (fail closed on unknown robots)."""
+def l1lite_enabled():
+    """True only for the explicit opt-in ``E2EWARP_NAV_L1LITE=on_v1`` marker."""
+    value = os.environ.get(L1LITE_ENV)
+    if value is None:
+        return False
+    if value != L1LITE_ON:
+        raise ValueError('NAV_L1LITE_MODE_UNKNOWN:' + str(value))
+    return True
+
+
+def bind_slot_decisions(decisions, *, robots=ROBOTS):
+    """Bind the run's LLM slot decision before any navigation adapter exists.
+
+    L1-lite only: the fixed ``SLOT_BY_ROBOT`` mapping is replaced by the
+    decision.  Robots must be exactly the pair, values must be ``left``/``right``
+    (duplicates are admitted so a measured collision can still drive; the
+    evaluator, not the binder, decides success).  A missing binding in an
+    L1-lite run fails closed instead of silently driving the fixed mapping.
+    """
+    global _DECIDED_SLOTS
+    if not l1lite_enabled():
+        raise ValueError('NAV_L1LITE_DECISIONS_REQUIRE_L1LITE')
+    if not isinstance(decisions, dict):
+        raise ValueError('NAV_L1LITE_DECISIONS_INVALID')
+    value = {str(r): str(s) for r, s in decisions.items()}
+    robots = tuple(robots)
+    if set(value) != set(robots):
+        raise ValueError('NAV_L1LITE_DECISIONS_ROBOTS')
+    bad = sorted(r for r in robots if value[r] not in SLOTS)
+    if bad:
+        raise ValueError('NAV_L1LITE_DECISIONS_SLOT_INVALID:' + ','.join(bad))
+    _DECIDED_SLOTS = value
+    return dict(value)
+
+
+def decided_slot_decisions():
+    """A copy of the bound decision (or None); admin/eval use only."""
+    return None if _DECIDED_SLOTS is None else dict(_DECIDED_SLOTS)
+
+
+def slot_assignment(robots=None, decisions=None):
+    """Per-robot order-sheet slot (fixed r4 mapping, or the L1-lite decision).
+
+    ``decisions`` may be passed explicitly (tests/administration).  Otherwise an
+    L1-lite process must already have bound its decision; a default process is
+    byte-identical to the r4/r5 fixed mapping.
+    """
     robots = tuple(robots or ROBOTS)
+    if decisions is None and l1lite_enabled():
+        if _DECIDED_SLOTS is None:
+            raise ValueError('NAV_L1LITE_DECISION_UNBOUND')
+        decisions = _DECIDED_SLOTS
+    if decisions is not None:
+        missing = [r for r in robots if r not in decisions]
+        if missing:
+            raise ValueError('NAV_SLOT_ROBOT_UNKNOWN:' + ','.join(missing))
+        bad = [r for r in robots if decisions[r] not in SLOTS]
+        if bad:
+            raise ValueError('NAV_SLOT_INVALID:' + ','.join(bad))
+        return {r: str(decisions[r]) for r in robots}
     missing = [r for r in robots if r not in SLOT_BY_ROBOT]
     if missing:
         raise ValueError('NAV_SLOT_ROBOT_UNKNOWN:' + ','.join(missing))
     return {r: SLOT_BY_ROBOT[r] for r in robots}
+
+
+def clear_slot_decisions():
+    """Drop the bound L1-lite decision (test/process reset; not a run input)."""
+    global _DECIDED_SLOTS
+    _DECIDED_SLOTS = None
 
 
 def arrival_selection():
@@ -411,11 +484,14 @@ def navigation_factory(robot_id, static=None, **kwargs):
         raise ValueError('NAV_ARRIVAL_REQUIRES_V230_R3')
     if mode['name'] in SLOT_GATE_MODES:
         # The r4/r5 order sheet must name this robot's slot; a run that lost it
-        # would silently be r3 (or r4 with different markers).
+        # would silently be r3 (or r4 with different markers).  In L1-lite the
+        # expected value is the bound LLM decision (a missing binding fails
+        # closed); otherwise it is the frozen fixed mapping.
         slots = (static or {}).get('slots') or {}
         if not isinstance(slots, dict) or slots.get(robot_id) not in SLOTS:
             raise ValueError('NAV_SLOT_REQUIRED:' + str(robot_id))
-        if slots.get(robot_id) != SLOT_BY_ROBOT[robot_id]:
+        expected = slot_assignment((robot_id,))[robot_id]
+        if slots.get(robot_id) != expected:
             raise ValueError('NAV_SLOT_MISMATCH:' + str(robot_id))
     extra = {}
     if mode['name'] in ACQUISITION_QUALITY_MODES:
@@ -480,9 +556,16 @@ def gate_queue_fields(seed, calibration=None, sim_budget_s=SIM_BUDGET_S, robots=
             fields.update(nav_arrival_odom_projection_m=float(arrival['projection_m']),
                           nav_arrival_projection_path_cap_m=float(arrival['projection_path_cap_m']))
         if mode['name'] in SLOT_GATE_MODES:
-            # Order-sheet per-robot slot (r4/r5).  v1/fwd24/r2/r3 queues carry
-            # no slot marker at all, so their bytes are unchanged.
-            fields.update(nav_slots=slot_assignment(robots))
+            if l1lite_enabled():
+                # L1-lite: the slot is an LLM decision bound at run time, so the
+                # prepared queue carries the allocation markers instead (written
+                # by ``harness.e2ewarp_l1lite.queue_fields``), never a fixed
+                # slot mapping.
+                pass
+            else:
+                # Order-sheet per-robot slot (r4/r5).  v1/fwd24/r2/r3 queues
+                # carry no slot marker at all, so their bytes are unchanged.
+                fields.update(nav_slots=slot_assignment(robots))
         if mode['name'] == GATE_MODE_V230_R5:
             # r5-only two-stage slot markers (threshold and clamp are frozen code
             # constants; r4 queues stay byte-identical without them).
@@ -589,7 +672,14 @@ def validate_gate_queue(queue):
             raise ValueError('NAV_ARRIVAL_REQUIRES_V230_R2')
     # r4/r5 order-sheet slots and the solo diagnostic are slot-mode markers.
     if mode['name'] in SLOT_GATE_MODES:
-        if dict(queue.get('nav_slots') or {}) != slot_assignment(robots):
+        if l1lite_enabled() or queue.get('nav_l1lite') == 'on_v1':
+            # L1-lite: no slot may be prepared, and the LLM decision must be
+            # bound before the factory (missing binding raises there).
+            if queue.get('nav_slots') is not None:
+                raise ValueError('NAV_L1LITE_SLOTS_RUNTIME_DECISION')
+            if len(robots) != 2:
+                raise ValueError('NAV_L1LITE_PAIR_ONLY')
+        elif dict(queue.get('nav_slots') or {}) != slot_assignment(robots):
             raise ValueError('NAV_SLOTS_REQUIRED')
     elif queue.get('nav_slots') is not None:
         raise ValueError('NAV_SLOTS_REQUIRE_V230_R4')
