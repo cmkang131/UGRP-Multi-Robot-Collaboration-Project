@@ -60,7 +60,7 @@ def stack_config():
 
 
 def nav_slots_enabled():
-    """True only for the explicit slot gate modes r4/r5 (slot order markers)."""
+    """True only for the explicit slot gate modes r4/r5/n1 (slot order markers)."""
     return nav_gate_mode()['name'] in NAV_SLOT_GATE_MODES
 
 
@@ -596,7 +596,7 @@ def main(argv=None):
     if a.nav_solo_robot and a.mode != NAV_MODE:
         p.error('--nav-solo-robot requires --mode nav')
     if a.nav_solo_robot and nav_gate_mode()['name'] not in NAV_SLOT_GATE_MODES:
-        p.error('--nav-solo-robot requires E2EWARP_NAV_GATE_MODE=v230_r4/v230_r5')
+        p.error('--nav-solo-robot requires E2EWARP_NAV_GATE_MODE=v230_r4/v230_r5/v230_n1')
     a.command = ['python', '-m', 'scripts.run_e2e_warp', *(argv if argv is not None else __import__('sys').argv[1:])]
     if a.prepare:
         if a.execute:

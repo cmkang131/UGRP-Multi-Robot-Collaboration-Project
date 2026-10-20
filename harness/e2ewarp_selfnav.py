@@ -82,6 +82,19 @@ Contract v1 (2026-10-18, user decisions):
   fail-closed: a component without a bbox or with an unprojectable bottom row
   never activates the slot.  Both new inputs are own-camera measurements; the
   static map and GT are never read.
+- **Approved gate mode v230_n1 (2026-10-20 decision; default OFF).** r5's Step B
+  passed (GT 2/2, claim 2/2, no contact), but both robots aimed at the same
+  component centre through the door and closed to 0.1770 m centre / 0.0457 m
+  base-box separation at 27.1 s.  N1 keeps r5's stage-1 *centre* aim and r5's
+  stage-2 slot exactly, and adds one bound: before the ground-projection door
+  pass (the stage-2 latch) the **aim direction** is limited to +-10 deg around
+  the robot's own spawn lane in the own-odometry frame.  The applied own-camera
+  bearing is ``wrap(clamp(wrap(centre_bearing + own_odom_yaw), -10, +10) -
+  own_odom_yaw)``.  Once the stage-2 latch opens, the bound is released and the
+  r5 aim (centre + clamped +-15 deg slot offset) is applied unchanged, as are
+  the arming bearing and the 0.52 m / 1.0 m claim.  10 deg is the user-approved
+  N1 limit; the lane frame is built only from own issued commands and the
+  injected calibration, so no map, GT, peer or top camera is read.
 - **Approved gate mode v230_r3 (2026-10-19 decision ①; default OFF).** The
   r2 Step B run failed because its claim counted the *path length* of the own
   issued pulses while arrival is a *position* judgement: both robots drove
@@ -136,6 +149,33 @@ SLOT_STAGE2_GROUND_M = 1.5
 # the arming row (1.5 m -> 0.365 m ground distance) 15 deg is ~0.29 m of lateral
 # spread, enough to separate the pair while keeping the follower off the jamb.
 SLOT_OFFSET_LIMIT_DEG = 15.0
+# ---- N1 spawn-lane bearing limit (2026-10-20 decision; default OFF) ---------
+# r5's pre-door stage-1 aim was the visible component centre.  Both robots aimed
+# at that one point, so the pair closed to 0.1770 m centre / 0.0457 m base-box
+# separation at 27.1 s (no contact, but only 4.6 cm of base-box clearance; r5
+# report sections 3.3 and 9.2).  N1 keeps the same stage-1 *centre aim* but bounds
+# the aim direction to +-10 deg around the robot's **own spawn lane** until the
+# r5 ground-projection door pass (i.e. until the stage-2 latch), so a robot may
+# still correct toward the marking but cannot turn across the neighbouring lane
+# while it is still before/inside the wide door.
+#
+# The bound is expressed in the own-odometry (spawn-lane) frame, whose x axis is
+# the heading at the first issued command (the authored spawn yaw is 0).  The
+# lane-relative aim is ``clamp(wrap(centre_bearing + own_odom_yaw), -10, +10)``
+# and the applied own-camera bearing is that value minus ``own_odom_yaw``.  Like
+# the r3 claim direction, this uses only own issued commands plus the injected
+# calibration: no map, GT, peer or top camera.
+#
+# 10 deg is the **2026-10-20 user-approved N1 limit** (Claude decision
+# `c4-decision-20261020.md` section 3), not a value fitted to r5.  It is a
+# control limit: at the pair's 0.50 m lane spacing a full 10 deg held over the
+# ~3.5 m from spawn to the 1.5 m ground latch is ~0.62 m of lateral travel, so
+# the bound alone does not *guarantee* lane separation - it removes the large
+# early turns toward the shared component (r5 r2 followed a +24.2 deg bearing
+# for its first samples) that produced the near pass.  After the door pass the
+# bound is released and the r5 stage-2 aim (centre + clamped +-15 deg slot
+# offset) applies unchanged.
+SPAWN_LANE_LIMIT_DEG = 10.0
 # Existing calibrated finite-pulse vocabulary (percent x pulse width), taken from
 # harness.egocentric_goto.duty (scale .35, 0.10 s).  These are command limits,
 # not odometry calibration: metres/degrees per percent-second stay injected.
@@ -433,7 +473,8 @@ class SelfCentricNavigation:
                  arrival_projection_m=ARRIVAL_ODOM_PROJECTION_M,
                  arrival_projection_path_cap_m=ARRIVAL_PROJECTION_PATH_CAP_M,
                  arrival_bottom_contact_norm=ARRIVAL_BOTTOM_CONTACT_NORM,
-                 ground_projection=None, slot=None, slot_stage2_ground_m=None):
+                 ground_projection=None, slot=None, slot_stage2_ground_m=None,
+                 spawn_lane_limit_deg=None):
         if robot_id not in ('r1', 'r2'):
             raise ValueError('contract v1 navigation is two-robot only (r1/r2)')
         if acquisition_mode not in ACQUISITION_MODES:
@@ -523,6 +564,18 @@ class SelfCentricNavigation:
             if arrival_mode != ARRIVAL_ODOM_PROJECTION:
                 raise ValueError('slot stage 2 requires the odom_projection arrival claim')
         self.slot_stage2_ground_m = slot_stage2_ground_m
+        # N1 spawn-lane bearing limit (2026-10-20, default OFF).  The bound is
+        # meaningful only while stage 1 lasts, and stage 1 is defined by the r5
+        # ground-projection door pass, so it requires the two-stage latch.  A
+        # missing latch fails closed instead of silently clamping forever (which
+        # would be a different condition) or never (which would silently be r5).
+        if spawn_lane_limit_deg is not None:
+            spawn_lane_limit_deg = float(spawn_lane_limit_deg)
+            if not 0.0 < spawn_lane_limit_deg <= 90.0:
+                raise ValueError('spawn lane limit must be in (0, 90] degrees')
+            if slot_stage2_ground_m is None:
+                raise ValueError('spawn lane limit requires the two-stage slot ground latch')
+        self.spawn_lane_limit_deg = spawn_lane_limit_deg
         self.arrival_range_m = float(arrival_range_m)
         if self.arrival_range_m < 0.0:
             raise ValueError('arrival range threshold must be nonnegative')
@@ -600,6 +653,17 @@ class SelfCentricNavigation:
         self._slot_ground_at_activation_m = None
         self._slot_offset_raw_deg = None
         self._slot_offset_applied_deg = None
+        # N1 spawn-lane limit state.  ``_spawn_lane_active`` is per control tick:
+        # True only when the stage-1 bound was actually applied to this plan.
+        # ``_spawn_lane_aim_raw/applied_deg`` are the aim direction in the
+        # own-odometry (spawn-lane) frame; ``_follow_bearing_*`` are the applied
+        # own-camera bearing before/after the bound (diagnostics only, never fed
+        # back into the gate).
+        self._spawn_lane_active = False
+        self._spawn_lane_aim_raw_deg = None
+        self._spawn_lane_aim_applied_deg = None
+        self._follow_bearing_raw_deg = None
+        self._follow_bearing_applied_deg = None
 
     @property
     def ready(self):
@@ -874,6 +938,13 @@ class SelfCentricNavigation:
         """Own-memory control plan; no plan means the wheel hold is returned."""
         if now_s is None:  # test/introspection default: the last own frame's time
             now_s = self._last_frame.sim_s if self._last_frame is not None else 0.0
+        # N1 lane-bound diagnostics are per plan, so an early-return tick can
+        # never report a stale bound as the current one.
+        self._spawn_lane_active = False
+        self._spawn_lane_aim_raw_deg = None
+        self._spawn_lane_aim_applied_deg = None
+        self._follow_bearing_raw_deg = None
+        self._follow_bearing_applied_deg = None
         landmark = self.memory.nearest(self.destination_kind)
         if self.option != OPTION:
             return dict(reason='option_off', landmark=landmark, forward=0.0, turn=0.0)
@@ -930,6 +1001,24 @@ class SelfCentricNavigation:
                 offset = 0.0
         self._slot_offset_applied_deg = offset
         bearing = wrap_deg(landmark.bearing_deg + offset)
+        self._follow_bearing_raw_deg = bearing
+        if self.spawn_lane_limit_deg is not None and not self._slot_stage2_active:
+            # N1 spawn-lane bound (2026-10-20 decision): while stage 1 lasts
+            # (before the ground-projection door pass), the aim direction in the
+            # own-odometry frame - whose x axis is the heading at the first
+            # issued command, i.e. the authored spawn lane - may not leave
+            # +-spawn_lane_limit_deg.  The r5 stage-1 centre aim itself is
+            # unchanged; only an aim pointing farther off the lane is capped.
+            # After the one-shot stage-2 latch this branch is skipped and the r5
+            # aim is applied unchanged.  No map/GT/peer input is read: the lane
+            # frame is the r3 own-odometry pose.
+            lane = wrap_deg(self._odom_yaw_deg + bearing)
+            applied = clamp(lane, -self.spawn_lane_limit_deg, self.spawn_lane_limit_deg)
+            self._spawn_lane_active = True
+            self._spawn_lane_aim_raw_deg = lane
+            self._spawn_lane_aim_applied_deg = applied
+            bearing = wrap_deg(applied - self._odom_yaw_deg)
+        self._follow_bearing_applied_deg = bearing
         turn = clamp(bearing / BEARING_FULL_DEG, -1.0, 1.0)
         if abs(bearing) > ALIGN_GATE_DEG:
             forward = 0.0  # rotate toward the destination before translating
@@ -945,6 +1034,26 @@ class SelfCentricNavigation:
         # plan keeps the clamped wheel values by round-tripping through them.
         return dict(reason='driving', landmark=landmark,
                     forward=(left + right) / 2.0, turn=(right - left) / 2.0)
+
+    def _spawn_lane_report_fields(self):
+        """N1-only report fields; empty when the mode does not select the bound.
+
+        Keeping them out of the base dict (rather than always emitting nulls)
+        preserves the frozen r4/r5 report bytes exactly.
+        """
+        if self.spawn_lane_limit_deg is None:
+            return {}
+        return dict(
+            spawn_lane_limit_deg=round(self.spawn_lane_limit_deg, 3),
+            spawn_lane_active=bool(self._spawn_lane_active),
+            spawn_lane_aim_raw_deg=(None if self._spawn_lane_aim_raw_deg is None
+                                    else round(self._spawn_lane_aim_raw_deg, 3)),
+            spawn_lane_aim_applied_deg=(None if self._spawn_lane_aim_applied_deg is None
+                                        else round(self._spawn_lane_aim_applied_deg, 3)),
+            follow_bearing_raw_deg=(None if self._follow_bearing_raw_deg is None
+                                    else round(self._follow_bearing_raw_deg, 3)),
+            follow_bearing_applied_deg=(None if self._follow_bearing_applied_deg is None
+                                        else round(self._follow_bearing_applied_deg, 3)))
 
     def _report(self, *, active, now_s):
         holding = 'unknown'
@@ -1003,7 +1112,8 @@ class SelfCentricNavigation:
                     odom_pose=(round(self._odom_x_m, 6), round(self._odom_y_m, 6),
                                round(self._odom_yaw_deg, 3)),
                     arrival_ground_distance_m=(None if self._ground_distance_m is None
-                                               else round(self._ground_distance_m, 6)))
+                                               else round(self._ground_distance_m, 6)),
+                    **self._spawn_lane_report_fields())
 
     # --- task/order sheet -------------------------------------------------
     def task_candidates(self, completed):
