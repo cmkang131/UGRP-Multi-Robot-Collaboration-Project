@@ -1041,6 +1041,14 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                 from sim.grasp_act_search17 import pulse_free
                 safe=all(pulse_free(pose,value,discs,rects,radius,mode=mode)
                          for mode in ('off',self.search15_modes['search17_odometry']))
+            if not self.search19_body_active:
+                # pairact P1 cand-1 (default off): align pulses use the real body rectangle.
+                from sim.grasp_act_align_guard import rect_clear
+                rect_safe=rect_clear(self,pose,value,discs,rects,radius)
+                if rect_safe is not None:
+                    if rect_safe and not safe:
+                        self.search20_log.append({'t':now,'event':'align_rect_guard_admit'})
+                    safe=rect_safe
             if self.search19_body_active:
                 from sim.grasp_act_search19 import body_pulse_free
                 safe=body_pulse_free(self,truth,value)

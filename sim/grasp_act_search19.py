@@ -91,8 +91,11 @@ def admitted(teacher, world, value, before):
     if teacher.search19_body_active:
         clear = body_pulse_free(teacher, world, value)
     else:
-        clear = all(pulse_free(pose, value, discs, rects, radius, mode=m)
-                    for m in ('off', teacher.search15_modes['search17_odometry']))
+        from sim.grasp_act_align_guard import rect_clear
+        clear = rect_clear(teacher, pose, value, discs, rects, radius)
+        if clear is None:
+            clear = all(pulse_free(pose, value, discs, rects, radius, mode=m)
+                        for m in ('off', teacher.search15_modes['search17_odometry']))
     if not clear:
         return False
     if teacher.sampled_stance:
