@@ -1026,6 +1026,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         if self.search15_modes['search19_motion']!='off':
             from sim.grasp_act_search19 import project_motion
             value=project_motion(self,truth,value,before_pwm,now)
+        proposed=value  # pairact P1 cand-2b: the align command before the pulse checks below
         if (((self.search19_body_active and self.phase in ('approach','align','ready','search','relook'))
                 or (self.priority is not None and self.phase in ('approach','align','ready','search','relook'))
                 or (self.approach_recovery in ('approach_recovery_v2','progress_view_recovery_v3') and self.approach_plan_valid
@@ -1063,6 +1064,10 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                 self.sink.pwm.update(before_pwm);self.arm.commanded.update(before_pwm)
                 value=self._hold(now)
                 self.search18_log.append({'t':now,'event':'footprint_pulse_reject','reason':reason})
+        # pairact P1 cand-2b (default off): a rejected align pulse refreshes the
+        # stale obstacles on the pulse path with the existing bounded reobserve.
+        from sim.grasp_act_align_refresh2 import maybe_begin
+        maybe_begin(self,truth,proposed,value,now)
         # READY waiting belongs to GO/ACK, and fine alignment has its own
         # error-progress checker. A search detour does not erase route debt.
         if self.phase in ('align','ready','pick','complete'):self.progress.reset()
