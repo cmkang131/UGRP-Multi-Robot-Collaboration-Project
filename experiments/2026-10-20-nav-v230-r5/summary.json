@@ -1,0 +1,462 @@
+{
+ "schema": "ugrp.e2ewarp.nav_v230_r5_summary.v1",
+ "domain": "sim",
+ "branch": "dsh/nav-v230-r5",
+ "run_source_sha": "219d08779bf068fb35156e16d19e7744e36d4595",
+ "post_run_analysis_fix_sha": "ef5ebcd9c134a17dba192d6de7b0e79ef8326261",
+ "base": "523b011c1",
+ "prereg": {
+  "path": "experiments/2026-10-17-act18/PREREG_V230_R5.md",
+  "sha256": "5fddf3f99cc58ba84d0cdfa54f9fe59213dfd61bf007791c8cac051e219a7d8d",
+  "commit_sha": "219d08779bf068fb35156e16d19e7744e36d4595"
+ },
+ "code_sha256": {
+  "harness/e2ewarp_selfnav.py": "7295fba55b60ac355487ca614536e0c085fa30d9dd88235700052e471e513d63",
+  "harness/e2ewarp_nav_gate.py": "8ffe71c8b361aaa847be02e1b625b2407662be034b3269384807bba3e7b28484",
+  "harness/e2ewarp_nav_contacts.py": "7bfa561eb27a940beef54996c5985272c4d571b547692fcac356976bbf05386b",
+  "harness/e2ewarp_nav_mode.py": "2115cdfa90393db95e3f0a28f939c4b541c5492c9b2fd73c2ab1e7969cbd8517",
+  "scripts/run_e2e_warp.py": "e36647d4db452362140c0a0680bc265af15a581ec4cbd9a6857684a87dd6d872",
+  "tests/test_e2ewarp_nav_v230_r5.py": "50649fbfb11cb3889e2fda307d1993d9bff4b75ff10e776520836284bd938012",
+  "experiments/2026-10-20-nav-v230-r5/nav_v230_r5_analysis.py": "ea1d495f2a6dfdd7118703fb68551a9a33cdc9c0a4f87c64fb72e6c0f3f98fed",
+  "experiments/2026-10-19-nav-v230-r3/render_check.py": "aedc0a43cfa315759289a43809b78d3418373902e730922be818d801c8c2624e",
+  "experiments/2026-10-17-act18/PREREG_V230_R5.md": "5fddf3f99cc58ba84d0cdfa54f9fe59213dfd61bf007791c8cac051e219a7d8d"
+ },
+ "host": {
+  "instance": "ugrp-act-l4-gcp6",
+  "project": "ugrp-sim-f-1016",
+  "account": "kcm5781kcm5781@gmail.com",
+  "zone": "asia-northeast3-a",
+  "boot_utc": "2026-10-20T01:36Z",
+  "stop_utc": "2026-10-20T01:58:17Z",
+  "status": "TERMINATED",
+  "lease": "e2ewarp.json",
+  "processes_before_stop": 0,
+  "gpu_before_stop": "0 %, 0 MiB",
+  "clone": "/home/ugrp/ugrp-sim/src/nav-v230-r5-219d0877 (HEAD 219d0877, clean during runs)",
+  "relay": "Oracle 127.0.0.1:18648 -> VM 127.0.0.1:18627, CoreWeave fp4 pinned, stopped"
+ },
+ "runs": [
+  {
+   "id": "render-20261020T0140Z",
+   "class_": "preflight",
+   "gate": true,
+   "source_sha": "219d0877…",
+   "raw_vm": "/home/ugrp/ugrp-sim/runs/nav-v230-r5-render-20261020T0140Z",
+   "raw_oracle": "/home/ubuntu/UGRP/outputs/e2e18-admin/nav-gate/v230-r5/stepB-20261020T0205Z/measure.json",
+   "result": {
+    "zone_free_frames": 10,
+    "zone_free_detections": 0,
+    "max_component_px": 1,
+    "step_b_allowed": true
+   }
+  },
+  {
+   "id": "solo-r1",
+   "class_": "diagnostic",
+   "gate": false,
+   "source_sha": "219d0877…",
+   "raw_vm": "/home/ugrp/ugrp-sim/runs/e2ewarp-nav-v230-r5-solo-r1",
+   "raw_oracle": "/home/ubuntu/UGRP/outputs/e2e18-admin/nav-gate/v230-r5/stepB-20261020T0205Z/nav-v230-r5-solo-r1-analysis.json",
+   "result": {
+    "status": "NAV_ARRIVAL_UNVERIFIED",
+    "sim_s": 39.7,
+    "wall_s": 165.65,
+    "claim_n": 1,
+    "gt_arrival_n": 1,
+    "mismatch": 0,
+    "scene_contact_ticks": 0,
+    "robots": {
+     "detection_n": 330,
+     "fresh_detection_n": 317,
+     "first_fresh_detection_s": 6.8,
+     "forward_used_m": 1.831013,
+     "drive_reason": {
+      "acquiring_forward": 130,
+      "driving": 228,
+      "driving_hold_heading": 39,
+      "arrived": 1
+     },
+     "stage2": {
+      "active": true,
+      "activation_sim_s": 26.6,
+      "ground_at_activation_m": 1.4833,
+      "ground_at_arming_m": 0.3681,
+      "activation_to_arming_m": 1.1152,
+      "raw_offset_min_deg": 6.573,
+      "raw_offset_max_deg": 25.915,
+      "applied_offset_min_deg": 0.0,
+      "applied_offset_max_deg": 15.0,
+      "clamp_ticks": 126
+     },
+     "armed": {
+      "sim_s": 35.8,
+      "u_deg": 13.641,
+      "bearing_armed_deg": -10.892,
+      "slot_offset_deg": 21.08,
+      "gt_xy": [
+       3.9317,
+       -1.7191
+      ]
+     },
+     "claim": {
+      "sim_s": 39.7,
+      "projection_m": 0.523949,
+      "path_m": 0.525616,
+      "gt_xy": [
+       4.4104,
+       -1.5134
+      ],
+      "inside_gt": true
+     },
+     "final_gt_xy": [
+      4.4104,
+      -1.5134
+     ],
+     "final_inside_gt": true,
+     "x_margin_to_west_edge_m": 0.1104,
+     "post_claim_gt_m": 0.0,
+     "gt_path_m": 5.4559,
+     "command_over_gt": 1.002,
+     "yaw_error_peak_deg": 7.532,
+     "yaw_error_final_deg": 5.545
+    }
+   }
+  },
+  {
+   "id": "stepB",
+   "class_": "study",
+   "gate": true,
+   "source_sha": "219d0877…",
+   "raw_vm": "/home/ugrp/ugrp-sim/runs/e2ewarp-nav-v230-r5-run",
+   "raw_oracle": "/home/ubuntu/UGRP/outputs/e2e18-admin/nav-gate/v230-r5/stepB-20261020T0205Z/nav-v230-r5-analysis.json",
+   "result": {
+    "status": "NAV_ARRIVAL_UNVERIFIED",
+    "sim_s": 39.9,
+    "wall_s": 274.13,
+    "wall_per_sim": 6.87,
+    "acceptance": {
+     "schema": "ugrp.e2ewarp.nav_v230_r5_acceptance.v1",
+     "eval_only": true,
+     "n_robots": 2,
+     "valid": true,
+     "valid_detail": {
+      "source_ok": true,
+      "stack_ok": true,
+      "boundaries_ok": true,
+      "status": "NAV_ARRIVAL_UNVERIFIED",
+      "status_ok": true
+     },
+     "gt_arrival_n": 2,
+     "claim_n": 2,
+     "claim_mismatch_n": 0,
+     "claims_outside_gt_at_claim_time_n": 0,
+     "fp_final_outside_claim_n": 0,
+     "fp_render_zone_free_detections": 0,
+     "fp_render_max_component_px": 1,
+     "fp_render_zone_free_frames": 10,
+     "no_claim_n": 0,
+     "boundary_violations": [],
+     "pass_": true,
+     "rule": "PASS <=> VALID and GT 2/2 and claim 2/2 and mismatch 0 and FP 0 and boundary 0",
+     "note": "cap_end is not success; contact is a failure cause, not INVALID"
+    },
+    "contacts": {
+     "schema": "ugrp.e2ewarp.nav_r4_contact_summary.v1",
+     "eval_only": true,
+     "robots": [
+      "r1",
+      "r2"
+     ],
+     "pair": true,
+     "ledger": {
+      "schema": "ugrp.e2ewarp.nav_contact_ledger.v1",
+      "eval_only": true,
+      "robots": [
+       "r1",
+       "r2"
+      ],
+      "contacts_available": true,
+      "unavailable_reason": null,
+      "base_boxes": {
+       "r1": {
+        "geom": "r1__base_lower_collision",
+        "size": [
+         0.0905,
+         0.0435,
+         0.0146
+        ],
+        "local_pos": [
+         0.0,
+         0.0,
+         -0.0011
+        ]
+       },
+       "r2": {
+        "geom": "r2__base_lower_collision",
+        "size": [
+         0.0905,
+         0.0435,
+         0.0146
+        ],
+        "local_pos": [
+         0.0,
+         0.0,
+         -0.0011
+        ]
+       }
+      },
+      "ticks": [],
+      "contact_ticks": 0,
+      "contact_pairs_total": 0,
+      "first_contact_s": null,
+      "last_contact_s": null,
+      "scene_contacts_available": true,
+      "scene_unavailable_reason": null,
+      "scene_excluded_geoms": [
+       "floor"
+      ],
+      "scene_ticks": [],
+      "scene_contact_ticks": 0,
+      "scene_contact_pairs_total": 0,
+      "scene_first_contact_s": null,
+      "scene_last_contact_s": null,
+      "scene_geom_totals": {},
+      "note": "MJWarp contact buffer read after each step; evaluation sink only"
+     },
+     "available": true,
+     "min_center_distance_m": 0.177,
+     "min_center_distance_s": 27.1,
+     "min_base_box_separation_m": 0.0457,
+     "min_base_box_separation_s": 27.2,
+     "center_distance_below_0_181_n": 7,
+     "contact_ticks": 0,
+     "contact_pairs_total": 0,
+     "first_contact_s": null,
+     "last_contact_s": null,
+     "contacts_available": true,
+     "note": "MJWarp contact buffer (evaluation-only) + GT box geometry; never a controller input"
+    },
+    "scene_contacts": 0,
+    "robots": {
+     "r1": {
+      "detection_n": 333,
+      "fresh_detection_n": 326,
+      "first_fresh_detection_s": 6.7,
+      "forward_used_m": 1.802843,
+      "drive_reason": {
+       "acquiring_forward": 128,
+       "driving": 230,
+       "driving_hold_heading": 39,
+       "arrived": 3
+      },
+      "stage2": {
+       "active": true,
+       "activation_sim_s": 26.5,
+       "ground_at_activation_m": 1.4834,
+       "ground_at_arming_m": 0.3679,
+       "activation_to_arming_m": 1.1155,
+       "raw_offset_min_deg": 7.23,
+       "raw_offset_max_deg": 25.869,
+       "applied_offset_min_deg": 0.0,
+       "applied_offset_max_deg": 15.0,
+       "clamp_ticks": 126
+      },
+      "armed": {
+       "sim_s": 35.8,
+       "u_deg": 15.85,
+       "bearing_armed_deg": -10.423,
+       "slot_offset_deg": 21.315,
+       "gt_xy": [
+        3.9342,
+        -1.7207
+       ]
+      },
+      "claim": {
+       "sim_s": 39.7,
+       "projection_m": 0.525104,
+       "path_m": 0.526637,
+       "gt_xy": [
+        4.4074,
+        -1.5138
+       ],
+       "inside_gt": true
+      },
+      "final_gt_xy": [
+       4.414,
+       -1.5103
+      ],
+      "final_inside_gt": true,
+      "x_margin_to_west_edge_m": 0.114,
+      "post_claim_gt_m": 0.0075,
+      "gt_path_m": 5.4597,
+      "command_over_gt": 1.002,
+      "yaw_error_peak_deg": 7.721,
+      "yaw_error_final_deg": 4.028
+     },
+     "r2": {
+      "detection_n": 359,
+      "fresh_detection_n": 333,
+      "first_fresh_detection_s": 4.1,
+      "forward_used_m": 1.352132,
+      "drive_reason": {
+       "acquiring_forward": 96,
+       "driving": 264,
+       "driving_hold_heading": 39,
+       "arrived": 1
+      },
+      "stage2": {
+       "active": true,
+       "activation_sim_s": 27.0,
+       "ground_at_activation_m": 1.4723,
+       "ground_at_arming_m": 0.3648,
+       "activation_to_arming_m": 1.1076,
+       "raw_offset_min_deg": -26.667,
+       "raw_offset_max_deg": -6.761,
+       "applied_offset_min_deg": -15.0,
+       "applied_offset_max_deg": 0.0,
+       "clamp_ticks": 130
+      },
+      "armed": {
+       "sim_s": 36.0,
+       "u_deg": -28.305,
+       "bearing_armed_deg": 8.545,
+       "slot_offset_deg": -23.85,
+       "gt_xy": [
+        3.9204,
+        -2.464
+       ]
+      },
+      "claim": {
+       "sim_s": 39.9,
+       "projection_m": 0.529674,
+       "path_m": 0.530721,
+       "gt_xy": [
+        4.4276,
+        -2.6098
+       ],
+       "inside_gt": true
+      },
+      "final_gt_xy": [
+       4.4276,
+       -2.6098
+      ],
+      "final_inside_gt": true,
+      "x_margin_to_west_edge_m": 0.1276,
+      "post_claim_gt_m": 0.0,
+      "gt_path_m": 5.4256,
+      "command_over_gt": 1.003,
+      "yaw_error_peak_deg": 15.655,
+      "yaw_error_final_deg": 15.631
+     }
+    }
+   }
+  }
+ ],
+ "media": {
+  "post_processing_only": true,
+  "in_run_code_changes": 0,
+  "frames": {
+   "pair-r1": {
+    "path": "/home/ugrp/ugrp-sim/runs/e2ewarp-nav-v230-r5-run/world-00/review-rgb",
+    "n": 80,
+    "first": "r1-000000.jpg",
+    "last": "r1-000395.jpg",
+    "tick_first": 0,
+    "tick_last": 395,
+    "tick_step": 5,
+    "fps": 0.5
+   },
+   "pair-r2": {
+    "path": "/home/ugrp/ugrp-sim/runs/e2ewarp-nav-v230-r5-run/world-00/review-rgb",
+    "n": 80,
+    "first": "r2-000000.jpg",
+    "last": "r2-000395.jpg",
+    "tick_first": 0,
+    "tick_last": 395,
+    "tick_step": 5,
+    "fps": 0.5
+   },
+   "solo-r1-r1": {
+    "path": "/home/ugrp/ugrp-sim/runs/e2ewarp-nav-v230-r5-solo-r1/world-00/review-rgb",
+    "n": 80,
+    "first": "r1-000000.jpg",
+    "last": "r1-000395.jpg",
+    "tick_first": 0,
+    "tick_last": 395,
+    "tick_step": 5,
+    "fps": 0.5
+   }
+  },
+  "files": [
+   {
+    "name": "nav-v230-r5-pair-both-720p.mp4",
+    "sha256": "242d630b03a55fa1890ab528fdbd22cfcbfb34a2e2b732459362f0c20f483b38",
+    "size_bytes": 1653727,
+    "width": 1920,
+    "height": 720,
+    "frames_n": 80,
+    "fps": "2/1",
+    "duration_s": 40.0
+   },
+   {
+    "name": "nav-v230-r5-pair-r1-2fps.mp4",
+    "sha256": "46da3fab72b6b8431ba6d8144c7f7b3a36d01585977e8d8ec683d9542eada987",
+    "size_bytes": 405132,
+    "width": 640,
+    "height": 480,
+    "frames_n": 80,
+    "fps": "2/1",
+    "duration_s": 40.0
+   },
+   {
+    "name": "nav-v230-r5-pair-r2-2fps.mp4",
+    "sha256": "9143ad764f432406a9f930259437dfdb07357af9a2887fbad7c63997d04a9328",
+    "size_bytes": 423220,
+    "width": 640,
+    "height": 480,
+    "frames_n": 80,
+    "fps": "2/1",
+    "duration_s": 40.0
+   },
+   {
+    "name": "nav-v230-r5-solo-r1-2fps.mp4",
+    "sha256": "81bd07deadd79eca153749c73e7145e6727f4ca2b415453d336909759c0ae640",
+    "size_bytes": 405574,
+    "width": 640,
+    "height": 480,
+    "frames_n": 80,
+    "fps": "2/1",
+    "duration_s": 40.0
+   }
+  ]
+ },
+ "evidence": {
+  "tar": "/home/ubuntu/UGRP/outputs/e2e18-admin/nav-gate/v230-r5/stepB-20261020T0205Z/nav-v230-r5-evidence-20261020T0205Z.tar.gz",
+  "tar_sha256": "b2142774c49b5138ed6acafbd5d235bac93613481263aa3d226852e5e90543b4",
+  "tar_size_bytes": 8628842,
+  "manifest_files": 625,
+  "vm_oracle_match": true
+ },
+ "exclusions": {
+  "no_pooling": true,
+  "runs": [
+   "v230-r2",
+   "v230-r3",
+   "v230-r4"
+  ],
+  "reason": "all FAIL; r4 r2 solo success also excluded"
+ },
+ "pre_run_failures": [
+  {
+   "id": "solo-r1-admission-error-20261020T0145Z",
+   "sim_ticks": 0,
+   "cause": "missing --e2e-warp-batch"
+  },
+  {
+   "id": "solo-r1-admission-error2-20261020T0146Z",
+   "sim_ticks": 0,
+   "cause": "lease file name must be e2ewarp.json"
+  }
+ ],
+ "scope": "nav-only, sim, n=1, seed 601; own-input arrival is unverified by the runner; acceptance via eval-only recount"
+}
