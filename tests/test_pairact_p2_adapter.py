@@ -22,4 +22,11 @@ def test_p2_candidate_is_r13_plus_carry_only():
 
 def test_dependency_pin_is_p2_teacher():
     text = (ROOT/'harness/beampair_teacher.py').read_text()
-    assert "DEPENDENCY_SHA = 'ccd33332743b7e1b5fa9ec0ef8555edbba966713'" in text
+    assert "DEPENDENCY_SHA = '208e61490cfc19aef2a95954841e76a929fc0666'" in text
+
+
+def test_floor_candidate_only_adds_lower_mode():
+    profiles = _profiles()
+    floor, p2 = profiles('pairact_p2_r13_floor'), profiles('pairact_p2_r13')
+    assert {k: v for k, v in floor.items() if k != 'carry_lower'} == p2
+    assert floor['carry_lower'] == 'floor_contact_v1' and 'carry_lower' not in p2
