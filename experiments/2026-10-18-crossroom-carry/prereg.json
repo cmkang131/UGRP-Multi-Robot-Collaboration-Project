@@ -1,0 +1,206 @@
+{
+ "schema": "ugrp.crossroom_carry.prereg.v1",
+ "experiment_id": "2026-10-18-crossroom-carry",
+ "stage": "A_unloaded",
+ "flow": "self_map",
+ "title": "Cross-room carry Stage A: west pickup room -> divider door -> zone B arrival (unloaded solo)",
+ "frozen_at": "2026-10-17T19:07:34Z",
+ "policy_source_sha": "c390105c2663a5b780e4ad8d69da72a5ffe1bce8",
+ "policy_source_commit_note": "visgoal candidate C build (PR #582 draft). Vendored byte copy in experiments/2026-10-18-crossroom-carry/vendor/visual_goal_search.py; the runner registers it as sim.visual_goal_search before use.",
+ "checkout_branch": "claude/crossroom-carry",
+ "scene": {
+  "map_id": "zone_wide_door_geometry_v3",
+  "arena_variant": "zone_wide_door",
+  "scene_profile": "walls_floor_contrast_v5_indigo110_s80",
+  "cargo_version": "v6",
+  "scenario_version": "s1_normal_mixed_v7",
+  "stage_a_scene": "s1_normal_mixed_v7 full scene (cargo boxes and long_beam included)",
+  "wall_profile": "walls_v3",
+  "renderer_source": "/home/ugrp/ugrp-sim/src/16a946ff3",
+  "legacy_source": "/home/ugrp/ugrp-sim/src/warp8f-selfmap-0ace43f25",
+  "host": "ugrp-act-l4-gcp3",
+  "host_note": "same L4 host as the visgoal gate r4/B/C runs. Results are not pooled with those runs (different starts, cap and stage)."
+ },
+ "destination": {
+  "zone": "B",
+  "appearance": "blue floor paint",
+  "rectangle_eval_only": [
+   4.3,
+   4.9,
+   -2.8,
+   -1.4
+  ],
+  "door": {
+   "center_m": [
+    2.2,
+    0.05
+   ],
+   "width_m": 0.5,
+   "opening_y_eval_only": [
+    -0.2,
+    0.3
+   ],
+   "divider_x_m": 2.2,
+   "divider_half_thickness_m": 0.025
+  }
+ },
+ "starts": "experiments/2026-10-18-crossroom-carry/setups.json#16",
+ "n_starts": 16,
+ "start_groups": {
+  "N": "near-wall starts (new; setup-validated before the gate)",
+  "F": "far-side pickup-room starts reusing the visgoal west e00-e07 coordinates"
+ },
+ "cap_sim_s": 180,
+ "nworld": 16,
+ "metrics": [
+  "door_crossed",
+  "door_cross_tick_s",
+  "door_lateral_offset_m",
+  "door_min_jamb_gap_m",
+  "post_cross_colour_seen",
+  "post_cross_found_t_s",
+  "found_any_pre_cross_reference_only",
+  "arrived_declared",
+  "declared_t_s",
+  "gt_inside",
+  "gt_zone_margin_m",
+  "gt_post_cross_zone_distance_m",
+  "time_to_cross_s",
+  "time_to_declare_s",
+  "collision_events",
+  "cap_end"
+ ],
+ "funnel_stages": {
+  "A": [
+   "requested_n16",
+   "input_audit_zero",
+   "start_valid",
+   "door_crossed",
+   "post_cross_colour_seen",
+   "post_cross_found",
+   "arrived_declared",
+   "gt_inside"
+  ]
+ },
+ "cap_end_label": "cap_end",
+ "cap_end_note": "cap_end is a separate termination label, never a rejection reason. The 180 Sim s cap is a new condition and is not pooled with the visgoal 120 Sim s runs.",
+ "rejection_fields": [
+  "reason_category",
+  "blocked_object",
+  "minimum_gap_m",
+  "gap_status",
+  "sim_s",
+  "door_lateral_offset_m",
+  "final_pose_eval_only",
+  "evidence",
+  "raw_path"
+ ],
+ "rejection_reason_categories": [
+  "input_audit_fail",
+  "start_invalid_overlap",
+  "door_not_crossed",
+  "destination_not_found",
+  "false_arrival_outside_zone",
+  "arrival_unverified",
+  "cap_end"
+ ],
+ "eval_only": "separate cells only; the controller never receives gt_*, world pose, spawn pose, static map, top camera or zone/door coordinates",
+ "input_audit": {
+  "implementation": "controller_boundary_v1: every skill.control/memory_observation/memory.step argument dict is scanned at the boundary and forbidden-key attempts are counted; a detected key fails the episode as input_audit_fail. Counters are not runner-written constants.",
+  "targets": {
+   "held_world_reads": 0,
+   "static_map_control": 0,
+   "spawn_control": 0,
+   "truth_control": 0,
+   "top_camera_frames": 0,
+   "invisible_measurements": 0
+  }
+ },
+ "constraints": {
+  "static_map_use": "none",
+  "localization_initial_prior": "none",
+  "goal_discovery": "visual_search",
+  "held_object_hidden_v1": true,
+  "weld": false,
+  "ultrasonic_front": "off",
+  "top_camera_control": false,
+  "no_llm_calls": true,
+  "physics_backend": "mjwarp_batch_v1",
+  "contact_profile": "warp_native_contact_v1",
+  "noslip_iterations": 0,
+  "memory_implementation": "legacy_v1"
+ },
+ "toggles": {
+  "crossroom_carry_v1": "on",
+  "crossroom_door_gap_v1": "on",
+  "crossroom_carry_state_v1": "on",
+  "crossroom_route_memory_v1": "on",
+  "crossroom_safe_lookaround_v1": "on",
+  "visgoal_expanding_search_v1": "on",
+  "visgoal_mirror_pulse_v1": "off",
+  "visgoal_arrival_aim_inset_v1": "off"
+ },
+ "search_policy_note": "Stage A reuses the visgoal candidate C expanding-search schedule (20/344/60/300/60 ticks) with the arrival declaration of gate r4/B (arrival aim inset 0), because the C 120 Sim s gate measured that the 0.142 m aim inset broke the declaration (0/16 declared even though the eight east episodes ended inside zone B). The 180 Sim s cap, 16 west starts and the search schedule form a new condition, not pooled with r4/B/C.",
+ "prior_funnel": {
+  "A": "/home/ugrp/ugrp-sim/runs/visgoal-gate-r4-lawnmower/recount.json"
+ },
+ "rejection_table": {
+  "A": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/rejection_table.json"
+ },
+ "no_pooling": [
+  "visgoal-gate-r4",
+  "visgoal-gate-r4-mirror",
+  "visgoal-gate-r4-lawnmower",
+  "egonav-gate-n16-09",
+  "act15",
+  "act16a",
+  "act18"
+ ],
+ "mission_scope": "Stage A measures the unloaded destination search after crossing the divider door. No cargo is grasped, carried or released, so the mission-level carry across the wall (Stage B/B+) is not verified by this stage. The full mission also needs ACT grasp/release; those are separate component gates.",
+ "setup_validation": "scripts/crossroom_setup_check.py runs on gcp3 before the gate: sim spawn-overlap admission per start plus explicit distances to the long_beam/cargo bodies and peer park clearance. Its setup-validation.json is committed before the gate. If a start is invalid it is replaced and this prereg is updated before any gate result is seen.",
+ "expected_wall": "16 worlds x 180 Sim s at the gcp3 batch rate (2.75-3.2 wall/(sim_s*nworld)) is about 2.5-3.1 h for the gate; a 2-start 60 s preflight runs first.",
+ "stack_check": "experiments/2026-10-18-crossroom-carry/stack-stageA.json (scripts/check_current_stack.py --flow self_map)",
+ "dsh": "Produced with DeepSeek Harness. https://github.com/deepseek-ai/DeepSeek-Harness",
+ "setup_validation_result": {
+  "n": 16,
+  "pass_n": 16,
+  "sim_admission_all_accepted": true,
+  "destination_zone_starts": [],
+  "beam_straight_path_blocked_episodes": [
+   6,
+   10,
+   11,
+   14,
+   15
+  ],
+  "beam_straight_path_clearance_m": {
+   "0": 0.6989,
+   "1": 0.6989,
+   "2": 0.3336,
+   "3": 0.3336,
+   "4": 0.7426,
+   "5": 0.446,
+   "6": 0.0,
+   "7": 0.2735,
+   "8": 0.562,
+   "9": 0.3991,
+   "10": 0.1403,
+   "11": 0.0,
+   "12": 0.6275,
+   "13": 0.3142,
+   "14": 0.0,
+   "15": 0.1929
+  },
+  "peer_parks_pass": true,
+  "note": "All 16 starts pass the simulator spawn-overlap admission and no start is inside a destination zone. The long_beam sits on the straight start->door segment for five starts (0.0-0.19 m clearance); this is a scene obstacle kept by design (full s1 v7 scene), not a start overlap, and the policy is wall-following rather than straight-line, so starts are not replaced.",
+  "artifact": "experiments/2026-10-18-crossroom-carry/setup-validation.json"
+ },
+ "candidate": "stage_a_unloaded_C_search_r4_arrival",
+ "control_policy": {
+  "search": "visgoal candidate C expanding lawnmower (EXPANDING_LEG_TICKS 20/344/60/300/60)",
+  "arrival": "gate r4 / candidate B declaration behaviour (0.10 m point tolerance, arrival aim inset 0)",
+  "reason": "Candidate C was measured on 2026-10-18 (16 starts, 120 Sim s, same host/source): found 9/16, arrived_declared 0/16, GT-inside 0/16, cap_end 16/16, west crossed 5/8. All eight east episodes ended physically inside zone B but never declared; the C-only change on the arrival path (0.142 m aim inset) is the identified regression (near-field paint loss -> local_reacquire_spin loop). Stage A therefore separates the two changes before the gate, not after any gate result.",
+  "c_result_reference": "experiments/2026-10-17-visgoal/README.md (candidate C results); raw /home/ugrp/ugrp-sim/runs/visgoal-gate-r4-lawnmower",
+  "no_pooling": "the C gate result is not pooled with Stage A; it is only the basis for this pre-registered policy choice."
+ }
+}

@@ -1,0 +1,131 @@
+{
+ "schema": "ugrp.crossroom_carry.prereg.v1",
+ "experiment_id": "2026-10-18-crossroom-carry",
+ "stage": "A_unloaded_fix",
+ "flow": "self_map",
+ "title": "Cross-room carry Stage A-fix: unloaded west -> divider door -> zone B, with the four Stage A failure-mode fixes",
+ "frozen_at": "2026-10-18T01:15:44Z",
+ "independent_from": [
+  "Stage A (unloaded baseline)",
+  "Stage B (loaded baseline)",
+  "visgoal gate r4/B/C",
+  "egonav gate-09",
+  "ACT15/16a/18"
+ ],
+ "policy": {
+  "base": "visgoal candidate C build c390105c2 (vendored byte copy), expanding search on, arrival aim inset 0",
+  "overrides": "experiments/2026-10-18-crossroom-carry/scripts/vgs_fix.py (subclass only; vendored bytes unchanged)",
+  "toggles": {
+   "crossroom_gap_twosided_v1": "on",
+   "crossroom_door_align_v1": "on",
+   "crossroom_paint_area_v1": "on",
+   "crossroom_contacts_v1": "on"
+  },
+  "design": "experiments/2026-10-18-crossroom-carry/FIX_DESIGN.md"
+ },
+ "scene": {
+  "map_id": "zone_wide_door_geometry_v3",
+  "scene_profile": "walls_floor_contrast_v5_indigo110_s80",
+  "scenario": "s1_normal_mixed_v7 (full scene, same as Stage A)",
+  "renderer_source": "/home/ugrp/ugrp-sim/src/16a946ff3",
+  "legacy_source": "/home/ugrp/ugrp-sim/src/warp8f-selfmap-0ace43f25",
+  "host": "ugrp-act-l4-gcp3"
+ },
+ "destination": {
+  "zone": "B",
+  "rectangle_eval_only": [
+   4.3,
+   4.9,
+   -2.8,
+   -1.4
+  ],
+  "door": {
+   "center_m": [
+    2.2,
+    0.05
+   ],
+   "width_m": 0.5,
+   "opening_y_eval_only": [
+    -0.2,
+    0.3
+   ]
+  }
+ },
+ "starts": "experiments/2026-10-18-crossroom-carry/setups.json#16",
+ "n_starts": 16,
+ "cap_sim_s": 180,
+ "nworld": 16,
+ "funnel_stages": {
+  "A": [
+   "requested_n16",
+   "input_audit_zero",
+   "start_valid",
+   "door_crossed",
+   "post_cross_colour_seen",
+   "post_cross_found",
+   "arrived_declared",
+   "gt_inside"
+  ]
+ },
+ "fix_metrics": {
+  "gap_claims_n": "trace openings of gap_cross/gap_forward",
+  "gap_claims_with_gt_crossing_n": "of the above, how many actually GT-crossed",
+  "gap_claim_false_n": "gap claims without a GT crossing (Stage A baseline: 9/9)",
+  "gap_rejected_front_missing_n": "vgs_fix event gap_rejected_front_missing",
+  "gap_confirmed_n": "vgs_fix event gap_confirmed",
+  "door_align_turns_n": "vgs_fix door_align events (small calibrated turns)",
+  "door_align_uncertain_ticks": "ticks with only one jamb visible",
+  "paint_rejected_small_extent_n": "paint_area_filter rejections",
+  "collision_ticks_n": "ticks with any MJWarp contact (contact recorder)",
+  "contact_events": "rising edges with classified geom categories",
+  "door_lateral_offset_m": "eval-only at GT crossing (Stage A baseline: -0.1634 m)",
+  "door_min_jamb_gap_m": "eval-only at GT crossing (Stage A baseline: -0.1084 m)"
+ },
+ "paint_filter": {
+  "constant": "PAINT_MIN_EXTENT_M = 0.15 m",
+  "basis": "floor_patch record extent_m: the long_beam blue end band footprint is 0.036 x 0.041 m (diagonal 0.054 m, zone_cargo.py), while any visible zone-B patch is at least the 0.30 m short side of the authored zone; the threshold sits between the two known geometries and is not tuned from gate episodes.",
+  "acceptance_effect": "only rejects colour bands; does not add success."
+ },
+ "gap_twosided": {
+  "constant": "tracked_side_ticks_min=12 ticks (1.2 Sim s), same-side front wall range <= 1.6 m",
+  "basis": "Stage A: 9/9 gap claims were false (skill claimed gap, GT never crossed); real door leaves the far jamb in the same-side forward sector, an open pickup-room corner does not.",
+  "measurement_note": "a rejected gap keeps wall following; the change is measured, not guaranteed to fix the mission."
+ },
+ "door_align": {
+  "constant": "align_tolerance_m=0.02 m, small calibrated turn pulses, never forward while misaligned",
+  "basis": "Stage A crossing lateral offset -0.1634 m vs the unloaded +/-0.055 m door budget; the two jamb wall feet give an own-RGB lateral estimate."
+ },
+ "contacts": {
+  "constant": "no new constant; eval-only MJWarp contact count/geom pairs",
+  "basis": "Stage A collision_events was not_measured because the runner never read the contact arrays; MJWarp Data exposes contact/nacon/geom/worldid."
+ },
+ "mission_scope": "unloaded destination search only; no cargo; not pooled with Stage A/B or visgoal/egonav/ACT.",
+ "success_threshold": "none (measurement gate). Compare with Stage A baseline: false gap claims, GT crossing, lateral offset/min jamb gap, false paint hints, and contact recording. Any improvement claim must be checked against the raw.",
+ "prior_funnel": {
+  "A": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/recount.json"
+ },
+ "rejection_table": {
+  "A": "/home/ugrp/ugrp-sim/runs/crossroom-stageA-fix/rejection_table.json"
+ },
+ "no_pooling": [
+  "crossroom-stageA",
+  "crossroom-stageB",
+  "visgoal-gate-r4",
+  "visgoal-gate-r4-mirror",
+  "visgoal-gate-r4-lawnmower",
+  "egonav-gate-n16-09",
+  "act15",
+  "act16a",
+  "act18"
+ ],
+ "expected_wall": "about 2.5-3.1 h for 16 x 180 Sim s at the gcp3 batch rate, same as Stage A.",
+ "dsh": "Produced with DeepSeek Harness. https://github.com/deepseek-ai/deepseek-harness",
+ "preflight": {
+  "run": "/home/ugrp/ugrp-sim/runs/crossroom-stageA-fix-preflight",
+  "status": "PREFLIGHT_DONE (2 starts, 60 Sim s, nworld=2)",
+  "result": "cap_end 2/2, input audit 2/2 passed, no HOST_ERROR",
+  "fix_telemetry": "ep0 gap claims 4 / rejected 4 (two-sided filter active), align turns 0, paint filter counts {} (no colour within 60 s)",
+  "contacts": "recorder ran without errors: 120 checked ticks, layout flat_pairs_with_worldid, count_layout global_only (global nacon only; per-world count unavailable in this mujoco_warp layout)",
+  "note": "the fix toggles were active in the preflight; the unloaded gate itself is the measurement."
+ }
+}

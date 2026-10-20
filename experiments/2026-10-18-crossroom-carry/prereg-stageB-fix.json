@@ -1,0 +1,60 @@
+{
+ "schema": "ugrp.crossroom_carry.prereg.v1",
+ "experiment_id": "2026-10-18-crossroom-carry",
+ "stage": "B_loaded_fix_2arm",
+ "flow": "self_map",
+ "title": "Cross-room carry Stage B-fix: held-box mask on/off counterfactual (2 arms, loaded, single red box)",
+ "frozen_at": "PENDING_FREEZE_COMMIT",
+ "independent_from": ["Stage A", "Stage B baseline", "crossroom-stageA-fix (v1)", "crossroom-stageA-fix2 (v2)", "crossroom-stageA-fix3 (v3)", "visgoal gate r4/B/C", "egonav gate-09", "ACT15/16a/18"],
+ "background": "Stage B baseline (freeze 868236f55) had GT door crossing 0/16, box retained 16/16, and it was measured that the held red box appears as a full-width near-field band at the bottom of own RGB (obstacle_avoid 0 vs 4,736 in Stage A). That causal statement was correlation/frame/code-condition only, with no counterfactual run. This experiment runs the counterfactual: identical loaded condition, one arm without any held-object masking (M0) and one arm with the native held-object mask (M1).",
+ "arms": {
+  "M0_mask_off": {
+   "stage": "B_loaded_mask_off",
+   "toggles": {"crossroom_carry_mask_v1": "off"},
+   "description": "loaded single red box, no held-object mask: obstacle_detections(bgr, servo) exactly as the Stage B baseline"
+  },
+  "M1_mask_on": {
+   "stage": "B_loaded_mask_on",
+   "toggles": {"crossroom_carry_mask_v1": "on"},
+   "description": "identical condition, but obstacle_detections is called with held_kind='red', grasp_pwm=closed 1500, i.e. the native kinematic held-object mask (sim/solo_carry_obstacles.py; uses only the issued grasp + current arm commands, never cargo world coordinates)"
+  }
+ },
+ "counterfactual_design": {
+  "unit": "episode",
+  "n_per_arm": 16,
+  "same_starts": "experiments/2026-10-18-crossroom-carry/setups.json#16",
+  "same_scene": "crossroom_carry_scene_v1 (reduced single red box) + s1_normal_mixed_v7 base",
+  "same_cap": 180.0,
+  "same_nworld": 16,
+  "same_host": "ugrp-act-l4-gcp3",
+  "only_difference": "the crossroom_carry_mask_v1 toggle (obstacle-channel held-object mask). The wall-foot perception and the policy are byte-identical between arms.",
+  "primary_contrast": ["obstacle detection ticks per episode (own-RGB obstacle detector non-empty ticks)",
+                       "wall zero share and wall points total",
+                       "false gap claims vs GT door crossing",
+                       "post-cross colour/found/declared/GT-inside",
+                       "box retained (own monitor) and box occlusion share"],
+  "no_pooling": "M0 and M1 are reported side by side as a 2-arm contrast and are not pooled with each other, with Stage B baseline, or with any other condition.",
+  "limitation": "masking the obstacle channel cannot restore wall-foot pixels that the box physically occludes; M1 tests the obstacle-channel part of the occlusion hypothesis only. If M1 shows no difference, the earlier Stage B occlusion wording must stay a correlation claim (already qualified in the Stage B results)."
+ },
+ "setup": {
+  "loaded_start": "setup-only: placement at r1 grip site, gripper closed PWM 1500, 1 SIM s CPU settle, no weld, no teacher",
+  "start_valid": "authored-start overlap admission before the loaded placement (as Stage B; loaded-state admission is reference-only)"
+ },
+ "scene": {
+  "map_id": "zone_wide_door_geometry_v3",
+  "scene_profile": "walls_floor_contrast_v5_indigo110_s80",
+  "scenario": "crossroom_carry_scene_v1 (single red cargo_red_1, 0.030 kg, 34x40x32 mm)",
+  "renderer_source": "/home/ugrp/ugrp-sim/src/16a946ff3",
+  "legacy_source": "/home/ugrp/ugrp-sim/src/warp8f-selfmap-0ace43f25",
+  "host": "ugrp-act-l4-gcp3"
+ },
+ "destination": {"zone": "B", "rectangle_eval_only": [4.30, 4.90, -2.80, -1.40],
+                 "door": {"center_m": [2.20, 0.05], "width_m": 0.50, "opening_y_eval_only": [-0.20, 0.30]}},
+ "funnel_stages": {"B": ["requested_n16", "input_audit_zero", "start_valid", "cargo_held_own_at_start", "door_crossed", "cargo_held_own_at_cross", "post_cross_colour_seen", "post_cross_found", "arrived_declared", "cargo_held_own_at_arrival", "gt_cargo_in_zone"]},
+ "carry_monitor": "scripts/carry_state_own.py own-RGB lower-centre red-box monitor (held/uncertain/lost) + own gripper command history; thresholds frozen in queue",
+ "prior": {"stage_b_baseline": {"freeze": "868236f55", "gt_door_crossed": "0/16", "cargo_held_start": "16/16", "cap_end": "16/16", "wall_s": 8229.22}},
+ "success_threshold": "none (measurement / counterfactual). The arms are judged by the paired contrast, not by a mission pass; any causal wording must match the measured contrast.",
+ "no_pooling_conditions": ["crossroom-stageA", "crossroom-stageB", "crossroom-stageA-fix", "crossroom-stageA-fix2", "crossroom-stageA-fix3", "visgoal-gate-r4", "visgoal-gate-r4-mirror", "visgoal-gate-r4-lawnmower", "egonav-gate-n16-09", "act15", "act16a", "act18"],
+ "expected_wall": "about 2.5-3.0 h per arm (16 x 180 Sim s at the gcp3 batch rate)",
+ "dsh": "Produced with DeepSeek Harness. https://github.com/deepseek-ai/deepseek-harness"
+}

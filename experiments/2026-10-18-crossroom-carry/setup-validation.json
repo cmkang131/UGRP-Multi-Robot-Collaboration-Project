@@ -1,0 +1,1286 @@
+{
+ "schema": "ugrp.crossroom_carry.setup_validation.v1",
+ "stage": "A_unloaded",
+ "renderer": "/home/ugrp/ugrp-sim/src/16a946ff3",
+ "legacy": "/home/ugrp/ugrp-sim/src/warp8f-selfmap-0ace43f25",
+ "setups": "experiments/2026-10-18-crossroom-carry/setups.json",
+ "map_id": "zone_wide_door_geometry_v3",
+ "scenario": "s1_normal_mixed_v7",
+ "door_center_m_eval_only": [
+  2.2,
+  0.05
+ ],
+ "long_beam_placement_eval_only": {
+  "item_id": "beam_1",
+  "pose_m": [
+   1.275,
+   0.45,
+   1.5708
+  ]
+ },
+ "n": 16,
+ "pass_n": 16,
+ "episodes": [
+  {
+   "episode": 0,
+   "group": "N",
+   "spawn_eval_only": [
+    1.0,
+    -1.7,
+    0.0,
+    0.0
+   ],
+   "base_xyyaw_eval_only": [
+    1.0,
+    -1.7,
+    0.0
+   ],
+   "admission": {
+    "enabled": true,
+    "accepted": true,
+    "status": "accepted",
+    "allowed_depth_m": 0.0,
+    "contact_points_n": 0,
+    "rejected_contact_points_n": 0,
+    "pair_count": 0,
+    "reasons": {},
+    "minimum_gap_m": null,
+    "gap_status": "no_relevant_contacts; noncontact_clearance_not_measured",
+    "rejections": [],
+    "time_sim_s": 0.0,
+    "all_contact_points_n": 252,
+    "floor_geoms": [
+     "floor"
+    ],
+    "cargo_bodies": [
+     "blue_block",
+     "cargo_beam_1",
+     "cargo_cyan_1",
+     "cargo_cyan_2",
+     "cargo_green_1",
+     "cargo_red_1",
+     "cargo_red_2",
+     "cargo_yellow_1",
+     "dispatch_box",
+     "red_block",
+     "team_beam",
+     "warehouse_oak_plank",
+     "warehouse_steel_pipe",
+     "warehouse_wood_crate",
+     "yellow_block"
+    ],
+    "wall_geoms": [
+     "zone_wall_divider_1",
+     "zone_wall_divider_2",
+     "zone_wall_east",
+     "zone_wall_north",
+     "zone_wall_south",
+     "zone_wall_west"
+    ],
+    "scope": "native mj_forward contact subset at supplied setup; no CPU integration; no actor feedback"
+   },
+   "in_region": [
+    "pickup"
+   ],
+   "in_destination_zone": [],
+   "min_cargo": {
+    "body": "cargo_red_1",
+    "item_id": "red_1",
+    "kind": "red",
+    "xy": [
+     1.0,
+     -2.45
+    ],
+    "match_dist_m": 0.0,
+    "base_dist_m": 0.75
+   },
+   "beam_door_path_min_clearance_m": 0.6989,
+   "beam_blocks_straight_door_path": false,
+   "wall_min_clearance_m": 0.98,
+   "pass_": true
+  },
+  {
+   "episode": 1,
+   "group": "N",
+   "spawn_eval_only": [
+    1.0,
+    -1.7,
+    0.0,
+    1.5707963267948966
+   ],
+   "base_xyyaw_eval_only": [
+    1.0,
+    -1.7,
+    1.5708
+   ],
+   "admission": {
+    "enabled": true,
+    "accepted": true,
+    "status": "accepted",
+    "allowed_depth_m": 0.0,
+    "contact_points_n": 0,
+    "rejected_contact_points_n": 0,
+    "pair_count": 0,
+    "reasons": {},
+    "minimum_gap_m": null,
+    "gap_status": "no_relevant_contacts; noncontact_clearance_not_measured",
+    "rejections": [],
+    "time_sim_s": 0.0,
+    "all_contact_points_n": 252,
+    "floor_geoms": [
+     "floor"
+    ],
+    "cargo_bodies": [
+     "blue_block",
+     "cargo_beam_1",
+     "cargo_cyan_1",
+     "cargo_cyan_2",
+     "cargo_green_1",
+     "cargo_red_1",
+     "cargo_red_2",
+     "cargo_yellow_1",
+     "dispatch_box",
+     "red_block",
+     "team_beam",
+     "warehouse_oak_plank",
+     "warehouse_steel_pipe",
+     "warehouse_wood_crate",
+     "yellow_block"
+    ],
+    "wall_geoms": [
+     "zone_wall_divider_1",
+     "zone_wall_divider_2",
+     "zone_wall_east",
+     "zone_wall_north",
+     "zone_wall_south",
+     "zone_wall_west"
+    ],
+    "scope": "native mj_forward contact subset at supplied setup; no CPU integration; no actor feedback"
+   },
+   "in_region": [
+    "pickup"
+   ],
+   "in_destination_zone": [],
+   "min_cargo": {
+    "body": "cargo_red_1",
+    "item_id": "red_1",
+    "kind": "red",
+    "xy": [
+     1.0,
+     -2.45
+    ],
+    "match_dist_m": 0.0,
+    "base_dist_m": 0.75
+   },
+   "beam_door_path_min_clearance_m": 0.6989,
+   "beam_blocks_straight_door_path": false,
+   "wall_min_clearance_m": 0.98,
+   "pass_": true
+  },
+  {
+   "episode": 2,
+   "group": "N",
+   "spawn_eval_only": [
+    1.0,
+    -0.3,
+    0.0,
+    0.0
+   ],
+   "base_xyyaw_eval_only": [
+    1.0,
+    -0.3,
+    0.0
+   ],
+   "admission": {
+    "enabled": true,
+    "accepted": true,
+    "status": "accepted",
+    "allowed_depth_m": 0.0,
+    "contact_points_n": 0,
+    "rejected_contact_points_n": 0,
+    "pair_count": 0,
+    "reasons": {},
+    "minimum_gap_m": null,
+    "gap_status": "no_relevant_contacts; noncontact_clearance_not_measured",
+    "rejections": [],
+    "time_sim_s": 0.0,
+    "all_contact_points_n": 252,
+    "floor_geoms": [
+     "floor"
+    ],
+    "cargo_bodies": [
+     "blue_block",
+     "cargo_beam_1",
+     "cargo_cyan_1",
+     "cargo_cyan_2",
+     "cargo_green_1",
+     "cargo_red_1",
+     "cargo_red_2",
+     "cargo_yellow_1",
+     "dispatch_box",
+     "red_block",
+     "team_beam",
+     "warehouse_oak_plank",
+     "warehouse_steel_pipe",
+     "warehouse_wood_crate",
+     "yellow_block"
+    ],
+    "wall_geoms": [
+     "zone_wall_divider_1",
+     "zone_wall_divider_2",
+     "zone_wall_east",
+     "zone_wall_north",
+     "zone_wall_south",
+     "zone_wall_west"
+    ],
+    "scope": "native mj_forward contact subset at supplied setup; no CPU integration; no actor feedback"
+   },
+   "in_region": [
+    "pickup"
+   ],
+   "in_destination_zone": [],
+   "min_cargo": {
+    "body": "cargo_red_2",
+    "item_id": "red_2",
+    "kind": "red",
+    "xy": [
+     1.0,
+     -0.85
+    ],
+    "match_dist_m": 0.0,
+    "base_dist_m": 0.55
+   },
+   "beam_door_path_min_clearance_m": 0.3336,
+   "beam_blocks_straight_door_path": false,
+   "wall_min_clearance_m": 0.98,
+   "pass_": true
+  },
+  {
+   "episode": 3,
+   "group": "N",
+   "spawn_eval_only": [
+    1.0,
+    -0.3,
+    0.0,
+    3.141592653589793
+   ],
+   "base_xyyaw_eval_only": [
+    1.0,
+    -0.3,
+    3.1416
+   ],
+   "admission": {
+    "enabled": true,
+    "accepted": true,
+    "status": "accepted",
+    "allowed_depth_m": 0.0,
+    "contact_points_n": 0,
+    "rejected_contact_points_n": 0,
+    "pair_count": 0,
+    "reasons": {},
+    "minimum_gap_m": null,
+    "gap_status": "no_relevant_contacts; noncontact_clearance_not_measured",
+    "rejections": [],
+    "time_sim_s": 0.0,
+    "all_contact_points_n": 252,
+    "floor_geoms": [
+     "floor"
+    ],
+    "cargo_bodies": [
+     "blue_block",
+     "cargo_beam_1",
+     "cargo_cyan_1",
+     "cargo_cyan_2",
+     "cargo_green_1",
+     "cargo_red_1",
+     "cargo_red_2",
+     "cargo_yellow_1",
+     "dispatch_box",
+     "red_block",
+     "team_beam",
+     "warehouse_oak_plank",
+     "warehouse_steel_pipe",
+     "warehouse_wood_crate",
+     "yellow_block"
+    ],
+    "wall_geoms": [
+     "zone_wall_divider_1",
+     "zone_wall_divider_2",
+     "zone_wall_east",
+     "zone_wall_north",
+     "zone_wall_south",
+     "zone_wall_west"
+    ],
+    "scope": "native mj_forward contact subset at supplied setup; no CPU integration; no actor feedback"
+   },
+   "in_region": [
+    "pickup"
+   ],
+   "in_destination_zone": [],
+   "min_cargo": {
+    "body": "cargo_red_2",
+    "item_id": "red_2",
+    "kind": "red",
+    "xy": [
+     1.0,
+     -0.85
+    ],
+    "match_dist_m": 0.0,
+    "base_dist_m": 0.55
+   },
+   "beam_door_path_min_clearance_m": 0.3336,
+   "beam_blocks_straight_door_path": false,
+   "wall_min_clearance_m": 0.98,
+   "pass_": true
+  },
+  {
+   "episode": 4,
+   "group": "N",
+   "spawn_eval_only": [
+    1.4,
+    -1.7,
+    0.0,
+    0.0
+   ],
+   "base_xyyaw_eval_only": [
+    1.4,
+    -1.7,
+    0.0
+   ],
+   "admission": {
+    "enabled": true,
+    "accepted": true,
+    "status": "accepted",
+    "allowed_depth_m": 0.0,
+    "contact_points_n": 0,
+    "rejected_contact_points_n": 0,
+    "pair_count": 0,
+    "reasons": {},
+    "minimum_gap_m": null,
+    "gap_status": "no_relevant_contacts; noncontact_clearance_not_measured",
+    "rejections": [],
+    "time_sim_s": 0.0,
+    "all_contact_points_n": 252,
+    "floor_geoms": [
+     "floor"
+    ],
+    "cargo_bodies": [
+     "blue_block",
+     "cargo_beam_1",
+     "cargo_cyan_1",
+     "cargo_cyan_2",
+     "cargo_green_1",
+     "cargo_red_1",
+     "cargo_red_2",
+     "cargo_yellow_1",
+     "dispatch_box",
+     "red_block",
+     "team_beam",
+     "warehouse_oak_plank",
+     "warehouse_steel_pipe",
+     "warehouse_wood_crate",
+     "yellow_block"
+    ],
+    "wall_geoms": [
+     "zone_wall_divider_1",
+     "zone_wall_divider_2",
+     "zone_wall_east",
+     "zone_wall_north",
+     "zone_wall_south",
+     "zone_wall_west"
+    ],
+    "scope": "native mj_forward contact subset at supplied setup; no CPU integration; no actor feedback"
+   },
+   "in_region": [
+    "pickup"
+   ],
+   "in_destination_zone": [],
+   "min_cargo": {
+    "body": "cargo_red_1",
+    "item_id": "red_1",
+    "kind": "red",
+    "xy": [
+     1.0,
+     -2.45
+    ],
+    "match_dist_m": 0.0,
+    "base_dist_m": 0.85
+   },
+   "beam_door_path_min_clearance_m": 0.7426,
+   "beam_blocks_straight_door_path": false,
+   "wall_min_clearance_m": 0.58,
+   "pass_": true
+  },
+  {
+   "episode": 5,
+   "group": "N",
+   "spawn_eval_only": [
+    1.4,
+    -0.3,
+    0.0,
+    1.5707963267948966
+   ],
+   "base_xyyaw_eval_only": [
+    1.4,
+    -0.3,
+    1.5708
+   ],
+   "admission": {
+    "enabled": true,
+    "accepted": true,
+    "status": "accepted",
+    "allowed_depth_m": 0.0,
+    "contact_points_n": 0,
+    "rejected_contact_points_n": 0,
+    "pair_count": 0,
+    "reasons": {},
+    "minimum_gap_m": null,
+    "gap_status": "no_relevant_contacts; noncontact_clearance_not_measured",
+    "rejections": [],
+    "time_sim_s": 0.0,
+    "all_contact_points_n": 252,
+    "floor_geoms": [
+     "floor"
+    ],
+    "cargo_bodies": [
+     "blue_block",
+     "cargo_beam_1",
+     "cargo_cyan_1",
+     "cargo_cyan_2",
+     "cargo_green_1",
+     "cargo_red_1",
+     "cargo_red_2",
+     "cargo_yellow_1",
+     "dispatch_box",
+     "red_block",
+     "team_beam",
+     "warehouse_oak_plank",
+     "warehouse_steel_pipe",
+     "warehouse_wood_crate",
+     "yellow_block"
+    ],
+    "wall_geoms": [
+     "zone_wall_divider_1",
+     "zone_wall_divider_2",
+     "zone_wall_east",
+     "zone_wall_north",
+     "zone_wall_south",
+     "zone_wall_west"
+    ],
+    "scope": "native mj_forward contact subset at supplied setup; no CPU integration; no actor feedback"
+   },
+   "in_region": [
+    "pickup"
+   ],
+   "in_destination_zone": [],
+   "min_cargo": {
+    "body": "cargo_red_2",
+    "item_id": "red_2",
+    "kind": "red",
+    "xy": [
+     1.0,
+     -0.85
+    ],
+    "match_dist_m": 0.0,
+    "base_dist_m": 0.6801
+   },
+   "beam_door_path_min_clearance_m": 0.446,
+   "beam_blocks_straight_door_path": false,
+   "wall_min_clearance_m": 0.58,
+   "pass_": true
+  },
+  {
+   "episode": 6,
+   "group": "N",
+   "spawn_eval_only": [
+    1.0,
+    0.9,
+    0.0,
+    0.0
+   ],
+   "base_xyyaw_eval_only": [
+    1.0,
+    0.9,
+    0.0
+   ],
+   "admission": {
+    "enabled": true,
+    "accepted": true,
+    "status": "accepted",
+    "allowed_depth_m": 0.0,
+    "contact_points_n": 0,
+    "rejected_contact_points_n": 0,
+    "pair_count": 0,
+    "reasons": {},
+    "minimum_gap_m": null,
+    "gap_status": "no_relevant_contacts; noncontact_clearance_not_measured",
+    "rejections": [],
+    "time_sim_s": 0.0,
+    "all_contact_points_n": 252,
+    "floor_geoms": [
+     "floor"
+    ],
+    "cargo_bodies": [
+     "blue_block",
+     "cargo_beam_1",
+     "cargo_cyan_1",
+     "cargo_cyan_2",
+     "cargo_green_1",
+     "cargo_red_1",
+     "cargo_red_2",
+     "cargo_yellow_1",
+     "dispatch_box",
+     "red_block",
+     "team_beam",
+     "warehouse_oak_plank",
+     "warehouse_steel_pipe",
+     "warehouse_wood_crate",
+     "yellow_block"
+    ],
+    "wall_geoms": [
+     "zone_wall_divider_1",
+     "zone_wall_divider_2",
+     "zone_wall_east",
+     "zone_wall_north",
+     "zone_wall_south",
+     "zone_wall_west"
+    ],
+    "scope": "native mj_forward contact subset at supplied setup; no CPU integration; no actor feedback"
+   },
+   "in_region": [
+    "pickup"
+   ],
+   "in_destination_zone": [],
+   "min_cargo": {
+    "body": "cargo_beam_1",
+    "item_id": "beam_1",
+    "kind": "long_beam",
+    "xy": [
+     1.275,
+     0.45
+    ],
+    "match_dist_m": 0.0,
+    "base_dist_m": 0.5274
+   },
+   "beam_door_path_min_clearance_m": 0.0,
+   "beam_blocks_straight_door_path": true,
+   "wall_min_clearance_m": 0.33,
+   "pass_": true
+  },
+  {
+   "episode": 7,
+   "group": "N",
+   "spawn_eval_only": [
+    1.4,
+    1.1,
+    0.0,
+    3.141592653589793
+   ],
+   "base_xyyaw_eval_only": [
+    1.4,
+    1.1,
+    3.1416
+   ],
+   "admission": {
+    "enabled": true,
+    "accepted": true,
+    "status": "accepted",
+    "allowed_depth_m": 0.0,
+    "contact_points_n": 0,
+    "rejected_contact_points_n": 0,
+    "pair_count": 0,
+    "reasons": {},
+    "minimum_gap_m": null,
+    "gap_status": "no_relevant_contacts; noncontact_clearance_not_measured",
+    "rejections": [],
+    "time_sim_s": 0.0,
+    "all_contact_points_n": 252,
+    "floor_geoms": [
+     "floor"
+    ],
+    "cargo_bodies": [
+     "blue_block",
+     "cargo_beam_1",
+     "cargo_cyan_1",
+     "cargo_cyan_2",
+     "cargo_green_1",
+     "cargo_red_1",
+     "cargo_red_2",
+     "cargo_yellow_1",
+     "dispatch_box",
+     "red_block",
+     "team_beam",
+     "warehouse_oak_plank",
+     "warehouse_steel_pipe",
+     "warehouse_wood_crate",
+     "yellow_block"
+    ],
+    "wall_geoms": [
+     "zone_wall_divider_1",
+     "zone_wall_divider_2",
+     "zone_wall_east",
+     "zone_wall_north",
+     "zone_wall_south",
+     "zone_wall_west"
+    ],
+    "scope": "native mj_forward contact subset at supplied setup; no CPU integration; no actor feedback"
+   },
+   "in_region": [],
+   "in_destination_zone": [],
+   "min_cargo": {
+    "body": "cargo_beam_1",
+    "item_id": "beam_1",
+    "kind": "long_beam",
+    "xy": [
+     1.275,
+     0.45
+    ],
+    "match_dist_m": 0.0,
+    "base_dist_m": 0.6619
+   },
+   "beam_door_path_min_clearance_m": 0.2735,
+   "beam_blocks_straight_door_path": false,
+   "wall_min_clearance_m": 0.13,
+   "pass_": true
+  },
+  {
+   "episode": 8,
+   "group": "F",
+   "spawn_eval_only": [
+    -0.75,
+    -2.3,
+    0.0,
+    0.0
+   ],
+   "base_xyyaw_eval_only": [
+    -0.75,
+    -2.3,
+    0.0
+   ],
+   "admission": {
+    "enabled": true,
+    "accepted": true,
+    "status": "accepted",
+    "allowed_depth_m": 0.0,
+    "contact_points_n": 0,
+    "rejected_contact_points_n": 0,
+    "pair_count": 0,
+    "reasons": {},
+    "minimum_gap_m": null,
+    "gap_status": "no_relevant_contacts; noncontact_clearance_not_measured",
+    "rejections": [],
+    "time_sim_s": 0.0,
+    "all_contact_points_n": 252,
+    "floor_geoms": [
+     "floor"
+    ],
+    "cargo_bodies": [
+     "blue_block",
+     "cargo_beam_1",
+     "cargo_cyan_1",
+     "cargo_cyan_2",
+     "cargo_green_1",
+     "cargo_red_1",
+     "cargo_red_2",
+     "cargo_yellow_1",
+     "dispatch_box",
+     "red_block",
+     "team_beam",
+     "warehouse_oak_plank",
+     "warehouse_steel_pipe",
+     "warehouse_wood_crate",
+     "yellow_block"
+    ],
+    "wall_geoms": [
+     "zone_wall_divider_1",
+     "zone_wall_divider_2",
+     "zone_wall_east",
+     "zone_wall_north",
+     "zone_wall_south",
+     "zone_wall_west"
+    ],
+    "scope": "native mj_forward contact subset at supplied setup; no CPU integration; no actor feedback"
+   },
+   "in_region": [],
+   "in_destination_zone": [],
+   "min_cargo": {
+    "body": "cargo_cyan_1",
+    "item_id": "cyan_1",
+    "kind": "cyan",
+    "xy": [
+     -0.2,
+     -2.45
+    ],
+    "match_dist_m": 0.0,
+    "base_dist_m": 0.5701
+   },
+   "beam_door_path_min_clearance_m": 0.562,
+   "beam_blocks_straight_door_path": false,
+   "wall_min_clearance_m": 0.08,
+   "pass_": true
+  },
+  {
+   "episode": 9,
+   "group": "F",
+   "spawn_eval_only": [
+    -0.75,
+    -1.2,
+    0.0,
+    0.35
+   ],
+   "base_xyyaw_eval_only": [
+    -0.75,
+    -1.2,
+    0.35
+   ],
+   "admission": {
+    "enabled": true,
+    "accepted": true,
+    "status": "accepted",
+    "allowed_depth_m": 0.0,
+    "contact_points_n": 0,
+    "rejected_contact_points_n": 0,
+    "pair_count": 0,
+    "reasons": {},
+    "minimum_gap_m": null,
+    "gap_status": "no_relevant_contacts; noncontact_clearance_not_measured",
+    "rejections": [],
+    "time_sim_s": 0.0,
+    "all_contact_points_n": 252,
+    "floor_geoms": [
+     "floor"
+    ],
+    "cargo_bodies": [
+     "blue_block",
+     "cargo_beam_1",
+     "cargo_cyan_1",
+     "cargo_cyan_2",
+     "cargo_green_1",
+     "cargo_red_1",
+     "cargo_red_2",
+     "cargo_yellow_1",
+     "dispatch_box",
+     "red_block",
+     "team_beam",
+     "warehouse_oak_plank",
+     "warehouse_steel_pipe",
+     "warehouse_wood_crate",
+     "yellow_block"
+    ],
+    "wall_geoms": [
+     "zone_wall_divider_1",
+     "zone_wall_divider_2",
+     "zone_wall_east",
+     "zone_wall_north",
+     "zone_wall_south",
+     "zone_wall_west"
+    ],
+    "scope": "native mj_forward contact subset at supplied setup; no CPU integration; no actor feedback"
+   },
+   "in_region": [],
+   "in_destination_zone": [],
+   "min_cargo": {
+    "body": "cargo_yellow_1",
+    "item_id": "yellow_1",
+    "kind": "yellow",
+    "xy": [
+     0.4,
+     -0.85
+    ],
+    "match_dist_m": 0.0,
+    "base_dist_m": 1.2021
+   },
+   "beam_door_path_min_clearance_m": 0.3991,
+   "beam_blocks_straight_door_path": false,
+   "wall_min_clearance_m": 0.08,
+   "pass_": true
+  },
+  {
+   "episode": 10,
+   "group": "F",
+   "spawn_eval_only": [
+    -0.75,
+    -0.1,
+    0.0,
+    -0.35
+   ],
+   "base_xyyaw_eval_only": [
+    -0.75,
+    -0.1,
+    -0.35
+   ],
+   "admission": {
+    "enabled": true,
+    "accepted": true,
+    "status": "accepted",
+    "allowed_depth_m": 0.0,
+    "contact_points_n": 0,
+    "rejected_contact_points_n": 0,
+    "pair_count": 0,
+    "reasons": {},
+    "minimum_gap_m": null,
+    "gap_status": "no_relevant_contacts; noncontact_clearance_not_measured",
+    "rejections": [],
+    "time_sim_s": 0.0,
+    "all_contact_points_n": 252,
+    "floor_geoms": [
+     "floor"
+    ],
+    "cargo_bodies": [
+     "blue_block",
+     "cargo_beam_1",
+     "cargo_cyan_1",
+     "cargo_cyan_2",
+     "cargo_green_1",
+     "cargo_red_1",
+     "cargo_red_2",
+     "cargo_yellow_1",
+     "dispatch_box",
+     "red_block",
+     "team_beam",
+     "warehouse_oak_plank",
+     "warehouse_steel_pipe",
+     "warehouse_wood_crate",
+     "yellow_block"
+    ],
+    "wall_geoms": [
+     "zone_wall_divider_1",
+     "zone_wall_divider_2",
+     "zone_wall_east",
+     "zone_wall_north",
+     "zone_wall_south",
+     "zone_wall_west"
+    ],
+    "scope": "native mj_forward contact subset at supplied setup; no CPU integration; no actor feedback"
+   },
+   "in_region": [],
+   "in_destination_zone": [],
+   "min_cargo": {
+    "body": "cargo_green_1",
+    "item_id": "green_1",
+    "kind": "green",
+    "xy": [
+     -0.2,
+     0.75
+    ],
+    "match_dist_m": 0.0,
+    "base_dist_m": 1.0124
+   },
+   "beam_door_path_min_clearance_m": 0.1403,
+   "beam_blocks_straight_door_path": true,
+   "wall_min_clearance_m": 0.08,
+   "pass_": true
+  },
+  {
+   "episode": 11,
+   "group": "F",
+   "spawn_eval_only": [
+    -0.75,
+    1.0,
+    0.0,
+    0.35
+   ],
+   "base_xyyaw_eval_only": [
+    -0.75,
+    1.0,
+    0.35
+   ],
+   "admission": {
+    "enabled": true,
+    "accepted": true,
+    "status": "accepted",
+    "allowed_depth_m": 0.0,
+    "contact_points_n": 0,
+    "rejected_contact_points_n": 0,
+    "pair_count": 0,
+    "reasons": {},
+    "minimum_gap_m": null,
+    "gap_status": "no_relevant_contacts; noncontact_clearance_not_measured",
+    "rejections": [],
+    "time_sim_s": 0.0,
+    "all_contact_points_n": 252,
+    "floor_geoms": [
+     "floor"
+    ],
+    "cargo_bodies": [
+     "blue_block",
+     "cargo_beam_1",
+     "cargo_cyan_1",
+     "cargo_cyan_2",
+     "cargo_green_1",
+     "cargo_red_1",
+     "cargo_red_2",
+     "cargo_yellow_1",
+     "dispatch_box",
+     "red_block",
+     "team_beam",
+     "warehouse_oak_plank",
+     "warehouse_steel_pipe",
+     "warehouse_wood_crate",
+     "yellow_block"
+    ],
+    "wall_geoms": [
+     "zone_wall_divider_1",
+     "zone_wall_divider_2",
+     "zone_wall_east",
+     "zone_wall_north",
+     "zone_wall_south",
+     "zone_wall_west"
+    ],
+    "scope": "native mj_forward contact subset at supplied setup; no CPU integration; no actor feedback"
+   },
+   "in_region": [],
+   "in_destination_zone": [],
+   "min_cargo": {
+    "body": "cargo_green_1",
+    "item_id": "green_1",
+    "kind": "green",
+    "xy": [
+     -0.2,
+     0.75
+    ],
+    "match_dist_m": 0.0,
+    "base_dist_m": 0.6042
+   },
+   "beam_door_path_min_clearance_m": 0.0,
+   "beam_blocks_straight_door_path": true,
+   "wall_min_clearance_m": 0.08,
+   "pass_": true
+  },
+  {
+   "episode": 12,
+   "group": "F",
+   "spawn_eval_only": [
+    0.2,
+    -2.0,
+    0.0,
+    0.0
+   ],
+   "base_xyyaw_eval_only": [
+    0.2,
+    -2.0,
+    0.0
+   ],
+   "admission": {
+    "enabled": true,
+    "accepted": true,
+    "status": "accepted",
+    "allowed_depth_m": 0.0,
+    "contact_points_n": 0,
+    "rejected_contact_points_n": 0,
+    "pair_count": 0,
+    "reasons": {},
+    "minimum_gap_m": null,
+    "gap_status": "no_relevant_contacts; noncontact_clearance_not_measured",
+    "rejections": [],
+    "time_sim_s": 0.0,
+    "all_contact_points_n": 252,
+    "floor_geoms": [
+     "floor"
+    ],
+    "cargo_bodies": [
+     "blue_block",
+     "cargo_beam_1",
+     "cargo_cyan_1",
+     "cargo_cyan_2",
+     "cargo_green_1",
+     "cargo_red_1",
+     "cargo_red_2",
+     "cargo_yellow_1",
+     "dispatch_box",
+     "red_block",
+     "team_beam",
+     "warehouse_oak_plank",
+     "warehouse_steel_pipe",
+     "warehouse_wood_crate",
+     "yellow_block"
+    ],
+    "wall_geoms": [
+     "zone_wall_divider_1",
+     "zone_wall_divider_2",
+     "zone_wall_east",
+     "zone_wall_north",
+     "zone_wall_south",
+     "zone_wall_west"
+    ],
+    "scope": "native mj_forward contact subset at supplied setup; no CPU integration; no actor feedback"
+   },
+   "in_region": [
+    "pickup"
+   ],
+   "in_destination_zone": [],
+   "min_cargo": {
+    "body": "cargo_cyan_2",
+    "item_id": "cyan_2",
+    "kind": "cyan",
+    "xy": [
+     0.4,
+     -2.45
+    ],
+    "match_dist_m": 0.0,
+    "base_dist_m": 0.4924
+   },
+   "beam_door_path_min_clearance_m": 0.6275,
+   "beam_blocks_straight_door_path": false,
+   "wall_min_clearance_m": 0.93,
+   "pass_": true
+  },
+  {
+   "episode": 13,
+   "group": "F",
+   "spawn_eval_only": [
+    -0.1,
+    -0.6,
+    0.0,
+    -0.35
+   ],
+   "base_xyyaw_eval_only": [
+    -0.1,
+    -0.6,
+    -0.35
+   ],
+   "admission": {
+    "enabled": true,
+    "accepted": true,
+    "status": "accepted",
+    "allowed_depth_m": 0.0,
+    "contact_points_n": 0,
+    "rejected_contact_points_n": 0,
+    "pair_count": 0,
+    "reasons": {},
+    "minimum_gap_m": null,
+    "gap_status": "no_relevant_contacts; noncontact_clearance_not_measured",
+    "rejections": [],
+    "time_sim_s": 0.0,
+    "all_contact_points_n": 252,
+    "floor_geoms": [
+     "floor"
+    ],
+    "cargo_bodies": [
+     "blue_block",
+     "cargo_beam_1",
+     "cargo_cyan_1",
+     "cargo_cyan_2",
+     "cargo_green_1",
+     "cargo_red_1",
+     "cargo_red_2",
+     "cargo_yellow_1",
+     "dispatch_box",
+     "red_block",
+     "team_beam",
+     "warehouse_oak_plank",
+     "warehouse_steel_pipe",
+     "warehouse_wood_crate",
+     "yellow_block"
+    ],
+    "wall_geoms": [
+     "zone_wall_divider_1",
+     "zone_wall_divider_2",
+     "zone_wall_east",
+     "zone_wall_north",
+     "zone_wall_south",
+     "zone_wall_west"
+    ],
+    "scope": "native mj_forward contact subset at supplied setup; no CPU integration; no actor feedback"
+   },
+   "in_region": [
+    "pickup"
+   ],
+   "in_destination_zone": [],
+   "min_cargo": {
+    "body": "cargo_yellow_1",
+    "item_id": "yellow_1",
+    "kind": "yellow",
+    "xy": [
+     0.4,
+     -0.85
+    ],
+    "match_dist_m": 0.0,
+    "base_dist_m": 0.559
+   },
+   "beam_door_path_min_clearance_m": 0.3142,
+   "beam_blocks_straight_door_path": false,
+   "wall_min_clearance_m": 0.73,
+   "pass_": true
+  },
+  {
+   "episode": 14,
+   "group": "F",
+   "spawn_eval_only": [
+    0.3,
+    0.9,
+    0.0,
+    0.35
+   ],
+   "base_xyyaw_eval_only": [
+    0.3,
+    0.9,
+    0.35
+   ],
+   "admission": {
+    "enabled": true,
+    "accepted": true,
+    "status": "accepted",
+    "allowed_depth_m": 0.0,
+    "contact_points_n": 0,
+    "rejected_contact_points_n": 0,
+    "pair_count": 0,
+    "reasons": {},
+    "minimum_gap_m": null,
+    "gap_status": "no_relevant_contacts; noncontact_clearance_not_measured",
+    "rejections": [],
+    "time_sim_s": 0.0,
+    "all_contact_points_n": 252,
+    "floor_geoms": [
+     "floor"
+    ],
+    "cargo_bodies": [
+     "blue_block",
+     "cargo_beam_1",
+     "cargo_cyan_1",
+     "cargo_cyan_2",
+     "cargo_green_1",
+     "cargo_red_1",
+     "cargo_red_2",
+     "cargo_yellow_1",
+     "dispatch_box",
+     "red_block",
+     "team_beam",
+     "warehouse_oak_plank",
+     "warehouse_steel_pipe",
+     "warehouse_wood_crate",
+     "yellow_block"
+    ],
+    "wall_geoms": [
+     "zone_wall_divider_1",
+     "zone_wall_divider_2",
+     "zone_wall_east",
+     "zone_wall_north",
+     "zone_wall_south",
+     "zone_wall_west"
+    ],
+    "scope": "native mj_forward contact subset at supplied setup; no CPU integration; no actor feedback"
+   },
+   "in_region": [
+    "pickup"
+   ],
+   "in_destination_zone": [],
+   "min_cargo": {
+    "body": "cargo_green_1",
+    "item_id": "green_1",
+    "kind": "green",
+    "xy": [
+     -0.2,
+     0.75
+    ],
+    "match_dist_m": 0.0,
+    "base_dist_m": 0.522
+   },
+   "beam_door_path_min_clearance_m": 0.0,
+   "beam_blocks_straight_door_path": true,
+   "wall_min_clearance_m": 0.33,
+   "pass_": true
+  },
+  {
+   "episode": 15,
+   "group": "F",
+   "spawn_eval_only": [
+    -0.75,
+    -0.3,
+    0.0,
+    3.141592653589793
+   ],
+   "base_xyyaw_eval_only": [
+    -0.75,
+    -0.3,
+    3.1416
+   ],
+   "admission": {
+    "enabled": true,
+    "accepted": true,
+    "status": "accepted",
+    "allowed_depth_m": 0.0,
+    "contact_points_n": 0,
+    "rejected_contact_points_n": 0,
+    "pair_count": 0,
+    "reasons": {},
+    "minimum_gap_m": null,
+    "gap_status": "no_relevant_contacts; noncontact_clearance_not_measured",
+    "rejections": [],
+    "time_sim_s": 0.0,
+    "all_contact_points_n": 252,
+    "floor_geoms": [
+     "floor"
+    ],
+    "cargo_bodies": [
+     "blue_block",
+     "cargo_beam_1",
+     "cargo_cyan_1",
+     "cargo_cyan_2",
+     "cargo_green_1",
+     "cargo_red_1",
+     "cargo_red_2",
+     "cargo_yellow_1",
+     "dispatch_box",
+     "red_block",
+     "team_beam",
+     "warehouse_oak_plank",
+     "warehouse_steel_pipe",
+     "warehouse_wood_crate",
+     "yellow_block"
+    ],
+    "wall_geoms": [
+     "zone_wall_divider_1",
+     "zone_wall_divider_2",
+     "zone_wall_east",
+     "zone_wall_north",
+     "zone_wall_south",
+     "zone_wall_west"
+    ],
+    "scope": "native mj_forward contact subset at supplied setup; no CPU integration; no actor feedback"
+   },
+   "in_region": [],
+   "in_destination_zone": [],
+   "min_cargo": {
+    "body": "cargo_green_1",
+    "item_id": "green_1",
+    "kind": "green",
+    "xy": [
+     -0.2,
+     0.75
+    ],
+    "match_dist_m": 0.0,
+    "base_dist_m": 1.1853
+   },
+   "beam_door_path_min_clearance_m": 0.1929,
+   "beam_blocks_straight_door_path": true,
+   "wall_min_clearance_m": 0.08,
+   "pass_": true
+  }
+ ],
+ "peer_parks": [
+  {
+   "robot": "r2",
+   "pose": [
+    5.15,
+    1.2
+   ],
+   "zone_min_clearance_m": 0.2693,
+   "wall_min_clearance_m": 0.225,
+   "in_region": [],
+   "pass_": true
+  },
+  {
+   "robot": "r3",
+   "pose": [
+    5.15,
+    -2.85
+   ],
+   "zone_min_clearance_m": 0.255,
+   "wall_min_clearance_m": 0.225,
+   "in_region": [],
+   "pass_": true
+  }
+ ],
+ "scope": "setup-only: scene built once, every start reset, no physics rollout and no controller run. Truth/setup coordinates appear only in this validator and in eval-only cells."
+}

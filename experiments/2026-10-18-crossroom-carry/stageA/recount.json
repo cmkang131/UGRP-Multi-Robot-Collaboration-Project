@@ -1,0 +1,2474 @@
+{
+ "schema": "ugrp.crossroom_carry.recount.v1",
+ "stage": "A_unloaded",
+ "run": "/home/ugrp/ugrp-sim/runs/crossroom-stageA",
+ "summary_status": "DONE",
+ "source_sha": "c390105c2663a5b780e4ad8d69da72a5ffe1bce8",
+ "n": 16,
+ "funnel": [
+  {
+   "stage": "requested_n16",
+   "input_n": 16,
+   "cumulative_pass_n": 16,
+   "rejected_n": 0
+  },
+  {
+   "stage": "input_audit_zero",
+   "input_n": 16,
+   "cumulative_pass_n": 16,
+   "rejected_n": 0
+  },
+  {
+   "stage": "start_valid",
+   "input_n": 16,
+   "cumulative_pass_n": 16,
+   "rejected_n": 0
+  },
+  {
+   "stage": "door_crossed",
+   "input_n": 16,
+   "cumulative_pass_n": 1,
+   "rejected_n": 15
+  },
+  {
+   "stage": "post_cross_colour_seen",
+   "input_n": 1,
+   "cumulative_pass_n": 1,
+   "rejected_n": 0
+  },
+  {
+   "stage": "post_cross_found",
+   "input_n": 1,
+   "cumulative_pass_n": 1,
+   "rejected_n": 0
+  },
+  {
+   "stage": "arrived_declared",
+   "input_n": 1,
+   "cumulative_pass_n": 1,
+   "rejected_n": 0
+  },
+  {
+   "stage": "gt_inside",
+   "input_n": 1,
+   "cumulative_pass_n": 0,
+   "rejected_n": 1
+  }
+ ],
+ "reasons": {
+  "cap_end": 13,
+  "false_arrival_outside_zone": 1,
+  "door_not_crossed": 2
+ },
+ "cap_end_n": 13,
+ "carry_stage": "A_unloaded",
+ "cargo_held_at_start_n": 0,
+ "cargo_held_at_cross_n": 0,
+ "cargo_held_at_arrival_n": 0,
+ "cargo_in_zone_at_declared_n": 0,
+ "cargo_in_zone_final_n": 0,
+ "door_crossed_n": 1,
+ "post_cross_colour_n": 1,
+ "post_cross_found_n": 1,
+ "arrived_declared_n": 1,
+ "gt_inside_n": 0,
+ "input_audit_zero_n": 16,
+ "start_valid_n": 16,
+ "near_wall_n": 8,
+ "far_wall_n": 8,
+ "batch_wall_s": 8772.13,
+ "wall_per_cap_nworld": 3.0459,
+ "first30_wall_s": 1401.6,
+ "first30_source": "frame mtime delta (estimate; progress t=30 overwritten)",
+ "skill_claimed_gap_n": 9,
+ "skill_claimed_gap_episodes": [
+  0,
+  3,
+  4,
+  6,
+  8,
+  10,
+  12,
+  14,
+  15
+ ],
+ "gt_door_crossed_episodes": [
+  2
+ ],
+ "first30_metric": 2.92,
+ "mismatches": [],
+ "episodes": [
+  {
+   "episode": 0,
+   "status": "cap_end",
+   "cap_end": true,
+   "start_valid": true,
+   "input_audit_zero": true,
+   "input_audit": {
+    "calls": 5403,
+    "counters": {
+     "held_world_reads": 0,
+     "static_map_control": 0,
+     "spawn_control": 0,
+     "truth_control": 0,
+     "top_camera_frames": 0,
+     "invisible_measurements": 0
+    },
+    "violations": []
+   },
+   "door_crossed": false,
+   "door_cross_tick": null,
+   "skill_claimed_gap": true,
+   "stage_runs": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "approach_wall",
+     27.4
+    ],
+    [
+     "follow_north",
+     32.2
+    ],
+    [
+     "gap_cross",
+     39.3
+    ],
+    [
+     "gap_forward",
+     39.6
+    ],
+    [
+     "east_search",
+     46.7
+    ],
+    [
+     "leg_forward",
+     53.6
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "door_cross_t_s": null,
+   "door_lateral_offset_m": null,
+   "door_min_jamb_gap_m": null,
+   "door_crossing_ticks": 0,
+   "post_cross_colour_seen": false,
+   "post_cross_found": false,
+   "post_cross_found_t_s": null,
+   "found_any_pre_cross_reference_only": false,
+   "colour_any": false,
+   "arrived_declared": false,
+   "declared_t_s": null,
+   "gt_inside": null,
+   "gt_zone_margin_at_declared_m": null,
+   "gt_post_cross_zone_distance_m": null,
+   "time_to_cross_s": null,
+   "time_to_declare_s": null,
+   "rotation_cmd_rad": 26.785653913900884,
+   "rotation_gt_rad_eval_only": 25.92400479098258,
+   "start_visibility_pixels": 0,
+   "start_paint_reason": "destination_colour_absent",
+   "sim_s": 180.0,
+   "wall_s": 8763.927558632997,
+   "camera_frames": 1801,
+   "final_pose_eval_only": [
+    1.3204455375671387,
+    0.32085633277893066
+   ],
+   "final_stage": "leg_forward",
+   "stage_sequence": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "approach_wall",
+     27.4
+    ],
+    [
+     "follow_north",
+     32.2
+    ],
+    [
+     "gap_cross",
+     39.3
+    ],
+    [
+     "gap_forward",
+     39.6
+    ],
+    [
+     "east_search",
+     46.7
+    ],
+    [
+     "leg_forward",
+     53.6
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "memory_landmarks": 0,
+   "collision_events": "not_measured",
+   "carry_loaded": false,
+   "cargo_held_at_start": null,
+   "cargo_held_at_cross": null,
+   "cargo_held_at_arrival": null,
+   "box_at_declared_eval_only": null,
+   "box_final_pose_eval_only": null,
+   "cargo_in_zone_at_declared_gt": null,
+   "cargo_zone_margin_at_declared_gt": null,
+   "cargo_in_zone_final_gt": null,
+   "evidence": {
+    "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e00/trace.jsonl",
+    "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e00/eval-only.json",
+    "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e00/frames"
+   },
+   "reason_category": "cap_end",
+   "blocked_object": "not_observed",
+   "minimum_gap_m": null,
+   "gap_status": "not_measured"
+  },
+  {
+   "episode": 1,
+   "status": "cap_end",
+   "cap_end": true,
+   "start_valid": true,
+   "input_audit_zero": true,
+   "input_audit": {
+    "calls": 5403,
+    "counters": {
+     "held_world_reads": 0,
+     "static_map_control": 0,
+     "spawn_control": 0,
+     "truth_control": 0,
+     "top_camera_frames": 0,
+     "invisible_measurements": 0
+    },
+    "violations": []
+   },
+   "door_crossed": false,
+   "door_cross_tick": null,
+   "skill_claimed_gap": false,
+   "stage_runs": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "approach_wall",
+     27.4
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "door_cross_t_s": null,
+   "door_lateral_offset_m": null,
+   "door_min_jamb_gap_m": null,
+   "door_crossing_ticks": 0,
+   "post_cross_colour_seen": false,
+   "post_cross_found": false,
+   "post_cross_found_t_s": null,
+   "found_any_pre_cross_reference_only": false,
+   "colour_any": false,
+   "arrived_declared": false,
+   "declared_t_s": null,
+   "gt_inside": null,
+   "gt_zone_margin_at_declared_m": null,
+   "gt_post_cross_zone_distance_m": null,
+   "time_to_cross_s": null,
+   "time_to_declare_s": null,
+   "rotation_cmd_rad": 52.89164027312846,
+   "rotation_gt_rad_eval_only": 32.55627636320589,
+   "start_visibility_pixels": 0,
+   "start_paint_reason": "destination_colour_absent",
+   "sim_s": 180.0,
+   "wall_s": 8764.429284623002,
+   "camera_frames": 1801,
+   "final_pose_eval_only": [
+    0.8094417452812195,
+    -1.262871503829956
+   ],
+   "final_stage": "approach_wall",
+   "stage_sequence": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "approach_wall",
+     27.4
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "memory_landmarks": 0,
+   "collision_events": "not_measured",
+   "carry_loaded": false,
+   "cargo_held_at_start": null,
+   "cargo_held_at_cross": null,
+   "cargo_held_at_arrival": null,
+   "box_at_declared_eval_only": null,
+   "box_final_pose_eval_only": null,
+   "cargo_in_zone_at_declared_gt": null,
+   "cargo_zone_margin_at_declared_gt": null,
+   "cargo_in_zone_final_gt": null,
+   "evidence": {
+    "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e01/trace.jsonl",
+    "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e01/eval-only.json",
+    "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e01/frames"
+   },
+   "reason_category": "cap_end",
+   "blocked_object": "not_observed",
+   "minimum_gap_m": null,
+   "gap_status": "not_measured"
+  },
+  {
+   "episode": 2,
+   "status": "ARRIVED_DECLARED",
+   "cap_end": false,
+   "start_valid": true,
+   "input_audit_zero": true,
+   "input_audit": {
+    "calls": 2346,
+    "counters": {
+     "held_world_reads": 0,
+     "static_map_control": 0,
+     "spawn_control": 0,
+     "truth_control": 0,
+     "top_camera_frames": 0,
+     "invisible_measurements": 0
+    },
+    "violations": []
+   },
+   "door_crossed": true,
+   "door_cross_tick": 55.2,
+   "skill_claimed_gap": false,
+   "stage_runs": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "approach_wall",
+     27.4
+    ],
+    [
+     "follow_north",
+     32.9
+    ],
+    [
+     "follow_south",
+     46.2
+    ],
+    [
+     "target",
+     49.7
+    ],
+    [
+     "approach",
+     64.9
+    ],
+    [
+     "end",
+     78.1
+    ]
+   ],
+   "door_cross_t_s": 55.2,
+   "door_lateral_offset_m": -0.1634,
+   "door_min_jamb_gap_m": -0.1084,
+   "door_crossing_ticks": 7,
+   "post_cross_colour_seen": true,
+   "post_cross_found": true,
+   "post_cross_found_t_s": 64.9,
+   "found_any_pre_cross_reference_only": true,
+   "colour_any": true,
+   "arrived_declared": true,
+   "declared_t_s": 77.1,
+   "gt_inside": false,
+   "gt_zone_margin_at_declared_m": -0.0281,
+   "gt_post_cross_zone_distance_m": 0.027,
+   "time_to_cross_s": 55.2,
+   "time_to_declare_s": 77.1,
+   "rotation_cmd_rad": 12.065982437584115,
+   "rotation_gt_rad_eval_only": 11.648716352294155,
+   "start_visibility_pixels": 0,
+   "start_paint_reason": "destination_colour_absent",
+   "sim_s": 78.0,
+   "wall_s": 8764.981765518998,
+   "camera_frames": 782,
+   "final_pose_eval_only": [
+    4.272960186004639,
+    -1.5722209215164185
+   ],
+   "final_stage": "approach",
+   "stage_sequence": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "approach_wall",
+     27.4
+    ],
+    [
+     "follow_north",
+     32.9
+    ],
+    [
+     "follow_south",
+     46.2
+    ],
+    [
+     "target",
+     49.7
+    ],
+    [
+     "approach",
+     64.9
+    ],
+    [
+     "end",
+     78.1
+    ]
+   ],
+   "memory_landmarks": 1,
+   "collision_events": "not_measured",
+   "carry_loaded": false,
+   "cargo_held_at_start": null,
+   "cargo_held_at_cross": null,
+   "cargo_held_at_arrival": null,
+   "box_at_declared_eval_only": null,
+   "box_final_pose_eval_only": null,
+   "cargo_in_zone_at_declared_gt": null,
+   "cargo_zone_margin_at_declared_gt": null,
+   "cargo_in_zone_final_gt": null,
+   "evidence": {
+    "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e02/trace.jsonl",
+    "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e02/eval-only.json",
+    "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e02/frames"
+   },
+   "reason_category": "false_arrival_outside_zone",
+   "blocked_object": "not_observed",
+   "minimum_gap_m": null,
+   "gap_status": "not_measured"
+  },
+  {
+   "episode": 3,
+   "status": "cap_end",
+   "cap_end": true,
+   "start_valid": true,
+   "input_audit_zero": true,
+   "input_audit": {
+    "calls": 5403,
+    "counters": {
+     "held_world_reads": 0,
+     "static_map_control": 0,
+     "spawn_control": 0,
+     "truth_control": 0,
+     "top_camera_frames": 0,
+     "invisible_measurements": 0
+    },
+    "violations": []
+   },
+   "door_crossed": false,
+   "door_cross_tick": null,
+   "skill_claimed_gap": true,
+   "stage_runs": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "approach_wall",
+     27.4
+    ],
+    [
+     "follow_north",
+     38.2
+    ],
+    [
+     "gap_cross",
+     55.3
+    ],
+    [
+     "gap_forward",
+     55.6
+    ],
+    [
+     "east_search",
+     64.0
+    ],
+    [
+     "leg_forward",
+     70.9
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "door_cross_t_s": null,
+   "door_lateral_offset_m": null,
+   "door_min_jamb_gap_m": null,
+   "door_crossing_ticks": 0,
+   "post_cross_colour_seen": false,
+   "post_cross_found": false,
+   "post_cross_found_t_s": null,
+   "found_any_pre_cross_reference_only": false,
+   "colour_any": false,
+   "arrived_declared": false,
+   "declared_t_s": null,
+   "gt_inside": null,
+   "gt_zone_margin_at_declared_m": null,
+   "gt_post_cross_zone_distance_m": null,
+   "time_to_cross_s": null,
+   "time_to_declare_s": null,
+   "rotation_cmd_rad": 28.324191501104043,
+   "rotation_gt_rad_eval_only": 25.905251608836515,
+   "start_visibility_pixels": 0,
+   "start_paint_reason": "destination_colour_absent",
+   "sim_s": 180.0,
+   "wall_s": 8765.226162922998,
+   "camera_frames": 1801,
+   "final_pose_eval_only": [
+    0.7161027789115906,
+    -1.2946053743362427
+   ],
+   "final_stage": "leg_forward",
+   "stage_sequence": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "approach_wall",
+     27.4
+    ],
+    [
+     "follow_north",
+     38.2
+    ],
+    [
+     "gap_cross",
+     55.3
+    ],
+    [
+     "gap_forward",
+     55.6
+    ],
+    [
+     "east_search",
+     64.0
+    ],
+    [
+     "leg_forward",
+     70.9
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "memory_landmarks": 0,
+   "collision_events": "not_measured",
+   "carry_loaded": false,
+   "cargo_held_at_start": null,
+   "cargo_held_at_cross": null,
+   "cargo_held_at_arrival": null,
+   "box_at_declared_eval_only": null,
+   "box_final_pose_eval_only": null,
+   "cargo_in_zone_at_declared_gt": null,
+   "cargo_zone_margin_at_declared_gt": null,
+   "cargo_in_zone_final_gt": null,
+   "evidence": {
+    "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e03/trace.jsonl",
+    "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e03/eval-only.json",
+    "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e03/frames"
+   },
+   "reason_category": "cap_end",
+   "blocked_object": "not_observed",
+   "minimum_gap_m": null,
+   "gap_status": "not_measured"
+  },
+  {
+   "episode": 4,
+   "status": "cap_end",
+   "cap_end": true,
+   "start_valid": true,
+   "input_audit_zero": true,
+   "input_audit": {
+    "calls": 5403,
+    "counters": {
+     "held_world_reads": 0,
+     "static_map_control": 0,
+     "spawn_control": 0,
+     "truth_control": 0,
+     "top_camera_frames": 0,
+     "invisible_measurements": 0
+    },
+    "violations": []
+   },
+   "door_crossed": false,
+   "door_cross_tick": null,
+   "skill_claimed_gap": true,
+   "stage_runs": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "approach_wall",
+     27.4
+    ],
+    [
+     "follow_north",
+     29.2
+    ],
+    [
+     "gap_cross",
+     36.3
+    ],
+    [
+     "gap_forward",
+     36.6
+    ],
+    [
+     "east_search",
+     43.7
+    ],
+    [
+     "leg_forward",
+     50.6
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "door_cross_t_s": null,
+   "door_lateral_offset_m": null,
+   "door_min_jamb_gap_m": null,
+   "door_crossing_ticks": 0,
+   "post_cross_colour_seen": false,
+   "post_cross_found": false,
+   "post_cross_found_t_s": null,
+   "found_any_pre_cross_reference_only": false,
+   "colour_any": false,
+   "arrived_declared": false,
+   "declared_t_s": null,
+   "gt_inside": null,
+   "gt_zone_margin_at_declared_m": null,
+   "gt_post_cross_zone_distance_m": null,
+   "time_to_cross_s": null,
+   "time_to_declare_s": null,
+   "rotation_cmd_rad": 29.102739606914493,
+   "rotation_gt_rad_eval_only": 28.95321659330406,
+   "start_visibility_pixels": 0,
+   "start_paint_reason": "destination_colour_absent",
+   "sim_s": 180.0,
+   "wall_s": 8765.734736287995,
+   "camera_frames": 1801,
+   "final_pose_eval_only": [
+    0.6244210600852966,
+    -2.1678788661956787
+   ],
+   "final_stage": "leg_forward",
+   "stage_sequence": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "approach_wall",
+     27.4
+    ],
+    [
+     "follow_north",
+     29.2
+    ],
+    [
+     "gap_cross",
+     36.3
+    ],
+    [
+     "gap_forward",
+     36.6
+    ],
+    [
+     "east_search",
+     43.7
+    ],
+    [
+     "leg_forward",
+     50.6
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "memory_landmarks": 0,
+   "collision_events": "not_measured",
+   "carry_loaded": false,
+   "cargo_held_at_start": null,
+   "cargo_held_at_cross": null,
+   "cargo_held_at_arrival": null,
+   "box_at_declared_eval_only": null,
+   "box_final_pose_eval_only": null,
+   "cargo_in_zone_at_declared_gt": null,
+   "cargo_zone_margin_at_declared_gt": null,
+   "cargo_in_zone_final_gt": null,
+   "evidence": {
+    "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e04/trace.jsonl",
+    "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e04/eval-only.json",
+    "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e04/frames"
+   },
+   "reason_category": "cap_end",
+   "blocked_object": "not_observed",
+   "minimum_gap_m": null,
+   "gap_status": "not_measured"
+  },
+  {
+   "episode": 5,
+   "status": "cap_end",
+   "cap_end": true,
+   "start_valid": true,
+   "input_audit_zero": true,
+   "input_audit": {
+    "calls": 5403,
+    "counters": {
+     "held_world_reads": 0,
+     "static_map_control": 0,
+     "spawn_control": 0,
+     "truth_control": 0,
+     "top_camera_frames": 0,
+     "invisible_measurements": 0
+    },
+    "violations": []
+   },
+   "door_crossed": false,
+   "door_cross_tick": null,
+   "skill_claimed_gap": false,
+   "stage_runs": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "approach_wall",
+     27.4
+    ],
+    [
+     "approach",
+     30.6
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "door_cross_t_s": null,
+   "door_lateral_offset_m": null,
+   "door_min_jamb_gap_m": null,
+   "door_crossing_ticks": 0,
+   "post_cross_colour_seen": false,
+   "post_cross_found": false,
+   "post_cross_found_t_s": null,
+   "found_any_pre_cross_reference_only": true,
+   "colour_any": true,
+   "arrived_declared": false,
+   "declared_t_s": null,
+   "gt_inside": null,
+   "gt_zone_margin_at_declared_m": null,
+   "gt_post_cross_zone_distance_m": null,
+   "time_to_cross_s": null,
+   "time_to_declare_s": null,
+   "rotation_cmd_rad": 16.00145111892137,
+   "rotation_gt_rad_eval_only": 16.136337984036103,
+   "start_visibility_pixels": 0,
+   "start_paint_reason": "destination_component_small",
+   "sim_s": 180.0,
+   "wall_s": 8766.239895501996,
+   "camera_frames": 1801,
+   "final_pose_eval_only": [
+    1.1983023881912231,
+    0.14068713784217834
+   ],
+   "final_stage": "approach",
+   "stage_sequence": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "approach_wall",
+     27.4
+    ],
+    [
+     "approach",
+     30.6
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "memory_landmarks": 11,
+   "collision_events": "not_measured",
+   "carry_loaded": false,
+   "cargo_held_at_start": null,
+   "cargo_held_at_cross": null,
+   "cargo_held_at_arrival": null,
+   "box_at_declared_eval_only": null,
+   "box_final_pose_eval_only": null,
+   "cargo_in_zone_at_declared_gt": null,
+   "cargo_zone_margin_at_declared_gt": null,
+   "cargo_in_zone_final_gt": null,
+   "evidence": {
+    "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e05/trace.jsonl",
+    "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e05/eval-only.json",
+    "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e05/frames"
+   },
+   "reason_category": "cap_end",
+   "blocked_object": "not_observed",
+   "minimum_gap_m": null,
+   "gap_status": "not_measured"
+  },
+  {
+   "episode": 6,
+   "status": "STOPPED_NO_ARRIVAL",
+   "cap_end": false,
+   "start_valid": true,
+   "input_audit_zero": true,
+   "input_audit": {
+    "calls": 5403,
+    "counters": {
+     "held_world_reads": 0,
+     "static_map_control": 0,
+     "spawn_control": 0,
+     "truth_control": 0,
+     "top_camera_frames": 0,
+     "invisible_measurements": 0
+    },
+    "violations": []
+   },
+   "door_crossed": false,
+   "door_cross_tick": null,
+   "skill_claimed_gap": true,
+   "stage_runs": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "approach_wall",
+     27.4
+    ],
+    [
+     "follow_north",
+     28.9
+    ],
+    [
+     "follow_south",
+     35.8
+    ],
+    [
+     "gap_cross",
+     49.8
+    ],
+    [
+     "gap_forward",
+     50.1
+    ],
+    [
+     "east_search",
+     58.3
+    ],
+    [
+     "leg_forward",
+     65.2
+    ],
+    [
+     "approach",
+     88.8
+    ],
+    [
+     "leg_forward",
+     92.2
+    ],
+    [
+     "approach",
+     152.4
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "door_cross_t_s": null,
+   "door_lateral_offset_m": null,
+   "door_min_jamb_gap_m": null,
+   "door_crossing_ticks": 0,
+   "post_cross_colour_seen": false,
+   "post_cross_found": false,
+   "post_cross_found_t_s": null,
+   "found_any_pre_cross_reference_only": true,
+   "colour_any": true,
+   "arrived_declared": false,
+   "declared_t_s": null,
+   "gt_inside": null,
+   "gt_zone_margin_at_declared_m": null,
+   "gt_post_cross_zone_distance_m": null,
+   "time_to_cross_s": null,
+   "time_to_declare_s": null,
+   "rotation_cmd_rad": 32.37477823021975,
+   "rotation_gt_rad_eval_only": 32.20483843050688,
+   "start_visibility_pixels": 0,
+   "start_paint_reason": "destination_colour_absent",
+   "sim_s": 180.0,
+   "wall_s": 8767.291516790996,
+   "camera_frames": 1801,
+   "final_pose_eval_only": [
+    1.2564977407455444,
+    0.5249038934707642
+   ],
+   "final_stage": "approach",
+   "stage_sequence": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "approach_wall",
+     27.4
+    ],
+    [
+     "follow_north",
+     28.9
+    ],
+    [
+     "follow_south",
+     35.8
+    ],
+    [
+     "gap_cross",
+     49.8
+    ],
+    [
+     "gap_forward",
+     50.1
+    ],
+    [
+     "east_search",
+     58.3
+    ],
+    [
+     "leg_forward",
+     65.2
+    ],
+    [
+     "approach",
+     88.8
+    ],
+    [
+     "leg_forward",
+     92.2
+    ],
+    [
+     "approach",
+     152.4
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "memory_landmarks": 2,
+   "collision_events": "not_measured",
+   "carry_loaded": false,
+   "cargo_held_at_start": null,
+   "cargo_held_at_cross": null,
+   "cargo_held_at_arrival": null,
+   "box_at_declared_eval_only": null,
+   "box_final_pose_eval_only": null,
+   "cargo_in_zone_at_declared_gt": null,
+   "cargo_zone_margin_at_declared_gt": null,
+   "cargo_in_zone_final_gt": null,
+   "evidence": {
+    "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e06/trace.jsonl",
+    "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e06/eval-only.json",
+    "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e06/frames"
+   },
+   "reason_category": "door_not_crossed",
+   "blocked_object": "not_observed",
+   "minimum_gap_m": null,
+   "gap_status": "not_measured"
+  },
+  {
+   "episode": 7,
+   "status": "STOPPED_NO_ARRIVAL",
+   "cap_end": false,
+   "start_valid": true,
+   "input_audit_zero": true,
+   "input_audit": {
+    "calls": 5403,
+    "counters": {
+     "held_world_reads": 0,
+     "static_map_control": 0,
+     "spawn_control": 0,
+     "truth_control": 0,
+     "top_camera_frames": 0,
+     "invisible_measurements": 0
+    },
+    "violations": []
+   },
+   "door_crossed": false,
+   "door_cross_tick": null,
+   "skill_claimed_gap": false,
+   "stage_runs": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "approach",
+     4.3
+    ],
+    [
+     "east_search",
+     36.0
+    ],
+    [
+     "leg_forward",
+     42.9
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "door_cross_t_s": null,
+   "door_lateral_offset_m": null,
+   "door_min_jamb_gap_m": null,
+   "door_crossing_ticks": 0,
+   "post_cross_colour_seen": false,
+   "post_cross_found": false,
+   "post_cross_found_t_s": null,
+   "found_any_pre_cross_reference_only": true,
+   "colour_any": true,
+   "arrived_declared": false,
+   "declared_t_s": null,
+   "gt_inside": null,
+   "gt_zone_margin_at_declared_m": null,
+   "gt_post_cross_zone_distance_m": null,
+   "time_to_cross_s": null,
+   "time_to_declare_s": null,
+   "rotation_cmd_rad": 23.59474558590439,
+   "rotation_gt_rad_eval_only": 24.48920008008419,
+   "start_visibility_pixels": 0,
+   "start_paint_reason": "destination_colour_absent",
+   "sim_s": 180.0,
+   "wall_s": 8767.858161974997,
+   "camera_frames": 1801,
+   "final_pose_eval_only": [
+    0.7715675234794617,
+    1.0916367769241333
+   ],
+   "final_stage": "leg_forward",
+   "stage_sequence": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "approach",
+     4.3
+    ],
+    [
+     "east_search",
+     36.0
+    ],
+    [
+     "leg_forward",
+     42.9
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "memory_landmarks": 1,
+   "collision_events": "not_measured",
+   "carry_loaded": false,
+   "cargo_held_at_start": null,
+   "cargo_held_at_cross": null,
+   "cargo_held_at_arrival": null,
+   "box_at_declared_eval_only": null,
+   "box_final_pose_eval_only": null,
+   "cargo_in_zone_at_declared_gt": null,
+   "cargo_zone_margin_at_declared_gt": null,
+   "cargo_in_zone_final_gt": null,
+   "evidence": {
+    "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e07/trace.jsonl",
+    "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e07/eval-only.json",
+    "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e07/frames"
+   },
+   "reason_category": "door_not_crossed",
+   "blocked_object": "not_observed",
+   "minimum_gap_m": null,
+   "gap_status": "not_measured"
+  },
+  {
+   "episode": 8,
+   "status": "cap_end",
+   "cap_end": true,
+   "start_valid": true,
+   "input_audit_zero": true,
+   "input_audit": {
+    "calls": 5403,
+    "counters": {
+     "held_world_reads": 0,
+     "static_map_control": 0,
+     "spawn_control": 0,
+     "truth_control": 0,
+     "top_camera_frames": 0,
+     "invisible_measurements": 0
+    },
+    "violations": []
+   },
+   "door_crossed": false,
+   "door_cross_tick": null,
+   "skill_claimed_gap": true,
+   "stage_runs": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "seek_wall",
+     27.4
+    ],
+    [
+     "approach_wall",
+     37.7
+    ],
+    [
+     "follow_north",
+     45.2
+    ],
+    [
+     "gap_cross",
+     52.3
+    ],
+    [
+     "gap_forward",
+     52.6
+    ],
+    [
+     "east_search",
+     59.6
+    ],
+    [
+     "leg_forward",
+     66.5
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "door_cross_t_s": null,
+   "door_lateral_offset_m": null,
+   "door_min_jamb_gap_m": null,
+   "door_crossing_ticks": 0,
+   "post_cross_colour_seen": false,
+   "post_cross_found": false,
+   "post_cross_found_t_s": null,
+   "found_any_pre_cross_reference_only": false,
+   "colour_any": false,
+   "arrived_declared": false,
+   "declared_t_s": null,
+   "gt_inside": null,
+   "gt_zone_margin_at_declared_m": null,
+   "gt_post_cross_zone_distance_m": null,
+   "time_to_cross_s": null,
+   "time_to_declare_s": null,
+   "rotation_cmd_rad": 28.068200333899018,
+   "rotation_gt_rad_eval_only": 26.597725381168484,
+   "start_visibility_pixels": 0,
+   "start_paint_reason": "destination_colour_absent",
+   "sim_s": 180.0,
+   "wall_s": 8768.469611020002,
+   "camera_frames": 1801,
+   "final_pose_eval_only": [
+    0.8795695900917053,
+    -0.3133581280708313
+   ],
+   "final_stage": "leg_forward",
+   "stage_sequence": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "seek_wall",
+     27.4
+    ],
+    [
+     "approach_wall",
+     37.7
+    ],
+    [
+     "follow_north",
+     45.2
+    ],
+    [
+     "gap_cross",
+     52.3
+    ],
+    [
+     "gap_forward",
+     52.6
+    ],
+    [
+     "east_search",
+     59.6
+    ],
+    [
+     "leg_forward",
+     66.5
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "memory_landmarks": 0,
+   "collision_events": "not_measured",
+   "carry_loaded": false,
+   "cargo_held_at_start": null,
+   "cargo_held_at_cross": null,
+   "cargo_held_at_arrival": null,
+   "box_at_declared_eval_only": null,
+   "box_final_pose_eval_only": null,
+   "cargo_in_zone_at_declared_gt": null,
+   "cargo_zone_margin_at_declared_gt": null,
+   "cargo_in_zone_final_gt": null,
+   "evidence": {
+    "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e08/trace.jsonl",
+    "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e08/eval-only.json",
+    "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e08/frames"
+   },
+   "reason_category": "cap_end",
+   "blocked_object": "not_observed",
+   "minimum_gap_m": null,
+   "gap_status": "not_measured"
+  },
+  {
+   "episode": 9,
+   "status": "cap_end",
+   "cap_end": true,
+   "start_valid": true,
+   "input_audit_zero": true,
+   "input_audit": {
+    "calls": 5403,
+    "counters": {
+     "held_world_reads": 0,
+     "static_map_control": 0,
+     "spawn_control": 0,
+     "truth_control": 0,
+     "top_camera_frames": 0,
+     "invisible_measurements": 0
+    },
+    "violations": []
+   },
+   "door_crossed": false,
+   "door_cross_tick": null,
+   "skill_claimed_gap": false,
+   "stage_runs": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "approach_wall",
+     27.4
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "door_cross_t_s": null,
+   "door_lateral_offset_m": null,
+   "door_min_jamb_gap_m": null,
+   "door_crossing_ticks": 0,
+   "post_cross_colour_seen": false,
+   "post_cross_found": false,
+   "post_cross_found_t_s": null,
+   "found_any_pre_cross_reference_only": false,
+   "colour_any": false,
+   "arrived_declared": false,
+   "declared_t_s": null,
+   "gt_inside": null,
+   "gt_zone_margin_at_declared_m": null,
+   "gt_post_cross_zone_distance_m": null,
+   "time_to_cross_s": null,
+   "time_to_declare_s": null,
+   "rotation_cmd_rad": 50.03836112664133,
+   "rotation_gt_rad_eval_only": 31.27944908140509,
+   "start_visibility_pixels": 0,
+   "start_paint_reason": "destination_colour_absent",
+   "sim_s": 180.0,
+   "wall_s": 8768.980489397,
+   "camera_frames": 1801,
+   "final_pose_eval_only": [
+    0.47997379302978516,
+    0.14711984992027283
+   ],
+   "final_stage": "approach_wall",
+   "stage_sequence": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "approach_wall",
+     27.4
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "memory_landmarks": 0,
+   "collision_events": "not_measured",
+   "carry_loaded": false,
+   "cargo_held_at_start": null,
+   "cargo_held_at_cross": null,
+   "cargo_held_at_arrival": null,
+   "box_at_declared_eval_only": null,
+   "box_final_pose_eval_only": null,
+   "cargo_in_zone_at_declared_gt": null,
+   "cargo_zone_margin_at_declared_gt": null,
+   "cargo_in_zone_final_gt": null,
+   "evidence": {
+    "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e09/trace.jsonl",
+    "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e09/eval-only.json",
+    "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e09/frames"
+   },
+   "reason_category": "cap_end",
+   "blocked_object": "not_observed",
+   "minimum_gap_m": null,
+   "gap_status": "not_measured"
+  },
+  {
+   "episode": 10,
+   "status": "cap_end",
+   "cap_end": true,
+   "start_valid": true,
+   "input_audit_zero": true,
+   "input_audit": {
+    "calls": 5403,
+    "counters": {
+     "held_world_reads": 0,
+     "static_map_control": 0,
+     "spawn_control": 0,
+     "truth_control": 0,
+     "top_camera_frames": 0,
+     "invisible_measurements": 0
+    },
+    "violations": []
+   },
+   "door_crossed": false,
+   "door_cross_tick": null,
+   "skill_claimed_gap": true,
+   "stage_runs": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "seek_wall",
+     27.4
+    ],
+    [
+     "approach_wall",
+     37.3
+    ],
+    [
+     "follow_north",
+     44.7
+    ],
+    [
+     "gap_cross",
+     51.8
+    ],
+    [
+     "gap_forward",
+     52.1
+    ],
+    [
+     "east_search",
+     59.0
+    ],
+    [
+     "leg_forward",
+     65.9
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "door_cross_t_s": null,
+   "door_lateral_offset_m": null,
+   "door_min_jamb_gap_m": null,
+   "door_crossing_ticks": 0,
+   "post_cross_colour_seen": false,
+   "post_cross_found": false,
+   "post_cross_found_t_s": null,
+   "found_any_pre_cross_reference_only": false,
+   "colour_any": false,
+   "arrived_declared": false,
+   "declared_t_s": null,
+   "gt_inside": null,
+   "gt_zone_margin_at_declared_m": null,
+   "gt_post_cross_zone_distance_m": null,
+   "time_to_cross_s": null,
+   "time_to_declare_s": null,
+   "rotation_cmd_rad": 25.595822632498948,
+   "rotation_gt_rad_eval_only": 24.22977236515896,
+   "start_visibility_pixels": 0,
+   "start_paint_reason": "destination_colour_absent",
+   "sim_s": 180.0,
+   "wall_s": 8769.553476362002,
+   "camera_frames": 1801,
+   "final_pose_eval_only": [
+    -0.36980974674224854,
+    0.3154270350933075
+   ],
+   "final_stage": "leg_forward",
+   "stage_sequence": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "seek_wall",
+     27.4
+    ],
+    [
+     "approach_wall",
+     37.3
+    ],
+    [
+     "follow_north",
+     44.7
+    ],
+    [
+     "gap_cross",
+     51.8
+    ],
+    [
+     "gap_forward",
+     52.1
+    ],
+    [
+     "east_search",
+     59.0
+    ],
+    [
+     "leg_forward",
+     65.9
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "memory_landmarks": 0,
+   "collision_events": "not_measured",
+   "carry_loaded": false,
+   "cargo_held_at_start": null,
+   "cargo_held_at_cross": null,
+   "cargo_held_at_arrival": null,
+   "box_at_declared_eval_only": null,
+   "box_final_pose_eval_only": null,
+   "cargo_in_zone_at_declared_gt": null,
+   "cargo_zone_margin_at_declared_gt": null,
+   "cargo_in_zone_final_gt": null,
+   "evidence": {
+    "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e10/trace.jsonl",
+    "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e10/eval-only.json",
+    "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e10/frames"
+   },
+   "reason_category": "cap_end",
+   "blocked_object": "not_observed",
+   "minimum_gap_m": null,
+   "gap_status": "not_measured"
+  },
+  {
+   "episode": 11,
+   "status": "cap_end",
+   "cap_end": true,
+   "start_valid": true,
+   "input_audit_zero": true,
+   "input_audit": {
+    "calls": 5403,
+    "counters": {
+     "held_world_reads": 0,
+     "static_map_control": 0,
+     "spawn_control": 0,
+     "truth_control": 0,
+     "top_camera_frames": 0,
+     "invisible_measurements": 0
+    },
+    "violations": []
+   },
+   "door_crossed": false,
+   "door_cross_tick": null,
+   "skill_claimed_gap": false,
+   "stage_runs": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "follow_north",
+     27.4
+    ],
+    [
+     "follow_south",
+     34.3
+    ],
+    [
+     "east_search",
+     77.9
+    ],
+    [
+     "leg_forward",
+     84.8
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "door_cross_t_s": null,
+   "door_lateral_offset_m": null,
+   "door_min_jamb_gap_m": null,
+   "door_crossing_ticks": 0,
+   "post_cross_colour_seen": false,
+   "post_cross_found": false,
+   "post_cross_found_t_s": null,
+   "found_any_pre_cross_reference_only": false,
+   "colour_any": false,
+   "arrived_declared": false,
+   "declared_t_s": null,
+   "gt_inside": null,
+   "gt_zone_margin_at_declared_m": null,
+   "gt_post_cross_zone_distance_m": null,
+   "time_to_cross_s": null,
+   "time_to_declare_s": null,
+   "rotation_cmd_rad": 36.34293937203969,
+   "rotation_gt_rad_eval_only": 31.229942097937343,
+   "start_visibility_pixels": 0,
+   "start_paint_reason": "destination_colour_absent",
+   "sim_s": 180.0,
+   "wall_s": 8770.052617148998,
+   "camera_frames": 1801,
+   "final_pose_eval_only": [
+    0.4810071885585785,
+    0.4909837245941162
+   ],
+   "final_stage": "leg_forward",
+   "stage_sequence": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "follow_north",
+     27.4
+    ],
+    [
+     "follow_south",
+     34.3
+    ],
+    [
+     "east_search",
+     77.9
+    ],
+    [
+     "leg_forward",
+     84.8
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "memory_landmarks": 0,
+   "collision_events": "not_measured",
+   "carry_loaded": false,
+   "cargo_held_at_start": null,
+   "cargo_held_at_cross": null,
+   "cargo_held_at_arrival": null,
+   "box_at_declared_eval_only": null,
+   "box_final_pose_eval_only": null,
+   "cargo_in_zone_at_declared_gt": null,
+   "cargo_zone_margin_at_declared_gt": null,
+   "cargo_in_zone_final_gt": null,
+   "evidence": {
+    "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e11/trace.jsonl",
+    "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e11/eval-only.json",
+    "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e11/frames"
+   },
+   "reason_category": "cap_end",
+   "blocked_object": "not_observed",
+   "minimum_gap_m": null,
+   "gap_status": "not_measured"
+  },
+  {
+   "episode": 12,
+   "status": "cap_end",
+   "cap_end": true,
+   "start_valid": true,
+   "input_audit_zero": true,
+   "input_audit": {
+    "calls": 5403,
+    "counters": {
+     "held_world_reads": 0,
+     "static_map_control": 0,
+     "spawn_control": 0,
+     "truth_control": 0,
+     "top_camera_frames": 0,
+     "invisible_measurements": 0
+    },
+    "violations": []
+   },
+   "door_crossed": false,
+   "door_cross_tick": null,
+   "skill_claimed_gap": true,
+   "stage_runs": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "approach_wall",
+     27.4
+    ],
+    [
+     "follow_north",
+     38.8
+    ],
+    [
+     "gap_cross",
+     45.9
+    ],
+    [
+     "gap_forward",
+     46.2
+    ],
+    [
+     "east_search",
+     53.4
+    ],
+    [
+     "leg_forward",
+     60.3
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "door_cross_t_s": null,
+   "door_lateral_offset_m": null,
+   "door_min_jamb_gap_m": null,
+   "door_crossing_ticks": 0,
+   "post_cross_colour_seen": false,
+   "post_cross_found": false,
+   "post_cross_found_t_s": null,
+   "found_any_pre_cross_reference_only": false,
+   "colour_any": false,
+   "arrived_declared": false,
+   "declared_t_s": null,
+   "gt_inside": null,
+   "gt_zone_margin_at_declared_m": null,
+   "gt_post_cross_zone_distance_m": null,
+   "time_to_cross_s": null,
+   "time_to_declare_s": null,
+   "rotation_cmd_rad": 26.785653913900884,
+   "rotation_gt_rad_eval_only": 26.409410135809722,
+   "start_visibility_pixels": 0,
+   "start_paint_reason": "destination_colour_absent",
+   "sim_s": 180.0,
+   "wall_s": 8770.573195297002,
+   "camera_frames": 1801,
+   "final_pose_eval_only": [
+    1.317165493965149,
+    0.2797432243824005
+   ],
+   "final_stage": "leg_forward",
+   "stage_sequence": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "approach_wall",
+     27.4
+    ],
+    [
+     "follow_north",
+     38.8
+    ],
+    [
+     "gap_cross",
+     45.9
+    ],
+    [
+     "gap_forward",
+     46.2
+    ],
+    [
+     "east_search",
+     53.4
+    ],
+    [
+     "leg_forward",
+     60.3
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "memory_landmarks": 0,
+   "collision_events": "not_measured",
+   "carry_loaded": false,
+   "cargo_held_at_start": null,
+   "cargo_held_at_cross": null,
+   "cargo_held_at_arrival": null,
+   "box_at_declared_eval_only": null,
+   "box_final_pose_eval_only": null,
+   "cargo_in_zone_at_declared_gt": null,
+   "cargo_zone_margin_at_declared_gt": null,
+   "cargo_in_zone_final_gt": null,
+   "evidence": {
+    "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e12/trace.jsonl",
+    "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e12/eval-only.json",
+    "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e12/frames"
+   },
+   "reason_category": "cap_end",
+   "blocked_object": "not_observed",
+   "minimum_gap_m": null,
+   "gap_status": "not_measured"
+  },
+  {
+   "episode": 13,
+   "status": "cap_end",
+   "cap_end": true,
+   "start_valid": true,
+   "input_audit_zero": true,
+   "input_audit": {
+    "calls": 5403,
+    "counters": {
+     "held_world_reads": 0,
+     "static_map_control": 0,
+     "spawn_control": 0,
+     "truth_control": 0,
+     "top_camera_frames": 0,
+     "invisible_measurements": 0
+    },
+    "violations": []
+   },
+   "door_crossed": false,
+   "door_cross_tick": null,
+   "skill_claimed_gap": false,
+   "stage_runs": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "approach_wall",
+     27.4
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "door_cross_t_s": null,
+   "door_lateral_offset_m": null,
+   "door_min_jamb_gap_m": null,
+   "door_crossing_ticks": 0,
+   "post_cross_colour_seen": false,
+   "post_cross_found": false,
+   "post_cross_found_t_s": null,
+   "found_any_pre_cross_reference_only": false,
+   "colour_any": false,
+   "arrived_declared": false,
+   "declared_t_s": null,
+   "gt_inside": null,
+   "gt_zone_margin_at_declared_m": null,
+   "gt_post_cross_zone_distance_m": null,
+   "time_to_cross_s": null,
+   "time_to_declare_s": null,
+   "rotation_cmd_rad": 53.85947333869432,
+   "rotation_gt_rad_eval_only": 35.18516951831027,
+   "start_visibility_pixels": 0,
+   "start_paint_reason": "destination_colour_absent",
+   "sim_s": 180.0,
+   "wall_s": 8771.075366555,
+   "camera_frames": 1801,
+   "final_pose_eval_only": [
+    -0.09900930523872375,
+    -0.5931478142738342
+   ],
+   "final_stage": "approach_wall",
+   "stage_sequence": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "approach_wall",
+     27.4
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "memory_landmarks": 0,
+   "collision_events": "not_measured",
+   "carry_loaded": false,
+   "cargo_held_at_start": null,
+   "cargo_held_at_cross": null,
+   "cargo_held_at_arrival": null,
+   "box_at_declared_eval_only": null,
+   "box_final_pose_eval_only": null,
+   "cargo_in_zone_at_declared_gt": null,
+   "cargo_zone_margin_at_declared_gt": null,
+   "cargo_in_zone_final_gt": null,
+   "evidence": {
+    "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e13/trace.jsonl",
+    "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e13/eval-only.json",
+    "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e13/frames"
+   },
+   "reason_category": "cap_end",
+   "blocked_object": "not_observed",
+   "minimum_gap_m": null,
+   "gap_status": "not_measured"
+  },
+  {
+   "episode": 14,
+   "status": "cap_end",
+   "cap_end": true,
+   "start_valid": true,
+   "input_audit_zero": true,
+   "input_audit": {
+    "calls": 5403,
+    "counters": {
+     "held_world_reads": 0,
+     "static_map_control": 0,
+     "spawn_control": 0,
+     "truth_control": 0,
+     "top_camera_frames": 0,
+     "invisible_measurements": 0
+    },
+    "violations": []
+   },
+   "door_crossed": false,
+   "door_cross_tick": null,
+   "skill_claimed_gap": true,
+   "stage_runs": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "approach_wall",
+     27.4
+    ],
+    [
+     "follow_north",
+     27.6
+    ],
+    [
+     "gap_cross",
+     43.4
+    ],
+    [
+     "gap_forward",
+     43.7
+    ],
+    [
+     "east_search",
+     52.1
+    ],
+    [
+     "leg_forward",
+     59.0
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "door_cross_t_s": null,
+   "door_lateral_offset_m": null,
+   "door_min_jamb_gap_m": null,
+   "door_crossing_ticks": 0,
+   "post_cross_colour_seen": false,
+   "post_cross_found": false,
+   "post_cross_found_t_s": null,
+   "found_any_pre_cross_reference_only": false,
+   "colour_any": false,
+   "arrived_declared": false,
+   "declared_t_s": null,
+   "gt_inside": null,
+   "gt_zone_margin_at_declared_m": null,
+   "gt_post_cross_zone_distance_m": null,
+   "time_to_cross_s": null,
+   "time_to_declare_s": null,
+   "rotation_cmd_rad": 29.733964127861935,
+   "rotation_gt_rad_eval_only": 28.455318236684217,
+   "start_visibility_pixels": 0,
+   "start_paint_reason": "destination_colour_absent",
+   "sim_s": 180.0,
+   "wall_s": 8771.625312336997,
+   "camera_frames": 1801,
+   "final_pose_eval_only": [
+    -0.04953081160783768,
+    0.9651792049407959
+   ],
+   "final_stage": "leg_forward",
+   "stage_sequence": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "approach_wall",
+     27.4
+    ],
+    [
+     "follow_north",
+     27.6
+    ],
+    [
+     "gap_cross",
+     43.4
+    ],
+    [
+     "gap_forward",
+     43.7
+    ],
+    [
+     "east_search",
+     52.1
+    ],
+    [
+     "leg_forward",
+     59.0
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "memory_landmarks": 0,
+   "collision_events": "not_measured",
+   "carry_loaded": false,
+   "cargo_held_at_start": null,
+   "cargo_held_at_cross": null,
+   "cargo_held_at_arrival": null,
+   "box_at_declared_eval_only": null,
+   "box_final_pose_eval_only": null,
+   "cargo_in_zone_at_declared_gt": null,
+   "cargo_zone_margin_at_declared_gt": null,
+   "cargo_in_zone_final_gt": null,
+   "evidence": {
+    "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e14/trace.jsonl",
+    "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e14/eval-only.json",
+    "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e14/frames"
+   },
+   "reason_category": "cap_end",
+   "blocked_object": "not_observed",
+   "minimum_gap_m": null,
+   "gap_status": "not_measured"
+  },
+  {
+   "episode": 15,
+   "status": "cap_end",
+   "cap_end": true,
+   "start_valid": true,
+   "input_audit_zero": true,
+   "input_audit": {
+    "calls": 5403,
+    "counters": {
+     "held_world_reads": 0,
+     "static_map_control": 0,
+     "spawn_control": 0,
+     "truth_control": 0,
+     "top_camera_frames": 0,
+     "invisible_measurements": 0
+    },
+    "violations": []
+   },
+   "door_crossed": false,
+   "door_cross_tick": null,
+   "skill_claimed_gap": true,
+   "stage_runs": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "follow_north",
+     27.4
+    ],
+    [
+     "gap_cross",
+     34.5
+    ],
+    [
+     "gap_forward",
+     34.8
+    ],
+    [
+     "east_search",
+     41.7
+    ],
+    [
+     "leg_forward",
+     48.6
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "door_cross_t_s": null,
+   "door_lateral_offset_m": null,
+   "door_min_jamb_gap_m": null,
+   "door_crossing_ticks": 0,
+   "post_cross_colour_seen": false,
+   "post_cross_found": false,
+   "post_cross_found_t_s": null,
+   "found_any_pre_cross_reference_only": false,
+   "colour_any": false,
+   "arrived_declared": false,
+   "declared_t_s": null,
+   "gt_inside": null,
+   "gt_zone_margin_at_declared_m": null,
+   "gt_post_cross_zone_distance_m": null,
+   "time_to_cross_s": null,
+   "time_to_declare_s": null,
+   "rotation_cmd_rad": 27.842083178203023,
+   "rotation_gt_rad_eval_only": 28.130444205065395,
+   "start_visibility_pixels": 0,
+   "start_paint_reason": "destination_colour_absent",
+   "sim_s": 180.0,
+   "wall_s": 8772.129013095997,
+   "camera_frames": 1801,
+   "final_pose_eval_only": [
+    -0.181794211268425,
+    1.0437886714935303
+   ],
+   "final_stage": "leg_forward",
+   "stage_sequence": [
+    [
+     "orient",
+     0.0
+    ],
+    [
+     "follow_north",
+     27.4
+    ],
+    [
+     "gap_cross",
+     34.5
+    ],
+    [
+     "gap_forward",
+     34.8
+    ],
+    [
+     "east_search",
+     41.7
+    ],
+    [
+     "leg_forward",
+     48.6
+    ],
+    [
+     "end",
+     180.0
+    ]
+   ],
+   "memory_landmarks": 0,
+   "collision_events": "not_measured",
+   "carry_loaded": false,
+   "cargo_held_at_start": null,
+   "cargo_held_at_cross": null,
+   "cargo_held_at_arrival": null,
+   "box_at_declared_eval_only": null,
+   "box_final_pose_eval_only": null,
+   "cargo_in_zone_at_declared_gt": null,
+   "cargo_zone_margin_at_declared_gt": null,
+   "cargo_in_zone_final_gt": null,
+   "evidence": {
+    "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e15/trace.jsonl",
+    "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e15/eval-only.json",
+    "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e15/frames"
+   },
+   "reason_category": "cap_end",
+   "blocked_object": "not_observed",
+   "minimum_gap_m": null,
+   "gap_status": "not_measured"
+  }
+ ],
+ "rejection_table": {
+  "unit": "episode",
+  "stage": "A_unloaded",
+  "run": "/home/ugrp/ugrp-sim/runs/crossroom-stageA",
+  "fields": [
+   "episode",
+   "reason_category",
+   "blocked_object",
+   "minimum_gap_m",
+   "gap_status",
+   "sim_s",
+   "door_lateral_offset_m",
+   "final_pose_eval_only",
+   "evidence",
+   "raw_path"
+  ],
+  "rows": [
+   {
+    "episode": 0,
+    "reason_category": "cap_end",
+    "blocked_object": "not_observed",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured",
+    "sim_s": 180.0,
+    "door_lateral_offset_m": null,
+    "final_pose_eval_only": [
+     1.3204455375671387,
+     0.32085633277893066
+    ],
+    "evidence": {
+     "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e00/trace.jsonl",
+     "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e00/eval-only.json",
+     "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e00/frames"
+    },
+    "raw_path": "/home/ugrp/ugrp-sim/runs/crossroom-stageA"
+   },
+   {
+    "episode": 1,
+    "reason_category": "cap_end",
+    "blocked_object": "not_observed",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured",
+    "sim_s": 180.0,
+    "door_lateral_offset_m": null,
+    "final_pose_eval_only": [
+     0.8094417452812195,
+     -1.262871503829956
+    ],
+    "evidence": {
+     "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e01/trace.jsonl",
+     "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e01/eval-only.json",
+     "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e01/frames"
+    },
+    "raw_path": "/home/ugrp/ugrp-sim/runs/crossroom-stageA"
+   },
+   {
+    "episode": 2,
+    "reason_category": "false_arrival_outside_zone",
+    "blocked_object": "not_observed",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured",
+    "sim_s": 78.0,
+    "door_lateral_offset_m": -0.1634,
+    "final_pose_eval_only": [
+     4.272960186004639,
+     -1.5722209215164185
+    ],
+    "evidence": {
+     "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e02/trace.jsonl",
+     "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e02/eval-only.json",
+     "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e02/frames"
+    },
+    "raw_path": "/home/ugrp/ugrp-sim/runs/crossroom-stageA"
+   },
+   {
+    "episode": 3,
+    "reason_category": "cap_end",
+    "blocked_object": "not_observed",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured",
+    "sim_s": 180.0,
+    "door_lateral_offset_m": null,
+    "final_pose_eval_only": [
+     0.7161027789115906,
+     -1.2946053743362427
+    ],
+    "evidence": {
+     "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e03/trace.jsonl",
+     "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e03/eval-only.json",
+     "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e03/frames"
+    },
+    "raw_path": "/home/ugrp/ugrp-sim/runs/crossroom-stageA"
+   },
+   {
+    "episode": 4,
+    "reason_category": "cap_end",
+    "blocked_object": "not_observed",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured",
+    "sim_s": 180.0,
+    "door_lateral_offset_m": null,
+    "final_pose_eval_only": [
+     0.6244210600852966,
+     -2.1678788661956787
+    ],
+    "evidence": {
+     "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e04/trace.jsonl",
+     "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e04/eval-only.json",
+     "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e04/frames"
+    },
+    "raw_path": "/home/ugrp/ugrp-sim/runs/crossroom-stageA"
+   },
+   {
+    "episode": 5,
+    "reason_category": "cap_end",
+    "blocked_object": "not_observed",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured",
+    "sim_s": 180.0,
+    "door_lateral_offset_m": null,
+    "final_pose_eval_only": [
+     1.1983023881912231,
+     0.14068713784217834
+    ],
+    "evidence": {
+     "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e05/trace.jsonl",
+     "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e05/eval-only.json",
+     "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e05/frames"
+    },
+    "raw_path": "/home/ugrp/ugrp-sim/runs/crossroom-stageA"
+   },
+   {
+    "episode": 6,
+    "reason_category": "door_not_crossed",
+    "blocked_object": "not_observed",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured",
+    "sim_s": 180.0,
+    "door_lateral_offset_m": null,
+    "final_pose_eval_only": [
+     1.2564977407455444,
+     0.5249038934707642
+    ],
+    "evidence": {
+     "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e06/trace.jsonl",
+     "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e06/eval-only.json",
+     "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e06/frames"
+    },
+    "raw_path": "/home/ugrp/ugrp-sim/runs/crossroom-stageA"
+   },
+   {
+    "episode": 7,
+    "reason_category": "door_not_crossed",
+    "blocked_object": "not_observed",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured",
+    "sim_s": 180.0,
+    "door_lateral_offset_m": null,
+    "final_pose_eval_only": [
+     0.7715675234794617,
+     1.0916367769241333
+    ],
+    "evidence": {
+     "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e07/trace.jsonl",
+     "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e07/eval-only.json",
+     "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e07/frames"
+    },
+    "raw_path": "/home/ugrp/ugrp-sim/runs/crossroom-stageA"
+   },
+   {
+    "episode": 8,
+    "reason_category": "cap_end",
+    "blocked_object": "not_observed",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured",
+    "sim_s": 180.0,
+    "door_lateral_offset_m": null,
+    "final_pose_eval_only": [
+     0.8795695900917053,
+     -0.3133581280708313
+    ],
+    "evidence": {
+     "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e08/trace.jsonl",
+     "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e08/eval-only.json",
+     "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e08/frames"
+    },
+    "raw_path": "/home/ugrp/ugrp-sim/runs/crossroom-stageA"
+   },
+   {
+    "episode": 9,
+    "reason_category": "cap_end",
+    "blocked_object": "not_observed",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured",
+    "sim_s": 180.0,
+    "door_lateral_offset_m": null,
+    "final_pose_eval_only": [
+     0.47997379302978516,
+     0.14711984992027283
+    ],
+    "evidence": {
+     "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e09/trace.jsonl",
+     "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e09/eval-only.json",
+     "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e09/frames"
+    },
+    "raw_path": "/home/ugrp/ugrp-sim/runs/crossroom-stageA"
+   },
+   {
+    "episode": 10,
+    "reason_category": "cap_end",
+    "blocked_object": "not_observed",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured",
+    "sim_s": 180.0,
+    "door_lateral_offset_m": null,
+    "final_pose_eval_only": [
+     -0.36980974674224854,
+     0.3154270350933075
+    ],
+    "evidence": {
+     "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e10/trace.jsonl",
+     "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e10/eval-only.json",
+     "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e10/frames"
+    },
+    "raw_path": "/home/ugrp/ugrp-sim/runs/crossroom-stageA"
+   },
+   {
+    "episode": 11,
+    "reason_category": "cap_end",
+    "blocked_object": "not_observed",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured",
+    "sim_s": 180.0,
+    "door_lateral_offset_m": null,
+    "final_pose_eval_only": [
+     0.4810071885585785,
+     0.4909837245941162
+    ],
+    "evidence": {
+     "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e11/trace.jsonl",
+     "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e11/eval-only.json",
+     "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e11/frames"
+    },
+    "raw_path": "/home/ugrp/ugrp-sim/runs/crossroom-stageA"
+   },
+   {
+    "episode": 12,
+    "reason_category": "cap_end",
+    "blocked_object": "not_observed",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured",
+    "sim_s": 180.0,
+    "door_lateral_offset_m": null,
+    "final_pose_eval_only": [
+     1.317165493965149,
+     0.2797432243824005
+    ],
+    "evidence": {
+     "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e12/trace.jsonl",
+     "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e12/eval-only.json",
+     "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e12/frames"
+    },
+    "raw_path": "/home/ugrp/ugrp-sim/runs/crossroom-stageA"
+   },
+   {
+    "episode": 13,
+    "reason_category": "cap_end",
+    "blocked_object": "not_observed",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured",
+    "sim_s": 180.0,
+    "door_lateral_offset_m": null,
+    "final_pose_eval_only": [
+     -0.09900930523872375,
+     -0.5931478142738342
+    ],
+    "evidence": {
+     "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e13/trace.jsonl",
+     "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e13/eval-only.json",
+     "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e13/frames"
+    },
+    "raw_path": "/home/ugrp/ugrp-sim/runs/crossroom-stageA"
+   },
+   {
+    "episode": 14,
+    "reason_category": "cap_end",
+    "blocked_object": "not_observed",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured",
+    "sim_s": 180.0,
+    "door_lateral_offset_m": null,
+    "final_pose_eval_only": [
+     -0.04953081160783768,
+     0.9651792049407959
+    ],
+    "evidence": {
+     "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e14/trace.jsonl",
+     "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e14/eval-only.json",
+     "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e14/frames"
+    },
+    "raw_path": "/home/ugrp/ugrp-sim/runs/crossroom-stageA"
+   },
+   {
+    "episode": 15,
+    "reason_category": "cap_end",
+    "blocked_object": "not_observed",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured",
+    "sim_s": 180.0,
+    "door_lateral_offset_m": null,
+    "final_pose_eval_only": [
+     -0.181794211268425,
+     1.0437886714935303
+    ],
+    "evidence": {
+     "trace": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e15/trace.jsonl",
+     "eval_only": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e15/eval-only.json",
+     "frames": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/episodes/e15/frames"
+    },
+    "raw_path": "/home/ugrp/ugrp-sim/runs/crossroom-stageA"
+   }
+  ]
+ },
+ "scope": "raw recount of trace/eval-only; no physics rerun; truth read only in eval-only cells and in the arrival verdict/analysis. Stage A measures unloaded destination search after the door; cargo transport is not part of Stage A."
+}

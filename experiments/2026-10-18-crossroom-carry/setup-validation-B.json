@@ -1,0 +1,452 @@
+{
+ "schema": "ugrp.crossroom_carry.stageB_settle_check.v1",
+ "scene": "crossroom_carry_scene_v1",
+ "n": 16,
+ "pass_n": 16,
+ "gripper_pwm_closed": 1500,
+ "cargo_own_thresholds": {
+  "held_min_pixels": 90,
+  "lost_min_pixels": 25,
+  "gripper_closed_max_pwm": 1600,
+  "lost_after_s": 1.5,
+  "roi_rows": [
+   0.4,
+   0.95
+  ],
+  "roi_cols": [
+   0.18,
+   0.82
+  ],
+  "sat_min": 110,
+  "val_min": 35,
+  "red_hue_ranges": [
+   [
+    0,
+    12
+   ],
+   [
+    168,
+    180
+   ]
+  ]
+ },
+ "episodes": [
+  {
+   "episode": 0,
+   "group": "N",
+   "spawn_eval_only": [
+    1.0,
+    -1.7,
+    0.0,
+    0.0
+   ],
+   "box_start_eval_only": [
+    1.1419,
+    -1.7,
+    0.1576
+   ],
+   "box_after_eval_only": [
+    1.1417,
+    -1.7,
+    0.1894
+   ],
+   "box_displacement_1s_m": 0.03181,
+   "box_to_grip_site_m": 1e-05,
+   "box_z_after_m": 0.1894,
+   "gripper_closed_joint_target": 0.016,
+   "settle_steps": 4000,
+   "settle_ok": true
+  },
+  {
+   "episode": 1,
+   "group": "N",
+   "spawn_eval_only": [
+    1.0,
+    -1.7,
+    0.0,
+    1.5707963267948966
+   ],
+   "box_start_eval_only": [
+    1.0,
+    -1.5581,
+    0.1576
+   ],
+   "box_after_eval_only": [
+    1.0,
+    -1.5583,
+    0.1894
+   ],
+   "box_displacement_1s_m": 0.03181,
+   "box_to_grip_site_m": 1e-05,
+   "box_z_after_m": 0.1894,
+   "gripper_closed_joint_target": 0.016,
+   "settle_steps": 4000,
+   "settle_ok": true
+  },
+  {
+   "episode": 2,
+   "group": "N",
+   "spawn_eval_only": [
+    1.0,
+    -0.3,
+    0.0,
+    0.0
+   ],
+   "box_start_eval_only": [
+    1.1419,
+    -0.3,
+    0.1576
+   ],
+   "box_after_eval_only": [
+    1.1417,
+    -0.3,
+    0.1894
+   ],
+   "box_displacement_1s_m": 0.03181,
+   "box_to_grip_site_m": 1e-05,
+   "box_z_after_m": 0.1894,
+   "gripper_closed_joint_target": 0.016,
+   "settle_steps": 4000,
+   "settle_ok": true
+  },
+  {
+   "episode": 3,
+   "group": "N",
+   "spawn_eval_only": [
+    1.0,
+    -0.3,
+    0.0,
+    3.141592653589793
+   ],
+   "box_start_eval_only": [
+    0.8581,
+    -0.3,
+    0.1576
+   ],
+   "box_after_eval_only": [
+    0.8583,
+    -0.3,
+    0.1894
+   ],
+   "box_displacement_1s_m": 0.03181,
+   "box_to_grip_site_m": 1e-05,
+   "box_z_after_m": 0.1894,
+   "gripper_closed_joint_target": 0.016,
+   "settle_steps": 4000,
+   "settle_ok": true
+  },
+  {
+   "episode": 4,
+   "group": "N",
+   "spawn_eval_only": [
+    1.4,
+    -1.7,
+    0.0,
+    0.0
+   ],
+   "box_start_eval_only": [
+    1.5419,
+    -1.7,
+    0.1576
+   ],
+   "box_after_eval_only": [
+    1.5417,
+    -1.7,
+    0.1894
+   ],
+   "box_displacement_1s_m": 0.03181,
+   "box_to_grip_site_m": 1e-05,
+   "box_z_after_m": 0.1894,
+   "gripper_closed_joint_target": 0.016,
+   "settle_steps": 4000,
+   "settle_ok": true
+  },
+  {
+   "episode": 5,
+   "group": "N",
+   "spawn_eval_only": [
+    1.4,
+    -0.3,
+    0.0,
+    1.5707963267948966
+   ],
+   "box_start_eval_only": [
+    1.4,
+    -0.1581,
+    0.1576
+   ],
+   "box_after_eval_only": [
+    1.4,
+    -0.1583,
+    0.1894
+   ],
+   "box_displacement_1s_m": 0.03181,
+   "box_to_grip_site_m": 1e-05,
+   "box_z_after_m": 0.1894,
+   "gripper_closed_joint_target": 0.016,
+   "settle_steps": 4000,
+   "settle_ok": true
+  },
+  {
+   "episode": 6,
+   "group": "N",
+   "spawn_eval_only": [
+    1.0,
+    0.9,
+    0.0,
+    0.0
+   ],
+   "box_start_eval_only": [
+    1.1419,
+    0.9,
+    0.1576
+   ],
+   "box_after_eval_only": [
+    1.1417,
+    0.9,
+    0.1894
+   ],
+   "box_displacement_1s_m": 0.03181,
+   "box_to_grip_site_m": 1e-05,
+   "box_z_after_m": 0.1894,
+   "gripper_closed_joint_target": 0.016,
+   "settle_steps": 4000,
+   "settle_ok": true
+  },
+  {
+   "episode": 7,
+   "group": "N",
+   "spawn_eval_only": [
+    1.4,
+    1.1,
+    0.0,
+    3.141592653589793
+   ],
+   "box_start_eval_only": [
+    1.2581,
+    1.1,
+    0.1576
+   ],
+   "box_after_eval_only": [
+    1.2583,
+    1.1,
+    0.1894
+   ],
+   "box_displacement_1s_m": 0.03182,
+   "box_to_grip_site_m": 1e-05,
+   "box_z_after_m": 0.1894,
+   "gripper_closed_joint_target": 0.016,
+   "settle_steps": 4000,
+   "settle_ok": true
+  },
+  {
+   "episode": 8,
+   "group": "F",
+   "spawn_eval_only": [
+    -0.75,
+    -2.3,
+    0.0,
+    0.0
+   ],
+   "box_start_eval_only": [
+    -0.6081,
+    -2.3,
+    0.1576
+   ],
+   "box_after_eval_only": [
+    -0.6083,
+    -2.3,
+    0.1894
+   ],
+   "box_displacement_1s_m": 0.03181,
+   "box_to_grip_site_m": 1e-05,
+   "box_z_after_m": 0.1894,
+   "gripper_closed_joint_target": 0.016,
+   "settle_steps": 4000,
+   "settle_ok": true
+  },
+  {
+   "episode": 9,
+   "group": "F",
+   "spawn_eval_only": [
+    -0.75,
+    -1.2,
+    0.0,
+    0.35
+   ],
+   "box_start_eval_only": [
+    -0.6167,
+    -1.1514,
+    0.1576
+   ],
+   "box_after_eval_only": [
+    -0.6169,
+    -1.1514,
+    0.1894
+   ],
+   "box_displacement_1s_m": 0.03181,
+   "box_to_grip_site_m": 1e-05,
+   "box_z_after_m": 0.1894,
+   "gripper_closed_joint_target": 0.016,
+   "settle_steps": 4000,
+   "settle_ok": true
+  },
+  {
+   "episode": 10,
+   "group": "F",
+   "spawn_eval_only": [
+    -0.75,
+    -0.1,
+    0.0,
+    -0.35
+   ],
+   "box_start_eval_only": [
+    -0.6167,
+    -0.1486,
+    0.1576
+   ],
+   "box_after_eval_only": [
+    -0.6169,
+    -0.1486,
+    0.1894
+   ],
+   "box_displacement_1s_m": 0.03181,
+   "box_to_grip_site_m": 1e-05,
+   "box_z_after_m": 0.1894,
+   "gripper_closed_joint_target": 0.016,
+   "settle_steps": 4000,
+   "settle_ok": true
+  },
+  {
+   "episode": 11,
+   "group": "F",
+   "spawn_eval_only": [
+    -0.75,
+    1.0,
+    0.0,
+    0.35
+   ],
+   "box_start_eval_only": [
+    -0.6167,
+    1.0486,
+    0.1576
+   ],
+   "box_after_eval_only": [
+    -0.6169,
+    1.0486,
+    0.1894
+   ],
+   "box_displacement_1s_m": 0.03181,
+   "box_to_grip_site_m": 1e-05,
+   "box_z_after_m": 0.1894,
+   "gripper_closed_joint_target": 0.016,
+   "settle_steps": 4000,
+   "settle_ok": true
+  },
+  {
+   "episode": 12,
+   "group": "F",
+   "spawn_eval_only": [
+    0.2,
+    -2.0,
+    0.0,
+    0.0
+   ],
+   "box_start_eval_only": [
+    0.3419,
+    -2.0,
+    0.1576
+   ],
+   "box_after_eval_only": [
+    0.3417,
+    -2.0,
+    0.1894
+   ],
+   "box_displacement_1s_m": 0.03181,
+   "box_to_grip_site_m": 1e-05,
+   "box_z_after_m": 0.1894,
+   "gripper_closed_joint_target": 0.016,
+   "settle_steps": 4000,
+   "settle_ok": true
+  },
+  {
+   "episode": 13,
+   "group": "F",
+   "spawn_eval_only": [
+    -0.1,
+    -0.6,
+    0.0,
+    -0.35
+   ],
+   "box_start_eval_only": [
+    0.0333,
+    -0.6486,
+    0.1576
+   ],
+   "box_after_eval_only": [
+    0.0331,
+    -0.6486,
+    0.1894
+   ],
+   "box_displacement_1s_m": 0.03181,
+   "box_to_grip_site_m": 1e-05,
+   "box_z_after_m": 0.1894,
+   "gripper_closed_joint_target": 0.016,
+   "settle_steps": 4000,
+   "settle_ok": true
+  },
+  {
+   "episode": 14,
+   "group": "F",
+   "spawn_eval_only": [
+    0.3,
+    0.9,
+    0.0,
+    0.35
+   ],
+   "box_start_eval_only": [
+    0.4333,
+    0.9486,
+    0.1576
+   ],
+   "box_after_eval_only": [
+    0.4331,
+    0.9486,
+    0.1894
+   ],
+   "box_displacement_1s_m": 0.03181,
+   "box_to_grip_site_m": 1e-05,
+   "box_z_after_m": 0.1894,
+   "gripper_closed_joint_target": 0.016,
+   "settle_steps": 4000,
+   "settle_ok": true
+  },
+  {
+   "episode": 15,
+   "group": "F",
+   "spawn_eval_only": [
+    -0.75,
+    -0.3,
+    0.0,
+    3.141592653589793
+   ],
+   "box_start_eval_only": [
+    -0.8919,
+    -0.3,
+    0.1576
+   ],
+   "box_after_eval_only": [
+    -0.8917,
+    -0.3,
+    0.1894
+   ],
+   "box_displacement_1s_m": 0.03181,
+   "box_to_grip_site_m": 1e-05,
+   "box_z_after_m": 0.1894,
+   "gripper_closed_joint_target": 0.016,
+   "settle_steps": 4000,
+   "settle_ok": true
+  }
+ ],
+ "scope": "setup-only settle check: single red box placed in the closed gripper, 1 Sim s CPU settle per start, no controller and no rollout. Weld is not used."
+}
