@@ -1,0 +1,135 @@
+--- a/scripts/run_e2e_warp.py
++++ b/scripts/run_e2e_warp.py
+@@ -41,6 +41,7 @@
+                                       validate_calibration_binding as nav_validate_calibration,
+                                       validate_gate_queue as nav_validate_gate_queue)
+ from harness import e2ewarp_l1lite as l1lite
++from harness import e2e_min_runner as e2e_min
+ from harness.zone_study_contract import ROBOTS
+ 
+ ROOT = Path(__file__).resolve().parents[1]
+@@ -168,6 +169,11 @@
+             if len(robots) != 2:
+                 raise ValueError('L1LITE_PAIR_ONLY')
+             queue.update(l1lite.queue_fields(a.seed, robots))
++        if e2e_min.enabled():
++            # E2E-min (default OFF): L1-lite pair, one world; config is hash-bound.
++            if not l1lite_on() or a.nworld != 1 or len(robots) != 2:
++                raise ValueError('E2E_MIN_REQUIRES_L1LITE_PAIR_ONE_WORLD')
++            queue.update(e2e_min.queue_fields(e2e_min.load_config()))
+         queue.update(nav_gate_fields(a.seed, sim_budget_s=a.nav_sim_budget_s, robots=robots))
+         nav_validate_gate_queue(queue)
+         l1lite.validate_queue(queue, seed=a.seed, condition=a.condition, robots=robots)
+@@ -244,6 +250,13 @@
+         if l1lite_on() and (len(robots) != 2 or a.nworld != 1):
+             raise ValueError('L1LITE_PAIR_ONE_WORLD_ONLY')
+         nav_validate_calibration(queue)
++    e2e_record = None
++    if nav and e2e_min.enabled():
++        if not l1lite_on() or len(robots) != 2 or a.nworld != 1:
++            raise ValueError('E2E_MIN_REQUIRES_L1LITE_PAIR_ONE_WORLD')
++        e2e_record = e2e_min.validate_queue(queue)
++    elif queue.get('e2e_min') is not None:
++        raise ValueError('E2E_MIN_QUEUE_WITHOUT_FLAG')
+     # Admission is complete before importing physics/render packages.
+     relay, proof = admit(a, queue)
+     components = (require_components(a.components, ROOT) if a.mode == 'mission'
+@@ -270,6 +283,7 @@
+     message_drops = []
+     contact_ledger = None
+     l1lite_record, l1lite_failure = None, None
++    e2e_session, e2e_issued = None, {}
+     status, error, tick, hooks = 'HOST_ERROR', None, 0, None
+     started = time.monotonic()
+     try:
+@@ -284,7 +298,8 @@
+             # execution robot set (the r4 solo diagnostic prunes the XML to one
+             # robot); setup-only spawns never reach a controller.
+             context = build_context(a.seed, a.output/f'world-{w:02d}', queue['stack_values'],
+-                                    nav_scene=nav, nav_keep=robots if nav else ('r1', 'r2'))
++                                    nav_scene=nav, nav_keep=robots if nav else ('r1', 'r2'),
++                                    nav_cubes=(e2e_min.nav_cubes(queue) if e2e_record else None))
+             contexts.append(context)
+         hooks = transport(contexts, a.output, head(), queue['stack_values'])
+         hooks.initialize(contexts)
+@@ -413,6 +428,14 @@
+                 else:
+                     tasks[key] = DiagnosticTask(scenario['orders'])
+                 ownstates[key], rings[key] = {}, deque(maxlen=101)  # 10 SIM s at existing 10Hz + current
++        if e2e_record is not None:
++            # E2E-min session: ACT grasp -> nav carry -> release, routed per tick.
++            e2e_session = e2e_min.E2ESession(queue, a.output, {r: tasks[(0, r)] for r in robots},
++                                             l1lite_record, queue['nav_calibration'])
++            from harness.active_camera import SEARCH as _E2E_SEARCH
++            for robot in robots:
++                e2e_issued[(0, robot)] = [dict(t=0., wheels=[0.]*4, duration_s=[0.]*4,
++                                               pwm={str(k): v for k, v in _E2E_SEARCH.items()})]
+         write(a.output/'runtime-applied.json', dict(flow='e2e_llm', stack_values=queue['stack_values'],
+             stack_deviations=queue['stack_deviations'], host=queue['host'],
+             contact_profile=dict(profile=queue['stack_values']['contact_profile'],
+@@ -425,7 +448,8 @@
+             cpu_physics_steps=0, cpu_render_calls=0, legacy_equivalence_shims=False,
+             xml_sha256=[sha(c['world'].scene_xml.encode()) for c in contexts]))
+         rollout_start = time.monotonic()
+-        limit = round(queue['sim_budget_s']*10)
++        limit = round((e2e_min.sim_budget_s(queue) if e2e_session is not None
++                       else queue['sim_budget_s'])*10)
+         for tick in range(limit+1):
+             now = tick/10
+             if (a.output/'SUPERVISOR_STOP.json').exists():
+@@ -440,7 +464,8 @@
+                     from harness.active_camera import SEARCH
+                     task.command_history.append(dict(t=0., wheels=[0.]*4, duration_s=[0.]*4,
+                         pwm={str(k): v for k, v in SEARCH.items()}))
+-                frame = OwnFrame(robot, w, tick, now, jpeg, tuple(task.command_history[-16:]))
++                history = e2e_issued[key] if e2e_session is not None else task.command_history
++                frame = OwnFrame(robot, w, tick, now, jpeg, tuple(history[-16:]))
+                 frames[key] = frame
+                 rings[key].append(frame)
+                 if tick % 5 == 0:  # recording-only2Hz review; decision JPEGs are included
+@@ -448,6 +473,9 @@
+                     rgb_path.parent.mkdir(parents=True, exist_ok=True)
+                     rgb_path.write_bytes(jpeg)
+                 planners[key].health.check(now)
++                if e2e_session is not None:
++                    # E2E-min: observe/command are routed by the session below.
++                    continue
+                 report = task.observe(frame) if active else own_map(frame, ownstates[key],
+                     keyframe_policy=queue.get('map_keyframe_admission','off'))
+                 maprows.append(dict(world=w, robot=robot, sim_s=now, rgb_sha256=sha(jpeg), **report))
+@@ -504,6 +532,11 @@
+                     task.command_history[-1] = command
+                 commands.append(dict(world=w, robot=robot, **command))
+                 issue(contexts[w], robot, command)
++            if e2e_session is not None and tick < limit:
++                for robot, command in e2e_session.step(now, {r: frames[(0, r)] for r in robots}).items():
++                    commands.append(dict(world=0, robot=robot, **command))
++                    e2e_issued[(0, robot)].append(command)
++                    issue(contexts[0], robot, command)
+             # Evaluation is a separate sink. Never pass these values to a task,
+             # mapper, ACT, LLM prompt, candidate filter or phase transition.
+             for w, context in enumerate(contexts):
+@@ -521,7 +554,10 @@
+             if active and all(task.complete for task in tasks.values()):
+                 status = 'OWN_COMPLETION_CLAIM'
+                 break
+-            if nav and nav_all_arrived(tasks.values()):
++            if e2e_session is not None and e2e_session.finished:
++                status = 'E2E_EPISODE_FINISHED'
++                break
++            if nav and e2e_session is None and nav_all_arrived(tasks.values()):
+                 # Own-input arrival is unverified: it stops the run but never
+                 # becomes a success claim (nav mode has no evaluator).
+                 status = 'NAV_ARRIVAL_UNVERIFIED'
+@@ -564,6 +600,11 @@
+         status = 'SUPERVISOR_STOP' if isinstance(exc, KeyboardInterrupt) else 'HOST_ERROR'
+     finally:
+         sim_s = tick/10
++        if e2e_session is not None:
++            try:
++                e2e_session.close(queue)
++            except Exception:
++                error = (error or '') + '\nE2E_SESSION_CLOSE:' + traceback.format_exc()
+         allrows = [dict(world=w, robot=r, **row) for (w, r), p in planners.items() for row in p.rows]
+         for name, rows in dict(decisions=decisions, localization=maprows, rejections=rejects,
+                                commands=commands, llm_ledger=allrows, evaluation=evaluations).items():

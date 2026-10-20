@@ -182,3 +182,88 @@ def test_e2e1p_route_with_act_grasp_and_script_release():
     assert execs['r1']['release'].held == HOLD
     # ACT builder saw every tick's issued command (history ends at the last tick)
     assert builders['r1'].issued[-1]['t'] == pytest.approx(t)
+
+
+# -- runner session (patch helper) ----------------------------------------------------
+def _config(tmp_path, level='E2E-1p', adopted='act_lift_end'):
+    from harness import e2e_min_runner as M
+    measure = tmp_path / 'measure.json'
+    measure.write_text(json.dumps(dict(verdict=dict(adopted=adopted))))
+    import hashlib
+    cfg = dict(level=level,
+               cubes={'r1': dict(item_id='cyan_1', xy=[-0.05, -2.375]),
+                      'r2': dict(item_id='red_1', xy=[-0.05, -2.875])},
+               carry_pose_verdict=dict(path=str(measure),
+                                       sha256=hashlib.sha256(measure.read_bytes()).hexdigest()),
+               act=dict(python='py', act_source='src', expected_act_sha='a' * 40, checkpoint='ck',
+                        expected_model_sha256='b' * 64, device='cuda'),
+               release=dict(backoff_m=0.03), timeouts=dict(settle=0.2), sim_budget_s=30.0)
+    path = tmp_path / 'e2e-config.json'
+    path.write_text(json.dumps(cfg))
+    return M, {M.CONFIG_ENV: str(path), H.ENV: H.MODE}
+
+
+def test_runner_config_queue_binding(tmp_path):
+    M, env = _config(tmp_path)
+    record = M.load_config(env)
+    queue = M.queue_fields(record)
+    assert M.validate_queue(queue, env)['sha256'] == record['sha256']
+    assert M.sim_budget_s(queue) == 30.0 and M.nav_cubes(queue)['r2']['item_id'] == 'red_1'
+    Path(env[M.CONFIG_ENV]).write_text(json.dumps(dict(record['value'], level='E2E-2')))
+    with pytest.raises(ValueError, match='E2E_CONFIG_CHANGED'):
+        M.validate_queue(queue, env)
+    bad = dict(record['value']); bad.pop('carry_pose_verdict')
+    with pytest.raises(ValueError):
+        M.check_config(bad)
+    argv = M.act_server_argv(record['value']['act'])
+    assert argv[0] == 'py' and '--enabled' in argv and argv[argv.index('--device') + 1] == 'cuda'
+
+
+class FakeNavRobot:
+    def __init__(self):
+        class Comp:
+            phase = 'NAVIGATE'
+        self.component, self.command_history, self.n = Comp(), [], 0
+
+    def observe(self, f):
+        self.n += 1
+        if self.n >= 3:
+            self.component.phase = 'ARRIVED'
+        return dict(own_navigation={})
+
+    def command(self, now):
+        row = cmd(now, SEARCH, 0.35)
+        self.command_history.append(row)
+        return row
+
+
+def test_runner_session_end_to_end_with_fakes(tmp_path):
+    M, env = _config(tmp_path)
+    queue = M.queue_fields(M.load_config(env))
+    alloc = dict(decisions={'r1': 'left', 'r2': 'right'}, success_eligible=True, fatal=False)
+    session = M.E2ESession(queue, tmp_path, {r: FakeNavRobot() for r in H.ROBOTS}, alloc,
+                           dict(constants=ODO), transport=FakeTransport(done_at=0.5))
+    issued = {r: [cmd(0.0)] for r in H.ROBOTS}
+    for k in range(0, 80):
+        t = k / 10
+        out = session.step(t, {r: frame(r, t, issued[r][-16:]) for r in H.ROBOTS})
+        for r in H.ROBOTS:
+            C.command(out[r])
+            issued[r].append(out[r])
+        if session.finished:
+            break
+    assert session.finished
+    record = session.close(queue)
+    saved = json.loads((tmp_path / 'e2e-handoff.json').read_text())
+    assert saved['config_sha256'] == queue['e2e_config']['sha256']
+    assert all(row['phase'] == H.DONE for row in saved['robots'].values())
+    assert saved['release_scripts']['r1']['name'] == 'release_open_v1'
+    assert record['e2e_substitutions'][0]['by'] == 'rule_script:release_open_v1'
+
+
+def test_runner_session_refuses_unadmitted_carry_pose(tmp_path):
+    M, env = _config(tmp_path, adopted='carry_look_v1')
+    queue = M.queue_fields(M.load_config(env))
+    with pytest.raises(NotImplementedError, match='carry_pose_transition'):
+        M.E2ESession(queue, tmp_path, {r: FakeNavRobot() for r in H.ROBOTS}, {}, dict(constants=ODO),
+                     transport=FakeTransport(done_at=0.5))

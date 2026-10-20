@@ -1,5 +1,7 @@
 # 최소 E2E 연결(N2) 설계 (2026-10-21, Claude 구현 워커)
 
+> **경로 변경(2026-10-21, Claude 결정):** E2E-0(teacher 집기·내려놓기)은 폐기했습니다. 첫 E2E는 **E2E-1'**(코드 키 `E2E-1p`)입니다. 구성은 ACT 학생 집기(R8 + v7 시계, C2c) + nav 운반 + 규칙 스크립트 내려놓기 `release_open_v1`입니다. **E2E-2**는 내려놓기까지 학생이 합니다. teacher 경로(`teacher_skill`)는 "경로 폐기"로 표기하고 NotImplemented로 남깁니다.
+
 상태: 설계와 CPU 코드만 있습니다. GPU 실행은 없습니다. 코드는 `harness/e2e_min_handoff.py`(default off), `harness/e2e_min_eval.py`, `tests/test_e2e_min.py`입니다.
 브랜치 `dsh/e2e-min`의 base는 `origin/dsh/l1lite-alloc`(580e6159f)입니다.
 
@@ -48,7 +50,7 @@
 
 ## 3. 한 world 안에서 이어 붙이는 방법
 
-### 3.1 world 구성 (미구현, `world_builder`)
+### 3.1 world 구성 (`world_builder`, 구현됨: §6.1)
 - 기반은 nav world(v6, `zone_wide_two_doors_final_v3`, r1·r2, 레인 스폰)입니다. 로봇마다 큐브 1개(role west 박스)를 **ACT 시작 분포 안**에 둡니다.
   - 제안 위치는 각 레인 스폰에서 동쪽으로 0.6–1.1 m, 방위 0°입니다(예: r1 (−0.05, −2.375), r2 (−0.05, −2.875)). 두 위치 모두 픽업 영역 안입니다. 정확한 값은 [확인 필요]입니다.
   - 큐브 사이 간격은 0.5 m(레인 간격)입니다. ACT 학습 world에서는 다른 로봇과 물체가 "주차·접촉 off" 상태였으므로 이 간격은 분포 밖입니다.
@@ -56,21 +58,22 @@
 
 ### 3.2 단계 상태기계 (`harness/e2e_min_handoff.py`, 구현됨)
 ```
-ALLOCATE ─(LLM 배정 성공: success_eligible ∧ 좌·우 각 1)→ ACT_GRASP | TEACHER_GRASP
-        ─(grasp done)→ NAV_CARRY [settle 3.1 s hold → nav]
-        ─(own arrival claim)→ ACT_RELEASE | TEACHER_RELEASE
+ALLOCATE ─(LLM 배정 성공: success_eligible ∧ 좌·우 각 1)→ ACT_GRASP
+        ─(ACT issued grasp done)→ NAV_CARRY [settle 3.1 s hold → nav]
+        ─(own arrival claim)→ SCRIPT_RELEASE (E2E-1') | ACT_RELEASE (E2E-2)
         ─(release done)→ DONE
 모든 단계 ─(오류·시간 초과)→ FAIL(code)   (종단, fail-closed)
 ```
 - ALLOCATE는 L1-lite `allocate_slots` 기록을 그대로 씁니다 [`harness/e2ewarp_l1lite.py:446-541`]. 기록이 없거나, fatal이거나, `success_eligible`가 아니면 두 로봇 모두 `E2E_ALLOC_FAILED`입니다. 슬롯이 겹치면 `E2E_ALLOC_SLOTS_INVALID`입니다.
-- grasp done 신호는 ACT executor의 issued done(헤드 ≥ .65, [`grasp_act_contract.py:142-153`])이나 teacher done입니다. 상태기계는 GT를 읽지 않습니다.
-- 단계별 시간 예산(SIM s)은 grasp 90(ACT 평가 cap), settle 3.1(`SETTLE_S`), carry 60(nav 예산), release 45입니다. release 45 s는 [확인 필요]이며 사전 등록에서 동결합니다.
+- grasp done 신호는 ACT executor의 issued done입니다(헤드 ≥ .65, [`grasp_act_contract.py:142-153`]). C2c 평가에서 쓰던 그 신호와 같습니다. 상태기계는 GT를 읽지 않습니다.
+- 단계별 시간 예산(SIM s)은 grasp 90, settle 3.1, carry 60, release 45입니다. release 45 s는 [확인 필요]입니다. E2E 루프 전체 예산은 config의 `sim_budget_s`로 정합니다. nav 큐의 ≤120 s 예산은 건드리지 않습니다.
 - fail-closed 오류 코드(`ERRORS`)는 다음과 같습니다.
   - 배정: `E2E_ALLOC_FAILED`, `E2E_ALLOC_SLOTS_INVALID`
   - 집기: `E2E_GRASP_TIMEOUT`, `E2E_GRASP_EXECUTOR_ERROR`, `E2E_HOLD_MISSING`
   - 운반: `E2E_NAV_NO_CLAIM`, `E2E_NAV_TIMEOUT`, `E2E_NAV_EXECUTOR_ERROR`
   - 내려놓기: `E2E_RELEASE_TIMEOUT`, `E2E_RELEASE_EXECUTOR_ERROR`
   - 순서: `E2E_EVENT_OUT_OF_ORDER`
+  - executor 예외는 위 단계별 executor 오류 코드로 기록하고, 예외 메시지를 함께 남깁니다.
 
 ### 3.3 단계 전환 시 명령 hold 규칙
 | 규칙 | 내용 | 근거 |
@@ -82,18 +85,42 @@ ALLOCATE ─(LLM 배정 성공: success_eligible ∧ 좌·우 각 1)→ ACT_GRAS
 | H5 | DONE이면 바퀴 0과 마지막 PWM, FAIL이면 바퀴 0과 마지막 PWM입니다. **실패가 그리퍼를 열지 않습니다** | 실패 처리 중 낙하를 막습니다 |
 - 대안 규칙 `gripper_hold_arm_search_v1`(그리퍼만 유지하고 팔은 SEARCH로)은 nav 카메라 지면 투영을 되살릴 수 있습니다. 하지만 팔을 움직이는 동안 큐브가 계속 잡혀 있는지는 측정한 적이 없어서 `NotImplementedError`로 남겼습니다.
 
-### 3.4 release (ACT 재개 또는 teacher 대체)
-- E2E-2(ACT release)에서는 owner가 `instruct(skill='release')`로 skill을 바꿉니다 [ACT `evaluate_act16w.py:68-69`]. 관측은 `destination_zone='pickup_site'`로 고정입니다 [O `warp_act_api.py:66`].
-  - zone B 바닥(파란 페인트 H 110–114) 위의 release는 학습 분포 밖입니다. 그래서 E2E-1에서는 teacher로 대체합니다.
-- teacher release는 frozen `SoloTeacher`입니다 [T `sim/grasp_act_solo_teacher.py:252-253,475`]. nav runner 안에서 구성하는 방법과, 픽업 위치가 아닌 곳에서 동작하는지는 [확인 필요]입니다(`teacher_skill`).
+### 3.4 집기와 내려놓기 executor
+**ACT 집기 (`act_skill_client`, 구현됨)**
+- 구조: runner(nav `.venv-warp`)가 부모 프로세스이고, ACT actor는 torch env의 JSON-lines 자식 프로세스 `scripts/e2e_min_act_server.py`입니다.
+- 서버는 C2c 평가 구성을 그대로 재현합니다.
+  - `act18_policy.Actor.load(checkpoint, device='cuda')` [ACT `act18_evaluate.py:273,414`]
+  - `contract.CHUNK = adapter.json chunk` [`:281`]
+  - `ChunkExecutor(n_action_steps=1, temporal_ensemble_coeff=.01)` [`:315`]. done head와 loop overlay는 쓰지 않습니다.
+  - 로봇마다 executor를 하나씩 두고, skill이 시작될 때 reset합니다 [`evaluate_act16w.py:68-69`].
+  - ACT source SHA, clean 상태, checkpoint sha256을 검사하고 하나라도 다르면 fail-closed입니다.
+- 클라이언트 `harness/e2e_min_act.py`는 owner `History`를 그대로 따라 관측을 만듭니다 [O `warp_act_api.py:51-76,220-228`].
+  - 4 lag 이미지 링(MEMORY_S + 0.1 s)과 issued 16행
+  - `destination_zone`: release면 `pickup_site`, 그 외에는 `none`
+  - `skill_elapsed_s`는 v6 시계, `pwm_elapsed_s`는 v7 deadband-2 시계로 계산합니다. C2c 평가기도 `pwm_elapsed_s`만 다시 계산했습니다 [ACT `act18_evaluate.py:116-159`].
+  - 프레임과 실제 issued 명령은 매 tick observer(`route_tick` observers)로 받아, 운반·hold 중에도 owner와 같은 방식으로 history가 쌓입니다.
+- r2: 정책 context에는 robot id 차원이 없습니다 [`grasp_act_contract.py:27`]. 그래서 관측의 `robot_id`는 실제 값(`r2`)을 넣습니다(`validate_observation` 허용 범위). 학습은 r1 단독이었으므로, r2에서 정책이 어떻게 행동할지는 측정 전입니다.
+- **[확인 필요] actuation 동등성:** ACT는 `DutyActPort.apply`(wheel_pulse, arm, look)로 명령을 적용했습니다 [O `warp_act_api.py:383-391`]. nav runner는 `e2e_warp_physics.issue`로 포트 필드를 직접 씁니다 [`scripts/e2e_warp_physics.py:271-294`]. servo slew와 바퀴 펄스의 적용 방식이 같은지는 아직 확인하지 않았습니다.
+
+**규칙 스크립트 내려놓기 `release_open_v1` (E2E-1', 구현됨, `harness/e2e_min_release.py`)**
+- 자기 명령만 씁니다. 순서는 다음과 같습니다.
+  1. 정지 `stop_ticks`
+  2. 그리퍼 PWM1을 hold 값에서 **2000**까지 5 tick 동안 선형으로 올리고 3 tick 유지
+  3. 네 바퀴 −0.35, 0.1 s 펄스로 후진. 자기 명령 odometry(nav calibration, `OwnCommandOdometry`)로 `backoff_m`에 도달할 때까지 합니다.
+  4. done
+- 2000의 근거: teacher 데이터셋 release 200 에피소드 모두 `open` 단계 끝과 `retract` 첫 행이 2000입니다(중앙값 2000, 다른 값 없음). 지시서의 "약 2009"와 다르므로 데이터 값을 쓰고 이 차이를 기록합니다. ramp 5 + 유지 3은 teacher open 단계 길이 중앙값 8 tick과 맞춘 것입니다.
+- `stop_ticks`와 `backoff_m`은 사전 등록 값으로 [확인 필요]입니다. 지금 기본값은 3과 0.15 m입니다.
+
+**ACT release (E2E-2)**: 같은 `ActSkillClient`에 skill='release'를 줍니다. zone B 바닥 위의 release는 학습 분포 밖입니다.
+
+**teacher (`teacher_skill`): 경로 폐기.** E2E-0이 폐기되어 쓰지 않습니다. 기록용으로 NotImplemented 상태를 유지합니다.
 
 ## 4. 대체 단계 표기
 - queue 필드는 `queue_fields(level)`이 만들고 `validate_queue`가 fail-closed로 검사합니다.
-  - 필드: `e2e_min=on_v1`, `e2e_level`, `e2e_substitutions=[...]`, `e2e_overlay_text=false`, `e2e_hold_rule`, `e2e_label`.
-  - 레벨별 `e2e_substitutions`: E2E-0은 `['grasp:teacher','release:teacher']`, E2E-1은 `['release:teacher']`, E2E-2는 `[]`입니다.
-- 실행 로그 `e2e-handoff.json`(`E2EMinEpisode.export()`)에도 같은 목록, 전환 이력(robot, sim_s, from, to, reason, code), 단계 도달 시각을 남깁니다.
-- 평가 보고서는 `e2e_substitutions`와 `substitutions_match_level`을 출력합니다.
-- 영상에는 **오버레이 텍스트를 넣지 않습니다**. 대체 단계는 보고서와 영상 설명문에만 적습니다.
+  - 필드: `e2e_min=on_v1`, `e2e_level`, `e2e_substitutions`, `e2e_overlay_text=false`, `e2e_hold_rule`, `e2e_label`. runner 패치는 여기에 `e2e_config`(경로, sha256, 값)를 더합니다.
+  - E2E-1'의 `e2e_substitutions`는 `[{"stage":"release","by":"rule_script:release_open_v1"}]`, E2E-2는 `[]`입니다.
+- 실행 로그 `e2e-handoff.json`에는 같은 목록, 전환 이력, 단계 도달 시각, ACT 서버 receipt, release 스크립트 로그가 남습니다.
+- 영상에는 오버레이 텍스트를 넣지 않습니다. 대체 단계는 보고서와 영상 설명문에만 적습니다.
 
 ## 5. 물체를 든 채 주행할 때의 낙하 지표 (eval-only, `e2e_min_eval.carry_drop`)
 - 창은 로봇별 NAV_CARRY 진입부터 이탈까지입니다(handoff 전환 로그 기준). GT는 `evaluation-state.npz`의 10 Hz qpos로, 큐브 free joint와 로봇 base에서 읽습니다.
@@ -101,35 +128,51 @@ ALLOCATE ─(LLM 배정 성공: success_eligible ∧ 좌·우 각 1)→ ACT_GRAS
   1. `floor`: 큐브 하단 여유(z − half) ≤ 0.005 m
   2. `detach`: 큐브와 base 중심의 수평 거리 > 0.35 m
   3. `no_grip`: 손가락 힘을 측정했을 때 최대 손가락 힘 < 0.1 N. ACT drop 정의와 같은 임계입니다 [`grasp_act_rollout.py:134-135`]
-- 임계값은 [확인 필요]입니다. E2E-0 전에 teacher 운반 trace로 보정한 뒤 사전 등록에서 동결합니다.
+- 임계값은 [확인 필요]입니다. E2E-1' 본실행 전에, 미합산 smoke 운반 trace로 확인한 뒤 사전 등록에서 동결합니다.
 - 창이 비었거나, 시계열 길이가 맞지 않거나, 큐브 geometry가 없으면 `dropped=None`(측정 안 됨)이고, 이 경우 성공이 아닙니다.
 
-## 6. 연결 지점 현황 (갱신 2026-10-21, 추측으로 메우지 않음)
+## 6. 연결 지점 현황 (갱신 2026-10-21 경로 변경 반영, 추측으로 메우지 않음)
 
 ### 6.1 구현됨
 | id | 구현 | 비고 |
 |---|---|---|
-| `world_builder` | `scripts/e2e_warp_physics.build_context(nav_cubes=, nav_arm_pwm=)`(default off), `harness/e2e_min_world.py` | s7 시나리오의 `cyan_1`·`red_1`만 남깁니다(beam은 계속 제거). xy는 호출자가 주고 기본값은 없습니다. cargo body가 정확히 일치하지 않으면 `E2E_CUBE_BODIES_MISMATCH`로 fail-closed입니다. GPU 첫 실행은 운반 자세 렌더 시험 때 합니다 |
-| `eval_cube_geometry` | 같은 경로에서 `eval-geometry.json`에 `cube_qpos_adr`, `cube_half_m`, `cube_items`, `cargo_contact_pairs`(감사)를 씁니다 | `e2e_min_eval.recount_run` 입력 |
-| `nav_carry_adapter` | `harness/e2e_min_runtime.NavCarryAdapter` | NAVIGATE 상태의 NavRobot을 감쌉니다. 운반 구간에서 route된 tick에만 observe·command를 호출합니다. 실제로 내보낸 명령(hold PWM)으로 `command_history`를 고칩니다. **운반 자세 렌더 판정이 `act_lift_end`일 때만** 생성됩니다. 다른 판정이면 `carry_pose_transition` TODO입니다 |
-| `runner_loop`(core) | `harness/e2e_min_runtime.route_tick` | 활성 source의 executor만 호출하고, executor 예외는 단계별 executor 오류 코드로 fail-closed합니다 |
+| `world_builder` | `scripts/e2e_warp_physics.build_context(nav_cubes=, nav_arm_pwm=)`(default off), `harness/e2e_min_world.py` | s7의 `cyan_1`·`red_1`만 남깁니다. xy는 config에서 받습니다. body가 정확히 맞지 않으면 fail-closed입니다 |
+| `eval_cube_geometry` | 같은 경로. `eval-geometry.json`에 `cube_qpos_adr`, `cube_half_m`, `cargo_contact_pairs`를 기록합니다 | `e2e_min_eval.recount_run` 입력 |
+| `nav_carry_adapter` | `harness/e2e_min_runtime.NavCarryAdapter` | 운반 자세 렌더 판정이 `act_lift_end`일 때만 생성됩니다 |
+| `runner_loop`(core) | `harness/e2e_min_runtime.route_tick` + `harness/e2e_min_runner.E2ESession` | config는 hash로 묶이고, executor·observer·`e2e-handoff.json`을 이 세션이 관리합니다 |
+| `act_skill_client` | `harness/e2e_min_act.py` + `scripts/e2e_min_act_server.py` | §3.4 |
+| `release_open_v1` | `harness/e2e_min_release.py` | §3.4 |
+| `runner_wiring` | **패치 파일** `patches/run_e2e_warp.patch` | `run_e2e_warp.py`는 DeepSeek 소유라 적용과 테스트는 DeepSeek이 맡습니다(§6.4) |
 
 ### 6.2 남음 (NotImplementedError)
-| id | 필요한 것 | 막는 근거 |
+| id | 상태 | 근거 |
 |---|---|---|
-| `teacher_skill` | nav runner 안의 SoloTeacher로 grasp·release를 수행하는 executor | SoloTeacher는 teacher episode generator 안에서만 구성됩니다. ops, visibility-gated read, A* route, lift observer가 필요합니다 [Q `scripts/warp_act_episode.py:48-60,214-221`] |
-| `runner_wiring` | `run_e2e_warp.py`(DeepSeek 소유)에서 E2E 플래그를 켜고, `route_tick`을 쓰고, 도착 시 조기 종료를 해제하고, `e2e-handoff.json`을 기록 | [`run_e2e_warp.py:500-506,524-528`]. executor가 먼저 있어야 합니다 |
-| `act_skill_client` | ACT actor RPC(r1·r2), E2E-1용 | [O `warp_act_api.py:60,67,149-157`] |
-| `carry_pose_transition` | lift 종료 자세가 아닌 운반 자세로 팔을 옮기는 동작(큐브를 쥔 채) | 측정한 적이 없습니다 |
-| `gripper_hold_arm_search_v1` | 대안 hold 규칙 | 같은 이유입니다(낙하 위험은 별도 물리 시험으로 확인) |
-| `contact_pair_parity` | finger/cargo `<pair>`가 ACT owner와 같은지 | 지금은 감사만 하고 단정하지 않습니다 |
+| `teacher_skill` | **경로 폐기**(E2E-0 폐기). 기록용으로만 남깁니다 | [Q `scripts/warp_act_episode.py:48-60,214-221`] |
+| `carry_pose_transition` | 10/21 밤 렌더 결과를 보고 구현 여부를 정합니다 | 큐브를 쥔 채 팔을 옮기는 동작은 측정한 적이 없습니다 |
+| `gripper_hold_arm_search_v1` | 같은 이유로 보류 | 낙하 위험 시험이 따로 필요합니다 |
+| `contact_pair_parity` | 감사만 하고 단정하지 않습니다 | ACT owner의 finger/cargo pair와 같은지 확인하지 않았습니다 |
 
-추가로 남은 위험(코드가 아닌 검증 항목): nav r5의 forward-acquisition 2.4 m cap과 `nav-calibration.json`(percent-second)은 레인 스폰(x −0.898, yaw 0)과 SEARCH 팔 기준입니다. 집은 뒤 자세(큐브 근처, 팔 hold)에서 시작할 때도 맞는지는 [확인 필요]입니다.
+추가로 남은 검증 항목(코드가 아님, [확인 필요]):
+- actuation 동등성(§3.4).
+- nav r5의 2.4 m forward cap과 calibration이 집은 뒤 자세에서도 맞는지.
+- ACT checkpoint·env는 gcp2에 있고 nav runner admission은 gcp6 전용입니다(`run_e2e_warp.py` INSTANCE). 둘 중 한 VM에 두 env와 checkpoint를 모두 갖춰야 합니다.
 
 ### 6.3 운반 자세 렌더 시험
 `CARRY_POSE_RENDER_DRAFT.md`, `carry_pose_render.py`, `carry_pose_candidates.json`에 있습니다. 판정에 따라 `nav_carry_adapter`의 hold 규칙을 정합니다.
 
-### 6.4 nav r5 브랜치 갱신분
+### 6.4 runner 패치 (DeepSeek 적용)
+- 패치: `experiments/2026-10-21-e2e-min/patches/run_e2e_warp.patch`. 이 브랜치의 HEAD에서 `git apply --check`가 통과하는 것을 확인했습니다.
+- 내용: `E2E_MIN_HANDOFF=on_v1`(+`E2E_MIN_CONFIG=<json>`)일 때만 동작하고, L1-lite pair·1 world를 요구합니다.
+  - prepare에서 `e2e_config`를 큐에 묶습니다.
+  - run에서 다시 검증하고, `build_context(nav_cubes=...)`로 world를 만듭니다.
+  - task 생성 뒤 `E2ESession`을 만들고, tick마다 frame만 모은 뒤 `session.step`으로 명령을 정해 `issue`합니다. OwnFrame의 issued history는 실제로 내보낸 명령입니다.
+  - nav 도착 시 조기 종료하지 않고 `E2E_EPISODE_FINISHED`로 끝냅니다. 예산은 config의 `sim_budget_s`입니다. finally에서 `e2e-handoff.json`을 씁니다.
+- DeepSeek이 확인할 것:
+  - (1) `check_current_stack.check_document`가 새 큐 키(`e2e_*`)를 허용하는지
+  - (2) gcp6에 ACT env와 checkpoint가 있는지
+  - (3) 플래그를 끈 상태에서 기존 nav·L1-lite 테스트가 그대로 통과하는지
+
+### 6.5 nav r5 브랜치 갱신분
 `origin/dsh/nav-v230-r5` 219d08779..e11efbeb9는 eval-only 분석 도구 수정(`ef5ebcd9c`)과 결과 문서·summary(`e11efbeb9`)뿐입니다. 런타임 코드 변경이 없어 e2e-min에는 merge하지 않았습니다.
 
 ## 7. 장면 적합성 시험 (D4)
@@ -138,6 +181,6 @@ ALLOCATE ─(LLM 배정 성공: success_eligible ∧ 좌·우 각 1)→ ACT_GRAS
 - v6 XML은 C312 참조를 다시 만들어야 합니다(`act17_v7_rebuild_compiled_references.py`에 같은 env를 연결). case index와 seed 대응은 [확인 필요]입니다.
 
 ## 8. 가장 큰 위험
-1. **nav 카메라 기하.** 카메라가 그리퍼에 붙어 있어서, 팔을 hold 자세(grasp 후 들어 올린 자세)로 두면 nav 검출, stage-2 1.5 m 투영, arming이 SEARCH 자세 보정과 어긋납니다. 큐브가 시야를 가릴 수도 있습니다. H3 규칙(지시서)을 그대로 쓰면 nav가 zone B를 보지 못할 수 있습니다.
-2. **ACT 분포 밖.** v6 픽업 바닥(어두운 남색 → 밝은 회색)과 같은 world 안의 다른 활성 로봇·큐브(학습 시에는 접촉 off로 주차)가 문제입니다. release를 zone B 바닥에서 하는 것도 분포 밖입니다.
-3. **물체를 든 채 GPU에서 주행한 적이 없습니다.** 바퀴 펄스의 가감속으로 낙하할 수 있고, finger/cargo 접촉 pair가 nav builder에 없습니다. 연결 코드 6개가 미구현이라 E2E-0 일정(10/22 밤)이 이 구현 속도에 묶입니다.
+1. **nav 카메라 기하.** 카메라가 그리퍼에 붙어 있어서, 집은 뒤 hold 자세에서는 nav 검출과 투영이 SEARCH 보정과 어긋납니다. 운반 자세 렌더 시험(10/21 밤)이 판정합니다. 채택된 자세가 SEARCH가 아니면 nav 투영을 다시 맞춰야 합니다.
+2. **ACT를 nav runner 안에서 돌릴 때의 분포 차이.** v6 픽업 바닥(D4), 같은 world의 다른 활성 로봇·큐브, r2 시점, actuation 경로 차이(owner의 DutyActPort와 nav의 `issue`)가 겹칩니다.
+3. **물체를 든 채 GPU에서 주행한 적이 없습니다.** 바퀴 펄스로 낙하할 수 있고, finger/cargo pair가 ACT owner와 같은지 확인하지 않았습니다. runner 연결은 패치 형태라 DeepSeek의 적용·검증 일정에 묶입니다.
