@@ -32,7 +32,7 @@ from harness.e2ewarp_l1lite_eval import ZONE_B, estimate_cost_usd, in_rect, slot
 SCHEMA = 'ugrp.e2e_min.evaluation.v1'
 STAGES = ('allocate', 'grasp', 'carry', 'release', 'done')
 #: Drop thresholds (eval-only, frozen by the prereg; values [확인 필요] against
-#: a teacher carry trace before E2E-0 is admitted).
+#: a carry trace before E2E-1p is admitted).
 DROP_DEFAULTS = dict(floor_clear_m=0.005, detach_m=0.35, min_ticks=5, finger_n=0.1)
 
 

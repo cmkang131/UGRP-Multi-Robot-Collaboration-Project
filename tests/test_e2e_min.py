@@ -36,8 +36,7 @@ def test_default_off_and_exact_opt_in():
         H.enabled({H.ENV: 'on'})
 
 
-@pytest.mark.parametrize('level,subs', [('E2E-0', ['grasp:teacher', 'release:teacher']),
-                                        ('E2E-1', ['release:teacher']), ('E2E-2', [])])
+@pytest.mark.parametrize('level,subs', [('E2E-1p', [{'stage': 'release', 'by': 'rule_script:release_open_v1'}]), ('E2E-2', [])])
 def test_substitutions_and_queue(level, subs):
     assert H.substitutions(level) == subs
     q = H.queue_fields(level)
@@ -53,12 +52,12 @@ def test_unknown_level_and_hold_rule_rejected():
     with pytest.raises(ValueError):
         H.queue_fields('E2E-3')
     with pytest.raises(ValueError):
-        H.RobotHandoff('r1', 'E2E-1', hold_rule='free')
+        H.RobotHandoff('r1', 'E2E-1p', hold_rule='free')
 
 
 # -- happy path ------------------------------------------------------------
 def test_full_transition_sequence_and_hold_rules():
-    h = H.RobotHandoff('r1', 'E2E-1', initial_pwm=OPEN)
+    h = H.RobotHandoff('r1', 'E2E-1p', initial_pwm=OPEN)
     assert h.tick(0.0) == H.hold_command(0.0, OPEN)          # ALLOCATE holds
     h.allocated(0.0, 'left')
     assert h.phase == H.ACT_GRASP
@@ -76,19 +75,19 @@ def test_full_transition_sequence_and_hold_rules():
     carry = drive(h, 5.1, 7.0, lambda t, s: dict(command=cmd(t, OPEN, 0.35), arrived=t >= 7.0))
     assert carry[0][1] == 'nav' and carry[0][2]['wheels'] == [0.35] * 4
     assert all(c['pwm'] == HOLD for _, _, c in carry)
-    assert h.phase == H.TEACHER_RELEASE
+    assert h.phase == H.SCRIPT_RELEASE
     assert carry[-1][2] == H.hold_command(7.0, HOLD)
     # release: executor drives from next tick; done -> DONE and hold last PWM (H5)
     rel = drive(h, 7.1, 8.0, lambda t, s: dict(command=cmd(t, OPEN), done=t >= 8.0))
     assert rel[0][1] == 'release' and h.phase == H.DONE
     assert h.tick(8.1) == H.hold_command(8.1, OPEN)
     phases = [r['to'] for r in h.transitions]
-    assert phases == [H.ACT_GRASP, H.NAV_CARRY, H.TEACHER_RELEASE, H.DONE]
-    assert set(h.reach) == {H.ALLOCATE, H.ACT_GRASP, H.NAV_CARRY, H.TEACHER_RELEASE, H.DONE}
+    assert phases == [H.ACT_GRASP, H.NAV_CARRY, H.SCRIPT_RELEASE, H.DONE]
+    assert set(h.reach) == {H.ALLOCATE, H.ACT_GRASP, H.NAV_CARRY, H.SCRIPT_RELEASE, H.DONE}
 
 
 def test_level_selects_executors():
-    for level, grasp, release in (('E2E-0', H.TEACHER_GRASP, H.TEACHER_RELEASE),
+    for level, grasp, release in (('E2E-1p', H.ACT_GRASP, H.SCRIPT_RELEASE),
                                   ('E2E-2', H.ACT_GRASP, H.ACT_RELEASE)):
         h = H.RobotHandoff('r2', level, timeouts=dict(settle=0.0))
         h.allocated(0.0, 'right')
@@ -100,16 +99,16 @@ def test_level_selects_executors():
 
 # -- fail-closed -------------------------------------------------------------
 def test_grasp_timeout_and_invalid_proposal():
-    h = H.RobotHandoff('r1', 'E2E-1', timeouts=dict(grasp=1.0), initial_pwm=OPEN)
+    h = H.RobotHandoff('r1', 'E2E-1p', timeouts=dict(grasp=1.0), initial_pwm=OPEN)
     h.allocated(0.0, 'left')
     drive(h, 0.1, 1.1, lambda t, s: dict(command=cmd(t), done=False))
     assert h.phase == H.FAIL and h.fail_code == 'E2E_GRASP_TIMEOUT'
-    h2 = H.RobotHandoff('r1', 'E2E-1', initial_pwm=OPEN)
+    h2 = H.RobotHandoff('r1', 'E2E-1p', initial_pwm=OPEN)
     h2.allocated(0.0, 'left')
     out = h2.tick(0.1, dict(command=dict(cmd(0.1), wheels=[0.9] * 4)))
     assert h2.fail_code == 'E2E_GRASP_EXECUTOR_ERROR'
     assert out == H.hold_command(0.1, OPEN)      # gripper not opened by failure
-    h3 = H.RobotHandoff('r1', 'E2E-1')
+    h3 = H.RobotHandoff('r1', 'E2E-1p')
     h3.allocated(0.0, 'left')
     h3.tick(0.1, None)
     assert h3.fail_code == 'E2E_GRASP_EXECUTOR_ERROR'
@@ -142,7 +141,7 @@ def test_nav_no_claim_timeout_and_release_timeout():
 
 
 def test_time_going_backwards_fails():
-    h = H.RobotHandoff('r1', 'E2E-1', initial_pwm=OPEN)
+    h = H.RobotHandoff('r1', 'E2E-1p', initial_pwm=OPEN)
     h.allocated(0.0, 'left')
     h.tick(0.5, dict(command=cmd(0.5)))
     h.tick(0.4, dict(command=cmd(0.4)))
@@ -152,33 +151,33 @@ def test_time_going_backwards_fails():
 
 
 def test_episode_allocation_fail_closed():
-    ep = H.E2EMinEpisode('E2E-1')
+    ep = H.E2EMinEpisode('E2E-1p')
     assert ep.allocate(0.0, dict(ALLOC, success_eligible=False, errors=['L1LITE_X'])) is False
     assert {h.fail_code for h in ep.robots.values()} == {'E2E_ALLOC_FAILED'}
-    ep = H.E2EMinEpisode('E2E-1')
+    ep = H.E2EMinEpisode('E2E-1p')
     assert ep.allocate(0.0, dict(ALLOC, decisions={'r1': 'left', 'r2': 'left'})) is False
     assert {h.fail_code for h in ep.robots.values()} == {'E2E_ALLOC_SLOTS_INVALID'}
-    ep = H.E2EMinEpisode('E2E-1')
+    ep = H.E2EMinEpisode('E2E-1p')
     assert ep.allocate(0.0, None) is False and ep.finished
-    ep = H.E2EMinEpisode('E2E-1')
+    ep = H.E2EMinEpisode('E2E-1p')
     assert ep.allocate(0.0, ALLOC) is True
     assert ep.sources(0.1) == {'r1': 'grasp', 'r2': 'grasp'}
     exp = ep.export()
-    assert exp['e2e_substitutions'] == ['release:teacher'] and exp['overlay_text'] is False
+    assert exp['e2e_substitutions'] == [{'stage': 'release', 'by': 'rule_script:release_open_v1'}] and exp['overlay_text'] is False
     assert exp['slots'] == {'r1': 'left', 'r2': 'right'}
     assert 'teacher_skill' in exp['integration_points_open']
     assert 'world_builder' not in exp['integration_points_open']
 
 
 def test_integration_points_raise_not_implemented():
-    for name in ('act_skill_client', 'teacher_skill', 'runner_wiring'):
+    for name in ('teacher_skill', 'runner_wiring'):
         with pytest.raises(NotImplementedError, match='E2E_MIN_TODO'):
             getattr(H, name)()
 
 
 # -- evaluator ---------------------------------------------------------------
 def good_inputs(**over):
-    base = dict(level='E2E-1', allocation=ALLOC, slots={'r1': 'left', 'r2': 'right'},
+    base = dict(level='E2E-1p', allocation=ALLOC, slots={'r1': 'left', 'r2': 'right'},
                 cube_final_xy={'r1': [4.6, -1.8], 'r2': [4.6, -2.4]},
                 drops={'r1': False, 'r2': False}, claims={'r1': True, 'r2': True},
                 contacts_available=True, robot_robot_contacts=0)
@@ -188,7 +187,7 @@ def good_inputs(**over):
 
 def test_evaluate_success_and_each_component():
     rep = E.evaluate(**good_inputs())
-    assert rep['success'] is True and rep['e2e_substitutions'] == ['release:teacher']
+    assert rep['success'] is True and rep['e2e_substitutions'] == [{'stage': 'release', 'by': 'rule_script:release_open_v1'}]
     assert rep['research_result'] is False
     bad = [dict(cube_final_xy={'r1': [4.6, -2.4], 'r2': [4.6, -1.8]}),   # swapped slots
            dict(cube_final_xy={'r1': [4.6, -1.8]}),                     # GT missing
@@ -227,7 +226,7 @@ def test_carry_drop_rules():
 
 
 def _episode_export():
-    ep = H.E2EMinEpisode('E2E-1', timeouts=dict(settle=0.0))
+    ep = H.E2EMinEpisode('E2E-1p', timeouts=dict(settle=0.0))
     ep.allocate(0.0, ALLOC)
     ep.tick(1.0, {r: dict(command=cmd(1.0, HOLD), done=True) for r in H.ROBOTS})
     ep.tick(3.0, {r: dict(command=cmd(3.0, OPEN, 0.35), arrived=True) for r in H.ROBOTS})
@@ -261,7 +260,7 @@ def _write_run(tmp_path, *, drop_r2=False):
     (tmp_path / 'world-00' / 'eval-geometry.json').write_text(json.dumps(dict(
         robot_qpos_adr=robot_adr, cube_qpos_adr=cube_adr, cube_half_m=0.02,
         destination=dict(center_m=[4.6, -2.1], half_extents_m=[0.3, 0.7]))))
-    (tmp_path / 'queue.json').write_text(json.dumps(H.queue_fields('E2E-1')))
+    (tmp_path / 'queue.json').write_text(json.dumps(H.queue_fields('E2E-1p')))
     (tmp_path / 'slot-decisions.json').write_text(json.dumps(ALLOC))
     (tmp_path / 'e2e-handoff.json').write_text(json.dumps(_episode_export()))
     (tmp_path / 'nav-events.json').write_text(json.dumps(
@@ -297,7 +296,7 @@ def test_aggregate_never_pools_levels():
     ok = E.evaluate(**good_inputs())
     bad = E.evaluate(**good_inputs(level='E2E-2', drops={'r1': True, 'r2': False}))
     agg = E.aggregate([ok, ok, bad])
-    assert agg['E2E-1'] == dict(n=2, N=2, fail_codes={})
+    assert agg['E2E-1p'] == dict(n=2, N=2, fail_codes={})
     assert agg['E2E-2']['n'] == 0 and agg['E2E-2']['N'] == 1
 
 
@@ -357,7 +356,7 @@ def test_nav_carry_adapter_requires_admitted_verdict():
 
 
 def test_route_tick_full_episode_with_fakes():
-    ep = H.E2EMinEpisode('E2E-0', timeouts=dict(settle=0.3))
+    ep = H.E2EMinEpisode('E2E-1p', timeouts=dict(settle=0.3))
     ep.allocate(0.0, ALLOC)
     navs = {r: FakeNavTask(arrive_after=3) for r in H.ROBOTS}
     grasp = {r: Script(done_at=0.5) for r in H.ROBOTS}
@@ -376,11 +375,11 @@ def test_route_tick_full_episode_with_fakes():
     assert nav.observed[0] == 'r1@0.8'
     # every nav command the runner keeps has the held PWM, not SEARCH/open
     assert all(c['pwm'] == HOLD for c in nav.command_history)
-    assert ep.export()['e2e_substitutions'] == ['grasp:teacher', 'release:teacher']
+    assert ep.export()['e2e_substitutions'] == [{'stage': 'release', 'by': 'rule_script:release_open_v1'}]
 
 
 def test_route_tick_executor_exception_fails_closed():
-    ep = H.E2EMinEpisode('E2E-1', initial_pwm={r: OPEN for r in H.ROBOTS})
+    ep = H.E2EMinEpisode('E2E-1p', initial_pwm={r: OPEN for r in H.ROBOTS})
     ep.allocate(0.0, ALLOC)
     execs = {'r1': dict(grasp=Script(1.0, fail=True)), 'r2': {}}
     out = R.route_tick(ep, 0.1, {'r1': 'f', 'r2': 'f'}, execs)

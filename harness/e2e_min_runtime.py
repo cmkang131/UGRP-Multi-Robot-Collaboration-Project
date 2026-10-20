@@ -68,10 +68,13 @@ class NavCarryAdapter:
             self.task.command_history[-1] = dict(command)
 
 
-def route_tick(episode, now, frames, executors):
+def route_tick(episode, now, frames, executors, observers=None):
     """One control tick for both robots; returns ``{robot: command|None}``.
 
     ``executors[robot][source]`` with source in {'grasp','nav','release'}.
+    ``observers[robot]``: objects with ``observe_tick(robot, frame, now,
+    command)`` called every tick after the command is decided (e.g. the ACT
+    observation builder, which must see every own frame and issued command).
     """
     sources = episode.sources(now)
     proposals, used = {}, {}
@@ -92,4 +95,7 @@ def route_tick(episode, now, frames, executors):
         record = getattr(executor, 'record_issued', None)
         if callable(record) and commands.get(robot) is not None:
             record(commands[robot])
+    for robot, items in (observers or {}).items():
+        for item in items:
+            item.observe_tick(robot, frames[robot], now, commands.get(robot))
     return commands

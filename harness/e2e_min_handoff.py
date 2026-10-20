@@ -7,13 +7,15 @@ flags) and the L1-lite allocation record.
 
 Phases per robot (see experiments/2026-10-21-e2e-min/DESIGN.md §3)::
 
-    ALLOCATE -> {ACT_GRASP | TEACHER_GRASP} -> NAV_CARRY
-             -> {ACT_RELEASE | TEACHER_RELEASE} -> DONE
+    ALLOCATE -> ACT_GRASP -> NAV_CARRY -> {SCRIPT_RELEASE | ACT_RELEASE} -> DONE
     any phase -> FAIL(code)           (fail-closed, terminal)
 
-Which grasp/release executor runs is fixed by the level (E2E-0/1/2) before the
-run; every teacher-substituted step is written to the queue field
-``e2e_substitutions`` and to the handoff log (never to a video overlay).
+Which release executor runs is fixed by the level before the run (E2E-1p =
+"E2E-1'": rule script ``release_open_v1``; E2E-2: ACT student).  Every
+substituted step is written as ``{"stage": ..., "by": ...}`` to the queue
+field ``e2e_substitutions`` and to the handoff log (never a video overlay).
+E2E-0 (teacher grasp/release) was dropped on 2026-10-21 (teacher path
+abandoned; ``teacher_skill`` stays NotImplemented).
 
 Command hold rules (DESIGN.md §3.3):
 
@@ -28,7 +30,7 @@ Command hold rules (DESIGN.md §3.3):
 * H5 DONE: wheels 0, last issued PWM.  FAIL: wheels 0, last issued PWM (the
   gripper is never opened by a failure).
 
-Connection points to the scene/physics owner and to the ACT/teacher/nav
+Connection points to the scene/physics owner and to the ACT/nav
 executors that are NOT verified yet raise ``NotImplementedError`` with an
 ``E2E_MIN_TODO:<id>`` tag; see ``INTEGRATION_POINTS`` and DESIGN.md §6.
 """
@@ -46,28 +48,31 @@ SERVOS = ('1', '3', '4', '5', '6')
 
 ALLOCATE = 'ALLOCATE'
 ACT_GRASP = 'ACT_GRASP'
-TEACHER_GRASP = 'TEACHER_GRASP'
 NAV_CARRY = 'NAV_CARRY'
 ACT_RELEASE = 'ACT_RELEASE'
-TEACHER_RELEASE = 'TEACHER_RELEASE'
+SCRIPT_RELEASE = 'SCRIPT_RELEASE'
 DONE = 'DONE'
 FAIL = 'FAIL'
-PHASES = (ALLOCATE, ACT_GRASP, TEACHER_GRASP, NAV_CARRY, ACT_RELEASE, TEACHER_RELEASE, DONE, FAIL)
-GRASP_PHASES = (ACT_GRASP, TEACHER_GRASP)
-RELEASE_PHASES = (ACT_RELEASE, TEACHER_RELEASE)
+PHASES = (ALLOCATE, ACT_GRASP, NAV_CARRY, ACT_RELEASE, SCRIPT_RELEASE, DONE, FAIL)
+GRASP_PHASES = (ACT_GRASP,)
+RELEASE_PHASES = (ACT_RELEASE, SCRIPT_RELEASE)
 TERMINAL = (DONE, FAIL)
 #: Stage names used by the evaluator's per-stage reach table.
-STAGE_OF = {ALLOCATE: 'allocate', ACT_GRASP: 'grasp', TEACHER_GRASP: 'grasp',
-            NAV_CARRY: 'carry', ACT_RELEASE: 'release', TEACHER_RELEASE: 'release',
+STAGE_OF = {ALLOCATE: 'allocate', ACT_GRASP: 'grasp',
+            NAV_CARRY: 'carry', ACT_RELEASE: 'release', SCRIPT_RELEASE: 'release',
             DONE: 'done', FAIL: 'fail'}
 
 LEVELS = {
-    'E2E-0': dict(grasp='teacher', release='teacher', label='배관 확인, 연구 결과 아님'),
-    'E2E-1': dict(grasp='act', release='teacher', label='혼합 E2E(내려놓기 teacher)'),
-    'E2E-2': dict(grasp='act', release='act', label='순수 E2E'),
+    # "E2E-1'" (key E2E-1p): student grasp + nav carry + rule-script release.
+    'E2E-1p': dict(grasp='act', release='rule_script', display="E2E-1'",
+                   label="E2E-1' 혼합(학생 집기 + nav 운반 + 규칙 내려놓기 release_open_v1)"),
+    'E2E-2': dict(grasp='act', release='act', display='E2E-2', label='순수 E2E'),
 }
 HOLD_RULES = ('last_hold_all_servos_v1', 'gripper_hold_arm_search_v1')
 DEFAULT_HOLD_RULE = 'last_hold_all_servos_v1'
+
+RELEASE_SCRIPT = 'release_open_v1'
+RELEASE_PHASE_BY = {'act': ACT_RELEASE, 'rule_script': SCRIPT_RELEASE}
 
 #: Phase SIM-second budgets.  grasp 90 s = the ACT full-evaluation cap
 #: (warp_act_api.py:410, 900 ticks); settle 3.1 s = SoloSequence SETTLE_S
@@ -95,9 +100,8 @@ ERRORS = {
 #: build_context(nav_cubes=...), harness/e2e_min_world.py), eval cube geometry
 #: (same), nav carry adapter and per-tick router (harness/e2e_min_runtime.py).
 INTEGRATION_POINTS = (
-    'teacher_skill',         # scripted SoloTeacher grasp/release inside the nav runner
+    'teacher_skill',         # ABANDONED path (E2E-0 dropped 2026-10-21); kept NotImplemented
     'runner_wiring',         # run_e2e_warp: E2E flag, route_tick, no early NAV_ARRIVAL stop
-    'act_skill_client',      # ACT actor RPC on the nav runner's own frames (r1 and r2), E2E-1
     'carry_pose_transition', # arm move to a non-lift-end carry pose while holding
     'gripper_hold_arm_search_v1',  # alternative hold rule (arm back to SEARCH)
     'contact_pair_parity',   # finger/cargo <pair> equality with the ACT owner (audited only)
@@ -123,9 +127,15 @@ def enabled(environ=None):
 
 
 def substitutions(level):
-    """Teacher-substituted steps for a level, e.g. ['release:teacher']."""
+    """Substituted (non-student) steps, e.g. [{'stage': 'release', 'by': 'rule_script:release_open_v1'}]."""
     spec = _level(level)
-    return [f'{step}:teacher' for step in ('grasp', 'release') if spec[step] == 'teacher']
+    out = []
+    for stage in ('grasp', 'release'):
+        if spec[stage] == 'rule_script':
+            out.append({'stage': stage, 'by': 'rule_script:' + RELEASE_SCRIPT})
+        elif spec[stage] != 'act':
+            raise ValueError('unknown executor for ' + stage)
+    return out
 
 
 def queue_fields(level, hold_rule=DEFAULT_HOLD_RULE):
@@ -227,8 +237,7 @@ class RobotHandoff:
         if slot not in SLOTS:
             return self.fail(now, 'E2E_ALLOC_SLOTS_INVALID', repr(slot))
         self.slot = slot
-        grasp = ACT_GRASP if self.spec['grasp'] == 'act' else TEACHER_GRASP
-        self._go(now, grasp, f'slot {slot} allocated by LLM')
+        self._go(now, ACT_GRASP, f'slot {slot} allocated by LLM')
 
     # -- per tick --------------------------------------------------------
     def source(self, now):
@@ -323,7 +332,7 @@ class RobotHandoff:
             self.fail(now, 'E2E_NAV_NO_CLAIM', 'nav NO_CLAIM latched')
             return self._final(now)
         if proposal.get('arrived') is True:
-            release = ACT_RELEASE if self.spec['release'] == 'act' else TEACHER_RELEASE
+            release = RELEASE_PHASE_BY[self.spec['release']]
             self._go(now, release, 'own arrival claim (unverified); release starts next tick')
             return self._issue(hold_command(now, self.hold_pwm))
         # H3: nav wheels/pulses unchanged, all PWM channels held.
@@ -397,7 +406,8 @@ class E2EMinEpisode:
         return all(h.phase in TERMINAL for h in self.robots.values())
 
     def export(self):
-        return dict(schema=SCHEMA, level=self.level, label=LEVELS[self.level]['label'],
+        return dict(schema=SCHEMA, level=self.level, display=LEVELS[self.level]['display'],
+                    label=LEVELS[self.level]['label'],
                     e2e_substitutions=substitutions(self.level), overlay_text=False,
                     allocation_success_eligible=bool((self.allocation or {}).get('success_eligible')),
                     slots={r: h.slot for r, h in self.robots.items()},
@@ -407,6 +417,8 @@ class E2EMinEpisode:
 
 # -- unverified connection points (DESIGN.md §6) ---------------------------
 def teacher_skill(*_args, **_kwargs):
+    # PATH ABANDONED (2026-10-21): E2E-0 was dropped; release is substituted by
+    # the rule script release_open_v1 instead.  Kept only as a record.
     # TODO(E2E_MIN_TODO:teacher_skill): SoloTeacher (frozen 6f057f7e
     # sim/grasp_act_solo_teacher.py) is only constructed inside the teacher
     # episode generator ([Q] scripts/warp_act_episode.py:48-60,214-221), which
@@ -418,18 +430,11 @@ def teacher_skill(*_args, **_kwargs):
     raise NotImplementedError('E2E_MIN_TODO:teacher_skill')
 
 
-def act_skill_client(*_args, **_kwargs):
-    # TODO(E2E_MIN_TODO:act_skill_client): the ACT actor runs in the torch env
-    # behind the owner RPC (act16w_eval_owner.py:48-60); the owner and History
-    # are r1-only ([O] warp_act_api.py:60,67,149-157).  Feeding r2 frames and
-    # driving the actor from the nav runner process is unverified (E2E-1).
-    raise NotImplementedError('E2E_MIN_TODO:act_skill_client')
-
-
 def runner_wiring(*_args, **_kwargs):
     # TODO(E2E_MIN_TODO:runner_wiring): scripts/run_e2e_warp.py (DeepSeek-owned
     # file) must, behind E2E_MIN_HANDOFF=on_v1: build worlds with nav_cubes,
     # call harness.e2e_min_runtime.route_tick instead of task.command
     # (:500-506), skip the nav_all_arrived early stop (:524-528), and write
-    # e2e-handoff.json.  Blocked on teacher_skill/act_skill_client executors.
+    # e2e-handoff.json.  Delivered as experiments/2026-10-21-e2e-min/patches/
+    # run_e2e_warp.patch for DeepSeek to apply and test (owner of the file).
     raise NotImplementedError('E2E_MIN_TODO:runner_wiring')
