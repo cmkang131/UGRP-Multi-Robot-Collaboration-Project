@@ -178,6 +178,47 @@ def clock_receipt(deadband):
         scope='own issued PWM history only; no measured joint or simulator state')
 
 
+# carry-cand-3 (A-c3, H-A2): release-only executor swap, default te1 (off).
+# Tournament A prereg draft lives on dsh/act18-carry-cand-1:
+# experiments/2026-10-17-act18/CARRY_TOURNAMENT_A_PREREG_DRAFT.json.
+TE1=(1,.01)
+RELEASE_EXECUTORS={'te1':TE1,'latest4':(4,None)}
+RELEASE_EXECUTOR_STATS=dict(switches=0)
+
+
+def executor_params(skill,release_executor):
+    """(n_action_steps, temporal_ensemble_coeff) for this tick; grasp is always te1."""
+    if release_executor not in RELEASE_EXECUTORS:
+        raise ValueError('registered release executor te1|latest4 required')
+    return RELEASE_EXECUTORS[release_executor] if skill=='release' else TE1
+
+
+def candidate_executor(base,*,release_executor='te1'):
+    """Deployed te1 executor; with latest4 the release skill alone runs the no-ensemble
+    ChunkExecutor (latest chunk first, unweighted, n_action_steps 4)."""
+    executor_params('grasp',release_executor)
+    class Executor(base):
+        def __init__(self,predict):
+            # Public ACT temporal ensemble; no additional motion guard/fallback.
+            super().__init__(predict,n_action_steps=1,temporal_ensemble_coeff=.01)
+        def step(self,observation,jpegs,*,interrupt=False):
+            want=executor_params(observation['skill'],release_executor)
+            if (self.n_action_steps,self.temporal_ensemble_coeff)!=want:
+                # Skill switch: the base executor resets on the identity change anyway.
+                self.n_action_steps,self.temporal_ensemble_coeff=want
+                self.reset();RELEASE_EXECUTOR_STATS['switches']+=1
+            return super().step(observation,jpegs,interrupt=interrupt)
+    return Executor
+
+
+def release_executor_receipt(mode):
+    steps,coeff=RELEASE_EXECUTORS[mode]
+    return dict(candidate='A-c3' if mode!='te1' else None,mode=mode,flag=f'--release-executor {mode}',
+        grasp=dict(n_action_steps=1,temporal_ensemble_coeff=.01),
+        release=dict(n_action_steps=steps,temporal_ensemble_coeff=coeff),
+        switches=RELEASE_EXECUTOR_STATS['switches'] if mode!='te1' else None)
+
+
 def post_lift_max_pe(out):
     """Evaluation-only receipt from the recorded actor inputs and owner truth."""
     inputs=out/'actor-inputs.jsonl';truth=out/'owner/evaluation-only.jsonl'
@@ -216,6 +257,8 @@ def main():
     p.add_argument('--stage',choices=['train','validation','final','diag'],required=True)
     p.add_argument('--diag-prereg',type=Path)
     p.add_argument('--issued-clock-deadband',type=int,choices=[0,2],default=0)
+    # carry-cand-3: default te1 (off). latest4 = release-only no-ensemble executor.
+    p.add_argument('--release-executor',choices=sorted(RELEASE_EXECUTORS),default='te1')
     p.add_argument('--baseline-act17',action='store_true')
     # User requirement: last10 SIM seconds at10Hz; recording only, no policy field.
     p.add_argument('--failure-camera-window-s',type=float,default=10.)
@@ -236,6 +279,8 @@ def main():
     a,args=p.parse_known_args()
     if not a.act18_reference_v1 or a.failure_camera_window_s!=10.:
         raise ValueError('explicit reference toggle and user10SIMs camera window required')
+    if a.release_executor!='te1' and (a.done_head is not None or a.loop_overlay):
+        raise ValueError('--release-executor is registered with the plain te1 executor only')
     if a.done_head is not None and a.done_head_threshold!=.65:
         raise ValueError('frozen done-head threshold .65 required')
     done_log_path=done_prob_log_path() if a.record_done_prob is None else a.record_done_prob
@@ -275,6 +320,7 @@ def main():
         act16w_eval_rpc.EvaluationClient,pm.ChunkExecutor,rm.SoloSequence,contract.CHUNK,
         contract.IssuedClock)
     CLOCK_STATS.update(instances=0,resets=0,max_pwm_elapsed_s=0.)
+    RELEASE_EXECUTOR_STATS.update(switches=0)
     install_issued_clock(contract,a.issued_clock_deadband)
     actor_class=OldActor if a.baseline_act17 else Actor
     chunk=8 if a.baseline_act17 else meta['chunk']
@@ -309,10 +355,7 @@ def main():
                 elapsed=time.perf_counter()-started;inference['wall_s']+=elapsed
                 if first30:inference['first30']['wall_s']+=elapsed
     from act18_loop_overlay import LoopOverlay, overlay_receipt
-    class Executor(originals[3]):
-        def __init__(self,predict):
-            # Public ACT temporal ensemble; no additional motion guard/fallback.
-            super().__init__(predict,n_action_steps=1,temporal_ensemble_coeff=.01)
+    Executor=candidate_executor(originals[3],release_executor=a.release_executor)
     class DoneHeadExecutor(Executor):
         def __init__(self,predict):
             super().__init__(predict)
@@ -450,6 +493,7 @@ def main():
                     static_map_use='none',handwritten_nearfield_fallback=False,policy_ground_truth_fields=0,
                     native_camera='own640x480 at10Hz; identical current_full_v1 transform',
                     issued_clock=clock,git_sha=source,
+                    release_executor=release_executor_receipt(a.release_executor),
                     scope=('TRAIN fit only, not generalization' if a.stage=='train' else
                            'HO4 diagnostic holdout only; not a promotion gate; no pooling' if a.stage=='diag'
                            else 'held-out native ACT stage'))
@@ -473,6 +517,7 @@ def main():
                 loop_receipt=overlay_receipt()
             (out/'act18-evaluator.json').write_text(json.dumps(dict(source_sha=source,stage=a.stage,
                 git_sha=source,issued_clock=clock,diag_prereg=diag,loop_overlay=loop_receipt,
+                release_executor=release_executor_receipt(a.release_executor),
                 allowed_seeds=sorted(allowed),checkpoint_sha256=digest,native_gate_sha256=sha256(gate_path),
                 failure_recording_only=True,recorded_bytes=sum(r['bytes'] for r in ring),
                 done_head=done_head_receipt),indent=2)+'\n')
