@@ -45,6 +45,10 @@ def main():
     p.add_argument('--history-causal-split-v1', choices=('off', 'wheel_pulse_train_mean'), default='off',
                    help='ACT16 wheel/pulse history mask, identical at train/deploy; default off')
     p.add_argument('--execution-host-profile', choices=('legacy', 'beamact1_gcp2'), default='legacy')
+    p.add_argument('--pairact-r1-config', type=Path, default=None,
+                   help='pairact-r1 pair carry config (default off); requires --beamact3-v1 A')
+    p.add_argument('--pairact-r1-stage-targets', type=Path, default=None,
+                   help='pairact-r1 stage-targets.json sidecar bound to --dataset')
     p.add_argument('--beamact3-v1', choices=('off', 'A', 'B'), default='off',
                    help='opt-in three-class wheel head and compact five-command history')
     a = p.parse_args()
@@ -58,6 +62,17 @@ def main():
         transform_batch = lambda batch, mode='off': compact_batch(batch, a.beamact3_v1)
     if a.history_causal_split_v1 != 'off' and a.blank_images:
         p.error('beamact1 history intervention requires own RGB')
+    pair_config = None
+    if (a.pairact_r1_config is None) != (a.pairact_r1_stage_targets is None):
+        p.error('pairact-r1 needs both --pairact-r1-config and --pairact-r1-stage-targets')
+    if a.pairact_r1_config is not None:
+        from harness import pairact_r1
+        pair_config = pairact_r1.load_config(a.pairact_r1_config)
+        if a.beamact3_v1 != pair_config['base_arm'] or a.seed != pair_config['seed']:
+            p.error('pairact-r1 requires its registered base arm and training seed')
+        if a.stage == 'main' and (a.steps != pair_config['steps']
+                                  or a.checkpoint_every != pair_config['checkpoint_every']):
+            p.error('pairact-r1 main uses the registered steps and checkpoint interval')
     if a.checkpoint_every < 0:
         p.error('checkpoint interval must be nonnegative')
     checkpoint_every = a.checkpoint_every or (100 if a.stage == 'smoke' else 500)
@@ -75,6 +90,9 @@ def main():
         host = require_gcp(training=True)
     source = source_sha()
     dataset_hash = sha256(a.dataset / 'manifest.json')
+    pair_hashes = ({'pairact_r1_config_sha256': sha256(a.pairact_r1_config),
+                    'pairact_r1_stage_targets_sha256': sha256(a.pairact_r1_stage_targets)}
+                   if pair_config else {})
     if a.stage == 'main':
         smoke_hash = sha256(a.smoke_summary) if a.smoke_summary else None
         smoke = json.loads(a.smoke_summary.read_text()) if a.smoke_summary else {}
@@ -86,12 +104,17 @@ def main():
                 or smoke.get('done_loss_weight', 1.) != a.done_loss_weight
                 or smoke.get('command_history_dropout', 0.) != a.command_history_dropout
                 or smoke.get('history_causal_split_v1', 'off') != a.history_causal_split_v1
-                or smoke.get('beamact3_v1', 'off') != a.beamact3_v1):
+                or smoke.get('beamact3_v1', 'off') != a.beamact3_v1
+                or any(smoke.get(k) != v for k, v in pair_hashes.items())):
             raise ValueError('completed matching smoke with checkpoint readback required')
         authorize_main(a.approval, source=source, dataset_hash=dataset_hash,
                        smoke_hash=smoke_hash, steps=a.steps, blank=a.blank_images,
                        command_history_dropout=a.command_history_dropout,
                        history_causal_split_v1=a.history_causal_split_v1, beamact3_v1=a.beamact3_v1)
+        if pair_hashes:
+            approval = json.loads(a.approval.read_text())
+            if any(approval.get(k) != v for k, v in pair_hashes.items()):
+                raise ValueError('main approval pairact-r1 config/stage target mismatch')
     a.output.mkdir(parents=True, exist_ok=False)
     report = {'status': 'running', 'complete': False, 'stage': a.stage,
         'class': a.run_class, 'research_result': False if a.run_class == 'dev' else None,
@@ -105,6 +128,9 @@ def main():
         'batch_size': 8, 'readback_verified': False,
         'gate_promotion_authorized_if_all_conditions_pass': False,
         'selection': 'fixed final step; validation never selects checkpoint'}
+    if pair_config:
+        report.update(pair_hashes, selection='pairact-r1: validation-split offline gate only '
+                      '(scripts/pairact_r1_offline.py); heldout never selects')
     write_summary(a.output / 'summary.json', report)
     write_json(a.output / 'RUN_META.json', {'class': a.run_class, 'sha': source,
         'pr': 545 if a.beamact3_v1 != 'off' else None if a.execution_host_profile == 'beamact1_gcp2' else 504,
@@ -130,6 +156,12 @@ def main():
             from functools import partial
             from harness.beamact3 import Beam3Actor as GraspActor, save_actor as save_candidate, policy_loss as loss_function
             save_actor = partial(save_candidate, arm=a.beamact3_v1)
+        if pair_config:
+            from functools import partial
+            from harness import pairact_r1
+            GraspActor = pairact_r1.PairActActor
+            loss_function = pairact_r1.policy_loss
+            save_actor = partial(pairact_r1.save_actor, config=pair_config)
         if not torch.cuda.is_available() or 'L4' not in torch.cuda.get_device_name(0):
             raise RuntimeError('CUDA NVIDIA L4 required')
         torch.manual_seed(a.seed)
@@ -137,14 +169,21 @@ def main():
         torch.set_num_threads(4)
         torch.backends.cudnn.benchmark = False
         data_started = time.monotonic()
-        data = GraspDataset(a.dataset, 'train', blank=a.blank_images)
+        if pair_config:
+            data = pairact_r1.pair_dataset_class()(a.dataset, 'train', stage_manifest=a.pairact_r1_stage_targets,
+                seed=a.seed, history=pair_config['history_augmentation'], sampling=pair_config['sampling'],
+                blank=a.blank_images)
+        else:
+            data = GraspDataset(a.dataset, 'train', blank=a.blank_images)
         data_load_s = time.monotonic() - data_started
-        priors = completion_priors(data) if a.done_loss != 'legacy_l1' else None
+        priors = (data.completion_priors() if pair_config else completion_priors(data)) if a.done_loss != 'legacy_l1' else None
         report['done_class_counts'] = priors
         policy = make_policy(pretrained=not bool(a.resume), device='cuda')
         if a.beamact3_v1 != 'off':
             from harness.beamact3 import install_head
             policy = install_head(policy, data.stats)
+        if pair_config:
+            policy = pairact_r1.install_stage_head(policy)
         optimizer = torch.optim.AdamW(policy.get_optim_params(), lr=1e-5, weight_decay=1e-4)
         generator = torch.Generator().manual_seed(a.seed)
         step = 0
@@ -154,7 +193,7 @@ def main():
                          'blank_images': a.blank_images, 'seed': a.seed,
                          'command_history_dropout': a.command_history_dropout,
                          'history_causal_split_v1': a.history_causal_split_v1,
-                         'beamact3_v1': a.beamact3_v1,
+                         'beamact3_v1': a.beamact3_v1, **pair_hashes,
                          'done_loss': a.done_loss, 'done_loss_weight': a.done_loss_weight}.items():
                 if resume.get(k, {'done_loss': 'legacy_l1', 'done_loss_weight': 1.,
                                   'command_history_dropout': 0., 'history_causal_split_v1': 'off', 'beamact3_v1': 'off'}.get(k)) != v:
@@ -202,7 +241,7 @@ def main():
                           'blank_images': a.blank_images, 'seed': a.seed, 'step': step,
                           'command_history_dropout': a.command_history_dropout,
                           'history_causal_split_v1': a.history_causal_split_v1,
-                          'beamact3_v1': a.beamact3_v1,
+                          'beamact3_v1': a.beamact3_v1, **pair_hashes,
                           'done_loss': a.done_loss, 'done_loss_weight': a.done_loss_weight,
                           'done_class_counts': priors}
             if a.run_class == 'dev':
@@ -219,6 +258,8 @@ def main():
                     'save_s': time.monotonic() - checkpoint_started,
                     'bytes': sum(f.stat().st_size for f in folder.rglob('*') if f.is_file())})
 
+        if pair_config:
+            data.augment = True   # TRAIN-only history dither/dropout; off again for readback
         with (a.output / 'progress.jsonl').open('x') as log:
             while step < a.steps:
                 if stop['requested'] or time.monotonic() - started > a.max_wall_s:
@@ -229,9 +270,13 @@ def main():
                 if a.profile_timing:
                     torch.cuda.synchronize()
                     step_started = time.monotonic()
-                indices = torch.randint(len(data), (8,), generator=generator).tolist()
+                indices = (data.sample(generator, 8) if pair_config
+                           else torch.randint(len(data), (8,), generator=generator).tolist())
                 batch = torch.utils.data.default_collate([data[i] for i in indices])
-                assert_tensor_keys(batch, training=True)
+                if pair_config and 'stage_target' not in batch:
+                    raise ValueError('pairact-r1 stage targets missing from batch')
+                # The stage target is a separate offline label, never a model input.
+                assert_tensor_keys({k: v for k, v in batch.items() if k != 'stage_target'}, training=True)
                 if a.profile_timing:
                     batch_load_s = time.monotonic() - step_started
                 batch = {k: v.to('cuda') for k, v in batch.items()}
@@ -272,6 +317,8 @@ def main():
         if a.profile_timing:
             torch.cuda.synchronize()
             report['timing']['checkpoint_load_s'] = time.monotonic() - readback_started
+        if pair_config:
+            data.augment = False
         probe = data[0]
         inputs = {k: torch.from_numpy(v.copy()).unsqueeze(0).to('cuda')
                   for k, v in probe.items() if k.startswith('observation.')}

@@ -15,6 +15,8 @@ or touches a simulator. Five default-off pieces:
    (``scripts/act18_carry_r1.py`` @3a28d24b4): TRAIN only, targets unchanged.
 5. v7 own-issued clock (C2c, deadband 2): +-1/+-2 PWM moves do not reset
    ``pwm_elapsed_s``. Deadband 0 is the unchanged contract ``IssuedClock``.
+6. TRAIN-only transition oversampling (READY entry, READY->grasp execute,
+   carry->place, place->complete) and sampler-mass completion priors.
 
 Student inputs stay the v6 contract: own RGB history, own issued commands,
 task tokens and own clocks. No stage, geometry, partner pose or truth is input.
@@ -58,14 +60,29 @@ TEACHER_PHASE_TO_STAGE = {
     'recover': 'recover',
     'complete': 'complete', 'done': 'complete',
 }
+# P2 GPU carry teacher (``harness/pair_carry_teacher_warp.py`` PHASES on
+# dsh/pairact-p2-carrypath, recorder label ``teacher_phase='carry:<phase>'``).
+CARRY_TEACHER_PHASES = ('carry_hold', 'to_west_staging', 'rotate_door', 'to_door_entry', 'door_pass',
+                        'to_east_staging', 'rotate_zone', 'to_zone', 'zone_settle', 'lower', 'open',
+                        'raise', 'retreat', 'done')
+TEACHER_PHASE_TO_STAGE.update({'carry:' + p: 'carry' for p in CARRY_TEACHER_PHASES[:9]})
+TEACHER_PHASE_TO_STAGE.update({'carry:' + p: 'place' for p in ('lower', 'open', 'raise', 'retreat')})
+TEACHER_PHASE_TO_STAGE['carry:done'] = 'complete'
 
 # act18 A-r1 history augmentation (identical constants and semantics).
 ENTRY = 14
 PWM_OFFSET = 8
 SERVO_COUNT = 5
 COMMAND_SLICE = slice(0, 13)        # wheels, pulse widths, PWMs (age at 13 excluded)
-REGISTERED_HISTORY = dict(dither_max_pwm=6, dither_prob=.5, dropout_prob=.1)
+REGISTERED_HISTORY = dict(dither_max_pwm=6, dither_prob=.5, dropout_prob=.1, dropout_min_k=12)
 CLOCK_DEADBANDS = (0, 2)
+# beamact3 arm A zeroes entries 0..10 after normalisation (COMPACT_HISTORY 5).
+# act18 dropout draws k in 1..15, so only k>=12 touches a visible entry
+# (effective 0.1*4/15). dropout_min_k=12 keeps every dropout event visible.
+VISIBLE_MIN_K = 12
+# Stage transition oversampling (h0 stage change, both sides of the change).
+TRANSITIONS = (('alignment', 'ready'), ('ready', 'execute'), ('carry', 'place'), ('place', 'complete'))
+REGISTERED_SAMPLING = dict(mode='pairact_r1_transition_weighted_v1', window_rows=10, weight=3.)
 
 
 # ---------------------------------------------------------------- config
@@ -74,7 +91,7 @@ def validate_config(config):
     """Registered P4 config draft; any deviation is an explicit error."""
     required = {'mode', 'base_arm', 'stages', 'done_recovery', 'place_sync', 'history_augmentation',
                 'issued_clock_deadband', 'steps', 'seed', 'batch_size', 'chunk', 'checkpoint_every',
-                'selection'}
+                'selection', 'sampling'}
     missing = required - set(config)
     if missing:
         raise ValueError(f'pairact config missing {sorted(missing)}')
@@ -90,6 +107,7 @@ def validate_config(config):
         raise ValueError('issued clock deadband must be 0 (v6) or 2 (v7)')
     h = config['history_augmentation']
     validate_history_options(**h)
+    validate_sampling(config['sampling'])
     if config['batch_size'] != 8 or config['chunk'] != c.CHUNK:
         raise ValueError('batch 8 / chunk 8 kept from beamact2-4')
     if type(config['steps']) is not int or not 1 <= config['steps'] <= 100000:
@@ -276,7 +294,10 @@ class DeadbandIssuedClock:
 
 # ---------------------------------------------------------------- history augmentation
 
-def validate_history_options(*, dither_max_pwm=None, dither_prob=None, dropout_prob=None):
+def validate_history_options(*, dither_max_pwm=None, dither_prob=None, dropout_prob=None, dropout_min_k=None):
+    if dropout_min_k is not None and (dropout_prob is None or type(dropout_min_k) is not int
+                                      or not 1 <= dropout_min_k < c.HISTORY):
+        raise ValueError('dropout_min_k needs dropout and an integer in [1, 15]')
     if dither_max_pwm is not None:
         if type(dither_max_pwm) is not int or not 1 <= dither_max_pwm <= 9:
             raise ValueError('history dither max PWM must be an integer in [1, 9]')
@@ -306,12 +327,14 @@ def history_dither(state, rng, max_pwm, prob):
     return out
 
 
-def history_dropout(state, rng, prob):
-    """With probability prob: entries 0..k-1 take the command content of entry k (ages kept)."""
+def history_dropout(state, rng, prob, min_k=1):
+    """With probability prob: entries 0..k-1 take the command content of entry k (ages kept).
+
+    ``min_k=1`` is act18 A-r1 exactly; ``min_k=12`` draws k in 12..15 only."""
     out = np.array(state, dtype=np.float32, copy=True)
     if rng.random() >= prob:
         return out
-    k = int(rng.integers(1, c.HISTORY))
+    k = int(rng.integers(min_k, c.HISTORY))
     keep = out[k * ENTRY:k * ENTRY + ENTRY][COMMAND_SLICE].copy()
     for entry in range(k):
         out[entry * ENTRY:entry * ENTRY + 13] = keep
@@ -322,8 +345,68 @@ def augment_raw_state(raw, rng, options):
     if options.get('dither_max_pwm') is not None:
         raw = history_dither(raw, rng, options['dither_max_pwm'], options['dither_prob'])
     if options.get('dropout_prob') is not None:
-        raw = history_dropout(raw, rng, options['dropout_prob'])
+        raw = history_dropout(raw, rng, options['dropout_prob'], options.get('dropout_min_k') or 1)
     return raw
+
+
+# ---------------------------------------------------------------- stage targets / sampling
+
+def segment_ids_from_samples(samples):
+    """Contiguous same-skill rows at the control period form one segment."""
+    out, current = [], -1
+    for i, row in enumerate(samples):
+        if i == 0 or row['skill'] != samples[i - 1]['skill'] or abs(row['t'] - samples[i - 1]['t'] - c.PERIOD_S) > 1e-5:
+            current += 1
+        out.append(current)
+    return out
+
+
+def episode_stage_targets(samples, phase_by_sample_id, action_is_pad):
+    """Sidecar targets for one converted episode (rows in samples.json order)."""
+    missing = [r['sample_id'] for r in samples if r['sample_id'] not in phase_by_sample_id]
+    if missing:
+        raise ValueError(f'{len(missing)} rows without teacher_phase; reject episode')
+    phases = [phase_by_sample_id[r['sample_id']] for r in samples]
+    return stage_targets(phases, segment_ids_from_samples(samples), action_is_pad)
+
+
+def transition_row_weights(h0_stages, segment_ids, *, window_rows, weight):
+    """Rows within window_rows of a registered h0 stage transition get ``weight``."""
+    stages = list(h0_stages)
+    out = np.ones(len(stages), dtype=np.float64)
+    pairs = {(stage_index(a), stage_index(b)) for a, b in TRANSITIONS}
+    for i in range(1, len(stages)):
+        if segment_ids[i] != segment_ids[i - 1]:
+            continue
+        if (stages[i - 1], stages[i]) in pairs:
+            lo, hi = max(0, i - window_rows), min(len(stages), i + window_rows)
+            for j in range(lo, hi):
+                if segment_ids[j] == segment_ids[i]:
+                    out[j] = weight
+    return out
+
+
+def validate_sampling(sampling):
+    if sampling is None or sampling.get('mode') == 'off':
+        return None
+    if (sampling.get('mode') != REGISTERED_SAMPLING['mode'] or type(sampling.get('window_rows')) is not int
+            or not 1 <= sampling['window_rows'] <= 50 or not 1 <= float(sampling.get('weight', 0)) <= 20):
+        raise ValueError('unknown or out-of-range transition sampling')
+    return sampling
+
+
+def weighted_completion_priors(skills, done_h0, weights):
+    """Balanced-BCE priors under the declared sampler mass (act18 A-r1 form)."""
+    totals = {}
+    for skill, positive, w in zip(skills, done_h0, weights):
+        if positive not in (0., 1.):
+            raise ValueError('binary TRAIN completion required')
+        v = totals.setdefault(skill, dict(mass=0., positive_mass=0., positive_n=0, rows_N=0))
+        v['mass'] += float(w); v['positive_mass'] += float(w) * positive
+        v['positive_n'] += int(positive); v['rows_N'] += 1
+    return {k: {**v, 'positive_fraction': v['positive_mass'] / v['mass'],
+                'source': 'TRAIN h0 labels under the pairact-r1 transition-weighted sampler'}
+            for k, v in totals.items() if v['rows_N'] and 0 < v['positive_mass'] < v['mass']}
 
 
 # ---------------------------------------------------------------- dataset
@@ -338,12 +421,14 @@ def pair_dataset_class():
     from harness.grasp_act_data import GraspDataset, safe_path, sha256
 
     class PairActDataset(GraspDataset):
-        def __init__(self, root, split, *, stage_manifest, seed=None, history=None, blank=False):
+        def __init__(self, root, split, *, stage_manifest, seed=None, history=None, sampling=None, blank=False):
             super().__init__(root, split, blank=blank)
             history = dict(history or {})
             validate_history_options(**history)
-            if split != 'train' and any(v is not None for v in history.values()):
-                raise ValueError('history augmentation is TRAIN only')
+            sampling = validate_sampling(sampling)
+            if split != 'train' and (any(v is not None for v in history.values()) or sampling):
+                raise ValueError('history augmentation / transition sampling are TRAIN only')
+            self.sampling = sampling
             self.history, self.augment = history, False
             self.rng = np.random.default_rng(seed)
             sidecar = json.loads(Path(stage_manifest).read_text())
@@ -369,6 +454,39 @@ def pair_dataset_class():
                         or np.any((target == PAD) != pad)
                         or np.any((target[~pad] < 0) | (target[~pad] >= len(STAGES)))):
                     raise ValueError('stage target/padding alignment mismatch')
+            self.segments = []
+            for episode in self.manifest['episodes']:
+                if episode['split'] == split:
+                    folder = safe_path(self.root, episode['path'])
+                    self.segments.append(segment_ids_from_samples(json.loads((folder / 'samples.json').read_text())))
+            weights = []
+            for target, segments in zip(self.targets, self.segments):
+                if len(segments) != len(target):
+                    raise ValueError('samples.json/tensor row mismatch')
+                if sampling:
+                    weights.append(transition_row_weights(target[:, 0], segments,
+                                                          window_rows=sampling['window_rows'],
+                                                          weight=float(sampling['weight'])))
+                else:
+                    weights.append(np.ones(len(target)))
+            self.row_weights = np.concatenate(weights)
+
+        def sample(self, generator, batch_size):
+            import torch
+            if not self.sampling:
+                return torch.randint(len(self), (batch_size,), generator=generator).tolist()
+            weights = torch.from_numpy(self.row_weights)
+            return torch.multinomial(weights, batch_size, replacement=True, generator=generator).tolist()
+
+        def completion_priors(self):
+            skills, done = [], []
+            for shard in self.shards:
+                for state, action in zip(shard['state'], shard['action'][:, 0]):
+                    task = state[c.HISTORY * ENTRY:c.HISTORY * ENTRY + len(c.SKILLS)]
+                    if not np.isin(task, [0., 1.]).all() or task.sum() != 1:
+                        raise ValueError('one-hot skill required for completion weighting')
+                    skills.append(c.SKILLS[int(task.argmax())]); done.append(float(action[-1]))
+            return weighted_completion_priors(skills, done, self.row_weights)
 
         def __getitem__(self, index):
             batch = super().__getitem__(index)
@@ -499,3 +617,96 @@ class PairActActor:
         policy.load_state_dict(load_file(str(root / 'model.safetensors')), strict=True)
         base = GraspActor(policy, meta['stats'], device=device, done_mode=meta['done_mode'])
         return cls(beamact3.Beam3Actor(base, 'A'), meta)
+
+
+# ---------------------------------------------------------------- offline gate (validation split only)
+
+# Pre-registered thresholds (experiments/2026-10-21-pairact-r1/OFFLINE_GATE.md).
+GATE = dict(stage_macro_acc_min=.80, premature_ready_max=.02, premature_post_go_max=.02,
+            done_false_positive_max=.01, done_recall_min=.80, transition_recall_min=.80,
+            transition_window_rows=10, dither_stage_acc_drop_max=.05, dither_done_false_positive_max=.02)
+DONE_THRESHOLD = .65   # grasp_act_contract.decode_action
+PRE_GO = ('approach', 'alignment', 'recover')
+
+
+def transition_recall(pred, target, segments, window_rows):
+    """Per registered transition: fraction of true h0 transitions whose 'to' stage is
+    predicted within window_rows rows after the change (same segment)."""
+    out = {}
+    for a, b in TRANSITIONS:
+        ia, ib = stage_index(a), stage_index(b)
+        hits = total = 0
+        for i in range(1, len(target)):
+            if segments[i] != segments[i - 1] or (target[i - 1], target[i]) != (ia, ib):
+                continue
+            total += 1
+            hits += any(pred[j] == ib for j in range(i, min(len(target), i + window_rows + 1))
+                        if segments[j] == segments[i])
+        out[f'{a}->{b}'] = dict(hits=hits, total=total, recall=hits / total if total else None)
+    return out
+
+
+def offline_metrics(pred, target, segments, done_score, done_target, *, window_rows=GATE['transition_window_rows']):
+    """h0 metrics over one split. pred/target are stage indices, done_* per row."""
+    pred, target = np.asarray(pred), np.asarray(target)
+    done_score, done_target = np.asarray(done_score, float), np.asarray(done_target, float)
+    if not (len(pred) == len(target) == len(segments) == len(done_score) == len(done_target)) or not len(pred):
+        raise ValueError('aligned nonempty offline rows required')
+    per_stage = {}
+    for i, name in enumerate(STAGES):
+        rows = target == i
+        if rows.any():
+            per_stage[name] = dict(n=int(rows.sum()), acc=float((pred[rows] == i).mean()))
+    pre = np.isin(target, [stage_index(s) for s in PRE_GO])
+    done_pred = done_score >= DONE_THRESHOLD
+    negatives, positives = done_target == 0, done_target == 1
+    return dict(rows=int(len(pred)), per_stage=per_stage,
+                stage_macro_acc=float(np.mean([v['acc'] for v in per_stage.values()])),
+                premature_ready=float((pred[pre] == stage_index('ready')).mean()) if pre.any() else None,
+                premature_post_go=float(np.isin(pred[pre], [stage_index(s) for s in POST_GO_STAGES]).mean())
+                if pre.any() else None,
+                done_false_positive=float(done_pred[negatives].mean()) if negatives.any() else None,
+                done_recall=float(done_pred[positives].mean()) if positives.any() else None,
+                transitions=transition_recall(pred.tolist(), target.tolist(), segments, window_rows))
+
+
+def gate(clean, dithered=None, thresholds=GATE):
+    """Return (passed, reasons). Missing measurements fail; nothing is waived."""
+    t, reasons = thresholds, []
+    def need(ok, why):
+        if not ok:
+            reasons.append(why)
+    need(clean['stage_macro_acc'] >= t['stage_macro_acc_min'], 'G1 stage macro accuracy')
+    need(clean['premature_ready'] is not None and clean['premature_ready'] <= t['premature_ready_max'],
+         'G2 READY before alignment end')
+    need(clean['premature_post_go'] is not None and clean['premature_post_go'] <= t['premature_post_go_max'],
+         'G2 post-GO stage before READY')
+    need(clean['done_false_positive'] is not None and clean['done_false_positive'] <= t['done_false_positive_max'],
+         'G3 done false positive')
+    need(clean['done_recall'] is not None and clean['done_recall'] >= t['done_recall_min'], 'G3 done recall')
+    for name, v in clean['transitions'].items():
+        need(v['total'] > 0 and v['recall'] >= t['transition_recall_min'], f'G4 transition {name}')
+    if dithered is None:
+        reasons.append('G5 dithered-history check missing')
+    else:
+        need(clean['stage_macro_acc'] - dithered['stage_macro_acc'] <= t['dither_stage_acc_drop_max'],
+             'G5 stage accuracy under dithered history')
+        need(dithered['done_false_positive'] is not None
+             and dithered['done_false_positive'] <= t['dither_done_false_positive_max'],
+             'G5 done false positive under dithered history')
+    return not reasons, reasons
+
+
+def select_checkpoint(rows):
+    """rows: [{'step', 'passed', 'clean'}]; validation split only.
+
+    Among passing checkpoints: max of the minimum transition recall, then
+    stage macro accuracy, then the earliest step. None passing -> None (NOT_READY).
+    """
+    passing = [r for r in rows if r['passed']]
+    if not passing:
+        return None
+    def key(r):
+        recalls = [v['recall'] for v in r['clean']['transitions'].values()]
+        return (min(recalls), r['clean']['stage_macro_acc'], -r['step'])
+    return max(passing, key=key)['step']
