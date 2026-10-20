@@ -6,6 +6,7 @@
     "validation": {"first": 8341000, "last": 8341019},
     "heldout": {"first": 8342000, "last": 8342019}
   },
+  "train_extension": {"first": 8340200, "last": 8340599, "rule": "COLLECT_PREREG_DRAFT.json seeds.train_extension: consumed in order only after 8340199; same use as train"},
   "use": {
     "train": "teacher demonstrations; only teacher-success episodes enter TRAIN tensors",
     "validation": "teacher demonstrations; offline gate and checkpoint selection only",

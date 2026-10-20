@@ -297,3 +297,18 @@ def test_collect_cases_geometry_respects_bins(prereg):
                 assert abs(d - plan['start_layers'][rid]['target_distance_m']) < 1e-9
                 assert pc.bin_of(prereg, d, plan['start_layers'][rid]['yaw_bin']['offset_rad']) == b['id']
             assert case == cc.make_case(geo, prereg, dict(seed=seed, bin=b['id'], split='train'))
+
+
+def test_prereg_seed_ranges_match_seeds_json(prereg):
+    spec = json.loads((ROOT / 'experiments/2026-10-21-pairact-r1/seeds.json').read_text())
+    pick = lambda r: (r['first'], r['last'])
+    s = prereg['seeds']
+    assert pick(s['train_primary']) == pick(spec['splits']['train'])
+    assert pick(s['train_extension']) == pick(spec['train_extension'])
+    assert pick(s['validation']) == pick(spec['splits']['validation'])
+    assert pick(s['heldout']) == pick(spec['splits']['heldout'])
+    import importlib.util as u
+    sp = u.spec_from_file_location('seedcheck', ROOT / 'scripts/check_pairact_r1_seeds.py')
+    m = u.module_from_spec(sp)
+    sp.loader.exec_module(m)
+    assert m.check(spec) == []
