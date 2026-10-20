@@ -68,6 +68,15 @@ def test_zone_b_long_axis_is_the_only_slack_orientation():
     assert ct.beam_in_zone((4.6, -2.1, 0.), z) and not ct.beam_in_zone((4.6, -2.1, 0.), z, margin=.02)
 
 
+def test_static_map_resolves_to_the_wide_door_map():
+    from harness import zone_final_environment as env
+    static, _, _ = env.resolve('zone_wide_two_doors_final_v3')
+    assert static == MAP
+    assert ct.static_map_for({'static_map': static}) is static
+    with pytest.raises(NotImplementedError):
+        ct.static_map_for({'static_map': {'map_id': 'x', 'passages': [], 'regions': {}}})
+
+
 def test_door_too_narrow_is_explicit_code():
     narrow = json.loads(json.dumps(MAP))
     for p in narrow['passages']:
