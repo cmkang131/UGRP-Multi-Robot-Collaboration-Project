@@ -42,6 +42,9 @@ def main():
     sys.path.insert(0, str(B/'src/warp1-teacher-snapshot-6f057f7e'))
     import sim
     sim.__path__.append(str(ROOT/'sim'))
+    # Default OFF scene-fit test (UGRP_ACT18_SCENE_FIT); no-op when unset.
+    from act18_scene_fit import install_if_requested
+    install_if_requested()
     from act16w_native_contact import installed
     script = (Q/'scripts/run_warp_act_teacher.py' if args.mode == 'teacher' else ROOT/'scripts'/
               {'record': 'run_warp_act_record.py', 'eval-owner': 'act16w_eval_owner.py',

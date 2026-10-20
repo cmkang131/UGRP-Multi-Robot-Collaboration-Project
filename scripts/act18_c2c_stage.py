@@ -128,7 +128,9 @@ def main():
                       diag_prereg=(dict(path=str(a.prereg), sha256=sha256(a.prereg)) if stage == 'diag' else None),
                       env=dict(UGRP_ACT16W_NATIVE_GATE=str(a.native_gate), MUJOCO_GL='osmesa',
                                LP_NUM_THREADS='1', OMP_NUM_THREADS='1', OPENBLAS_NUM_THREADS='1',
-                               PYTHONDONTWRITEBYTECODE='1'),
+                               PYTHONDONTWRITEBYTECODE='1',
+                               **({'UGRP_ACT18_SCENE_FIT': os.environ['UGRP_ACT18_SCENE_FIT']}
+                                  if os.environ.get('UGRP_ACT18_SCENE_FIT') else {})),
                       run_root=str(a.run_root), no_pooling=True, r3_retraining='no-go',
                       started_utc=datetime.now(timezone.utc).isoformat())
         (folder / 'launch.json').write_text(json.dumps(launch, indent=2) + '\n')

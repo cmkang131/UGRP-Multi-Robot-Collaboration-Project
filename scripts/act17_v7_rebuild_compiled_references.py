@@ -333,6 +333,10 @@ def main():
         print(json.dumps(dict(warning='parallel builds share the frozen sim package; use workers=1 for audited runs')))
 
     sim = install_paths(a.teacher_source, a.qualified_source, a.owner_source)
+    # Default OFF scene-fit test (UGRP_ACT18_SCENE_FIT); no-op when unset.
+    from act18_scene_fit import install_if_requested, requested
+    install_if_requested()
+    scene_fit = requested()
     assets_cwd = (a.assets_cwd or a.qualified_source).resolve()
     if not (assets_cwd / 'sim' / 'assets').is_dir():
         raise ValueError('assets-cwd must contain sim/assets: ' + str(assets_cwd))
@@ -384,6 +388,7 @@ def main():
         qualified_source=dict(path=str(a.qualified_source.resolve()), sha256=qualified_sha, mode=qualified_mode),
         owner_source=dict(path=str(a.owner_source.resolve()), sha256=owner_sha, mode=owner_mode),
         mujoco=mujoco.__version__, platform=platform.platform(),
+        scene_fit=('v6_neutral_pickup_v1' if scene_fit else 'off'),
         scope='compiled C312 export only; no physics rollout, GPU, teacher action or task-success claim',
         semantics='all regenerated assets compared with the recorded reference manifest/geometry when --reference-root is set',
         cases=ok)
