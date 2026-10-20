@@ -15,7 +15,7 @@ set -uo pipefail
 MODE="${1:-plan}"
 PY="${PY:-/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python}"
 SRC="${SRC:-/home/ugrp/ugrp-sim/src}"
-REPO="${REPO:-/home/ugrp/ugrp-sim/ugrp}"            # git clone of this repo on gcp6 [확인 필요]
+REPO="${REPO:-/home/ugrp/ugrp-sim/src/nav-v230-r5-219d0877}"  # verified 2026-10-20: remote=kcm0127-dotcom/ugrp.git, has origin/dsh/pairact-p0-diag. /home/ugrp/ugrp-sim/ugrp is NOT a git repo (only .venv-sim/.venv-warp)
 RUNNER="${RUNNER:-$SRC/beamact5-tools/run_warp_flow_teacher_gcp6.py}"
 HERE="$(cd "$(dirname "$0")" && pwd)"
 CASES0="${CASES0:-/home/ugrp/ugrp-sim/runs/beamact5/wide-start-8420000d-r4/wide-cases-r13.json}"
@@ -47,12 +47,16 @@ declare -A CAND=([r13]=beamact5_r13 [c1]=pairact_p1c1 [c2b]=pairact_p1c2b [c3]=p
 declare -A ROOT=([r13]=05046e9d245e46b4ee3d1c43308f7258a9fa41c5 [c1]=6360e972e22401c42ec316883f40e2c485f88005 [c2b]=f2fd635d0020b69b50d09e9878c3924d47c76291 [c3]=7f8bb3c5b950c3743da6aff7ee2ff1eead94c915)
 declare -A ADPT=([r13]=d354468a303e1ebc961e58deedd35d05bed40098 [c1]=c25a616c9ebb1a46564b75a7be07a9db394e07b7 [c2b]=63c3b697817b40aab27412917e160e755bd07b78 [c3]=9b4c29108705b157c4a73ab2be8c205ca0f22727)
 declare -A TCHR=([r13]=fe6858eca7fa7b2ba6fb518c54f18a071995d5b4 [c1]=ee757b916335dd225723e742f76426bbf9018c21 [c2b]=42fc4eecb6daeef932393235d5d6bf5192f87c66 [c3]=802a19a673bc481c86b8fea26156430ed3082d89)
-# r13 used old directory names src/835ccef2.. (adapter) and src/26f84d0f.. (teacher) [확인 필요]; overridable.
-R13_ADAPTER_DIR="${R13_ADAPTER_DIR:-$SRC/835ccef26aa84b08cc8f7e256fd0f43aa1583ef9}"
-R13_TEACHER_DIR="${R13_TEACHER_DIR:-$SRC/26f84d0f0ada1c33473c83cca2d3415ce51bd247}"
+# r13 reproduce strings used old directory names src/835ccef2.. (adapter) / src/26f84d0f.. (teacher), but on
+# gcp6 those paths now hold HEAD d4398363e / f1cf1926b (verified 2026-10-20), not the pinned d354468a / fe6858ec.
+# Default to the pinned worktrees; both remain overridable.
+R13_ADAPTER_DIR="${R13_ADAPTER_DIR:-$SRC/pairact-adapter-d354468a}"
+R13_TEACHER_DIR="${R13_TEACHER_DIR:-$SRC/pairact-teacher-fe6858ec}"
+R13_ROOT_DIR="${R13_ROOT_DIR:-$SRC/pairact-root-05046e9d}"   # verified 2026-10-20: HEAD 05046e9d; $SRC/05046e9d.. does not exist
 
 dir_for() {  # arm kind -> directory
   local arm=$1 kind=$2
+  if [ "$arm" = r13 ] && [ "$kind" = root ]; then echo "$R13_ROOT_DIR"; return; fi
   if [ "$arm" = r13 ] && [ "$kind" = adapter ]; then echo "$R13_ADAPTER_DIR"; return; fi
   if [ "$arm" = r13 ] && [ "$kind" = teacher ]; then echo "$R13_TEACHER_DIR"; return; fi
   case $kind in root) echo "$SRC/${ROOT[$arm]}";; adapter) echo "$SRC/${ADPT[$arm]}";; teacher) echo "$SRC/${TCHR[$arm]}";; esac
@@ -87,9 +91,12 @@ preflight() {
     sha256sum "$CASES0" "$XML" "$REFS" "$REJ" "$RUNNER" 2>/dev/null
     nvidia-smi --query-compute-apps=pid,process_name,used_memory --format=csv
   } | tee "$f"
-  # r13 dirs carry old names; a HEAD mismatch there is reported, not fatal, when MISMATCH only on r13 [확인 필요]
-  if grep -E '^(MISSING|MISMATCH)' "$f" | grep -v 'arm=r13' | grep -q .; then echo "PREFLIGHT FAIL" >&2; return 1; fi
-  grep -q '^MISSING' "$f" && { echo "PREFLIGHT FAIL" >&2; return 1; }
+  # The r13 dirs now default to the pinned worktrees, so a HEAD mismatch is fatal for every arm.
+  # plan mode has not created the candidate worktrees yet, so only fail for real (EXEC) runs.
+  if grep -E '^(MISSING|MISMATCH)' "$f" | grep -q .; then
+    if [ $EXEC = 1 ]; then echo "PREFLIGHT FAIL" >&2; return 1; fi
+    echo "PREFLIGHT WARN (plan mode): candidate worktrees not created yet" >&2
+  fi
   return 0
 }
 
