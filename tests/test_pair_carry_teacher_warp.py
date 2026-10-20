@@ -307,3 +307,171 @@ def test_runner_rejects_invalid_carry_combinations(tmp_path, kwargs, match):
     from scripts import run_grasp_act_teacher as runner
     with pytest.raises(ValueError, match=match):
         runner.run({'roles': ROLES}, tmp_path, **kwargs)
+
+
+# ------------------------------------- drive response (eval-only, P2 follow-up)
+
+def _teacher_rollout(teacher, beam0, *, speed_gain=1., min_z_fn=None, cap=200.):
+    """Like ``rollout`` but with a body-speed gain (GT moves speed_gain x the
+    command) and an optional arm-driven beam height model for the set-down."""
+    robots = {rid: tuple(v['pose']) for rid, v in handover(beam0)['robots'].items()}
+    off = ct.relative(robots['r1'], beam0)
+    beam, rows, t, min_z = beam0, [], 0., .03
+    while t < cap:
+        phase = teacher.phase
+        if min_z_fn is not None:
+            min_z = min_z_fn(teacher)
+            held = phase not in ('raise', 'retreat', 'done') and not (phase == 'open' and t - teacher.phase_t >= .2)
+        else:
+            held = phase not in ('open', 'raise', 'retreat', 'done') or (phase == 'open' and t - teacher.phase_t < .2)
+            if phase == 'lower':
+                min_z = max(0., .03*(1 - (t - teacher.phase_t)/teacher.p.lower_s))
+            elif phase in ('open', 'raise', 'retreat', 'done'):
+                min_z = 0.
+        row = truth(beam, robots, held=held, min_z=min_z, t=t)
+        rows.append(ce.eval_row(row))
+        if teacher.done and t - teacher.events[-1]['t'] > 1.5:
+            break
+        teacher.step(row, t)
+        drives = {rid: teacher.log[-1]['drive'][rid] if teacher.log and teacher.log[-1]['t'] == t else (0., 0., 0.)
+                  for rid in ROLES}
+        for rid in ROLES:
+            robots[rid] = integrate(robots[rid], [speed_gain*v for v in drives[rid]])
+        if teacher.phase in ct.PHASES[:ct.PHASES.index('open')] and min_z > 0:
+            beam = ct.compose(robots['r1'], off)
+        t = round(t + .1, 6)
+    return rows
+
+
+def test_drive_response_matches_ideal_kinematics_and_is_eval_only():
+    teacher = make((.7, -1.5, .3))
+    rows = _teacher_rollout(teacher, (.7, -1.5, .3))
+    assert teacher.outcome == 'command_sequence_complete'
+    resp = ce.drive_response(rows, teacher.log, list(ROLES))
+    assert resp['affects_success'] is False and resp['affects_phase_timeout'] is False
+    for rid in ROLES:
+        a = resp['phases']['all'][rid]
+        assert a['speed_ratio'] == pytest.approx(1., abs=1e-6) and a['stall_ticks'] == 0
+    assert {'to_west_staging', 'door_pass', 'to_zone'} <= set(resp['phases'])
+
+
+def test_slow_body_shows_in_drive_response_not_in_success_or_timeout_code():
+    teacher = make((.7, -1.5, .3))
+    rows = _teacher_rollout(teacher, (.7, -1.5, .3), speed_gain=.4, cap=120.)
+    resp = ce.drive_response(rows, teacher.log, list(ROLES))
+    for rid in ROLES:
+        assert resp['phases']['all'][rid]['speed_ratio'] == pytest.approx(.4, abs=1e-6)
+    lower = next((e['t'] for e in teacher.events if e.get('to') == 'lower'), None)
+    plain = ce.evaluate(rows, MAP, list(ROLES), lower_start_t=lower, handover_t=0.)
+    # the evaluator verdict does not depend on the drive diagnostic
+    assert set(plain) == set(ce.evaluate(rows, MAP, list(ROLES), lower_start_t=lower, handover_t=0.))
+    rep = ce.phase_report(teacher.diagnostic(), resp)
+    assert rep['timeout_source'] == 'teacher_events'
+    for r in rep['phases']:
+        if r['drive_response'] is not None:
+            assert r['drive_response']['r1']['speed_ratio'] == pytest.approx(.4, abs=1e-6)
+        # a timeout flag only ever comes from a teacher fail event
+        assert r['teacher_timeout'] == (r['teacher_code'] is not None and r['teacher_code'].endswith('_timeout'))
+
+
+def test_phase_report_flags_the_timed_out_phase():
+    teacher = make((.7, -1.5, .3))
+    row = handover((.7, -1.5, .3))
+    t = 0.
+    teacher.p.phase_caps_s['to_west_staging'] = 2.     # frozen dataclass, mutable dict: test-only
+    try:
+        while not teacher.done and t < 10:
+            teacher.step(row, t)
+            t = round(t + .1, 6)
+    finally:
+        teacher.p.phase_caps_s['to_west_staging'] = 40.
+    assert teacher.outcome == 'west_staging_timeout'
+    rows = [ce.eval_row({**row, 't': k*.1}) for k in range(int(t*10) + 1)]
+    resp = ce.drive_response(rows, teacher.log, list(ROLES))
+    rep = ce.phase_report(teacher.diagnostic(), resp)
+    last = rep['phases'][-1]
+    assert last['phase'] == 'to_west_staging' and last['teacher_timeout'] and last['teacher_code'] == 'west_staging_timeout'
+    assert last['drive_response']['r1']['stall_frac'] == pytest.approx(1.)  # commanded, robots never moved
+
+
+# ------------------------------------------ set-down: floor_contact_v1 (opt-in)
+
+ARM_DEEP = {rid: {**ARM[rid], 'place_deep': {1: 1500, 3: 1500, 4: 1600, 5: 1500, 6: 1500}} for rid in ROLES}
+
+
+def _beam_z_from_arm(teacher, floor_at=1460):
+    """min_z falls linearly with servo 3 from the lift (1200) to the floor at
+    ``floor_at``; the grasp-height place pose (1400) stops 6.9 mm above it."""
+    if teacher.phase in ('raise', 'retreat', 'done'):
+        return 0.
+    s3 = teacher.pwm['r1'][3]
+    return max(0., .03*(1 - (s3 - 1200)/(floor_at - 1200)))
+
+
+def _make_lower(mode, arm=ARM_DEEP):
+    params = ct.Params(lower_mode=mode)
+    if mode == 'floor_contact_v1':
+        params = ct.Params(lower_mode=mode, phase_caps_s={**params.phase_caps_s, 'lower': params.lower_max_s + 1.})
+    return ct.PairCarryTeacherWarp(ROLES, handover((.7, -1.5, .3)), 0., MAP, arm, PWM, wheel_fn=wheels, params=params)
+
+
+def _min_z_at_open(rows, teacher):
+    t_open = next(e['t'] for e in teacher.events if e.get('to') == 'open')
+    return next(r['beam']['min_z'] for r in rows if r['t'] >= t_open - 1e-9)
+
+
+def test_default_lower_mode_is_grasp_height_and_unchanged():
+    assert ct.Params().lower_mode == 'grasp_height'
+    teacher = _make_lower('grasp_height')
+    rows = _teacher_rollout(teacher, (.7, -1.5, .3), min_z_fn=_beam_z_from_arm)
+    assert teacher.outcome == 'command_sequence_complete'
+    assert not any(e.get('event') == 'floor_touch' for e in teacher.events)
+    # beam slipped in the grasp model: the IK grasp height opens the jaws 6.9 mm up
+    assert _min_z_at_open(rows, teacher) > .006
+
+
+def test_floor_contact_lowering_stops_at_touch_and_places():
+    teacher = _make_lower('floor_contact_v1')
+    rows = _teacher_rollout(teacher, (.7, -1.5, .3), min_z_fn=_beam_z_from_arm)
+    assert teacher.outcome == 'command_sequence_complete', teacher.events[-3:]
+    touch = next(e for e in teacher.events if e.get('event') == 'floor_touch')
+    assert touch['min_z'] <= teacher.p.floor_margin_m and touch['lower_elapsed_s'] <= teacher.p.lower_max_s
+    d = teacher.diagnostic()
+    assert d['lower_mode'] == 'floor_contact_v1' and d['floor_touch_pwm']['r1']['3'] < 1500
+    assert _min_z_at_open(rows, teacher) <= teacher.p.floor_margin_m
+    lower = next(e['t'] for e in teacher.events if e.get('to') == 'lower')
+    res = ce.evaluate(rows, MAP, list(ROLES), lower_start_t=lower, handover_t=0.)
+    assert res['success'], res['failure']
+
+
+def test_floor_contact_no_touch_fails_closed_without_opening():
+    teacher = _make_lower('floor_contact_v1')
+    _teacher_rollout(teacher, (.7, -1.5, .3), min_z_fn=lambda tc: _beam_z_from_arm(tc, floor_at=1700))
+    assert teacher.outcome == ct.LOWER_NO_CONTACT
+    assert teacher.pwm['r1'][1] == 1500        # gripper never opened in the air
+
+
+def test_floor_contact_requires_place_deep_target():
+    assert _make_lower('floor_contact_v1', arm=ARM).outcome == 'arm_targets_missing'
+    with pytest.raises(ValueError, match='lower mode'):
+        ct.PairCarryTeacherWarp(ROLES, handover((.7, -1.5, .3)), 0., MAP, ARM_DEEP, PWM, wheel_fn=wheels,
+                                params=ct.Params(lower_mode='bogus'))
+    with pytest.raises(ValueError, match='lower phase cap'):
+        ct.PairCarryTeacherWarp(ROLES, handover((.7, -1.5, .3)), 0., MAP, ARM_DEEP, PWM, wheel_fn=wheels,
+                                params=ct.Params(lower_mode='floor_contact_v1'))
+
+
+@pytest.mark.parametrize('kwargs,match', [
+    ({'carry_lower': 'floor_contact_v1'}, 'requires pair carry'),
+    ({'pair_carry': ct.MODE, 'teacher_profile': 'visible_only', 'carry_lower': 'x'}, 'unknown carry lower'),
+])
+def test_runner_rejects_invalid_lower_mode(tmp_path, kwargs, match):
+    from scripts import run_grasp_act_teacher as runner
+    with pytest.raises(ValueError, match=match):
+        runner.run({'roles': ROLES}, tmp_path, **kwargs)
+
+
+def test_runner_lower_default_is_grasp_height():
+    fn = _runner_function()
+    kw = {a.arg: d.value for a, d in zip(fn.args.kwonlyargs, fn.args.kw_defaults) if isinstance(d, ast.Constant)}
+    assert kw['carry_lower'] == 'grasp_height'

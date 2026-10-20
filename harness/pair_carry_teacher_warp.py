@@ -25,6 +25,11 @@ from dataclasses import dataclass, field, asdict
 
 MODE = 'pair_carry_gt_v1'
 MODES = ('off', MODE)
+# Set-down target (default: the frozen P2 behaviour, IK back to the grasp height).
+# 'floor_contact_v1' keeps lowering past the grasp height until the GT beam
+# lowest point is within ``floor_margin_m`` of the floor, bounded by
+# ``lower_max_s`` (DESIGN §2-1). Opt-in only.
+LOWER_MODES = ('grasp_height', 'floor_contact_v1')
 SCHEMA = 'ugrp.pairact.carry_teacher.v1'
 ROLES = ('teal', 'blue')
 SERVOS = (1, 3, 4, 5, 6)
@@ -53,11 +58,12 @@ FAIL = {
     'raise': 'raise_timeout',
     'retreat': 'retreat_timeout',
 }
+LOWER_NO_CONTACT = 'lower_no_floor_contact'   # floor_contact_v1 only
 # Additional teacher-side abort codes (GT, teacher only; the evaluator recounts
 # drops independently from eval-only rows).
 ABORTS = ('carry_hold_lost', 'formation_stretch', 'formation_tracking_lost',
           'door_clearance_insufficient', 'staging_unclear', 'route_blocked',
-          'zone_unreachable', 'carry_total_timeout', 'arm_targets_missing')
+          'zone_unreachable', 'carry_total_timeout', 'arm_targets_missing', LOWER_NO_CONTACT)
 
 
 @dataclass(frozen=True)
@@ -90,6 +96,11 @@ class Params:
     zone_tol_yaw: float = math.radians(4.)
     zone_inner_margin_m: float = .02
     lower_s: float = 1.6
+    lower_mode: str = 'grasp_height'
+    floor_margin_m: float = .004  # floor_contact_v1: stop when beam min_z <= this (< eval rest .006)
+    lower_max_s: float = 4.       # floor_contact_v1: lift -> place_deep cap; no touch -> lower_no_floor_contact
+    floor_touch_hold_s: float = .2  # min_z must stay within the margin this long before freezing
+    place_deep_m: float = .025    # place_deep = IK at grasp_z - place_deep_m (arm_targets_from_teacher)
     open_s: float = .8
     raise_s: float = 1.
     settle_after_s: float = .3
@@ -389,14 +400,20 @@ class PairCarryTeacherWarp:
                  wheel_fn=None, door_id='door_wide', zone='zone_B', obstacles=None):
         if sorted(roles.values()) != sorted(ROLES):
             raise ValueError('one robot per beam end required')
+        if params.lower_mode not in LOWER_MODES:
+            raise ValueError(f'unknown lower mode {params.lower_mode!r}')
+        if params.lower_mode == 'floor_contact_v1' and params.phase_caps_s['lower'] < params.lower_max_s + params.settle_after_s:
+            raise ValueError('lower phase cap must cover lower_max_s + settle')
         self.roles, self.p, self.wheel_fn = dict(roles), params, wheel_fn
         self.rids = tuple(roles)
         self.static_map = static_map
         self.t0 = float(now)
         self.pwm = {rid: {int(s): int(v) for s, v in pwm[rid].items()} for rid in self.rids}
         self.lift_pwm = {rid: dict(self.pwm[rid]) for rid in self.rids}
+        need = {'place', 'hover'} | ({'place_deep'} if params.lower_mode == 'floor_contact_v1' else set())
         missing = [rid for rid in self.rids if not arm_targets or rid not in arm_targets
-                   or not {'place', 'hover'} <= set(arm_targets[rid])]
+                   or not need <= set(arm_targets[rid])]
+        self.touch_pwm, self.touch_since = None, None
         self.arm_targets = arm_targets
         beam = tuple(truth['beam']['pose'])
         robots = {rid: tuple(truth['robots'][rid]['pose']) for rid in self.rids}
@@ -480,14 +497,20 @@ class PairCarryTeacherWarp:
                 self.stretch_since = None
         else:
             stretch = 0.
+        issue_phase = self.phase
         handler = getattr(self, '_' + self.phase)
         drive = handler(truth, robots, now, stretch)
         out = {}
         for rid in self.rids:
             out[rid] = (make_command(now, self.pwm[rid], drive.get(rid, (0., 0., 0.)), params=self.p,
                                      wheel_fn=self.wheel_fn), self.phase == 'done')
-        self.log.append({'t': now, 'phase': self.phase, 'virtual': list(self.virtual), 'stretch_m': stretch,
-                         'drive': {rid: list(drive.get(rid, (0., 0., 0.))) for rid in self.rids}})
+        # 'issue_phase' = phase whose handler produced this tick's command (eval-only
+        # drive response pairs it with the GT motion over the next tick).
+        self.log.append({'t': now, 'phase': self.phase, 'issue_phase': issue_phase, 'virtual': list(self.virtual),
+                         'stretch_m': stretch,
+                         'drive': {rid: list(drive.get(rid, (0., 0., 0.))) for rid in self.rids},
+                         'wheels': {rid: list(out[rid][0]['wheels']) for rid in self.rids},
+                         'duration_s': {rid: list(out[rid][0]['duration_s']) for rid in self.rids}})
         return out
 
     # ---- phases
@@ -585,13 +608,50 @@ class PairCarryTeacherWarp:
 
     def _arm(self, rid, key):
         t = self.arm_targets[rid]
-        if key == 'open':
-            return {**{int(s): int(v) for s, v in t['place'].items()}, 1: GRIPPER_OPEN}
-        return {int(s): int(v) for s, v in t[key].items()}
+        if key in ('place', 'open') and self.touch_pwm is not None:
+            # floor_contact_v1: the set-down pose is where the floor was touched
+            base = self.touch_pwm[rid]
+        else:
+            base = t['place' if key == 'open' else key]
+        base = {int(s): int(v) for s, v in base.items()}
+        return {**base, 1: GRIPPER_OPEN} if key == 'open' else base
 
     def _lower(self, truth, robots, now, stretch):
         # Both arms follow the same clock: simultaneous lowering by construction.
+        if self.p.lower_mode == 'floor_contact_v1':
+            return self._lower_to_floor(truth, now)
         return self._arm_phase(now, 'lift', 'place', self.p.lower_s, 'open')
+
+    def _lower_to_floor(self, truth, now):
+        """Lower lift -> place_deep on one clock over lower_max_s and freeze both
+        arms as soon as the GT beam lowest point stays within floor_margin_m of
+        the floor for floor_touch_hold_s. No touch by lower_max_s -> explicit
+        failure (never opens in the air)."""
+        p, el = self.p, now - self.phase_t
+        if self.touch_pwm is not None:
+            if now - self.touch_t >= p.settle_after_s - 1e-8:
+                self._set('open', now)
+            return {}
+        if truth['beam']['min_z'] <= p.floor_margin_m:
+            self.touch_since = now if self.touch_since is None else self.touch_since
+            if now - self.touch_since >= p.floor_touch_hold_s - 1e-8:
+                self.touch_pwm = {rid: dict(self.pwm[rid]) for rid in self.rids}
+                self.touch_t = now
+                self.events.append({'t': now, 'event': 'floor_touch', 'min_z': truth['beam']['min_z'],
+                                    'lower_elapsed_s': el})
+                return {}
+        else:
+            self.touch_since = None
+        if el >= p.lower_max_s - 1e-8 and self.touch_since is None:
+            self._fail(LOWER_NO_CONTACT, now, detail={'min_z': truth['beam']['min_z']})
+            return {}
+        # same smoothstep as grasp_height, but toward the deeper target and
+        # held still while the touch dwell is being confirmed
+        if self.touch_since is None:
+            u = el/p.lower_max_s
+            for rid in self.rids:
+                self.pwm[rid] = interpolate_pwm(self.lift_pwm[rid], self._arm(rid, 'place_deep'), u)
+        return {}
 
     def _open(self, truth, robots, now, stretch):
         return self._arm_phase(now, 'place', 'open', self.p.open_s, 'raise')
@@ -630,14 +690,19 @@ class PairCarryTeacherWarp:
                 'phase': self.phase, 'route': [[t, list(p)] for t, p in self.route],
                 'route_info': self.route_info, 'offsets': {k: list(v) for k, v in self.offsets.items()},
                 'd12_0_m': self.d12_0, 'max_stretch_m': self.max_stretch, 'max_track_err_m': self.max_track,
+                'lower_mode': self.p.lower_mode,
+                'floor_touch_pwm': ({k: {str(s): v for s, v in d.items()} for k, d in self.touch_pwm.items()}
+                                    if self.touch_pwm is not None else None),
                 'retreat': getattr(self, 'retreat_kind', None), 'events': self.events}
 
 
-def arm_targets_from_teacher(teacher, *, hover_z=.095):
+def arm_targets_from_teacher(teacher, *, hover_z=.095, place_deep_m=None):
     """Runner glue (needs the simulator arm model). Reuses the grasp teacher's
     own recorded grasp point and the same IK the pick used
     (``sim/grasp_act_teacher.py::_queue_pick``): place = grip site back at the
-    grasp height (gripper closed 1500), hover = gripper open at hover_z."""
+    grasp height (gripper closed 1500), hover = gripper open at hover_z.
+    ``place_deep_m`` (floor_contact_v1 only) adds place_deep = grip site
+    place_deep_m below the grasp height; the IK may clamp it [확인 필요 on gcp6]."""
     from harness.visual_arm_v3 import solve_grip_site_ik, tool_pose
     xyz = getattr(teacher, 'grasp_xyz', None)
     if xyz is None:
@@ -647,8 +712,12 @@ def arm_targets_from_teacher(teacher, *, hover_z=.095):
     place = {**solve_grip_site_ik(xyz, preferred_pitch_deg=pitch), 1: 1500}
     hover = {**solve_grip_site_ik((xyz[0], xyz[1], hover_z), preferred_pitch_deg=pitch), 1: GRIPPER_OPEN}
     pan = int(teacher.sink.pwm[6])
-    return {'place': {**{int(k): int(v) for k, v in place.items()}, 6: pan},
-            'hover': {**{int(k): int(v) for k, v in hover.items()}, 6: pan}}
+    out = {'place': {**{int(k): int(v) for k, v in place.items()}, 6: pan},
+           'hover': {**{int(k): int(v) for k, v in hover.items()}, 6: pan}}
+    if place_deep_m is not None:
+        deep = {**solve_grip_site_ik((xyz[0], xyz[1], xyz[2] - place_deep_m), preferred_pitch_deg=pitch), 1: 1500}
+        out['place_deep'] = {**{int(k): int(v) for k, v in deep.items()}, 6: pan}
+    return out
 
 
 def static_map_for(scene_config, *, door_id='door_wide', zone='zone_B'):
@@ -672,12 +741,18 @@ def carry_obstacles(truth, roles):
     return out
 
 
-def start_from_runner(plan, truth, now, scene, teachers, previous, carry_cap_s):
+def start_from_runner(plan, truth, now, scene, teachers, previous, carry_cap_s, lower_mode='grasp_height'):
     """Runner glue called once at the joint-hold handover (scripts/run_grasp_act_teacher.py)."""
+    if lower_mode not in LOWER_MODES:
+        raise ValueError(f'unknown lower mode {lower_mode!r}')
+    params = Params(carry_cap_s=float(carry_cap_s), lower_mode=lower_mode)
+    if lower_mode == 'floor_contact_v1':
+        params = Params(carry_cap_s=float(carry_cap_s), lower_mode=lower_mode,
+                        phase_caps_s={**params.phase_caps_s, 'lower': params.lower_max_s + 1.})
     static = static_map_for(scene.config)
-    targets = {rid: arm_targets_from_teacher(t) for rid, t in teachers.items()}
+    deep = params.place_deep_m if lower_mode == 'floor_contact_v1' else None
+    targets = {rid: arm_targets_from_teacher(t, place_deep_m=deep) for rid, t in teachers.items()}
     targets = {rid: v for rid, v in targets.items() if v is not None}
     pwm = {rid: {int(k): int(v) for k, v in previous[rid]['pwm'].items()} for rid in teachers}
-    return PairCarryTeacherWarp(plan['roles'], truth, now, static, targets, pwm,
-                                params=Params(carry_cap_s=float(carry_cap_s)),
+    return PairCarryTeacherWarp(plan['roles'], truth, now, static, targets, pwm, params=params,
                                 obstacles=carry_obstacles(truth, plan['roles']))

@@ -193,3 +193,106 @@ def eval_row(truth):
                                       'xyz': xyz},
             'robots': {rid: {'pose': list(v['pose'])} for rid, v in truth['robots'].items()},
             'contacts': {rid: list(v) for rid, v in truth['contacts'].items()}}
+
+
+# ------------------------------------------------- drive response (eval-only)
+
+class DriveCriteria:
+    moving_cmd_mps = .02      # commanded body speed counted as "moving"
+    moving_cmd_radps = .05
+    stall_ratio = .25         # GT speed below this fraction of the command -> stall tick
+    max_dt_s = .15            # pair a command only with the next row (0.1 s tick)
+
+
+def _body_velocity(a, b, dt):
+    """GT body-frame (forward, left, yaw rate) between two poses."""
+    c, s = math.cos(a[2]), math.sin(a[2])
+    dx, dy = b[0] - a[0], b[1] - a[1]
+    return ((c*dx + s*dy)/dt, (-s*dx + c*dy)/dt, wrap(b[2] - a[2])/dt)
+
+
+def drive_response(rows, log, roles, crit=DriveCriteria):
+    """Commanded body velocity / wheel duty vs GT body velocity, per carry phase.
+
+    EVAL-ONLY diagnostic (DESIGN §3, [확인 필요] duty -> body speed). Never feeds
+    the teacher, the success judgement or the phase timeouts; the timeout codes
+    stay the teacher's own (``carry.events``). ``log`` is the teacher log
+    (``PairCarryTeacherWarp.log``): per tick t the drive (fwd, left, turn) and
+    the 14-dim command wheels/duration_s it issued. The response of the command
+    issued at t is the GT pose change from the row at t to the next row.
+    """
+    by_t = {round(r['t'], 6): r for r in rows}
+    ts = sorted(by_t)
+    nxt = {a: b for a, b in zip(ts, ts[1:])}
+    acc = {}
+    for entry in log:
+        t = round(entry['t'], 6)
+        if t not in by_t or t not in nxt or nxt[t] - t > crit.max_dt_s + 1e-9:
+            continue
+        a, b, dt = by_t[t], by_t[nxt[t]], nxt[t] - t
+        phase = entry.get('issue_phase', entry['phase'])
+        for rid in roles:
+            cmd = entry['drive'].get(rid, (0., 0., 0.))
+            cmd_v, cmd_w = math.hypot(cmd[0], cmd[1]), abs(cmd[2])
+            if cmd_v < crit.moving_cmd_mps and cmd_w < crit.moving_cmd_radps:
+                continue
+            gt = _body_velocity(a['robots'][rid]['pose'], b['robots'][rid]['pose'], dt)
+            gt_v, gt_w = math.hypot(gt[0], gt[1]), abs(gt[2])
+            wheels = entry.get('wheels', {}).get(rid) or [0.]*4
+            widths = entry.get('duration_s', {}).get(rid) or [0.]*4
+            along = (gt[0]*cmd[0] + gt[1]*cmd[1])/cmd_v if cmd_v >= crit.moving_cmd_mps else None
+            stall = ((cmd_v >= crit.moving_cmd_mps and gt_v < crit.stall_ratio*cmd_v) or
+                     (cmd_v < crit.moving_cmd_mps and gt_w < crit.stall_ratio*cmd_w))
+            for key in (phase, 'all'):
+                d = acc.setdefault(key, {}).setdefault(rid, {'ticks': 0, 'cmd_v': 0., 'gt_v': 0., 'gt_along': 0.,
+                                                            'along_n': 0, 'cmd_w': 0., 'gt_w': 0., 'duty': 0.,
+                                                            'width': 0., 'stall': 0})
+                d['ticks'] += 1; d['cmd_v'] += cmd_v; d['gt_v'] += gt_v; d['cmd_w'] += cmd_w; d['gt_w'] += gt_w
+                d['duty'] += sum(abs(w) for w in wheels)/len(wheels); d['width'] += sum(widths)/len(widths)
+                d['stall'] += int(stall)
+                if along is not None:
+                    d['gt_along'] += along; d['along_n'] += 1
+    out = {}
+    for key, per in acc.items():
+        out[key] = {}
+        for rid, d in per.items():
+            n = d['ticks']
+            cv, gv, cw, gw = d['cmd_v']/n, d['gt_v']/n, d['cmd_w']/n, d['gt_w']/n
+            out[key][rid] = {'ticks': n, 'cmd_speed_mps': cv, 'gt_speed_mps': gv,
+                             'gt_along_cmd_mps': d['gt_along']/d['along_n'] if d['along_n'] else None,
+                             'speed_ratio': gv/cv if cv > 1e-9 else None,
+                             'cmd_turn_radps': cw, 'gt_turn_radps': gw,
+                             'turn_ratio': gw/cw if cw > 1e-9 else None,
+                             'wheel_duty_abs_mean': d['duty']/n, 'pulse_width_s_mean': d['width']/n,
+                             'stall_ticks': d['stall'], 'stall_frac': d['stall']/n}
+    return {'schema': 'ugrp.pairact.carry_drive_response.v1', 'affects_success': False,
+            'affects_phase_timeout': False, 'source': 'gt_pose_finite_difference_eval_only',
+            'criteria': {k: getattr(crit, k) for k in dir(crit) if not k.startswith('_')}, 'phases': out}
+
+
+def phase_report(diagnostic, response):
+    """Side-by-side but SEPARATE: teacher phase durations/timeout codes (teacher
+    events only) next to the eval-only drive response of the same phase. The
+    drive numbers never change the timeout verdict."""
+    events = diagnostic.get('events', [])
+    caps = (diagnostic.get('params') or {}).get('phase_caps_s', {})
+    spans, cur, t_prev = [], None, None
+    for e in events:
+        if e.get('event') == 'phase':
+            if cur is not None:
+                spans.append((cur, t_prev, e['t']))
+            cur, t_prev = e['to'], e['t']
+        elif e.get('event') == 'fail' and cur is not None:
+            spans.append((cur, t_prev, e['t']))
+            cur = None
+    fail = next((e for e in events if e.get('event') == 'fail'), None)
+    rows = []
+    for phase, t0, t1 in spans:
+        if phase == 'done':
+            continue
+        rows.append({'phase': phase, 'duration_s': t1 - t0, 'cap_s': caps.get(phase),
+                     'teacher_timeout': bool(fail and fail.get('phase') == phase and fail.get('code', '').endswith('_timeout')),
+                     'teacher_code': fail.get('code') if fail and fail.get('phase') == phase else None,
+                     'drive_response': (response.get('phases') or {}).get(phase)})
+    return {'teacher_outcome': diagnostic.get('outcome'), 'timeout_source': 'teacher_events',
+            'drive_source': response.get('source'), 'phases': rows}

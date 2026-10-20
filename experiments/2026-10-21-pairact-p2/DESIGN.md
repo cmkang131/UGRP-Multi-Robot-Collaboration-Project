@@ -46,6 +46,14 @@ zone B 폭 0.6 m와 빔 길이 0.6 m가 같으므로 *빔을 zone 장축(y)에 �
 | raise | open → hover(0.095 m) 1.0 s | 1.0 s + 0.3 s | 3 | `raise_timeout` |
 | retreat | 두 로봇이 자기 −x(빔 반대쪽)로 0.06 m/s, 0.15 m | 둘 다 0.15 m → `retreat_complete`. 벽 0.03 m 앞 검사에 걸리거나 4 s → `retreat_bounded`(성공 판정과 무관, b-v6e와 같은 처리) | 5 | `retreat_timeout` |
 
+### 2-1. 하강 목표 옵션 `floor_contact_v1` (기본 off, 2026-10-21 추가)
+
+- 기본값 `lower_mode = grasp_height`는 위 표 그대로입니다(동작 변화 0, 기존 테스트 그대로 통과).
+- `floor_contact_v1`(runner `--carry-lower floor_contact_v1`, adapter 후보 `pairact_p2_r13_floor`): lift → `place_deep`(잡은 높이보다 `place_deep_m` 0.025 m 아래로 같은 IK) 을 `lower_max_s` 4 s 동안 같은 smoothstep으로 내립니다. *GT 빔 최저점 ≤ `floor_margin_m` 0.004 m*가 0.2 s 유지되면 그 자리에서 두 팔을 멈추고(`floor_touch` 이벤트, 그 PWM을 `floor_touch_pwm`에 기록), 0.3 s 뒤 그 자세에서 집게만 엽니다.
+- 4 s 안에 닿지 않으면 `lower_no_floor_contact`로 끝냅니다. 공중에서 열지 않습니다. lower 단계 cap은 이 모드에서 `lower_max_s + 1` = 5 s입니다.
+- 0.004 m는 evaluator의 rest 기준 0.006 m보다 작게 잡은 *새 후보 상수*입니다. `place_deep`이 IK 작업 공간 밖이면 IK가 자르거나 실패할 수 있습니다 [확인 필요, gcp6 smoke].
+- 이유: 기본 모드는 운반 중 빔이 손가락 안에서 미끄러졌을 때 바닥 위에서 집게를 엽니다(테스트 `test_default_lower_mode_is_grasp_height_and_unchanged`: 6.9 mm 위에서 열림). 바닥 접촉 모드는 같은 조건에서 0.004 m 이내에서 엽니다(`test_floor_contact_lowering_stops_at_touch_and_places`).
+
 운반 중 공통 감시(carry_hold ~ zone_settle): hold(양쪽 접촉 ≥ 0.5 ∧ 최저점 ≥ 0.012 m) 끊김 0.5 s → `carry_hold_lost`; 로봇 간 거리 변화 > 0.08 m 1 s → `formation_stretch`; 추종 오차 > 0.15 m 3 s → `formation_tracking_lost`; 전체 운반 110 SIM s → `carry_total_timeout`. 정상 종료는 `command_sequence_complete`입니다. 교사 outcome은 *참고용*이고 성공 판정은 §5 evaluator만 합니다.
 
 경로 계획: formation-space planner는 없습니다. 위 7개 직선 구간(자세 선형 보간)을 0.05 m 간격으로 GT 검사합니다(로봇 원·빔 모서리 vs 벽, 로봇 원 vs 다른 물체·대기 로봇 r3). 처음 구간이 막히면 *단 하나의 대안*인 "handover 지점에서 먼저 문 축으로 회전한 뒤 이동"을 검사합니다. 둘 다 막히면 `route_blocked`로 끝내고 우회하지 않습니다. 어느 쪽을 썼는지 `route_info.variant`에 남깁니다.
@@ -56,6 +64,8 @@ zone B 폭 0.6 m와 빔 길이 0.6 m가 같으므로 *빔을 zone 장축(y)에 �
 - 각 로봇 목표 = 가상 빔 자세 ∘ handover 오프셋. 로봇 명령 = 강체 속도 feed-forward + P 제어(k_xy 1.5/s, k_yaw 1.2/s), 로봇당 0.10 m/s·0.35 rad/s 상한. 출력은 기존 교사 `_continuous`와 같은 환산(전진·횡 ×3, 회전 ×0.65 → `duty_wheels`, 14차원 명령 v5 형식)입니다.
 - *빔 길이 구속*: 두 로봇 중심 거리 d12가 handover 값에서 0.03 m 넘게 변하면 가상 자세 전진을 멈춥니다(로봇은 현재 목표로 계속 수렴). 0.08 m 초과가 1 s 지속되면 실패입니다. 두 로봇 중 하나라도 추종 오차 0.04 m·6°를 넘으면 역시 멈춥니다. 그래서 한 로봇이 밀리면 다른 로봇이 앞서 나가 빔을 당기지 않습니다.
 - [확인 필요] 듀티 펄스 명령(속도 35, 폭 ≤ 0.1 s)에서 빔을 든 두 로봇의 실제 몸체 속도는 측정 기록이 없습니다. 0.08 m/s보다 느리면 가상 자세가 자주 멈춰 느려질 뿐 안전 쪽이고, 그 경우 cap에 걸리면 단계 코드로 드러납니다.
+- *측정 배선(eval-only, 2026-10-21)*: `pair_carry_eval.drive_response()`가 매 tick 교사가 낸 몸체 명령(fwd, left, turn)·바퀴 듀티·펄스 폭을 다음 tick의 GT 자세 차분(몸체 좌표 속도)과 짝지어 단계별·로봇별로 집계합니다: `cmd_speed_mps`, `gt_speed_mps`, `gt_along_cmd_mps`, `speed_ratio`, `turn_ratio`, `wheel_duty_abs_mean`, `pulse_width_s_mean`, `stall_ticks`(GT 속도 < 명령의 25%). 결과는 `carry-eval.json`의 `drive_response`에 `affects_success = false`, `affects_phase_timeout = false`로 남습니다. 교사·evaluator 판정·단계 timeout은 이 값을 읽지 않습니다.
+- `phase_report`는 단계별 소요·cap·교사 timeout 코드(교사 events에서만)와 같은 단계의 drive 집계를 *나란히* 둡니다. timeout 여부는 교사 events만으로 정하고, drive 값은 원인 해석용입니다(예: `door_pass_timeout`이면서 `speed_ratio` 0.3이면 몸체 속도 환산 문제 쪽).
 
 ## 4. 문 정렬·통과 기하 (handover 오프셋 ±0.5 m 가정 시 계산값)
 
@@ -100,5 +110,5 @@ zone B 폭 0.6 m와 빔 길이 0.6 m가 같으므로 *빔을 zone 장축(y)에 �
 2. [확인 필요] MJWarp mirror(`world.data`)가 운반 중 빔·로봇 자세를 매 tick 갱신하는지. 파지 gate에서는 같은 `snapshot()`으로 joint_held를 판정했으므로 갱신된다고 보지만, 바퀴를 굴리며 빔을 든 상태는 GPU에서 처음입니다.
 3. native 접촉 행(로봇-로봇, 로봇-벽, 빔-벽) 배선: `pair_carry_eval.native_contacts`는 `NotImplementedError`. 지금은 GT 기하 proxy만 씁니다.
 4. formation-space planner 없음. 물체가 직선 구간을 막으면 `route_blocked`.
-5. `arm_targets_from_teacher`: 하강 목표 = 파지 때 기록한 `grasp_xyz` 높이로 같은 IK. 빔이 바닥에 닿기 전에 IK 높이에 도달하면 최저점 > 0.006 m로 `not_resting`이 됩니다. smoke에서 최종 최저점 값을 봅니다.
+5. `arm_targets_from_teacher`: 하강 목표 = 파지 때 기록한 `grasp_xyz` 높이로 같은 IK. 빔이 바닥에 닿기 전에 IK 높이에 도달하면 공중에서 집게를 엽니다(작은 낙하, 기울면 `tilt`). 대안 `floor_contact_v1`(§2-1, 기본 off)을 넣었습니다. smoke는 기본 모드로 돌리고, 열 때 최저점(`teacher-r?.jsonl`의 `carry:open` 첫 행 시각의 eval 행)을 봅니다.
 6. warp4에서 빔 짝·release 12건이 전부 HOST_ERROR(CUDA 700)였습니다(P0 진단 중). 운반 smoke도 같은 fault를 낼 수 있습니다.
