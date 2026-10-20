@@ -1,11 +1,20 @@
 # UGRP 작업 계획 (DSH 조정자 유지)
 
-최종 갱신: 2026-10-18 20:20 KST. 이 파일이 **단일 계획표**다. 상세 원본·수치는 `outputs/e2e18-admin/ops-alert.md`(로컬), 실험별 README, PR을 따른다.
+최종 갱신: 2026-10-20 18:00 UTC (KST 10-21 03:00). 이 파일이 **단일 계획표**다. 상세 원본·수치는 `outputs/e2e18-admin/ops-alert.md`(로컬), 실험별 README, PR을 따른다.
 
 ## 0. 이번 세션 목표
 - 미션: 두 로봇이 서쪽 픽업존 → divider 문 → 동쪽 목적 구역으로 짐(빔/박스) 운반. 근거리 파지·놓기는 ACT.
 - 입력 경계: 정적 지도·좌표계·top 카메라·정답 금지. 자기 RGB·자기 발행 명령·자기중심 기억만. GT는 평가 칸만.
 - 검증 관문(2026-10-18 사용자 결정): 병합·사용자 보고 전 독립 verifier(원본 재계수·조건 감사). 최종 관문 2, 중간 1.
+
+## 0.5 2026-10-20 갱신 (10/19–21 사실, 상세는 current_status.md)
+- **C2c v7 시계 HO4 진단 PASS**(`learned·sim·GPU gcp2`, 평가 전용): task 6/12·lift 12/12·release 6/12·done 11/12, pickup-site setdown이라 운반 0 m, B0 0/12. gate 아님. PR #615 `eaacefd3`. 다음은 release 병목(88668 0/3)과 VAL8 개방 결정.
+- **nav**: r5 2-robot 단일 PASS(seed 601·1회) `rule·sim·GPU gcp6`, N1 3/3 PASS는 spawn 동일 → **repeatability only** `rule·sim·GPU gcp6`. 다음은 다중 seed 강건성.
+- **P2 teacher carry smoke 2/3**(world 1 `not_through_door`, world 11 3.882 m·world 17 4.423 m) `teacher·sim·GPU gcp6`; 바닥 하강 미실행 → 6-run 계획 미완.
+- **C4b v3 Codex hold**: `895040936` 무조건 OK 보류, GPU 실행 0회. 정정 SHA 재검토 후 gcp2 1회.
+- **CPU 수치는 GPU 계약과 합산 금지**: 40/40(교사 파지 gate40, CPU MuJoCo gcp2, PR #533 merge)와 13/13(b-v6e 내려놓기 13셀, CPU Mac·top RGB+정적 지도, 전부 `retreat_bounded`)은 문 통과 운반 계약이 아니다.
+- **CI**: 2026-10-20 main run `39420494048` shard 2/8 실패(workflow "Offline regression tests") — `tests/test_azure_archive_native.py` 1건·`tests/test_pair_llm_live.py` 3건. issue #6의 `test_wrapper_signal_cleans_up_child_process_group`은 30-run 창에서 실패 0건이다.
+- 다음 순서: C4b 정정→Codex 재검토→gcp2 1회 → P1 static(Codex FROZEN)→10/21 tournament → P2 collection(RUNBOOK §1) → L1-lite.
 
 ## 1. 작업 스레드 상태 (2026-10-18 14:45 KST)
 | 스레드 | 상태 | 다음 |
