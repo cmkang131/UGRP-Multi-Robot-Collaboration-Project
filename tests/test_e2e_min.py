@@ -166,12 +166,12 @@ def test_episode_allocation_fail_closed():
     exp = ep.export()
     assert exp['e2e_substitutions'] == ['release:teacher'] and exp['overlay_text'] is False
     assert exp['slots'] == {'r1': 'left', 'r2': 'right'}
-    assert 'world_builder' in exp['integration_points_open']
+    assert 'teacher_skill' in exp['integration_points_open']
+    assert 'world_builder' not in exp['integration_points_open']
 
 
 def test_integration_points_raise_not_implemented():
-    for name in ('build_world', 'act_skill_client', 'teacher_skill', 'nav_carry_adapter',
-                 'runner_loop', 'eval_cube_geometry'):
+    for name in ('act_skill_client', 'teacher_skill', 'runner_wiring'):
         with pytest.raises(NotImplementedError, match='E2E_MIN_TODO'):
             getattr(H, name)()
 
@@ -299,3 +299,103 @@ def test_aggregate_never_pools_levels():
     agg = E.aggregate([ok, ok, bad])
     assert agg['E2E-1'] == dict(n=2, N=2, fail_codes={})
     assert agg['E2E-2']['n'] == 0 and agg['E2E-2']['N'] == 1
+
+
+# -- runtime glue ----------------------------------------------------------------
+from harness import e2e_min_runtime as R  # noqa: E402
+
+
+class FakeComponent:
+    def __init__(self):
+        self.phase = 'NAVIGATE'
+
+
+class FakeNavTask:
+    """NavRobot stand-in: arrives after `arrive_after` observed frames."""
+
+    def __init__(self, arrive_after=3, no_claim=False):
+        self.component = FakeComponent()
+        self.command_history, self.observed = [], []
+        self.arrive_after, self.no_claim = arrive_after, no_claim
+
+    def observe(self, frame):
+        self.observed.append(frame)
+        if len(self.observed) >= self.arrive_after:
+            self.component.phase = 'ARRIVED'
+        return dict(own_navigation=dict(arrival_no_claim=self.no_claim))
+
+    def command(self, now):
+        row = cmd(now, OPEN, 0.35)
+        self.command_history.append(row)
+        return row
+
+
+class Script:
+    def __init__(self, done_at, pwm=HOLD, fail=False):
+        self.done_at, self.pwm, self.fail, self.calls = done_at, pwm, fail, 0
+
+    def propose(self, frame, now):
+        self.calls += 1
+        if self.fail:
+            raise RuntimeError('boom')
+        return dict(command=cmd(now, self.pwm), done=now >= self.done_at - 1e-9)
+
+
+VERDICT = dict(adopted='act_lift_end')
+
+
+def test_nav_carry_adapter_requires_admitted_verdict():
+    with pytest.raises(NotImplementedError, match='carry_pose_transition'):
+        R.NavCarryAdapter(FakeNavTask(), carry_pose_verdict=dict(adopted='carry_look_v1'))
+    with pytest.raises(NotImplementedError):
+        R.NavCarryAdapter(FakeNavTask(), carry_pose_verdict=None)
+    task = FakeNavTask()
+    task.component.phase = 'TASK'
+    adapter = R.NavCarryAdapter(task, carry_pose_verdict=VERDICT)
+    with pytest.raises(ValueError):
+        adapter.propose('f', 1.0)
+
+
+def test_route_tick_full_episode_with_fakes():
+    ep = H.E2EMinEpisode('E2E-0', timeouts=dict(settle=0.3))
+    ep.allocate(0.0, ALLOC)
+    navs = {r: FakeNavTask(arrive_after=3) for r in H.ROBOTS}
+    grasp = {r: Script(done_at=0.5) for r in H.ROBOTS}
+    release = {r: Script(done_at=2.0, pwm=OPEN) for r in H.ROBOTS}
+    execs = {r: dict(grasp=grasp[r], nav=R.NavCarryAdapter(navs[r], carry_pose_verdict=VERDICT),
+                     release=release[r]) for r in H.ROBOTS}
+    issued = []
+    for k in range(1, 31):
+        t = k / 10
+        issued.append((t, R.route_tick(ep, t, {r: f'{r}@{t}' for r in H.ROBOTS}, execs)))
+        if ep.finished:
+            break
+    assert ep.finished and all(h.phase == H.DONE for h in ep.robots.values())
+    nav = navs['r1']
+    # nav saw frames only after settle (0.5 + 0.3) and never during grasp
+    assert nav.observed[0] == 'r1@0.8'
+    # every nav command the runner keeps has the held PWM, not SEARCH/open
+    assert all(c['pwm'] == HOLD for c in nav.command_history)
+    assert ep.export()['e2e_substitutions'] == ['grasp:teacher', 'release:teacher']
+
+
+def test_route_tick_executor_exception_fails_closed():
+    ep = H.E2EMinEpisode('E2E-1', initial_pwm={r: OPEN for r in H.ROBOTS})
+    ep.allocate(0.0, ALLOC)
+    execs = {'r1': dict(grasp=Script(1.0, fail=True)), 'r2': {}}
+    out = R.route_tick(ep, 0.1, {'r1': 'f', 'r2': 'f'}, execs)
+    assert ep.robots['r1'].fail_code == 'E2E_GRASP_EXECUTOR_ERROR'
+    assert 'boom' in ep.robots['r1'].fail_detail
+    assert ep.robots['r2'].fail_code == 'E2E_GRASP_EXECUTOR_ERROR'   # missing executor
+    assert out['r1'] == H.hold_command(0.1, OPEN)
+
+
+def test_route_tick_nav_no_claim_fails():
+    ep = H.E2EMinEpisode('E2E-2', timeouts=dict(settle=0.0))
+    ep.allocate(0.0, ALLOC)
+    execs = {r: dict(grasp=Script(0.1),
+                     nav=R.NavCarryAdapter(FakeNavTask(arrive_after=99, no_claim=True),
+                                           carry_pose_verdict=VERDICT)) for r in H.ROBOTS}
+    for t in (0.1, 0.2):
+        R.route_tick(ep, t, {r: 'f' for r in H.ROBOTS}, execs)
+    assert {h.fail_code for h in ep.robots.values()} == {'E2E_NAV_NO_CLAIM'}

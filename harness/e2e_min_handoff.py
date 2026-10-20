@@ -91,14 +91,16 @@ ERRORS = {
 }
 
 #: Unverified connection points (DESIGN.md §6).  Each raises NotImplementedError.
+#: Implemented since the first draft: world builder (scripts/e2e_warp_physics.py
+#: build_context(nav_cubes=...), harness/e2e_min_world.py), eval cube geometry
+#: (same), nav carry adapter and per-tick router (harness/e2e_min_runtime.py).
 INTEGRATION_POINTS = (
-    'world_builder',        # v6 two-robot world WITH cubes + finger/cargo contact pairs
-    'act_skill_client',     # ACT actor RPC on the nav runner's own frames (r1 and r2)
-    'teacher_skill',        # scripted SoloTeacher grasp/release inside the nav runner
-    'nav_carry_adapter',    # nav adapter started from the post-grasp pose with held arm
-    'runner_loop',          # run_e2e_warp tick loop routing + no early NAV_ARRIVAL stop
-    'eval_cube_geometry',   # cube qpos address / half size written to eval-geometry.json
+    'teacher_skill',         # scripted SoloTeacher grasp/release inside the nav runner
+    'runner_wiring',         # run_e2e_warp: E2E flag, route_tick, no early NAV_ARRIVAL stop
+    'act_skill_client',      # ACT actor RPC on the nav runner's own frames (r1 and r2), E2E-1
+    'carry_pose_transition', # arm move to a non-lift-end carry pose while holding
     'gripper_hold_arm_search_v1',  # alternative hold rule (arm back to SEARCH)
+    'contact_pair_parity',   # finger/cargo <pair> equality with the ACT owner (audited only)
 )
 
 
@@ -275,6 +277,8 @@ class RobotHandoff:
 
     def _valid(self, proposal, code):
         try:
+            if isinstance(proposal, dict) and 'error' in proposal:
+                raise ValueError('executor error: ' + str(proposal['error']))
             if not isinstance(proposal, dict) or 'command' not in proposal:
                 raise ValueError('proposal with command required')
             return check_command(proposal['command'])
@@ -402,51 +406,30 @@ class E2EMinEpisode:
 
 
 # -- unverified connection points (DESIGN.md §6) ---------------------------
-def build_world(*_args, **_kwargs):
-    # TODO(E2E_MIN_TODO:world_builder): the nav builder strips every cube
-    # (scripts/e2e_warp_physics.py:77-80) and the ACT owner builds solo-r1 worlds
-    # with C312 compiled references bound to the exact XML
-    # (warp_act_api.py:148-157, simalt_compiled_compat.py:85-89).  A v6
-    # two-robot world with one cube per robot inside the ACT start distribution
-    # and the cargo finger contact pairs does not exist yet.
-    raise NotImplementedError('E2E_MIN_TODO:world_builder')
+def teacher_skill(*_args, **_kwargs):
+    # TODO(E2E_MIN_TODO:teacher_skill): SoloTeacher (frozen 6f057f7e
+    # sim/grasp_act_solo_teacher.py) is only constructed inside the teacher
+    # episode generator ([Q] scripts/warp_act_episode.py:48-60,214-221), which
+    # supplies its ops bundle, the visibility-gated reads (eyes.region_visible),
+    # the frozen A* route callback and the lift observer from the CPU world.
+    # None of these exist in the nav runner, and release away from the pickup
+    # pose is untested.  An adapter must expose the runtime executor protocol
+    # (harness/e2e_min_runtime.py: propose(frame, now) -> command/done).
+    raise NotImplementedError('E2E_MIN_TODO:teacher_skill')
 
 
 def act_skill_client(*_args, **_kwargs):
     # TODO(E2E_MIN_TODO:act_skill_client): the ACT actor runs in the torch env
     # behind the owner RPC (act16w_eval_owner.py:48-60); the owner and History
-    # are r1-only (warp_act_api.py:60,67,149-157).  Feeding r2 frames and
-    # driving the actor from the nav runner process is unverified.
+    # are r1-only ([O] warp_act_api.py:60,67,149-157).  Feeding r2 frames and
+    # driving the actor from the nav runner process is unverified (E2E-1).
     raise NotImplementedError('E2E_MIN_TODO:act_skill_client')
 
 
-def teacher_skill(*_args, **_kwargs):
-    # TODO(E2E_MIN_TODO:teacher_skill): SoloTeacher (frozen 6f057f7e
-    # sim/grasp_act_solo_teacher.py) is constructed only by the teacher runner;
-    # its inputs inside the nav runner and its release-away-from-pickup
-    # behaviour are unverified.
-    raise NotImplementedError('E2E_MIN_TODO:teacher_skill')
-
-
-def nav_carry_adapter(*_args, **_kwargs):
-    # TODO(E2E_MIN_TODO:nav_carry_adapter): SelfCentricNavigation always sends
-    # SEARCH PWM (e2ewarp_selfnav.py:1030-1031) and its ground projection is fit
-    # at the SEARCH camera mount (e2ewarp_selfnav.py:280-289); starting it from
-    # the post-grasp pose with the arm held elsewhere is unverified.
-    raise NotImplementedError('E2E_MIN_TODO:nav_carry_adapter')
-
-
-def runner_loop(*_args, **_kwargs):
-    # TODO(E2E_MIN_TODO:runner_loop): run_e2e_warp issues task.command(now)
-    # (scripts/run_e2e_warp.py:500-506) and stops on nav_all_arrived
-    # (:524-528); the E2E loop must route through E2EMinEpisode.tick and must
-    # not stop at arrival.
-    raise NotImplementedError('E2E_MIN_TODO:runner_loop')
-
-
-def eval_cube_geometry(*_args, **_kwargs):
-    # TODO(E2E_MIN_TODO:eval_cube_geometry): eval_geometry
-    # (e2ewarp_nav_gate.py:722-733) records robot qpos addresses only; the cube
-    # free-joint qpos address and half size per robot are needed by
-    # harness/e2e_min_eval.recount_run.
-    raise NotImplementedError('E2E_MIN_TODO:eval_cube_geometry')
+def runner_wiring(*_args, **_kwargs):
+    # TODO(E2E_MIN_TODO:runner_wiring): scripts/run_e2e_warp.py (DeepSeek-owned
+    # file) must, behind E2E_MIN_HANDOFF=on_v1: build worlds with nav_cubes,
+    # call harness.e2e_min_runtime.route_tick instead of task.command
+    # (:500-506), skip the nav_all_arrived early stop (:524-528), and write
+    # e2e-handoff.json.  Blocked on teacher_skill/act_skill_client executors.
+    raise NotImplementedError('E2E_MIN_TODO:runner_wiring')
