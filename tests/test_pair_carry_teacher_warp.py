@@ -475,3 +475,231 @@ def test_runner_lower_default_is_grasp_height():
     fn = _runner_function()
     kw = {a.arg: d.value for a, d in zip(fn.args.kwonlyargs, fn.args.kw_defaults) if isinstance(d, ast.Constant)}
     assert kw['carry_lower'] == 'grasp_height'
+
+
+# ------------------------------------------------ P3 recorder: v7 clock + stages
+
+def test_v7_clock_ignores_two_pwm_dither_and_resets_on_three():
+    clk = cr.DeadbandIssuedClock()
+    base = {'1': 1500, '3': 1400, '4': 1600, '5': 1500, '6': 1500}
+    assert clk.observe(('release', 'B'), 0., base)['pwm_elapsed_s'] == 0.
+    assert clk.observe(('release', 'B'), .1, {**base, '3': 1402})['pwm_elapsed_s'] == pytest.approx(.1)
+    assert clk.observe(('release', 'B'), .2, {**base, '3': 1400})['pwm_elapsed_s'] == pytest.approx(.2)
+    out = clk.observe(('release', 'B'), .3, {**base, '3': 1403})
+    assert out['pwm_elapsed_s'] == 0. and out['skill_elapsed_s'] == pytest.approx(.3) and clk.resets == 1
+    # instruction change resets only the skill clock
+    out = clk.observe(('grasp', 'B'), .4, {**base, '3': 1403})
+    assert out['skill_elapsed_s'] == 0. and out['pwm_elapsed_s'] == pytest.approx(.1)
+
+
+def test_v7_clock_deadband_zero_equals_contract_clock():
+    from harness import grasp_act_contract as contract
+    import random
+    rng = random.Random(7)
+    a, b = cr.DeadbandIssuedClock(0), contract.IssuedClock()
+    pwm = {'1': 1500, '3': 1400, '4': 1600, '5': 1500, '6': 1500}
+    for k in range(200):
+        if rng.random() < .3:
+            pwm = {**pwm, str(rng.choice((1, 3, 4, 5, 6))): 1500 + rng.randint(-4, 4)}
+        inst = ('grasp',) if k < 100 else ('release',)
+        assert a.observe(inst, k*.1, pwm) == b.observe(inst, k*.1, dict(pwm))
+    with pytest.raises(ValueError):
+        cr.DeadbandIssuedClock(5)
+
+
+def test_carry_recorder_shares_the_runner_clock_across_segments():
+    clk = cr.DeadbandIssuedClock()
+    pwm = {'1': 1500, '3': 1400, '4': 1600, '5': 1500, '6': 1500}
+    clk.observe(('grasp', 'teal', True), 0., pwm)
+    clk.observe(('grasp', 'teal', True), 3., pwm)
+    history, images = cr.new_buffers()
+    clean = ct.make_command(0., PWM['r1'], (0., 0., 0.))
+    for k in range(16):
+        history.append({**clean, 't': k*.1})
+    rec = cr.CarryRecorder('r1', 'teal', history=history, images=images, episode_id='ep', clock=clk)
+    for k in range(60):
+        rec.add_frame(k, k*.1, b'j%d' % k)
+    row = rec.student_row(31, 3.1, pwm)
+    assert row['skill_elapsed_s'] == 0.                       # new instruction (release, B)
+    assert row['pwm_elapsed_s'] == pytest.approx(3.1)         # PWM clock continuous from the grasp segment
+
+
+def test_only_first_done_carry_row_is_a_local_sample():
+    history, images = cr.new_buffers()
+    rec = cr.CarryRecorder('r1', 'teal', history=history, images=images, episode_id='ep')
+    clean = ct.make_command(0., PWM['r1'], (0., 0., 0.))
+    rows = [rec.label_row(k, clean=clean, applied=clean, done=done, phase=ph, outcome=oc)
+            for k, (done, ph, oc) in enumerate([(False, 'retreat', None), (True, 'done', 'command_sequence_complete'),
+                                                (True, 'done', 'command_sequence_complete')])]
+    assert [r['local_skill_sample'] for r in rows] == [True, True, False]
+    assert rows[1]['terminal_reason'] == 'command_sequence_complete'
+
+
+def _phase_literals(path):
+    import re
+    text = (ROOT/path).read_text()
+    return set(re.findall(r"_set\(['\"]([a-z_]+)['\"]", text)) | set(re.findall(r"\bphase *= *['\"]([a-z_]+)['\"]", text))
+
+
+def test_phase_table_covers_every_teacher_phase_literal():
+    grasp = _phase_literals('sim/grasp_act_teacher.py') | _phase_literals('sim/grasp_act_teacher_v3.py')
+    assert grasp == set(cr.GRASP_PHASE_TO_STAGE), grasp ^ set(cr.GRASP_PHASE_TO_STAGE)
+    assert set(cr.CARRY_PHASE_TO_STAGE) == set(ct.PHASES)
+    assert set(cr.TEACHER_PHASE_TO_STAGE.values()) <= set(cr.STAGES)
+    # every stage except recover-only paths is reachable from a teacher label
+    assert set(cr.TEACHER_PHASE_TO_STAGE.values()) == set(cr.STAGES)
+    with pytest.raises(ValueError, match='unmapped'):
+        cr.stage_for('carry:unknown')
+
+
+def test_phase_table_matches_design_doc():
+    import re
+    text = (ROOT/'experiments/2026-10-21-pairact-p2/DESIGN.md').read_text()
+    block = text[text.index('<!-- phase-stage-table -->'):text.index('<!-- /phase-stage-table -->')]
+    rows = re.findall(r"^\| `([a-z_:]+)` \| `([a-z_]+)` \|", block, re.M)
+    assert dict(rows) == cr.TEACHER_PHASE_TO_STAGE
+
+
+def test_phase_table_matches_pairact_r1_copy():
+    """Same mapping as harness/pairact_r1.py on dsh/pairact-carry-r1 (skipped
+    when that ref is not fetched)."""
+    import re
+    import subprocess
+    try:
+        src = subprocess.check_output(['git', 'show', 'origin/dsh/pairact-carry-r1:harness/pairact_r1.py'],
+                                      cwd=ROOT, text=True, stderr=subprocess.DEVNULL)
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        pytest.skip('origin/dsh/pairact-carry-r1 not available')
+    m = re.search(r"^TEACHER_PHASE_TO_STAGE = \{.*?^TEACHER_PHASE_TO_STAGE\['carry:done'\] = 'complete'$", src, re.S | re.M)
+    ns = {}
+    exec(m.group(0), ns)
+    r1 = ns['TEACHER_PHASE_TO_STAGE']
+    stages = re.search(r"^STAGES = (\(.*?\))$", src, re.M).group(1)
+    assert eval(stages) == cr.STAGES
+    missing = set(cr.TEACHER_PHASE_TO_STAGE) - set(r1)
+    assert not missing, f'pairact_r1 lacks {sorted(missing)}'
+    assert {k: r1[k] for k in cr.TEACHER_PHASE_TO_STAGE} == cr.TEACHER_PHASE_TO_STAGE
+
+
+def test_runner_records_carry_with_recorder_and_v7_clock():
+    text = (ROOT/'scripts/run_grasp_act_teacher.py').read_text()
+    assert 'recorder hook not wired' not in text
+    assert "clocks[rid]=v5.IssuedClock() if pair_carry=='off' else DeadbandIssuedClock()" in text
+    assert 'recorders[rid].student_row(i,now,previous[rid]' in text and 'recorders[rid].label_row(' in text
+    assert "report['grasp_physical_success']" in text
+
+
+# ---------------------------------------------- P5 student eval (runner side)
+
+from harness import pairact_student_eval as se
+
+CFG = {'mode': se.MODE, 'python': 'py', 'source': '/src', 'model': '/ckpt', 'config': '/cfg.json', 'device': 'cpu'}
+
+
+class FakeWorker:
+    """Scripted stand-in for scripts/pairact_r1_student_worker.py (records requests)."""
+    def __init__(self, ready_after=0):
+        self.requests, self.ready_after, self.n = [], ready_after, 0
+
+    def request(self, payload):
+        self.requests.append(json.loads(json.dumps(payload)))
+        op = payload['op']
+        if op == 'reset':
+            return {'ok': True}
+        if op == 'propose':
+            self.n += 1
+            return {'robots': {r: {'ready': self.n > self.ready_after, 'observation': {'t': payload['t']},
+                                   'rgb_path': 'rgb', 'stage': 'ready'} for r in payload['robots']}}
+        if op == 'issue':
+            cmd = {r: {'command': {'t': payload['t'], 'wheels': [0.]*4, 'duration_s': [0.]*4,
+                                   'pwm': {str(s): 1500 for s in ct.SERVOS}},
+                       'done': False, 'stage': 'ready', 'segment': 'grasp', 'permit': payload['permits'][r],
+                       'blocked': False} for r in payload['permits']}
+            return {'robots': cmd, 'finished': False}
+        return {'events': [], 'teacher_actions': 0}
+
+
+def _episode(worker):
+    from harness.grasp_act_start_sync import GraspStartSync
+    init = {r: {'t': 0., 'wheels': [0.]*4, 'duration_s': [0.]*4, 'pwm': {str(s): 1500 for s in ct.SERVOS}}
+            for r in ROLES}
+    return se.start(CFG, ROLES, 'ep', init, seed=8342000, factory=GraspStartSync, client=worker)[0], init
+
+
+def test_student_requests_carry_only_own_camera_and_issued_command():
+    worker = FakeWorker()
+    ep, init = _episode(worker)
+    ep.tick(0., {'r1': b'a', 'r2': b'b'}, init)
+    propose = next(r for r in worker.requests if r['op'] == 'propose')
+    assert set(propose) == {'op', 't', 'robots'}
+    assert all(set(v) == {'jpeg', 'issued'} for v in propose['robots'].values())
+    issue = next(r for r in worker.requests if r['op'] == 'issue')
+    assert set(issue) == {'op', 't', 'permits'} and all(type(v) is bool for v in issue['permits'].values())
+    with pytest.raises(ValueError, match='own camera'):
+        ep.tick(.1, {'r1': b'a'}, init)
+
+
+def test_student_protocol_go_ack_then_permits_and_rearm_on_withdrawal():
+    worker = FakeWorker(ready_after=2)
+    ep, init = _episode(worker)
+    permits = []
+    for k in range(40):
+        ep.tick(k*.1, {'r1': b'a', 'r2': b'b'}, init)
+        permits.append(next(r for r in reversed(worker.requests) if r['op'] == 'issue')['permits'])
+    assert not any(permits[0].values())
+    assert all(permits[-1].values())          # READY -> GO -> ACK -> START after the bounded delays
+    events = [e['event'] for e in ep.sync.events]
+    assert events[:1] == ['GO'] and 'START' in events
+    ep.sync.tick({'r1': False, 'r2': True}, 5.)
+    assert ep.sync.events[-1]['event'] == 'READY_withdrawn_rearm'
+
+
+def test_student_funnel_chain_and_zone_entry_boundary():
+    f = se.StudentFunnel()
+    beam = (1., 1., 0.)
+    ends = {'teal': [.73, 1., .02], 'blue': [1.27, 1., .02]}
+    robots = {'r1': {'pose': [.73 - .203, 1., 0.]}, 'r2': {'pose': [1.27 + .203, 1., math.pi]}}
+    truth_row = {'beam': {'pose': list(beam), 'ends': ends}, 'robots': robots, 'contacts': {'r1': [1., 1.], 'r2': [1., 1.]}}
+    passed = f.add(0., truth_row, ROLES, {'r1': True, 'r2': True}, True)
+    assert all(passed.values())
+    rec = f.record({'success': False, 'funnel': {'carried_1m': True, 'door_passed': False}, 'drop_events': []})
+    assert rec['reached'] == {'approach': True, 'alignment': True, 'READY': True, 'grasp': True, 'hold_3s': True,
+                              'carry_1m': True, 'door': False, 'place': False}
+    assert rec['first_failure'] == 'door'
+    assert se.StudentFunnel().record(None)['first_failure'] == 'approach'
+    rows = [ce.eval_row(truth((x, -2.1, math.pi/2), {'r1': (x, -2.7, 0.), 'r2': (x, -1.5, 0.)}, held=True, t=k*.1))
+            for k, x in enumerate((3.5, 4.0, 4.6, 4.6))]
+    assert ce.zone_entry_t(rows, MAP) == pytest.approx(.2)
+
+
+def test_student_config_and_runner_combinations_fail_closed(tmp_path):
+    with pytest.raises(ValueError):
+        se.validate_config({**CFG, 'gt': True})
+    from scripts import run_grasp_act_teacher as runner
+    with pytest.raises(ValueError, match='visible_only pair carry'):
+        runner.run({'roles': ROLES}, tmp_path, teacher_profile='visible_only', student_eval=CFG)
+    with pytest.raises(ValueError, match='never records'):
+        runner.run({'roles': ROLES}, tmp_path, teacher_profile='visible_only', pair_carry=ct.MODE, noise=True,
+                   student_eval=CFG)
+
+
+def test_runner_student_branch_never_steps_teachers():
+    text = (ROOT/'scripts/run_grasp_act_teacher.py').read_text()
+    assert "for rid,t in (teachers.items() if carry is None and student_ep is None else ()):" in text
+    assert "if strict and carry is None and student_ep is None:" in text
+    fn = _runner_function()
+    kw = {a.arg: d for a, d in zip(fn.args.kwonlyargs, fn.args.kw_defaults)}
+    assert isinstance(kw['student_eval'], ast.Constant) and kw['student_eval'].value is None
+
+
+def test_worker_client_handshake_and_command_line():
+    class P:
+        def __init__(self, argv, **kw):
+            self.argv, self.kw = argv, kw
+            import io
+            self.stdout = io.StringIO(json.dumps({'ready': True, 'mode': se.MODE}) + '\n')
+            self.stdin = io.StringIO()
+    client = se.WorkerClient(CFG, popen=P)
+    assert client.proc.argv == ['py', '-m', 'scripts.pairact_r1_student_worker', '--model', '/ckpt',
+                                '--config', '/cfg.json', '--device', 'cpu']
+    assert client.proc.kw['cwd'] == '/src'

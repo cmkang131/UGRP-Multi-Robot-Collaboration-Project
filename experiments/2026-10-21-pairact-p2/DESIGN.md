@@ -8,7 +8,7 @@
 - 교사(teacher)는 *시연 생성 전용*이라 GT를 씁니다(계획 P2의 시연 예외). 학생 입력으로는 절대 들어가지 않습니다.
 - 공동 파지는 바꾸지 않습니다. r13 프로필(`beamact5_r13`)이 `joint_held`(양쪽 손가락 접촉 ≥ 0.5, 빔 최저점 ≥ 0.012 m, 기울기 ≤ 10°가 3 SIM s 유지)에 도달한 바로 그 tick에서 운반 교사가 넘겨받습니다(handover).
 - 새 모드는 모두 *기본 off*입니다. `--pair-carry pair_carry_gt_v1` 또는 adapter 후보 `pairact_p2_r13`일 때만 켜집니다. off면 runner 동작은 바이트 단위로 기존과 같습니다(기존 runner 테스트 280개 통과).
-- 학습 기록(`record_training`)과 운반은 함께 켤 수 없습니다(fail closed). 기록 훅은 P3에서 배선합니다(§7).
+- 학습 기록(`record_training`)과 운반을 함께 켜면 P3 recorder가 운반 구간을 기록합니다(§7, 2026-10-21 배선). 기록은 기존 recording proof(≥38/40 관문) 조건을 그대로 요구합니다.
 - `Params`의 거리·속도·시간 값은 모두 *새 P2 후보 상수*이고 측정값이 아닙니다. smoke가 처음 측정합니다.
 - CPU 결과(beampair7 40/40, b-v6e 13/13)와 합산하지 않습니다.
 
@@ -95,14 +95,51 @@ zone B 폭 0.6 m와 빔 길이 0.6 m가 같으므로 *빔을 zone 장축(y)에 �
 - 공칭 소요 추정: 이동 약 4.6 m / 0.08 m/s ≈ 57 s + 회전 약 8 s + 정렬·팔 동작·후진 약 10 s ≈ 75 s. [확인 필요] 추종 정지가 잦으면 더 깁니다.
 - root runner(`run_warp_flow_teacher.py`)는 lane이 끝날 때까지 돌고 tick 예산이 없으므로 이 연장과 충돌하지 않습니다. `--cap-s`는 60으로 둡니다(root는 ≤ 180, adapter가 runner에 그대로 전달).
 
-## 7. Recorder 훅 (P3, 지금은 미배선)
+## 7. Recorder (P3, 2026-10-21 배선, 기본 off)
 
-`harness/pair_carry_recorder.py`가 형식만 정합니다. 목표는 beampair8 `dataset-v1`이 쓰는 raw 형식과 *같은 파일·같은 키*입니다.
+`harness/pair_carry_recorder.py`. `record_training`과 `pair_carry`를 *둘 다* 켤 때만 운반 tick에서 기록합니다(이전의 fail-closed 거부는 없앴습니다). 둘 중 하나라도 off면 기존 동작 그대로입니다. 형식은 beampair8 `dataset-v1` raw와 *같은 파일·같은 키*입니다.
 
-- `student-{rid}.jsonl`: `ugrp.grasp_act.student.v5` 행. 키는 `harness/grasp_act_contract.py` FIELDS와 정확히 같습니다: 자기 RGB 참조 4장(5.2/1.5/0.5/0 s 전), 자기 발행 명령 16개, 번호표 토큰(skill `release`, object_kind `long_beam`, role `teal|blue`, destination_zone `B`), 자기 명령 시계(skill_elapsed_s, pwm_elapsed_s). 상대 로봇 정보·GT·접촉은 없습니다. beampair8처럼 training 변환에서 schema 토큰만 v6로 바꾸면 되고, `B`는 v5·v6 enum 모두에 있습니다.
-- `teacher-{rid}.jsonl`: `carry_label()` 행(clean/applied 명령, done, `teacher_phase = carry:<단계>`, `segment = pair_carry_gt`, `local_skill_sample = true`, `teacher_input = simulator_truth_demo_exception`). runner smoke도 이미 이 형식으로 씁니다.
-- beampair8 변환기(`grasp_act_data.paired_segments`)는 (robot_id, skill, object_kind, role, destination_zone)로 구간을 나누므로, 한 에피소드의 파지(`grasp`, `none`)와 운반(`release`, `B`)이 같은 로봇 스트림의 연속된 두 구간이 됩니다. 16개 명령 이력은 파지에서 운반으로 끊기지 않고 이어집니다(runner의 같은 deque 사용).
-- P3에서 할 일: ①`done=true` 행은 첫 1개만 학습 대상으로 두기(교사 종료 후 1.5 s 수동 행은 학습 제외) ②runner 운반 tick에서 `add_frame/student_row` 호출 ③evaluator 성공 에피소드만 admission.
+- `student-{rid}.jsonl`: `ugrp.grasp_act.student.v5` 행. 키는 `harness/grasp_act_contract.py` FIELDS와 정확히 같습니다: 자기 RGB 참조 4장(5.2/1.5/0.5/0 s 전), 자기 발행 명령 16개, 번호표 토큰(skill `release`, object_kind `long_beam`, role `teal|blue`, destination_zone `B`), 자기 명령 시계(skill_elapsed_s, pwm_elapsed_s). 상대 로봇 정보·GT·접촉은 없습니다. 운반 tick도 파지 tick과 같은 순서(관측 기록 → 교사 명령)입니다.
+- `teacher-{rid}.jsonl`: `carry_label()` 행(clean/applied 명령, done, `teacher_phase = carry:<단계>`, `segment = pair_carry_gt`, `teacher_input = simulator_truth_demo_exception`). `local_skill_sample`은 *첫 `done=true` 행까지만* true이고, 교사 종료 뒤 1.5 s 수동 행은 false입니다.
+- *시계(v7)*: pair_carry가 켜지면 runner의 로봇별 시계가 `DeadbandIssuedClock(2)`가 됩니다(`harness/pairact_r1.py`, act18 C2c `ac274afeb`와 같은 규칙: 직전 관측 PWM 대비 |Δ| ≤ 2는 `pwm_elapsed_s`를 리셋하지 않음). *같은 시계 객체*를 파지 구간과 운반 구간이 같이 씁니다. 그래서 운반 첫 행에서 `skill_elapsed_s`는 0으로 리셋되고 `pwm_elapsed_s`는 이어집니다(배포된 학생과 같음). deadband 0이면 계약 `IssuedClock`과 같습니다(테스트). `result.json → carry_recording`에 `issued_clock = v7_issued_clock_deadband_2`, `issued_clock_deadband = 2`, 로봇별 리셋 횟수를 남깁니다. pair_carry off 실행의 시계는 바뀌지 않습니다. `skill_elapsed_s`는 v6·v7이 같으므로 교사의 `skill_started` 동작도 바뀌지 않습니다.
+- *성공 필드*: pair_carry 실행에서 `grasp_physical_success`(기존 파지 관문 정의)와 `carry_success`(evaluator)를 따로 남깁니다. `physical_success`는 smoke(기록 off)에서는 기존 파지 정의 그대로이고, *기록 on(P3)에서만* `grasp ∧ carry`가 됩니다(COLLECT_SPEC §5, `grasp_act_data.convert`의 admission). 그래서 root summary의 `success`는 smoke에서 파지 관문, P3 수집에서 시연 admission을 뜻합니다.
+- 16개 명령 이력은 파지에서 운반으로 끊기지 않습니다(runner의 같은 deque). beampair8 변환기는 (robot_id, skill, object_kind, role, destination_zone)로 구간을 나누므로 파지(`grasp`, `none`)와 운반(`release`, `B`)이 같은 로봇 스트림의 연속된 두 구간이 됩니다.
+
+### 7-1. teacher_phase → pairact-r1 단계 head 8단계 대응표 (고정)
+
+코드: `pair_carry_recorder.TEACHER_PHASE_TO_STAGE`(`stage_for()`는 없는 값을 거부). 같은 표가 `dsh/pairact-carry-r1`의 `harness/pairact_r1.TEACHER_PHASE_TO_STAGE`에 있어야 합니다(테스트 `test_phase_table_matches_pairact_r1_copy`가 origin ref를 읽어 비교). 파지 구간 어휘는 visible_only 교사 코드의 phase 리터럴 전체입니다(테스트 `test_phase_table_covers_every_teacher_phase_literal`). 아래 표와 코드가 다르면 테스트가 실패합니다. 단계 순서: approach → alignment → ready → execute → carry → place → recover → complete.
+
+<!-- phase-stage-table -->
+| teacher_phase | stage | 출처 |
+|---|---|---|
+| `approach` | `approach` | grasp: `sim/grasp_act_teacher_v3.py`/`grasp_act_teacher.py` |
+| `search` | `approach` | grasp: `sim/grasp_act_teacher_v3.py`/`grasp_act_teacher.py` — 시야 탐색(접근 전) |
+| `align` | `alignment` | grasp: `sim/grasp_act_teacher_v3.py`/`grasp_act_teacher.py` |
+| `relook` | `recover` | grasp: `sim/grasp_act_teacher_v3.py`/`grasp_act_teacher.py` — 정렬 재관측(align_relook_v1) — READY 철회 |
+| `ready` | `ready` | grasp: `sim/grasp_act_teacher_v3.py`/`grasp_act_teacher.py` |
+| `pick` | `execute` | grasp: `sim/grasp_act_teacher_v3.py`/`grasp_act_teacher.py` — 고정 파지 동작 |
+| `verify` | `execute` | grasp: `sim/grasp_act_teacher_v3.py`/`grasp_act_teacher.py` — GraspTeacher 기본 경로만 |
+| `complete` | `complete` | grasp: `sim/grasp_act_teacher_v3.py`/`grasp_act_teacher.py` — 파지 명령 완료(done) |
+| `done` | `complete` | grasp: `sim/grasp_act_teacher_v3.py`/`grasp_act_teacher.py` — GraspTeacher 기본 경로만 |
+| `carry:carry_hold` | `carry` | carry: `pair_carry_teacher_warp.PHASES` |
+| `carry:to_west_staging` | `carry` | carry: `pair_carry_teacher_warp.PHASES` |
+| `carry:rotate_door` | `carry` | carry: `pair_carry_teacher_warp.PHASES` |
+| `carry:to_door_entry` | `carry` | carry: `pair_carry_teacher_warp.PHASES` |
+| `carry:door_pass` | `carry` | carry: `pair_carry_teacher_warp.PHASES` |
+| `carry:to_east_staging` | `carry` | carry: `pair_carry_teacher_warp.PHASES` |
+| `carry:rotate_zone` | `carry` | carry: `pair_carry_teacher_warp.PHASES` |
+| `carry:to_zone` | `carry` | carry: `pair_carry_teacher_warp.PHASES` |
+| `carry:zone_settle` | `carry` | carry: `pair_carry_teacher_warp.PHASES` |
+| `carry:lower` | `place` | carry: `pair_carry_teacher_warp.PHASES` |
+| `carry:open` | `place` | carry: `pair_carry_teacher_warp.PHASES` |
+| `carry:raise` | `place` | carry: `pair_carry_teacher_warp.PHASES` |
+| `carry:retreat` | `place` | carry: `pair_carry_teacher_warp.PHASES` |
+| `carry:done` | `complete` | carry: `pair_carry_teacher_warp.PHASES` — 교사 종료 후 1.5 s 수동 행 포함 |
+<!-- /phase-stage-table -->
+
+- `relook`은 정렬 중 재관측(정렬 진행 없음 → 다시 보기)이라 `recover`입니다. StudentBarrier에서 READY를 철회하는 단계와 같은 뜻입니다.
+- 파지 구간의 `wait` skill 행도 `teacher_phase`는 교사 phase(대개 `ready`) 그대로입니다. skill 토큰과 단계는 별개입니다.
+- 실제 기록에 이 표에 없는 값이 나오면 sidecar 생성이 그 에피소드를 거부합니다. 그때 표를 고치고 다시 사전 등록합니다.
 
 ## 8. 남은 TODO와 [확인 필요]
 
@@ -112,3 +149,13 @@ zone B 폭 0.6 m와 빔 길이 0.6 m가 같으므로 *빔을 zone 장축(y)에 �
 4. formation-space planner 없음. 물체가 직선 구간을 막으면 `route_blocked`.
 5. `arm_targets_from_teacher`: 하강 목표 = 파지 때 기록한 `grasp_xyz` 높이로 같은 IK. 빔이 바닥에 닿기 전에 IK 높이에 도달하면 공중에서 집게를 엽니다(작은 낙하, 기울면 `tilt`). 대안 `floor_contact_v1`(§2-1, 기본 off)을 넣었습니다. smoke는 기본 모드로 돌리고, 열 때 최저점(`teacher-r?.jsonl`의 `carry:open` 첫 행 시각의 eval 행)을 봅니다.
 6. warp4에서 빔 짝·release 12건이 전부 HOST_ERROR(CUDA 700)였습니다(P0 진단 중). 운반 smoke도 같은 fault를 낼 수 있습니다.
+
+## 9. P5 학생 평가 경로 (2026-10-21, 기본 off)
+
+- runner 인자 `student_eval`(CLI `--student-eval <config.json>`, root `--student-eval`)이 None이면 동작 변화 0입니다. 켜면 같은 visible_only pair-carry 에피소드에서 *학생 ACT가 모든 명령을 냅니다*. 교사 객체는 setup에서 만들어지지만 `step()`은 한 번도 호출되지 않고(`teacher_steps = 0`), 운반 교사도 만들지 않습니다. 기록·노이즈·probe와 함께 켤 수 없습니다.
+- 학생 정책은 별도 프로세스(`dsh/pairact-p5-student`의 `scripts/pairact_r1_student_worker.py`, 체크포인트 옆 Python)에서 돕니다. runner가 보내는 것은 로봇별 *자기 카메라 JPEG*와 *runner가 실제로 적용한 자기 명령*뿐이고(`harness/pairact_student_eval.py`, 요청 키 allowlist 테스트), 받는 것은 명령뿐입니다. 학생 행동에 teacher·GT 보정은 0입니다(runner는 받은 명령을 계약 `command()` 검사만 하고 그대로 적용).
+- READY → GO → ACK는 기존 `GraspStartSync`에 beamact4 re-arm 규칙(READY 철회 시 barrier 재생성)을 씌워 씁니다. 시작 지연 RNG는 beampair7 runner와 같습니다(seed 기반 0–1.5 s).
+- 지시 순서(사전 등록 초안): 파지 구간 skill `grasp`(GO 대기 중이면 `wait`), 두 로봇의 *자기 done 플래그*가 3.0 SIM s 동안 함께 참이면 둘 다 `release`·목적지 `B`로 바꿉니다. 두 로봇의 release done이 1.5 s 함께 참이면 끝내고, 아니면 cap까지 돕니다(cap = `cap_s + carry_cap_s`).
+- 판정은 *같은 evaluator*(`pair_carry_eval.evaluate`)입니다. 시작점은 GT 3초 공동 유지에 처음 도달한 시각(eval-only), 하강 경계는 학생에게 교사 lower 시각이 없으므로 `zone_entry_t`(빔 footprint가 처음 zone B 안에 든 행)로 둡니다. 그 전의 낮은 빔은 낙하, 기울기·급강하 낙하는 전 구간 적용입니다. `physical_success = (3초 유지 도달) ∧ carry_eval.success`.
+- 퍼널(eval-only, `StudentFunnel`): approach(맡은 끝 0.8 m) → alignment(station 0.203 m에서 0.03 m·0.06 rad) → READY(두 학생 READY 메시지) → grasp(양쪽 접촉 ≥ 0.5) → hold_3s → carry_1m → door → place. 상수는 CPU 학생 runner(`run_beamact2_student.py`)와 같습니다. 행은 `student-eval.jsonl`에 쓰고 학생에게는 가지 않습니다.
+- [확인 필요] 실제 체크포인트·GPU에서 worker 왕복 지연, adapter(`run_beampair1.py`)가 교사 step 없는 결과를 그대로 받는지는 gcp smoke에서 확인합니다.

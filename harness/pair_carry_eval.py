@@ -296,3 +296,11 @@ def phase_report(diagnostic, response):
                      'drive_response': (response.get('phases') or {}).get(phase)})
     return {'teacher_outcome': diagnostic.get('outcome'), 'timeout_source': 'teacher_events',
             'drive_source': response.get('source'), 'phases': rows}
+
+
+def zone_entry_t(rows, static_map, zone='zone_B'):
+    """Student set-down boundary (P5 prereg): first GT row whose beam footprint is
+    inside zone B. Before it a low beam is a carry drop; after it a commanded
+    set-down is allowed. The student has no teacher lower-start time."""
+    z = zone_of(static_map, zone)
+    return next((r['t'] for r in rows if beam_inside(r['beam']['pose'], z)), None)
