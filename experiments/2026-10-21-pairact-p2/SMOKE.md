@@ -1,4 +1,4 @@
-# pairact P2 smoke: MJWarp GT 공동 운반·하차 (world 3개, gcp6)
+# pairact P2 smoke: MJWarp GT 공동 운반·하차 (world 1·11·17, gcp6)
 
 설계: teacher 브랜치 `dsh/pairact-p2-carrypath`의 `experiments/2026-10-21-pairact-p2/DESIGN.md`.
 목적은 *경로가 GPU에서 끝까지 돌고 evaluator가 판정을 남기는지* 확인하는 것입니다. 관문이 아닙니다.
@@ -35,15 +35,31 @@ git -C $SRC/root rev-parse HEAD   # 이 값을 ROOT_SHA로 기록
 # 순수 함수 테스트 (simulator 불필요)
 cd $SRC/teacher && python -m pytest -q tests/test_pair_carry_teacher_warp.py          # 기대: 24 passed
 cd $SRC/adapter && python -m pytest -q tests/test_pairact_p2_adapter.py               # 기대: 2 passed
-cd $SRC/root    && python -m pytest -q tests/test_pairact_p2_root.py                  # 기대: 3 passed
+cd $SRC/root    && python -m pytest -q tests/test_pairact_p2_root.py                  # 기대: 통과 수는 아래 '테스트 수' 참고
 
-# cases: r13 cases(sha 3d4e065d…)에서 world 6·10·20만 뽑고 candidate만 바꿉니다
+# cases: r13 cases(sha 3d4e065d…)에서 world 1·11·17만 뽑고 candidate만 바꿉니다
 cd $SRC/root && python experiments/2026-10-21-pairact-p2/make_p2_cases.py \
   --r13-cases /home/ugrp/ugrp-sim/runs/beamact5/wide-start-8420000d-r4/wide-cases-r13.json \
   --out $RUN/p2-smoke-cases.json      # 출력 sha256과 seed 3개를 기록
 ```
 
-world 선택 근거: r13 stage-2에서 6·10·20이 파지+3초 유지 PASS(54.7 / 49.5 / 36.3 SIM s)였습니다. 결과를 보고 고른 것이 아니라 "파지가 되는 world에서 운반 경로를 본다"는 smoke 목적에 맞춘 선택이며, 실행 전 이 문서에 고정합니다.
+### smoke world 선택 규칙 (결정적, 운반 실행 전 고정)
+
+1. 입력: `r13-funnel-attempt1.json`(이 폴더, `claude/beamact5-r2-t` `0610c95e5`의 `experiments/2026-10-17-beamact5/runs/gate39-r13-run/funnel-attempt1.json`과 바이트 동일, sha256 `31027ffb…f60c2`). r13 39-gate attempt 1의 world별 기록입니다.
+2. `succ = true`인 world만 남깁니다(37개).
+3. `sim`(에피소드 종료 SIM s = 두 teacher 모두 `complete` = 공동 파지 + 3초 유지 완료 시각) 오름차순, 동률이면 `case`(world id) 오름차순으로 정렬합니다.
+4. 앞의 3개를 씁니다. 코드: `make_p2_cases.select_worlds()`, 테스트 `test_smoke_worlds_are_fastest_r13_grasps`.
+
+| 순위 | world | attempt1 sim | attempt2 sim(참고) |
+|---|---|---|---|
+| 1 | 1 | 22.8 | 23.0 |
+| 2 | 11 | 24.3 | 24.3 |
+| 3 | 17 | 25.2 | 24.7 |
+| (4) | 13 | 26.9 | 27.5 |
+
+- attempt 2(`r13-funnel-attempt2.json`, `376c006f1`)에 같은 규칙을 적용해도 1·11·17이 나옵니다(테스트 `test_attempt2_agrees_on_the_same_three_worlds`). 판정에는 attempt 1만 씁니다.
+- 이전 선택 6·10·20(54.7 / 49.5 / 36.3 SIM s, attempt2의 20은 55.2 s)은 파지 cap 60 s에 가까워 운반 경로를 보기 전에 파지 변동으로 smoke가 끝날 위험이 있어 바꿨습니다. 이 규칙은 *파지 속도*만 보고 운반 결과를 보고 고른 것이 아닙니다.
+- 빨리 잡는 world만 쓰므로 운반 시작 배치가 쉬운 쪽으로 치우칠 수 있습니다. smoke는 경로가 끝까지 도는지만 보며, 성공률 근거로 쓰지 않습니다.
 
 ## 3. 실행 (GPU, 오프피크)
 
