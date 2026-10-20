@@ -1,0 +1,386 @@
+{
+  "schema": "ugrp.act18.c2c_summary.v1",
+  "experiment": "2026-10-17-act18",
+  "phase": "C2c",
+  "title": "R8 + v7 own-issued clock (deadband 2) closed loop, no retraining",
+  "scope": "engineering-only / sim / HO4 diagnostic / not a promotion gate / pooling forbidden",
+  "executed_utc": {
+    "start": "2026-10-19T23:03:30Z",
+    "last_run_end": "2026-10-20T01:22:00Z",
+    "vm_stop": "2026-10-20T01:26:26Z"
+  },
+  "branch": "dsh/act18-c2c-v7clock",
+  "source_sha": "257dcaccc95a6e185f6fcbac2e3837ba4ba6a8b8",
+  "prereg": {
+    "path": "experiments/2026-10-17-act18/C2C_V7CLOCK_PREREG.json",
+    "sha256": "572f82593fb2de916a46af91f883a6a2b42da8f6cbd96d731d342c15503cc4fd",
+    "commit": "e0b9b1ce3"
+  },
+  "checkpoint": {
+    "path": "/home/ugrp/ugrp-sim/runs/act18/training-r1/R8/step-100000",
+    "model_sha256": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a",
+    "unchanged_before_after": true
+  },
+  "run_root": "/home/ugrp/ugrp-sim/runs/act18/c2c-v7clock-20261019T2315Z",
+  "runs": [
+    {
+      "run": "C2c-ho4-rep1",
+      "arm": "C2c",
+      "queue": "ho4",
+      "rep": 1,
+      "stage": "diag",
+      "deadband": 2,
+      "status": "DONE",
+      "group_exit": {
+        "0": 0,
+        "1": 0,
+        "2": 0
+      },
+      "wall_s": 915.3,
+      "checkpoint_sha256_after": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a",
+      "finished_utc": "2026-10-19T23:18:45.860556+00:00"
+    },
+    {
+      "run": "B0-ho4-rep1",
+      "arm": "B0",
+      "queue": "ho4",
+      "rep": 1,
+      "stage": "diag",
+      "deadband": 0,
+      "status": "DONE",
+      "group_exit": {
+        "0": 0,
+        "1": 0,
+        "2": 0
+      },
+      "wall_s": 1079.9,
+      "checkpoint_sha256_after": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a",
+      "finished_utc": "2026-10-19T23:36:46.394932+00:00"
+    },
+    {
+      "run": "C2c-train4-rep1",
+      "arm": "C2c",
+      "queue": "train4",
+      "rep": 1,
+      "stage": "train",
+      "deadband": 2,
+      "status": "DONE",
+      "group_exit": {
+        "0": 0,
+        "1": 0
+      },
+      "wall_s": 843.6,
+      "checkpoint_sha256_after": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a",
+      "finished_utc": "2026-10-19T23:50:50.592980+00:00"
+    },
+    {
+      "run": "C2c-ho4-rep2",
+      "arm": "C2c",
+      "queue": "ho4",
+      "rep": 2,
+      "stage": "diag",
+      "deadband": 2,
+      "status": "DONE",
+      "group_exit": {
+        "0": 0,
+        "1": 0,
+        "2": 0
+      },
+      "wall_s": 836.4,
+      "checkpoint_sha256_after": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a",
+      "finished_utc": "2026-10-20T00:04:47.606396+00:00"
+    },
+    {
+      "run": "B0-ho4-rep2",
+      "arm": "B0",
+      "queue": "ho4",
+      "rep": 2,
+      "stage": "diag",
+      "deadband": 0,
+      "status": "DONE",
+      "group_exit": {
+        "0": 0,
+        "1": 0,
+        "2": 0
+      },
+      "wall_s": 1056.8,
+      "checkpoint_sha256_after": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a",
+      "finished_utc": "2026-10-20T00:22:25.037231+00:00"
+    },
+    {
+      "run": "C2c-train4-rep2",
+      "arm": "C2c",
+      "queue": "train4",
+      "rep": 2,
+      "stage": "train",
+      "deadband": 2,
+      "status": "DONE",
+      "group_exit": {
+        "0": 0,
+        "1": 0
+      },
+      "wall_s": 834.7,
+      "checkpoint_sha256_after": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a",
+      "finished_utc": "2026-10-20T00:36:20.354876+00:00"
+    },
+    {
+      "run": "C2c-ho4-rep3",
+      "arm": "C2c",
+      "queue": "ho4",
+      "rep": 3,
+      "stage": "diag",
+      "deadband": 2,
+      "status": "DONE",
+      "group_exit": {
+        "0": 0,
+        "1": 0,
+        "2": 0
+      },
+      "wall_s": 889.1,
+      "checkpoint_sha256_after": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a",
+      "finished_utc": "2026-10-20T00:51:10.126120+00:00"
+    },
+    {
+      "run": "B0-ho4-rep3",
+      "arm": "B0",
+      "queue": "ho4",
+      "rep": 3,
+      "stage": "diag",
+      "deadband": 0,
+      "status": "DONE",
+      "group_exit": {
+        "0": 0,
+        "1": 0,
+        "2": 0
+      },
+      "wall_s": 1053.2,
+      "checkpoint_sha256_after": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a",
+      "finished_utc": "2026-10-20T01:08:43.931109+00:00"
+    },
+    {
+      "run": "C2c-train4-rep3",
+      "arm": "C2c",
+      "queue": "train4",
+      "rep": 3,
+      "stage": "train",
+      "deadband": 2,
+      "status": "DONE",
+      "group_exit": {
+        "0": 0,
+        "1": 0
+      },
+      "wall_s": 814.5,
+      "checkpoint_sha256_after": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a",
+      "finished_utc": "2026-10-20T01:22:19.036318+00:00"
+    }
+  ],
+  "aggregate": {
+    "B0-ho4": {
+      "N": 12,
+      "G": 0,
+      "Pre": 0,
+      "lift": 7,
+      "done": 0,
+      "release": 0,
+      "task": 0,
+      "cap_end": 12,
+      "seeds": {
+        "88668": {
+          "n": 3,
+          "lift": 3,
+          "G": 0
+        },
+        "88669": {
+          "n": 3,
+          "lift": 1,
+          "G": 0
+        },
+        "88670": {
+          "n": 3,
+          "lift": 0,
+          "G": 0
+        },
+        "88671": {
+          "n": 3,
+          "lift": 3,
+          "G": 0
+        }
+      }
+    },
+    "B0-train4": {
+      "N": 0,
+      "G": 0,
+      "Pre": 0,
+      "lift": 0,
+      "done": 0,
+      "release": 0,
+      "task": 0,
+      "cap_end": 0,
+      "seeds": {}
+    },
+    "C2c-ho4": {
+      "N": 12,
+      "G": 11,
+      "Pre": 0,
+      "lift": 12,
+      "done": 11,
+      "release": 6,
+      "task": 6,
+      "cap_end": 5,
+      "seeds": {
+        "88668": {
+          "n": 3,
+          "lift": 3,
+          "G": 3
+        },
+        "88669": {
+          "n": 3,
+          "lift": 3,
+          "G": 3
+        },
+        "88670": {
+          "n": 3,
+          "lift": 3,
+          "G": 2
+        },
+        "88671": {
+          "n": 3,
+          "lift": 3,
+          "G": 3
+        }
+      }
+    },
+    "C2c-train4": {
+      "N": 12,
+      "G": 10,
+      "Pre": 0,
+      "lift": 11,
+      "done": 10,
+      "release": 3,
+      "task": 3,
+      "cap_end": 9,
+      "seeds": {
+        "88600": {
+          "n": 3,
+          "lift": 3,
+          "G": 3
+        },
+        "88601": {
+          "n": 3,
+          "lift": 3,
+          "G": 2
+        },
+        "88602": {
+          "n": 3,
+          "lift": 2,
+          "G": 2
+        },
+        "88603": {
+          "n": 3,
+          "lift": 3,
+          "G": 3
+        }
+      }
+    }
+  },
+  "acceptance": {
+    "verdict": "PASS",
+    "G_C2c_HO4": 11,
+    "G_C2c_TRAIN4": 10,
+    "Pre_C2c_total": 0,
+    "G_B0_HO4": 0,
+    "criteria": {
+      "PASS": "G(C2c-HO4) >= 4 AND G(C2c-TRAIN4) >= 4 AND Pre(C2c total 24) <= 2 AND G(B0-HO4) <= 1.",
+      "FAIL": "G(C2c-HO4) <= 1 AND G(C2c-TRAIN4) <= 1, OR Pre(C2c total 24) >= 5.",
+      "INCONCLUSIVE": "anything else; no training seed exists so an N increase requires approval.",
+      "T": "reported only; §8 milestone T(C2c-HO4) >= 1 is reported separately.",
+      "fisher_note": "PASS reference: Fisher one-sided 4/12 vs 0/12 p = 0.047.",
+      "no_result_based_changes": "No threshold, seed, arm or metric definition may change after results are seen."
+    }
+  },
+  "milestone": {
+    "T_C2c_HO4": 6,
+    "threshold": 1,
+    "met": true
+  },
+  "clock": {
+    "B0": {
+      "mode": "v6",
+      "post_lift_max_pe_s": [
+        1.0,
+        1.3
+      ],
+      "done": 0
+    },
+    "C2c": {
+      "mode": "deadband",
+      "reset_threshold": 3,
+      "post_lift_max_pe_s": [
+        11.0,
+        14.5
+      ],
+      "issued_done_pe": {
+        "pe_11_1_to_11_4": 16,
+        "reset_immediately_before_done": 5
+      }
+    }
+  },
+  "grouping_fallback": {
+    "reason": "registered HO4 g000 {88668,88669} failed warp_act_backend.py:402 converted model scalar/topology/options differ (88669 has two fewer geoms)",
+    "executed": [
+      "group-000 88668",
+      "group-001 88669",
+      "group-002 88670+88671"
+    ],
+    "design_reference": "act-student-failure-design.md §3 E2 preflight fallback"
+  },
+  "aborted_roots": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act18/c2c-v7clock-20261019T2300Z",
+      "reason": "relative prereg path from child cwd; HOST_ERROR",
+      "inference": 0
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act18/c2c-v7clock-20261019T2258Z",
+      "reason": "physics venv symlink resolved; owner import error",
+      "inference": 0
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act18/c2c-v7clock-20261019T2301Z",
+      "reason": "registered 2-world HO4 group model mismatch; aborted",
+      "inference": "partial 88669 only"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act18/c2c-v7clock-20261019T2307Z",
+      "reason": "four single-world HO4 groups trial; stopped for throughput",
+      "inference": "~10 SIM s"
+    }
+  ],
+  "resources": {
+    "vm": "ugrp-act-l4-gcp2",
+    "project": "ugrp-sim-b-1014",
+    "zone": "asia-northeast3-a",
+    "vm_state_after": "TERMINATED",
+    "processes_after": 0,
+    "gpu_after": "0 %, 0 MiB",
+    "runs_wall_s": 8323.5,
+    "window_note": "started inside weekday UTC 10:00-01:00 window; finished ~22 min past the 01:00Z end"
+  },
+  "retrieval": {
+    "local_root": "/home/ubuntu/UGRP/outputs/runs/act18-c2c-v7clock-20261019T2315Z",
+    "remote_files": 41354,
+    "remote_bytes": "734 MB",
+    "local_selected_files_verified": "9/9 runs sha256 OK",
+    "remote_manifest": "remote-full-sha256.txt (41354 lines)"
+  },
+  "originals_unchanged": {
+    "finish_r3_R8": "f25299593965bf6f8a163b54d7d94fa98281daa510fcaf3e2d2392038df2896f",
+    "finish_r3_R100": "aca288d10c9c629f0fd37bee2ec8f4ec7a57fd29987b10c39c4cfd87cb77407d",
+    "finish_r3": "54feb0b97b1a639873fabd6e91a43a26e7a8118a614c169081cc53869a742a6a"
+  },
+  "no_pooling": true,
+  "r3_retraining": "no-go",
+  "training_runs": 0,
+  "raw_analysis_sha256": "4594c33f2cf2cedb85428626cc04814ea0b102b3c23ced2e844118d565a1e757",
+  "raw_runs_sha256": "def6a8634efcc96fdd19345dc8d04975384c98a0846c75f50cb67150393d6359"
+}
