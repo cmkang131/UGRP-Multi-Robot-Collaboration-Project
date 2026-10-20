@@ -1,6 +1,6 @@
-# Private GitHub 동기화
+# GitHub 동기화
 
-이 저장소는 `kcm0127-dotcom/ugrp` private repository와 수동으로 동기화한다. 시작할 때 working tree가 깨끗한 경우에만 다음 명령으로 fast-forward pull한다.
+이 저장소는 원격 저장소와 수동으로 동기화한다. 시작할 때 working tree가 깨끗한 경우에만 다음 명령으로 fast-forward pull한다.
 
 ```sh
 /Users/changmin/projects/main/scripts/project-sync start /Users/changmin/projects/ugrp
