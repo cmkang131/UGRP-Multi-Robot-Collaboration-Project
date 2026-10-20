@@ -22,7 +22,7 @@ def test_p2_candidate_is_r13_plus_carry_only():
 
 def test_dependency_pin_is_p2_teacher():
     text = (ROOT/'harness/beampair_teacher.py').read_text()
-    assert "DEPENDENCY_SHA = '208e61490cfc19aef2a95954841e76a929fc0666'" in text
+    assert "DEPENDENCY_SHA = '59299f903f4a2f9a2eabe5ff0e442e0ce25e8266'" in text
 
 
 def test_floor_candidate_only_adds_lower_mode():
