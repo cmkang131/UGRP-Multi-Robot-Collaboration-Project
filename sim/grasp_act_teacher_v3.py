@@ -21,6 +21,15 @@ def propagate_owned(point,issued,dt,*,mode="off"):
     return [co*x+si*y,-si*x+co*y,z]
 
 
+def _align_relook_limit(teacher):
+    # Existing rule: the 3rd relook ends the episode (limit 2). pairact P1 cand-3
+    # (default off) allows up to 5 relooks; see sim/grasp_act_search26.py.
+    from sim.grasp_act_search26 import ALIGN_RELOOK_LIMIT, ALIGN_RELOOK_LIMIT_V1
+    if teacher.search15_modes.get('search26_align_relook_cap','off')!='off':
+        return ALIGN_RELOOK_LIMIT_V1
+    return ALIGN_RELOOK_LIMIT
+
+
 class VisibleOnlyGraspTeacher(GraspTeacher):
     def __init__(self,*args,**kwargs):
         self.teacher_stability=kwargs.pop('teacher_stability','off')
@@ -116,7 +125,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         self.events.append({'t':now,'alignment_recovery':reason})
         self._reset_alignment();self.path=[];self.path_goal=None
         self.local_seen=None;self.last_seen_t=None;self.search_since=now
-        if self.align_relooks>2:
+        if self.align_relooks>_align_relook_limit(self):
             self.outcome='alignment_no_progress'
         else:
             self._set('relook',now)

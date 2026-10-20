@@ -71,6 +71,15 @@ new candidate selects them.
   at align and stalled (alignment_no_progress) while wheel commands were all
   zero; the teacher needs to report whether it is waiting on a stale-memory
   pick-cloud collision or on missing visible error.
+- ``search26_align_relook_cap``: pairact P1 cand-3 (world 27 align flake).
+  Existing rule: ``alignment_no_progress`` on the 3rd relook (limit 2). This
+  mode ends on the 5th relook instead (limit 4). Basis: r13 world 27 FAILs end
+  at SIM 25.5-26.3 s with 34-35 s of the 60 s cap unused; the same seed passes
+  1/3 standalone and trajectories diverge within 0.5 SIM s, so a later align
+  attempt can take the passing branch. Caveat: r13diag shows relooks did not
+  clear the stale-margin block in the failing branch; effect is uncertain and
+  is what the tournament measures. This is a tournament parameter (new
+  constant), registered before the run. Default off.
 - ``search26_align_pulse``: alignment breakaway pulse.  In the align phase
   every issued wheel pulse is widened to the full 0.1 s control period (the
   existing period only; the 0.35 board speed and duty ratios are unchanged).
@@ -102,6 +111,7 @@ new stance candidate uses only the existing calibrated envelope, the existing
 jaw predicate, and the existing margins.
 """
 MODES = {'search26_circles': 'search26_downfirst_circles_v1',
+         'search26_align_relook_cap': 'search26_align_relook_cap_v1',
          'search26_align_pulse': 'search26_align_pulse_v1',
          'search26_align_diag': 'search26_align_diag_v1',
          'search26_wide_rescue': 'search26_wide_rescue_v1',
@@ -117,3 +127,7 @@ MODES = {'search26_circles': 'search26_downfirst_circles_v1',
 
 def enabled(t, key):
     return getattr(t, 'search15_modes', {}).get(key, 'off') != 'off'
+
+# Relook limits for alignment_no_progress (teacher_v3._begin_relook).
+ALIGN_RELOOK_LIMIT = 2      # existing behaviour (3rd relook ends the episode)
+ALIGN_RELOOK_LIMIT_V1 = 4   # pairact P1 cand-3 tournament value (5th relook ends)
