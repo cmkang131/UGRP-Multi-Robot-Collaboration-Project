@@ -23,6 +23,36 @@ from scripts import worktree_guard as guard  # noqa: E402
 needs_lsof = pytest.mark.skipif(shutil.which("lsof") is None, reason="lsof is required for the busy check")
 
 
+def test_partial_retirement_recovery_requires_receipt_and_preserves_every_file(repo, tmp_path, monkeypatch):
+    residue = tmp_path / 'residue'
+    residue.mkdir()
+    (residue / 'source.py').write_text('preserve this source')
+    receipt = repo / 'outputs/retired-worktrees/failed/RETIRED.json'
+    receipt.parent.mkdir(parents=True)
+    saved = {'worktree': str(residue), 'verified': True, 'worktree_remove_exit': 255,
+             'head': run(repo, 'rev-parse', 'HEAD').strip(), 'branch': 'archive/test'}
+    receipt.write_text(json.dumps(saved))
+    monkeypatch.setattr(aw.sys, 'platform', 'darwin')
+    monkeypatch.setattr(aw, 'archived_evidence', lambda *args: 'remote SHA verified')
+    monkeypatch.setattr(aw, 'open_pr_numbers', lambda *args: [])
+    monkeypatch.setattr(aw, 'refuse_if_in_use', lambda *args: None)
+    monkeypatch.setattr(Path, 'home', classmethod(lambda cls: tmp_path / 'home'))
+    args = ['--primary', str(repo), 'retire', str(residue), '--recover-receipt', str(receipt),
+            '--archive-ref', 'archive/test']
+    assert aw.main(args) == 0
+    assert (residue / 'source.py').exists()
+    saved['verified'] = False
+    receipt.write_text(json.dumps(saved))
+    assert aw.main(args + ['--execute']) == 2
+    saved['verified'] = True
+    receipt.write_text(json.dumps(saved))
+    assert aw.main(args + ['--execute']) == 0
+    assert not residue.exists()
+    recovered = json.loads(receipt.read_text())['residue_recovery']
+    assert (Path(recovered['trash']) / 'source.py').read_text() == 'preserve this source'
+    assert receipt.with_name('RESIDUE-MANIFEST.tsv').is_file()
+
+
 def run(cwd: Path, *args: str) -> str:
     return subprocess.run(["git", "-C", str(cwd), *args], check=True, capture_output=True, text=True).stdout
 

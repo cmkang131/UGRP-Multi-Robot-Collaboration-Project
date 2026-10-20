@@ -463,6 +463,8 @@ def move_verified(path: Path, plan: list[dict], manifest_tsv: Path) -> list[dict
 
 def cmd_retire(args: argparse.Namespace) -> int:
     primary = primary_checkout(args.primary)
+    if getattr(args, 'recover_receipt', None):
+        return recover_retire(primary, args)
     row, evidence = retire_checks(primary, args)
     path = row["path"]
     ignored = [rel for code, rel in status_entries(path, "--ignored=traditional", "--untracked-files=normal")
@@ -512,6 +514,41 @@ def cmd_retire(args: argparse.Namespace) -> int:
     return 0
 
 
+def recover_retire(primary: Path, args: argparse.Namespace) -> int:
+    """Mac partial-remove recovery: preserve every residue file in Trash."""
+    path = args.path.absolute()
+    receipt = args.recover_receipt.resolve()
+    retired_root = primary / 'outputs' / 'retired-worktrees'
+    if (sys.platform != 'darwin' or path.is_symlink() or not path.is_dir()
+            or path.resolve() == primary or not receipt.is_relative_to(retired_root.resolve())
+            or receipt.name != 'RETIRED.json'):
+        raise Refused('recovery requires a Mac residue and its project retirement receipt')
+    saved = json.loads(receipt.read_text())
+    if (saved.get('worktree') != str(path) or saved.get('verified') is not True
+            or not saved.get('worktree_remove_exit') or not args.archive_ref):
+        raise Refused('receipt must verify raw relocation and a failed removal; archive-ref required')
+    if any(r['path'].resolve() == path.resolve() for r in worktrees(primary)):
+        raise Refused('worktree is still registered; use normal retire')
+    evidence = archived_evidence(primary, saved, args.archive_ref, args.remote)
+    opened = open_pr_numbers(primary, saved.get('branch'))
+    if opened is None or opened:
+        raise Refused('cannot confirm absence of open PRs')
+    refuse_if_in_use(path, args.idle_minutes, None)
+    trash = Path.home() / '.Trash' / ('ugrp-retire-' + path.name + '-' +
+                                    dt.datetime.now().strftime('%Y%m%dT%H%M%S%f'))
+    result = {'worktree': str(path), 'archive_evidence': evidence, 'trash': str(trash),
+              'receipt': str(receipt), 'dry_run': not args.execute}
+    if args.execute:
+        count, size = logical_usage(path)
+        result['moved'] = move_verified(path.parent, [{
+            'path': path.name, 'destination': str(trash), 'entries': count, 'bytes': size}],
+            receipt.with_name('RESIDUE-MANIFEST.tsv'))
+        saved['residue_recovery'] = result
+        write_receipt(retired_root, receipt.parent, saved)
+    print(json.dumps(result, indent=2))
+    return 0
+
+
 def write_receipt(retired_root: Path, receipt_dir: Path, summary: dict) -> None:
     (receipt_dir / "RETIRED.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n")
     with (retired_root / "retirements.jsonl").open("a") as log:
@@ -552,6 +589,8 @@ def main(argv: list[str] | None = None) -> int:
     retire.add_argument("--no-pr-check", action="store_true", help="skip the gh open-PR check (checked by hand)")
     retire.add_argument("--allow-open-pr", action="store_true", help="owner confirmed the open PR needs no worktree")
     retire.add_argument("--archive-ref", help="unmerged work: remote branch that already holds exactly this HEAD")
+    retire.add_argument("--recover-receipt", type=Path,
+                        help="Mac: move deregistered partial-removal residue to Trash using RETIRED.json")
     retire.add_argument("--remote", default="origin", help="remote checked with ls-remote for --archive-ref")
     retire.add_argument("--archive-layout", action="store_true",
                         help="put everything under outputs/retired-worktrees/<label>/ (no same-path placement)")

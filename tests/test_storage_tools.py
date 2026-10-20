@@ -217,7 +217,7 @@ class StorageTests(unittest.TestCase):
         self.assertEqual(prune.plan(self.root, 123)['bytes'], 0)
         self.write('nested/RUN_META.json', 0).write_text('{"class":"study"}')
         self.write('nested/frame.jpg')
-        self.assertIn('nested', prune.plan(self.root, 123)['skipped'])
+        self.assertEqual(prune.plan(self.root, 123)['bytes'], 0)
         self.assertEqual(target.read_bytes(), b'outside')
 
     def test_invalid_keep_path_refuses(self):
