@@ -44,6 +44,8 @@
 | [3대 공동 출하·복구](experiments/dispatch-adaptive-recovery-20260917/README.md) | 목적지·장애물 변화 6조건에서 새 LLM 합의부터 운반·방출까지 성공 | seed11·조건당 1회·기존 RGB 스킬·수치 접촉 프로필; 임의 배치/역할·실시간 분산·실물 일반화 아님 |
 | [ACT 공동 운반 비교](experiments/2026-09-18-act-pair-carry/README.md) | 운반 진입 3조건에서 교사 3/3, ACT seed18 1/3·seed19 0/3 | 네 번째 조건은 접근 중단; 확정 계획 재생, 새 LLM 호출 없음. ACT는 기존 경로를 대체하지 않음 |
 
+- [ACT18 C2c v7 시계 진단(HO4)](experiments/2026-10-20-act18-c2c-v7clock/README.md): 제자리 집기→3초 들기→같은 자리 내려놓기 12회 중 과제 성공 6/12(들기 12/12, 내려놓기 6/12). 관문 미통과 진단이며 이동·공동 운반 성공 아님.
+
 자기 RGB·공용 top RGB·자기 발행 명령을 사용하고 승인된 지도 경로에서는 정적 지도를 제공한다. 교사 정답은 학습용이며 실행 중 평가 좌표·접촉·관절 측정으로 행동을 보정하지 않는다. 카메라 배치/FOV와 weld OFF를 유지한다. 시뮬레이션 결과는 실물 MasterPi 검증과 구분한다.
 
 > 현행 규칙(2026-10-03 [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366))상 공용 top 카메라는 평가·검토 영상 전용이며 제어·지도 만들기·위치 추정 입력으로 금지한다. 이 기존 경로는 아직 TOP 사용(미이행)이다.
