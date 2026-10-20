@@ -13,8 +13,8 @@ spec.loader.exec_module(p2)
 
 def test_pins_point_to_p2_trees():
     text = (ROOT/'scripts/warp_flow_episode.py').read_text()
-    assert "ADAPTER_SHA = 'db4920b9a22f6a755538291a92adfb21a6687e42'" in text
-    assert "TEACHER_SHA = 'ccd33332743b7e1b5fa9ec0ef8555edbba966713'" in text
+    assert "ADAPTER_SHA = '76532d0dd6aa770cea19c65a734b893159d898de'" in text
+    assert "TEACHER_SHA = '208e61490cfc19aef2a95954841e76a929fc0666'" in text
 
 
 def test_derive_rejects_other_cases_file():

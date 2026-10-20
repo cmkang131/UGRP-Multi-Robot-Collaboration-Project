@@ -15,9 +15,11 @@
 
 | tree | 브랜치 | SHA |
 |---|---|---|
-| teacher | `dsh/pairact-p2-carrypath` | `ccd33332743b7e1b5fa9ec0ef8555edbba966713` |
-| adapter | `dsh/pairact-p2-carrypath-a` | `db4920b9a22f6a755538291a92adfb21a6687e42` |
+| teacher | `dsh/pairact-p2-carrypath` | `208e61490cfc19aef2a95954841e76a929fc0666` |
+| adapter | `dsh/pairact-p2-carrypath-a` | `76532d0dd6aa770cea19c65a734b893159d898de` |
 | root | `dsh/pairact-p2-carrypath-r` | 이 문서가 들어 있는 커밋(`git rev-parse origin/dsh/pairact-p2-carrypath-r`) |
+
+smoke는 기본 하강(`grasp_height`)으로 돌립니다. 바닥 접촉 하강은 별도 후보 `pairact_p2_r13_floor`(teacher DESIGN §2-1, 기본 off)이고, smoke에서 `not_resting`이나 공중 열기가 보일 때 *다른 world 집합*으로 따로 확인합니다.
 
 r13과 다른 점은 adapter 후보 `pairact_p2_r13`(= `beamact5_r13` 프로필 + `pair_carry=pair_carry_gt_v1`, `carry_cap_s=110`)과 pin 3개, root summary의 `carry_success`/`carry_failure` 필드뿐입니다. physics/contact/scene 플래그는 r13 실행과 같습니다.
 
@@ -26,16 +28,16 @@ r13과 다른 점은 adapter 후보 `pairact_p2_r13`(= `beamact5_r13` 프로필 
 ```bash
 SRC=/home/ugrp/ugrp-sim/src/pairact-p2; RUN=/home/ugrp/ugrp-sim/runs/pairact-p2
 mkdir -p $SRC $RUN
-for t in teacher:ccd33332743b7e1b5fa9ec0ef8555edbba966713 adapter:db4920b9a22f6a755538291a92adfb21a6687e42 root:origin/dsh/pairact-p2-carrypath-r; do
+for t in teacher:208e61490cfc19aef2a95954841e76a929fc0666 adapter:76532d0dd6aa770cea19c65a734b893159d898de root:origin/dsh/pairact-p2-carrypath-r; do
   name=${t%%:*}; rev=${t#*:}
   git -C /home/ugrp/ugrp-sim/ugrp worktree add --detach $SRC/$name $rev   # 기존 레포 경로는 [확인 필요]
 done
 git -C $SRC/root rev-parse HEAD   # 이 값을 ROOT_SHA로 기록
 
 # 순수 함수 테스트 (simulator 불필요)
-cd $SRC/teacher && python -m pytest -q tests/test_pair_carry_teacher_warp.py          # 기대: 24 passed
-cd $SRC/adapter && python -m pytest -q tests/test_pairact_p2_adapter.py               # 기대: 2 passed
-cd $SRC/root    && python -m pytest -q tests/test_pairact_p2_root.py                  # 기대: 통과 수는 아래 '테스트 수' 참고
+cd $SRC/teacher && python -m pytest -q tests/test_pair_carry_teacher_warp.py          # 기대: 34 passed
+cd $SRC/adapter && python -m pytest -q tests/test_pairact_p2_adapter.py               # 기대: 3 passed
+cd $SRC/root    && python -m pytest -q tests/test_pairact_p2_root.py                  # 기대: 6 passed
 
 # cases: r13 cases(sha 3d4e065d…)에서 world 1·11·17만 뽑고 candidate만 바꿉니다
 cd $SRC/root && python experiments/2026-10-21-pairact-p2/make_p2_cases.py \
@@ -90,6 +92,8 @@ python /home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py \
 |---|---|
 | `$RUN/smoke-1/summary.json` | `worlds[].success`(= 파지 gate 성공, 기존 정의), `carry_success`, `carry_failure`, `source_sha`, HOST_ERROR |
 | `world-00k/raw/carry-eval.json` | evaluator 판정: success, failure, funnel(1 m 운반·문 통과·zone 안·내려놓음·해제·정지), drop_events, robot_robot_contact_ticks, wall_contact_*(기록만), final_beam_pose |
+| 같은 파일 → `drive_response` | *eval-only* 단계·로봇별 명령 몸체 속도 대비 GT 몸체 속도(`speed_ratio`, `turn_ratio`, `stall_ticks`, 바퀴 듀티·펄스 폭). 성공 판정·단계 timeout과 무관(`affects_* = false`) |
+| 같은 파일 → `phase_report` | 단계별 소요·cap·교사 timeout 코드(교사 events)와 같은 단계 drive 집계를 *나란히, 따로* 표시. 보고 시 timeout 단계의 `speed_ratio`를 같이 적습니다 |
 | `world-00k/raw/result.json(.zst)` → `carry` | 교사 outcome, events(단계 전환 시각), route·route_info(문 폭 필요/가용, 대기점, variant), max_stretch_m, max_track_err_m, retreat 종류 |
 | `world-00k/raw/teacher-r?.jsonl` | 운반 라벨(`teacher_phase = carry:<단계>`) |
 | `world-00k/review-2hz/` | 자기 카메라 2 Hz(검토용) |
