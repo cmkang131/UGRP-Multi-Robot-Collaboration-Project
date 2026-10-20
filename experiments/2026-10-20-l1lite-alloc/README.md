@@ -35,25 +35,23 @@ B-right 1건, required_robots=1, assigned_robot=None
 
 ## 2. Seed별 사적 제약 표 (결정론적, 코드가 원본)
 
-`SEED_TABLE` (code -> documentation, 역방향 편집 금지):
+`TEST_TABLE`(본실험)과 `DEV_TABLE`(공통 부품 tournament 전용, 합산 금지). 코드가 원본이며 문서를 보고 코드를 고치지 않는다.
+2026-10-20 Claude 결정으로 TEST 충돌 seed를 2/6에서 *4/6*으로 바꿨다. 통신이 필요한 seed를 다수로 두기 위해서이며, no_comm 기대값은 2/6이다.
 
-| seed | 제약 받는 로봇 | 가능 슬롯 | no_comm 기본 결과 | 충돌? |
-|---:|---|---|---|---|
-| 601 | r1 | right | r1 right / r2 right | **충돌** |
-| 602 | r1 | left  | r1 left / r2 right | 분리 |
-| 603 | r2 | left  | r1 left / r2 left | **충돌** |
-| 604 | r2 | right | r1 left / r2 right | 분리 |
-| 605 | r1 | left  | r1 left / r2 right | 분리 |
-| 606 | r2 | right | r1 left / r2 right | 분리 |
+| seed | 구분 | 제약 받는 로봇 | 가능 슬롯 | no_comm 기본 결과 | 충돌? |
+|---:|---|---|---|---|---|
+| 601 | test | r1 | right | r1 right / r2 right | **충돌** |
+| 602 | test | r2 | left  | r1 left / r2 left | **충돌** |
+| 603 | test | r1 | left  | r1 left / r2 right | 분리 |
+| 604 | test | r1 | right | r1 right / r2 right | **충돌** |
+| 605 | test | r2 | left  | r1 left / r2 left | **충돌** |
+| 606 | test | r2 | right | r1 left / r2 right | 분리 |
+| 701 | dev | r1 | right | r1 right / r2 right | **충돌** |
+| 702 | dev | r2 | right | r1 left / r2 right | 분리 |
 
-- `constraint_table_digest()` = **`252d0ebc867b0a5acdd2139e69a45c384f0466c2f88ec71574684e365d187e88`**
-  (sha256; queue의 `nav_l1lite_constraints_sha256`에 기록. 표 자체는 로봇 입력에 쓰지 않는다).
-- 균형: r1 3 / r2 3, 제약 슬롯 left 3 / right 3.
-- no_comm 기본 규칙: "제약이 있으면 그 슬롯, 없으면 자기 스폰 레인 슬롯" (r1 north lane→left,
-  r2 south lane→right). 이 규칙에서 충돌은 "제약 로봇의 슬롯 == 상대의 스폰 레인 슬롯"일 때만
-  생긴다. r1 3/r2 3·left 3/right 3을 동시에 만족하면 충돌 수는 **짝수(0/2/4)** 이며,
-  표는 균형을 위해 **2/6 충돌**(601, 603)을 택한다. 이 성질은 `table_violations()`가 import
-  시점에 강제한다. (prereg에서 3/6 충돌을 원하면 left/right 제약을 4/2로 기울여야 한다.)
+- `constraint_table_digest()`는 test와 dev 표를 모두 덮는다. 값은 커밋 뒤 queue에 기록된다.
+- 균형(test): r1 3 / r2 3, 제약 슬롯 left 3 / right 3, no_comm 충돌 4/6. `table_violations()`가 import 시점에 강제한다.
+- 충돌 규칙: no_comm 충돌은 "제약 슬롯 ≠ 제약 로봇 자신의 스폰 레인 슬롯"일 때 생긴다(r1 레인=left, r2 레인=right).
 - 사적 제약은 해당 로봇의 `robot_brief()`의 `own_constraint`에만 쓰인다. 상대 brief에는
   `own_constraint: null`이고, 내비게이션 어댑터 allowlist(`nav_static`)는 이 키를 거부한다.
 

@@ -75,7 +75,8 @@ def test_order_sheet_is_v_l1lite_two_unassigned_deliveries():
 
 
 def test_constraint_table_is_balanced_deterministic_and_pinned():
-    assert L.table_violations(L.SEED_TABLE) == []
+    assert L.table_violations(L.TEST_TABLE) == []
+    assert L.table_violations(L.constraint_table()) == []
     assert L.TABLE_SEEDS == (601, 602, 603, 604, 605, 606)
     rows = {seed: L.all_constraints(seed) for seed in L.TABLE_SEEDS}
     constrained = {seed: next(r for r, slot in rows[seed].items() if slot)
@@ -84,10 +85,10 @@ def test_constraint_table_is_balanced_deterministic_and_pinned():
     assert sorted(constrained.values()).count('r2') == 3
     slots = [rows[seed][constrained[seed]] for seed in L.TABLE_SEEDS]
     assert slots.count('left') == 3 and slots.count('right') == 3
-    # The no_comm rule collides on exactly the two balanced collision seeds.
+    # The no_comm rule collides on exactly the four pre-registered seeds.
     collisions = [seed for seed in L.TABLE_SEEDS
                   if L.default_slot(seed, 'r1') == L.default_slot(seed, 'r2')]
-    assert collisions == [601, 603]
+    assert collisions == [601, 602, 604, 605]
     assert len(L.constraint_table_digest()) == 64
     assert L.constraint_table_digest() == L.constraint_table_digest()
     # Private-constraint output is a fresh copy: a caller cannot mutate the table.
@@ -97,19 +98,19 @@ def test_constraint_table_is_balanced_deterministic_and_pinned():
 
 
 def test_table_violations_detect_a_tampered_table():
-    # Break the slot balance only (601 right -> left).
+    # Break the slot balance only (601 r1 right -> left, 606 r2 right -> left).
     table = L.constraint_table()
     table[601] = dict(robot='r1', slot='left')
-    table[604] = dict(robot='r2', slot='left')
+    table[606] = dict(robot='r2', slot='left')
     issues = L.table_violations(table)
     assert any('slot balance' in issue for issue in issues)
-    # Every constrained robot takes the peer's lane slot: 3/3 and 3/3 hold but
-    # the deterministic collision count leaves the pre-registered table.
+    # Every constrained robot keeps its own lane slot: 3/3 and 3/3 hold but
+    # the collision count (0) leaves the pre-registered table (4).
     table = L.constraint_table()
-    for seed in (601, 602, 605):
-        table[seed] = dict(robot='r1', slot='right')
-    for seed in (603, 604, 606):
-        table[seed] = dict(robot='r2', slot='left')
+    for seed in (601, 602, 603):
+        table[seed] = dict(robot='r1', slot='left')
+    for seed in (604, 605, 606):
+        table[seed] = dict(robot='r2', slot='right')
     assert any('collisions' in issue for issue in L.table_violations(table))
     del table[606]
     assert any('exactly seeds' in issue for issue in L.table_violations(table))
@@ -178,7 +179,7 @@ def test_structured_channel_accepts_the_fixed_enum_only():
 
 
 def test_peer_en_channel_is_free_english_only():
-    channel = Channels('peer_en', 602, message_schema='l1lite')
+    channel = Channels('peer_en', 603, message_schema='l1lite')
     channel.send('r1', {'recipients': ['r2'],
                         'body': {'text': 'I can only take B-left.'}}, now=0.)
     assert channel.inbox('r2')['inbox'][0]['body']['text'].startswith('I can')
@@ -206,7 +207,7 @@ def test_leader_rotation_is_seed_mod_two():
 
 def test_no_comm_allocation_uses_the_default_rule_with_zero_messages():
     ask = scripted({'r1': [reply('slot_left')], 'r2': [reply('slot_right')]})
-    record = L.allocate_slots('no_comm', 602, ask=ask)
+    record = L.allocate_slots('no_comm', 603, ask=ask)
     assert record['decisions'] == {'r1': 'left', 'r2': 'right'}
     assert record['utterances'] == 0
     assert record['messages'] == []
@@ -218,7 +219,7 @@ def test_no_comm_allocation_uses_the_default_rule_with_zero_messages():
 def test_no_comm_never_delivers_a_message_even_if_the_model_tries():
     ask = scripted({'r1': [reply('slot_left', {'text': 'hello'})],
                     'r2': [reply('slot_right')]})
-    record = L.allocate_slots('no_comm', 602, ask=ask)
+    record = L.allocate_slots('no_comm', 603, ask=ask)
     assert record['utterances'] == 0 and record['messages'] == []
     assert len(record['message_drops']) == 1
 
@@ -233,11 +234,11 @@ def test_no_comm_collision_records_the_named_duplicate_error():
 
 
 def test_no_comm_decision_off_the_default_rule_fails_closed():
-    # seed 602 default: r1 left, r2 right.  r1 returning the non-default slot
+    # seed 603 default: r1 left, r2 right.  r1 returning the non-default slot
     # is not a fallback case: the candidate list only advertised the default.
     ask = scripted({'r1': [reply('slot_right')], 'r2': [reply('slot_right')]})
     with pytest.raises(L.L1LiteError) as info:
-        L.allocate_slots('no_comm', 602, ask=ask)
+        L.allocate_slots('no_comm', 603, ask=ask)
     assert info.value.code == 'L1LITE_INVALID_SLOT'
     assert info.value.record['decisions'] == {}
 
@@ -255,7 +256,7 @@ def test_structured_exchange_claims_both_slots_and_resolves_in_round_two():
 
     ask = scripted({'r1': [claim('r1', 'left'), claim('r1', 'left')],
                     'r2': [claim('r2', 'right'), claim('r2', 'right')]})
-    record = L.allocate_slots('structured', 602, ask=ask)
+    record = L.allocate_slots('structured', 603, ask=ask)
     assert record['decisions'] == {'r1': 'left', 'r2': 'right'}
     assert record['rounds'] == 2
     assert record['utterances'] == 4
@@ -275,7 +276,7 @@ def test_peer_messages_are_visible_only_from_round_two():
 
     ask = scripted({'r1': [claim('r1', 'left'), claim('r1', 'left')],
                     'r2': [claim('r2', 'right'), claim('r2', 'right')]})
-    L.allocate_slots('structured', 602, ask=ask)
+    L.allocate_slots('structured', 603, ask=ask)
     assert seen[('r1', 1)]['inbox'] == [] and seen[('r2', 1)]['inbox'] == []
     assert seen[('r1', 2)]['inbox'][0]['body']['slot'] == 'right'
     assert seen[('r2', 2)]['inbox'][0]['body']['slot'] == 'left'
@@ -296,7 +297,7 @@ def test_structured_free_text_is_dropped_and_recorded():
         'r1': [reply('slot_left', {'text': 'take the right half'})] * 2,
         'r2': [reply('slot_right', {'act': 'claim_slot', 'slot': 'right'}, to='r1')] * 2,
     })
-    record = L.allocate_slots('structured', 602, ask=ask)
+    record = L.allocate_slots('structured', 603, ask=ask)
     assert record['decisions'] == {'r1': 'left', 'r2': 'right'}
     assert record['utterances'] == 2  # only the peer's valid messages were sent
     assert 'L1LITE_MESSAGE_INVALID' in record['errors']
@@ -359,20 +360,20 @@ def test_missing_or_malformed_decision_fails_closed():
     def none_ask(robot, dynamic):
         raise L.L1LiteError('L1LITE_NO_DECISION', detail='planner returned none')
     with pytest.raises(L.L1LiteError) as info:
-        L.allocate_slots('structured', 602, ask=none_ask)
+        L.allocate_slots('structured', 603, ask=none_ask)
     assert info.value.code == 'L1LITE_NO_DECISION'
     assert info.value.record['condition'] == 'structured'
 
     malformed = scripted({'r1': [{'act': 'slot_left'}],
                           'r2': [reply('slot_right')]})
     with pytest.raises(L.L1LiteError) as info:
-        L.allocate_slots('structured', 602, ask=malformed)
+        L.allocate_slots('structured', 603, ask=malformed)
     assert info.value.code == 'L1LITE_INVALID_DECISION'
 
 
 def test_allocator_rejects_unknown_condition_and_seed():
     with pytest.raises(L.L1LiteError, match='CONDITION_UNKNOWN'):
-        L.allocate_slots('peer_ko', 602, ask=scripted({}))
+        L.allocate_slots('peer_ko', 603, ask=scripted({}))
     with pytest.raises(L.L1LiteError, match='SEED_UNKNOWN'):
         L.allocate_slots('no_comm', 610, ask=scripted({}))
 
@@ -762,7 +763,7 @@ class FakeTask:
         return False
 
 
-def fake_args(tmp_path, condition='no_comm', seed=602):
+def fake_args(tmp_path, condition='no_comm', seed=603):
     return type('Args', (), dict(
         mode='nav', nav_solo_robot=None, seed=seed, condition=condition,
         nworld=1, output=tmp_path / 'run', nav_sim_budget_s=0.5,
@@ -772,7 +773,7 @@ def fake_args(tmp_path, condition='no_comm', seed=602):
         arrival_odom_projection=True, command=['fake-run']))()
 
 
-def fake_queue(condition='no_comm', seed=602):
+def fake_queue(condition='no_comm', seed=603):
     return dict(sim_budget_s=0.5, stack_values=dict(contact_profile='fake'),
                 stack_deviations=[], host=dict(instance='fake'),
                 map_keyframe_admission='off', dependency_status='fake',
@@ -860,3 +861,14 @@ def test_runner_default_path_still_uses_the_fixed_r5_slot_mapping(tmp_path, monk
     for robot, static in FakeTask.statics:
         assert static['slots'] == gate.SLOT_BY_ROBOT
         assert 'own_constraint' not in static
+
+
+def test_dev_seeds_are_separate_from_test_seeds():
+    assert L.DEV_SEEDS == (701, 702)
+    assert not set(L.DEV_SEEDS) & set(L.TABLE_SEEDS)
+    assert L.seed_split(701) == 'dev' and L.seed_split(601) == 'test'
+    assert L.default_slot(701, 'r1') == L.default_slot(701, 'r2')   # collision
+    assert L.default_slot(702, 'r1') != L.default_slot(702, 'r2')   # split
+    dev = L.dev_constraint_table()
+    dev[701]['slot'] = 'left'
+    assert L.all_constraints(701)['r1'] == 'right'

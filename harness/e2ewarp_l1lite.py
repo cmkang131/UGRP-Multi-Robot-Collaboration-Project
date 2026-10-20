@@ -82,29 +82,37 @@ ORDER_SHEET = dict(
           'picking and placing are outside this task'),
 )
 
-#: Deterministic private-constraint table (plan §3 item 2).  ``robot`` is the
-#: single robot that receives the constraint, ``slot`` the only slot it may use.
-#: Balance required by the plan: 6 seeds, r1 constrained on 3, r2 on 3, and the
-#: constraint slots split 3 left / 3 right.  The no_comm default rule (private
-#: constraint if any, else the robot's spawn-lane slot) collides when the
-#: constrained robot's slot equals the *peer's* spawn-lane slot: seeds 601 and
-#: 603 below.  With r1 3 / r2 3 and left 3 / right 3 the collision count is
-#: necessarily even (0, 2 or 4) -- 2 collisions is the balanced choice and is
-#: asserted by ``table_violations`` so a later edit cannot silently tip it.
-SEED_TABLE = {
+#: Deterministic private-constraint table (plan §1, Claude decision 2026-10-20).
+#: ``robot`` is the single robot that receives the constraint, ``slot`` the only
+#: slot it may use.  TEST seeds (601-606) are the pre-registered main-run seeds;
+#: DEV seeds (701-702) are only for the shared-component tournament and are
+#: never pooled with TEST.  The no_comm default rule (private constraint if
+#: any, else the robot's spawn-lane slot) collides exactly when the constrained
+#: robot's slot equals the *peer's* spawn-lane slot.  With r1 3 / r2 3 and
+#: left 3 / right 3 the collision count is necessarily even (0, 2 or 4); the
+#: TEST table takes 4 so that most seeds need information exchange (no_comm
+#: expected 2/6), and ``table_violations`` asserts it so a later edit cannot
+#: silently tip it.
+TEST_TABLE = {
     601: dict(robot='r1', slot=SLOT_RIGHT),   # no_comm collision (r2 lane=right)
-    602: dict(robot='r1', slot=SLOT_LEFT),    # no_comm split
-    603: dict(robot='r2', slot=SLOT_LEFT),    # no_comm collision (r1 lane=left)
-    604: dict(robot='r2', slot=SLOT_RIGHT),   # no_comm split
-    605: dict(robot='r1', slot=SLOT_LEFT),    # no_comm split
+    602: dict(robot='r2', slot=SLOT_LEFT),    # no_comm collision (r1 lane=left)
+    603: dict(robot='r1', slot=SLOT_LEFT),    # no_comm split
+    604: dict(robot='r1', slot=SLOT_RIGHT),   # no_comm collision
+    605: dict(robot='r2', slot=SLOT_LEFT),    # no_comm collision
     606: dict(robot='r2', slot=SLOT_RIGHT),   # no_comm split
 }
-TABLE_SEEDS = tuple(sorted(SEED_TABLE))
+DEV_TABLE = {
+    701: dict(robot='r1', slot=SLOT_RIGHT),   # no_comm collision
+    702: dict(robot='r2', slot=SLOT_RIGHT),   # no_comm split
+}
+SEED_TABLE = {**TEST_TABLE, **DEV_TABLE}
+DEV_SEEDS = tuple(sorted(DEV_TABLE))
+TABLE_SEEDS = tuple(sorted(TEST_TABLE))
 #: sha256 of the canonical table; recorded in the queue so the pre-registered
 #: constraint assignment is pinned without writing the private rows into a run
 #: input (the table is admin data, not a robot observation).
 TABLE_SHA256 = hashlib.sha256(
-    json.dumps(dict(version=VERSION, table=SEED_TABLE), sort_keys=True,
+    json.dumps(dict(version=VERSION, test=TEST_TABLE, dev=DEV_TABLE), sort_keys=True,
                separators=(',', ':')).encode()).hexdigest()
 
 #: Pinned planner prices (USD per 1M tokens) copied from
@@ -129,8 +137,19 @@ def constraint_table_digest():
 
 
 def constraint_table():
-    """A fresh copy of the admin table (never a robot input)."""
-    return copy.deepcopy(SEED_TABLE)
+    """A fresh copy of the pre-registered TEST admin table (never a robot input)."""
+    return copy.deepcopy(TEST_TABLE)
+
+
+def dev_constraint_table():
+    """A fresh copy of the DEV admin table (tournament only, never pooled)."""
+    return copy.deepcopy(DEV_TABLE)
+
+
+def seed_split(seed):
+    """'test' or 'dev' for a known seed; recorded in the queue."""
+    _check_seed(seed)
+    return 'dev' if seed in DEV_TABLE else 'test'
 
 
 def table_violations(table):
@@ -162,15 +181,15 @@ def table_violations(table):
     if collisions not in (0, 2, 4):
         out.append('no_comm collision count must be even with 3/3 balances, got '
                    + str(collisions))
-    if collisions != 2:
-        out.append('the pre-registered table has 2 no_comm collisions, got '
+    if collisions != 4:
+        out.append('the pre-registered table has 4 no_comm collisions, got '
                    + str(collisions))
     return out
 
 
-if table_violations(SEED_TABLE):
+if table_violations(TEST_TABLE):
     raise RuntimeError('L1LITE_CONSTRAINT_TABLE_INVALID:' + '; '.join(
-        table_violations(SEED_TABLE)))
+        table_violations(TEST_TABLE)))
 
 
 def _check_seed(seed):
