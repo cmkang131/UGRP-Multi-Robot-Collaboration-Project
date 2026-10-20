@@ -5,7 +5,7 @@
 
 ## 0. 사전 확인 (CPU, 수 분)
 ```
-/home/ubuntu/ugrp-e1-venv/bin/python -m pytest -q tests/test_pairact_r1.py        # 13 passed 기대
+/home/ubuntu/ugrp-e1-venv/bin/python -m pytest -q tests/test_pairact_r1.py        # 14 passed 기대
 python scripts/check_pairact_r1_seeds.py --scan-refs origin/main origin/codex/beamact1 \
   origin/claude/beampair7 origin/claude/beampair8 origin/claude/beampair9 origin/claude/beamact5 \
   origin/dsh/pairact-p0-diag origin/dsh/act18-carry-retrain-r1 > runs/pairact-p3-<TS>/seed-check.json

@@ -50,10 +50,17 @@ PAD = -1
 
 # Teacher phase vocabulary required from the P2 MJWarp carry/place teacher
 # (COLLECT_SPEC.md section 4). Unknown phases are rejected, never guessed.
+# Grasp segment: the MJWarp beamact5 visible_only teacher writes exactly
+# approach/search/relook/align/ready/pick/verify/complete/done (phase literals
+# of sim/grasp_act_teacher{,_v3}.py; fixed in dsh/pairact-p2-carrypath
+# harness/pair_carry_recorder.TEACHER_PHASE_TO_STAGE, which must stay equal on
+# every key it defines). 'relook' = alignment re-observation -> recover.
 TEACHER_PHASE_TO_STAGE = {
     'start': 'approach', 'fold': 'approach', 'search': 'approach', 'approach': 'approach',
     'align': 'alignment',
+    'relook': 'recover',
     'ready': 'ready', 'wait_go': 'ready',
+    'pick': 'execute', 'verify': 'execute',
     'grasp': 'execute', 'close': 'execute', 'lift': 'execute', 'hold': 'execute',
     'carry': 'carry', 'door': 'carry',
     'lower': 'place', 'open': 'place', 'place': 'place', 'retreat': 'place',

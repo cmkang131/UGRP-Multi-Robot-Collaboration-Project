@@ -35,10 +35,10 @@
 ## 4. recorder 필수 필드 (P2 워커 ④와 조율)
 | 파일 | 필드 | 요구 |
 |---|---|---|
-| student-{rid}.jsonl | `skill_elapsed_s`, `pwm_elapsed_s` | *v7 시계*: `harness.pairact_r1.DeadbandIssuedClock(2)`로 계산합니다. 현재 P2 recorder는 `contract.IssuedClock()`(v6)이라 *바꿔야 합니다*. 결과 JSON에 `issued_clock_deadband: 2`와 리셋 횟수를 남깁니다 |
-| teacher-{rid}.jsonl | `teacher_phase` | 모든 행에 필수입니다. 운반 구간은 `carry:<phase>`이고 P2 PHASES 14개를 씁니다. 파지 구간 어휘는 [확인 필요]입니다. `TEACHER_PHASE_TO_STAGE`에 없는 값이 있으면 sidecar 생성이 그 에피소드를 거부합니다 |
+| student-{rid}.jsonl | `skill_elapsed_s`, `pwm_elapsed_s` | *v7 시계*(deadband 2). *반영됨(2026-10-21)*: `dsh/pairact-p2-carrypath`의 runner가 pair_carry on일 때 로봇별 `pair_carry_recorder.DeadbandIssuedClock(2)`(이 브랜치 `DeadbandIssuedClock`과 같은 규칙) 하나를 파지·운반 구간에 같이 씁니다. `result.json → carry_recording`에 `issued_clock_deadband: 2`와 로봇별 리셋 횟수가 남습니다 |
+| teacher-{rid}.jsonl | `teacher_phase` | 모든 행에 필수입니다. 운반 구간은 `carry:<phase>`(P2 PHASES 14개), 파지 구간은 visible_only 교사 어휘 9개(approach·search·relook·align·ready·pick·verify·complete·done)입니다. *대응표 고정(2026-10-21)*: P2 teacher DESIGN §7-1과 `pair_carry_recorder.TEACHER_PHASE_TO_STAGE`, 이 브랜치 `TEACHER_PHASE_TO_STAGE`가 같은 키에서 같아야 합니다(양쪽 테스트). 없는 값이 있으면 sidecar 생성이 그 에피소드를 거부합니다 |
 | teacher-{rid}.jsonl | `sample_id` | student 행과 1:1. sidecar가 이 키로 phase를 붙입니다 |
-| raw/result.json | `physical_success`, `status`, `student_execution=false`, `recording_mode=training`, `training_rgb=true` | `grasp_act_data.convert` 요구 그대로입니다. `physical_success`는 §5의 teacher 성공과 같아야 합니다 |
+| raw/result.json | `physical_success`, `status`, `student_execution=false`, `recording_mode=training`, `training_rgb=true` | `grasp_act_data.convert` 요구 그대로입니다. `physical_success`는 §5의 teacher 성공과 같아야 합니다. *반영됨*: 기록 on + pair_carry on에서 runner가 `physical_success = grasp_physical_success ∧ carry_success`로 씁니다(기록 off smoke에서는 파지 관문 정의 그대로) |
 | eval-only.jsonl | GT 자세, 빔 자세, 접촉 | P2 evaluator 입력입니다. 학습 텐서로는 들어가지 않습니다 |
 
 ## 5. teacher 성공 판정 (학습 포함 조건)

@@ -273,3 +273,10 @@ def test_sidecar_builder_and_pair_dataset_end_to_end(tmp_path):
                                history=cfg['history_augmentation'])
     with pytest.raises(FileExistsError):
         build(data, tmp_path / 'targets')
+
+
+def test_grasp_teacher_vocabulary_is_mapped():
+    # P3 recorder table (dsh/pairact-p2-carrypath harness/pair_carry_recorder.py)
+    fixed = {'approach': 'approach', 'search': 'approach', 'align': 'alignment', 'relook': 'recover',
+             'ready': 'ready', 'pick': 'execute', 'verify': 'execute', 'complete': 'complete', 'done': 'complete'}
+    assert {k: p.stage_from_phase(k) for k in fixed} == fixed

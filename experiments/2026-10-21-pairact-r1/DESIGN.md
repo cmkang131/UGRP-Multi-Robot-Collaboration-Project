@@ -41,8 +41,8 @@
 
 ## 4. 위험과 미확인 사항
 1. *dither 3–6과 v7 시계의 불일치*: 학습 dither는 이력 PWM만 바꾸고 기록된 시계는 바꾸지 않습니다. 배포에서 ±3–6 변화는 v7 시계를 리셋합니다. 단독 A-r1 + C2c 조합과 같은 불일치이고 r1에서는 그대로 둡니다. G5(dither 이력 오프라인 검사)로 영향만 봅니다.
-2. *grasp 구간 teacher phase 어휘* [확인 필요]: 운반 구간은 P2 `carry:<phase>`(14개)에 맞췄습니다. 파지 구간(MJWarp beamact5 teacher)의 `teacher_phase` 값은 확인하지 못했습니다. 모르는 값은 sidecar 생성에서 거부되므로 P3 smoke 직후 실제 어휘로 `TEACHER_PHASE_TO_STAGE`를 고정해야 합니다(코드 변경 1곳, 사전 등록 전에 끝내야 합니다).
-3. *P2 recorder 시계*: `pair_carry_recorder.py`(P2 worktree, 미커밋)는 `contract.IssuedClock()`(v6)을 씁니다. P3에서는 `DeadbandIssuedClock(2)`로 바꿔야 합니다. P2 워커 ④와 조율이 필요합니다.
+2. *grasp 구간 teacher phase 어휘* (2026-10-21 고정): visible_only 교사 코드의 phase 리터럴 9개(approach·search·relook·align·ready·pick·verify·complete·done)를 `TEACHER_PHASE_TO_STAGE`에 넣었습니다(relook → recover, pick·verify → execute). 표는 P2 teacher DESIGN §7-1과 같습니다. 코드 정적 목록이므로 P3 smoke의 실제 기록에서 다른 값이 나오면 그 에피소드는 거부되고 표를 다시 고정합니다.
+3. *P2 recorder 시계* (2026-10-21 반영): P2 runner가 pair_carry on일 때 v7 시계(deadband 2)를 파지·운반 구간에 같이 씁니다(COLLECT_SPEC §4).
 4. *시작 분포 상한 1.2 m*: beamact2 평가 cold start는 0.5–2 m였습니다. r1은 수집과 평가를 모두 0.3–1.2 m로 맞추므로 beamact2와 같은 분포 비교가 아닙니다. 1.2–2 m는 "지도 주행(nav) → ACT 입구" 영역으로 남깁니다(beamact4 `handoff_v1` 명세).
 5. *place_sync off*: 두 로봇의 하강 시작이 어긋나면 빔이 기웁니다. r1에서는 학습 단계 head와 teacher 시연에 맡깁니다. P2 동기 모듈과 합칠지는 P2 smoke 뒤에 결정합니다.
 6. *init*: beamact3 체크포인트가 아니라 새 초기화(ImageNet ResNet18)로 시작합니다. beamact2/3와 같은 방식이고, 실패한 정책의 편향을 이어받지 않으려는 선택입니다.
