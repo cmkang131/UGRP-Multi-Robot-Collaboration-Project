@@ -53,7 +53,12 @@ CONTROL_ARMS = ARMS[1:]
 # GPU addendum (C4_COUNTERFACTUAL_PREREG_ADDENDUM_GPU.json): V-hist-fail is formal,
 # replayed on failure worlds only (green has no failure world, so there is no
 # same-kind failure reference for success worlds; the arm is not applicable there).
-ADDENDUM_SCHEMA = 'ugrp.act18.c4b_gpu_addendum.v1'
+ADDENDUM_SCHEMA_V1 = 'ugrp.act18.c4b_gpu_addendum.v1'
+# v2 (registered before any GPU result) supersedes the v1 V-hist-fail donor rule:
+# the donor is a failure world with a DIFFERENT seed that maximises the mean
+# 16-tick history |dPWM| against the target (ties: label order). v1 is refused.
+ADDENDUM_SCHEMA = 'ugrp.act18.c4b_gpu_addendum.v2'
+HIST_FAIL_SUITABLE_RATIO = .5
 ADDENDUM_ARMS = ARMS + EXTRA_ARMS
 FAILURE_ONLY_ARMS = ('V-hist-fail',)
 # Offline executors re-aggregated from the recorded raw chunks (no extra forward):
@@ -500,7 +505,7 @@ def decide(recovered):
 
 
 def decide_addendum(recovered, hist_fail_recovered, executor_recovered, v0_chunk_open,
-                    failure_n=10, minimum=DECISION_MIN):
+                    failure_n=10, minimum=DECISION_MIN, hist_fail_suitable=True):
     """GPU addendum rules; the original ``decide`` over the 5 control arms is unchanged.
 
     H-A1 (history copycat): V-hist >= 6 and V-hist-fail < 6 -> supported (success
@@ -511,7 +516,11 @@ def decide_addendum(recovered, hist_fail_recovered, executor_recovered, v0_chunk
     open row (0/10) -> refuted; otherwise not supported.
     """
     hist = recovered.get('V-hist')
-    if hist is None or hist_fail_recovered is None:
+    if hist is not None and hist_fail_recovered is not None and not hist_fail_suitable:
+        h_a1 = dict(verdict='control_unsuitable', v_hist_recovered=hist,
+                    text='V-hist-fail |dPWM| 중앙값 < V-hist의 50%% -> 대조 부적합; '
+                         'V-hist 단독 회복 %d/%d와 donor 크기를 함께 보고' % (hist, failure_n))
+    elif hist is None or hist_fail_recovered is None:
         h_a1 = dict(verdict='incomplete', text='V-hist 또는 V-hist-fail 미실행')
     elif hist >= minimum and hist_fail_recovered >= minimum:
         h_a1 = dict(verdict='refuted_any_history', text='임의 실패 이력도 회복 -> 성공 이력 내용 특이성 기각')
@@ -769,13 +778,30 @@ def summarize(replay, checkpoint_sha, arms=ARMS, addendum=False):
             v0_chunk_open = table['V0']['failure_chunk_open']
             masked_rate = (table['V0']['failure_masked_by_te'] / len(failures)
                            if failures else None)
+        def deltas(arm):
+            return [(world['arms'][arm].get('history_delta') or {}).get('mean_abs_pwm')
+                    for world in failures if arm in world['arms']]
+        hist_dist = delta_distribution(deltas('V-hist'))
+        fail_dist = delta_distribution(deltas('V-hist-fail'))
+        suitable = None
+        if hist_dist and fail_dist:
+            suitable = fail_dist['median'] >= HIST_FAIL_SUITABLE_RATIO * hist_dist['median']
         result['addendum'] = dict(
             hist_fail_recovered=hist_fail,
+            hist_fail_donors={world['label']: dict(
+                donor=world.get('reference_fail'),
+                mean_abs_pwm=(world['arms']['V-hist-fail'].get('history_delta') or {}).get('mean_abs_pwm'))
+                for world in failures if 'V-hist-fail' in world['arms']},
+            history_delta=dict(V_hist=hist_dist, V_hist_fail=fail_dist,
+                               ratio_rule='V-hist-fail median >= %.2f x V-hist median'
+                               % HIST_FAIL_SUITABLE_RATIO,
+                               hist_fail_control_suitable=suitable),
             executor_recovered=executor_recovered,
             h_a2_masked_by_te=dict(arm='V0', n=table.get('V0', {}).get('failure_masked_by_te'),
                                    N=len(failures), rate=masked_rate),
             decision=decide_addendum(recovered, hist_fail, executor_recovered, v0_chunk_open,
-                                     failure_n=len(failures)))
+                                     failure_n=len(failures),
+                                     hist_fail_suitable=suitable is not False))
     return result
 
 
@@ -791,6 +817,8 @@ def device_guard(requested, available):
 def load_addendum(path, prereg_path):
     """GPU addendum must name the exact base prereg it extends."""
     value = json.loads(Path(path).read_text())
+    if value.get('schema') == ADDENDUM_SCHEMA_V1:
+        raise SystemExit('addendum v1 is superseded by v2 (V-hist-fail donor rule); use the v2 file')
     if value.get('schema') != ADDENDUM_SCHEMA:
         raise SystemExit('unregistered addendum schema')
     if value.get('base_prereg', {}).get('sha256') != sha256(prereg_path):
@@ -798,6 +826,68 @@ def load_addendum(path, prereg_path):
     if value.get('registered_before_results') is not True:
         raise SystemExit('addendum must be registered before results')
     return value
+
+
+def window_history_delta(target_window, donor_obs, donor_t0):
+    """Mean over the window ticks of the mean |dPWM| (16 issued x 5 servos) between the
+    target history and the donor history at the same release-relative tick."""
+    references = [rindex(donor_obs, donor_t0, index) for index in range(len(target_window))]
+    return history_delta_series(target_window, references)['mean_abs_pwm']
+
+
+def hist_fail_donor_v2(target, failures, delta):
+    """v2 donor rule: failure world with a different seed, largest mean |dPWM|; ties by
+    label order. ``delta(target_label, donor_label)`` returns the mean |dPWM|."""
+    candidates = sorted((item for item in failures
+                         if item['label'] != target['label'] and item['seed'] != target['seed']),
+                        key=lambda item: item['label'])
+    if not candidates:
+        return None, None
+    best = None
+    for item in candidates:
+        value = round(float(delta(target['label'], item['label'])), 3)
+        if best is None or value > best[1]:
+            best = (item['label'], value)
+    return best
+
+
+def hist_fail_donor_map(run_root, registration):
+    """Deterministic v2 donor table from the recorded C2c observations (no forward)."""
+    failures = registration['targets']['failure']
+    windows = {}
+    for item in failures:
+        observations, _ = world_inputs(run_root, item)
+        t0, window = release_window(observations)
+        windows[item['label']] = (observations, t0, window)
+    cache = {}
+
+    def delta(target, donor):
+        key = (target, donor)
+        if key not in cache:
+            donor_obs, donor_t0, _ = windows[donor]
+            cache[key] = window_history_delta(windows[target][2], donor_obs, donor_t0)
+        return cache[key]
+    table = {}
+    for item in failures:
+        label, value = hist_fail_donor_v2(item, failures, delta)
+        table[item['label']] = dict(donor=label, mean_abs_pwm=value)
+    return table
+
+
+def _median(values):
+    values = sorted(values)
+    if not values:
+        return None
+    middle = len(values) // 2
+    return float(values[middle]) if len(values) % 2 else (values[middle - 1] + values[middle]) / 2.
+
+
+def delta_distribution(values):
+    values = [float(value) for value in values if value is not None]
+    if not values:
+        return None
+    return dict(n=len(values), median=round(_median(values), 3), min=round(min(values), 3),
+                max=round(max(values), 3), values=[round(value, 3) for value in values])
 
 
 def hist_fail_reference(registration, label, kind):
@@ -897,6 +987,8 @@ def main(argv=None):
     all_worlds = {world['label']: world for world in c2c_worlds(args.c2c_root)}
     if len(all_worlds) != 24:
         raise SystemExit('expected 24 C2c worlds')
+    donors = (hist_fail_donor_map(args.c2c_root, registration)
+              if addendum is not None and 'V-hist-fail' in arms else None)
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     import torch
@@ -919,11 +1011,18 @@ def main(argv=None):
             # Registered: V-hist-fail swaps histories between failure worlds only.
             world_arms = tuple(arm for arm in arms if arm not in FAILURE_ONLY_ARMS)
         if 'V-hist-fail' in world_arms:
-            reference = hist_fail_reference(registration, label, world['kind'])
+            if addendum is not None:
+                donor = donors[label]
+                registered = addendum['hist_fail_donor'][label]
+                if (donor['donor'] != registered['donor']
+                        or abs(donor['mean_abs_pwm'] - registered['mean_abs_pwm']) > 1e-3):
+                    raise SystemExit('V-hist-fail donor differs from addendum v2 for %s' % label)
+                reference = donor['donor']
+            else:
+                # Exploratory (no addendum): legacy same-kind rule.
+                reference = hist_fail_reference(registration, label, world['kind'])
             if reference is None:
-                raise SystemExit('no same-kind failure reference for %s' % label)
-            if addendum is not None and addendum['hist_fail_reference'][label] != reference:
-                raise SystemExit('V-hist-fail reference differs from addendum for %s' % label)
+                raise SystemExit('no V-hist-fail donor for %s' % label)
             world['reference_fail'] = reference
             world['reference_fail_world'] = all_worlds[world['reference_fail']]
         world_started = time.time()

@@ -360,20 +360,71 @@ def test_hist_fail_reference_is_same_kind_failure_never_self():
     assert c4b.hist_fail_reference(registration, 'x', 'green') is None
 
 
-def test_addendum_file_matches_code_and_base_prereg(tmp_path):
-    value = c4b.load_addendum(ADDENDUM, PREREG)
-    registration = json.loads(PREREG.read_text())
+ADDENDUM_V2 = ROOT / 'experiments/2026-10-17-act18/C4_COUNTERFACTUAL_PREREG_ADDENDUM_GPU_V2.json'
+
+
+def test_addendum_v1_is_refused_and_v2_matches_code_and_base_prereg(tmp_path):
+    with pytest.raises(SystemExit, match='superseded'):
+        c4b.load_addendum(ADDENDUM, PREREG)
+    value = c4b.load_addendum(ADDENDUM_V2, PREREG)
+    assert value['amends']['sha256'] == c4b.sha256(ADDENDUM)
     assert value['device'] == 'cuda'
     assert value['arms'] == list(c4b.ADDENDUM_ARMS)
     assert value['offline_aggregates']['alternative_executors']['executors'] == \
         {name: dict(n_action_steps=steps, temporal_ensemble_coeff=None)
          for name, steps in c4b.ALT_EXECUTORS.items()}
-    failures = registration['targets']['failure']
-    assert value['hist_fail_reference'] == {
-        item['label']: c4b.hist_fail_reference(registration, item['label'], item['kind'])
-        for item in failures}
     assert value['decision']['minimum_recovered'] == c4b.DECISION_MIN
+    assert value['decision']['hist_fail_suitable_ratio'] == c4b.HIST_FAIL_SUITABLE_RATIO
+    registration = json.loads(PREREG.read_text())
+    seeds = {item['label']: item['seed'] for item in registration['targets']['failure']}
+    assert set(value['hist_fail_donor']) == set(seeds)
+    for label, donor in value['hist_fail_donor'].items():
+        assert donor['donor'] in seeds and seeds[donor['donor']] != seeds[label]
     bad = tmp_path / 'bad.json'
     bad.write_text(json.dumps(dict(value, base_prereg=dict(value['base_prereg'], sha256='0' * 64))))
     with pytest.raises(SystemExit):
         c4b.load_addendum(bad, PREREG)
+
+
+def test_v2_donor_is_different_seed_max_delta_with_label_tiebreak():
+    failures = [dict(label='a', seed=1), dict(label='b', seed=1), dict(label='c', seed=2),
+                dict(label='d', seed=3), dict(label='e', seed=3)]
+    sizes = {('a', 'b'): 999., ('a', 'c'): 10., ('a', 'd'): 40., ('a', 'e'): 40.}
+    label, value = c4b.hist_fail_donor_v2(failures[0], failures, lambda t, d: sizes[(t, d)])
+    assert (label, value) == ('d', 40.)          # same-seed 'b' excluded; tie d/e -> d
+    assert c4b.hist_fail_donor_v2(dict(label='x', seed=1), [dict(label='y', seed=1)],
+                                  lambda t, d: 1.) == (None, None)
+
+
+def test_window_history_delta_mean_over_ticks():
+    target = [dict(observation=observation(t=10. + .1 * k)) for k in range(3)]
+    donor = []
+    for k in range(3):
+        obs = observation(t=20. + .1 * k)
+        obs['issued'] = [dict(row, pwm={**row['pwm'], '1': 1500 + 10 * (k + 1)}) for row in obs['issued']]
+        donor.append(dict(observation=obs))
+    # Only servo 1 differs: |d| = 10, 20, 30 on 1 of 5 servos -> 2, 4, 6 -> mean 4.
+    assert c4b.window_history_delta(target, donor, 20.) == pytest.approx(4.)
+
+
+def test_hist_fail_control_unsuitable_rule():
+    def world(label, outcome, hist_delta, fail_delta, hist_open, fail_open):
+        arms = {name: dict(open_tau=None, raw_open_tau=None, done_tau=None, te_pwm1_max=1500,
+                           chunk_open_tau=None, executors={n: dict(open_tau=None, truncated_at_tau=None) for n in c4b.ALT_EXECUTORS}) for name in c4b.ARMS}
+        arms['V-hist'].update(open_tau=hist_open, history_delta=dict(mean_abs_pwm=hist_delta))
+        arms['V-hist-fail'] = dict(arms['V0'], open_tau=fail_open,
+                                   history_delta=dict(mean_abs_pwm=fail_delta))
+        return dict(label=label, outcome=outcome, reference_fail='donor-' + label, arms=arms)
+    small = [world('f%d' % i, 'failure', 194., 52., 3.4 if i < 7 else None, None) for i in range(10)]
+    summary = c4b.summarize(small, 'x', c4b.ADDENDUM_ARMS, addendum=True)
+    add = summary['addendum']
+    assert add['history_delta']['V_hist']['median'] == 194.
+    assert add['history_delta']['V_hist_fail']['median'] == 52.
+    assert add['history_delta']['hist_fail_control_suitable'] is False
+    assert add['hist_fail_donors']['f0'] == dict(donor='donor-f0', mean_abs_pwm=52.)
+    assert add['decision']['h_a1']['verdict'] == 'control_unsuitable'
+    assert add['decision']['h_a1']['v_hist_recovered'] == 7
+    large = [world('f%d' % i, 'failure', 194., 120., 3.4 if i < 7 else None, None) for i in range(10)]
+    add = c4b.summarize(large, 'x', c4b.ADDENDUM_ARMS, addendum=True)['addendum']
+    assert add['history_delta']['hist_fail_control_suitable'] is True
+    assert add['decision']['h_a1']['verdict'] == 'supported'
