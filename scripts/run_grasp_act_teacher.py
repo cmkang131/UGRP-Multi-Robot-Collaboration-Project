@@ -550,11 +550,26 @@ def main():
     p.add_argument('--carry-cap-s',type=float,default=110.)
     p.add_argument('--carry-lower',choices=('grasp_height','floor_contact_v1'),default='grasp_height')
     p.add_argument('--student-eval',type=Path,help='P5 student eval config JSON (default off)')
+    # pairact P3 (default off): replace ONLY the >=38/40 gate requirement by a FROZEN collect prereg sha256
+    p.add_argument('--recording-admission',choices=('teacher_gate_v1','pairact_p3_collect'),default='teacher_gate_v1')
+    p.add_argument('--collect-prereg',type=Path);p.add_argument('--collect-prereg-sha256')
     a=p.parse_args();proof=None
     validate_recording_inputs(a.record_training,a.teacher_profile,a.self_pose_source)
     from scripts.grasp_act_host import identity,same_machine
     host=identity(a.execution_host)
-    if a.record_training:
+    if a.recording_admission!='teacher_gate_v1' and not a.record_training:raise ValueError('collect recording admission requires --record-training')
+    if a.recording_admission=='teacher_gate_v1' and (a.collect_prereg or a.collect_prereg_sha256):raise ValueError('collect prereg requires --recording-admission pairact_p3_collect')
+    if a.record_training and a.recording_admission=='pairact_p3_collect':
+        from harness.grasp_act_admission import collect_recording_admission,RECORDING_CHECK_MODES
+        from sim.grasp_act_search15_modes import options
+        if a.collect_prereg is None:raise ValueError('FROZEN collect pre-registration required before recording')
+        source_sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+        check=json.loads(a.recording_check.read_text()) if a.recording_check else None
+        proof=collect_recording_admission(a.collect_prereg,a.collect_prereg_sha256,check,source_sha=source_sha,
+            teacher_profile=a.teacher_profile,modes={k:getattr(a,k) for k in RECORDING_CHECK_MODES},
+            search15_options=options(a),execution_host=host,recording_probe=a.recording_probe,
+            check_sha256=hashlib.sha256(a.recording_check.read_bytes()).hexdigest() if a.recording_check else None)
+    elif a.record_training:
         if a.teacher_gate is None:raise ValueError('verified >=38/40 teacher gate required before recording')
         from harness.grasp_act_admission import recording_admission
         gate=json.loads(a.teacher_gate.read_text())

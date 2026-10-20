@@ -82,3 +82,45 @@ def recording_mode_equivalence(gate_rows,recorded_rows):
             'handoff_observation':recorded_rows[0].get('handoff_observation','off'),
             **{k:recorded_rows[0].get(k,'off') for k in MODES},
             'execution_host':recorded_rows[0]['execution_host']}
+
+
+# pairact P3 (opt-in candidate pairact_p3_collect, default off). The ONLY change from the
+# gate path above: the ">=38/40 teacher gate" requirement is replaced by the sha256 of a
+# FROZEN success-filtered collection pre-registration (pairact-success-filter-decision.md:
+# the gate measures teacher reliability and does not block data; only successful episodes
+# enter tensors). The paired 640x480 recording-mode check is kept unchanged: it verifies the
+# training input matches the student camera (data validity), not teacher reliability.
+COLLECT_CANDIDATE='pairact_p3_collect'
+COLLECT_ADMISSION='pairact_p3_collect_prereg_v1'
+COLLECT_PREREG_SCHEMA='ugrp.pairact_r1.collect_prereg.v1'
+RECORDING_CHECK_MODES=('teacher_stability','teacher_search','approach_goal_set','nominal_blocked_handoff',
+                       'approach_progress','approach_recovery','approach_coordination','handoff_observation')
+
+
+def collect_recording_admission(prereg_path,expected_sha256,check,*,source_sha,teacher_profile,modes,
+                                search15_options,execution_host,recording_probe=False,check_sha256=None):
+    """Recording proof for the pairact P3 collection; same check rule as run_grasp_act_teacher.main."""
+    from scripts.grasp_act_host import same_machine
+    from sim.grasp_act_search15_modes import match
+    raw=Path(prereg_path).read_bytes()
+    digest=hashlib.sha256(raw).hexdigest()
+    if not expected_sha256 or digest!=expected_sha256:
+        raise ValueError('collect pre-registration sha256 mismatch')
+    import json
+    prereg=json.loads(raw)
+    if prereg.get('schema')!=COLLECT_PREREG_SCHEMA:raise ValueError('collect pre-registration schema required')
+    if prereg.get('status')!='FROZEN':raise ValueError('FROZEN collect pre-registration required before recording')
+    proof={'admission':COLLECT_ADMISSION,'teacher_gate':'not_required_success_filtered_collection',
+           'collect_prereg_sha256':digest,'source_sha':source_sha,'teacher_profile':teacher_profile,
+           **{k:modes.get(k,'off') for k in RECORDING_CHECK_MODES},**search15_options,
+           'qualified':True,'criteria':CRITERIA,'execution_host':execution_host}
+    if not recording_probe:
+        # unchanged from run_grasp_act_teacher.main (recording-mode check block)
+        if check is None:raise ValueError('paired 640x480 recording-mode check required')
+        match(check,search15_options,'recording-mode check')
+        if check.get('qualified') is not True or check.get('N',0)<3 or check.get('n')!=check.get('N') or check.get('source_sha')!=source_sha or check.get('teacher_profile')!=teacher_profile or any(check.get(k,'off')!=modes.get(k,'off') for k in RECORDING_CHECK_MODES):
+            raise ValueError('unverified recording-mode equivalence')
+        same_machine(check.get('execution_host'),execution_host)
+        if not check_sha256:raise ValueError('recording-mode check sha256 required')
+        proof['recording_check_sha256']=check_sha256
+    return proof
