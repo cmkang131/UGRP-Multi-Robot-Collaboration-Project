@@ -12,7 +12,7 @@ import json
 import sys
 from pathlib import Path
 
-ARMS = ('beamact5_r13', 'pairact_p1c1', 'pairact_p1c3')
+ARMS = ('beamact5_r13', 'pairact_p1c1', 'pairact_p1c2b', 'pairact_p1c3')
 
 
 def _cases(doc):
