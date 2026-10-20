@@ -308,6 +308,10 @@ def main():
             sim=float(raw.get('sim_s',0.))
             worlds.append(dict(world=i,seed=selected[i]['plan']['seed'],candidate=selected[i].get('candidate'),
                 success=success,sim_s=sim,cap_end=not success and sim>=a.cap_s-1e-8,
+                # pairact P2 (default off): separate eval-only carry judgement,
+                # never merged into the grasp gate ``success`` above.
+                carry_success=(raw.get('carry_eval') or {}).get('success'),
+                carry_failure=(raw.get('carry_eval') or {}).get('failure'),
                 input_audit=raw.get('input_audit'),raw=str(a.out/f'world-{i:03d}'/'raw')))
         # Recording-only native JPEG ring, including bootstrap exceptions and
         # supervisor interrupts. No extra render/capture calls enter control.
