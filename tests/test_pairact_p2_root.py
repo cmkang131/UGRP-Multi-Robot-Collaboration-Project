@@ -13,8 +13,8 @@ spec.loader.exec_module(p2)
 
 def test_pins_point_to_p2_trees():
     text = (ROOT/'scripts/warp_flow_episode.py').read_text()
-    assert "ADAPTER_SHA = '6843fcaa94785e46ee52ef1889e392ca988d604d'" in text
-    assert "TEACHER_SHA = '59299f903f4a2f9a2eabe5ff0e442e0ce25e8266'" in text
+    assert "ADAPTER_SHA = 'd128984d2fd3b136f6df1c07bb3d387fef22cd20'" in text
+    assert "TEACHER_SHA = '01ed171fc93140683227072a10aecff55150b45f'" in text
 
 
 def test_derive_rejects_other_cases_file():
@@ -93,3 +93,16 @@ def test_student_eval_default_off_and_injected_only_when_set():
     assert "student_eval=None):" in episode and 'bridge.student_eval = student_eval' in episode
     assert "if self.student_eval is not None:" in episode
     assert "STUDENT_SHA='3c9337d5f5c9deefd49139b26ae7117022e3d5cc'" in runner
+
+
+def test_collect_root_changes_only_the_two_pins():
+    import subprocess
+    base = '0e60345d7'     # dsh/pairact-p2-carrypath-r
+    try:
+        out = subprocess.run(['git', '-C', str(ROOT), 'diff', '-U0', base, '--', 'scripts/'],
+                             capture_output=True, text=True, check=True).stdout
+    except (subprocess.CalledProcessError, FileNotFoundError) as error:
+        pytest.skip(f'base commit unavailable: {error}')
+    removed = sorted(l for l in out.splitlines() if l.startswith('-') and not l.startswith('---'))
+    assert removed == ["-ADAPTER_SHA = '6843fcaa94785e46ee52ef1889e392ca988d604d'",
+                       "-TEACHER_SHA = '59299f903f4a2f9a2eabe5ff0e442e0ce25e8266'"]
