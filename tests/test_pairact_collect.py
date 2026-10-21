@@ -1149,6 +1149,7 @@ def test_verify_assets_rehashes_episode_files(tmp_path, prereg):
     for name in ('wrap.py', 'scene.xml', 'refs.json', 'table.json', 'mesh.obj'):
         (tmp_path / name).write_text(name)
         files[name] = str(tmp_path / name)
+    (tmp_path / 'scene.xml').write_text('<mujoco><asset><mesh file="mesh.obj"/></asset></mujoco>')   # v5: parsed
     tpl = (f"python {files['wrap.py']} --flow beampair --cases {{cases}} --indices {{indices}} --cap-s 60 "
            f"--canonical-xml {files['scene.xml']} --per-world-model-references-v1 {files['refs.json']} "
            f"--rejection-table {files['table.json']} --out {{out}}")

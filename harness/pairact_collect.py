@@ -20,6 +20,7 @@ from pathlib import Path
 import random
 import shlex
 import subprocess
+import xml.etree.ElementTree as ET
 
 PREREG_SCHEMA = 'ugrp.pairact_r1.collect_prereg.v2'
 LEDGER_SCHEMA = 'ugrp.pairact_r1.collect_ledger.v3'
@@ -1274,6 +1275,70 @@ def episode_assets(template):
                 rejection_table_input_sha256=flag('--rejection-table'))
 
 
+# v5 (Codex v4 re-review 2): MuJoCo XML file references.  mesh / skin / hfield resolve under compiler meshdir,
+# texture (incl. the six cube faces) under texturedir; assetdir sets both when the specific one is unset;
+# strippath keeps the file name only; include and <model file> resolve against the main model directory.
+XML_FILE_ATTRS = {'mesh': ('file',), 'skin': ('file',), 'hfield': ('file',),
+                  'texture': ('file', 'fileright', 'fileleft', 'fileup', 'filedown', 'filefront', 'fileback')}
+XML_MESHDIR_TAGS = ('mesh', 'skin', 'hfield')
+
+
+def xml_dependencies(xml_path):
+    """Every file a MuJoCo XML pulls in (includes recursively, assets, sub-models): sorted absolute paths.
+    Raises ET.ParseError / OSError on an unreadable file and ValueError on an include cycle."""
+    main = Path(os.path.realpath(xml_path))
+    base, deps, elements = main.parent, set(), []
+
+    def at(directory, name):
+        return os.path.realpath(name if os.path.isabs(name) else base / (directory or '') / name)
+
+    def expand(path, chain):
+        for el in ET.parse(path).getroot().iter():
+            if el.tag == 'include' and el.get('file'):
+                inc = at(None, el.get('file'))
+                if inc in chain:
+                    raise ValueError(f'include cycle at {inc}')
+                deps.add(inc)
+                expand(inc, chain | {inc})
+            else:
+                elements.append(el)
+    expand(main, {str(main)})
+    comp = {}
+    for el in elements:
+        if el.tag == 'compiler':
+            comp.update(el.attrib)
+    strip = comp.get('strippath', 'false').lower() == 'true'
+    dirs = dict(mesh=comp.get('meshdir', comp.get('assetdir')), texture=comp.get('texturedir', comp.get('assetdir')))
+    for el in elements:
+        for attr in XML_FILE_ATTRS.get(el.tag, ()):
+            name = el.get(attr)
+            if name:
+                name = os.path.basename(name) if strip else name
+                deps.add(at(dirs['mesh' if el.tag in XML_MESHDIR_TAGS else 'texture'], name))
+        if el.tag == 'model' and el.get('file'):
+            sub = at(None, el.get('file'))
+            deps.add(sub)
+            deps.update(xml_dependencies(sub))
+    return sorted(deps)
+
+
+def xml_asset_problems(xml_path, registered):
+    """v5: assets.mesh_assets_sha256 must list exactly the files the canonical XML references (no omission, no
+    unrelated decoy); their hashes are compared separately."""
+    try:
+        deps = set(xml_dependencies(xml_path))
+    except (ET.ParseError, OSError, ValueError) as error:
+        return [f'canonical XML dependencies unreadable: {error}']
+    reg = {os.path.realpath(k) for k in registered}
+    out = []
+    if deps - reg:
+        out.append('assets.mesh_assets_sha256 misses files the canonical XML references: ' + ', '.join(sorted(deps - reg)))
+    if reg - deps:
+        out.append('assets.mesh_assets_sha256 lists files the canonical XML does not reference: '
+                   + ', '.join(sorted(reg - deps)))
+    return out
+
+
 def sharding_problems(manifest, *, stage, shard=None):
     """v3s: shard count / VM assignment of the run (core) and, at final, one recording check per extra VM.
 
@@ -1380,6 +1445,9 @@ def check_run_manifest(manifest, *, stage, prereg, batch_size=None, episode=None
         for path, want in (m('assets', 'mesh_assets_sha256') or {}).items():
             if not os.path.isfile(path) or file_sha256(path) != want:
                 problems.append(f'assets.mesh_assets_sha256 differs or missing: {path}')
+        xml = episode_assets(template)['canonical_xml_sha256']
+        if xml is not None and os.path.isfile(xml) and isinstance(m('assets', 'mesh_assets_sha256'), dict):
+            problems += xml_asset_problems(xml, m('assets', 'mesh_assets_sha256'))
     if stage == 'final':
         if recording_dir is None:
             problems.append('final stage needs the recording check directory')

@@ -318,3 +318,104 @@ def test_check_rows_binding_reads_the_probe_source_ledger(tmp_path, prereg):
     pilot = _probe_ledger(tmp_path / 'pilot', prereg, pc.PURPOSE_PILOT, None)
     with pytest.raises(ValueError, match='pilot_yield_only'):
         pc.check_rows_binding(pilot, H('c'), cases, rows, rows)
+
+
+# ------------------------------------------------------------ 2. every file the canonical XML references
+
+def _asset_case(tmp_path, scene, files):
+    """wrapper / scene / refs / table under tmp_path/assets + extra files; manifest for that template."""
+    from test_pairact_collect import filled_manifest
+    a = tmp_path / 'assets'
+    for name, data in dict({'wrap.py': '# inert\n', 'scene.xml': scene, 'refs.json': '{}\n', 'table.json': '{}\n'},
+                           **files).items():
+        (a / name).parent.mkdir(parents=True, exist_ok=True)
+        (a / name).write_text(data)
+    for role in ('teacher', 'adapter'):
+        (tmp_path / role).mkdir()
+    tpl = (f'python {a}/wrap.py --flow beampair --cases {{cases}} --indices {{indices}} --cap-s 60 '
+           f'--adapter-source {tmp_path}/adapter --teacher-source {tmp_path}/teacher '
+           f'--canonical-xml {a}/scene.xml --per-world-model-references-v1 {a}/refs.json '
+           f'--rejection-table {a}/table.json --out {{out}}')
+    m = filled_manifest(prereg_core(), template=tpl)
+    m['assets'] = dict(wrapper_sha256=pc.file_sha256(a / 'wrap.py'), canonical_xml_sha256=pc.file_sha256(a / 'scene.xml'),
+                       per_world_model_references_sha256=pc.file_sha256(a / 'refs.json'),
+                       rejection_table_input_sha256=pc.file_sha256(a / 'table.json'), mesh_assets_sha256={})
+    return a, m
+
+
+def prereg_core():
+    return dict(json.loads(PREREG.read_text()), status='FROZEN_CORE')
+
+
+def _register(m, *paths):
+    m['assets']['mesh_assets_sha256'] = {str(p): pc.file_sha256(p) for p in paths}
+
+
+def test_decoy_mesh_registration_is_refused(tmp_path):
+    """admission-probe REPRO mesh: actual.obj (referenced) omitted, decoy.obj registered -> v4 core accepted, and
+    then accepted again after actual.obj changed."""
+    a, m = _asset_case(tmp_path, '<mujoco><asset><mesh name="actual" file="actual.obj"/></asset></mujoco>\n',
+                       {'actual.obj': 'actual\n', 'decoy.obj': 'decoy\n'})
+    _register(m, a / 'decoy.obj')
+    with pytest.raises(ValueError) as e:
+        pc.check_run_manifest(m, stage='core', prereg=prereg_core(), verify_assets=True)
+    assert f'misses files the canonical XML references: {a / "actual.obj"}' in str(e.value)
+    assert f'lists files the canonical XML does not reference: {a / "decoy.obj"}' in str(e.value)
+    _register(m, a / 'actual.obj')
+    core = pc.check_run_manifest(m, stage='core', prereg=prereg_core(), verify_assets=True)
+    (a / 'actual.obj').write_text('changed after FROZEN_CORE\n')
+    with pytest.raises(ValueError, match='mesh_assets_sha256 differs'):
+        pc.check_run_manifest(m, stage='core', prereg=prereg_core(), verify_assets=True)
+    assert core
+
+
+SCENE = '''<mujoco>
+  <compiler meshdir="meshes" texturedir="tex"/>
+  <include file="parts/robot.xml"/>
+  <asset>
+    <texture name="sky" type="skybox" fileright="r.png" fileleft="l.png" fileup="u.png" filedown="d.png"
+             filefront="f.png" fileback="b.png"/>
+    <texture name="grid" type="2d" builtin="checker" width="8" height="8"/>
+    <hfield name="floor" file="floor.png" size="1 1 .1 .1"/>
+    <mesh name="abs" file="ABS"/>
+  </asset>
+</mujoco>
+'''
+
+
+def test_xml_dependencies_follow_include_compiler_dirs_and_cube_textures(tmp_path):
+    other = tmp_path / 'elsewhere' / 'abs.stl'
+    other.parent.mkdir()
+    other.write_text('abs')
+    files = {'parts/robot.xml': '<mujoco><asset><mesh file="arm.obj"/><skin file="arm.skn"/></asset>'
+                                '<include file="parts/more.xml"/></mujoco>',
+             'parts/more.xml': '<mujoco><asset><texture name="t" file="wood.png"/></asset></mujoco>'}
+    a, _ = _asset_case(tmp_path, SCENE.replace('ABS', str(other)), files)
+    want = {a / 'parts/robot.xml', a / 'parts/more.xml', a / 'meshes/arm.obj', a / 'meshes/arm.skn',
+            a / 'meshes/floor.png', a / 'tex/wood.png', other} | {a / f'tex/{c}.png' for c in 'rludfb'}
+    assert set(pc.xml_dependencies(a / 'scene.xml')) == {str(p) for p in want}
+    # assetdir sets both dirs; strippath keeps only the file name
+    (a / 'flat.xml').write_text('<mujoco><compiler assetdir="all" strippath="true"/>'
+                                '<asset><mesh file="x/y/m.obj"/><texture file="z/t.png"/></asset></mujoco>')
+    assert set(pc.xml_dependencies(a / 'flat.xml')) == {str(a / 'all/m.obj'), str(a / 'all/t.png')}
+    (a / 'loop.xml').write_text('<mujoco><include file="loop.xml"/></mujoco>')
+    with pytest.raises(ValueError, match='include cycle'):
+        pc.xml_dependencies(a / 'loop.xml')
+
+
+def test_unregistered_include_and_unparsable_xml_are_refused(tmp_path):
+    a, m = _asset_case(tmp_path, '<mujoco><include file="sub.xml"/></mujoco>\n',
+                       {'sub.xml': '<mujoco><asset><mesh file="m.obj"/></asset></mujoco>', 'm.obj': 'm'})
+    _register(m, a / 'm.obj')
+    with pytest.raises(ValueError, match='misses files the canonical XML references: .*sub.xml'):
+        pc.check_run_manifest(m, stage='core', prereg=prereg_core(), verify_assets=True)
+    _register(m, a / 'm.obj', a / 'sub.xml')
+    pc.check_run_manifest(m, stage='core', prereg=prereg_core(), verify_assets=True)
+    (a / 'sub.xml').write_text('<mujoco><asset><mesh file="m.obj"/></asset>')        # also a hash change
+    with pytest.raises(ValueError, match='canonical XML dependencies unreadable'):
+        pc.check_run_manifest(m, stage='core', prereg=prereg_core(), verify_assets=True)
+
+
+def test_freeze_xml_assets_prints_the_registration(tmp_path):
+    a, _ = _asset_case(tmp_path, '<mujoco><asset><mesh file="m.obj"/></asset></mujoco>', {'m.obj': 'm'})
+    assert _fz().xml_assets(a / 'scene.xml') == {str(a / 'm.obj'): pc.file_sha256(a / 'm.obj')}

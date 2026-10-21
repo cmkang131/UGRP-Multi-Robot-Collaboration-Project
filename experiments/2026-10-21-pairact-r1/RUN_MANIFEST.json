@@ -30,10 +30,10 @@
     "source_sha": "[VM 기입] commit X, the collector code commit; HEAD may be a descendant",
     "files_rule": "harness.pairact_collect.COLLECTOR_FILES (runner code, direct setup-geometry imports and inputs) and the generator: identical at X and HEAD, clean in the checkout",
     "file_sha256": {
-      "harness/pairact_collect.py": "8af4a1eac3d4e8073f9157b8639e603afb6d56f6a20054627a2dbbd7c8361b33",
+      "harness/pairact_collect.py": "eb371d2dc46578da4f400e1160e2950d063085dc9a7df7313d2b3ddbb9c27a9e",
       "harness/pairact_r1.py": "8a9869248740bf5ad2da7194cdd9a582347ac09e88783cd6ea127ef3f208a210",
       "scripts/run_pairact_collect.py": "f99a4aa2d79a8c8e419c2f48603933d8adbbd841ed249520f6ad9276439140f9",
-      "scripts/pairact_r1_freeze.py": "1ea6ecba14f66bc6eaa67216676ce2bffc39ba2f46da218209c1d2ab4dc3a07c",
+      "scripts/pairact_r1_freeze.py": "3b1f752dae2e0642eedc9fe30903cc921b2f22f8b75f7b9ec7535bcdb6301a57",
       "scripts/check_pairact_r1_seeds.py": "463054427877efd34dfd6e5ce291b4e06f2ad95c4e81e2d75e385af38c3b73de",
       "experiments/2026-10-21-pairact-r1/seeds.json": "eeb5cf615666e15d03c1d4cb54de8c83b0618cb6321d92e641dd237de8cd4735",
       "harness/static_keepouts.py": "2b4faf26317f45cbdd7cb2deab8fae87a9e460f96778c8af185ec2ac00d57aa3",
@@ -76,7 +76,7 @@
     "canonical_xml_sha256": "[VM 기입] /home/ugrp/ugrp-sim/runs/beamact5/wide-export-old-8420000e/canonical-scene.xml",
     "per_world_model_references_sha256": "[VM 기입] /home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/per-world-references.json",
     "rejection_table_input_sha256": "[VM 기입] /home/ugrp/ugrp-sim/runs/beamact5/gate-40-r13/rejection_table.json",
-    "mesh_assets_sha256": "[VM 기입] absolute path -> sha256 of every mesh/texture file the canonical XML references (smoke-1 failed on mesh[fuji_roller_v2])",
+    "mesh_assets_sha256": "[VM 기입] output of `python scripts/pairact_r1_freeze.py xml-assets --canonical-xml XML` (v5): absolute path -> sha256 of every file the canonical XML references, recursively (include, mesh, skin, hfield, texture incl. cube faces; compiler meshdir/texturedir/assetdir/strippath). verify_assets refuses an omitted or an unreferenced entry (smoke-1 failed on mesh[fuji_roller_v2])",
     "wrapper_sha256": "[VM 기입] the wrapper .py named by the episode template (run_warp_flow_teacher_gcp6.py)"
   },
   "host": {

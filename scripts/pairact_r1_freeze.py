@@ -1,6 +1,7 @@
 """pairact-r1 two-stage freeze of COLLECT_PREREG_DRAFT.json + RUN_MANIFEST.json (v3, Codex v2 B1/B2).
 
     # commit Y: every VM-fill field except the three recording_check hashes is already filled
+    python scripts/pairact_r1_freeze.py xml-assets --canonical-xml XML   # -> assets.mesh_assets_sha256 (v5)
     python scripts/pairact_r1_freeze.py core --collector-sha X [--verify-assets]
     git commit -m 'pairact-r1 FROZEN_CORE'          # prints core_sha256; record it in the commit message
     # probe source run, probe-cases, recording probe, check-rows, recording-check (RUNBOOK 1-2b)
@@ -81,9 +82,14 @@ def freeze(stage, *, prereg_path, manifest_path, repo=ROOT, collector_sha=None, 
                 manifest_sha256=pc.file_sha256(manifest_path), prereg_core_sha256=manifest['prereg']['core_sha256'])
 
 
+def xml_assets(canonical_xml):
+    """v5: assets.mesh_assets_sha256 for RUN_MANIFEST -- every file the canonical XML references (recursive)."""
+    return {path: pc.file_sha256(path) for path in pc.xml_dependencies(canonical_xml)}
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument('stage', choices=('core', 'final'))
+    p.add_argument('stage', choices=('core', 'final', 'xml-assets'))
     p.add_argument('--prereg', type=Path, default=EXP / 'COLLECT_PREREG_DRAFT.json')
     p.add_argument('--manifest', type=Path, default=EXP / 'RUN_MANIFEST.json')
     p.add_argument('--collector-sha', help='core: commit X (collector code)')
@@ -92,7 +98,13 @@ def main():
     p.add_argument('--vm-recording-dir', action='append', default=[], metavar='VM=DIR',
                    help='final, sharded over VMs: recording files of a non-primary VM (repeat per VM)')
     p.add_argument('--verify-assets', action='store_true', help='re-hash the episode assets (on the collection VM)')
+    p.add_argument('--canonical-xml', type=Path, help='xml-assets: the --canonical-xml of the episode template')
     a = p.parse_args()
+    if a.stage == 'xml-assets':
+        if a.canonical_xml is None:
+            p.error('xml-assets needs --canonical-xml')
+        print(json.dumps(xml_assets(a.canonical_xml), indent=2))      # -> RUN_MANIFEST assets.mesh_assets_sha256
+        return
     if a.stage == 'final' and a.recording_dir is None:
         p.error('final needs --recording-dir')
     if any('=' not in x for x in a.vm_recording_dir):
