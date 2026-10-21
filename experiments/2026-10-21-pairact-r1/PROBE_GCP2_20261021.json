@@ -1,0 +1,308 @@
+{
+ "schema": "ugrp.pairact_r1.recording_probe.v1",
+ "status": "PARTIAL",
+ "host": {
+  "vm": "ugrp-act-l4-gcp2",
+  "project": "ugrp-sim-b-1014",
+  "zone": "asia-northeast3-a",
+  "machine_type": "g2-standard-8",
+  "gpu": "NVIDIA L4"
+ },
+ "window_utc": {
+  "start": "2026-10-21T05:53:00Z",
+  "lease": "2026-10-21T05:55:53Z",
+  "end": "2026-10-21T06:27:00Z"
+ },
+ "branch": {
+  "name": "dsh/pairact-r1-v3s-probe-gcp2",
+  "base": "6a68e4ca86dd18e3efdb67ec5e88afec278b3783"
+ },
+ "stack": {
+  "teacher": "75929e7719ad98a089e3dda5251f4249d8bae511",
+  "adapter": "3779d9615ef6dc8e38f57ab968a14a9e45189ecc",
+  "root": "a93082c343ef5f3687851bf4b0c9fb0f2484ada1"
+ },
+ "run_root": "/home/ugrp/ugrp-sim/runs/pairact-p3-probe-gcp2-20261021T0612Z",
+ "logs": [
+  "probe-w0.log",
+  "probe-w1.log",
+  "probe-w2.log",
+  "base-run.log",
+  "gate2-test.log",
+  "gate2b-test.log",
+  "gate2c-test.log",
+  "pilot2-test.log"
+ ],
+ "probe_prereg": {
+  "path": "/home/ugrp/ugrp-sim/runs/pairact-p3-probe-gcp2-20261021T0612Z/probe-prereg-FROZEN_CORE-copy.json",
+  "sha256": "b729421ca1184190a675b60d7e001de3473d52555c3b0e042d9dbe3390ba8f3d",
+  "core_sha256": "342e028dfe3e2a9de57f965fd305dcaeb929ceea470c3c9f6b25d3264a2afdfe",
+  "note": "status-only copy of COLLECT_PREREG_DRAFT.json (READY_FOR_REVIEW -> FROZEN_CORE); core_sha256 identical to the original prereg; originals unchanged"
+ },
+ "probes": [
+  {
+   "world": 0,
+   "seed": 8343000,
+   "collect_bin": "B0",
+   "status": "complete",
+   "sim_s": 20.0,
+   "cap_end": true,
+   "end_reason": "cap_end",
+   "source_sha": "75929e7719ad98a089e3dda5251f4249d8bae511",
+   "recording_mode": "training",
+   "data_admitted": false,
+   "observation_sampling": {
+    "rgb_size": [
+     640,
+     480
+    ],
+    "rgb_hz": 10,
+    "review_tile_size": [
+     320,
+     240
+    ],
+    "review_cameras": "own cameras only; top disabled",
+    "review_hz": 1,
+    "control_hz": 10,
+    "aspect_ratio_unchanged": true,
+    "camera_fov_and_pose_unchanged": true,
+    "own_review_hz": 1,
+    "own_review_size": [
+     320,
+     240
+    ]
+   },
+   "proof": {
+    "admission": "pairact_p3_collect_prereg_v1",
+    "freeze_stage": "FROZEN_CORE",
+    "qualified": true,
+    "collect_prereg_sha256": "b729421ca1184190a675b60d7e001de3473d52555c3b0e042d9dbe3390ba8f3d",
+    "collect_prereg_core_sha256": "342e028dfe3e2a9de57f965fd305dcaeb929ceea470c3c9f6b25d3264a2afdfe",
+    "execution_host": {
+     "project_id": "ugrp-sim-b-1014",
+     "instance": "ugrp-act-l4-gcp2",
+     "machine_type": "g2-standard-8",
+     "zone": "asia-northeast3-a",
+     "provider": "gcp",
+     "schema": "ugrp.grasp_act.host.v1",
+     "cpu_count": 8
+    }
+   },
+   "frames": [
+    {
+     "robot": "r1",
+     "frames": 200,
+     "first": "000000.jpg",
+     "first_bytes": 12571,
+     "last": "000199.jpg"
+    },
+    {
+     "robot": "r2",
+     "frames": 200,
+     "first": "000000.jpg",
+     "first_bytes": 16079,
+     "last": "000199.jpg"
+    }
+   ],
+   "result_sha256": "5d2a1790e8ee4276f41aea8d39ff71b2df22e257465d3bff88e1e4b32fbf56fb",
+   "summary_sha256": "1ceac06cf20898ab829e9f089dd0be82b18185b936b2c00379d2c2a99d5aae8a"
+  },
+  {
+   "world": 1,
+   "seed": 8343001,
+   "collect_bin": "B1",
+   "status": "complete",
+   "sim_s": 20.0,
+   "cap_end": true,
+   "end_reason": "cap_end",
+   "source_sha": "75929e7719ad98a089e3dda5251f4249d8bae511",
+   "recording_mode": "training",
+   "data_admitted": false,
+   "observation_sampling": {
+    "rgb_size": [
+     640,
+     480
+    ],
+    "rgb_hz": 10,
+    "review_tile_size": [
+     320,
+     240
+    ],
+    "review_cameras": "own cameras only; top disabled",
+    "review_hz": 1,
+    "control_hz": 10,
+    "aspect_ratio_unchanged": true,
+    "camera_fov_and_pose_unchanged": true,
+    "own_review_hz": 1,
+    "own_review_size": [
+     320,
+     240
+    ]
+   },
+   "proof": {
+    "admission": "pairact_p3_collect_prereg_v1",
+    "freeze_stage": "FROZEN_CORE",
+    "qualified": true,
+    "collect_prereg_sha256": "b729421ca1184190a675b60d7e001de3473d52555c3b0e042d9dbe3390ba8f3d",
+    "collect_prereg_core_sha256": "342e028dfe3e2a9de57f965fd305dcaeb929ceea470c3c9f6b25d3264a2afdfe",
+    "execution_host": {
+     "project_id": "ugrp-sim-b-1014",
+     "instance": "ugrp-act-l4-gcp2",
+     "machine_type": "g2-standard-8",
+     "zone": "asia-northeast3-a",
+     "provider": "gcp",
+     "schema": "ugrp.grasp_act.host.v1",
+     "cpu_count": 8
+    }
+   },
+   "frames": [
+    {
+     "robot": "r1",
+     "frames": 200,
+     "first": "000000.jpg",
+     "first_bytes": 11640,
+     "last": "000199.jpg"
+    },
+    {
+     "robot": "r2",
+     "frames": 200,
+     "first": "000000.jpg",
+     "first_bytes": 13071,
+     "last": "000199.jpg"
+    }
+   ],
+   "result_sha256": "f369839050029da3ffd9cd4559ea070bc9d6b56e930919a97e146a3448193f68",
+   "summary_sha256": "4f9cd1671adf0b25ad1eecd27df07e8bb138d9ac8d97ceceaebeb019ad498462"
+  },
+  {
+   "world": 2,
+   "seed": 8343002,
+   "collect_bin": "B2",
+   "status": "HOST_ERROR",
+   "sim_s": null,
+   "cap_end": null,
+   "end_reason": null,
+   "source_sha": "75929e7719ad98a089e3dda5251f4249d8bae511",
+   "recording_mode": "training",
+   "data_admitted": false,
+   "observation_sampling": {
+    "rgb_size": [
+     640,
+     480
+    ],
+    "rgb_hz": 10,
+    "review_tile_size": [
+     320,
+     240
+    ],
+    "review_cameras": "own cameras only; top disabled",
+    "review_hz": 1,
+    "control_hz": 10,
+    "aspect_ratio_unchanged": true,
+    "camera_fov_and_pose_unchanged": true,
+    "own_review_hz": 1,
+    "own_review_size": [
+     320,
+     240
+    ]
+   },
+   "proof": {
+    "admission": "pairact_p3_collect_prereg_v1",
+    "freeze_stage": "FROZEN_CORE",
+    "qualified": true,
+    "collect_prereg_sha256": "b729421ca1184190a675b60d7e001de3473d52555c3b0e042d9dbe3390ba8f3d",
+    "collect_prereg_core_sha256": "342e028dfe3e2a9de57f965fd305dcaeb929ceea470c3c9f6b25d3264a2afdfe",
+    "execution_host": {
+     "project_id": "ugrp-sim-b-1014",
+     "instance": "ugrp-act-l4-gcp2",
+     "machine_type": "g2-standard-8",
+     "zone": "asia-northeast3-a",
+     "provider": "gcp",
+     "schema": "ugrp.grasp_act.host.v1",
+     "cpu_count": 8
+    }
+   },
+   "frames": [
+    {
+     "robot": "r1",
+     "frames": 994,
+     "first": "000000.jpg",
+     "first_bytes": 12645,
+     "last": "000993.jpg"
+    },
+    {
+     "robot": "r2",
+     "frames": 994,
+     "first": "000000.jpg",
+     "first_bytes": 11628,
+     "last": "000993.jpg"
+    }
+   ],
+   "result_sha256": "5b862614c94bda31215478a4b99e61e9ecb187b948732e76efe860139ead598b",
+   "summary_sha256": "214183a391d22d9aea946217d035ccabcb2f82a97f3a0cb1297df4e4ae5636f9"
+  }
+ ],
+ "refusals": 0,
+ "recording_640x480": {
+  "passed": 3,
+  "N": 3,
+  "evidence": "observation_sampling.rgb_size=[640,480], rgb_hz=10, recording_mode=training, JPEG frames measured 640x480"
+ },
+ "source_sha_match": {
+  "passed": 3,
+  "N": 3,
+  "value": "75929e7719ad98a089e3dda5251f4249d8bae511"
+ },
+ "recording_mode_equivalence_check": {
+  "status": "not_run",
+  "reason": "needs >=3 paired complete+physical_success rows (recording-off baseline + recording-on probe); probe rows are cap_end/HOST_ERROR and no baseline rows; collector CLI probe paths need a FROZEN_CORE manifest (DRAFT_VM_FILL)"
+ },
+ "collector_cli_first_batch_gate": {
+  "status": "not_run",
+  "reason": "RUN_MANIFEST.json DRAFT_VM_FILL; frozen_gate(stage='core') refused by design before FROZEN_CORE"
+ },
+ "gcp2_batch": {
+  "status": "not_verified",
+  "reason": "batch needs per-world C312 compiled references; gcp6 r13 refs/canonical do not match the c5 scene build (unsupported world parameter difference mujoco/asset[3]/mesh[fuji_roller_v2]; auto-canonical KeyError). RUNBOOK episode flags include --full-active-dof-workspace-v1 which the base runner gates on --gcp3-isolated-v1"
+ },
+ "w2_failure": {
+  "type": "MJWarp workspace overflow",
+  "tick": 999,
+  "nacon": 34,
+  "naconmax": 32,
+  "nefc": 205,
+  "njmax": 256,
+  "nvmax": 128,
+  "awake_dofs": 110,
+  "scope": "single-world capacity; not generalized to N=20 batches"
+ },
+ "tests": {
+  "status": "not_run",
+  "reason": "pytest absent from the prepared .venv-warp; stack markers (COLLECT_PROBE_STATUSES, DEPENDENCY_SHA, ADAPTER_SHA/TEACHER_SHA) verified instead"
+ },
+ "known_schema_question": {
+  "training_rgb": "pair raw/result.json has no training_rgb key (recording_mode=training only) and the adapter result hardcodes training_rgb=false; COLLECT_SPEC sec 4 expects training_rgb=true -> check the convert side"
+ },
+ "data_policy": {
+  "training_data_recorded": false,
+  "data_admitted_all_false": true,
+  "validation_heldout_touched": false,
+  "originals_changed": false
+ },
+ "cost_estimate_usd": 0.62,
+ "cost_scope": "whole-VM estimate at $1.096/h over ~34 min; not billing",
+ "artifacts": {
+  "probe_cases_8": {
+   "path": "/home/ugrp/ugrp-sim/runs/pairact-p3-probe-gcp2-20261021T0612Z/probe-cases-8.json",
+   "sha256": "7a90ddbd9b29a53e6472a3e0e75f37dd490e4b610b60fef37be8ff6e1a09ab13"
+  },
+  "base_cases_p2": {
+   "path": "/home/ugrp/ugrp-sim/runs/pairact-p3-probe-gcp2-20261021T0612Z/base-cases-p2.json",
+   "sha256": "e37ffbfb7673948f1251f2e2e9616b92e5dfb094c06ee4fb8de39b5621d90887"
+  },
+  "probe_evidence": {
+   "path": "/home/ugrp/ugrp-sim/runs/pairact-p3-probe-gcp2-20261021T0612Z/probe-evidence.json"
+  }
+ },
+ "report": "experiments/2026-10-21-pairact-r1/PROBE_GCP2_20261021.md"
+}
