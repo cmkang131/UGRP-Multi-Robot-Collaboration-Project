@@ -13,12 +13,13 @@
 ## 1. 스택 (기본 경로는 -c5 그대로, `--hybrid-carry`일 때만 아래 SHA)
 | tree | 브랜치 | SHA | 고정 위치 |
 |---|---|---|---|
-| root | `dsh/pairact-p2-carrypath-r-c5-hybrid` | 이 문서가 든 커밋 | — |
-| adapter | `dsh/pairact-p2-carrypath-a-c5-hybrid` | `6e957a42665ce98e40aae8afcb79023f669b5e65` | `warp_flow_episode.HYBRID_ADAPTER_SHA` |
-| teacher(runner) | `dsh/pairact-p2-carrypath-c5-hybrid` | `60ef0b1481082daad4cf5582d1542661c0b8664f` | `warp_flow_episode.HYBRID_TEACHER_SHA` |
+| root | `dsh/pairact-p2-carrypath-r-c5-hybrid2` | 이 문서가 든 커밋 | — |
+| adapter | `dsh/pairact-p2-carrypath-a-c5-hybrid2` | `0479e7b47c87e0a5af7158015d011d98ca5df449` | `warp_flow_episode.HYBRID_ADAPTER_SHA` |
+| teacher(runner) | `dsh/pairact-p2-carrypath-c5-hybrid2` | `c51f3e7c2cd419c3fe9ef4199481ffc1c5f74fea` | `warp_flow_episode.HYBRID_TEACHER_SHA` |
 | 학생 worker | `dsh/pairact-p5-student-hybrid` | `bdc41a3fa8ec151889a1c6559147f495a9619dad` | `run_warp_flow_teacher.HYBRID_STUDENT_SHA` |
 | nav 검출기 | `dsh/nav-v5-recal` | `ceacd474b9e03110c1b35c0cd0fc2cca40594ec9` | `HYBRID_NAV_SHA`, teacher `hybrid_carry.NAV_SHA` |
 
+- hybrid2(2026-10-21): root `-r-c5-hybrid2`가 adapter `-a-c5-hybrid2`(teacher 고정 1줄)·teacher `-c5-hybrid2`를 고정합니다. teacher -c5-hybrid2 = -c5-hybrid + 적재 오도메트리 보정 v2(config mode `pairact_r1_hybrid_carry_v2`) + 코드 운반 smoke(`HYBRID_SMOKE.md`) + 도구 3개. 아래 -c5-hybrid 설명은 그 위에 그대로 유지됩니다. v1 config는 이제 거부됩니다.
 - adapter -a-c5-hybrid는 -a-c5에서 teacher 고정 1줄만 바꿨습니다. teacher -c5-hybrid는 -c5에 `harness/hybrid_carry.py`를 더하고 runner에 `hybrid_carry=None` 인자와 학생 tick 가드 1줄을 넣었습니다(gate 경로 바이트 동일 테스트가 이 조각만 허용). worker -hybrid는 `shadow` op만 더했습니다.
 - `--hybrid-carry` 없이 돌리면 -c5 고정(adapter `3779d961`, teacher `75929e77`, worker `3c9337d5`)을 그대로 씁니다. arm F 학생과 teacher arm은 -r-c5에서 돌려도 되고 여기서 플래그 없이 돌려도 같습니다.
 
@@ -52,22 +53,23 @@ nav 모드 운반 순서: `carry_hold`(들기 자세 유지) → `acquire`(빔 �
 
 `map`을 쓰려면 (1) 창민이 공동 운반의 정적 지도 사용을 승인하고, (2) 승인 기록 파일을 커밋하고, (3) teacher에 그 sha256을 `MAP_MODE_APPROVAL_SHA256`으로, root에 `HYBRID_MAP_MODE_APPROVED=True`를 새 커밋으로 넣고, (4) 결과를 `hybrid_n_map`("(정적 지도)" 표기)으로 따로 보고해야 합니다. 이 문서 작성 시점에는 (1)이 없습니다.
 
-## 4. config (`HYBRID_CARRY_NAV_TEMPLATE.json`)
-- 키 집합이 정확히 맞아야 하고, 수치는 모두 양수여야 합니다. 기본값을 몰래 넣지 않습니다. 템플릿의 `[확인 필요]` 칸이 남아 있으면 검증에서 거부됩니다.
-- 채워야 할 값: 적재 상태 오도메트리 보정 3개, 불확실성 한계·증가율 4개, `carry_budget_s`(사전 등록 `episode_cap_sim_s`의 운반 예산과 같게), nav `profile`, `arm_ground_m`, `advance_m`.
+## 4. config (teacher `experiments/2026-10-21-pairact-p2/HYBRID_CARRY_NAV_TEMPLATE_V2.json`)
+- 키 집합이 정확히 맞아야 하고, 수치는 모두 양수여야 합니다(편향은 유한값). 기본값을 몰래 넣지 않습니다. 템플릿의 `[확인 필요]` 칸이 남아 있으면 검증에서 거부됩니다.
+- *적재 상태 오도메트리 보정(v2)*: 이득 3개(전진·횡 m/(%·s), 회전 deg/(%·s)), 공통 지연 `latency_ticks`, 이동 중 편향 3개, sigma 증가율 2개(`sigma_xy_per_m`, `sigma_yaw_per_rad`)는 teacher `scripts/fit_loaded_odom.py` 출력으로만 채웁니다. 이 도구는 pilot·smoke run의 `eval-only.jsonl`(GT, offline 라벨)과 기록된 운반 teacher 진단으로 GT 운반 teacher를 offline 재실행해 tick별 명령을 복원하고(경로·events·`drive_response`가 기록과 같을 때만), hybrid smoke의 `hybrid-drive.jsonl`도 받습니다. seed는 pilot 8343000–8343039와 smoke 8420001·8420011·8420017만 허용하고, 다른 seed가 있으면 멈춥니다.
+- `scripts/make_hybrid_config.py`가 fit 파일로 config를 만듭니다. 보정·sigma율에 대한 `--set`은 거부하고, 나머지 `[확인 필요]`(carry_budget_s, sigma 한계 2개, nav profile·source·arm_ground_m·advance_m)는 owner `--set`으로만 채웁니다. config의 `calibration_provenance{fit_sha256, values_sha256, seeds, …}`를 teacher `validate_config`가 다시 계산하므로, 손으로 고친 수치는 실행 시작 전에 거부됩니다.
+- `purpose`: `hybrid_n`(이 문서, 학생)과 `teacher_smoke`(`HYBRID_SMOKE.md`, shadow_predict false)를 나눕니다. P5 hybrid_n의 보정은 C4 pilot·smoke-1c 적합으로 시작하고, hybrid smoke의 코드 명령으로 다시 적합한 값(`fit2`)이 있으면 그것을 씁니다. 어느 쪽이든 보류 seed 실행 전에 config와 SHA를 커밋합니다.
 - `v_max`·`w_max`·stretch 값은 GT 운반 teacher `Params`의 값을 그대로 옮겼습니다.
-- 보정값 측정 도구는 아직 없습니다 [확인 필요: pilot seed에서 자기 명령 적분 대비 eval-only 이동량을 재는 스크립트. 측정값만 config에 들어가고 GT는 실행 중 입력이 아닙니다].
 
 ## 5. 실행
 ```bash
 # 0) tree 준비(각 SHA로 checkout, clean). nav tree는 config nav.source 경로
-for t in root:dsh/pairact-p2-carrypath-r-c5-hybrid adapter:6e957a42665ce98e40aae8afcb79023f669b5e65 \
-         teacher:60ef0b1481082daad4cf5582d1542661c0b8664f student:bdc41a3fa8ec151889a1c6559147f495a9619dad \
+for t in root:dsh/pairact-p2-carrypath-r-c5-hybrid2 adapter:0479e7b47c87e0a5af7158015d011d98ca5df449 \
+         teacher:c51f3e7c2cd419c3fe9ef4199481ffc1c5f74fea student:bdc41a3fa8ec151889a1c6559147f495a9619dad \
          nav:ceacd474b9e03110c1b35c0cd0fc2cca40594ec9; do echo "$t"; done   # git worktree add $SRC/<name> <ref>
 
 # 1) student-eval.json: P5_STUDENT_EVAL.md §2와 같은 6키. source=$SRC/student(-hybrid worker),
 #    model=arm N 동결 체크포인트(CHECKPOINT_FREEZE_ARM_N.json), config=...PAIRACT_R1_TRAIN_CONFIG_ARM_N.json
-# 2) hybrid.json: 템플릿을 채운 파일(커밋 후 사용)
+# 2) hybrid.json: HYBRID_SMOKE.md §2와 같은 명령, --purpose hybrid_n (shadow_predict는 템플릿 값 true 유지). 커밋 후 사용
 
 # 3) pilot smoke (pilot seed 3개, 보류 seed 아님)
 cd $SRC/root
@@ -81,7 +83,7 @@ python /home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py \
 #    --cases $RUN/p5-heldout-cases.json --indices 0,...,19 --out $RUN/p5-hybrid-n
 ```
 - [확인 필요] gcp6 wrapper(`run_warp_flow_teacher_gcp6.py`)가 `--hybrid-carry`를 그대로 넘기는지. wrapper는 이 레포 밖 경로입니다.
-- [확인 필요] 적재 자세에서 카메라 높이·피치가 `GATE_GROUND_PROJECTION`(높이 0.300 m, 아래로 19°)과 같은지. 다르면 zone 거리 투영이 틀립니다.
+- 적재 자세에서 카메라 높이·피치가 `GATE_GROUND_PROJECTION`(높이 0.300 m, 아래로 19°)과 같은지는 hybrid smoke의 eval-only `camera_mount`·`projection` 로그로 잽니다(`HYBRID_SMOKE.md` §6). P5 hybrid_n 실행 전에 그 결과를 봅니다.
 
 ## 6. 집계
 ```bash
@@ -103,13 +105,14 @@ python scripts/pairact_r1_p5_decide.py --prereg <v2.1 FROZEN> --rows RUN-report/
 
 ## 8. 위험과 미검증 (실행 전 확인)
 1. GPU/MJWarp에서 한 번도 돌지 않았습니다. 테스트의 가짜 세계는 명령이 보정값대로 정확히 움직이는 운동학 모형이라 미끄러짐·접촉·빔 하중이 없습니다.
-2. navigator는 빔과 상대 로봇 쪽을 봅니다. 빔·상대 차체가 zone B를 가리면 `acquire`가 실패합니다 [확인 필요: pilot smoke 영상].
-3. 문 검출기가 없습니다. 문은 zone 성분 중심을 겨눠 지나가는데, 이것은 단독 로봇(nav r5)에서만 확인된 방식입니다. 1 m 넘는 대형으로 문을 지나는지는 모릅니다.
+2. navigator는 빔과 상대 로봇 쪽을 봅니다. 빔·상대 차체가 zone B를 가리면 `acquire`가 실패합니다. hybrid smoke가 tick마다 GT 광선으로 zone B 격자의 시야 안·빔 가림·상대 가림을 eval-only로 기록하고(`hybrid_smoke_eval.zone_occlusion`, 빔 반경 0.03 m·상대 원기둥 0.17×0.30 m 근사 [확인 필요]), `HYBRID_SMOKE.md` §6 규칙으로 판단합니다.
+3. *문 검출기가 없습니다(위험 유지).* config `nav.door_detector`는 null만 허용되고, 문은 zone 성분 중심을 겨눠 지나갑니다. 이것은 단독 로봇(nav r5)에서만 확인된 방식이고, 1 m 넘는 대형으로 문을 지나는지는 모릅니다. 판단은 hybrid smoke(teacher 근거리 + 코드 운반, 학습 아님) 결과로 합니다: 파지 world 중 `door_passed`가 false인 world를 `code_outcome`별로 나눠, 절반 이상이 문 앞 실패이면 문 검출기를 다음 후보로 올리고 P5 hybrid_n 실행을 미룹니다(`HYBRID_SMOKE.md` §6).
 4. 대형 유지는 두 로봇의 dead-reckoning 추정 비교뿐입니다. 실제 늘어남을 직접 재지 않습니다. CPU 자기 센서 운반은 0/33(`SELF_POSE_UNCERTAIN`)이었습니다.
 5. 반환 시점 학생 이력은 코드 명령입니다. teacher 시연(운반 중 teacher 명령)과 분포가 다를 수 있습니다.
 6. 메시지 지연·손실 모형이 없습니다(같은 프로세스, 지연 0). L1-lite 지연 조건과는 별개입니다.
 
 ## 9. 테스트 (CPU, mujoco·warp 없음)
+- hybrid2: teacher -c5-hybrid2 `test_hybrid_carry.py` 21 + `test_hybrid_smoke.py` 10 + `test_fit_loaded_odom.py` 8 + C5 묶음(`test_pairact_p3_collect_admission.py`, `test_grasp_act_admission.py`, `test_pair_carry_route_c4.py`, `test_pair_carry_detour.py`, `test_pair_carry_teacher_warp.py`) → 127개 통과. adapter -a-c5-hybrid2 9개. root 아래 hybrid2 커밋 메시지의 수.
 - teacher -c5-hybrid: `tests/test_hybrid_carry.py` 17개 + 기존 C5 묶음(`test_pairact_p3_collect_admission.py`, `test_grasp_act_admission.py`, `test_pair_carry_route_c4.py`, `test_pair_carry_detour.py`, `test_pair_carry_teacher_warp.py`) 88개 → 105개 통과.
 - worker -hybrid: `tests/test_pairact_r1_student.py` 10개 통과(shadow 2개 추가).
 - adapter -a-c5-hybrid: `tests/test_pairact_p2_adapter.py` 9개 통과.

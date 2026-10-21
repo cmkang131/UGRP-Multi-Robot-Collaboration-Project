@@ -18,8 +18,8 @@ ADAPTER_SHA = '3779d9615ef6dc8e38f57ab968a14a9e45189ecc'
 TEACHER_SHA = '75929e7719ad98a089e3dda5251f4249d8bae511'
 RELEASE_SHA = '8e81b7d96c0c73171635348c90631462adfe1eb0'
 # pairact hybrid carry stack (run_warp_flow_teacher.py --hybrid-carry only; default path keeps the pins above)
-HYBRID_ADAPTER_SHA = '6e957a42665ce98e40aae8afcb79023f669b5e65'   # adapter -a-c5-hybrid (teacher pin only)
-HYBRID_TEACHER_SHA = '60ef0b1481082daad4cf5582d1542661c0b8664f'   # teacher -c5-hybrid (-c5 + harness/hybrid_carry.py)
+HYBRID_ADAPTER_SHA = '0479e7b47c87e0a5af7158015d011d98ca5df449'   # adapter -a-c5-hybrid2 (teacher pin only)
+HYBRID_TEACHER_SHA = 'c51f3e7c2cd419c3fe9ef4199481ffc1c5f74fea'   # teacher -c5-hybrid2 (-c5-hybrid + loaded-odom fit v2 + code-carry smoke)
 
 
 def owned(name):
@@ -128,6 +128,7 @@ class Bridge:
         self.recording_commands = False
         self.student_eval = None
         self.hybrid_carry = None
+        self.hybrid_smoke = None
 
     def build(self, original, scene, **kwargs):
         from sim import masterpi_drive_friction_v7 as drive
@@ -257,6 +258,9 @@ class Bridge:
         if self.hybrid_carry is not None:
             # pairact hybrid (default off): the -c5-hybrid runner's hybrid_carry option
             kwargs = {**kwargs, 'hybrid_carry': dict(self.hybrid_carry)}
+        if self.hybrid_smoke is not None:
+            # hybrid code-carry smoke (default off): teacher near field + code carry + teacher place, not learned
+            kwargs = {**kwargs, 'hybrid_smoke': dict(self.hybrid_smoke)}
         try:
             return (yield from function(*args, **kwargs))
         finally:
@@ -306,10 +310,11 @@ class Bridge:
             yield dict(kind='step', target=target)
 
 
-def make_lane(adapter_source, teacher_source, plan, out, hooks, index, cap_s, *, flow='beampair', profile=None, canonical=None, candidate='baseline', student_eval=None, hybrid_carry=None):
+def make_lane(adapter_source, teacher_source, plan, out, hooks, index, cap_s, *, flow='beampair', profile=None, canonical=None, candidate='baseline', student_eval=None, hybrid_carry=None, hybrid_smoke=None):
     bridge = Bridge(hooks, index)
     bridge.student_eval = student_eval
     bridge.hybrid_carry = hybrid_carry
+    bridge.hybrid_smoke = hybrid_smoke
     bridge.output = Path(out)
     bridge.plan = plan
     bridge.certification_source=Path(teacher_source) if teacher_source else Path(adapter_source).parent/TEACHER_SHA

@@ -108,7 +108,7 @@ def test_student_eval_default_off_and_injected_only_when_set():
     runner = (ROOT/'scripts/run_warp_flow_teacher.py').read_text()
     episode = (ROOT/'scripts/warp_flow_episode.py').read_text()
     assert "p.add_argument('--student-eval',type=Path" in runner and 'default OFF' in runner
-    assert "student_eval=None, hybrid_carry=None):" in episode and 'bridge.student_eval = student_eval' in episode
+    assert "student_eval=None, hybrid_carry=None, hybrid_smoke=None):" in episode and 'bridge.student_eval = student_eval' in episode
     assert "if self.student_eval is not None:" in episode
     assert "STUDENT_SHA='3c9337d5f5c9deefd49139b26ae7117022e3d5cc'" in runner
 
@@ -164,15 +164,15 @@ def test_pinned_adapter_has_the_detour_candidates():
 
 # ------------------------------------------------- hybrid carry (arm N, default off)
 
-HYB = {'mode': 'pairact_r1_hybrid_carry_v1', 'carry_mode': 'nav',
+HYB = {'mode': 'pairact_r1_hybrid_carry_v2', 'carry_mode': 'nav',
        'nav': {'source': '/src/nav', 'sha': 'ceacd474b9e03110c1b35c0cd0fc2cca40594ec9'}}
 
 
 def test_hybrid_pins_and_default_off():
     runner = (ROOT/'scripts/run_warp_flow_teacher.py').read_text()
     episode = (ROOT/'scripts/warp_flow_episode.py').read_text()
-    assert "HYBRID_ADAPTER_SHA = '6e957a42665ce98e40aae8afcb79023f669b5e65'" in episode    # -a-c5-hybrid
-    assert "HYBRID_TEACHER_SHA = '60ef0b1481082daad4cf5582d1542661c0b8664f'" in episode    # -c5-hybrid
+    assert "HYBRID_ADAPTER_SHA = '0479e7b47c87e0a5af7158015d011d98ca5df449'" in episode    # -a-c5-hybrid2
+    assert "HYBRID_TEACHER_SHA = 'c51f3e7c2cd419c3fe9ef4199481ffc1c5f74fea'" in episode    # -c5-hybrid2
     assert "HYBRID_STUDENT_SHA='bdc41a3fa8ec151889a1c6559147f495a9619dad'" in runner      # p5-student-hybrid
     assert "HYBRID_MAP_MODE_APPROVED=False" in runner
     assert "p.add_argument('--hybrid-carry',type=Path" in runner and 'default OFF' in runner
@@ -211,9 +211,59 @@ def test_hybrid_student_pin_is_used_with_hybrid_flag(tmp_path, monkeypatch):
         mod.load_student_eval(path)
 
 
-def test_hybrid_template_is_nav_and_unfilled_values_stay_marked():
-    t = json.loads((ROOT/'experiments/2026-10-21-pairact-p2/HYBRID_CARRY_NAV_TEMPLATE.json').read_text())
-    assert t['mode'] == 'pairact_r1_hybrid_carry_v1' and t['carry_mode'] == 'nav' and t['map'] is None
-    assert t['nav']['sha'] == 'ceacd474b9e03110c1b35c0cd0fc2cca40594ec9' and t['nav']['door_detector'] is None
-    # calibration is measured, never defaulted: the template keeps the marker until filled
-    assert all('[확인 필요' in str(v) for v in t['calibration'].values())
+def test_hybrid_template_is_the_teacher_v2_template():
+    # v2: the template lives next to the fit tool in the teacher tree; root keeps no stale copy
+    assert not (ROOT/'experiments/2026-10-21-pairact-p2/HYBRID_CARRY_NAV_TEMPLATE.json').exists()
+    doc = (ROOT/'experiments/2026-10-21-pairact-p2/HYBRID_RUN.md').read_text()
+    assert 'HYBRID_CARRY_NAV_TEMPLATE_V2.json' in doc and 'fit_loaded_odom.py' in doc
+
+
+# ------------------------------------------------- hybrid code-carry smoke (teacher near field, default off)
+
+# teacher c51f3e7c harness/hybrid_carry.calibration_values_sha256 of the fixture below (computed in that tree)
+VALUES_SHA_FIXTURE = 'ed5dcf7c60bcdd93c893e64275214c955d515abadcd48a72d9800cc617522378'
+PROV = {'tool': 'scripts/fit_loaded_odom.py + scripts/make_hybrid_config.py', 'fit_quality': 'per_tick'}
+SMOKE = dict(HYB, shadow_predict=False, calibration_provenance=PROV)
+
+
+def test_hybrid_smoke_flag_default_off_and_threaded():
+    runner = (ROOT/'scripts/run_warp_flow_teacher.py').read_text()
+    episode = (ROOT/'scripts/warp_flow_episode.py').read_text()
+    assert "p.add_argument('--hybrid-smoke',type=Path" in runner and 'not learned' in runner
+    assert "HYBRID_SMOKE_LABEL='teacher 근거리 + 코드 운반, 학습 아님'" in runner
+    assert "if self.hybrid_smoke is not None:" in episode and 'bridge.hybrid_smoke = hybrid_smoke' in episode
+    assert "if hybrid_carry is not None or hybrid_smoke is not None:" in runner      # hybrid2 stack pins
+
+
+def test_hybrid_smoke_config_checks(tmp_path, monkeypatch):
+    mod = _runner_module()
+    path = tmp_path/'s.json'
+    assert mod.load_hybrid_smoke(None, None, None) is None
+    path.write_text(json.dumps(SMOKE))
+    with pytest.raises(ValueError, match='no student'):
+        mod.load_hybrid_smoke(path, CFG, None)
+    with pytest.raises(ValueError, match='no student'):
+        mod.load_hybrid_smoke(path, None, HYB)
+    monkeypatch.setattr(mod, 'source_head', lambda p: mod.HYBRID_NAV_SHA)
+    assert mod.load_hybrid_smoke(path, None, None)['carry_mode'] == 'nav'
+    for bad, why in ((dict(SMOKE, mode='pairact_r1_hybrid_carry_v1'), 'mode'), (dict(SMOKE, shadow_predict=True), 'shadow'),
+                     (dict(SMOKE, calibration_provenance=dict(PROV, tool='hand')), 'fit_loaded_odom'),
+                     (dict(SMOKE, calibration_provenance=None), 'fit_loaded_odom'),
+                     (dict(SMOKE, carry_mode='map'), 'nav')):
+        path.write_text(json.dumps(bad))
+        with pytest.raises(ValueError, match=why):
+            mod.load_hybrid_smoke(path, None, None)
+    path.write_text(json.dumps(SMOKE))
+    monkeypatch.setattr(mod, 'source_head', lambda p: '0'*40)
+    with pytest.raises(ValueError, match='nav detector tree'):
+        mod.load_hybrid_smoke(path, None, None)
+
+
+def test_values_hash_literal_matches_the_teacher_tree():
+    # same canonical form as teacher harness/hybrid_carry.calibration_values_sha256 (tests/test_fit_loaded_odom.py)
+    cal = {'forward_m_per_pct_s': .0036, 'lateral_m_per_pct_s': .0031, 'yaw_deg_per_pct_s': .82, 'latency_ticks': 1,
+           'forward_bias_m_per_s': .002, 'lateral_bias_m_per_s': -.001, 'yaw_bias_deg_per_s': .3}
+    lim = {'sigma_xy_per_m': .05, 'sigma_yaw_per_rad': .1}
+    got = hashlib.sha256(json.dumps({'calibration': cal, 'sigma': lim}, sort_keys=True,
+                                    separators=(',', ':')).encode()).hexdigest()
+    assert got == VALUES_SHA_FIXTURE
