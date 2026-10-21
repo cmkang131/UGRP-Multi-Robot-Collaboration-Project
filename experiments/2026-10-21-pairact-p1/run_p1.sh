@@ -7,7 +7,8 @@
 #   bash run_p1.sh plan                  # fetch/worktree commands + preflight + tournament commands (default)
 #   bash run_p1.sh static                # rule-A static check on the tournament cases (CPU, seconds)
 #   bash run_p1.sh run                   # tournament, registered order r13 c1 c2b c3
-#   ARMS="c2b" bash run_p1.sh run        # subset (only for a crash restart; report it)
+#   ARMS="c2b" bash run_p1.sh run        # subset: only arms that never started (no $OUT_ROOT/<arm> dir).
+#                                        # An arm that started is never re-run: a crash is HOST_ERROR (prereg host_error)
 #   CONF_CASES0=... bash run_p1.sh static-confirm        # rule-A static check on the new worlds
 #   WINNER=c1 CONF_CASES0=... CONF_XML=... CONF_REFS=... CONF_REJ=... bash run_p1.sh confirm   # r13 + winner
 # Every arm writes to a NEW directory; existing results are never reused or overwritten.
@@ -102,6 +103,9 @@ preflight() {
 
 arm_run() {
   local arm=$1 out="$OUT_ROOT/$1" cases="$OUT_ROOT/cases-$1.json"
+  if [ $EXEC = 1 ] && [ -e "$out" ]; then   # prereg host_error: a started arm is never re-run
+    echo "[$arm] $out exists: started arms are not re-run (HOST_ERROR stays a failure)" >&2; return 1
+  fi
   if [ $EXEC = 1 ]; then
     "$PY" "$HERE/make_arm_cases.py" "$CASES0" "$cases" "${CAND[$arm]}" | tee -a "$OUT_ROOT/cases.jsonl" || return 1
   fi
@@ -145,4 +149,6 @@ prepare || { echo "prepare failed (fetch)"; [ $EXEC = 1 ] && exit 2; }
 preflight || { [ $EXEC = 1 ] && exit 2; }
 for arm in $ARMS; do arm_run "$arm"; done
 [ $EXEC = 1 ] && "$PY" "$HERE/p1_gate.py" verdict "$PREREG" "$STAGE" "$OUT_ROOT" $ARMS
+# world-run ledger for scripts/report_tables.py pairact-p1 (dsh/report-auto); HOST_ERROR rows stay failures
+[ $EXEC = 1 ] && "$PY" "$HERE/p1_ledger.py" "$PREREG" "$STAGE" "$OUT_ROOT" "$CASES0" $ARMS
 exit 0

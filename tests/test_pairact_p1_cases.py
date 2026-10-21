@@ -67,6 +67,7 @@ def test_run_requires_frozen_prereg_with_recorded_exclusions():
     with pytest.raises(SystemExit):
         g.check_frozen(doc, 'tournament')
     doc['status'] = 'FROZEN'
+    doc['static_exclusion']['tournament']['excluded_worlds'] = None   # c7089b68f recorded []; test the unfilled case
     with pytest.raises(SystemExit):                       # list not yet filled by the static check
         g.check_frozen(doc, 'tournament')
     doc['static_exclusion']['tournament']['excluded_worlds'] = []

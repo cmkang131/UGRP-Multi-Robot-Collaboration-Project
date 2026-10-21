@@ -102,6 +102,16 @@
     "winner": "채택 기준을 넘은 후보 arm(c1/c2b/c3) 중 success 최대. 동률이면 (1) world 27 통과 arm, (2) 그래도 같으면 동작 변경이 작은 순서 c3 → c1 → c2b",
     "no_winner": "어떤 후보 arm도 기준 미달이면 채택 없음. r13 재실행 결과와 함께 그대로 보고"
   },
+  "host_error": {
+    "rule": "HOST_ERROR는 재실행하지 않는다. 시작한 arm이 끝나지 않으면(summary.json 없음·HOST_ERROR·admission_rejected) 결과가 없는 실행 index는 모두 HOST_ERROR로 기록하고 N_eff 안의 실패로 센다(primary_metric과 같음)",
+    "not_started": "한 번도 시작하지 않은 arm(OUT_ROOT/<arm> 없음)만 ARMS 부분집합으로 처음 실행할 수 있다. run_p1.sh arm_run은 OUT_ROOT/<arm>이 이미 있으면 거부한다",
+    "same_rule_as": "단독 ACT release tournament A (experiments/2026-10-17-act18/CARRY_TOURNAMENT_A_PREREG_DRAFT.json host_error, branch dsh/act18-carry-cand-1)"
+  },
+  "ledger": {
+    "writer": "p1_ledger.py PREREG STAGE OUT_ROOT CASES0 ARM... -> OUT_ROOT/p1-ledger.jsonl (run_p1.sh run/confirm가 verdict 뒤에 호출)",
+    "schema": "ugrp.pairact.p1_ledger.v1: header {prereg_sha256, stage, N_nominal, not_executed, excluded_worlds, summary_sha256} + arm x case index마다 world_run {arm, rep 1, cohort=stage, world, seed, status complete|HOST_ERROR|not_executed|excluded, success, cap_end}",
+    "report": "scripts/report_tables.py pairact-p1 --prereg PREREG --ledger OUT_ROOT/p1-ledger.jsonl --out <새 디렉터리> (branch dsh/report-auto). confirmation은 --ledger에 confirmation OUT_ROOT의 원장"
+  },
   "secondary_metrics": [
     "world 27 결과와 align 시간·relook 수·alignment_axes_blocked 횟수",
     "c1: search20_log의 align_rect_guard_admit 횟수",
