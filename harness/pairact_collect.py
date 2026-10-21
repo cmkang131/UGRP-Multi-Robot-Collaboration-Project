@@ -1541,7 +1541,8 @@ def check_run_manifest(manifest, *, stage, prereg, batch_size=None, episode=None
         if '$' in template:
             problems.append('command.episode_template has an unexpanded shell variable')
         problems += episode_option_problems(template)
-        problems += episode_command_problems(template)      # v7 risk 2: explicit form + wrapper parser
+        problems += episode_command_problems(template, strict=True)   # v7 risk 2 + b: form + wrapper parser
+        problems += episode_allowlist_problems(template)    # v7 a: only options whose value the core binds
     if episode is not None and m('command', 'episode_template_sha256') != episode['template_sha256']:
         problems.append('run manifest episode template sha256 differs')
     if episode is not None and m('limits', 'grasp_cap_sim_s') != episode['cap_s']:
@@ -2063,9 +2064,11 @@ def _fill(token, values):
     return token
 
 
-def episode_command_problems(template, *, wrapper=None):
+def episode_command_problems(template, *, wrapper=None, strict=False):
     """v7 static + parser check of the episode command.  ``wrapper``: the wrapper file whose parser reads it
-    (the template's own .py when it exists, else the repository copy when the template names the gcp6 wrapper)."""
+    (the template's own .py when it exists, else the repository copy when the template names the gcp6 wrapper).
+    ``strict`` (core / final manifest gates, v7 b): a wrapper whose parser() cannot be read is refused instead of
+    falling back to the form check only."""
     try:
         _, _, named, _ = episode_command_form(template)
     except ValueError as error:
@@ -2076,14 +2079,57 @@ def episode_command_problems(template, *, wrapper=None):
         elif os.path.basename(named) == REPO_WRAPPER.name:
             wrapper = REPO_WRAPPER
     if wrapper is None:
-        return []
+        return [f'episode wrapper {named} not found; its parser() must read the command'] if strict else []
     try:
         parser = wrapper_parser(wrapper)
     except (OSError, SyntaxError, ValueError) as error:
-        if os.path.basename(str(wrapper)) != REPO_WRAPPER.name:
-            return []       # another wrapper without parser(): form check only (pinned by assets.wrapper_sha256)
+        if not strict and os.path.basename(str(wrapper)) != REPO_WRAPPER.name:
+            return []       # pilot only: another wrapper without parser(), form check (assets.wrapper_sha256)
         return [f'episode wrapper parser unreadable: {error}']
     return episode_parse_problems(template, parser)
+
+
+# v7 a: the wrapper parser accepts options that change the model input (--compiled-reference-v1,
+# --compiled-geometry-312-v1, --physics-backend, ...; the act teacher also takes --damping-ablation-v1).  The
+# core binds the template text, but a path option binds only its *name*, so an option outside the assets the
+# manifest hashes would feed an unhashed file.  The core / final gates accept only the options below, each
+# with what binds its value; anything else is refused even when the wrapper parser knows it.
+EPISODE_OPTION_ALLOWLIST = {
+    '--flow': 'value in command.episode_template_sha256',
+    '--cap-s': 'value in command.episode_template_sha256 and limits.grasp_cap_sim_s',
+    '--vm-hourly-usd': 'value in command.episode_template_sha256 (cost recording only)',
+    '--teacher-source': 'stack.teacher.sha (git HEAD of the checkout)',
+    '--adapter-source': 'stack.adapter.sha (git HEAD of the checkout)',
+    '--canonical-xml': 'assets.canonical_xml_sha256 + assets.mesh_assets_sha256',
+    '--per-world-model-references-v1': 'assets.per_world_model_references_sha256 + per_world_reference_files_sha256',
+    '--rejection-table': 'assets.rejection_table_input_sha256',
+    '--cases': 'runner placeholder {cases}', '--indices': 'runner placeholder {indices}',
+    '--out': 'runner placeholder {out}',
+    **{flag: 'switch in command.episode_template_sha256' for flag in (
+        '--gcp6-isolated-v1', '--placement-graspable-filter-v1', '--world-model-parameters-v1',
+        '--native-sleep-policy-compat-v1', '--full-active-dof-workspace-v1', '--warp-native-contact-v1',
+        '--batch-per-world-speed-v1')}}
+EPISODE_PLACEHOLDER_OPTIONS = {'--cases': '{cases}', '--indices': '{indices}', '--out': '{out}'}
+
+
+def episode_allowlist_problems(template):
+    """v7 a: every option of the episode command is on EPISODE_OPTION_ALLOWLIST (exact spelling, ``=`` form
+    included) and the runner options carry exactly their placeholder."""
+    try:
+        _, _, _, args = episode_command_form(template)
+    except ValueError as error:
+        return [str(error)]
+    out = [f'episode command option {t.partition("=")[0]} is not on the v7 allowlist (its input is not bound '
+           f'to the core)' for t in args if t.startswith('--') and t.partition('=')[0] not in EPISODE_OPTION_ALLOWLIST]
+    for flag, want in EPISODE_PLACEHOLDER_OPTIONS.items():
+        try:
+            got = episode_option(args, flag)
+        except ValueError as error:
+            out.append(str(error))
+            continue
+        if got != want:
+            out.append(f'episode command {flag} must be exactly {want}, got {got!r}')
+    return out
 
 
 def episode_argv(template, cases, indices, out):

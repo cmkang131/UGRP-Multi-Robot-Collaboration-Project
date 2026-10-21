@@ -10,7 +10,7 @@ from pathlib import Path
 import pytest
 
 from harness import pairact_collect as pc
-from test_pairact_collect import PREREG, TABLE, FakeEpisode, result, runner
+from test_pairact_collect import FAKE_WRAPPER_SOURCE, PREREG, TABLE, FakeEpisode, result, runner
 
 FIX = Path(__file__).resolve().parent / 'fixtures' / 'pairact_c5_shardsmoke_20261021'
 
@@ -326,7 +326,7 @@ def _asset_case(tmp_path, scene, files):
     """wrapper / scene / refs / table under tmp_path/assets + extra files; manifest for that template."""
     from test_pairact_collect import filled_manifest
     a = tmp_path / 'assets'
-    for name, data in dict({'wrap.py': '# inert\n', 'scene.xml': scene, 'refs.json': '{}\n', 'table.json': '{}\n'},
+    for name, data in dict({'wrap.py': FAKE_WRAPPER_SOURCE, 'scene.xml': scene, 'refs.json': '{}\n', 'table.json': '{}\n'},
                            **files).items():
         (a / name).parent.mkdir(parents=True, exist_ok=True)
         (a / name).write_text(data)

@@ -27,5 +27,20 @@
 2. *VM 필요*: frozen teacher/adapter(-c5 pin)가 canonical XML을 정말 `from_xml_string`으로 컴파일하는지, 그리고 실행 cwd가 collector cwd 그대로인지(teacher 내부에서 `chdir`하지 않는지)는 고정 checkout에서 확인해야 합니다. 이 레포의 wrapper 사본은 `chdir`하지 않습니다.
 3. 운영 영향: v7 이전에 수집한 FROZEN_CORE probe source에는 결속 파일이 없어 check-rows가 거부합니다. probe source·probe를 v7 runner로 다시 실행해야 합니다.
 4. 범위 밖: 수동 실행 자체를 막으려면 frozen teacher가 결속을 읽어야 합니다. 이는 teacher pin 변경이 필요하므로 오너가 결정할 사항입니다. 현재는 "산출물 사용 거부"까지입니다.
-5. 템플릿의 wrapper가 gcp6 wrapper가 아니고 `parser()`도 없으면 parser 판독 없이 형태 검사만 합니다(테스트 fixture의 가짜 `wrap.py` 때문). 실제 수집 템플릿은 gcp6 wrapper입니다.
+5. ~~템플릿의 wrapper가 gcp6 wrapper가 아니고 `parser()`도 없으면 형태 검사만 합니다.~~ → *병합 단계(보강 b)에서 해소*: core/final 게이트(`check_run_manifest`)는 `episode_command_problems(strict=True)`로 parser()가 없거나 wrapper 파일이 없으면 거부합니다. 테스트의 가짜 `wrap.py`는 parser()를 갖도록 고쳤습니다(`tests/test_pairact_collect.py` `FAKE_WRAPPER_SOURCE`). 형태 검사만 하는 경로는 manifest 없는 pilot 감사(`episode_cmd_audit`)에만 남습니다.
 6. RUNBOOK의 episode 명령 예시는 이미 이 형태(`python <wrapper> --opt ...`)입니다. `export WARP_SOURCE_ROOT`는 부모 환경으로 전달되고, 템플릿 앞 대입도 허용합니다.
+
+## 병합 단계 추가: MuJoCo CPU 로드 대조 (2026-10-21, 작업 C)
+
+- 환경: `/tmp/v7-mj-venv`(레포 밖 별도 venv), `pip install mujoco` → *mujoco 3.16.0 CPU wheel 설치 성공*. 테스트 스위트는 이 venv를 쓰지 않습니다.
+- 스크립트: `/tmp/v7-mj-check/check.py`(레포 밖), 결과 `/tmp/v7-mj-check/egonav.json`. `MjModel.from_xml_string`으로 *로드만* 했고 `mj_step`은 호출하지 않았습니다. 소요 3.1초.
+- 대상: 실제 pairact canonical scene(`/home/ugrp/ugrp-sim/runs/beamact5/wide-export-old-8420000e/canonical-scene.xml`)은 VM에만 있어 로컬에 없습니다. 대신 레포에 있는 같은 exporter 산출물 `experiments/2026-10-17-egonav/raw/far-diag-range-01/scene.xml`(`texturedir="sim/assets/floor_light_textured_v1"` 상대, mesh 1개 VM 절대경로)을 썼습니다.
+- 결과
+  - 원본 그대로 로드(cwd=레포 루트, cwd=XML 디렉터리): 둘 다 실패. 첫 오류는 VM 절대경로 mesh `/home/ugrp/ugrp-sim/src/41584d3a1-warp10-pool/sim/assets/masterpi_drive_friction_v2/fuji_roller.stl` 열기 실패.
+  - `xml_dependencies(base=레포 루트)` = 38개 파일(VM mesh 1 + 로컬 37). 로컬 37개 중 6개(`zone_wall_divider_1_250_14750_2000_{fileright,fileleft,fileup,filedown,filefront,fileback}.png`)는 이 checkout에 없습니다.
+  - 대조 방법: 빈 임시 디렉터리에 *의존집합 파일만* 같은 상대 배치로 복사하고, VM mesh는 레포의 같은 꼬리 경로 사본(`sim/assets/masterpi_drive_friction_v2/fuji_roller.stl`)으로 XML 문자열 안에서 치환, cwd=임시 디렉터리에서 로드.
+    - 없는 텍스처 6개를 채우지 않으면 실패(`...fileright.png` 열기 실패). 따라서 그 6개는 실제 로드에 필요합니다.
+    - 6개를 8×8 회색 PNG 자리표시자로 채우면 *로드 성공*. 의존집합 밖의 파일이 없어도 로드되므로, 필요 집합 ⊆ 우리 의존집합입니다.
+    - 로컬 의존 파일 37개를 하나씩 빼면 *37/37 로드 실패*. 따라서 우리 의존집합 ⊆ 필요 집합입니다. 대조군인 의존집합 밖 파일 1개를 빼면 로드 성공.
+  - 결론: 이 scene에서 `xml_dependencies(base=cwd)`의 로컬 부분은 MuJoCo 3.16 `from_xml_string`(cwd 기준)이 실제로 여는 파일 집합과 *정확히 일치*합니다. 원본 XML을 XML 디렉터리 cwd로 로드해도 텍스처 경로가 풀리지 않는다는 점(B의 cwd 기준 해석)과도 일치합니다.
+- 한계(VM 필요): (1) 실제 canonical-scene.xml과 VM mesh는 로컬에 없어 대조하지 못했습니다. (2) VM mesh는 레포 사본으로 치환했으므로 VM 파일 자체의 sha는 검증하지 않았습니다. (3) 로컬 3.16과 VM mujoco(manifest 예시 3.3.6)의 경로 해석이 같은지는 VM에서 같은 스크립트로 확인해야 합니다. (4) `zone_wall_divider_1_*` 텍스처 6개 부재의 원인(소스 버전 차이)은 미확인입니다.

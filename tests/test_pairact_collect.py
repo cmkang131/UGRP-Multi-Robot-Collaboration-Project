@@ -31,7 +31,23 @@ PHASES = ['approach', 'align', 'ready', 'pick', 'carry:carry_hold', 'carry:door_
 _TABLE_DIR = Path(tempfile.mkdtemp(prefix='pairact-r1-test-table-'))
 TABLE = str(_TABLE_DIR / 'rejection_table.json')          # v3 N2: a clean batch needs the file to exist
 Path(TABLE).write_text('{}\n')
-EP_CMD = ('python wrap.py --flow beampair --cases {cases} --indices {indices} --cap-s 60 '
+# v7 b: the core / final gates read the episode command with the wrapper's own parser() and refuse a wrapper
+# without one, so the fake wrapper of the tests has a parser() (lenient: the gcp6 option names, none required).
+FAKE_WRAPPER_SOURCE = (
+    'import argparse\n\n\ndef parser():\n    p = argparse.ArgumentParser()\n'
+    + ''.join(f"    p.add_argument('{f}')\n" for f in (
+        '--flow', '--adapter-source', '--teacher-source', '--cases', '--indices', '--canonical-xml', '--out',
+        '--compiled-reference-v1', '--compiled-geometry-312-v1', '--per-world-model-references-v1',
+        '--rejection-table', '--physics-backend'))
+    + "    p.add_argument('--cap-s', type=float)\n    p.add_argument('--vm-hourly-usd', type=float)\n"
+    + ''.join(f"    p.add_argument('{f}', action='store_true')\n" for f in (
+        '--gcp6-isolated-v1', '--placement-graspable-filter-v1', '--world-model-parameters-v1',
+        '--native-sleep-policy-compat-v1', '--full-active-dof-workspace-v1', '--warp-native-contact-v1',
+        '--batch-per-world-speed-v1', '--export-compiled-only', '--damping-ablation-v1'))
+    + '    return p\n')
+FAKE_WRAPPER = str(_TABLE_DIR / 'wrap.py')
+Path(FAKE_WRAPPER).write_text(FAKE_WRAPPER_SOURCE)
+EP_CMD = (f'python {FAKE_WRAPPER} --flow beampair --cases {{cases}} --indices {{indices}} --cap-s 60 '
           '--rejection-table /home/ugrp/ugrp-sim/runs/beamact5/gate-40-r13/rejection_table.json --out {out}')
 
 
@@ -1150,6 +1166,7 @@ def test_verify_assets_rehashes_episode_files(tmp_path, prereg):
     for name in ('wrap.py', 'scene.xml', 'refs.json', 'table.json', 'mesh.obj'):
         (tmp_path / name).write_text(name)
         files[name] = str(tmp_path / name)
+    (tmp_path / 'wrap.py').write_text(FAKE_WRAPPER_SOURCE)                         # v7 b: parser()
     (tmp_path / 'refs.json').write_text('{}\n')                                    # v7: parsed (no references)
     (tmp_path / 'scene.xml').write_text('<mujoco><asset><mesh file="mesh.obj"/></asset></mujoco>')   # v5: parsed
     from test_pairact_collect_v5 import _repo
