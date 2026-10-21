@@ -174,8 +174,10 @@ def p5_report(out):
     summary = json.loads((out / 'summary.json').read_text())
     worlds = []
     for w in summary.get('worlds', []):
-        result_path = Path(w['raw']) / 'result.json'
-        result = json.loads(result_path.read_text()) if result_path.is_file() else {}
+        raw = Path(w['raw'])
+        result_path = raw / 'result.json.zst' if (raw / 'result.json.zst').is_file() else raw / 'result.json'
+        from harness.grasp_act_data import read_json
+        result = read_json(result_path) if result_path.is_file() else {}
         se = result.get('student_eval') or {}
         funnel = se.get('funnel')
         checks = {'result_json': result_path.is_file(),
