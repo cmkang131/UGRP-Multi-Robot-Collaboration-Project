@@ -758,11 +758,11 @@ def test_run_manifest_draft_is_complete_except_vm_fields_and_blocks_training(pre
         assert key in m, key
     unfilled = pc.manifest_unfilled(m)
     assert unfilled and all(p.split('.')[0] in ('host', 'assets', 'smoke', 'recording_check', 'command', 'collector',
-                                                'prereg', 'generator', 'stack') for p in unfilled)
+                                                'prereg', 'generator', 'stack', 'seed_check') for p in unfilled)
     assert pc.check_run_manifest(m, mode='measurement', prereg_sha='x') == []
     with pytest.raises(ValueError, match='unfilled'):
         pc.check_run_manifest(m, mode='training', prereg_sha='x')
-    filled = json.loads(json.dumps(m).replace(pc.VM_FILL, 'v'))
+    filled = json.loads(json.dumps(m, ensure_ascii=False).replace(pc.VM_FILL, 'v'))
     filled['status'] = 'FROZEN'
     filled['prereg']['sha256'] = 'sha'
     filled['collector']['source_sha'] = 'c'
@@ -775,7 +775,16 @@ def test_run_manifest_draft_is_complete_except_vm_fields_and_blocks_training(pre
     with pytest.raises(ValueError, match='batch size'):
         pc.check_run_manifest(filled, mode='training', prereg_sha='sha', batch_size=25)
     s = m['stack']
-    assert s['teacher']['branch'] == 'dsh/pairact-p2-carrypath-c' and s['adapter']['branch'] == 'dsh/pairact-p2-carrypath-a-c'
+    assert s['teacher']['branch'] == 'dsh/pairact-p2-carrypath-c2' and s['adapter']['branch'] == 'dsh/pairact-p2-carrypath-a-c2'
+    assert s['root']['branch'] == 'dsh/pairact-p2-carrypath-r-c2'
+
+
+def test_run_manifest_file_hashes_match_this_checkout():
+    """The frozen manifest names the exact collector / generator files (stale hash = test failure)."""
+    m = json.loads((EXP / 'RUN_MANIFEST.json').read_text())
+    files = dict(m['collector']['file_sha256'], **{m['generator']['file']: m['generator']['file_sha256']})
+    for path, sha in files.items():
+        assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == sha, path
 
 
 def test_eval_prereg_heldout_rule_matches_collection(prereg):

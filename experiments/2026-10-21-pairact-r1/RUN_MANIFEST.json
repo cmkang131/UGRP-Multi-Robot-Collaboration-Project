@@ -1,0 +1,104 @@
+{
+  "schema": "ugrp.pairact_r1.run_manifest.v1",
+  "status": "DRAFT_VM_FILL",
+  "freeze_rule": "Frozen together with COLLECT_PREREG_DRAFT.json (owner decision 10). DeepSeek fills every VM-fill marker on the collection VM (read-only commands listed in fill_commands), then the freeze commit sets status FROZEN here and in the prereg and writes the prereg sha256 into prereg.sha256. scripts/run_pairact_collect.py --mode training refuses a manifest that is not FROZEN, still contains a VM-fill marker, or whose prereg sha256 / collector source sha / episode template sha256 / batch size differ from the run. The manifest sha256 is written into the ledger header.",
+  "prereg": {
+    "path": "experiments/2026-10-21-pairact-r1/COLLECT_PREREG_DRAFT.json",
+    "schema": "ugrp.pairact_r1.collect_prereg.v2",
+    "sha256": "[VM 기입] sha256sum of the FROZEN prereg file (freeze commit)"
+  },
+  "stack": {
+    "teacher": {"branch": "dsh/pairact-p2-carrypath-c2", "sha": "4b080d35a3dcbbd8fb8a992e1f1106a7289757b2",
+                "change_vs_c": "tests only (repo audit 4: pinned SHA + fixture, no skip); runtime identical to 01ed171f"},
+    "adapter": {"branch": "dsh/pairact-p2-carrypath-a-c2", "sha": "aaabddb1725191ebaa11f0849bf6446f612e150b",
+                "change_vs_a_c": "one runner.run call site (root bridge runner_call=1), same keyword sets; teacher pin 4b080d35"},
+    "root": {"branch": "dsh/pairact-p2-carrypath-r-c2", "sha": "612ef6437d1eab4ad98a3fa8ee331760c4dc5595",
+             "change_vs_r_c": "pins adapter aaabddb1 / teacher 4b080d35; test compiles the pinned adapter run() with this root"},
+    "local_check": "2026-10-21 Oracle: root -r-c2 compile_function on adapter d128984d -> ValueError runner_call 2 != 1; on aaabddb1 -> runner_call 1"
+  },
+  "collector": {
+    "branch": "dsh/pairact-carry-r1-v2",
+    "source_sha": "[VM 기입] git rev-parse HEAD of the collector checkout = the freeze commit (runner compares it, tree must be clean)",
+    "file_sha256": {
+      "harness/pairact_collect.py": "c86eefb1970e58187447129ef63f306229a8d4a69c2bfa64582698b984dd4800",
+      "scripts/run_pairact_collect.py": "e5de5bb8c088ca520ef9973244f6d11d233d5dda0ddb72d84629ef276a94d332",
+      "scripts/check_pairact_r1_seeds.py": "463054427877efd34dfd6e5ce291b4e06f2ad95c4e81e2d75e385af38c3b73de",
+      "experiments/2026-10-21-pairact-r1/seeds.json": "eeb5cf615666e15d03c1d4cb54de8c83b0618cb6321d92e641dd237de8cd4735"
+    }
+  },
+  "generator": {
+    "file": "experiments/2026-10-21-pairact-r1/collect_cases.py",
+    "file_sha256": "a10ae743188d9269cbe36b67e1c7c3103c46ba6aefea702e181034956c0d2ac7",
+    "base_generator": "experiments/2026-10-17-beamact5/teacher/wide_start.py blob c35acca614b19c84abcac38d6118f80c904bf90f",
+    "scenario": "experiments/2026-10-15-beampair1/scenario-v7.json sha256 6382011a64cc0eea17edbdfe8b44fbd070a54467afc6b4db547c42dbd28df6f7",
+    "scene_profile": "walls_floor_contrast_v5_indigo110_s80",
+    "proposal_budget": 5000,
+    "placement_filter": "adapter-pinned runtime --placement-graspable-filter-v1 family (Geometry adapter_root = stack.adapter)"
+  },
+  "command": {
+    "batch_size": 20,
+    "max_batches_per_night": "4 for the pilot (40 seeds = 2 batches + re-queues), training: until --deadline-utc (UTC 00:30 offpeak end minus one batch wall)",
+    "episode_template_draft": "python /home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py --flow beampair --adapter-source $SRC/adapter --teacher-source $SRC/teacher --cases {cases} --indices {indices} --cap-s 60 --out {out} --vm-hourly-usd 1.096 --gcp6-isolated-v1 --placement-graspable-filter-v1 --world-model-parameters-v1 --native-sleep-policy-compat-v1 --full-active-dof-workspace-v1 --warp-native-contact-v1 --canonical-xml /home/ugrp/ugrp-sim/runs/beamact5/wide-export-old-8420000e/canonical-scene.xml --per-world-model-references-v1 /home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/per-world-references.json --rejection-table /home/ugrp/ugrp-sim/runs/beamact5/gate-40-r13/rejection_table.json --batch-per-world-speed-v1",
+    "episode_template": "[VM 기입] the exact expanded --episode-cmd string ($SRC replaced by the absolute -c2 checkout path)",
+    "episode_template_sha256": "[VM 기입] sha256 of episode_template (= ledger header episode.template_sha256; harness.pairact_collect.episode_cmd_audit)",
+    "collect_pilot": "python $COL/scripts/run_pairact_collect.py collect --prereg $P --run-root $RUNP --mode measurement --noise off --batch-size 20 --max-batches 4 --deadline-utc <D>T00:00Z --dependency-root $SRC/teacher --frozen-root $SRC/root --adapter-root $SRC/adapter --run-manifest $COL/experiments/2026-10-21-pairact-r1/RUN_MANIFEST.json --episode-cmd \"$EP\"",
+    "collect_training": "python $COL/scripts/run_pairact_collect.py collect --prereg $P --run-root $RUNT --mode training --noise off --batch-size 20 --max-batches 4 --deadline-utc <D>T00:00Z --recording-check $RUNP/recording-check.json --dependency-root $SRC/teacher --frozen-root $SRC/root --adapter-root $SRC/adapter --run-manifest $COL/experiments/2026-10-21-pairact-r1/RUN_MANIFEST.json --episode-cmd \"$EP\""
+  },
+  "limits": {
+    "grasp_cap_sim_s": 60,
+    "carry_cap_sim_s": 110,
+    "episode_cap_sim_s": 170,
+    "planning_wall_safety_cap": "teacher PlanningSafetyCap (status complete, end_reason planning_wall_safety_cap -> behavior failure)",
+    "speed_gate": "root --batch-per-world-speed-v1 first30-speed.json: per_world_wall_SIM block 6.0, warning 3.5 (recorded, not a collection stop)",
+    "attempt_cap": 600,
+    "pilot_seeds": 40,
+    "validation_seeds": 20,
+    "max_tries_per_batch": 2,
+    "host_error_requeue": 1
+  },
+  "assets": {
+    "canonical_xml_sha256": "[VM 기입] /home/ugrp/ugrp-sim/runs/beamact5/wide-export-old-8420000e/canonical-scene.xml",
+    "per_world_model_references_sha256": "[VM 기입] /home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/per-world-references.json",
+    "rejection_table_input_sha256": "[VM 기입] /home/ugrp/ugrp-sim/runs/beamact5/gate-40-r13/rejection_table.json",
+    "mesh_assets_sha256": "[VM 기입] sha256 of every mesh/texture file the canonical XML references (smoke-1 failed on mesh[fuji_roller_v2]); list path -> sha256",
+    "wrapper_sha256": "[VM 기입] /home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py"
+  },
+  "host": {
+    "machine": "[VM 기입] instance name (e.g. ugrp-act-l4-gcp6), zone, machine type",
+    "gpu": "[VM 기입] nvidia-smi --query-gpu=name,driver_version,memory.total",
+    "cuda_warp_mujoco": "[VM 기입] CUDA runtime, warp, mujoco, mujoco_warp versions (python -c import ...)",
+    "python": "[VM 기입] python --version and venv path",
+    "warp_kernel_cache": "[VM 기입] kernel cache directory writable by the run user (smoke-1b failed on PermissionError /root/.cache)"
+  },
+  "smoke": {
+    "run": "gcp6 /home/ugrp/ugrp-sim/runs/pairact-p2/smoke-1c",
+    "summary_sha256": "[VM 기입] sha256 of smoke-1c/summary.json",
+    "carry_eval_sha256": "[VM 기입] smoke-1c/world-000,001,002/raw/carry-eval.json",
+    "artifact_manifest_sha256": "[VM 기입] smoke-1c/artifact-sha256.json",
+    "world1_raw_result_sha256": "[VM 기입] smoke-1c/world-000/raw/result.json(.zst) (carry.outcome/events/route_info/offsets; 02-world1-failure.md decisive artifact)",
+    "report_file_sha256": "outputs/reports/pairact-p2-teacher-clips-20261020.md 1197dc28e64711aa88b8031cb0406f9456687b56a54a6a05d23ee79c8fba75e4",
+    "video_sha256": {
+      "world11": "5c5a4836e13557005550f86d6376b4f5517c328158ebe7c1518cf293cffdc43d",
+      "world17": "48545aa8f1dbd653fe416bfcde920a1f9e0f0a809dbdb44360fd6d1f99ace0ee",
+      "world1": "ef42d48196aec38f5cb13b3251ebe144b93b748b6b2e401582e07e7a61792139"
+    }
+  },
+  "recording_check": {
+    "function": "teacher harness.grasp_act_admission.recording_mode_equivalence (unchanged, AST identical per Codex follow-up)",
+    "probe_cases_sha256": "[VM 기입] $RUNP/probe-cases.json (3 admitted pilot starts)",
+    "check_rows_sha256": "[VM 기입] $RUNP/check-rows.json",
+    "recording_check_sha256": "[VM 기입] $RUNP/recording-check.json (must verify, else no training run)",
+    "scope": "metadata + physical result comparison; not pixel content, measured cadence or trajectory identity"
+  },
+  "seed_check": {
+    "local_2026_10_21": "scripts/check_pairact_r1_seeds.py --scan-refs (15 refs incl. -c, -a-c, -r-c, p5-student): passed true, problems 0, scan_hits 0 (pilot 8343000-039 included)",
+    "vm_seed_check_sha256": "[VM 기입] $RUNP/seed-check.json"
+  },
+  "fill_commands": [
+    "sha256sum <each VM-fill file path above>",
+    "git -C $COL rev-parse HEAD; git -C $COL status --porcelain --untracked-files=no (must be empty)",
+    "git -C $SRC/{teacher,adapter,root} rev-parse HEAD (must equal stack.*.sha)",
+    "nvidia-smi --query-gpu=name,driver_version,memory.total --format=csv; python -c 'import warp, mujoco, mujoco_warp; print(warp.__version__, mujoco.__version__)'",
+    "printf %s \"$EP\" | sha256sum"
+  ]
+}

@@ -41,10 +41,13 @@
     "independent_recount": "Codex recounts from eval-only rows"
   },
   "exclusions": {
-    "pre_run_static_check": "only the pre-registered P0 static stance-feasibility check (world-37 type), applied to all 20 seeds before any rollout; excluded seeds listed here before the run",
+    "pre_run_static_check": "rule A only (P0/P1 static stance check, experiments/2026-10-21-pairact-p1 README D2 and run_p1.sh static: flagged['overlap'] of static_stance_check.py = every certified grasp stance of one beam end overlaps a box). Applied mechanically to all 20 heldout seeds after the checkpoint SHA is committed and before any P5 rollout; the excluded seed list and the static-check output sha256 are committed before the run. Rule B (11.07 mm) is not used",
+    "denominator": "excluded seeds leave the denominator (N_eff = 20 - excluded), no replacement seed is drawn, both arms use the same N_eff seeds; reported as n/N_eff with the excluded seeds listed",
+    "no_filter_meaning": "'no filter' (COLLECT_PREREG heldout) means no success filter and no selection by outcome; the pre-registered rule A static exclusion is the only exclusion",
     "host_error": "one rerun of the same seed; a second HOST_ERROR counts as failure and is reported separately",
     "post_hoc_exclusion": "forbidden"
   },
+  "heldout_access": "no heldout rollout, result, video or log is produced or read before the selected checkpoint SHA256 and OFFLINE_GATE selection.json are committed (commit_before_run); heldout seeds are never collected (COLLECT_PREREG v2 seeds.heldout) and never used for checkpoint selection",
   "runs_per_arm": 1,
   "minimum_success_claim": ">= 1/20 student success meets the r1 minimum; 0/20 is reported with the funnel as the result",
   "compute_estimate_gpu_h": "2-3 (pair-act-carry-plan.md P5) [확인 필요]"
