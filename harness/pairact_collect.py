@@ -1445,6 +1445,7 @@ def check_run_manifest(manifest, *, stage, prereg, batch_size=None, episode=None
         for path, want in (m('assets', 'mesh_assets_sha256') or {}).items():
             if not os.path.isfile(path) or file_sha256(path) != want:
                 problems.append(f'assets.mesh_assets_sha256 differs or missing: {path}')
+        problems += episode_source_problems(manifest, template)
         xml = episode_assets(template)['canonical_xml_sha256']
         if xml is not None and os.path.isfile(xml) and isinstance(m('assets', 'mesh_assets_sha256'), dict):
             problems += xml_asset_problems(xml, m('assets', 'mesh_assets_sha256'))
@@ -1722,23 +1723,88 @@ def check_attempt_identity(st):
     return len(st['attempt_rows'])
 
 
-def check_stack_heads(manifest, roots, *, rev_parse=None):
+STACK_ROLES = ('teacher', 'adapter', 'root')
+EPISODE_SOURCE_FLAGS = dict(teacher='--teacher-source', adapter='--adapter-source')
+
+
+def episode_sources(template, env=None):
+    """v5 (Codex v4 re-review 3): the source checkouts the episode command runs: --teacher-source,
+    --adapter-source and the root (the wrapper's WARP_SOURCE_ROOT: a ``WARP_SOURCE_ROOT=...`` token of the
+    template, else ``env``).  None where the command does not name one."""
+    tokens = shlex.split(template)
+
+    def flag(name):
+        return tokens[tokens.index(name) + 1] if name in tokens and tokens.index(name) + 1 < len(tokens) else None
+    root = next((x.split('=', 1)[1] for x in tokens if x.startswith('WARP_SOURCE_ROOT=')), None)
+    if root is None and env is not None:
+        root = env.get('WARP_SOURCE_ROOT')
+    return dict(teacher=flag(EPISODE_SOURCE_FLAGS['teacher']), adapter=flag(EPISODE_SOURCE_FLAGS['adapter']),
+                root=root)
+
+
+def _git_head(path):
+    def git(*args):
+        return subprocess.check_output(['git', '-C', str(path), *args], text=True, stderr=subprocess.DEVNULL).strip()
+    return git('rev-parse', 'HEAD'), bool(git('status', '--porcelain', '--untracked-files=no'))
+
+
+def stack_pin_problems(manifest, role, path, rev_parse=None):
+    """The checkout at ``path`` is at RUN_MANIFEST stack.<role>.sha with no tracked change."""
+    try:
+        head, dirty = (rev_parse or _git_head)(path)
+    except (OSError, subprocess.CalledProcessError) as error:
+        return [f'stack {role} checkout {path} is not a git checkout: {error}']
+    want = _dig(manifest, ('stack', role, 'sha'))
+    if head != want:
+        return [f'stack {role} checkout {path} is at {head}, RUN_MANIFEST pins {want}']
+    return [f'stack {role} checkout {path} has tracked changes'] if dirty else []
+
+
+def episode_source_problems(manifest, template, rev_parse=None):
+    """v5 manifest gate (verify_assets, on the VM): the teacher / adapter (and a template WARP_SOURCE_ROOT) the
+    episode command names exist and are at the stack pins."""
+    src, out = episode_sources(template), []
+    for role in STACK_ROLES:
+        path = src[role]
+        name = EPISODE_SOURCE_FLAGS.get(role, 'WARP_SOURCE_ROOT')
+        if path is None:
+            if role != 'root':
+                out.append(f'episode template needs {name}')
+        elif not os.path.isdir(path):
+            out.append(f'episode {name} {path} does not exist')
+        else:
+            out += stack_pin_problems(manifest, role, path, rev_parse)
+    return out
+
+
+def check_stack_heads(manifest, roots, *, rev_parse=None, env=None):
     """v4 (Codex H4): the teacher / adapter / root checkouts the generator and episodes use must be at
-    RUN_MANIFEST stack.<role>.sha with no tracked change.  ``roots`` maps role -> checkout path."""
-    def git(path, *args):
-        return subprocess.check_output(['git', '-C', str(path), *args], text=True).strip()
-    rev_parse = rev_parse or (lambda path: (git(path, 'rev-parse', 'HEAD'),
-                                            bool(git(path, 'status', '--porcelain', '--untracked-files=no'))))
+    RUN_MANIFEST stack.<role>.sha with no tracked change.  ``roots`` maps role -> checkout path.
+
+    v5 (Codex v4 re-review 3): they must also *be* the episode sources -- --teacher-source / --adapter-source of
+    command.episode_template and the root WARP_SOURCE_ROOT (template token, else ``env``, default os.environ),
+    existing and the same realpath; the root may instead hold the wrapper .py itself."""
+    template = _dig(manifest, ('command', 'episode_template'))
+    if not isinstance(template, str):
+        raise ValueError('stack check: RUN_MANIFEST command.episode_template required')
+    src = episode_sources(template, os.environ if env is None else env)
+    wrapper = next((x for x in shlex.split(template) if x.endswith('.py')), None)
     out = {}
-    for role in ('teacher', 'adapter', 'root'):
+    for role in STACK_ROLES:
         path = roots.get(role)
         if path is None:
             raise ValueError(f'stack check: {role} checkout path required')
-        head, dirty = rev_parse(path)
-        want = manifest['stack'][role]['sha']
-        if head != want:
-            raise ValueError(f'stack {role} checkout {path} is at {head}, RUN_MANIFEST pins {want}')
-        if dirty:
-            raise ValueError(f'stack {role} checkout {path} has tracked changes')
-        out[role] = head
+        ep, name = src[role], EPISODE_SOURCE_FLAGS.get(role, 'WARP_SOURCE_ROOT')
+        if ep is None:
+            inside = wrapper is not None and os.path.realpath(wrapper).startswith(os.path.realpath(path) + os.sep)
+            if role != 'root' or not inside:
+                raise ValueError(f'stack check: the episode command does not name its {role} source ({name})')
+        elif not os.path.isdir(ep):
+            raise ValueError(f'stack check: episode {role} source {ep} ({name}) does not exist')
+        elif os.path.realpath(ep) != os.path.realpath(path):
+            raise ValueError(f'stack check: episode {role} source {ep} ({name}) is not the checked {role} checkout {path}')
+        problems = stack_pin_problems(manifest, role, path, rev_parse)
+        if problems:
+            raise ValueError(problems[0])
+        out[role] = manifest['stack'][role]['sha']
     return out

@@ -157,15 +157,21 @@ def test_convert_input_refuses_missing_world_raw(tmp_path, prereg):
     assert not (tmp_path / 'out').exists()
 
 
-def test_stack_heads_must_match_the_manifest_pins():
-    m = dict(stack={r: dict(sha=c * 40) for r, c in (('teacher', 'a'), ('adapter', 'b'), ('root', 'c'))})
-    roots = dict(teacher='T', adapter='A', root='R')
-    heads = dict(T=('a' * 40, False), A=('b' * 40, False), R=('c' * 40, False))
+def test_stack_heads_must_match_the_manifest_pins(tmp_path, monkeypatch):
+    roots = {r: str(tmp_path / r) for r in ('T', 'A', 'R')}
+    for path in roots.values():
+        Path(path).mkdir()
+    # v5: the checked checkouts are the episode command's sources (template flags / WARP_SOURCE_ROOT)
+    m = dict(stack={r: dict(sha=c * 40) for r, c in (('teacher', 'a'), ('adapter', 'b'), ('root', 'c'))},
+             command=dict(episode_template=f"python w.py --teacher-source {roots['T']} --adapter-source {roots['A']}"))
+    monkeypatch.setenv('WARP_SOURCE_ROOT', roots['R'])
+    heads = {roots['T']: ('a' * 40, False), roots['A']: ('b' * 40, False), roots['R']: ('c' * 40, False)}
+    roots = dict(teacher=roots['T'], adapter=roots['A'], root=roots['R'])
     assert pc.check_stack_heads(m, roots, rev_parse=heads.get) == dict(teacher='a' * 40, adapter='b' * 40, root='c' * 40)
     with pytest.raises(ValueError, match='RUN_MANIFEST pins'):
-        pc.check_stack_heads(m, roots, rev_parse=dict(heads, A=('d' * 40, False)).get)
+        pc.check_stack_heads(m, roots, rev_parse=dict(heads, **{roots['adapter']: ('d' * 40, False)}).get)
     with pytest.raises(ValueError, match='tracked changes'):
-        pc.check_stack_heads(m, roots, rev_parse=dict(heads, R=('c' * 40, True)).get)
+        pc.check_stack_heads(m, roots, rev_parse=dict(heads, **{roots['root']: ('c' * 40, True)}).get)
     with pytest.raises(ValueError, match='path required'):
         pc.check_stack_heads(m, dict(roots, adapter=None), rev_parse=heads.get)
 

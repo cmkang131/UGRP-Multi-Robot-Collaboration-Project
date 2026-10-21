@@ -330,13 +330,14 @@ def _asset_case(tmp_path, scene, files):
                            **files).items():
         (a / name).parent.mkdir(parents=True, exist_ok=True)
         (a / name).write_text(data)
-    for role in ('teacher', 'adapter'):
-        (tmp_path / role).mkdir()
+    pins = {role: _repo(tmp_path / role) for role in ('teacher', 'adapter')}       # v5 #3: real pinned sources
     tpl = (f'python {a}/wrap.py --flow beampair --cases {{cases}} --indices {{indices}} --cap-s 60 '
            f'--adapter-source {tmp_path}/adapter --teacher-source {tmp_path}/teacher '
            f'--canonical-xml {a}/scene.xml --per-world-model-references-v1 {a}/refs.json '
            f'--rejection-table {a}/table.json --out {{out}}')
     m = filled_manifest(prereg_core(), template=tpl)
+    for role, sha in pins.items():
+        m['stack'][role]['sha'] = sha
     m['assets'] = dict(wrapper_sha256=pc.file_sha256(a / 'wrap.py'), canonical_xml_sha256=pc.file_sha256(a / 'scene.xml'),
                        per_world_model_references_sha256=pc.file_sha256(a / 'refs.json'),
                        rejection_table_input_sha256=pc.file_sha256(a / 'table.json'), mesh_assets_sha256={})
@@ -419,3 +420,81 @@ def test_unregistered_include_and_unparsable_xml_are_refused(tmp_path):
 def test_freeze_xml_assets_prints_the_registration(tmp_path):
     a, _ = _asset_case(tmp_path, '<mujoco><asset><mesh file="m.obj"/></asset></mujoco>', {'m.obj': 'm'})
     assert _fz().xml_assets(a / 'scene.xml') == {str(a / 'm.obj'): pc.file_sha256(a / 'm.obj')}
+
+
+# ------------------------------------------------------------ 3. the checked checkouts are the episode sources
+
+def _repo(path):
+    import subprocess
+    path.mkdir(parents=True, exist_ok=True)
+    git = lambda *a: subprocess.run(['git', '-C', str(path), *a], check=True, capture_output=True, text=True).stdout
+    git('init', '-q')
+    (path / 'f.txt').write_text(path.name)
+    git('add', 'f.txt')
+    git('-c', 'user.name=t', '-c', 'user.email=t@t', 'commit', '-qm', 'x')
+    return git('rev-parse', 'HEAD').strip()
+
+
+def _stack(tmp_path, template_roots=None, warp_root_in_template=False):
+    """Three real git checkouts pinned in the manifest; the episode template names ``template_roots``."""
+    from test_pairact_collect import filled_manifest
+    roots = {r: tmp_path / 'src' / r for r in ('teacher', 'adapter', 'root')}
+    m = filled_manifest(prereg_core())
+    for r, path in roots.items():
+        m['stack'][r]['sha'] = _repo(path)
+    t = dict(roots, **(template_roots or {}))
+    tpl = (f"{'WARP_SOURCE_ROOT=' + str(t['root']) + ' ' if warp_root_in_template else ''}python /w/wrap.py "
+           f"--flow beampair --adapter-source {t['adapter']} --teacher-source {t['teacher']} --cases {{cases}} "
+           f"--indices {{indices}} --cap-s 60 --rejection-table /abs/table.json --out {{out}}")
+    m['command'].update(episode_template=tpl, episode_template_sha256=__import__('hashlib').sha256(tpl.encode()).hexdigest())
+    return m, roots
+
+
+def test_correct_pins_with_other_episode_paths_are_refused(tmp_path):
+    """admission-probe v4 remaining R3: real -c5 roots passed check_stack_heads while the episode template named
+    /nonexistent teacher / adapter sources."""
+    env = dict(WARP_SOURCE_ROOT=str(tmp_path / 'src' / 'root'))
+    m, roots = _stack(tmp_path)
+    assert pc.check_stack_heads(m, roots, env=env)['teacher'] == m['stack']['teacher']['sha']
+    bad, _ = _stack(tmp_path / 'b', dict(teacher='/nonexistent/review-teacher', adapter='/nonexistent/review-adapter'))
+    with pytest.raises(ValueError, match='does not exist'):
+        pc.check_stack_heads(bad, {r: tmp_path / 'b' / 'src' / r for r in roots}, env=env)
+    # an existing checkout at the same pin, but not the one checked
+    other = tmp_path / 'copy' / 'teacher'
+    other.parent.mkdir()
+    __import__('shutil').copytree(roots['teacher'], other)
+    m2, _ = _stack(tmp_path / 'c', dict(teacher=other))
+    with pytest.raises(ValueError, match='is not the checked teacher checkout'):
+        pc.check_stack_heads(m2, {r: tmp_path / 'c' / 'src' / r for r in roots}, env=dict(
+            WARP_SOURCE_ROOT=str(tmp_path / 'c' / 'src' / 'root')))
+
+
+def test_episode_root_source_is_the_checked_root(tmp_path):
+    m, roots = _stack(tmp_path)
+    with pytest.raises(ValueError, match='WARP_SOURCE_ROOT'):
+        pc.check_stack_heads(m, roots, env={})
+    with pytest.raises(ValueError, match='is not the checked root checkout'):
+        pc.check_stack_heads(m, roots, env=dict(WARP_SOURCE_ROOT=str(roots['teacher'])))
+    m2, roots2 = _stack(tmp_path / 'x', warp_root_in_template=True)
+    assert pc.check_stack_heads(m2, roots2, env={})['root'] == m2['stack']['root']['sha']    # template wins
+    with pytest.raises(ValueError, match='is not the checked root checkout'):
+        pc.check_stack_heads(m2, dict(roots2, root=roots['root']), env={})
+
+
+def test_manifest_gate_checks_the_episode_sources_on_the_vm(tmp_path):
+    m, roots = _stack(tmp_path)
+    for k in ('wrapper_sha256', 'canonical_xml_sha256', 'per_world_model_references_sha256',
+              'rejection_table_input_sha256'):
+        m['assets'][k] = 'f' * 64
+    def problems(manifest):
+        with pytest.raises(ValueError) as e:
+            pc.check_run_manifest(manifest, stage='core', prereg=prereg_core(), verify_assets=True)
+        return str(e.value)
+    assert 'episode --teacher-source' not in problems(m) and 'stack teacher' not in problems(m)
+    bad, _ = _stack(tmp_path / 'b', dict(teacher='/nonexistent/review-teacher', adapter='/nonexistent/review-adapter'))
+    assert 'episode --teacher-source /nonexistent/review-teacher does not exist' in problems(bad)
+    assert 'episode --adapter-source /nonexistent/review-adapter does not exist' in problems(bad)
+    m['stack']['adapter']['sha'] = 'd' * 40
+    assert f"stack adapter checkout {roots['adapter']} is at" in problems(m)
+    (roots['teacher'] / 'f.txt').write_text('dirty')
+    assert 'has tracked changes' in problems(m)

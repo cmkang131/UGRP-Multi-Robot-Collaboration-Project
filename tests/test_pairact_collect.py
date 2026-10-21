@@ -1150,10 +1150,15 @@ def test_verify_assets_rehashes_episode_files(tmp_path, prereg):
         (tmp_path / name).write_text(name)
         files[name] = str(tmp_path / name)
     (tmp_path / 'scene.xml').write_text('<mujoco><asset><mesh file="mesh.obj"/></asset></mujoco>')   # v5: parsed
+    from test_pairact_collect_v5 import _repo
+    pins = {role: _repo(tmp_path / role) for role in ('teacher', 'adapter')}       # v5: existing pinned sources
     tpl = (f"python {files['wrap.py']} --flow beampair --cases {{cases}} --indices {{indices}} --cap-s 60 "
+           f"--adapter-source {tmp_path / 'adapter'} --teacher-source {tmp_path / 'teacher'} "
            f"--canonical-xml {files['scene.xml']} --per-world-model-references-v1 {files['refs.json']} "
            f"--rejection-table {files['table.json']} --out {{out}}")
     m = filled_manifest(prereg, template=tpl)
+    for role, sha in pins.items():
+        m['stack'][role]['sha'] = sha
     m['assets'] = dict(wrapper_sha256=pc.file_sha256(files['wrap.py']), canonical_xml_sha256=pc.file_sha256(files['scene.xml']),
                        per_world_model_references_sha256=pc.file_sha256(files['refs.json']),
                        rejection_table_input_sha256=pc.file_sha256(files['table.json']),

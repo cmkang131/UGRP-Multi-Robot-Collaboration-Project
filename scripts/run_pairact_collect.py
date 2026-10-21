@@ -654,6 +654,9 @@ def main():
         except ValueError as error:
             p.error(str(error))
         core, _ = frozen_gate(a, prereg, sha, stage='core', episode=episode)
+        # v5 (Codex v4 re-review 3): the recording probe runs the pinned checkouts its command names
+        pc.check_stack_heads(json.loads(a.run_manifest.read_bytes()),
+                             dict(teacher=a.dependency_root, adapter=a.adapter_root, root=a.frozen_root))
         cases_path = a.run_root / 'probe-cases.json'
         n = len(json.loads(cases_path.read_text()))
         env = collect_env('training', a.prereg, sha, probe=True, prereg_core=prereg_core)
@@ -716,7 +719,8 @@ def main():
             manifest_sha = hashlib.sha256(raw).hexdigest()
         freeze = dict(stage=stage, purpose=pc.PURPOSE_PILOT, prereg_core_sha256=prereg_core, core_sha256=None)
     if stage in pc.FREEZE_STAGES:
-        # v4 (Codex H4): generator and episodes use the RUN_MANIFEST -c pins, not just any consistent stack
+        # v4 (Codex H4): generator and episodes use the RUN_MANIFEST -c pins, not just any consistent stack;
+        # v5: and these checkouts are the episode command's --teacher-source / --adapter-source / WARP_SOURCE_ROOT
         pc.check_stack_heads(json.loads(a.run_manifest.read_bytes()),
                              dict(teacher=a.dependency_root, adapter=a.adapter_root, root=a.frozen_root))
     env = collect_env(a.mode, a.prereg, sha, a.recording_check, prereg_core=prereg_core)
