@@ -22,7 +22,7 @@ import shlex
 import subprocess
 
 PREREG_SCHEMA = 'ugrp.pairact_r1.collect_prereg.v2'
-LEDGER_SCHEMA = 'ugrp.pairact_r1.collect_ledger.v2'
+LEDGER_SCHEMA = 'ugrp.pairact_r1.collect_ledger.v3'
 REPORT_SCHEMA = 'ugrp.pairact_r1.collect_report.v2'
 MODES = ('measurement', 'training')
 # measurement = recording-off pilot yield/bin run on seeds.pilot (A is an admission candidate,
@@ -30,7 +30,7 @@ MODES = ('measurement', 'training')
 CANDIDATE_BY_MODE = {'measurement': 'pairact_p2_r13', 'training': 'pairact_p3_collect'}
 SPLITS_BY_MODE = {'measurement': ('pilot',), 'training': ('train', 'validation')}
 COLLECT_ENV = ('PAIRACT_P3_COLLECT_PREREG', 'PAIRACT_P3_COLLECT_PREREG_SHA256', 'PAIRACT_P3_RECORDING_CHECK',
-               'PAIRACT_P3_RECORDING_PROBE')
+               'PAIRACT_P3_RECORDING_PROBE', 'PAIRACT_P3_COLLECT_PREREG_CORE_SHA256')
 NOISE_MODES = ('off', 'on')
 VM_FILL = '[VM 기입]'
 ROBOTS = ('r1', 'r2')
@@ -43,6 +43,41 @@ TRAIN_STOPS_WITH_VALIDATION = ('STOP_TARGET', 'STOP_CAP', 'STOP_SEEDS', 'STOP_AL
 TRAINABLE = ('TRAIN', 'TRAIN_DATA_RANGE_LIMITED', 'TRAIN_SMALL_DATA')
 
 
+# Two-stage freeze (v3, Codex v2 B1/B2): FROZEN_CORE fixes everything except the three
+# recording_check hashes (core_sha256); FROZEN adds them.  Probe / probe-cases accept
+# FROZEN_CORE, training recording needs FROZEN.  Pre-freeze pilot ledgers are yield only.
+FREEZE_STAGES = ('FROZEN_CORE', 'FROZEN')
+PURPOSE_PILOT = 'pilot_yield_only'          # READY_FOR_REVIEW measurement: never probe / training input
+PURPOSE_PROBE_SOURCE = 'probe_source'       # FROZEN_CORE measurement bound to core_sha256
+PURPOSE_TRAINING = 'training'
+RECORDING_FIELDS = ('probe_cases_sha256', 'check_rows_sha256', 'recording_check_sha256')
+RECORDING_FILES = {'probe_cases_sha256': 'probe-cases.json', 'check_rows_sha256': 'check-rows.json',
+                   'recording_check_sha256': 'recording-check.json'}
+
+
+def canonical(value):
+    return json.dumps(value, sort_keys=True, separators=(',', ':'), ensure_ascii=False, allow_nan=False).encode()
+
+
+def prereg_core_sha256(prereg):
+    """Content identity of the prereg across READY -> FROZEN_CORE -> FROZEN (status excluded)."""
+    return hashlib.sha256(canonical({k: v for k, v in prereg.items() if k != 'status'})).hexdigest()
+
+
+def manifest_core(manifest):
+    """RUN_MANIFEST without status and the three recording_check hashes (the FROZEN_CORE content)."""
+    core = json.loads(json.dumps({k: v for k, v in manifest.items() if k != 'status'}))
+    for k in RECORDING_FIELDS:
+        core.get('recording_check', {}).pop(k, None)
+    return core
+
+
+def core_sha256(prereg, manifest):
+    """core_sha256 = sha256(canonical {prereg minus status, manifest_core}); never stored in either file."""
+    return hashlib.sha256(canonical(dict(prereg={k: v for k, v in prereg.items() if k != 'status'},
+                                         manifest=manifest_core(manifest)))).hexdigest()
+
+
 # ------------------------------------------------------------------ prereg
 
 def load_prereg(path, *, mode='measurement'):
@@ -52,7 +87,7 @@ def load_prereg(path, *, mode='measurement'):
         raise ValueError(f'collect prereg schema {PREREG_SCHEMA} required')
     if mode not in MODES:
         raise ValueError('unknown collection mode')
-    allowed = ('FROZEN',) if mode == 'training' else ('READY_FOR_REVIEW', 'FROZEN')
+    allowed = ('FROZEN',) if mode == 'training' else ('READY_FOR_REVIEW',) + FREEZE_STAGES
     if prereg.get('status') not in allowed:
         raise ValueError(f'prereg status {prereg.get("status")!r} not allowed for {mode}')
     check_seed_ranges(prereg)
@@ -193,24 +228,51 @@ def episode_cmd_audit(template):
                 cap_s=float(value('--cap-s')))
 
 
-def header(prereg_sha, *, mode, noise, batch_size, episode=None, run_manifest_sha256=None):
+def header(prereg_sha, *, mode, noise, batch_size, episode=None, run_manifest_sha256=None, freeze=None):
+    """Ledger header.  ``freeze``: dict(stage, purpose, prereg_core_sha256, core_sha256) from the runner."""
     if noise not in NOISE_MODES:
         raise ValueError('unknown noise mode')
     if mode not in MODES:
         raise ValueError('unknown collection mode')
+    freeze = dict(dict(stage=None, purpose=PURPOSE_TRAINING if mode == 'training' else PURPOSE_PILOT,
+                       prereg_core_sha256=None, core_sha256=None), **(freeze or {}))
+    if freeze['purpose'] not in (PURPOSE_PILOT, PURPOSE_PROBE_SOURCE, PURPOSE_TRAINING) or \
+            (freeze['purpose'] == PURPOSE_TRAINING) != (mode == 'training'):
+        raise ValueError(f'ledger purpose {freeze["purpose"]!r} does not fit mode {mode}')
     return dict(type='header', schema=LEDGER_SCHEMA, prereg_sha256=prereg_sha, mode=mode, noise=noise,
-                batch_size=int(batch_size), episode=episode, run_manifest_sha256=run_manifest_sha256)
+                batch_size=int(batch_size), episode=episode, run_manifest_sha256=run_manifest_sha256,
+                freeze_stage=freeze['stage'], purpose=freeze['purpose'],
+                prereg_core_sha256=freeze['prereg_core_sha256'], core_sha256=freeze['core_sha256'])
 
 
-def require_header_sha(st, prereg_sha):
-    """audit 2: report / convert-input never relabel a ledger under a different pre-registration."""
+def require_header_sha(st, prereg_sha, prereg_core=None):
+    """audit 2: report / convert-input never relabel a ledger under a different pre-registration.
+
+    Same file sha256, or (v3) the same prereg content (status excluded) when the header recorded it:
+    a pilot ledger stays reportable after the status moves READY -> FROZEN_CORE -> FROZEN.
+    """
     h = st['header']
     if h is None:
         raise ValueError('ledger has no header')
     if h.get('schema') != LEDGER_SCHEMA:
         raise ValueError(f'ledger schema {h.get("schema")!r} is not {LEDGER_SCHEMA}')
-    if h.get('prereg_sha256') != prereg_sha:
+    same_core = prereg_core is not None and h.get('prereg_core_sha256') == prereg_core
+    if h.get('prereg_sha256') != prereg_sha and not same_core:
         raise ValueError(f'ledger header prereg sha256 {h.get("prereg_sha256")} != current prereg {prereg_sha}')
+    return h
+
+
+def require_probe_source(st, core):
+    """probe-cases: only a FROZEN_CORE measurement ledger bound to the current core_sha256 (B2)."""
+    h = st['header']
+    if h is None or h.get('schema') != LEDGER_SCHEMA:
+        raise ValueError(f'ledger schema {LEDGER_SCHEMA} required')
+    if h.get('purpose') == PURPOSE_PILOT:
+        raise ValueError('pilot_yield_only ledger (pre-freeze pilot) is never a recording probe source')
+    if h.get('purpose') != PURPOSE_PROBE_SOURCE or h.get('mode') != 'measurement':
+        raise ValueError(f'probe source needs a {PURPOSE_PROBE_SOURCE} measurement ledger, got {h.get("purpose")!r}')
+    if h.get('core_sha256') != core:
+        raise ValueError(f'ledger core_sha256 {h.get("core_sha256")} != current core {core}')
     return h
 
 
@@ -692,10 +754,11 @@ def _bin_table(prereg, st, rows, split):
     return table
 
 
-def report(prereg, st, *, prereg_sha):
-    h = require_header_sha(st, prereg_sha)
+def report(prereg, st, *, prereg_sha, prereg_core=None):
+    h = require_header_sha(st, prereg_sha, prereg_core)
     mode = h['mode']
     out = dict(schema=REPORT_SCHEMA, prereg_sha256=h['prereg_sha256'], mode=mode, noise=h['noise'],
+               purpose=h.get('purpose'), freeze_stage=h.get('freeze_stage'), core_sha256=h.get('core_sha256'),
                unit='pair episode (N attempts, S physical successes, A admitted, E environment failures not in N)',
                run_state=run_state(prereg, st),
                setup_rejections=dict(n=len(st['setup_rows']),
@@ -762,15 +825,19 @@ def check_row(result, seed, search15_keys=()):
 
 # ------------------------------------------------------- convert hand-off
 
-def convert_input(prereg, st, out_dir, *, prereg_sha, teacher_sha, run_pattern='seed-{seed}'):
+def convert_input(prereg, st, out_dir, *, prereg_sha, teacher_sha, run_pattern='seed-{seed}', core=None):
     """Symlink admitted train/validation episodes into the grasp_act_data.convert layout (originals untouched).
 
     Only a finished training ledger with decision TRAIN / TRAIN_DATA_RANGE_LIMITED under the same
     prereg sha is accepted.  seed-<seed>/{SOURCE_SHA, EXIT, raw -> <batch>/try-N/world-XXX/raw}.
     """
     h = require_header_sha(st, prereg_sha)
+    if h.get('purpose') == PURPOSE_PILOT:
+        raise ValueError('pilot_yield_only ledger is never a training input')
     if h['mode'] != 'training':
         raise ValueError('convert input needs a training-mode ledger (measurement runs have no tensors)')
+    if core is not None and (h.get('freeze_stage') != 'FROZEN' or h.get('core_sha256') != core):
+        raise ValueError('convert input needs a FROZEN training ledger bound to the current core_sha256')
     d = decision(prereg, st)
     if d['decision'] not in TRAINABLE or d['validation'] in (None, 'pending'):
         raise ValueError(f'convert input refused: decision {d["decision"]}, validation {d["validation"]}')
@@ -787,7 +854,8 @@ def convert_input(prereg, st, out_dir, *, prereg_sha, teacher_sha, run_pattern='
         (p / 'raw').symlink_to(Path(r['raw']).resolve(), target_is_directory=True)
         (train if r['split'] == 'train' else val).append(r['seed'])
     protocol = dict(train_seeds=sorted(train), validation_seeds=sorted(val), run_pattern=run_pattern,
-                    teacher_sha=teacher_sha, prereg_sha256=prereg_sha, decision=d['decision'],
+                    teacher_sha=teacher_sha, prereg_sha256=prereg_sha, core_sha256=h.get('core_sha256'),
+                    decision=d['decision'],
                     data_range_limited=bool(d['limited_bins']), small_data=d['decision'] == 'TRAIN_SMALL_DATA',
                     result_labels=d['labels'], limited_bins=d['limited_bins'],
                     admission='pairact_r1 success_only_v2 (COLLECT_PREREG v2)')
@@ -795,7 +863,98 @@ def convert_input(prereg, st, out_dir, *, prereg_sha, teacher_sha, run_pattern='
     return protocol
 
 
-# --------------------------------------------------------- run manifest
+
+
+# --------------------------------------------------------- run manifest (v3, Codex v2 B1/B2/B3)
+
+MANIFEST_SCHEMA = 'ugrp.pairact_r1.run_manifest.v2'
+# Collector files fixed by the freeze (B1): runner code, its direct setup-geometry imports and inputs.
+# They must be identical between collector.source_sha (commit X) and the checkout HEAD.
+COLLECTOR_FILES = (
+    'harness/pairact_collect.py', 'harness/pairact_r1.py', 'scripts/run_pairact_collect.py',
+    'scripts/pairact_r1_freeze.py', 'scripts/check_pairact_r1_seeds.py',
+    'experiments/2026-10-21-pairact-r1/seeds.json',
+    'harness/static_keepouts.py', 'harness/zone_final_environment.py', 'sim/zone_cargo.py', 'sim/zone_arena.py',
+    'experiments/2026-10-17-beamact5/teacher/wide_start.py', 'experiments/2026-10-15-beampair1/scenario-v7.json')
+GENERATOR_FILE = 'experiments/2026-10-21-pairact-r1/collect_cases.py'
+PLACEHOLDER_PATTERNS = (VM_FILL, '[확인 필요]', '[-c3 SHA 기입]', '기입]')
+_ANGLE = __import__('re').compile(r'<[^<>\s]{1,60}>')
+_HEX = __import__('re').compile(r'[0-9a-f]+')
+
+
+def _sha64(v):
+    return isinstance(v, str) and len(v) == 64 and bool(_HEX.fullmatch(v))
+
+
+def _git40(v):
+    return isinstance(v, str) and len(v) == 40 and bool(_HEX.fullmatch(v))
+
+
+def _text(v):
+    return isinstance(v, str) and bool(v.strip())
+
+
+def _int(v):
+    return type(v) is int
+
+
+def _num(v):
+    return type(v) in (int, float)
+
+
+def _sha_map(v):
+    return isinstance(v, dict) and bool(v) and all(_text(k) and _sha64(x) for k, x in v.items())
+
+
+def _abs_sha_map(v):
+    return _sha_map(v) and all(os.path.isabs(k) for k in v)
+
+
+def _smoke_worlds(v):
+    return isinstance(v, dict) and set(v) == {'world-000', 'world-001', 'world-002'} and all(map(_sha64, v.values()))
+
+
+def _text_list(v):
+    return isinstance(v, list) and bool(v) and all(map(_text, v))
+
+
+def _stack_entry():
+    return dict(branch=_text, sha=_git40, note=_text)
+
+
+# Fixed schema: every key, nothing extra (B3).  VM-fill fields (22) are marked with VM_FIELDS below.
+MANIFEST_SPEC = dict(
+    schema=_text, status=_text, freeze_rule=_text,
+    prereg=dict(path=_text, schema=_text, core_sha256=_sha64),
+    stack=dict(teacher=_stack_entry(), adapter=_stack_entry(), root=_stack_entry(), pin_rule=_text),
+    collector=dict(branch=_text, source_sha=_git40, files_rule=_text, file_sha256=_sha_map),
+    generator=dict(file=_text, file_sha256=_sha64, base_generator=_text, scenario=_text, scene_profile=_text,
+                   proposal_budget=_int, placement_filter=_text),
+    command=dict(batch_size=_int, max_batches_per_night=_text, episode_template_draft=_text,
+                 episode_template=_text, episode_template_sha256=_sha64),
+    limits=dict(grasp_cap_sim_s=_num, carry_cap_sim_s=_num, episode_cap_sim_s=_num, planning_wall_safety_cap=_text,
+                speed_gate=_text, attempt_cap=_int, pilot_seeds=_int, validation_seeds=_int,
+                max_tries_per_batch=_int, host_error_requeue=_int),
+    assets=dict(canonical_xml_sha256=_sha64, per_world_model_references_sha256=_sha64,
+                rejection_table_input_sha256=_sha64, mesh_assets_sha256=_abs_sha_map, wrapper_sha256=_sha64),
+    host=dict(machine=_text, gpu=_text, cuda_warp_mujoco=_text, python=_text, warp_kernel_cache=_text),
+    smoke=dict(run=_text, summary_sha256=_sha64, carry_eval_sha256=_smoke_worlds, artifact_manifest_sha256=_sha64,
+               world1_raw_result_sha256=_sha64, report_file=_text, report_file_sha256=_sha64,
+               video_sha256=_sha_map),
+    recording_check=dict(function=_text, probe_cases_sha256=_sha64, check_rows_sha256=_sha64,
+                         recording_check_sha256=_sha64, scope=_text),
+    seed_check=dict(local_2026_10_21=_text, vm_seed_check_sha256=_sha64),
+    fill_commands=_text_list)
+VM_FIELDS = ('prereg.core_sha256', 'collector.source_sha', 'command.episode_template',
+             'command.episode_template_sha256', 'assets.canonical_xml_sha256',
+             'assets.per_world_model_references_sha256', 'assets.rejection_table_input_sha256',
+             'assets.mesh_assets_sha256', 'assets.wrapper_sha256', 'host.machine', 'host.gpu',
+             'host.cuda_warp_mujoco', 'host.python', 'host.warp_kernel_cache', 'smoke.summary_sha256',
+             'smoke.carry_eval_sha256', 'smoke.artifact_manifest_sha256', 'smoke.world1_raw_result_sha256',
+             'recording_check.probe_cases_sha256', 'recording_check.check_rows_sha256',
+             'recording_check.recording_check_sha256', 'seed_check.vm_seed_check_sha256')
+RECORDING_PATHS = tuple(f'recording_check.{k}' for k in RECORDING_FIELDS)
+
 
 def manifest_unfilled(value, path=''):
     """Paths of every '[VM 기입]' left in RUN_MANIFEST.json."""
@@ -806,23 +965,155 @@ def manifest_unfilled(value, path=''):
     return [path] if isinstance(value, str) and VM_FILL in value else []
 
 
-def check_run_manifest(manifest, *, mode, prereg_sha, collector_sha=None, episode=None, batch_size=None):
-    """Training needs a fully filled manifest bound to this prereg, collector checkout and command."""
-    if manifest.get('schema') != 'ugrp.pairact_r1.run_manifest.v1':
-        raise ValueError('run manifest schema ugrp.pairact_r1.run_manifest.v1 required')
-    if mode != 'training':
+def manifest_placeholders(value, path=''):
+    """Paths of any placeholder string ([VM 기입], [확인 필요], [-c3 SHA 기입], <...>)."""
+    if isinstance(value, dict):
+        return [p for k, v in value.items() for p in manifest_placeholders(v, f'{path}.{k}' if path else k)]
+    if isinstance(value, list):
+        return [p for i, v in enumerate(value) for p in manifest_placeholders(v, f'{path}[{i}]')]
+    if isinstance(value, str) and (any(m in value for m in PLACEHOLDER_PATTERNS) or _ANGLE.search(value)):
+        return [path]
+    return []
+
+
+def _schema_problems(value, spec, path, skip):
+    if isinstance(spec, dict):
+        if not isinstance(value, dict):
+            return [f'{path or "manifest"}: object required']
+        out = [f'missing {path + "." if path else ""}{k}' for k in spec if k not in value]
+        out += [f'unexpected {path + "." if path else ""}{k}' for k in value if k not in spec]
+        for k, sub in spec.items():
+            if k in value:
+                out += _schema_problems(value[k], sub, f'{path}.{k}' if path else k, skip)
+        return out
+    if path in skip:
         return []
-    problems = [f'unfilled {p}' for p in manifest_unfilled(manifest)]
-    if manifest.get('status') != 'FROZEN':
-        problems.append('run manifest status must be FROZEN')
-    if manifest.get('prereg', {}).get('sha256') != prereg_sha:
-        problems.append('run manifest prereg sha256 differs')
-    if collector_sha is not None and manifest.get('collector', {}).get('source_sha') != collector_sha:
-        problems.append('run manifest collector sha differs from this checkout')
-    if episode is not None and manifest.get('command', {}).get('episode_template_sha256') != episode['template_sha256']:
-        problems.append('run manifest episode template sha256 differs')
-    if batch_size is not None and manifest.get('command', {}).get('batch_size') != batch_size:
-        problems.append('run manifest batch size differs')
-    if problems:
-        raise ValueError('run manifest not usable for training: ' + '; '.join(problems))
+    return [] if spec(value) else [f'invalid {path}: {spec.__name__.strip("_")} required, got {value!r:.80}']
+
+
+def file_sha256(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def collector_provenance(repo, source_sha, files):
+    """B1: source_sha (commit X) is an ancestor of HEAD and no fixed collector file changed X..HEAD or is dirty."""
+    def git(*args):
+        return subprocess.run(['git', '-C', str(repo), *args], capture_output=True, text=True)
+    problems = []
+    if not _git40(source_sha):
+        return [f'collector.source_sha {source_sha!r:.60} is not a 40-hex commit']
+    if git('cat-file', '-e', f'{source_sha}^{{commit}}').returncode:
+        return [f'collector.source_sha {source_sha} not in this repository']
+    if git('merge-base', '--is-ancestor', source_sha, 'HEAD').returncode:
+        problems.append(f'collector.source_sha {source_sha} is not an ancestor of HEAD')
+    changed = git('diff', '--name-only', source_sha, 'HEAD', '--', *files)
+    if changed.returncode or changed.stdout.strip():
+        problems.append('collector files changed since collector.source_sha: ' + changed.stdout.strip().replace('\n', ','))
+    dirty = git('status', '--porcelain', '--untracked-files=no', '--', *files)
+    if dirty.stdout.strip():
+        problems.append('collector files dirty in the checkout: ' + dirty.stdout.strip().replace('\n', ','))
     return problems
+
+
+def episode_assets(template):
+    """Asset paths named by the expanded episode command (wrapper, canonical xml, references, rejection table)."""
+    tokens = shlex.split(template)
+
+    def flag(name):
+        return tokens[tokens.index(name) + 1] if name in tokens and tokens.index(name) + 1 < len(tokens) else None
+    wrapper = next((t for t in tokens if t.endswith('.py')), None)
+    return dict(wrapper_sha256=wrapper, canonical_xml_sha256=flag('--canonical-xml'),
+                per_world_model_references_sha256=flag('--per-world-model-references-v1'),
+                rejection_table_input_sha256=flag('--rejection-table'))
+
+
+def check_run_manifest(manifest, *, stage, prereg, batch_size=None, episode=None, repo=None,
+                       recording_dir=None, verify_assets=False):
+    """Freeze gate (B3).  stage 'core' (probe source / probe / check rows) or 'final' (training / convert).
+
+    Fixed schema with types for every field, no placeholder anywhere, prereg / manifest status
+    agree, prereg core sha256, command / batch / limits bound to this run, collector provenance
+    (B1, when ``repo`` is given), asset files re-hashed (``verify_assets``), and for 'final' the
+    three recording_check files in ``recording_dir`` hash to the manifest values.  Returns core_sha256.
+    """
+    if manifest.get('schema') != MANIFEST_SCHEMA:
+        raise ValueError(f'run manifest schema {MANIFEST_SCHEMA} required')
+    if stage not in ('core', 'final'):
+        raise ValueError('stage core or final')
+    skip = RECORDING_PATHS if stage == 'core' else ()
+    problems = _schema_problems(manifest, MANIFEST_SPEC, '', skip)
+    problems += [f'placeholder {p}' for p in manifest_placeholders(manifest)
+                 if not (stage == 'core' and p in RECORDING_PATHS)]
+    allowed = FREEZE_STAGES if stage == 'core' else ('FROZEN',)
+    if manifest.get('status') not in allowed:
+        problems.append(f'run manifest status {manifest.get("status")!r} not in {allowed}')
+    if prereg.get('status') != manifest.get('status'):
+        problems.append(f'prereg status {prereg.get("status")!r} != manifest status {manifest.get("status")!r}')
+    m = lambda *keys: _dig(manifest, keys)
+    if m('prereg', 'schema') != prereg.get('schema'):
+        problems.append('run manifest prereg schema differs')
+    if m('prereg', 'core_sha256') != prereg_core_sha256(prereg):
+        problems.append('run manifest prereg core sha256 differs')
+    if isinstance(m('collector', 'file_sha256'), dict) and set(m('collector', 'file_sha256')) != set(COLLECTOR_FILES):
+        problems.append('run manifest collector.file_sha256 must list exactly COLLECTOR_FILES')
+    if m('generator', 'file') != GENERATOR_FILE:
+        problems.append(f'run manifest generator.file must be {GENERATOR_FILE}')
+    template = m('command', 'episode_template')
+    if isinstance(template, str):
+        if hashlib.sha256(template.encode()).hexdigest() != m('command', 'episode_template_sha256'):
+            problems.append('command.episode_template_sha256 is not sha256(command.episode_template)')
+        if '$' in template:
+            problems.append('command.episode_template has an unexpanded shell variable')
+    if episode is not None and m('command', 'episode_template_sha256') != episode['template_sha256']:
+        problems.append('run manifest episode template sha256 differs')
+    if episode is not None and m('limits', 'grasp_cap_sim_s') != episode['cap_s']:
+        problems.append('limits.grasp_cap_sim_s differs from the episode --cap-s')
+    if batch_size is not None and m('command', 'batch_size') != batch_size:
+        problems.append('run manifest batch size differs')
+    s = prereg.get('seeds', {})
+    for key, want in (('attempt_cap', _dig(prereg, ('targets', 'attempt_cap'))),
+                      ('pilot_seeds', _span_len(s.get('pilot'))), ('validation_seeds', _span_len(s.get('validation')))):
+        if m('limits', key) != want:
+            problems.append(f'limits.{key} {m("limits", key)!r} != prereg {want!r}')
+    if repo is not None:
+        files = list(COLLECTOR_FILES) + [GENERATOR_FILE]
+        problems += collector_provenance(repo, m('collector', 'source_sha'), files)
+        for rel, want in dict(m('collector', 'file_sha256') or {}, **{GENERATOR_FILE: m('generator', 'file_sha256')}).items():
+            path = Path(repo) / rel
+            if not path.is_file() or file_sha256(path) != want:
+                problems.append(f'file sha256 differs from the manifest: {rel}')
+    if verify_assets and isinstance(template, str):
+        for key, path in episode_assets(template).items():
+            if path is None or not os.path.isfile(path):
+                problems.append(f'asset for assets.{key} missing: {path}')
+            elif file_sha256(path) != m('assets', key):
+                problems.append(f'assets.{key} differs from {path}')
+        for path, want in (m('assets', 'mesh_assets_sha256') or {}).items():
+            if not os.path.isfile(path) or file_sha256(path) != want:
+                problems.append(f'assets.mesh_assets_sha256 differs or missing: {path}')
+    if stage == 'final':
+        if recording_dir is None:
+            problems.append('final stage needs the recording check directory')
+        else:
+            for key, name in RECORDING_FILES.items():
+                path = Path(recording_dir) / name
+                if not path.is_file():
+                    problems.append(f'recording_check file missing: {path}')
+                elif file_sha256(path) != m('recording_check', key):
+                    problems.append(f'recording_check.{key} differs from {path}')
+            check = Path(recording_dir) / RECORDING_FILES['recording_check_sha256']
+            if check.is_file() and json.loads(check.read_text()).get('qualified') is not True:
+                problems.append('recording-check.json is not qualified')
+    if problems:
+        raise ValueError(f'run manifest not usable at stage {stage}: ' + '; '.join(problems))
+    return core_sha256(prereg, manifest)
+
+
+def _dig(value, keys):
+    for k in keys:
+        value = value.get(k) if isinstance(value, dict) else None
+    return value
+
+
+def _span_len(r):
+    return r['last'] - r['first'] + 1 if isinstance(r, dict) and 'first' in r else None

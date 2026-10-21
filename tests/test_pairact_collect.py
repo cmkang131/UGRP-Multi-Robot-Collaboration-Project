@@ -8,6 +8,7 @@ import hashlib
 import importlib.util
 import json
 import math
+import re
 from pathlib import Path
 
 import subprocess
@@ -779,38 +780,24 @@ def test_episode_command_needs_absolute_rejection_table_and_cap():
         pc.episode_cmd_audit(EP_CMD.replace('{out}', 'x'))
 
 
-def test_run_manifest_draft_is_complete_except_vm_fields_and_blocks_training(prereg):
-    """Codex (4) / owner 10: one RUN_MANIFEST.json frozen with the prereg."""
+def test_run_manifest_draft_has_22_vm_fields_and_blocks_frozen_stages(prereg):
+    """Codex (4) / owner 10 + v3 B3: one RUN_MANIFEST.json, fixed schema, 22 VM-fill fields."""
     m = json.loads((EXP / 'RUN_MANIFEST.json').read_text())
-    for key in ('stack', 'collector', 'generator', 'command', 'limits', 'assets', 'host', 'smoke', 'recording_check',
-                'prereg'):
-        assert key in m, key
-    unfilled = pc.manifest_unfilled(m)
-    assert unfilled and all(p.split('.')[0] in ('host', 'assets', 'smoke', 'recording_check', 'command', 'collector',
-                                                'prereg', 'generator', 'stack', 'seed_check') for p in unfilled)
-    assert pc.check_run_manifest(m, mode='measurement', prereg_sha='x') == []
-    with pytest.raises(ValueError, match='unfilled'):
-        pc.check_run_manifest(m, mode='training', prereg_sha='x')
-    filled = json.loads(json.dumps(m, ensure_ascii=False).replace(pc.VM_FILL, 'v'))
-    filled['status'] = 'FROZEN'
-    filled['prereg']['sha256'] = 'sha'
-    filled['collector']['source_sha'] = 'c'
-    filled['command']['episode_template_sha256'] = pc.episode_cmd_audit(EP_CMD)['template_sha256']
-    filled['command']['batch_size'] = 20
-    assert pc.check_run_manifest(filled, mode='training', prereg_sha='sha', collector_sha='c',
-                                 episode=pc.episode_cmd_audit(EP_CMD), batch_size=20) == []
-    with pytest.raises(ValueError, match='prereg sha256 differs'):
-        pc.check_run_manifest(filled, mode='training', prereg_sha='other')
-    with pytest.raises(ValueError, match='batch size'):
-        pc.check_run_manifest(filled, mode='training', prereg_sha='sha', batch_size=25)
+    assert m['schema'] == pc.MANIFEST_SCHEMA and set(m) == set(pc.MANIFEST_SPEC)
+    assert sorted(pc.manifest_unfilled(m)) == sorted(pc.VM_FIELDS) and len(pc.VM_FIELDS) == 22
+    for stage in ('core', 'final'):
+        with pytest.raises(ValueError, match='placeholder'):
+            pc.check_run_manifest(m, stage=stage, prereg=dict(prereg, status='FROZEN_CORE'))
     s = m['stack']
-    assert s['teacher']['branch'] == 'dsh/pairact-p2-carrypath-c2' and s['adapter']['branch'] == 'dsh/pairact-p2-carrypath-a-c2'
-    assert s['root']['branch'] == 'dsh/pairact-p2-carrypath-r-c2'
+    assert [s[k]['branch'] for k in ('teacher', 'adapter', 'root')] == [
+        'dsh/pairact-p2-carrypath-c3', 'dsh/pairact-p2-carrypath-a-c3', 'dsh/pairact-p2-carrypath-r-c3']
+    assert all(s[k]['sha'] == '[-c3 SHA 기입]' for k in ('teacher', 'adapter', 'root'))     # pin pending
 
 
 def test_run_manifest_file_hashes_match_this_checkout():
     """The frozen manifest names the exact collector / generator files (stale hash = test failure)."""
     m = json.loads((EXP / 'RUN_MANIFEST.json').read_text())
+    assert set(m['collector']['file_sha256']) == set(pc.COLLECTOR_FILES)
     files = dict(m['collector']['file_sha256'], **{m['generator']['file']: m['generator']['file_sha256']})
     for path, sha in files.items():
         assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == sha, path
@@ -867,16 +854,21 @@ def _geometry():
     return cc, cc.Geometry(setup_validity=False)
 
 
+# -c2 stack: the setup-geometry admission family (c3 only adds the formation detour path and the
+# FROZEN_CORE recording interface, RUN_MANIFEST stack.*.note); the manifest pins -c3 once pushed.
+C2_STACK = dict(teacher='4b080d35a3dcbbd8fb8a992e1f1106a7289757b2', root='612ef6437d1eab4ad98a3fa8ee331760c4dc5595',
+                adapter='aaabddb1725191ebaa11f0849bf6446f612e150b')
+
+
 @pytest.fixture(scope='module')
 def pinned_stack(tmp_path_factory):
     """teacher / root / adapter at the RUN_MANIFEST stack SHAs, exported with git archive (missing commit = fail)."""
-    m = json.loads((EXP / 'RUN_MANIFEST.json').read_text())
     base = tmp_path_factory.mktemp('pinned-stack')
     roots = {}
-    for name in ('teacher', 'root', 'adapter'):
+    for name, sha in C2_STACK.items():
         # the adapter's dependency_modules needs a clean git checkout at the pinned teacher SHA:
         # shared sparse clone (no worktree registered in this repo)
-        sha, out = m['stack'][name]['sha'], base / name
+        out = base / name
         for cmd in (['git', 'clone', '-q', '--shared', '--no-checkout', str(ROOT), str(out)],
                     ['git', '-C', str(out), 'sparse-checkout', 'set', 'harness', 'sim', 'scripts'],
                     ['git', '-C', str(out), 'checkout', '-q', '--detach', sha]):
@@ -1029,3 +1021,241 @@ def test_collect_cases_real_admission_path_with_pinned_stack(prereg, pinned_stac
         assert plan['setup_validity'] == 'placement_graspable_filter_v1' and plan['placement_validity']['accepted']
         cmd = plan['setup_audit']['reproduce']
         assert cmd[cmd.index('--adapter-root') + 1] == str(Path(pinned_stack['adapter']).resolve())
+
+
+# ------------------------------------------------- v3: Codex v2 re-review B1 / B2 / B3 (freeze)
+
+H = lambda c: c * 64
+G = lambda c: c * 40
+
+
+def filled_manifest(prereg, status='FROZEN_CORE', template=EP_CMD, recording=None):
+    """The draft manifest with every placeholder replaced by a well-typed value (what DeepSeek fills)."""
+    m = json.loads((EXP / 'RUN_MANIFEST.json').read_text())
+    m['status'] = status
+    for k in ('teacher', 'adapter', 'root'):
+        m['stack'][k]['sha'] = G('a')
+    m['prereg']['core_sha256'] = pc.prereg_core_sha256(dict(prereg, status=status))
+    m['collector']['source_sha'] = G('b')
+    m['command']['episode_template'] = template
+    m['command']['episode_template_sha256'] = hashlib.sha256(template.encode()).hexdigest()
+    m['assets'].update(canonical_xml_sha256=H('1'), per_world_model_references_sha256=H('2'),
+                       rejection_table_input_sha256=H('3'), mesh_assets_sha256={'/vm/mesh/fuji_roller_v2.obj': H('4')},
+                       wrapper_sha256=H('5'))
+    m['host'] = dict(machine='ugrp-act-l4-gcp6 us-central1-a g2-standard-8', gpu='NVIDIA L4, 550.54, 23034 MiB',
+                     cuda_warp_mujoco='cuda 12.4 warp 1.9 mujoco 3.3.6 mujoco_warp 0.1', python='3.12.3 /venv',
+                     warp_kernel_cache='/home/ugrp/.cache/warp')
+    m['smoke'].update(summary_sha256=H('6'), carry_eval_sha256={f'world-00{i}': H(str(7 + i)) for i in range(3)},
+                      artifact_manifest_sha256=H('a'), world1_raw_result_sha256=H('b'))
+    m['seed_check']['vm_seed_check_sha256'] = H('c')
+    m['recording_check'].update(recording or {})
+    return m
+
+
+def recording_dir(tmp_path, qualified=True):
+    d = tmp_path / 'runc'
+    d.mkdir()
+    (d / 'probe-cases.json').write_text('[]\n')
+    (d / 'check-rows.json').write_text('{}\n')
+    (d / 'recording-check.json').write_text(json.dumps(dict(qualified=qualified, N=3, n=3)) + '\n')
+    return d, {k: pc.file_sha256(d / name) for k, name in pc.RECORDING_FILES.items()}
+
+
+def test_filled_manifest_passes_core_and_final_with_recording_files(tmp_path, prereg):
+    core_prereg = dict(prereg, status='FROZEN_CORE')
+    m = filled_manifest(prereg)
+    ep = pc.episode_cmd_audit(EP_CMD)
+    core = pc.check_run_manifest(m, stage='core', prereg=core_prereg, batch_size=20, episode=ep)
+    assert core == pc.core_sha256(core_prereg, m)
+    d, hashes = recording_dir(tmp_path)
+    final = filled_manifest(prereg, status='FROZEN', recording=hashes)
+    assert pc.check_run_manifest(final, stage='final', prereg=dict(prereg, status='FROZEN'), batch_size=20,
+                                 episode=ep, recording_dir=d) == core          # status + recording excluded
+    with pytest.raises(ValueError, match='status'):
+        pc.check_run_manifest(m, stage='final', prereg=core_prereg, recording_dir=d)
+    with pytest.raises(ValueError, match='recording check directory'):
+        pc.check_run_manifest(final, stage='final', prereg=dict(prereg, status='FROZEN'))
+
+
+def test_minimal_manifest_reproduction_is_rejected(prereg):
+    """B3: Codex's minimal manifest (schema/status/prereg/collector/episode/batch only) passed v2 with []."""
+    full = filled_manifest(prereg)
+    minimal = dict(schema=pc.MANIFEST_SCHEMA, status='FROZEN_CORE', prereg=full['prereg'],
+                   collector=dict(source_sha=G('b')), command=dict(batch_size=20, episode_template=EP_CMD,
+                   episode_template_sha256=full['command']['episode_template_sha256']))
+    with pytest.raises(ValueError) as e:
+        pc.check_run_manifest(minimal, stage='core', prereg=dict(prereg, status='FROZEN_CORE'), batch_size=20)
+    for key in ('missing stack', 'missing assets', 'missing host', 'missing smoke', 'missing recording_check',
+                'missing limits', 'missing generator', 'missing seed_check', 'missing collector.file_sha256'):
+        assert key in str(e.value), key
+
+
+@pytest.mark.parametrize('edit, match', [
+    (lambda m: m['host'].update(gpu=''), 'invalid host.gpu'),
+    (lambda m: m['assets'].update(wrapper_sha256='v'), 'invalid assets.wrapper_sha256'),
+    (lambda m: m['assets'].update(mesh_assets_sha256={'rel/mesh.obj': H('4')}), 'invalid assets.mesh_assets_sha256'),
+    (lambda m: m['smoke'].update(carry_eval_sha256=H('7')), 'invalid smoke.carry_eval_sha256'),
+    (lambda m: m['command'].update(batch_size='20'), 'invalid command.batch_size'),
+    (lambda m: m['stack']['teacher'].update(sha='[-c3 SHA 기입]'), 'placeholder stack.teacher.sha'),
+    (lambda m: m['host'].update(python='3.12 [확인 필요]'), 'placeholder host.python'),
+    (lambda m: m['host'].update(extra='x'), 'unexpected host.extra'),
+    (lambda m: m['limits'].pop('attempt_cap'), 'missing limits.attempt_cap'),
+    (lambda m: m['limits'].update(attempt_cap=500), 'limits.attempt_cap'),
+    (lambda m: m['prereg'].update(core_sha256=H('0')), 'prereg core sha256 differs'),
+    (lambda m: m['command'].update(episode_template_sha256=H('0')), 'episode_template_sha256'),
+    (lambda m: m['collector']['file_sha256'].pop('harness/pairact_r1.py'), 'COLLECTOR_FILES'),
+    (lambda m: m.update(status='FROZEN'), 'prereg status'),
+])
+def test_manifest_gate_checks_every_field(prereg, edit, match):
+    m = filled_manifest(prereg)
+    edit(m)
+    with pytest.raises(ValueError, match=re.escape(match)):
+        pc.check_run_manifest(m, stage='core', prereg=dict(prereg, status='FROZEN_CORE'), batch_size=20,
+                              episode=pc.episode_cmd_audit(EP_CMD))
+
+
+def test_final_stage_hashes_the_recording_files(tmp_path, prereg):
+    d, hashes = recording_dir(tmp_path)
+    final = filled_manifest(prereg, status='FROZEN', recording=hashes)
+    (d / 'check-rows.json').write_text('{"changed": 1}\n')
+    with pytest.raises(ValueError, match='recording_check.check_rows_sha256 differs'):
+        pc.check_run_manifest(final, stage='final', prereg=dict(prereg, status='FROZEN'), recording_dir=d)
+    d2, h2 = recording_dir(tmp_path / 'x' if (tmp_path / 'x').mkdir() is None else None, qualified=False)
+    with pytest.raises(ValueError, match='not qualified'):
+        pc.check_run_manifest(filled_manifest(prereg, status='FROZEN', recording=h2), stage='final',
+                              prereg=dict(prereg, status='FROZEN'), recording_dir=d2)
+
+
+def test_verify_assets_rehashes_episode_files(tmp_path, prereg):
+    files = {}
+    for name in ('wrap.py', 'scene.xml', 'refs.json', 'table.json', 'mesh.obj'):
+        (tmp_path / name).write_text(name)
+        files[name] = str(tmp_path / name)
+    tpl = (f"python {files['wrap.py']} --flow beampair --cases {{cases}} --indices {{indices}} --cap-s 60 "
+           f"--canonical-xml {files['scene.xml']} --per-world-model-references-v1 {files['refs.json']} "
+           f"--rejection-table {files['table.json']} --out {{out}}")
+    m = filled_manifest(prereg, template=tpl)
+    m['assets'] = dict(wrapper_sha256=pc.file_sha256(files['wrap.py']), canonical_xml_sha256=pc.file_sha256(files['scene.xml']),
+                       per_world_model_references_sha256=pc.file_sha256(files['refs.json']),
+                       rejection_table_input_sha256=pc.file_sha256(files['table.json']),
+                       mesh_assets_sha256={files['mesh.obj']: pc.file_sha256(files['mesh.obj'])})
+    pr = dict(prereg, status='FROZEN_CORE')
+    pc.check_run_manifest(m, stage='core', prereg=pr, verify_assets=True)
+    Path(files['scene.xml']).write_text('edited')
+    Path(files['mesh.obj']).unlink()
+    with pytest.raises(ValueError) as e:
+        pc.check_run_manifest(m, stage='core', prereg=pr, verify_assets=True)
+    assert 'assets.canonical_xml_sha256 differs' in str(e.value) and 'mesh_assets_sha256 differs or missing' in str(e.value)
+
+
+def test_core_sha_ignores_status_and_recording_but_not_content(prereg):
+    m = filled_manifest(prereg)
+    core = pc.core_sha256(dict(prereg, status='FROZEN_CORE'), m)
+    m2 = filled_manifest(prereg, status='FROZEN', recording=dict(probe_cases_sha256=H('d')))
+    assert pc.core_sha256(dict(prereg, status='FROZEN'), m2) == core
+    m2['host']['gpu'] = 'other'
+    assert pc.core_sha256(dict(prereg, status='FROZEN'), m2) != core
+    assert pc.core_sha256(dict(prereg, status='FROZEN', revision=99), m) != core
+    assert pc.prereg_core_sha256(dict(prereg, status='READY_FOR_REVIEW')) == pc.prereg_core_sha256(
+        dict(prereg, status='FROZEN'))
+
+
+def _git(repo, *args):
+    return subprocess.run(['git', '-C', str(repo), *args], check=True, capture_output=True, text=True).stdout.strip()
+
+
+def test_collector_provenance_two_commit_freeze(tmp_path):
+    """B1: X = collector code, Y = manifest records X; HEAD == X is not required, a collector change is."""
+    repo = tmp_path / 'repo'
+    repo.mkdir()
+    _git(repo, 'init', '-q')
+    _git(repo, 'config', 'user.email', 't@t')
+    _git(repo, 'config', 'user.name', 't')
+    (repo / 'collector.py').write_text('v1\n')
+    (repo / 'MANIFEST.json').write_text('{}\n')
+    _git(repo, 'add', '-A')
+    _git(repo, 'commit', '-qm', 'X')
+    x = _git(repo, 'rev-parse', 'HEAD')
+    (repo / 'MANIFEST.json').write_text(json.dumps(dict(source_sha=x)) + '\n')
+    _git(repo, 'commit', '-qam', 'Y')
+    assert _git(repo, 'rev-parse', 'HEAD') != x
+    assert pc.collector_provenance(repo, x, ['collector.py']) == []
+    (repo / 'collector.py').write_text('v2\n')
+    assert 'dirty' in ' '.join(pc.collector_provenance(repo, x, ['collector.py']))
+    _git(repo, 'commit', '-qam', 'Z changes the collector')
+    assert 'changed since' in ' '.join(pc.collector_provenance(repo, x, ['collector.py']))
+    _git(repo, 'checkout', '-q', '--orphan', 'other')
+    _git(repo, 'commit', '-qm', 'unrelated')
+    assert 'not an ancestor' in ' '.join(pc.collector_provenance(repo, x, ['collector.py']))
+    assert 'not in this repository' in ' '.join(pc.collector_provenance(repo, G('e'), ['collector.py']))
+    assert '40-hex' in ' '.join(pc.collector_provenance(repo, '[VM 기입]', ['collector.py']))
+
+
+def _probe_ledger(tmp_path, prereg, purpose, core):
+    st, _, _ = None, None, None
+    freeze = dict(stage='FROZEN_CORE' if purpose != pc.PURPOSE_PILOT else 'READY_FOR_REVIEW', purpose=purpose,
+                  prereg_core_sha256=pc.prereg_core_sha256(prereg), core_sha256=core)
+    runner.run(tmp_path, prereg, 'filesha', mode='measurement', noise='off', batch_size=20, max_batches=1,
+               make_cases=make(prereg), run_episode=FakeEpisode(lambda s, c: result()), freeze=freeze)
+    return pc.replay(prereg, pc.read_ledger(tmp_path / 'ledger.jsonl'))
+
+
+def test_pilot_ledger_is_never_a_probe_source_or_training_input(tmp_path, prereg):
+    """B2: the pre-freeze pilot is tagged pilot_yield_only; probe-cases / convert refuse it."""
+    st = _probe_ledger(tmp_path / 'pilot', prereg, pc.PURPOSE_PILOT, None)
+    assert st['header']['purpose'] == pc.PURPOSE_PILOT
+    with pytest.raises(ValueError, match='pilot_yield_only'):
+        pc.require_probe_source(st, H('c'))
+    with pytest.raises(ValueError, match='pilot_yield_only'):
+        pc.convert_input(prereg, st, tmp_path / 'conv', prereg_sha='filesha', teacher_sha='t', core=H('c'))
+    rep = pc.report(prereg, st, prereg_sha='other-file-sha', prereg_core=pc.prereg_core_sha256(prereg))
+    assert rep['purpose'] == pc.PURPOSE_PILOT                  # still reportable after the status flip
+
+
+def test_probe_source_is_bound_to_core_sha(tmp_path, prereg):
+    st = _probe_ledger(tmp_path / 'runc', prereg, pc.PURPOSE_PROBE_SOURCE, H('c'))
+    assert pc.require_probe_source(st, H('c'))['core_sha256'] == H('c')
+    with pytest.raises(ValueError, match='core_sha256'):
+        pc.require_probe_source(st, H('d'))
+    assert len(pc.probe_slots(st)) == 3
+
+
+def test_training_header_purpose_matches_mode():
+    with pytest.raises(ValueError, match='purpose'):
+        pc.header('s', mode='measurement', noise='off', batch_size=20, freeze=dict(purpose=pc.PURPOSE_TRAINING))
+    with pytest.raises(ValueError, match='purpose'):
+        pc.header('s', mode='training', noise='off', batch_size=20, freeze=dict(purpose=pc.PURPOSE_PROBE_SOURCE))
+
+
+def test_convert_input_needs_frozen_training_ledger_with_same_core(tmp_path, prereg):
+    hdr = pc.header('sha', mode='training', noise='off', batch_size=20,
+                    freeze=dict(stage='FROZEN_CORE', purpose=pc.PURPOSE_TRAINING, core_sha256=H('c')))
+    st = pc.replay(prereg, [hdr])
+    with pytest.raises(ValueError, match='FROZEN training ledger'):
+        pc.convert_input(prereg, st, tmp_path / 'c', prereg_sha='sha', teacher_sha='t', core=H('c'))
+
+
+def test_freeze_script_core_then_final_keeps_core_sha(tmp_path, prereg, monkeypatch):
+    spec2 = importlib.util.spec_from_file_location('pairact_r1_freeze', ROOT / 'scripts/pairact_r1_freeze.py')
+    fz = importlib.util.module_from_spec(spec2)
+    spec2.loader.exec_module(fz)
+    monkeypatch.setattr(pc, 'collector_provenance', lambda repo, sha, files: [])
+    pp, mp = tmp_path / 'prereg.json', tmp_path / 'manifest.json'
+    pp.write_text(PREREG.read_text())
+    m = filled_manifest(prereg, status='DRAFT_VM_FILL')
+    for k in pc.RECORDING_FIELDS:
+        m['recording_check'][k] = '[VM 기입] filled at FROZEN'
+    mp.write_text(json.dumps(m, indent=2, ensure_ascii=False))
+    with pytest.raises(ValueError, match='collector-sha'):
+        fz.freeze('core', prereg_path=pp, manifest_path=mp, repo=ROOT)
+    out = fz.freeze('core', prereg_path=pp, manifest_path=mp, repo=ROOT, collector_sha=G('f'))
+    p1 = json.loads(pp.read_text())
+    assert p1['status'] == 'FROZEN_CORE' and json.loads(mp.read_text())['status'] == 'FROZEN_CORE'
+    assert pp.read_text() == PREREG.read_text().replace('"status": "READY_FOR_REVIEW"', '"status": "FROZEN_CORE"', 1)
+    d, _ = recording_dir(tmp_path)
+    with pytest.raises(ValueError, match='expected'):
+        fz.freeze('final', prereg_path=pp, manifest_path=mp, repo=ROOT, recording_dir=d, expect_core=H('0'))
+    fin = fz.freeze('final', prereg_path=pp, manifest_path=mp, repo=ROOT, recording_dir=d,
+                    expect_core=out['core_sha256'])
+    assert fin['core_sha256'] == out['core_sha256'] and fin['prereg_sha256'] != out['prereg_sha256']
+    assert json.loads(pp.read_text())['status'] == 'FROZEN' and pc.manifest_placeholders(json.loads(mp.read_text())) == []

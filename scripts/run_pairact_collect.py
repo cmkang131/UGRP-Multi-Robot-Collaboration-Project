@@ -177,20 +177,20 @@ def batch_cases(bdir, planned, slots, make_cases):
 
 def run(run_root, prereg, prereg_sha, *, mode, noise, batch_size, max_batches, make_cases, run_episode,
         episode=None, run_manifest_sha256=None, deadline=None, now=None, validation_after_host_fix=False,
-        read_rows=pc.read_jsonl):
+        read_rows=pc.read_jsonl, freeze=None):
     """Returns the run state (stop/decision) or 'MAX_BATCHES' / 'DEADLINE'. Fakes plug in via make_cases / run_episode."""
     run_root = Path(run_root)
     run_root.mkdir(parents=True, exist_ok=True)
     ledger = run_root / 'ledger.jsonl'
     hdr = pc.header(prereg_sha, mode=mode, noise=noise, batch_size=batch_size, episode=episode,
-                    run_manifest_sha256=run_manifest_sha256)
+                    run_manifest_sha256=run_manifest_sha256, freeze=freeze)
     pc.repair_ledger(ledger)
     rows = pc.read_ledger(ledger)
     if not rows:
         pc.append(ledger, hdr)
     elif rows[0] != hdr:
-        raise ValueError('ledger header mismatch: same prereg sha, mode, noise, batch size, episode command '
-                         'and run manifest required')
+        raise ValueError('ledger header mismatch: same prereg sha, mode, noise, batch size, episode command, '
+                         'run manifest and freeze stage / core sha required')
     now = now or (lambda: dt.datetime.now(dt.timezone.utc))
     started = 0
     while True:
@@ -247,20 +247,39 @@ def run(run_root, prereg, prereg_sha, *, mode, noise, batch_size, max_batches, m
                done_slots=done, read_rows=read_rows)
 
 
-def collector_sha():
-    sha = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
+def tree_dirty():
     dirty = subprocess.check_output(['git', 'status', '--porcelain', '--untracked-files=no'], cwd=ROOT, text=True)
-    return sha, bool(dirty.strip())
+    return bool(dirty.strip())
 
 
-def collect_env(mode, prereg_path, prereg_sha, recording_check=None, probe=False):
-    """Env read by the -c adapter candidate pairact_p3_collect; measurement mode clears it."""
+def frozen_gate(a, prereg, sha, *, stage, episode=None, recording_dir=None, need_clean=True):
+    """Stage 'core' / 'final' manifest gate (B1/B2/B3) -> (core_sha256, manifest_sha256)."""
+    if a.run_manifest is None:
+        raise SystemExit(f'{a.command}: --run-manifest required at {stage} stage')
+    if need_clean and tree_dirty():
+        raise SystemExit('frozen stages need a clean collector checkout (tracked files)')
+    raw = a.run_manifest.read_bytes()
+    core = pc.check_run_manifest(json.loads(raw), stage=stage, prereg=prereg, batch_size=a.batch_size,
+                                 episode=episode, repo=ROOT, recording_dir=recording_dir,
+                                 verify_assets=not a.no_verify_assets)
+    return core, hashlib.sha256(raw).hexdigest()
+
+
+def collect_env(mode, prereg_path, prereg_sha, recording_check=None, probe=False, prereg_core=None):
+    """Env read by the teacher candidate pairact_p3_collect; measurement mode clears it.
+
+    v3 interface (teacher -c3 harness/grasp_act_admission.py): PAIRACT_P3_COLLECT_PREREG_CORE_SHA256
+    is the prereg content sha256 (status excluded); the probe accepts FROZEN_CORE or FROZEN, data
+    recording needs FROZEN and the file sha256.
+    """
     env = {k: v for k, v in os.environ.items() if k not in pc.COLLECT_ENV}
     if mode == 'training':
         if recording_check is None and not probe:
             raise ValueError('training mode needs --recording-check (paired 640x480 recording-mode check)')
         env.update(PAIRACT_P3_COLLECT_PREREG=str(Path(prereg_path).resolve()),
                    PAIRACT_P3_COLLECT_PREREG_SHA256=prereg_sha, PAIRACT_P3_RECORDING_PROBE='1' if probe else '0')
+        if prereg_core is not None:
+            env['PAIRACT_P3_COLLECT_PREREG_CORE_SHA256'] = prereg_core
         if recording_check is not None:
             env['PAIRACT_P3_RECORDING_CHECK'] = str(Path(recording_check).resolve())
     return env
@@ -276,7 +295,8 @@ def shell_episode(template, env=None):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument('command', choices=('collect', 'report', 'convert-input', 'probe-cases', 'check-rows'))
+    p.add_argument('command', choices=('collect', 'report', 'convert-input', 'probe-cases', 'probe-episode',
+                                       'check-rows'))
     p.add_argument('--prereg', type=Path, required=True)
     p.add_argument('--run-root', type=Path, required=True)
     p.add_argument('--mode', choices=pc.MODES, default='measurement')
@@ -285,14 +305,19 @@ def main():
     p.add_argument('--max-batches', type=int, default=1)
     p.add_argument('--deadline-utc', help='do not start a new batch at or after this ISO time (e.g. 2026-10-22T00:00Z)')
     p.add_argument('--episode-cmd', help='shell template with {cases} {indices} {out}; needs --rejection-table ABS and --cap-s')
-    p.add_argument('--run-manifest', type=Path, help='RUN_MANIFEST.json (required, FROZEN and fully filled, for training)')
+    p.add_argument('--run-manifest', type=Path,
+                   help='RUN_MANIFEST.json: FROZEN_CORE for the probe source / probe-cases / probe / check-rows, '
+                        'FROZEN for training and convert-input')
+    p.add_argument('--no-verify-assets', action='store_true',
+                   help='skip re-hashing the episode assets (only off the collection VM; never for training)')
     p.add_argument('--validation-after-host-fix', action='store_true',
                    help='after STOP_HOST: run validation once DeepSeek has reported the host fix')
     p.add_argument('--dependency-root', type=Path)
     p.add_argument('--frozen-root', type=Path)
     p.add_argument('--adapter-root', type=Path, help='pinned adapter checkout (runtime placement filter family)')
     p.add_argument('--candidate', help='default: pairact_p2_r13 (measurement) / pairact_p3_collect (training)')
-    p.add_argument('--recording-check', type=Path, help='training: paired 640x480 recording-mode check json')
+    p.add_argument('--recording-check', type=Path,
+                   help='training: RUNC/recording-check.json (probe-cases.json and check-rows.json beside it)')
     p.add_argument('--baseline-raws', nargs='*', default=[], help='check-rows: recording-off world raw dirs')
     p.add_argument('--probe-raws', nargs='*', default=[], help='check-rows: recording-probe world raw dirs')
     p.add_argument('--teacher-sha')
@@ -302,25 +327,32 @@ def main():
     load_mode = 'training' if a.command == 'convert-input' or (a.command == 'collect' and a.mode == 'training') \
         else 'measurement'
     prereg, sha = pc.load_prereg(a.prereg, mode=load_mode)
+    prereg_core = pc.prereg_core_sha256(prereg)
+    stage = prereg['status']
     if a.command in ('report', 'convert-input', 'probe-cases'):
         st = pc.replay(prereg, pc.read_ledger(a.run_root / 'ledger.jsonl'))
-        pc.require_header_sha(st, sha)       # audit 2: never relabel a ledger under another prereg
+        pc.require_header_sha(st, sha, prereg_core)     # audit 2: never relabel a ledger under another prereg
     if a.command == 'report':
-        rep = pc.report(prereg, st, prereg_sha=sha)
+        rep = pc.report(prereg, st, prereg_sha=sha, prereg_core=prereg_core)
         write(a.run_root / 'report.json', rep)
         print(json.dumps(dict(state=rep['run_state'], text=(rep.get('A') or rep.get('pilot'))['text']), ensure_ascii=False))
         return
     if a.command == 'convert-input':
         if not a.teacher_sha or not a.out:
             p.error('--teacher-sha and --out required')
-        print(json.dumps(pc.convert_input(prereg, st, a.out, prereg_sha=sha, teacher_sha=a.teacher_sha)))
+        core, _ = frozen_gate(a, prereg, sha, stage='final', need_clean=False)
+        print(json.dumps(pc.convert_input(prereg, st, a.out, prereg_sha=sha, teacher_sha=a.teacher_sha, core=core)))
         return
+    if stage not in pc.FREEZE_STAGES and a.command in ('probe-cases', 'probe-episode', 'check-rows'):
+        p.error(f'{a.command} needs a FROZEN_CORE (or FROZEN) prereg, got {stage}')
     if a.command == 'probe-cases':
-        # starts for the recording probe: first 3 admitted pilot successes, cases copied byte-for-byte
+        # starts for the recording probe: first 3 admitted successes of the FROZEN_CORE probe source run
         if not a.out:
             p.error('--out required')
         if a.out.exists():
             p.error('refusing to overwrite')
+        core, _ = frozen_gate(a, prereg, sha, stage='core')
+        pc.require_probe_source(st, core)
         cases = []
         for r in pc.probe_slots(st):
             batch = json.loads((a.run_root / 'batches' / f"b{r['batch']:03d}" / 'cases.json').read_text())
@@ -329,14 +361,30 @@ def main():
                 raise ValueError('ledger/cases mismatch')
             cases.append(dict(case, candidate=pc.CANDIDATE_BY_MODE['training']))
         write(a.out, cases)
-        print(json.dumps(dict(out=str(a.out), seeds=[c['plan']['seed'] for c in cases],
+        print(json.dumps(dict(out=str(a.out), core_sha256=core, seeds=[c['plan']['seed'] for c in cases],
                               baseline_raws=[r['raw'] for r in pc.probe_slots(st)])))
         return
+    if a.command == 'probe-episode':
+        # recording probe on probe-cases.json (data_admitted false, no check needed): FROZEN_CORE env
+        if not a.out or a.out.exists():
+            p.error('--out (new directory) required')
+        try:
+            episode = pc.episode_cmd_audit(a.episode_cmd)
+        except ValueError as error:
+            p.error(str(error))
+        core, _ = frozen_gate(a, prereg, sha, stage='core', episode=episode)
+        cases_path = a.run_root / 'probe-cases.json'
+        n = len(json.loads(cases_path.read_text()))
+        env = collect_env('training', a.prereg, sha, probe=True, prereg_core=prereg_core)
+        code = shell_episode(a.episode_cmd, env)(cases_path, list(range(n)), a.out)
+        print(json.dumps(dict(out=str(a.out), exit=code, core_sha256=core)))
+        sys.exit(code)
     if a.command == 'check-rows':
         # inputs for the teacher's unchanged recording_mode_equivalence(baseline rows, probe rows)
         if not a.out or not a.baseline_raws or len(a.baseline_raws) != len(a.probe_raws):
             p.error('--out and equal-length --baseline-raws/--probe-raws required')
-        rows = {}
+        core, _ = frozen_gate(a, prereg, sha, stage='core')
+        rows = dict(core_sha256=core)
         for name, raws in (('baseline', a.baseline_raws), ('recorded', a.probe_raws)):
             rows[name] = []
             for raw in raws:
@@ -355,25 +403,34 @@ def main():
         episode = pc.episode_cmd_audit(a.episode_cmd)
     except ValueError as error:
         p.error(str(error))
-    manifest_sha = None
-    if a.run_manifest is not None:
-        raw = a.run_manifest.read_bytes()
-        manifest_sha = hashlib.sha256(raw).hexdigest()
-        src, dirty = collector_sha()
-        if dirty and a.mode == 'training':
-            p.error('training needs a clean collector checkout')
-        pc.check_run_manifest(json.loads(raw), mode=a.mode, prereg_sha=sha, collector_sha=src, episode=episode,
-                              batch_size=a.batch_size)
-    elif a.mode == 'training':
-        p.error('training mode needs --run-manifest (FROZEN RUN_MANIFEST.json, no [VM 기입] left)')
-    env = collect_env(a.mode, a.prereg, sha, a.recording_check)
+    manifest_sha, freeze = None, None
+    if a.mode == 'training':
+        if a.recording_check is None or a.recording_check.name != pc.RECORDING_FILES['recording_check_sha256']:
+            p.error('training needs --recording-check RUNC/recording-check.json')
+        if a.no_verify_assets:
+            p.error('training never skips the asset re-hash')
+        core, manifest_sha = frozen_gate(a, prereg, sha, stage='final', episode=episode,
+                                         recording_dir=a.recording_check.parent)
+        freeze = dict(stage='FROZEN', purpose=pc.PURPOSE_TRAINING, prereg_core_sha256=prereg_core, core_sha256=core)
+    elif stage in pc.FREEZE_STAGES:
+        core, manifest_sha = frozen_gate(a, prereg, sha, stage='core', episode=episode)
+        freeze = dict(stage=stage, purpose=pc.PURPOSE_PROBE_SOURCE, prereg_core_sha256=prereg_core, core_sha256=core)
+    else:
+        # pre-freeze pilot: yield only, never a probe source or training input (B2)
+        if a.run_manifest is not None:
+            raw = a.run_manifest.read_bytes()
+            if json.loads(raw).get('schema') != pc.MANIFEST_SCHEMA:
+                p.error(f'run manifest schema {pc.MANIFEST_SCHEMA} required')
+            manifest_sha = hashlib.sha256(raw).hexdigest()
+        freeze = dict(stage=stage, purpose=pc.PURPOSE_PILOT, prereg_core_sha256=prereg_core, core_sha256=None)
+    env = collect_env(a.mode, a.prereg, sha, a.recording_check, prereg_core=prereg_core)
     sys.path.insert(0, str(ROOT / 'experiments/2026-10-21-pairact-r1'))
     import collect_cases
     geo = collect_cases.Geometry(a.dependency_root, a.frozen_root, setup_validity=True, adapter_root=a.adapter_root)
     deadline = dt.datetime.fromisoformat(a.deadline_utc.replace('Z', '+00:00')) if a.deadline_utc else None
     state = run(a.run_root, prereg, sha, mode=a.mode, noise=a.noise, batch_size=a.batch_size,
                 max_batches=a.max_batches, deadline=deadline, episode=episode, run_manifest_sha256=manifest_sha,
-                validation_after_host_fix=a.validation_after_host_fix,
+                validation_after_host_fix=a.validation_after_host_fix, freeze=freeze,
                 make_cases=lambda slots: collect_cases.make_cases(geo, prereg, slots, candidate=candidate,
                                                                   prereg_path=a.prereg),
                 run_episode=shell_episode(a.episode_cmd, env))
