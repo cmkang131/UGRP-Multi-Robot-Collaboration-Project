@@ -71,7 +71,7 @@ MAX_LATENCY_TICKS = 10
 # values_sha256 and validate_config recomputes it, so a hand-filled or edited number is refused.
 FIT_SCHEMA = 'ugrp.pairact.loaded_odom_fit.v1'
 PROVENANCE_KEYS = {'schema', 'fit_sha256', 'values_sha256', 'fit_quality', 'seeds', 'sources', 'tool'}
-FIT_QUALITIES = ('per_tick', 'aggregate_coarse')
+FIT_QUALITIES = ('per_tick',)   # aggregate drive_response numbers are a replay cross-check, never a fit
 SIGMA_FIT_KEYS = ('sigma_xy_per_m', 'sigma_yaw_per_rad')
 # Fit data may come only from pilot (8343000-8343039) and P2 smoke worlds 1/11/17 of the r13 cases
 # (seed = 8420000 + world). Never training, validation or held-out seeds.
@@ -137,9 +137,6 @@ def validate_provenance(cfg, purpose):
                          'regenerate with scripts/make_hybrid_config.py, never edit by hand')
     if prov['fit_quality'] not in FIT_QUALITIES:
         raise ValueError(f'unknown fit quality {prov["fit_quality"]!r}')
-    if purpose == 'hybrid_n' and prov['fit_quality'] != 'per_tick':
-        raise ValueError('hybrid_n (student) runs need a per_tick loaded-odometry fit; aggregate_coarse is '
-                         'allowed only for the teacher near-field smoke')
     seeds = prov['seeds']
     if (not isinstance(seeds, list) or not seeds or any(type(x) is not int for x in seeds)
             or not set(seeds) <= FIT_SEEDS):

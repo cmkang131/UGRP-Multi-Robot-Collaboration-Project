@@ -344,11 +344,11 @@ def test_fit_seeds_are_pilot_and_smoke_only():
     assert h.validate_config(c)
 
 
-def test_coarse_fit_only_for_teacher_smoke():
+def test_teacher_smoke_purpose():
     c = cfg(); c['calibration_provenance']['fit_quality'] = 'aggregate_coarse'
-    with pytest.raises(ValueError, match='per_tick'):
-        h.validate_config(c)
-    assert h.validate_config(c, purpose='teacher_smoke')
+    with pytest.raises(ValueError, match='fit quality'):
+        h.validate_config(c, purpose='teacher_smoke')
+    assert h.validate_config(cfg(), purpose='teacher_smoke')
     with pytest.raises(ValueError, match='shadow_predict'):
         h.validate_config(cfg(shadow_predict=True), purpose='teacher_smoke')
     with pytest.raises(ValueError, match='purpose'):
