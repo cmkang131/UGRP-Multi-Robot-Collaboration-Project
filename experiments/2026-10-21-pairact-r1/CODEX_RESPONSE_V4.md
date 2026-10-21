@@ -82,11 +82,11 @@
 2. 지연된 bin_limit이 운 나쁜 초기 결과로 구간을 닫는 효과는 K가 클수록 큽니다(X7 K=4). K 상한 3은 이 효과를 줄일 뿐 없애지는 않습니다.
 3. 거리 관문 요구 비율 축소식은 D-v4-2로 승인되었습니다.
 
-## 해시·테스트 (이 커밋 기준)
+## 해시·테스트 (D-v4-1–4 반영 커밋 `e34bc69ec` 기준; 이 기입은 다음 문서 커밋)
 
-- 코드·prereg 커밋 `192da476d`(이 대응표의 해시 기입은 그 다음 커밋, 문서만).
-- `COLLECT_PREREG_DRAFT.json` 파일 sha256 `fa337d70f24bc8de43a6635616c89a85a9c8edb86eda8dc0ca5b6797761686d2`
-- prereg core(status 제외, `prereg_core_sha256`) `b271f16b71540a547bcfa7b7f0a5a842ff608de7741de0b890cfd4ffc1ddcd0c`
-- `core_sha256`(prereg + DRAFT manifest, 참고값 — VM 기입 뒤 FROZEN_CORE에서 바뀜) `759ea413efeca8369f900f1d8509bda924638de1c74c71c981d4c565f3d5da22`
-- `RUN_MANIFEST.json` 파일 sha256 `5be92e44f3f52d704bcded652aa5f5c90710bc024b41be141f4eef9a93d4da70`
-- 테스트(Oracle `/home/ubuntu/ugrp-e1-venv`, 가짜 에피소드·순수 함수만): `tests/test_pairact_collect.py` 89 + `tests/test_pairact_collect_shard.py` 17 + `tests/test_pairact_prereg_xreview.py` 8(X1–X8) + `tests/test_pairact_collect_v4.py` 11 + `tests/test_pairact_r1.py` 14 = *139 passed, skip 0*(155 s). 시뮬레이터·GPU 실행 없음.
+- `COLLECT_PREREG_DRAFT.json` 파일 sha256 `cf045a9f1440f63022dc06539a7988e7beb905739307ed979a6e3d4b68b609e5`, status READY_FOR_REVIEW
+- prereg core(status 제외) `7bce6856288a5cc55a77be14ef4abb84b5678716f57ff5fe01a2b510cf09def1`
+- `core_sha256`(prereg + DRAFT manifest, 참고값 — VM 기입 뒤 FROZEN_CORE에서 바뀜) `5d7dfec2aa5c4559dabef73283d97706db4ddbeb4d3cd996700ab40fcea257df`
+- `RUN_MANIFEST.json` 파일 sha256 `60ea2e63a9a4c04918201a5e335443ab434c5adb24da1717cee388ed0652abaa`
+- 테스트(Oracle `/home/ubuntu/ugrp-e1-venv`, 가짜 에피소드·순수 함수만): collect 89 + shard 17 + xreview 8(X1–X8) + v4 11 + r1 14 = *139 passed, skip 0*(108 s). 시뮬레이터·GPU 실행 없음.
+- 이전 v4 커밋 `192da476d` 값(prereg `fa337d70…`, core `b271f16b…`)은 D-v4-1–4 이전 것이라 대체되었습니다.
