@@ -34,7 +34,7 @@
 | 합성 validation | 9990002 | 위와 같음 |
 | P5 1 world | 8420001 (P2 smoke-1c world 1, r13 case 1) | train·validation·heldout·pilot과 겹치지 않음. `known_ranges`의 beamact5 wide gate40(8420000–8420039)에 들어 있는데, 이것은 이미 실행된 P2 smoke world라서 예상된 결과입니다(테스트 `test_synthetic_seeds_do_not_overlap_registered_ranges`) |
 
-전체 origin ref `git grep` 결과(999000x 리터럴)는 커밋 메시지와 최종 보고에 적습니다.
+`git grep -I -E '\b999000[0-9]\b'`(`*.py`·`*.json`·`*.md`)를 origin의 pairact ref 47개와 `origin/main`에 돌린 결과, 이 dry-run 브랜치 밖에서는 일치가 0건이었습니다(2026-10-21). 나머지 origin ref(전체 416개)는 시간 문제로 스캔하지 못했습니다 [확인 필요].
 
 ## 3. 경로 (VM)
 
