@@ -13,8 +13,8 @@ spec.loader.exec_module(p2)
 
 def test_pins_point_to_p2_trees():
     text = (ROOT/'scripts/warp_flow_episode.py').read_text()
-    assert "ADAPTER_SHA = '2e4460ee618894542e73e164f9f814a50426b3f8'" in text     # adapter -a-c4
-    assert "TEACHER_SHA = '402bbf155ca162da7a74518eab9b8bd98138299a'" in text     # teacher -c4 (route 즉시 기록)
+    assert "ADAPTER_SHA = '3779d9615ef6dc8e38f57ab968a14a9e45189ecc'" in text     # adapter -a-c5
+    assert "TEACHER_SHA = '75929e7719ad98a089e3dda5251f4249d8bae511'" in text     # teacher -c5 (-c4 + c3 admission)
 
 
 def test_pinned_adapter_run_passes_the_bridge_audit():
