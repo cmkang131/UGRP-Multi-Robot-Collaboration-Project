@@ -447,7 +447,19 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
                 if not probe and pair_carry!='off' and report['joint_held']:
                     from harness.pair_carry_teacher_warp import start_from_runner
                     from harness.pair_carry_recorder import CarryRecorder
+                    plan_started=time.monotonic()
                     carry=start_from_runner(plan,truth,now,scene,teachers,previous,carry_cap_s,lower_mode=carry_lower,route_mode=carry_route)
+                    if carry_route!='straight_v1':
+                        # -c4 (opt-in route modes only): persist route/route_info the moment it is
+                        # planned, so a wall-capped or killed run still has it (result.json is final-only)
+                        planned=dict(carry.route_record(),handover_sim_s=now-origin,plan_wall_s=time.monotonic()-plan_started)
+                        report['carry_route_plan']=planned
+                        write(out/'carry-route.json',planned)
+                        try:write(out/'result.json',report)
+                        except (TypeError,ValueError) as error:planned['result_json_midrun_error']=str(error)
+                        print('CARRY_ROUTE_PLANNED '+json.dumps(dict(out=str(out),variant=planned['route_info'].get('variant'),
+                            outcome=planned['outcome'],plan_wall_s=planned['plan_wall_s'],handover_sim_s=planned['handover_sim_s'])),
+                            file=sys.stderr,flush=True)
                     recorders={rid:CarryRecorder(rid,plan['roles'][rid],history=history[rid],
                         images=images.setdefault(rid,deque(maxlen=max(HISTORY+1,math.ceil(contract.MEMORY_S/.1)+2))),
                         episode_id=plan['episode_id'],clock=clocks[rid]) for rid in plan['roles']}

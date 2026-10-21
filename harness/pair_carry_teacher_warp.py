@@ -37,6 +37,7 @@ LOWER_MODES = ('grasp_height', 'floor_contact_v1')
 ROUTE_MODES = ('straight_v1', 'detour_v1')
 NO_PATH = 'route_blocked_no_path'                 # detour_v1: search found no clear path
 SCHEMA = 'ugrp.pairact.carry_teacher.v1'
+ROUTE_RECORD_SCHEMA = 'ugrp.pairact.carry_route_plan.v1'   # -c4 carry-route.json
 ROLES = ('teal', 'blue')
 SERVOS = (1, 3, 4, 5, 6)
 GRIPPER_OPEN = 2000
@@ -596,9 +597,13 @@ class PairCarryTeacherWarp:
         self.max_stretch = self.max_track = 0.
         self.retreat_start = {}
         self.route, self.route_info, self.seg = [], {}, 0
+        # -c4: the route (incl. detour_v1 A*) is planned exactly once, here at the
+        # handover; step() only tracks it. Counted so a run can prove it.
+        self.route_plans = self.detour_searches = 0
         if missing:
             self._fail('arm_targets_missing', now, detail=missing)
             return
+        self.route_plans += 1
         try:
             self.route, self.route_info = carry_route(beam, self.offsets, static_map, params=params,
                                                       door_id=door_id, zone=zone)
@@ -611,6 +616,7 @@ class PairCarryTeacherWarp:
         self.route_info['variant'] = 'translate_first' if blocked is None or blocked[0] else 'rotate_first'
         if blocked is not None and not blocked[0] and route_mode == 'detour_v1':
             # both straight variants blocked: formation-space search (GT, teacher only)
+            self.detour_searches += 1
             detour, info = detour_route(beam, planned, self.offsets, wall_rects(static_map), list(obstacles or ()))
             self.route_info['route_mode'] = route_mode
             self.route_info['straight_blocked'] = blocked[1]
@@ -865,6 +871,21 @@ class PairCarryTeacherWarp:
         if blocked:
             return {}
         return drive
+
+    def route_record(self):
+        """-c4: the planned route as soon as it exists (written by the runner at
+        the handover so a wall-capped run keeps it). Non-finite floats -> None."""
+        def clean(v):
+            if isinstance(v, float):
+                return v if math.isfinite(v) else None
+            if isinstance(v, dict):
+                return {k: clean(x) for k, x in v.items()}
+            if isinstance(v, (list, tuple)):
+                return [clean(x) for x in v]
+            return v
+        return clean({'schema': ROUTE_RECORD_SCHEMA, 'route': [[t, list(p)] for t, p in self.route],
+                      'route_info': self.route_info, 'route_plans': self.route_plans,
+                      'detour_searches': self.detour_searches, 'outcome': self.outcome, 'phase': self.phase})
 
     def diagnostic(self):
         return {'schema': SCHEMA, 'mode': MODE, 'params': asdict(self.p), 'outcome': self.outcome,
