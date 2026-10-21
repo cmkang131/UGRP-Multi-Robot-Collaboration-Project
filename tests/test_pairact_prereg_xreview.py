@@ -1,8 +1,9 @@
-"""Cross-review repro (Claude, 2026-10-21) of COLLECT_PREREG v3s (dsh/pairact-carry-r1-v3-shard 6a68e4ca8).
+"""Cross-review repro (Claude, 2026-10-21) of COLLECT_PREREG v3s, flipped for v4 (dsh/pairact-carry-r1-v4).
 
-These tests pin the *current* behaviour that the review flags (outputs/reports/claude-arch-parallel-20261019/
-t2-prereg-xreview.md).  They pass on 6a68e4ca8; a fix should flip the marked assertion.  No collector
-code is changed here.
+X1-X8 first pinned the v3s behaviour flagged in outputs/reports/claude-arch-parallel-20261019/
+t2-prereg-xreview.md (8 passed on 6a68e4ca8).  v4 fixes B1-B3 and R1-R3 (owner decisions 2026-10-21,
+CODEX_RESPONSE_V4.md); each test now pins the fixed behaviour.  X7 keeps the disclosed lag effect
+(R4) and pins that the stop is the stop of the drained data.
 """
 import json
 import random
@@ -35,23 +36,37 @@ def _start(d):
     return {'r1': dict(distance_m=d, yaw_offset_rad=3.), 'r2': dict(distance_m=d, yaw_offset_rad=3.)}
 
 
-# X1 (BLOCKER a/c): train_closed is only the LAST fallback of train_stop; the final decision is
-# re-evaluated on data that includes in-flight batches finished after the close.
-def test_x1_sharded_stop_distance_close_can_end_as_train(prereg):
-    # 160 admitted, distances spread so the distance gate passes on the FINAL set
+def _sharded(tmp_path, prereg, k, episode_factory, seed, **kw):
+    run_cooperative(tmp_path, prereg, k, {i: episode_factory() for i in range(k)}, rng=random.Random(seed), **kw)
+    rows, rep, meta = merged_rows(tmp_path, prereg, k)
+    return rows, pc.replay(prereg, rows), rep, meta
+
+
+# X1 (BLOCKER B1, v4 fixed): train_closed can no longer change the decision class.  It is written only on
+# the drained view, equals train_stop of the final data, and a ledger where it disagrees is refused.
+def test_x1_train_closed_cannot_change_the_decision_class(tmp_path, prereg):
     rows = [attempt_row(8340000 + k, pc.bin_ids(prereg)[k % 6], OK, start=_start(.35 + .1 * (k % 9)))
             for k in range(160)]
     st = _ledger(prereg, rows, extra=[dict(type='train_closed', planning_batch=8, stop='STOP_DISTANCE')])
-    assert pc.distance_gate(prereg, st)['passed']
-    d = pc.decision(prereg, st)
-    assert d['train_stop'] == 'STOP_DISTANCE'                      # the recorded stop ...
-    assert d['decision'] == 'TRAIN'                                # ... but not NO_TRAIN_DISTANCE_GATE (per_stop)
-    assert 'NO_TRAIN_DISTANCE_GATE' in prereg['training_decision']['per_stop']['STOP_DISTANCE']
+    assert pc.distance_gate(prereg, st)['passed'] and pc.train_stop(prereg, st) is None
+    with pytest.raises(ValueError, match='disagrees'):
+        pc.decision(prereg, st)
+    from test_pairact_collect_shard import outcome
+    _, st_serial, _ = collect(tmp_path / 'serial', prereg, None, episode=FakeEpisode(outcome))
+    serial = pc.decision(prereg, st_serial)
+    for k, seed in ((2, 1), (3, 1)):
+        rows, st, rep, meta = _sharded(tmp_path / f'k{k}', prereg, k, lambda: FakeEpisode(outcome), seed)
+        held = [r for r in rows if r['type'] == 'train_barrier' and r['action'] == 'hold']
+        closed = next(r for r in rows if r['type'] == 'train_closed')
+        assert held and held[0]['planning_batch'] < closed['planning_batch']      # the lagged stop was held ...
+        assert closed['stop'] == pc.train_stop(prereg, st)                        # ... and fixed on the drained data
+        assert meta['finished'] and pc.decision(prereg, st)['decision'] == serial['decision']   # same class as serial
+        assert pc.decision(prereg, st)['train_stop'] == serial['train_stop'] == 'STOP_TARGET'
 
 
-# X2 (BLOCKER a/c): with K > 1, STOP_SEEDS is seen while the last batch is in flight, so its
-# HOST_ERROR re-queue is never run; the serial run re-queues it ("re-queued as in the serial run").
-def test_x2_stop_seeds_drops_in_flight_requeue(tmp_path, prereg):
+# X2 (BLOCKER B2, v4 fixed): STOP_SEEDS seen while the last batch is in flight is held; its HOST_ERROR
+# re-queue runs before the stop is fixed, as in the serial run.
+def test_x2_stop_seeds_waits_for_the_in_flight_requeue(tmp_path, prereg):
     def outcome(seed, case):
         return result(success=seed % 4 == 0)
 
@@ -61,29 +76,29 @@ def test_x2_stop_seeds_drops_in_flight_requeue(tmp_path, prereg):
     drop = [8340599]
     serial_state, st_serial, _ = collect(tmp_path / 'serial', prereg, None, make_cases=cases,
                                          episode=FakeEpisode(outcome, drop_seeds=drop))
-    eps = {i: FakeEpisode(outcome, drop_seeds=drop) for i in range(2)}
-    run_cooperative(tmp_path / 'k2', prereg, 2, eps, rng=random.Random(1), make_cases=cases)
-    rows, rep, meta = merged_rows(tmp_path / 'k2', prereg, 2)
-    st_k2 = pc.replay(prereg, rows)
+    rows, st_k2, rep, meta = _sharded(tmp_path / 'k2', prereg, 2, lambda: FakeEpisode(outcome, drop_seeds=drop), 1,
+                                      make_cases=cases)
     assert pc.train_stop(prereg, st_serial) == pc.train_stop(prereg, st_k2) == 'STOP_SEEDS'
     rq = lambda st: [r for r in pc.split_rows(st, 'train') if r['requeue']]
-    assert len(rq(st_serial)) == 1                                  # serial: re-queued once
-    assert rq(st_k2) == []                                          # K = 2: lost
-    assert pc.totals(st_serial)['attempts'] == pc.totals(st_k2)['attempts'] + 1
+    assert len(rq(st_serial)) == len(rq(st_k2)) == 1                               # re-queued once in both
+    assert pc.totals(st_serial)['attempts'] == pc.totals(st_k2)['attempts']
+    assert pc.decision(prereg, st_serial)['decision'] == pc.decision(prereg, st_k2)['decision']
+    assert any(r['type'] == 'train_barrier' and r['stop'] == 'STOP_SEEDS' for r in rows)
 
 
-# X3 (BLOCKER b): validation is one batch of 20; a single HOST_ERROR world makes the batch unclean,
-# every validation success is then not admitted and the gate (>= 8) fails -> NO_TRAIN.
-def test_x3_one_host_error_in_validation_batch_blocks_training(tmp_path, prereg):
+# X3 (BLOCKER B3, v4 fixed): one HOST_ERROR world in the validation batch re-queues every judged world of
+# that batch once (environment, not in N); the clean re-run is judged and admitted -> TRAIN.
+def test_x3_one_host_error_in_validation_batch_is_requeued(tmp_path, prereg):
     state, st, _ = collect(tmp_path, prereg, None, episode=FakeEpisode(lambda s, c: result(), drop_seeds=[8341003]))
     v = pc.totals(st, 'validation')
-    assert (v['successes'], v['admitted'], v['env_failures']) == (20, 1, 1)
-    assert state == 'NO_TRAIN_VALIDATION_INSUFFICIENT'
+    assert (v['attempts'], v['successes'], v['admitted'], v['env_failures']) == (20, 20, 20, 20)
+    assert v['env_by_kind'] == {'host_error': 1, 'unclean_batch_requeue': 19}
+    assert state == 'TRAIN'
 
 
-# X4 (권고 b): bin_limit retires on S/N, the allocator weights on A; a bin with S/N >= 0.2 but
-# A ~ 0 (handoff successes) is never retired and takes most of every batch.
-def test_x4_bin_with_successes_but_no_admissions_is_never_limited_and_dominates(prereg):
+# X4 (권고 R1, v4 fixed): bin_limit reads A_b / N_b like the allocation; a bin with physical successes but
+# no admissions is limited and gets no slot.
+def test_x4_bin_with_successes_but_no_admissions_is_limited(prereg):
     handoff_ok = dict(pc.judge(result(handoff=True), mode='measurement', batch_clean=True))
     rows = []
     for k, b in enumerate(b for b in pc.bin_ids(prereg) for _ in range(30)):
@@ -94,68 +109,78 @@ def test_x4_bin_with_successes_but_no_admissions_is_never_limited_and_dominates(
             j = OK if i < 10 else FAIL
         rows.append(attempt_row(8340000 + k, b, j))
     st = _ledger(prereg, rows)
-    assert pc.bin_counts(prereg, st)['B5']['admitted'] == 0 and pc.pending_bin_limits(prereg, st) == []
-    slots = pc.allocate(prereg, st, 20)
-    assert slots.count('B5') >= 14
+    lim = pc.pending_bin_limits(prereg, st)
+    assert pc.bin_counts(prereg, st)['B5']['admitted'] == 0 and [r['bin'] for r in lim] == ['B5']
+    assert lim[0]['admitted_rate'] == 0 and lim[0]['success_rate'] == .5           # S/N reported only
+    st = _ledger(prereg, rows, extra=lim)
+    assert 'B5' not in pc.allocate(prereg, st, 20)
 
 
-# X5 (권고 b): with both far bins limited the 25% share > 0.8 m cannot be met from B2/B3 alone,
-# contrary to distance_gate.rationale ("allowing the far bins to be bin_limited").
-def test_x5_both_far_bins_limited_fail_the_distance_gate(prereg):
+# X5 (권고 R2, v4 fixed): with B4 and B5 both bin_limited the 0.9-1.2 m band leaves the distance gate
+# (denominator, cells, scaled share) and the result carries the label.
+def test_x5_both_far_bins_limited_leave_the_distance_gate(prereg):
     rows, k = [], 0
-    for b, n in (('B0', 38), ('B1', 38), ('B2', 38), ('B3', 38), ('B4', 3), ('B5', 3)):
-        for _ in range(n):
+    for b, n, ok in (('B0', 38, 38), ('B1', 38, 38), ('B2', 38, 38), ('B3', 38, 38), ('B4', 20, 3), ('B5', 20, 3)):
+        for i in range(n):
             seed = 8340000 + k
             d0, _y = pc.draw_start(prereg, seed, b, 0)
             d1, _y = pc.draw_start(prereg, seed, b, 1)
-            rows.append(attempt_row(seed, b, OK, start={'r1': dict(distance_m=d0, yaw_offset_rad=3.),
-                                                         'r2': dict(distance_m=d1, yaw_offset_rad=3.)}))
+            rows.append(attempt_row(seed, b, OK if i < ok else FAIL,
+                                    start={'r1': dict(distance_m=d0, yaw_offset_rad=3.),
+                                           'r2': dict(distance_m=d1, yaw_offset_rad=3.)}))
             k += 1
     st = _ledger(prereg, rows)
+    assert pc.totals(st)['admitted'] == 158 and not pc.distance_gate(prereg, st)['passed']     # not limited yet
+    lim = pc.pending_bin_limits(prereg, st)
+    assert sorted(r['bin'] for r in lim) == ['B4', 'B5']
+    st = _ledger(prereg, rows, extra=lim)
     g = pc.distance_gate(prereg, st)
-    assert pc.totals(st)['admitted'] == 158 and g['share_over_0p8'] < .25 and not g['passed']
+    assert g['range_excluded'] == [[0.9, 1.2]] and g['robot_starts'] == 152 * 2
+    assert g['min_share_required'] == pytest.approx(.25 * (.1 / .6) / (.4 / .9))
+    assert g['share_over_0p8'] < .25 and g['passed'] and '거리 관문 축소' in g['label']
+    st = _ledger(prereg, rows, extra=[r for r in lim if r['bin'] == 'B5'])        # one far bin open: no exclusion
+    assert pc.distance_gate(prereg, st)['range_excluded'] == []
 
 
-# X6 (정보 a): with K > 1 validation is planned while train batches are still in flight
-# (prereg seeds.validation: "only after the train stop (never during ... collection)").
-def test_x6_validation_planned_with_train_batches_in_flight(tmp_path, prereg):
-    eps = {i: FakeEpisode(lambda s, c: result()) for i in range(3)}
-    run_cooperative(tmp_path, prereg, 3, eps, rng=random.Random(5))
-    rows, rep, meta = merged_rows(tmp_path, prereg, 3)
+# X6 (정보/R5, v4 fixed): validation is planned only after train_closed, never with a train batch in flight.
+def test_x6_validation_never_planned_with_train_batches_in_flight(tmp_path, prereg):
+    rows, st, rep, meta = _sharded(tmp_path, prereg, 3, lambda: FakeEpisode(lambda s, c: result()), 5)
     planned = {r['batch']: r['split'] for r in rows if r['type'] == 'batch_planned'}
     v = min(j for j, s in planned.items() if s == 'validation')
-    assert any(planned.get(j) == 'train' for j in range(v - 2, v))
+    assert not any(planned.get(j) == 'train' for j in range(v - 2, v))
+    closed = next(i for i, r in enumerate(rows) if r['type'] == 'train_closed')
+    first_val = next(i for i, r in enumerate(rows) if r['type'] == 'batch_planned' and r['split'] == 'validation')
+    assert closed < first_val and rep['run_state'] == 'TRAIN'
 
 
-# X7 (권고 a): bin_limit reads lagged counts; a hopeless bin keeps its high deficit weight
-# (need / p_floor) for K - 1 more batches, so it receives more attempts than in the serial run.
-def test_x7_hopeless_bin_gets_more_attempts_with_k4(tmp_path, prereg):
+# X7 (권고 R4, disclosed): bin_limit reads lagged counts, so a hopeless bin gets more attempts with K = 4.
+# The stop is fixed on the drained data by the serial function; the drained data themselves differ from the
+# serial run (different bin sequence), so the class may differ: here serial STOP_TARGET (A 204), K = 4
+# STOP_DISTANCE on the drained ledger (A 181) -- disclosed in sharding.what_changes_vs_serial.
+def test_x7_hopeless_bin_gets_more_attempts_with_k4_and_the_stop_is_the_drained_stop(tmp_path, prereg):
     from test_pairact_collect_shard import outcome
     _, st_serial, _ = collect(tmp_path / 'serial', prereg, None, episode=FakeEpisode(outcome))
-    eps = {i: FakeEpisode(outcome) for i in range(4)}
-    run_cooperative(tmp_path / 'k4', prereg, 4, eps, rng=random.Random(2))
-    rows, rep, meta = merged_rows(tmp_path / 'k4', prereg, 4)
-    st_k4 = pc.replay(prereg, rows)
+    rows, st_k4, rep, meta = _sharded(tmp_path / 'k4', prereg, 4, lambda: FakeEpisode(outcome), 2)
     n = lambda st: pc.bin_counts(prereg, st)['B5']['attempts']
     assert 'B5' in st_serial['limited'] and 'B5' in st_k4['limited']
     assert n(st_k4) > n(st_serial)                                  # 36 vs 22 on this fake
-    # same fake outcome function, different terminal class (BLOCKER a): serial STOP_TARGET (A 204),
-    # K = 4 STOP_DISTANCE -> NO_TRAIN_DISTANCE_GATE (A 181, N 380)
-    assert pc.train_stop(prereg, st_serial) == 'STOP_TARGET'
-    assert pc.train_stop(prereg, st_k4) == 'STOP_DISTANCE'
-    assert pc.decision(prereg, st_k4)['decision'] == 'NO_TRAIN_DISTANCE_GATE'
+    closed = next(r for r in rows if r['type'] == 'train_closed')
+    assert closed['stop'] == pc.train_stop(prereg, st_k4) == 'STOP_DISTANCE'
+    assert closed['admitted'] == pc.totals(st_k4)['admitted'] == 181          # nothing arrived after the close
+    assert pc.train_stop(prereg, st_serial) == 'STOP_TARGET' and pc.totals(st_serial)['admitted'] == 204
+    assert not pc.distance_gate(prereg, st_k4)['passed']                      # the drained data fail the gate
 
 
-# X8 (권고 c): STOP_HOST needs two *consecutive* unclean batches by global index; with
-# interleaved ownership a permanently broken shard (every K-th batch unclean) never triggers it,
-# and its batches still count in N (judged, never admitted).
-def test_x8_one_broken_shard_never_triggers_stop_host(tmp_path, prereg):
+# X8 (권고 R3, v4 fixed): a permanently broken shard triggers STOP_HOST through stop_rules.shard_host
+# (3 unclean in a row of its own batches) long before the cap.
+def test_x8_one_broken_shard_triggers_stop_host(tmp_path, prereg):
     ok = lambda s, c: result(success=s % 3 == 0)
     eps = {0: FakeEpisode(ok), 1: FakeEpisode(ok, status='HOST_ERROR')}
-    run_cooperative(tmp_path, prereg, 2, eps, rng=random.Random(4))
+    states = run_cooperative(tmp_path, prereg, 2, eps, rng=random.Random(4))
     rows, rep, meta = merged_rows(tmp_path, prereg, 2)
     st = pc.replay(prereg, rows)
     unclean = [k for k, b in st['batches'].items() if b['split'] == 'train' and b['done'] and not b['clean']]
-    assert len(unclean) >= 10
-    assert pc.train_stop(prereg, st) != 'STOP_HOST'
-    assert pc.totals(st)['attempts'] == prereg['targets']['attempt_cap']     # half the cap spent on unclean batches
+    d = pc.decision(prereg, st)
+    assert d['train_stop'] == 'STOP_HOST' and set(states.values()) == {rep['run_state']} == {'NO_TRAIN_BELOW_FLOOR'}
+    assert [s['shard'] for s in d['host_stop']['shards']] == [1] and len(unclean) == 3
+    assert pc.totals(st)['attempts'] < 200

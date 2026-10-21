@@ -589,6 +589,7 @@ def main():
     prereg_core = pc.prereg_core_sha256(prereg)
     stage = prereg['status']
     if a.command in ('report', 'convert-input', 'probe-cases'):
+        merged_meta(a.run_root, require_finished=False)     # v4: a sharded run root is read through merged/ only
         st = pc.replay(prereg, pc.read_ledger(a.run_root / 'ledger.jsonl'))
         pc.require_header_sha(st, sha, prereg_core)     # audit 2: never relabel a ledger under another prereg
     if a.command == 'merge':

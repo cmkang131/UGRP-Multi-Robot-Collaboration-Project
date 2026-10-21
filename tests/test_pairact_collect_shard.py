@@ -437,3 +437,8 @@ def test_cli_shard_needs_vm_and_merge_writes_the_merged_root(tmp_path, prereg):
     assert res['state'] == 'PILOT_DONE' and res['finished'] and (root / 'merged' / 'report.json').exists()
     out = cli('report', '--prereg', str(PREREG), '--run-root', str(root / 'merged'))
     assert out.returncode == 0 and '수율 측정' in out.stdout
+    # v4 (Codex H3): report on the merged root keeps the sharding block; the sharded root itself is refused
+    rep = json.loads((root / 'merged' / 'report.json').read_text())
+    assert rep['sharding']['count'] == 2 and rep['sharding']['finished']
+    out = cli('report', '--prereg', str(PREREG), '--run-root', str(root))
+    assert out.returncode != 0 and 'sharded run root' in out.stderr

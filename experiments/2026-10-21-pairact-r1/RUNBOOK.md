@@ -1,10 +1,18 @@
-# pairact-r1 실행 순서 (DeepSeek용 — 수집 사전 등록 v3, v3s 샤딩)
+# pairact-r1 실행 순서 (DeepSeek용 — 수집 사전 등록 v4, 샤딩 + 정지 barrier)
+
+v4 변경(2026-10-21, 대응표 `CODEX_RESPONSE_V4.md`, 교차 검토 B1–B3·R1–R8 + Codex H1–H5):
+- *정지 barrier*(K>1): 첫 정지가 보이면 새 batch를 계획하지 않고(`train_barrier` hold, `batch_skipped`) 실행 중 batch를 모두 끝낸 뒤 *전체 원장*으로 정지를 한 번 판정해 `train_closed`로 고정합니다. 정지가 아니면(예: STOP_SEEDS인데 실행 중 batch의 HOST_ERROR 재큐가 남음) `release`하고 직렬과 같이 이어갑니다. 정지·학습 판정은 K와 무관하게 같은 함수입니다. 구간 배정 순서는 K>1이면 직렬과 달라질 수 있습니다(공개 유지).
+- validation batch가 unclean이면 판정된 world도 같은 seed로 1회 재큐합니다. 재큐 batch도 unclean이면 그 seed는 미채택입니다.
+- `bin_limit`은 채택률 A_b/N_b < 0.2(배정과 같은 지표, 물리 성공률은 보고용), 거리 관문은 *전부 제한된 거리 구간*(예: B4·B5 = 0.9–1.2 m)을 분모·칸 검사에서 빼고 요구 비율을 줄인 뒤 결과에 `거리 관문 축소(...)` 표기를 붙입니다.
+- STOP_HOST: 연속 2 batch unclean(순서 기준, 나중 clean batch가 지우지 못함) *또는* 한 샤드의 자기 batch가 연속 3개 unclean이거나 6개 이상 중 30% 이상 unclean.
+- K(샤드 수)는 *FROZEN_CORE 전* measurement 모드 측정(1-2b)으로 정합니다. pilot 26/40은 -c4 결과라 -c5 수율 근거로 쓰지 않습니다.
+- convert-input은 merged root만, `merge.json` finished·running 없음·원장 sha 일치·admitted raw 존재를 확인합니다. merge는 샤드 원장이 이전 merge의 append-only 연장인지, seed가 두 번 새로 쓰이지 않았는지 검사합니다. 학습 수집은 `--dependency-root/--adapter-root/--frozen-root`의 git HEAD가 RUN_MANIFEST stack pin과 같고 clean해야 시작합니다.
 
 v3s 변경(2026-10-21): 수집을 *샤드 병렬*로 돌립니다(prereg `sharding`, 실행 방식만 바뀌고 판정·집계·정지·배정 공식·seed 규칙은 그대로). 같은 VM 3–4 프로세스와 두 VM 동시 실행은 1-6a·1-6b, 예상 시간 계산식은 1-6c에 있습니다. 스택은 *-c5*(teacher -c4 + c3 admission)로 고정했습니다(1-0).
 
 v3 변경(Codex v2 재검토 HOLD 대응, 대응표 `CODEX_RESPONSE_V3.md`): 동결이 *2-커밋(X·Y) + 2단계(FROZEN_CORE → FROZEN)*로 바뀌었습니다. pre-freeze pilot은 수율 전용(`pilot_yield_only`)이라 녹화 probe·학습 입력으로 쓸 수 없습니다. probe 대상은 FROZEN_CORE에서 새로 돌리는 *probe source* 측정 run에서 고릅니다.
 전제: P1 관문(≥38/40)은 수집을 막지 않는 병행 작업입니다. 수집 시작 조건은 *P2 smoke 전 구간 성공 ≥1* 하나이고 smoke-1c(seed 8420001·8420011·8420017) 운반 성공 2/3으로 충족했습니다(증거 해시는 `RUN_MANIFEST.json` `smoke`의 VM 기입 칸).
-규칙: 새 run root만 씁니다. 원본·체크포인트는 덮어쓰지 않습니다. 오프피크(UTC 16:30–00:30)에만 실행하고 끝나면 VM을 정지합니다. 브랜치는 `dsh/pairact-carry-r1-v3-shard`입니다(v3 `f5c37425f` 위).
+규칙: 새 run root만 씁니다. 원본·체크포인트는 덮어쓰지 않습니다. 오프피크(UTC 16:30–00:30)에만 실행하고 끝나면 VM을 정지합니다. 브랜치는 `dsh/pairact-carry-r1-v4`입니다(v3s `6a68e4ca8` 위).
 
 ## 0. 사전 확인 (CPU, 수 분)
 ```
@@ -53,9 +61,10 @@ mkdir -p $SRC
 for t in teacher:$TEACHER_C5 adapter:$ADAPTER_C5 root:$ROOT_C5; do
   git -C /home/ugrp/ugrp-sim/ugrp worktree add --detach $SRC/${t%%:*} ${t#*:}      # VM 레포 경로는 [확인 필요]
 done
-COL=/home/ugrp/ugrp-sim/src/pairact-r1v3      # 이 브랜치 worktree (단계마다 X → Y → Z로 갱신)
-git -C /home/ugrp/ugrp-sim/ugrp worktree add --detach $COL origin/dsh/pairact-carry-r1-v3-shard
-cd $COL && python -m pytest -q tests/test_pairact_collect.py tests/test_pairact_r1.py tests/test_pairact_collect_shard.py     # 120 passed
+COL=/home/ugrp/ugrp-sim/src/pairact-r1v4      # 이 브랜치 worktree (단계마다 X → Y → Z로 갱신)
+git -C /home/ugrp/ugrp-sim/ugrp worktree add --detach $COL origin/dsh/pairact-carry-r1-v4
+cd $COL && python -m pytest -q tests/test_pairact_collect.py tests/test_pairact_r1.py tests/test_pairact_collect_shard.py \
+  tests/test_pairact_prereg_xreview.py tests/test_pairact_collect_v4.py     # 기대 수: CODEX_RESPONSE_V4.md 맨 끝(torch 없으면 2 skip)
 P=$COL/experiments/2026-10-21-pairact-r1/COLLECT_PREREG_DRAFT.json
 M=$COL/experiments/2026-10-21-pairact-r1/RUN_MANIFEST.json
 EP="python /home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py --flow beampair \
@@ -81,11 +90,29 @@ python $COL/scripts/run_pairact_collect.py collect --prereg $P --run-root $RUNP 
   --dependency-root $SRC/teacher --frozen-root $SRC/root --adapter-root $SRC/adapter --episode-cmd "$EP"
 ```
 - 원장 purpose는 `pilot_yield_only`입니다. "수율 측정, 시연 아님"으로만 보고하며 probe·학습 입력에 쓰지 않습니다(runner가 거부).
+- 이미 있는 READY pilot 26/40(STATUS 2026-10-21)은 *-c4 스택* 결과입니다. -c5 수집의 수율 근거로 쓰지 않습니다(600 상한의 33% 가정은 결정 문서 3의 값). 보고에는 purpose와 스택을 같이 적습니다(`pilot_yield_only -c4`, `probe_source -c5`).
+
+### 1-2b. K(샤드 수) 경합 측정 — measurement 모드, *FROZEN_CORE 전* (prereg `sharding.K`, 교차 검토 R6)
+K는 core 내용이라 FROZEN_CORE에서 고정되고, 학습 run root를 연 뒤에는 바꾸지 않습니다(바꾸려면 새 prereg 개정·오너 결정, 같은 train seed 재수집 금지). 그래서 경합 측정을 *먼저* 합니다.
+```bash
+# 같은 VM에서 K개 프로세스를 동시에 (각자 다른 run root, 각 20 world, pilot seed 8343000–019 batch 1개; 수율은 보고하지 않음)
+for K in 3 4; do
+  for i in $(seq 1 $K); do
+    RUNK=/home/ugrp/ugrp-sim/runs/pairact-p3-kmeas-K$K-p$i-$(date -u +%Y%m%dT%H%M); mkdir -p $RUNK
+    nohup python $COL/scripts/run_pairact_collect.py collect --prereg $P --run-root $RUNK --mode measurement --noise off \
+      --batch-size 20 --max-batches 1 --deadline-utc $DEADLINE --run-manifest $M \
+      --dependency-root $SRC/teacher --frozen-root $SRC/root --adapter-root $SRC/adapter --episode-cmd "$EP" > $RUNK.log 2>&1 &
+  done; wait      # 프로세스마다 summary.json wall_s·host_loop_s.world_ticks, nvidia-smi 최대 메모리, CPU 사용률 기록
+done
+```
+- 판정: 처리량 ∝ P ÷ s_wt(P)입니다. `K ÷ s_wt(K)`가 `(K−1) ÷ s_wt(K−1)`보다 크고 GPU 메모리 여유가 있을 때만 K를 올립니다(1-6c). 결과로 `RUN_MANIFEST.json` `sharding.count`·`lag_batches`·`assignment`를 정하고 1-3으로 갑니다.
+- 이 측정은 *결정성·경합 측정용*입니다. measurement 모드는 구간이 고정(`seed % 6`)이라 K>1의 적응 경로(warmup·deficit·bin_limit·정지 barrier)는 검증하지 못합니다. 그 경로는 가짜 에피소드 테스트(`test_pairact_prereg_xreview.py` X1·X2·X7·X8, `test_pairact_collect_shard.py`)로만 검증되었다고 보고에 적습니다.
+- 같은 pilot seed를 여러 run root에서 돌리므로 수율은 보고하지 않고 합산하지 않습니다. warp kernel cache 동시 컴파일 충돌 여부 [확인 필요](첫 프로세스 시작 300 s 뒤 나머지를 띄우는 방식도 기록).
 - *중단·재시작*: 같은 명령을 다시 실행하면 `ledger.jsonl`에서 이어갑니다. 최종 summary가 있는 배치는 다시 돌리지 않고 집계만 합니다. 중간에 끊긴 배치는 남은 slot만 `try-2`로 1회 재시도하고 두 번째도 끊기면 환경 실패로 닫습니다. HOST_ERROR world는 같은 seed·구간으로 1회 재배정되고, 그 재배정 slot이 생성기에서 setup 거부되면 대기열에서 빠집니다(다시 고르지 않음).
 
 ### 1-3. 커밋 X·Y — FROZEN_CORE (Codex 재검토 통과 뒤)
 1. *커밋 X*: Codex가 통과시킨 collector 코드 커밋(`COLLECTOR_FILES` + `collect_cases.py`를 마지막으로 바꾼 커밋). `X=$(git -C $COL rev-parse HEAD)`. 이후 이 파일들은 바꾸지 않습니다(바뀌면 runner가 거부).
-2. *샤드 수·VM 배정 결정*(core 내용이라 여기서 확정): `RUN_MANIFEST.json` `sharding` 초안은 한 VM 4샤드(`count` 4, `assignment` {"gcp6": [0,1,2,3]}, `primary_vm` gcp6)입니다. 두 VM이면 `count` 6, `lag_batches` 6, `assignment` {"gcp6": [0,1,2], "gcp2": [3,4,5]}로 바꿉니다(gcp2 MJWarp 스택 준비 여부 [확인 필요]). 1-6a의 K 측정 전이면 3샤드(`count` 3)가 안전합니다.
+2. *샤드 수·VM 배정 결정*(core 내용이라 여기서 확정): `RUN_MANIFEST.json` `sharding` 초안은 한 VM 4샤드(`count` 4, `assignment` {"gcp6": [0,1,2,3]}, `primary_vm` gcp6)입니다. 두 VM이면 `count` 6, `lag_batches` 6, `assignment` {"gcp6": [0,1,2], "gcp2": [3,4,5]}로 바꿉니다(gcp2 MJWarp 스택 준비 여부 [확인 필요]). K는 1-2b 측정 결과로 정합니다(측정 전에는 FROZEN_CORE로 가지 않습니다).
 3. VM에서 읽기 전용 명령(`RUN_MANIFEST.json` `fill_commands`)으로 VM 기입 칸을 채웁니다. 22칸 = prereg 1 + collector 1 + command 2 + assets 5 + host 5 + smoke 4 + recording_check 3 + seed_check 1이며, *이 단계에서는 recording_check 3칸을 뺀 19칸*을 채우고 stack 세 SHA도 채웁니다. 타입: sha256은 64자리 소문자 hex, 커밋은 40자리, `assets.mesh_assets_sha256`은 {절대경로: sha256}, `smoke.carry_eval_sha256`은 {world-000, world-001, world-002: sha256}. 빈 문자열·`[VM 기입]`·`[확인 필요]`·`<...>`는 gate가 거부합니다.
 4. `python $COL/scripts/pairact_r1_freeze.py core --collector-sha $X --verify-assets` → prereg·manifest status FROZEN_CORE, `collector.source_sha`, `prereg.core_sha256`을 쓰고 stage core gate(스키마·타입·placeholder·prereg/limits 교차·X 조상·collector 파일 X..HEAD 불변·자산 재해시)를 통과해야 파일을 씁니다. 출력의 `core_sha256`을 `CORE`로 적어 둡니다.
 5. *커밋 Y*: prereg·manifest 두 파일만 커밋하고 메시지에 `CORE`를 적습니다(Claude/Codex 확인 뒤 push). `$COL`을 Y로 갱신합니다(추적 파일이 clean해야 다음 단계가 진행됩니다).
@@ -119,11 +146,12 @@ python $COL/scripts/pairact_r1_freeze.py final --recording-dir $RUNC --expect-co
 recording_check 3칸을 `$RUNC/{probe-cases,check-rows,recording-check}.json` sha256으로 채우고 status를 FROZEN으로 바꾼 뒤 stage final gate(세 파일 해시 대조·qualified 포함)를 통과해야 씁니다. core_sha256이 `CORE`와 다르면 거부합니다. *커밋 Z*(두 파일만, 메시지에 CORE) → push → `$COL`을 Z로 갱신.
 
 ### 1-6. 학습 수집 run (FROZEN, 새 run root, 샤드 병렬)
-샤드 규칙(prereg `sharding`, `batch_owner_lag_v1`): 전역 batch k는 shard `k % K`가 계획하고 돌립니다. batch k는 *batch < k의 계획 + batch ≤ k−K의 결과*만 보고 기존 규칙(plan_batch·allocate·정지)으로 계획합니다. 그래서 어느 샤드가 먼저 끝나든 같은 원장이 나옵니다(K=1이면 직렬 원장과 행 단위 동일, 테스트 고정). 진행 중인 batch의 train slot은 시도 상한 600에 미리 잡히고, 처음 본 정지가 `train_closed`로 train 계획을 닫습니다. 진행 중 batch는 끝까지 돌고 모두 집계합니다(overshoot 규칙과 같음).
+샤드 규칙(prereg `sharding`, `batch_owner_lag_v1`): 전역 batch k는 shard `k % K`가 계획하고 돌립니다. batch k는 *batch < k의 계획 + batch ≤ k−K의 결과*만 보고 기존 규칙(plan_batch·allocate·정지)으로 계획합니다. 그래서 어느 샤드가 먼저 끝나든 같은 원장이 나옵니다(K=1이면 직렬 원장과 행 단위 동일, 테스트 고정). 진행 중인 batch의 train slot은 시도 상한 600에 미리 잡힙니다. *정지 barrier*(v4): 지연된 view에서 정지가 처음 보이면 `train_barrier`(hold) 행을 쓰고 새 batch를 계획하지 않습니다(`batch_skipped`, seed 소비 없음). 진행 중 batch가 모두 끝나면 전체 원장으로 같은 정지 함수를 한 번 평가해 정지면 `train_closed`로 고정하고, 정지가 아니면 `train_barrier`(release) 뒤 직렬과 같이 이어갑니다(예: STOP_SEEDS였는데 HOST_ERROR 재큐가 남은 경우). 진행 중 batch의 결과는 모두 집계합니다(overshoot 규칙과 같음). validation은 `train_closed` 뒤에만, train batch가 하나도 실행 중이 아닐 때 계획됩니다.
 - 샤드마다 원장 `$RUNT/shards/sII/ledger.jsonl`, batch 디렉터리 `$RUNT/shards/sII/batches/bNNN/`. 한 샤드는 한 프로세스만(파일 lock, 두 번째는 즉시 실패). 원장 header에 shard 번호·K·VM이 남아 다른 VM·다른 K로 재시작하면 거부합니다.
 - 재시작: 같은 명령을 다시 실행합니다. 끊긴 batch는 직렬과 같은 규칙(try-2 1회, 두 번째도 끊기면 환경 실패로 닫음)으로 이어갑니다.
 - 기다림: 다음 batch의 view가 아직 안 찼으면 `--poll-s`(기본 30 s)마다 다시 봅니다. 한 샤드가 죽으면 나머지는 그 batch에서 멈춰 기다립니다(결정성 때문). `--max-wait-s`를 넘기면 `WAITING`으로 끝납니다(누적 대기). `--deadline-utc`를 넘기면 새 batch를 시작하지 않고 `DEADLINE`.
-- STOP_HOST: 모든 샤드가 `STOP_HOST`로 끝나고 아무 행도 쓰지 않습니다. 호스트 수정 보고 뒤 *모든 샤드*를 `--validation-after-host-fix`로 다시 실행합니다.
+- STOP_HOST: 연속 2 batch unclean 또는 한 샤드의 연속 3 unclean / 6개 이상 중 30% 이상 unclean(prereg `stop_rules.shard_host`). barrier 뒤 `train_closed`(STOP_HOST)가 써지고 모든 샤드가 `STOP_HOST`로 끝납니다(validation은 계획하지 않음). `report.json` `decision.host_stop.shards`에 어느 샤드인지 나옵니다. 호스트 수정 보고 뒤 *모든 샤드*를 `--validation-after-host-fix`로 다시 실행합니다.
+- validation batch가 unclean이면 그 batch에서 판정된 world도 환경 실패처럼 같은 seed로 1회 재큐됩니다(`unclean_batch_requeue`, N에 넣지 않음). 재큐 batch도 unclean이면 그 seed는 미채택으로 남고 더 재큐하지 않습니다.
 
 #### 1-6a. 같은 VM 3–4 샤드 (g2-standard-8, L4 1장)
 ```bash
@@ -140,7 +168,7 @@ done
 wait
 python $COL/scripts/run_pairact_collect.py merge --prereg $P --run-root $RUNT --shards $K     # -> $RUNT/merged/
 ```
-- 첫 밤 첫 batch에서 샤드별 `summary.json`의 `wall_s`·`host_loop_s.world_ticks`로 1-6c의 `s_wt`를 재고, K=3→4로 늘릴지 정합니다(K는 core라 바꾸려면 새 FROZEN_CORE·새 run root). GPU 메모리(`nvidia-smi`)와 CPU 사용률을 같이 적습니다. 프로세스당 20 world를 L4 1장에 3–4개 올렸을 때의 메모리는 [확인 필요]입니다.
+- K는 1-2b에서 이미 정했습니다. 첫 밤 첫 batch에서는 샤드별 `summary.json`의 `wall_s`·`host_loop_s.world_ticks`로 1-6c의 `s_wt`를 다시 재서 1-2b 값과 비교만 합니다(K는 바꾸지 않습니다. 호스트가 버티지 못하면 STOP_HOST 경로로 멈추고 보고). GPU 메모리(`nvidia-smi`)와 CPU 사용률을 같이 적습니다.
 - 각 샤드 프로세스의 runner가 시작 전에 stage final gate를 다시 돌립니다: `--shard i/K`의 K == `sharding.count`, i ∈ `assignment[--vm]`, `--recording-check` 세 파일 해시 == `recording_check`(primary VM). 직렬(`--shard` 없음) 학습은 `count` 1일 때만 됩니다.
 
 #### 1-6b. 두 VM 동시 실행 (gcp6 shard 0–2, gcp2 shard 3–5; `count` 6)
@@ -176,14 +204,14 @@ T_wall ≈ N_attempt × L_tick × s_wt ÷ P   (+ validation 20 × L_tick × s_wt
   python -c "import json,glob;r=[json.load(open(f)) for f in glob.glob('$RUNT/shards/*/batches/*/try-*/summary.json')];r=[x for x in r if 'worlds' in x and x.get('host_loop_s')];print(sum(x['wall_s'] for x in r)/sum(x['host_loop_s']['world_ticks'] for x in r))"
   L_tick 갱신: 원장 attempt 행 sim_s 평균 ÷ 0.1
 ```
-예(초기값): 600 × 1,200 × 0.34 s = 244,800 s ≈ 68 h(1 프로세스) → K=3 22.7 h, K=4 17 h, 두 VM 6 프로세스 11.3 h. 오프피크 8 h/밤 기준 K=4는 약 2.1밤, 6 프로세스는 약 1.4밤입니다(validation 20 × 1,200 × 0.34 s ≈ 2.3 h ÷ P, K=4면 약 0.6 h 추가). 동시 실행으로 프로세스당 `s_wt`가 커지면(CPU 8 vCPU 경합) 측정값으로 다시 계산하고, `s_wt × P`가 줄지 않으면 K를 늘리지 않습니다.
+예(초기값): 600 × 1,200 × 0.34 s = 244,800 s ≈ 68 h(1 프로세스) → K=3 22.7 h, K=4 17 h, 두 VM 6 프로세스 11.3 h. 오프피크 8 h/밤 기준 K=4는 약 2.1밤, 6 프로세스는 약 1.4밤입니다(validation 20 × 1,200 × 0.34 s ≈ 2.3 h ÷ P, K=4면 약 0.6 h 추가). 동시 실행으로 프로세스당 `s_wt`가 커지면(CPU 8 vCPU 경합) 측정값으로 다시 계산합니다. 처리량은 `P ÷ s_wt(P)`이므로 `K ÷ s_wt(K) > (K−1) ÷ s_wt(K−1)`일 때만 K를 늘립니다(v3s의 `s_wt × P` 기준은 식과 맞지 않아 고쳤습니다, Codex other note). K는 1-2b에서 FROZEN_CORE 전에 정합니다.
 
 ### 1-7. 볼 것과 보고
 ```bash
 python $COL/scripts/run_pairact_collect.py merge --prereg $P --run-root $RUNT --shards $K    # 샤드 원장 → $RUNT/merged/{ledger.jsonl,report.json,merge.json}
 python $COL/scripts/run_pairact_collect.py report --prereg $P --run-root $RUNT/merged     # 같은 파일 sha256 또는 같은 내용(status 제외)이어야 함
 ```
-- merge는 언제든 다시 돌려도 됩니다(파생 파일을 새로 씀, 샤드 원장이 원본). `merge.json`의 `finished`(run_end 있고 계획된 batch가 모두 끝남), `running`, 샤드 원장 sha256을 보고에 적습니다. 보고에는 K와 VM 배정을 적습니다(K>1이면 구간 배정이 최대 K−1 batch 늦은 집계를 읽음 — prereg `sharding.what_changes_vs_serial`).
+- merge는 언제든 다시 돌려도 됩니다(파생 파일을 새로 씀, 샤드 원장이 원본). `merge.json`의 `finished`(run_end 있고 계획된 batch가 모두 끝남), `running`, 샤드 원장 sha256을 보고에 적습니다. 보고에는 K와 VM 배정을 적습니다(K>1이면 구간 배정이 최대 K−1 batch 늦은 집계를 읽음, 제한될 구간이 최대 약 (K−1)×batch 시도를 더 받을 수 있음 — prereg `sharding.what_changes_vs_serial`). merged root의 `report`는 `merge.json`의 `sharding` 블록을 유지합니다. 샤드 run root 자체(`$RUNT`)에 report·convert-input을 돌리면 거부합니다. merge는 샤드 원장이 이전 merge가 본 바이트의 append-only 연장이 아니거나(잘못된 방향 rsync) seed가 두 번 새로 계획됐으면 거부합니다. 원장의 `train_barrier`(hold/release)·`train_closed` 행(경계 번호·A·N)을 보고에 적습니다.
 - `report.json`: `purpose`·`freeze_stage`·`core_sha256`, `A.text`(그대로 인용: 물리 성공 S/시도 N, 최종 채택 A/시도 N), `A.bins`(구간별 N·S·A·성공률·need·환경 실패·생성기 거부·구간 범위 제한·운반 실패 하위 사유), `A.by_seed_phase`, `validation.text`(S/20·A/20), `ks`(세 그룹, pair 단위), `distance_gate`, `decision`, `run_state`.
 - 생성기 거부 행(`setup_rejected`): 관문별 누적 통과·거부, 막은 물체 이름(정적 장애물 id·cargo id·`bounds`·`beam_1`·`peer_robot`·인증 stance 차단자), 관문별 최소 틈 또는 `not_measured`, 생성기 SHA·파일 sha256, 절대경로 재현 명령(`collect_cases.py --slot-json ... --stdout`).
 - 보고 표기: n/200은 쓰지 않습니다. pilot·probe source는 "수율 측정, 시연 아님"입니다. B(교사 관문 n/40), C(학습 n/20)와 섞지 않습니다.
@@ -196,7 +224,7 @@ python $COL/scripts/run_pairact_collect.py convert-input --prereg $P --run-root 
   --recording-check $RUNC/recording-check.json --teacher-sha $TEACHER_C5 --out $RUNT/convert-input
 # -> seed-<seed>/{SOURCE_SHA,EXIT,raw -> 원본 world raw symlink} + protocol.json(core_sha256, decision, data_range_limited, small_data, result_labels)
 ```
-FROZEN 학습 원장이 아니거나(pilot·probe source 포함) core_sha256이 다르거나 판정이 학습 불가면 runner가 거부합니다. [확인 필요] world result.json의 `source_sha`가 teacher -c3 SHA인지 첫 배치에서 확인합니다.
+FROZEN 학습 원장이 아니거나(pilot·probe source 포함) core_sha256이 다르거나 판정이 학습 불가면 runner가 거부합니다. v4: merged root만 받고, `merge.json`의 `finished`가 true이고 `running`이 비어 있으며 merged 원장 sha256이 `merge.json`과 같아야 합니다. 채택 world raw 디렉터리가 이 VM에 하나라도 없으면(두 VM에서 raw 복사 누락) 거부합니다. 결과 표기(`result_labels`)에 `거리 관문 축소(...)`가 붙을 수 있습니다. [확인 필요] world result.json의 `source_sha`가 teacher -c3 SHA인지 첫 배치에서 확인합니다.
 
 ## 2. 변환 + stage sidecar (CPU)
 ```
