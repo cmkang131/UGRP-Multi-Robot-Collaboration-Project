@@ -98,3 +98,61 @@ def test_collect_without_summary_carry_success_admits_from_the_result(tmp_path, 
     assert len(rows) == 20 and not [r for r in rows if r['outcome'] == 'record_error']
     assert sum(r['success'] for r in rows) == sum(r['seed'] % 2 for r in rows) > 0
     assert all(r['summary_carry_success'] is None for r in rows)
+
+
+# ------------------------------------------------------------ 4. ledger: one committed prefix
+
+def _shard0(tmp_path):
+    sdir = runner.shard_dir(tmp_path, 0)
+    sdir.mkdir(parents=True)
+    led = sdir / 'ledger.jsonl'
+    pc.append(led, pc.header('sha', mode='measurement', noise='off', batch_size=20,
+                             shard=dict(index=0, count=2, vm='A')))
+    return led
+
+
+PLAN0 = dict(type='batch_planned', batch=0, split='pilot',
+             slots=[dict(seed=8343000, bin='B0', split='pilot', slot=0, requeue=False)])
+
+
+def test_repaired_torn_tail_then_append_merges_again(tmp_path, prereg):
+    """sharding-probe repair_after_merge: v4 sealed the torn 8 bytes and refused the repaired ledger."""
+    led = _shard0(tmp_path)
+    with led.open('a') as f:
+        f.write('{"type":')                                   # 8 bytes, no newline (crash mid-append)
+    runner.merge(tmp_path, prereg, 'sha', 2)
+    meta = json.loads((tmp_path / 'merged' / 'merge.json').read_text())
+    assert meta['shard_ledger_bytes']['s00'] == len(led.read_bytes()) - 8      # committed prefix only
+    assert pc.repair_ledger(led) == 8
+    pc.append(led, PLAN0)
+    rep, meta = runner.merge(tmp_path, prereg, 'sha', 2)
+    assert meta['planned'] == [0] and meta['shard_ledger_bytes']['s00'] == len(led.read_bytes())
+
+
+def test_committed_prefix_change_is_still_refused(tmp_path, prereg):
+    led = _shard0(tmp_path)
+    pc.append(led, PLAN0)
+    with led.open('a') as f:
+        f.write('{"type": "attempt"')                          # uncommitted tail, ignored by the seal
+    runner.merge(tmp_path, prereg, 'sha', 2)
+    data = led.read_bytes()
+    led.write_bytes(data.replace(b'8343000', b'8343001', 1))  # rewritten committed row
+    with pytest.raises(ValueError, match='append-only'):
+        runner.merge(tmp_path, prereg, 'sha', 2)
+    led.write_bytes(data[:len(data) - 30])                    # shorter than the sealed prefix
+    with pytest.raises(ValueError, match='append-only'):
+        runner.merge(tmp_path, prereg, 'sha', 2)
+
+
+def test_valid_json_without_newline_is_uncommitted_for_reader_and_repair(tmp_path):
+    """sharding-probe uncommitted_valid_row: v4 read_ledger showed the row, repair_ledger deleted it."""
+    h = pc.header('sha', mode='measurement', noise='off', batch_size=20, shard=dict(index=0, count=2, vm='A'))
+    torn = tmp_path / 'torn.jsonl'
+    torn.write_text(json.dumps(h) + '\n' + json.dumps(PLAN0))
+    before = pc.read_ledger(torn)
+    assert before == [h]
+    assert pc.shard_view({0: before, 1: []}, 2, 1) is None          # batch 0 not planned yet for the view
+    pc.repair_ledger(torn)
+    assert pc.read_ledger(torn) == before
+    pc.append(torn, PLAN0)
+    assert pc.read_ledger(torn) == [h, PLAN0]

@@ -436,7 +436,9 @@ def merge(run_root, prereg, prereg_sha, count, *, prereg_core=None, out=None):
     """
     run_root = Path(run_root)
     out = Path(out or run_root / 'merged')
-    ledgers = read_shards(run_root, count)
+    paths = {f's{i:02d}': shard_dir(run_root, i) / 'ledger.jsonl' for i in range(count)}
+    sealed = {n: pc.committed_bytes(q) for n, q in paths.items()}      # v5: view and seal from the same bytes
+    ledgers = {i: pc.parse_ledger(sealed[f's{i:02d}']) for i in range(count)}
     view = pc.shard_view(ledgers, count)
     if view is None:
         raise ValueError(f'{run_root}: no shard ledger')
@@ -444,11 +446,12 @@ def merge(run_root, prereg, prereg_sha, count, *, prereg_core=None, out=None):
     previous = out / 'merge.json'
     if previous.exists():
         # v4 (xreview R7): every shard ledger must extend the bytes the previous merge saw (append-only;
-        # a wrong-direction rsync that shortens or rewrites a ledger is refused)
+        # a wrong-direction rsync that shortens or rewrites a ledger is refused).  v5: the seal is the committed
+        # prefix (pc.committed_bytes), the same bytes the merge read -- an uncommitted tail is never sealed.
         old = json.loads(previous.read_text())
         for name, size in (old.get('shard_ledger_bytes') or {}).items():
             path = shard_dir(run_root, int(name[1:])) / 'ledger.jsonl'
-            data = path.read_bytes() if path.exists() else b''
+            data = sealed.get(name, b'')
             if size and (len(data) < size or hashlib.sha256(data[:size]).hexdigest() != old['shard_ledger_sha256'][name]):
                 raise ValueError(f'{path}: not an append-only extension of the ledger recorded by the previous merge')
     seen = {}
@@ -472,10 +475,9 @@ def merge(run_root, prereg, prereg_sha, count, *, prereg_core=None, out=None):
     rep = pc.report(prereg, st, prereg_sha=prereg_sha, prereg_core=prereg_core)
     rep['sharding'] = dict(count=count, **info)
     write(out / 'report.json', rep)
-    paths = {f's{i:02d}': shard_dir(run_root, i) / 'ledger.jsonl' for i in range(count)}
-    shards = {n: (pc.file_sha256(q) if q.exists() else None) for n, q in paths.items()}
-    sizes = {n: (q.stat().st_size if q.exists() else 0) for n, q in paths.items()}
-    meta = dict(count=count, shard_ledger_sha256=shards, shard_ledger_bytes=sizes,
+    shards = {n: (hashlib.sha256(b).hexdigest() if paths[n].exists() else None) for n, b in sealed.items()}
+    sizes = {n: len(b) for n, b in sealed.items()}
+    meta = dict(count=count, ledger_seal='committed_prefix_v1', shard_ledger_sha256=shards, shard_ledger_bytes=sizes,
                 merged_ledger_sha256=pc.file_sha256(out / 'ledger.jsonl'), **info)
     write(out / 'merge.json', meta)
     return rep, meta

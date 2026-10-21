@@ -178,29 +178,42 @@ def draw_start(prereg, seed, bin_id, robot_index):
 
 # ------------------------------------------------------------------ ledger
 
-def read_ledger(path):
+def committed_bytes(path):
+    """v5: the ledger bytes up to and including the last newline -- the only part reader, repair and the merge
+    append-only seal share.  A tail without a newline (crash mid-append, partial sync) is uncommitted, even when
+    it happens to be valid JSON: invisible to read_ledger, dropped by repair_ledger, outside the merge seal."""
     path = Path(path)
     if not path.exists():
-        return []
+        return b''
+    raw = path.read_bytes()
+    return raw[:raw.rfind(b'\n') + 1]
+
+
+def read_ledger(path):
+    return parse_ledger(committed_bytes(path))
+
+
+def parse_ledger(data):
+    """Rows of committed ledger bytes (see committed_bytes)."""
     rows = []
-    for line in path.read_text().splitlines():
+    for line in data.decode().splitlines():
         if line.strip():
             try:
                 rows.append(json.loads(line))
             except json.JSONDecodeError:
-                break      # torn last line after a crash: ignore it, it is re-derived
+                break      # malformed committed line: stop there (never skip over it)
     return rows
 
 
 def repair_ledger(path):
-    """Drop a torn last line (crash mid-write) so later appends stay readable; returns bytes dropped."""
+    """Drop the uncommitted tail (crash mid-write) so later appends stay readable; returns bytes dropped."""
     path = Path(path)
     if not path.exists():
         return 0
     raw = path.read_bytes()
-    if not raw or raw.endswith(b'\n'):
+    keep = committed_bytes(path)
+    if len(keep) == len(raw):
         return 0
-    keep = raw[:raw.rfind(b'\n') + 1]
     with open(path, 'r+b') as f:
         f.truncate(len(keep))
         os.fsync(f.fileno())
