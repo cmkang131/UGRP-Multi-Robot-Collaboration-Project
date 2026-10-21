@@ -1259,3 +1259,29 @@ def test_freeze_script_core_then_final_keeps_core_sha(tmp_path, prereg, monkeypa
                     expect_core=out['core_sha256'])
     assert fin['core_sha256'] == out['core_sha256'] and fin['prereg_sha256'] != out['prereg_sha256']
     assert json.loads(pp.read_text())['status'] == 'FROZEN' and pc.manifest_placeholders(json.loads(mp.read_text())) == []
+
+
+# ------------------------------------------------- v3: B6 / #4 / prereg placeholders
+
+def test_eval_prereg_uses_one_denominator_n_over_n_eff():
+    """B6: primary, funnel and minimum success all use n/N_eff (N_eff = 20 when nothing is excluded)."""
+    e = json.loads((EXP / 'PAIRACT_R1_EVAL_PREREG_DRAFT.json').read_text())
+    text = json.dumps(e, ensure_ascii=False)
+    assert 'n/20' not in text and '1/20' not in text and '0/20' not in text
+    assert 'N_eff = 20 when nothing is excluded' in e['denominator_rule']
+    assert 'n/N_eff' in e['report']['primary'] and 'n/N_eff' in e['funnel']['report']
+    assert '1/N_eff' in e['minimum_success_claim'] and 'no replacement' in e['exclusions']['denominator']
+
+
+def test_collect_spec_convert_list_matches_trainable():
+    """#4: COLLECT_SPEC convert-input list = harness TRAINABLE (TRAIN_SMALL_DATA included)."""
+    line = next(l for l in (EXP / 'COLLECT_SPEC.md').read_text().splitlines() if l.startswith('- convert-input'))
+    assert all(f'`{t}`' in line for t in pc.TRAINABLE)
+
+
+def test_prereg_has_no_bracket_placeholder_and_gate_refuses_one(prereg):
+    assert pc._bracket_placeholders(prereg) == []
+    bad = dict(prereg, status='FROZEN_CORE', dart_noise=dict(prereg['dart_noise'], gpu_status='[확인 필요] x'))
+    m = filled_manifest(bad)
+    with pytest.raises(ValueError, match='placeholder in prereg dart_noise.gpu_status'):
+        pc.check_run_manifest(m, stage='core', prereg=bad)

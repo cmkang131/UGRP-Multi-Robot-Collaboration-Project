@@ -32,10 +32,10 @@
       "door": "beam centre passed the door plane (P2 evaluator door_t not None)",
       "place": "success definition above"
     },
-    "report": "count reaching each stage, n/20 per arm, same seed order"
+    "report": "count reaching each stage, n/N_eff per arm (denominator_rule), same seed order"
   },
   "report": {
-    "primary": "student n/20 and teacher n/20 on the same 20 heldout seeds",
+    "primary": "student n/N_eff and teacher n/N_eff on the same N_eff heldout seeds (denominator_rule); the excluded seeds are listed next to it",
     "secondary": ["funnel per arm", "termination reasons (cap_end, drop, contact, HOST_ERROR)",
                   "first-failure stage per seed", "one-side done stuck count", "GO before alignment count"],
     "independent_recount": "Codex recounts from eval-only rows"
@@ -47,8 +47,9 @@
     "host_error": "one rerun of the same seed; a second HOST_ERROR counts as failure and is reported separately",
     "post_hoc_exclusion": "forbidden"
   },
+  "denominator_rule": "v3 (Codex v2 B6): one denominator everywhere (primary, funnel, minimum success): N_eff = 20 - (rule A excluded seeds); N_eff = 20 when nothing is excluded. Reported as n/N_eff with N_eff and the excluded seed list; never n/20 when N_eff < 20",
   "heldout_access": "no heldout rollout, result, video or log is produced or read before the selected checkpoint SHA256 and OFFLINE_GATE selection.json are committed (commit_before_run); heldout seeds are never collected (COLLECT_PREREG v2 seeds.heldout) and never used for checkpoint selection",
   "runs_per_arm": 1,
-  "minimum_success_claim": ">= 1/20 student success meets the r1 minimum; 0/20 is reported with the funnel as the result",
+  "minimum_success_claim": ">= 1/N_eff student success meets the r1 minimum; 0/N_eff is reported with the funnel as the result",
   "compute_estimate_gpu_h": "2-3 (pair-act-carry-plan.md P5) [확인 필요]"
 }

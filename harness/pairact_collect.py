@@ -976,6 +976,15 @@ def manifest_placeholders(value, path=''):
     return []
 
 
+def _bracket_placeholders(value, path=''):
+    """[VM 기입] / [확인 필요] / [... 기입] in the prereg (its <rid>/<seed> notation is not a placeholder)."""
+    if isinstance(value, dict):
+        return [p for k, v in value.items() for p in _bracket_placeholders(v, f'{path}.{k}' if path else k)]
+    if isinstance(value, list):
+        return [p for i, v in enumerate(value) for p in _bracket_placeholders(v, f'{path}[{i}]')]
+    return [path] if isinstance(value, str) and any(m in value for m in PLACEHOLDER_PATTERNS) else []
+
+
 def _schema_problems(value, spec, path, skip):
     if isinstance(spec, dict):
         if not isinstance(value, dict):
@@ -1044,6 +1053,7 @@ def check_run_manifest(manifest, *, stage, prereg, batch_size=None, episode=None
     problems = _schema_problems(manifest, MANIFEST_SPEC, '', skip)
     problems += [f'placeholder {p}' for p in manifest_placeholders(manifest)
                  if not (stage == 'core' and p in RECORDING_PATHS)]
+    problems += [f'placeholder in prereg {p}' for p in _bracket_placeholders(prereg)]
     allowed = FREEZE_STAGES if stage == 'core' else ('FROZEN',)
     if manifest.get('status') not in allowed:
         problems.append(f'run manifest status {manifest.get("status")!r} not in {allowed}')

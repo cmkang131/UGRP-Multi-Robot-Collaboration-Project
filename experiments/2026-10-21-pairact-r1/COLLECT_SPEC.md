@@ -64,7 +64,7 @@ runs/pairact-p3-<TS>/{seed-check.json,ledger.jsonl,report.json,SHA256SUMS}   # r
 experiments/2026-10-21-pairact-r1/RUN_MANIFEST.json                 # 스택·명령·자산·호스트·smoke·녹화 check 해시 (사전 등록과 함께 동결)
 ```
 - convert protocol: `train_seeds` = 성공한 train seed, `validation_seeds` = 성공한 validation seed. heldout seed는 넣지 않습니다(`pairact_r1_offline.py`가 heldout 포함 데이터셋을 거부합니다).
-- convert-input은 원장 header의 사전 등록 SHA가 현재 파일과 같고 판정이 TRAIN/TRAIN_DATA_RANGE_LIMITED일 때만 만들어집니다(audit ②). `protocol.json`에 판정과 '데이터 범위 제한' 여부가 남습니다.
+- convert-input은 원장 header의 사전 등록 SHA(또는 status를 뺀 core)가 현재 파일과 같고, 원장이 FROZEN 학습 원장(core_sha256 일치)이며, 판정이 `TRAIN`/`TRAIN_DATA_RANGE_LIMITED`/`TRAIN_SMALL_DATA`(코드 `harness.pairact_collect.TRAINABLE`)일 때만 만들어집니다(audit ②, v3 #4). `protocol.json`에 판정, '데이터 범위 제한'·'소량 데이터(A<150)' 여부, result_labels가 남습니다. pre-freeze pilot 원장(`pilot_yield_only`)은 거부됩니다.
 - 데이터 SHA(`manifest.json`, `stage-targets.json`)를 고정한 뒤 P4 approval 파일에 넣습니다.
 
 ## 7. 비용 추정
