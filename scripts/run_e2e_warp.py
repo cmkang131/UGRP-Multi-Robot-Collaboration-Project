@@ -38,6 +38,11 @@ from harness.e2ewarp_nav_gate import (NAV_SCENARIO,
                                       slot_assignment as nav_slot_assignment,
                                       validate_calibration_binding as nav_validate_calibration,
                                       validate_gate_queue as nav_validate_gate_queue)
+from harness.e2ewarp_nav_scene import (SCENE_ENV as NAV_SCENE_ENV,
+                                       apply_scene_profile as nav_apply_scene_profile,
+                                       scene_queue_fields as nav_scene_fields,
+                                       scene_selection as nav_scene_selection,
+                                       validate_scene_queue as nav_validate_scene_queue)
 from harness.zone_study_contract import ROBOTS
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -146,6 +151,14 @@ def prepare(a):
             values[key] = value
             deviations.append(dict(id=key, reason='navigation-only gate: component not used and not loaded',
                                    approval=dict(approval)))
+        # BRANCH_NAV_V5 (2026-10-21, default OFF): opt-in scene profile
+        # substitution.  OFF leaves values/deviations/queue bytes unchanged.
+        scene = nav_scene_selection()
+        scene_values, scene_deviation = nav_apply_scene_profile(values, scene)
+        if scene_deviation is not None:
+            values['scene_profile'] = scene_values['scene_profile']
+            deviations.append(scene_deviation)
+            queue.update(nav_scene_fields(scene))
         # Explicit opt-in queue markers; the smoke/mission queue stays
         # byte-identical.  r4 adds the opt-in solo diagnostic (one execution
         # robot) and the order-sheet slots; both are r4-only and fail closed.
@@ -222,6 +235,7 @@ def run(a, queue):
         # Fail closed before any host admission or physics import.
         nav_validate_queue(queue, a.seed, robots)
         nav_validate_gate_queue(queue)
+        nav_validate_scene_queue(queue)
         nav_validate_calibration(queue)
     # Admission is complete before importing physics/render packages.
     relay, proof = admit(a, queue)
@@ -593,6 +607,8 @@ def main(argv=None):
     a = p.parse_args(argv)
     if a.mode == 'smoke' and a.nworld > 2:
         p.error('first30 smoke is restricted to 1–2 worlds')
+    if a.mode != NAV_MODE and nav_scene_selection()['profile'] is not None:
+        p.error(NAV_SCENE_ENV + ' requires --mode nav')
     if a.nav_solo_robot and a.mode != NAV_MODE:
         p.error('--nav-solo-robot requires --mode nav')
     if a.nav_solo_robot and nav_gate_mode()['name'] not in NAV_SLOT_GATE_MODES:

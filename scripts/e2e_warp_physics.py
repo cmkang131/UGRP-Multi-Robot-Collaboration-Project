@@ -40,8 +40,14 @@ def source_module():
     return backend, core, schedule
 
 
-def build_context(seed, out, stack, *, nav_scene=False, nav_spawns=None, nav_keep=('r1', 'r2')):
+def build_context(seed, out, stack, *, nav_scene=False, nav_spawns=None, nav_keep=('r1', 'r2'),
+                  eval_xml_transform=None):
     """Privileged initial construction only. No CPU integration/settling.
+
+    ``eval_xml_transform`` (default ``None``: XML unchanged) is a render-only
+    hook for eval reference frames (the BRANCH_NAV_V5 zone-ablation sweep); it
+    is applied to the final XML just before compilation and is never used by a
+    run that drives a controller.
 
     ``nav_scene`` builds the contract-v1 two-robot navigation gate: cargo is not
     spawned, r3 is pruned from the XML and only the two wide-door lane spawns are
@@ -103,6 +109,8 @@ def build_context(seed, out, stack, *, nav_scene=False, nav_spawns=None, nav_kee
     if nav_scene:
         from harness.e2ewarp_nav_gate import prune_robots
         xml = prune_robots(xml, keep=nav_keep)
+    if eval_xml_transform is not None:
+        xml = eval_xml_transform(xml)
     model = mujoco.MjModel.from_xml_string(xml)
     data = mujoco.MjData(model)
     assert_model_profile(model, stack['contact_profile'], data.eq_active)
