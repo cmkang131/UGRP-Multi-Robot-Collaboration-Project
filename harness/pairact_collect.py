@@ -65,10 +65,13 @@ def prereg_core_sha256(prereg):
 
 
 def manifest_core(manifest):
-    """RUN_MANIFEST without status and the three recording_check hashes (the FROZEN_CORE content)."""
+    """RUN_MANIFEST without status, the three recording_check hashes and the per-VM recording checks
+    of a sharded run (sharding.vm_recording_check, filled at FROZEN like recording_check)."""
     core = json.loads(json.dumps({k: v for k, v in manifest.items() if k != 'status'}))
     for k in RECORDING_FIELDS:
         core.get('recording_check', {}).pop(k, None)
+    if isinstance(core.get('sharding'), dict):
+        core['sharding'].pop('vm_recording_check', None)
     return core
 
 
@@ -228,8 +231,11 @@ def episode_cmd_audit(template):
                 cap_s=float(value('--cap-s')))
 
 
-def header(prereg_sha, *, mode, noise, batch_size, episode=None, run_manifest_sha256=None, freeze=None):
-    """Ledger header.  ``freeze``: dict(stage, purpose, prereg_core_sha256, core_sha256) from the runner."""
+def header(prereg_sha, *, mode, noise, batch_size, episode=None, run_manifest_sha256=None, freeze=None, shard=None):
+    """Ledger header.  ``freeze``: dict(stage, purpose, prereg_core_sha256, core_sha256) from the runner.
+
+    ``shard`` (v3s sharded runs only): dict(index, count, vm); a serial header has no ``shard`` key.
+    """
     if noise not in NOISE_MODES:
         raise ValueError('unknown noise mode')
     if mode not in MODES:
@@ -239,10 +245,13 @@ def header(prereg_sha, *, mode, noise, batch_size, episode=None, run_manifest_sh
     if freeze['purpose'] not in (PURPOSE_PILOT, PURPOSE_PROBE_SOURCE, PURPOSE_TRAINING) or \
             (freeze['purpose'] == PURPOSE_TRAINING) != (mode == 'training'):
         raise ValueError(f'ledger purpose {freeze["purpose"]!r} does not fit mode {mode}')
-    return dict(type='header', schema=LEDGER_SCHEMA, prereg_sha256=prereg_sha, mode=mode, noise=noise,
-                batch_size=int(batch_size), episode=episode, run_manifest_sha256=run_manifest_sha256,
-                freeze_stage=freeze['stage'], purpose=freeze['purpose'],
-                prereg_core_sha256=freeze['prereg_core_sha256'], core_sha256=freeze['core_sha256'])
+    out = dict(type='header', schema=LEDGER_SCHEMA, prereg_sha256=prereg_sha, mode=mode, noise=noise,
+               batch_size=int(batch_size), episode=episode, run_manifest_sha256=run_manifest_sha256,
+               freeze_stage=freeze['stage'], purpose=freeze['purpose'],
+               prereg_core_sha256=freeze['prereg_core_sha256'], core_sha256=freeze['core_sha256'])
+    if shard is not None:
+        out['shard'] = dict(shard)
+    return out
 
 
 def require_header_sha(st, prereg_sha, prereg_core=None):
@@ -296,6 +305,8 @@ def replay(prereg, rows):
                 st['requeue'] = [q for q in st['requeue'] if (q['split'], q['seed']) != (r['split'], r['seed'])]
         elif kind == 'bin_limited':
             st['limited'][r['bin']] = r
+        elif kind == 'train_closed':
+            st.setdefault('train_closed', r)        # sharded runs only: the first stop seen ends train planning
         elif kind == 'batch_planned':
             st['batches'][r['batch']] = dict(r, done=False, clean=None, ingested=set())
             st['open_batch'] = r['batch']
@@ -411,6 +422,10 @@ def train_stop(prereg, st):
     if not [q for q in st['requeue'] if q['split'] == 'train'] and \
             not [s for s in pool(prereg, 'train') if s not in st['consumed'].get('train', set())]:
         return 'STOP_SEEDS'
+    if st.get('train_closed'):
+        # sharded run (v3s): a stop seen at an earlier planning boundary stays (a serial run would have
+        # ended there); serial ledgers never carry train_closed
+        return st['train_closed']['stop']
     return None
 
 
@@ -520,16 +535,20 @@ def _fixed_bin_slots(prereg, st, split, n):
     return slots
 
 
-def plan_batch(prereg, st, batch_size, *, validation_after_host_fix=False):
-    """Next batch of slots; [] when the run root is finished (see run_state)."""
+def plan_batch(prereg, st, batch_size, *, validation_after_host_fix=False, reserved=0):
+    """Next batch of slots; [] when the run root is finished (see run_state).
+
+    ``reserved`` (sharded runs, v3s): train slots planned in batches whose results are not yet in
+    ``st`` (in flight); they count against the attempt cap so N never exceeds it.  0 for serial runs.
+    """
     mode = (st['header'] or {}).get('mode')
     if mode == 'measurement':
         slots = _fixed_bin_slots(prereg, st, 'pilot', batch_size)
     elif mode == 'training':
         stop = train_stop(prereg, st)
         if stop is None:
-            room = prereg['targets']['attempt_cap'] - totals(st)['attempts']
-            n = min(batch_size, room)
+            room = prereg['targets']['attempt_cap'] - totals(st)['attempts'] - reserved
+            n = max(0, min(batch_size, room))
             slots = [dict(seed=q['seed'], bin=q['bin'], split='train', requeue=True)
                      for q in st['requeue'] if q['split'] == 'train'][:n]
             free = [s for s in pool(prereg, 'train') if s not in st['consumed'].get('train', set())]
@@ -918,6 +937,16 @@ def _text_list(v):
     return isinstance(v, list) and bool(v) and all(map(_text, v))
 
 
+def _assignment(v):
+    return isinstance(v, dict) and bool(v) and all(_text(k) and isinstance(x, list) and bool(x) and all(map(_int, x))
+                                                   for k, x in v.items())
+
+
+def _vm_recording(v):
+    return isinstance(v, dict) and all(_text(k) and isinstance(x, dict) and set(x) == set(RECORDING_FIELDS)
+                                       and all(map(_sha64, x.values())) for k, x in v.items())
+
+
 def _stack_entry():
     return dict(branch=_text, sha=_git40, note=_text)
 
@@ -944,6 +973,8 @@ MANIFEST_SPEC = dict(
     recording_check=dict(function=_text, probe_cases_sha256=_sha64, check_rows_sha256=_sha64,
                          recording_check_sha256=_sha64, scope=_text),
     seed_check=dict(local_2026_10_21=_text, vm_seed_check_sha256=_sha64),
+    sharding=dict(rule=_text, count=_int, lag_batches=_int, assignment=_assignment, primary_vm=_text,
+                  vm_recording_check=_vm_recording),
     fill_commands=_text_list)
 VM_FIELDS = ('prereg.core_sha256', 'collector.source_sha', 'command.episode_template',
              'command.episode_template_sha256', 'assets.canonical_xml_sha256',
@@ -953,7 +984,7 @@ VM_FIELDS = ('prereg.core_sha256', 'collector.source_sha', 'command.episode_temp
              'smoke.carry_eval_sha256', 'smoke.artifact_manifest_sha256', 'smoke.world1_raw_result_sha256',
              'recording_check.probe_cases_sha256', 'recording_check.check_rows_sha256',
              'recording_check.recording_check_sha256', 'seed_check.vm_seed_check_sha256')
-RECORDING_PATHS = tuple(f'recording_check.{k}' for k in RECORDING_FIELDS)
+RECORDING_PATHS = tuple(f'recording_check.{k}' for k in RECORDING_FIELDS) + ('sharding.vm_recording_check',)
 
 
 def manifest_unfilled(value, path=''):
@@ -1036,8 +1067,46 @@ def episode_assets(template):
                 rejection_table_input_sha256=flag('--rejection-table'))
 
 
+def sharding_problems(manifest, *, stage, shard=None):
+    """v3s: shard count / VM assignment of the run (core) and, at final, one recording check per extra VM.
+
+    ``shard`` = (index, count, vm) of a training collection process (serial: (0, 1, None)).
+    """
+    sh = manifest.get('sharding')
+    if not isinstance(sh, dict) or not _int(sh.get('count')) or not _assignment(sh.get('assignment')):
+        return []                     # schema problems are reported by _schema_problems
+    out, count, assign = [], sh['count'], sh['assignment']
+    flat = [i for v in assign.values() for i in v]
+    if sorted(flat) != list(range(count)):
+        out.append(f'sharding.assignment must cover shards 0..{count - 1} exactly once, got {sorted(flat)}')
+    if sh.get('lag_batches') != count:
+        out.append('sharding.lag_batches must equal sharding.count')
+    if sh.get('primary_vm') not in assign:
+        out.append('sharding.primary_vm must be a key of sharding.assignment (the VM of host.* / recording_check)')
+    if stage == 'final' and isinstance(sh.get('vm_recording_check'), dict) and \
+            set(sh['vm_recording_check']) != set(assign) - {sh.get('primary_vm')}:
+        out.append('sharding.vm_recording_check needs exactly the non-primary VMs of sharding.assignment')
+    if shard is not None:
+        index, n, vm = shard
+        if n != count:
+            out.append(f'shard count {n} != sharding.count {count}')
+        if vm is not None and vm not in assign:
+            out.append(f'vm {vm!r} not in sharding.assignment')
+        elif index not in assign.get(vm if vm is not None else sh.get('primary_vm'), []):
+            out.append(f'shard {index} is not assigned to vm {vm if vm is not None else sh.get("primary_vm")!r}')
+    return out
+
+
+def recording_hashes_for(manifest, vm=None):
+    """The recording_check hashes that bind recording on ``vm`` (None / primary: recording_check)."""
+    sh = manifest.get('sharding') or {}
+    if vm is None or vm == sh.get('primary_vm'):
+        return manifest.get('recording_check') or {}
+    return (sh.get('vm_recording_check') or {}).get(vm) or {}
+
+
 def check_run_manifest(manifest, *, stage, prereg, batch_size=None, episode=None, repo=None,
-                       recording_dir=None, verify_assets=False):
+                       recording_dir=None, verify_assets=False, shard=None):
     """Freeze gate (B3).  stage 'core' (probe source / probe / check rows) or 'final' (training / convert).
 
     Fixed schema with types for every field, no placeholder anywhere, prereg / manifest status
@@ -1054,6 +1123,7 @@ def check_run_manifest(manifest, *, stage, prereg, batch_size=None, episode=None
     problems += [f'placeholder {p}' for p in manifest_placeholders(manifest)
                  if not (stage == 'core' and p in RECORDING_PATHS)]
     problems += [f'placeholder in prereg {p}' for p in _bracket_placeholders(prereg)]
+    problems += sharding_problems(manifest, stage=stage, shard=shard)
     allowed = FREEZE_STAGES if stage == 'core' else ('FROZEN',)
     if manifest.get('status') not in allowed:
         problems.append(f'run manifest status {manifest.get("status")!r} not in {allowed}')
@@ -1105,11 +1175,12 @@ def check_run_manifest(manifest, *, stage, prereg, batch_size=None, episode=None
         if recording_dir is None:
             problems.append('final stage needs the recording check directory')
         else:
+            want = recording_hashes_for(manifest, shard[2] if shard else None)
             for key, name in RECORDING_FILES.items():
                 path = Path(recording_dir) / name
                 if not path.is_file():
                     problems.append(f'recording_check file missing: {path}')
-                elif file_sha256(path) != m('recording_check', key):
+                elif file_sha256(path) != want.get(key):
                     problems.append(f'recording_check.{key} differs from {path}')
             check = Path(recording_dir) / RECORDING_FILES['recording_check_sha256']
             if check.is_file() and json.loads(check.read_text()).get('qualified') is not True:
@@ -1127,3 +1198,171 @@ def _dig(value, keys):
 
 def _span_len(r):
     return r['last'] - r['first'] + 1 if isinstance(r, dict) and 'first' in r else None
+
+
+# ------------------------------------------------------------- sharding (v3s)
+#
+# Execution-only change (prereg ``sharding``): K shard processes, batch k owned by shard k % K.
+# Batch k is planned with the unchanged plan_batch / allocate / stop rules on a *view*: the plans
+# of every batch < k and the results of every batch <= k - K, in the serial ledger order
+# (results of batch j - K, then the plan rows of batch j).  K = 1 is the serial ledger row for
+# row.  The view only depends on immutable rows, so the plan of batch k is the same whatever the
+# wall-clock order of the shards; a shard waits until the view is complete.
+
+SHARD_PLAN_ROWS = ('bin_limited', 'train_closed', 'setup_rejected', 'batch_planned', 'batch_skipped', 'run_end')
+PLAN_DONE_ROWS = ('batch_planned', 'batch_skipped', 'run_end')
+RESULT_ROWS = ('attempt', 'batch_done')
+
+
+def parse_shard(text):
+    """'i/K' -> (i, K) with 0 <= i < K."""
+    try:
+        i, k = (int(x) for x in str(text).split('/'))
+    except ValueError:
+        raise ValueError(f'--shard i/K required, got {text!r}') from None
+    if not (k >= 1 and 0 <= i < k):
+        raise ValueError(f'shard {text!r}: need 0 <= i < K')
+    return i, k
+
+
+def owner(batch, count):
+    return batch % count
+
+
+def row_batch(r):
+    """Batch index a shard ledger row belongs to (plan rows: the planning boundary)."""
+    if r.get('type') in ('setup_rejected', 'bin_limited', 'train_closed'):
+        return r.get('planning_batch')
+    return r.get('batch')
+
+
+def shard_index(rows):
+    """One shard ledger -> plan rows / results per batch, plan-complete and done batch sets."""
+    out = dict(header=None, plan={}, results={}, complete={}, done=set(), ingested={}, ended=None)
+    for r in rows:
+        kind = r.get('type')
+        if kind == 'header':
+            out['header'] = r
+            continue
+        j = row_batch(r)
+        if kind in SHARD_PLAN_ROWS:
+            out['plan'].setdefault(j, []).append(r)
+            if kind in PLAN_DONE_ROWS:
+                out['complete'][j] = r
+                if kind != 'batch_planned':
+                    out['done'].add(j)          # a skipped / end boundary has no results to wait for
+            if kind == 'run_end':
+                out['ended'] = j
+        elif kind in RESULT_ROWS:
+            out['results'].setdefault(j, []).append(r)
+            if kind == 'attempt':
+                out['ingested'].setdefault(j, set()).add(r['slot'])
+            else:
+                out['done'].add(j)
+    return out
+
+
+def check_shard_headers(ledgers, count):
+    """Every shard header equal except shard.index / shard.vm; returns the merged-view header."""
+    heads = {i: shard_index(rows)['header'] for i, rows in ledgers.items() if rows}
+    if not heads:
+        return None
+    base = None
+    for i, h in sorted(heads.items()):
+        s = h.get('shard') or {}
+        if s.get('index') != i or s.get('count') != count:
+            raise ValueError(f'shard {i} ledger header has shard {s}, expected index {i} of {count}')
+        common = {k: v for k, v in h.items() if k != 'shard'}
+        if base is None:
+            base = common
+        elif common != base:
+            raise ValueError(f'shard {i} ledger header differs from the other shards')
+    return dict(base, shard=dict(count=count, lag_batches=count, merged=True))
+
+
+def _index_all(ledgers, count):
+    idx = {i: shard_index(rows) for i, rows in ledgers.items()}
+    for i, x in idx.items():
+        for j in list(x['plan']) + list(x['results']):
+            if j is None or owner(j, count) != i:
+                raise ValueError(f'shard {i} ledger has a row of batch {j} (owner {None if j is None else owner(j, count)})')
+    return idx
+
+
+def shard_view(ledgers, count, k=None):
+    """Virtual serial ledger (header first) from the shard ledgers.
+
+    ``k`` given: the view that plans batch k -> (rows, inflight) or None while incomplete (a plan of
+    some batch < k or a result of some batch <= k - count is not visible yet).  The partial plan
+    rows of batch k itself (crash mid-planning) are included, as in a serial ledger.
+    ``k`` None: the merged ledger -> (rows, info) with every visible plan and finished result.
+    """
+    hdr = check_shard_headers(ledgers, count)
+    if hdr is None:
+        return None
+    idx = _index_all(ledgers, count)
+    plan = lambda j: idx.get(owner(j, count), {}).get('plan', {}).get(j, [])
+    complete = lambda j: j in idx.get(owner(j, count), {}).get('complete', {})
+    done = lambda j: j in idx.get(owner(j, count), {}).get('done', set())
+    results = lambda j: idx.get(owner(j, count), {}).get('results', {}).get(j, [])
+    rows = [hdr]
+    if k is not None:
+        if any(not complete(j) for j in range(k)) or any(not done(j) for j in range(max(0, k - count + 1))):
+            return None
+        for j in range(k + 1):
+            if j - count >= 0:
+                rows += results(j - count)
+            rows += plan(j)
+        inflight = [j for j in range(max(0, k - count + 1), k)
+                    if idx[owner(j, count)]['complete'][j]['type'] == 'batch_planned']
+        return rows, inflight
+    last = -1
+    while complete(last + 1):
+        last += 1
+    shown = set()
+    for j in range(last + 1):
+        if j - count >= 0 and done(j - count):
+            rows += results(j - count)
+            shown.add(j - count)
+        rows += plan(j)
+    tail = [j for j in range(last + 1) if j not in shown and done(j)]
+    for j in tail:
+        rows += results(j)
+    planned = [j for j in range(last + 1) if idx[owner(j, count)]['complete'][j]['type'] == 'batch_planned']
+    ended = next((j for j in range(last + 1) if idx[owner(j, count)]['complete'][j]['type'] == 'run_end'), None)
+    return rows, dict(last_planned=last, planned=planned, done=[j for j in planned if done(j)],
+                      running=[j for j in planned if not done(j)], ended=ended,
+                      finished=ended is not None and all(done(j) for j in planned))
+
+
+def running_seeds(ledgers, count):
+    """(split, seed) -> batches that are planned but not done: the test invariant is <= 1 each."""
+    idx = _index_all(ledgers, count)
+    out = {}
+    for i, x in idx.items():
+        for j, r in x['complete'].items():
+            if r['type'] == 'batch_planned' and j not in x['done']:
+                for s in r['slots']:
+                    out.setdefault((s['split'], s['seed']), []).append(j)
+    return out
+
+
+def inflight_train_slots(rows, inflight):
+    planned = {r['batch']: r for r in rows if r.get('type') == 'batch_planned'}
+    return sum(s['split'] == 'train' for j in inflight for s in planned[j]['slots'])
+
+
+def boundary_rows(prereg, st, k):
+    """Rows the planner appends at planning boundary k before planning (bin_limit_v1, train close)."""
+    mode = (st['header'] or {}).get('mode')
+    out = []
+    if mode == 'training' and not any(b['split'] == 'validation' for b in st['batches'].values()):
+        out += [dict(r, planning_batch=k) for r in pending_bin_limits(prereg, st)]
+    return out
+
+
+def close_row(prereg, st, k):
+    if (st['header'] or {}).get('mode') != 'training' or st.get('train_closed'):
+        return None
+    stop = train_stop(prereg, st)
+    return None if stop is None else dict(type='train_closed', planning_batch=k, stop=stop)
