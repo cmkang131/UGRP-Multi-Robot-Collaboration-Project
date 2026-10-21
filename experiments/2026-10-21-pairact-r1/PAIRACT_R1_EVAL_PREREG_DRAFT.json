@@ -47,7 +47,7 @@
     "host_error": "one rerun of the same seed; a second HOST_ERROR counts as failure and is reported separately",
     "post_hoc_exclusion": "forbidden"
   },
-  "denominator_rule": "v3 (Codex v2 B6): one denominator everywhere (primary, funnel, minimum success): N_eff = 20 - (rule A excluded seeds); N_eff = 20 when nothing is excluded. Reported as n/N_eff with N_eff and the excluded seed list; never n/20 when N_eff < 20",
+  "denominator_rule": "v3 (Codex v2 B6): one denominator everywhere (primary, funnel, minimum success): N_eff = 20 - (rule A excluded seeds); N_eff = 20 when nothing is excluded. Reported as n/N_eff with N_eff and the excluded seed list, also when N_eff < 20",
   "heldout_access": "no heldout rollout, result, video or log is produced or read before the selected checkpoint SHA256 and OFFLINE_GATE selection.json are committed (commit_before_run); heldout seeds are never collected (COLLECT_PREREG v2 seeds.heldout) and never used for checkpoint selection",
   "runs_per_arm": 1,
   "minimum_success_claim": ">= 1/N_eff student success meets the r1 minimum; 0/N_eff is reported with the funnel as the result",
