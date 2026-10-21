@@ -136,6 +136,95 @@ def test_tournament_rejects_unregistered_seed_and_sha(tmp_path):
     assert run(['tournament', '--prereg', p, '--ledger', led, '--out', tmp_path / 'o2']) == 2
 
 
+def test_tournament_host_error_rule_from_prereg(tmp_path):
+    p = frozen_copy(FIX / 'CARRY_TOURNAMENT_A_PREREG_DRAFT.json', tmp_path / 'prereg.json')
+    rows = tournament_rows(p)
+    target = next(r for r in rows if r.get('arm') == 'A-c3' and r.get('release_success'))
+    for k in ('release_success', 'physical_success', 'G'):
+        target.pop(k)
+    target['status'] = 'HOST_ERROR'
+    out = tmp_path / 'out'
+    assert run(['tournament', '--prereg', p, '--ledger', write_jsonl(tmp_path / 'l.jsonl', rows), '--out', out]) == 0
+    doc = json.loads((out / 'report.json').read_text())
+    assert doc['data']['arms']['A-c3']['host_error'] == 1 and doc['data']['arms']['A-c3']['primary'] == 8
+    md = (out / 'report.md').read_text()
+    assert '재실행하지 않고 분모에 남겨 실패' in md
+    rows[1]['status'] = 'retry'
+    assert run(['tournament', '--prereg', p, '--ledger', write_jsonl(tmp_path / 'l2.jsonl', rows),
+                '--out', tmp_path / 'o2']) == 2
+
+
+# ------------------------------------------------------------------ (a') pairact P1
+
+def p1_prereg(tmp_path, excluded=(37,), status='FROZEN'):
+    d = json.loads((FIX / 'PAIRACT_P1_PREREG_DRAFT.json').read_text())
+    d['status'] = status
+    d['static_exclusion']['tournament']['excluded_worlds'] = list(excluded)
+    d['static_exclusion']['confirmation']['excluded_worlds'] = []
+    p = tmp_path / 'P1.json'
+    p.write_text(json.dumps(d))
+    return p
+
+
+def p1_rows(p, stage, passes, *, excluded=(37,), host=None, arms=None):
+    """passes: arm -> set of passing world indices; host: arm -> set of HOST_ERROR indices."""
+    not_exec = [15] if stage == 'tournament' else []
+    excluded = list(excluded) if stage == 'tournament' else []
+    arms = arms or list(passes)
+    rows = [dict(type='header', prereg_sha256=sha(p), stage=stage, excluded_worlds=excluded, not_executed=not_exec,
+                 arms=arms)]
+    for a in passes:
+        for w in range(40):
+            st = ('excluded' if w in excluded else 'not_executed' if w in not_exec
+                  else 'HOST_ERROR' if w in (host or {}).get(a, ()) else 'complete')
+            rows.append(dict(type='world_run', arm=a, rep=1, cohort=stage, world=w, seed=8420000 + w, status=st,
+                             success=st == 'complete' and w in passes[a], cap_end=False))
+    return rows
+
+
+def test_pairact_p1_tournament_winner_tie_and_host_error(tmp_path):
+    p = p1_prereg(tmp_path)
+    allw = set(range(40)) - {15, 37}                                   # 38 executable, N_eff 39, need 38
+    passes = {'r13': allw - {27}, 'c1': set(allw), 'c2b': set(allw), 'c3': allw - {27, 3}}
+    out = tmp_path / 'out'
+    led = write_jsonl(tmp_path / 'l.jsonl', p1_rows(p, 'tournament', passes, host={'c3': {5}}))
+    assert run(['pairact-p1', '--prereg', p, '--ledger', led, '--out', out]) == 0
+    doc = json.loads((out / 'report.json').read_text())['data']
+    assert (doc['N_eff'], doc['need']) == (39, 38)
+    assert doc['arms']['r13']['n'] == 37 and doc['arms']['c1']['n'] == 38 and doc['arms']['c3']['host_error'] == 1
+    assert doc['winner'] == 'c1'                                       # tie c1/c2b, both pass 27 -> c3, c1, c2b order
+    assert doc['verdicts']['c2b'] == '채택 기준 통과(패)' and doc['verdicts']['c3'] == '채택 기준 미달'
+    assert doc['arms']['c3']['new_failures_vs_r13'] == [3, 5]
+    md = (out / 'report.md').read_text()
+    assert '38/39' in md and '37/40' in md and '재실행하지 않고' in md
+
+
+def test_pairact_p1_confirmation_d5_and_refusals(tmp_path):
+    p = p1_prereg(tmp_path)
+    allw = set(range(40))
+    led = write_jsonl(tmp_path / 'c.jsonl', p1_rows(p, 'confirmation', {'r13': set(allw), 'c1': allw - {1}}))
+    out = tmp_path / 'out'
+    assert run(['pairact-p1', '--prereg', p, '--ledger', led, '--out', out]) == 0
+    doc = json.loads((out / 'report.json').read_text())['data']
+    assert doc['winner'] is None and doc['verdicts']['c1'].startswith('불채택(r13보다 적음')
+    # missing arm -> held; duplicate row, wrong exclusion and sha mismatch -> refused
+    rows = p1_rows(p, 'tournament', {'r13': set(range(40)) - {15, 37}}, arms=['r13', 'c1', 'c2b', 'c3'])
+    assert run(['pairact-p1', '--prereg', p, '--ledger', write_jsonl(tmp_path / 'm.jsonl', rows),
+                '--out', tmp_path / 'om']) == 0
+    assert json.loads((tmp_path / 'om' / 'report.json').read_text())['data']['missing'] == ['c1', 'c2b', 'c3']
+    bad = rows + [rows[1]]
+    assert run(['pairact-p1', '--prereg', p, '--ledger', write_jsonl(tmp_path / 'd.jsonl', bad), '--out', tmp_path / 'o']) == 2
+    bad = [dict(r) for r in rows]
+    bad[0]['excluded_worlds'] = []
+    assert run(['pairact-p1', '--prereg', p, '--ledger', write_jsonl(tmp_path / 'e.jsonl', bad), '--out', tmp_path / 'o']) == 2
+    bad = [dict(rows[0], prereg_sha256='0' * 64)] + rows[1:]
+    assert run(['pairact-p1', '--prereg', p, '--ledger', write_jsonl(tmp_path / 's.jsonl', bad), '--out', tmp_path / 'o']) == 2
+    (tmp_path / 'draft').mkdir()
+    d = p1_prereg(tmp_path / 'draft', status='READY_FOR_REVIEW')                   # not FROZEN -> refused
+    rows = p1_rows(d, 'tournament', {'r13': set(range(40))}, arms=['r13', 'c1', 'c2b', 'c3'])
+    assert run(['pairact-p1', '--prereg', d, '--ledger', write_jsonl(tmp_path / 'r.jsonl', rows), '--out', tmp_path / 'o']) == 2
+
+
 # ------------------------------------------------------------------ (b1) pairact collect
 
 def collect_report(prereg_sha, mode='training'):
@@ -224,6 +313,27 @@ def test_pairact_eval_funnel_and_exclusions(tmp_path):
     assert '표기 C' in md and '1/19' in md and '15/19' in md and '8342004' in md
 
 
+def test_pairact_eval_unrecorded_teacher_stages_and_null_counters(tmp_path):
+    p = frozen_copy(FIX / 'PAIRACT_R1_EVAL_PREREG_DRAFT.json', tmp_path / 'p.json')
+    rows = [dict(type='header', prereg_sha256=sha(p))]
+    for s in range(8342000, 8342020):
+        t = episode('teacher', s, 8 if s < 8342010 else 6, student_gt_corrections=None,
+                    teacher_commands_issued_to_student=None)
+        for st in ('approach', 'alignment', 'READY', 'grasp'):
+            t['funnel'][st] = None                                  # pairact_p5_rows: teacher runner does not record
+        rows.append(t)
+        rows.append(episode('student', s, 8 if s == 8342000 else 3,
+                            **({'student_gt_corrections': None} if s == 8342000 else {})))
+    out = tmp_path / 'out'
+    assert run(['pairact-eval', '--prereg', p, '--rows', write_jsonl(tmp_path / 'r.jsonl', rows), '--out', out]) == 0
+    doc = json.loads((out / 'report.json').read_text())['data']['arms']
+    assert doc['teacher']['n'] == 10 and doc['student']['n'] == 0      # null GT counter is not a success
+    assert doc['teacher']['unrecorded'] == ['approach', 'alignment', 'READY', 'grasp']
+    assert not doc['teacher'].get('funnel_non_monotone')
+    md = (out / 'report.md').read_text()
+    assert '미기록' in md and '8342000' in md and 'door에서 멈춤' in md
+
+
 def test_pairact_eval_refusals(tmp_path):
     p = frozen_copy(FIX / 'PAIRACT_R1_EVAL_PREREG_DRAFT.json', tmp_path / 'p.json')
     head = dict(type='header', prereg_sha256=sha(p))
@@ -239,51 +349,84 @@ def test_pairact_eval_refusals(tmp_path):
 
 # ------------------------------------------------------------------ (c) L1-lite
 
-def l1_report(success, **comp):
-    c = {k: success for k in rt.L1_COMPONENTS}
-    c.update(comp)
-    return dict(schema='ugrp.e2ewarp.l1lite_evaluation.v1', success=success, success_components=c,
-                aux=dict(completion_sim_s=31.5 if success else None, utterances=2, deadlock_60s=not success,
-                         hallucination={'count': 0}, llm={'cost_usd': 0.001}))
+def l1_analysis(prereg_sha, wins=None, host=(), not_run=(), dev=False):
+    """Shape of scripts/analyze_l1lite.py analyze() output (dsh/l1lite-alloc f6e812bc6)."""
+    wins = wins or {'no_comm': 2, 'structured': 5, 'peer_en': 6, 'leader_en': 4}
+    cells, table = [], {}
+    for c in rt.L1_CONDITIONS:
+        mine = []
+        for i, s in enumerate(rt.L1_TEST_SEEDS + ((701,) if dev and c == 'peer_en' else ())):
+            ok = i < wins[c] and (c, s) not in host and (c, s) not in not_run
+            reasons = ([] if ok else ['HOST_ERROR'] if (c, s) in host else ['NOT_RUN'] if (c, s) in not_run
+                       else ['L1LITE_DUPLICATE_SLOT', 'SLOTS_NOT_DISTINCT'] if c == 'no_comm' else ['CLAIM_INCOMPLETE'])
+            mine.append(dict(condition=c, seed=s, success=ok, reasons=reasons, attempts=1,
+                             primary_reason=reasons[0] if reasons else None))
+        cells += mine
+        prim = {}
+        for x in mine:
+            if x['primary_reason']:
+                prim[x['primary_reason']] = prim.get(x['primary_reason'], 0) + 1
+        table[c] = dict(n_success=sum(x['success'] for x in mine), n_total=len(mine), primary_failure_reasons=prim,
+                        host_error=prim.get('HOST_ERROR', 0), not_run=prim.get('NOT_RUN', 0),
+                        aux=dict(completion_sim_s_success_median=40.1, min_body_gap_m_min=.1, min_body_gap_m_median=.2,
+                                 utterances_per_run_mean=2.0, deadlock_runs=0, hallucination_total=0,
+                                 hallucination_runs=0, llm_calls_total=12, llm_tokens_total=12000,
+                                 llm_cost_usd_total=0.0012))
+    return dict(schema='ugrp.e2ewarp.l1lite_analysis.v1', frozen_source_sha='f' * 40, prereg_sha256=prereg_sha,
+                table=table, cells=cells, excluded=[dict(order=25, condition='peer_en', seed=701, kind='dev',
+                                                        reason='dev_seed')], protocol_deviations=[],
+                ledger=dict(path='ledger.json', sha256=None))
 
 
-def test_l1lite_condition_table(tmp_path):
-    p = tmp_path / 'L1.json'
-    p.write_text(json.dumps(dict(status='REGISTERED')))
-    rows = [dict(type='header', prereg_sha256=sha(p))]
-    wins = {'no_comm': 2, 'structured': 5, 'peer_en': 6, 'leader_en': 4}
-    (tmp_path / 'reports').mkdir()
-    for c, k in wins.items():
-        for i, s in enumerate(rt.L1_TEST_SEEDS):
-            if c == 'leader_en' and s == 606:
-                continue                                                            # not run
-            if c == 'peer_en':                                                       # report_path form
-                path = tmp_path / 'reports' / f'{c}-{s}.json'
-                path.write_text(json.dumps(l1_report(i < k)))
-                rows.append(dict(type='run', condition=c, seed=s, report_path=f'reports/{c}-{s}.json'))
-            else:
-                rows.append(dict(type='run', condition=c, seed=s, report=l1_report(i < k)))
-    led = write_jsonl(tmp_path / 'rows.jsonl', rows)
+def frozen_md(src, dst):
+    dst.write_text(Path(src).read_text().replace('**READY_FOR_REVIEW**', '**FROZEN**', 1))
+    return dst
+
+
+def test_l1lite_condition_table_from_analysis(tmp_path):
+    p = frozen_md(FIX / 'PREREG_L1LITE.md', tmp_path / 'PREREG_L1LITE.md')
+    led = tmp_path / 'ledger.json'
+    led.write_text('{"schema": "ugrp.e2ewarp.l1lite_ledger.v1"}')
+    an = l1_analysis(sha(p), host={('leader_en', 606)})
+    an['ledger']['sha256'] = sha(led)
+    a = tmp_path / 'analysis.json'
+    a.write_text(json.dumps(an))
     out = tmp_path / 'out'
-    assert run(['l1lite', '--prereg', p, '--rows', led, '--out', out]) == 0
+    assert run(['l1lite', '--prereg', p, '--analysis', a, '--ledger', led, '--out', out]) == 0
     doc = json.loads((out / 'report.json').read_text())
     st = doc['data']['conditions']
-    assert [st[c]['n'] for c in rt.L1_CONDITIONS] == [2, 5, 6, 4]
-    assert st['leader_en']['missing'] == [606]
-    assert any(k.endswith('peer_en-601.json') for k in doc['inputs_sha256'])
+    assert [st[c]['n'] for c in rt.L1_CONDITIONS] == [2, 5, 6, 4] and st['leader_en']['host_error'] == 1
+    assert st['no_comm']['component_failures']['서로 다른 슬롯'] == 4
+    assert doc['verdict_allowed'] is True and doc['data']['incomplete'] is False
     md = (out / 'report.md').read_text()
-    assert '6/6' in md and '[확인 필요]' in md
+    assert '6/6' in md and 'dev_seed' in md and '[확인 필요]' not in md
 
 
-def test_l1lite_rejects_dev_seed_and_duplicates(tmp_path):
-    p = tmp_path / 'L1.json'
-    p.write_text(json.dumps(dict(status='REGISTERED')))
-    head = dict(type='header', prereg_sha256=sha(p))
-    for bad in ([dict(type='run', condition='peer_en', seed=701, report=l1_report(True))],
-                [dict(type='run', condition='peer_en', seed=601, report=l1_report(True))] * 2,
-                [dict(type='run', condition='shout', seed=601, report=l1_report(True))]):
-        led = write_jsonl(tmp_path / 'r.jsonl', [head] + bad)
-        assert run(['l1lite', '--prereg', p, '--rows', led, '--out', tmp_path / 'o']) == 2
+def test_l1lite_markdown_status_and_refusals(tmp_path):
+    p = FIX / 'PREREG_L1LITE.md'                                       # READY_FOR_REVIEW -> draft
+    a = tmp_path / 'a.json'
+    a.write_text(json.dumps(l1_analysis(sha(p))))
+    assert rt.prereg_status(p.read_bytes()) == 'READY_FOR_REVIEW'
+    assert run(['l1lite', '--prereg', p, '--analysis', a, '--out', tmp_path / 'o']) == 2
+    assert run(['l1lite', '--prereg', p, '--analysis', a, '--out', tmp_path / 'o', '--allow-draft']) == 0
+    for bad in (l1_analysis('0' * 64), l1_analysis(sha(p), dev=True), dict(l1_analysis(sha(p)), schema='x')):
+        a.write_text(json.dumps(bad))
+        assert run(['l1lite', '--prereg', p, '--analysis', a, '--out', tmp_path / 'o', '--allow-draft']) == 2
+    led = tmp_path / 'ledger.json'
+    led.write_text('{}')
+    a.write_text(json.dumps(l1_analysis(sha(p))))                      # ledger hash not in analysis
+    assert run(['l1lite', '--prereg', p, '--analysis', a, '--ledger', led, '--out', tmp_path / 'o',
+                '--allow-draft']) == 2
+
+
+def test_l1lite_incomplete_run_label(tmp_path):
+    p = frozen_md(FIX / 'PREREG_L1LITE.md', tmp_path / 'P.md')
+    a = tmp_path / 'a.json'
+    a.write_text(json.dumps(l1_analysis(sha(p), not_run={('structured', s) for s in rt.L1_TEST_SEEDS[:5]})))
+    out = tmp_path / 'out'
+    assert run(['l1lite', '--prereg', p, '--analysis', a, '--out', out]) == 0
+    assert json.loads((out / 'report.json').read_text())['data']['incomplete'] is True
+    assert '실행 불완전' in (out / 'report.md').read_text()
 
 
 # ------------------------------------------------------------------ (d) E2E
@@ -328,8 +471,25 @@ def test_e2e_refuses_substitution_mismatch_and_overflow(tmp_path):
     assert run(['e2e', '--prereg', p, '--rows', led, '--out', tmp_path / 'o']) == 2
     led = write_jsonl(tmp_path / 'r.jsonl', [head] + [dict(type='run', level='E2E-1p', seed=601,
                                                             report=e2e_report('E2E-1p', True))] * 4)
-    assert run(['e2e', '--prereg', p, '--rows', led, '--out', tmp_path / 'o']) == 2
-    assert run(['e2e', '--prereg', p, '--rows', led, '--out', tmp_path / 'o', '--planned', 'E2E-1p=4']) == 0
+    assert run(['e2e', '--prereg', p, '--rows', led, '--out', tmp_path / 'o']) == 2   # 4 > registered 3
+    with pytest.raises(SystemExit):                                                  # N is fixed, no override
+        run(['e2e', '--prereg', p, '--rows', led, '--out', tmp_path / 'o', '--planned', 'E2E-1p=4'])
+
+
+def test_e2e_fixed_n_matches_prereg_and_host_error_row(tmp_path):
+    doc = (FIX / 'E2E_PREREG_DRAFT.md').read_text()
+    assert "E2E-1' 3, E2E-2 6" in doc and rt.E2E_PLANNED == {'E2E-1p': 3, 'E2E-2': 6}
+    assert rt.prereg_status((FIX / 'E2E_PREREG_DRAFT.md').read_bytes()) == 'DRAFT'
+    p = tmp_path / 'PREREG.md'
+    p.write_text('# 최소 E2E 사전 등록 (상태: FROZEN)\n')
+    rows = [dict(type='header', prereg_sha256=sha(p)),
+            dict(type='run', level='E2E-1p', seed=601, status='HOST_ERROR'),
+            dict(type='run', level='E2E-1p', seed=601, report=e2e_report('E2E-1p', True))]
+    out = tmp_path / 'out'
+    assert run(['e2e', '--prereg', p, '--rows', write_jsonl(tmp_path / 'r.jsonl', rows), '--out', out]) == 0
+    lv = json.loads((out / 'report.json').read_text())['data']['levels']['E2E-1p']
+    assert (lv['n'], lv['N'], lv['ran'], lv['host_error'], lv['reach']['done']) == (1, 3, 2, 1, 2)
+    assert '[확인 필요]' not in (out / 'report.md').read_text()
 
 
 # ------------------------------------------------------------------ figures

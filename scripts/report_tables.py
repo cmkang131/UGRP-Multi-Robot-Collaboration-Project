@@ -4,12 +4,16 @@
 Tracks (one subcommand each; usage in docs/report_auto.md):
 
   tournament      (a) single-robot ACT release tournament A
-                      (CARRY_TOURNAMENT_A_PREREG_DRAFT.json, dsh/act18-carry-cand-1..3)
+                      (CARRY_TOURNAMENT_A_PREREG_DRAFT.json, ledger scripts/act18_tournament_ledger.py,
+                       dsh/act18-carry-cand-1)
+  pairact-p1      (a') pair carry P1 MJWarp teacher gate tournament / confirmation
+                      (PAIRACT_P1_PREREG_DRAFT.json, ledger p1_ledger.py, dsh/pairact-p0-diag)
   pairact-collect (b1) pair carry teacher collection, label A
                       (scripts/run_pairact_collect.py report -> report.json, dsh/pairact-carry-r1-v2)
   pairact-eval    (b2) P5 same-seed evaluation, label C: student n/20 vs teacher n/20 + funnel
-                      (PAIRACT_R1_EVAL_PREREG_DRAFT.json)
-  l1lite          (c) L1-lite, n/6 per condition (harness/e2ewarp_l1lite_eval.evaluate_run reports)
+                      (PAIRACT_R1_EVAL_PREREG_DRAFT.json, rows scripts/pairact_p5_rows.py,
+                       dsh/pairact-p2-carrypath-r-c2)
+  l1lite          (c) L1-lite, n/6 per condition (scripts/analyze_l1lite.py analysis, dsh/l1lite-alloc)
   e2e             (d) minimal single-robot-per-slot E2E (harness/e2e_min_eval.recount_run reports)
 
 Every subcommand:
@@ -29,6 +33,7 @@ import argparse
 import hashlib
 import json
 import math
+import re
 import sys
 from pathlib import Path
 
@@ -109,16 +114,33 @@ def check_prereg(inputs, path, *, recorded_sha=None, expect_sha=None, allow_draf
     for label, value in (recorded_sha or {}).items():
         if value != sha:
             raise ReportError(f'{label}: recorded prereg sha256 {value} != prereg file sha256 {sha} ({path})')
-    status = None
-    try:
-        status = json.loads(data).get('status')
-    except (json.JSONDecodeError, UnicodeDecodeError, AttributeError):
-        status = None          # non-JSON prereg (e.g. PREREG_DRAFT.md): status unknown
+    status = prereg_status(data)
     final = isinstance(status, str) and status.split()[0].rstrip('.:-') in FINAL_STATUSES
     if not final and not allow_draft:
         raise ReportError(f'prereg status {status!r} is not {"/".join(FINAL_STATUSES)}; '
                           'pass --allow-draft for a labelled draft table (no verdict)')
     return dict(path=str(path), sha256=sha, status=status, final=final)
+
+
+MD_STATUS = (re.compile(r'상태:\s*\**\s*([A-Z][A-Z_]+)'), re.compile(r'(?im)^\W*status\W*:?\s*\**\s*([A-Z][A-Z_]+)'))
+
+
+def prereg_status(data):
+    """JSON 'status', else the first Markdown '상태: **X**' / 'status: X' (PREREG_L1LITE.md, PREREG_DRAFT.md)."""
+    try:
+        value = json.loads(data)
+        return value.get('status') if isinstance(value, dict) else None
+    except (json.JSONDecodeError, UnicodeDecodeError):
+        pass
+    try:
+        text = data.decode()
+    except UnicodeDecodeError:
+        return None
+    for pat in MD_STATUS:
+        m = pat.search(text)
+        if m:
+            return m.group(1)
+    return None
 
 
 def header_sha(rows, name):
@@ -132,14 +154,18 @@ def header_sha(rows, name):
     return heads[0], shas.pop()
 
 
-def load_report_rows(inputs, rows, base):
-    """Run rows carry either an embedded 'report' or a 'report_path' (relative to the rows file)."""
+def load_report_rows(inputs, rows, base, *, host_error_without_report=False):
+    """Run rows carry either an embedded 'report' or a 'report_path' (relative to the rows file).
+    With host_error_without_report, a status HOST_ERROR row may have neither (report None = failure)."""
     out = []
     for r in rows:
         if r.get('type') != 'run':
             continue
         r = dict(r)
-        if r.get('report') is None:
+        if (host_error_without_report and r.get('status') == 'HOST_ERROR'
+                and r.get('report') is None and not r.get('report_path')):
+            r['report'] = None
+        elif r.get('report') is None:
             if not r.get('report_path'):
                 raise ReportError(f'run row without report/report_path: {r}')
             p = Path(r['report_path'])
@@ -199,11 +225,11 @@ TOURNAMENT_REQUIRED = ('arm', 'rep', 'cohort', 'seed', 'status')
 
 
 def tournament(args, inputs):
-    """Ledger contract [확인 필요: no tournament runner exists yet; DeepSeek writes this JSONL]:
+    """Ledger written by scripts/act18_tournament_ledger.py (dsh/act18-carry-cand-1) from the run root:
     header {"type":"header","prereg_sha256"}; one row per world-run
     {"type":"world_run","arm","rep","cohort":"HO4"|"TRAIN4","seed","status":"complete"|"HOST_ERROR",
-     "release_success","physical_success","drop_detected"  (harness/grasp_act_rollout.py record keys),
-     "G","early_open_grasp","open_issued","release_done","cap_end"  (C2c aggregate terms, [확인 필요] keys)}.
+     "release_success","physical_success","drop_detected","cap_end"  (summary student_scores),
+     "G" (act18_c2c_analyze definition), "early_open_grasp","open_issued","release_done"}.
     """
     rows = inputs.jsonl(args.ledger)
     _, rec = header_sha(rows, args.ledger)
@@ -228,6 +254,8 @@ def tournament(args, inputs):
             raise ReportError(f'world_run row missing {miss}: {r}')
         if r['arm'] not in arms:
             raise ReportError(f'arm {r["arm"]!r} not in prereg arms {arms}')
+        if r['status'] not in ('complete', 'HOST_ERROR'):
+            raise ReportError(f'world_run status {r["status"]!r} is not complete/HOST_ERROR: {r}')
         if seed_cohort.get(int(r['seed'])) != r['cohort']:
             raise ReportError(f'seed {r["seed"]} is not a registered {r["cohort"]} seed')
         if not 1 <= int(r['rep']) <= n_rep:
@@ -295,9 +323,11 @@ def tournament(args, inputs):
     body.append(md_table(['arm', 'open issued', 'release done', 'cap_end'],
                          [[a] + [stats[a]['descriptive'][k] for k in ('open_issued', 'release_done', 'cap_end')]
                           for a in arms]))
+    host_rule = (f'사전 등록 host_error: HOST_ERROR는 재실행하지 않고 분모에 남겨 실패로 셉니다. 미실행 run은 판정 보류입니다.'
+                 if 'host_error' in prereg else
+                 f'HOST_ERROR와 미실행도 분모에 남깁니다(성공 아님) {CHECK}: 사전 등록에 host_error 규칙이 없습니다.')
     notes = [
-        f'분모 규칙: arm당 {N} world-run 고정(8 seed × N={n_rep}). HOST_ERROR와 미실행도 분모에 남깁니다(성공 아님) {CHECK}: '
-        '토너먼트 사전 등록에 HOST_ERROR 재실행 규칙이 없어 C2c·E2E 관례(실패도 분모)를 따릅니다.',
+        f'분모 규칙: arm당 {N} world-run 고정(8 seed × N={n_rep}). {host_rule}',
         f'채택 규칙: 기준 대비 +{min_gain}/{N} 이상, G가 기준 대비 {safety}/{N}보다 나쁘면 탈락, 동률은 조기 open 0 → 낙하 수.',
         'HO4는 진단용 보류 seed이고 TRAIN4는 적합 진단입니다. 승격 관문이 아닙니다.',
         '확인 run(미사용 seed 4 × N=2)은 seed 목록이 [확인 필요]라 이 표에 없습니다.',
@@ -311,6 +341,122 @@ def tournament(args, inputs):
     return dict(track='tournament', title='(a) 단독 ACT release tournament A', prereg=pre, body=body,
                 notes=notes, figures=[fig], data=data,
                 headline=f'승자: {winner}' if winner else ('승자 없음' if decide else '판정 보류'))
+
+
+# ------------------------------------------------------------------ (a') pairact P1 teacher gate tournament
+
+P1_STATUSES = ('complete', 'HOST_ERROR', 'not_executed', 'excluded')
+P1_TIE_ORDER = ('c3', 'c1', 'c2b')       # prereg adoption.winner: smaller behaviour change first
+P1_FLAKE_WORLD = 27
+
+
+def pairact_p1(args, inputs):
+    """Ledger written by experiments/2026-10-21-pairact-p1/p1_ledger.py (dsh/pairact-p0-diag):
+    header {"type":"header","prereg_sha256","stage","excluded_worlds","not_executed","arms"} + one row
+    per arm x case index {"type":"world_run","arm","world","seed","status":complete|HOST_ERROR|
+    not_executed|excluded,"success","cap_end"}.  Adoption: success >= ceil(0.95 x N_eff)."""
+    rows = inputs.jsonl(args.ledger)
+    head, rec = header_sha(rows, args.ledger)
+    pre = check_prereg(inputs, args.prereg, recorded_sha={'ledger header': rec},
+                       expect_sha=args.expect_prereg_sha, allow_draft=args.allow_draft)
+    prereg = json.loads(Path(args.prereg).read_text())
+    stage = head.get('stage')
+    if stage not in ('tournament', 'confirmation'):
+        raise ReportError(f'ledger stage {stage!r} is not tournament/confirmation')
+    ws = prereg['world_set'][stage]
+    N = int(ws['nominal_denominator'])
+    excl = prereg['static_exclusion'][stage]['excluded_worlds']
+    if not isinstance(excl, list):
+        raise ReportError(f'{stage}: prereg excluded_worlds not recorded (static check first)')
+    excl, not_exec = set(excl), set(ws.get('not_executed') or [])
+    if sorted(head.get('excluded_worlds') or []) != sorted(excl):
+        raise ReportError(f'ledger excluded_worlds {head.get("excluded_worlds")} != prereg {sorted(excl)}')
+    if 'c3 → c1 → c2b' not in prereg['adoption']['winner']:
+        raise ReportError('prereg tie order is not "c3 → c1 → c2b"; update P1_TIE_ORDER before reporting')
+    registered = [a['arm'] for a in prereg['arms_registered_order']]
+    arms = list(head.get('arms') or registered)
+    if stage == 'tournament' and arms != registered:
+        raise ReportError(f'tournament arms {arms} != registered order {registered}')
+    if stage == 'confirmation' and (len(arms) != 2 or arms[0] != 'r13' or arms[1] not in registered[1:]):
+        raise ReportError(f'confirmation arms {arms} must be [r13, winner]')
+    grid = {}
+    for r in (r for r in rows if r.get('type') == 'world_run'):
+        a, w, st = r.get('arm'), int(r['world']), r.get('status')
+        if a not in arms:
+            raise ReportError(f'arm {a!r} not in {arms}')
+        if not 0 <= w < N or st not in P1_STATUSES:
+            raise ReportError(f'world {w} / status {st!r} outside 0..{N - 1} / {P1_STATUSES}')
+        if (st == 'excluded') != (w in excl) or (st == 'not_executed') != (w in not_exec):
+            raise ReportError(f'{a} world {w}: status {st} disagrees with prereg exclusions/not_executed')
+        if (a, w) in grid:
+            raise ReportError(f'duplicate world-run {a}/{w} (HOST_ERROR is never re-run)')
+        grid[(a, w)] = r
+    n_eff = N - len(excl)
+    need = math.ceil(round(.95 * n_eff, 9))
+    stats, missing = {}, []
+    for a in arms:
+        mine = [grid[(a, w)] for w in range(N) if (a, w) in grid]
+        if not mine:
+            missing.append(a)
+        elif len(mine) != N:
+            raise ReportError(f'{a}: {len(mine)} rows != {N} registered indices (writer must cover every index)')
+        ok = {r['world'] for r in mine if r['status'] == 'complete' and r.get('success') is True}
+        stats[a] = dict(n=len(ok), started=bool(mine), adopt=bool(mine) and len(ok) >= need,
+                        host_error=sum(r['status'] == 'HOST_ERROR' for r in mine),
+                        cap_end=sum(r.get('cap_end') is True for r in mine),
+                        not_executed=sum(r['status'] == 'not_executed' for r in mine),
+                        failed=sorted(w for w in range(N) if w not in excl and w not in ok and mine),
+                        flake_world=(P1_FLAKE_WORLD in ok) if mine else None)
+    base = stats.get('r13')
+    for a in arms:
+        stats[a]['new_failures_vs_r13'] = (sorted(set(stats[a]['failed']) - set(base['failed']))
+                                           if a != 'r13' and base and base['started'] and stats[a]['started'] else [])
+    decide = pre['final'] and not missing
+    verdicts, winner = {}, None
+    if stage == 'tournament':
+        cands = [a for a in arms if a != 'r13' and stats[a]['adopt']]
+        if cands:
+            best = max(stats[a]['n'] for a in cands)
+            top = [a for a in cands if stats[a]['n'] == best]
+            top = [a for a in top if stats[a]['flake_world']] or top
+            winner = min(top, key=P1_TIE_ORDER.index)
+        for a in arms:
+            verdicts[a] = ('기준(재실행)' if a == 'r13' else '승자' if a == winner else
+                           '채택 기준 통과(패)' if stats[a]['adopt'] else '채택 기준 미달')
+        headline = f'승자: {winner}' if winner else '채택 없음(r13 유지)'
+    else:
+        w = arms[1]
+        adopt = stats[w]['adopt'] and stats[w]['n'] >= stats['r13']['n']
+        winner = w if adopt else None
+        verdicts = {'r13': '기준(같은 world)', w: '채택' if adopt else
+                    ('불채택(r13보다 적음, D5)' if stats[w]['adopt'] else '불채택(채택 기준 미달)')}
+        headline = f'{w} 채택' if adopt else f'{w} 불채택(r13 유지)'
+    if not decide:
+        verdicts, winner, headline = {a: '판정 보류' for a in arms}, None, '판정 보류'
+    body = [f'*{"tournament" if stage == "tournament" else "confirmation(새 world)"} — MJWarp teacher 관문(공동 파지 + 3초 유지).* '
+            f'채택 = 통과 ≥ ceil(0.95 × N_eff) = {need}, N_eff = {N} − 규칙 A 제외 {len(excl)} = {n_eff}.',
+            md_table(['arm', f'통과 n/{N}', f'통과 n/N_eff', '필요', 'HOST_ERROR', '미실행(world 15 등)', 'cap_end',
+                      f'world {P1_FLAKE_WORLD}', 'r13 대비 새 실패', '판정'],
+                     [[a, f'{stats[a]["n"]}/{N}' if stats[a]['started'] else '미실행',
+                       nn(stats[a]['n'], n_eff) if stats[a]['started'] else '-', need, stats[a]['host_error'],
+                       stats[a]['not_executed'], stats[a]['cap_end'],
+                       {True: 'PASS', False: 'FAIL', None: '-'}[stats[a]['flake_world']],
+                       ', '.join(map(str, stats[a]['new_failures_vs_r13'])) or '-', verdicts[a]] for a in arms]),
+            '실패 world(N_eff 안):',
+            md_table(['arm', '실패 world'], [[a, ', '.join(map(str, stats[a]['failed'])) or '-'] for a in arms])]
+    notes = [f'제외 world(규칙 A, 실행 전 정적 검사): {sorted(excl) or "없음"}. 미실행 world {sorted(not_exec) or "없음"}은 N_eff 안의 실패입니다.',
+             '사전 등록 host_error: HOST_ERROR는 재실행하지 않고 N_eff 안의 실패로 셉니다. 시작하지 않은 arm만 판정 보류입니다.',
+             f'동률: world {P1_FLAKE_WORLD} 통과 arm → {" → ".join(P1_TIE_ORDER)} 순. world 27 단일 결과로 후보 효과를 주장하지 않습니다(flake_note).',
+             'teacher 결과는 시연 생성 자격이며 학습 결과가 아닙니다. CPU 결과·다른 관문 회차와 합산하지 않습니다.']
+    if stage == 'confirmation':
+        notes.append('confirmation 채택(D5): winner ≥ 필요 수 그리고 같은 world에서 winner 통과 ≥ r13 통과.')
+    if missing:
+        notes.append(f'시작하지 않은 arm: {missing} → 판정 보류')
+    fig = bar_figure(Path(args.out) / f'fig-pairact-p1-{stage}.png', f'P1 {stage}: 관문 통과 (n/N_eff={n_eff})', arms,
+                     [('통과', [(stats[a]['n'], n_eff if stats[a]['started'] else 0) for a in arms])])
+    return dict(track='pairact-p1', title=f"(a') 공동 운반 P1 teacher 관문 {stage}", prereg=pre, body=body, notes=notes,
+                figures=[fig], data=dict(stage=stage, arms=stats, N=N, N_eff=n_eff, need=need, winner=winner,
+                                         verdicts=verdicts, missing=missing), headline=headline)
 
 
 # ------------------------------------------------------------------ (b1) pairact collect
@@ -361,11 +507,12 @@ def pairact_collect(args, inputs):
 # ------------------------------------------------------------------ (b2) pairact P5 eval
 
 def pairact_eval(args, inputs):
-    """Rows contract [확인 필요: the P5 rollout writer does not exist yet (dsh/pairact-p5-student has the
-    controller only)]: header {"type":"header","prereg_sha256","excluded_seeds":[...],
-    "static_check_sha256"}; one row per arm x seed x attempt {"type":"episode","arm":"student"|"teacher",
-    "seed","attempt":1|2,"status":"complete"|"HOST_ERROR","success","funnel":{stage: bool},
-    "termination","student_gt_corrections","teacher_commands_issued_to_student"}.
+    """Rows written by scripts/pairact_p5_rows.py (dsh/pairact-p2-carrypath-r-c2): header
+    {"type":"header","prereg_sha256","excluded_seeds":[...],"static_check_sha256"}; one row per
+    arm x seed x attempt {"type":"episode","arm":"student"|"teacher","seed","attempt":1|2,
+    "status":"complete"|"HOST_ERROR","success","funnel":{stage: true|false|null},"termination",
+    "student_gt_corrections","teacher_commands_issued_to_student"}.  null funnel stage = not recorded
+    (teacher approach/alignment/READY/grasp); null GT/teacher counters = unverified, never a success.
     """
     rows = inputs.jsonl(args.rows)
     head, rec = header_sha(rows, args.rows)
@@ -385,7 +532,8 @@ def pairact_eval(args, inputs):
     eff = [s for s in seeds if s not in excluded]
     arms = [a['id'] for a in prereg['arms']]
     ep = [r for r in rows if r.get('type') == 'episode']
-    final, host2, missing, gt_viol = {a: {} for a in arms}, {a: [] for a in arms}, {a: [] for a in arms}, []
+    final, host2, missing, gt_viol, gt_unknown = ({a: {} for a in arms}, {a: [] for a in arms},
+                                                  {a: [] for a in arms}, [], [])
     for r in ep:
         if r.get('arm') not in arms:
             raise ReportError(f'arm {r.get("arm")!r} not in prereg {arms}')
@@ -411,29 +559,39 @@ def pairact_eval(args, inputs):
     def success(a, r):
         if r is None or r['status'] != 'complete' or r.get('success') is not True:
             return False
-        if a == 'student' and (r.get('student_gt_corrections') or r.get('teacher_commands_issued_to_student')):
-            gt_viol.append(r['seed'])
-            return False
+        if a == 'student':
+            counters = (r.get('student_gt_corrections'), r.get('teacher_commands_issued_to_student'))
+            if None in counters:
+                gt_unknown.append(r['seed'])
+                return False
+            if any(counters):
+                gt_viol.append(r['seed'])
+                return False
         return True
 
     Ne = len(eff)
     res = {a: dict(n=sum(success(a, final[a].get(s)) for s in eff),
                    funnel={st: sum(1 for s in eff if (final[a].get(s) or {}).get('funnel', {}).get(st) is True)
                            for st in funnel},
+                   unrecorded=[st for st in funnel
+                               if all(((final[a].get(s) or {}).get('funnel') or {}).get(st) is None for s in eff)
+                               and any(final[a].get(s) is not None and final[a][s]['status'] == 'complete' for s in eff)],
                    termination={}, missing=missing[a], host_error_twice=host2[a]) for a in arms}
     for a in arms:
         for s in eff:
             t = (final[a].get(s) or {}).get('termination') or ('미실행' if s in missing[a] else 'unknown')
             res[a]['termination'][t] = res[a]['termination'].get(t, 0) + 1
     for a in arms:
+        rec = [st for st in funnel if st not in res[a]['unrecorded']]
         f = res[a]['funnel']
-        if any(f[funnel[i + 1]] > f[funnel[i]] for i in range(len(funnel) - 1)):
+        if any(f[rec[i + 1]] > f[rec[i]] for i in range(len(rec) - 1)):
             res[a]['funnel_non_monotone'] = True
     body = ['*표기 C — 보류 seed 같은-seed 평가.* teacher는 기준선(GT 사용 허용)이며 학습 결과가 아닙니다.',
             md_table(['arm', f'성공 n/N_eff', '미실행', 'HOST_ERROR 2회(실패로 셈)'],
                      [[a, nn(res[a]['n'], Ne), len(res[a]['missing']), len(res[a]['host_error_twice'])] for a in arms]),
             '단계 퍼널(각 단계에 도달한 seed 수, 같은 seed 순서):',
-            md_table(['단계'] + arms, [[st] + [nn(res[a]['funnel'][st], Ne) for a in arms] for st in funnel]),
+            md_table(['단계'] + arms, [[st] + ['미기록' if st in res[a]['unrecorded'] else nn(res[a]['funnel'][st], Ne)
+                                            for a in arms] for st in funnel]),
             md_table(['종료 사유'] + arms,
                      [[t] + [res[a]['termination'].get(t, 0) for a in arms]
                       for t in sorted({t for a in arms for t in res[a]['termination']})])]
@@ -446,7 +604,8 @@ def pairact_eval(args, inputs):
                 row.append('미실행')
                 continue
             f = r.get('funnel', {})
-            stop = next((st for st in funnel if f.get(st) is not True), None)
+            stop = next((st for st in funnel if f.get(st) is False
+                         or (f.get(st) is None and st not in res[a]['unrecorded'])), None)
             if success(a, r):
                 row.append('성공')
             elif stop is None:
@@ -463,11 +622,18 @@ def pairact_eval(args, inputs):
              'A(교사 시연 수집)·B(교사 관문 n/40)와 합산하지 않습니다.']
     if sorted(set(gt_viol)):
         notes.append(f'학생 GT/teacher 보정 기록이 있어 실패로 센 seed: {sorted(set(gt_viol))}')
+    if sorted(set(gt_unknown)):
+        notes.append(f'학생 GT/teacher 보정 기록(student_gt_corrections·teacher 명령)이 없어 성공으로 세지 않은 seed: '
+                     f'{sorted(set(gt_unknown))}')
+    for a in arms:
+        if res[a]['unrecorded']:
+            notes.append(f'{a}: {", ".join(res[a]["unrecorded"])} 단계는 runner가 기록하지 않아 "미기록"입니다(0이 아님).')
     for a in arms:
         if res[a].get('funnel_non_monotone'):
             notes.append(f'{a}: 퍼널이 단조 감소가 아님(행 기록 확인 필요)')
-    figs = [bar_figure(Path(args.out) / 'fig-pairact-eval-funnel.png', f'C: 단계 퍼널 (n/{Ne})', funnel,
-                       [(a, [(res[a]['funnel'][st], Ne) for st in funnel]) for a in arms])]
+    figs = [bar_figure(Path(args.out) / 'fig-pairact-eval-funnel.png', f'C: 단계 퍼널 (n/{Ne}, 미기록 N=0)', funnel,
+                       [(a, [(res[a]['funnel'][st], 0 if st in res[a]['unrecorded'] else Ne) for st in funnel])
+                        for a in arms])]
     return dict(track='pairact-eval', title='(b2) 공동 운반 P5 같은-seed 평가 (표기 C)', prereg=pre, body=body,
                 notes=notes, figures=figs, data=dict(arms=res, N_eff=Ne, excluded=excluded),
                 headline=', '.join(f'{a} {res[a]["n"]}/{Ne}' for a in arms))
@@ -475,97 +641,124 @@ def pairact_eval(args, inputs):
 
 # ------------------------------------------------------------------ (c) L1-lite
 
-L1_CONDITIONS = ('no_comm', 'structured', 'peer_en', 'leader_en')   # harness/e2ewarp_l1lite.py
-L1_TEST_SEEDS = (601, 602, 603, 604, 605, 606)                       # TEST_TABLE; DEV 701/702 never pooled
-L1_COMPONENTS = ('allocation_ok', 'distinct_slots', 'arrival_in_chosen_slot', 'claims_2_of_2',
-                 'constraint_ok', 'robot_contact_zero')
+L1_CONDITIONS = ('no_comm', 'structured', 'peer_en', 'leader_en')   # harness/e2ewarp_l1lite.py CONDITIONS
+L1_TEST_SEEDS = (601, 602, 603, 604, 605, 606)                       # TABLE_SEEDS; DEV 701/702 never pooled
+L1_DEV_SEEDS = (701, 702)
+L1_ANALYSIS_SCHEMA = 'ugrp.e2ewarp.l1lite_analysis.v1'               # scripts/analyze_l1lite.py SCHEMA
+#: analyze_l1lite.failure_reasons names -> success component (PREREG_L1LITE.md §4) for the component table
+L1_COMPONENT_REASONS = (
+    ('배정(allocation_ok)', ('ALLOCATION_NOT_OK',), 'L1LITE_'),
+    ('서로 다른 슬롯', ('SLOTS_NOT_DISTINCT',), None),
+    ('사적 제약 준수', ('CONSTRAINT_VIOLATION',), None),
+    ('GT 도착 2/2', ('GT_UNMEASURED', 'GT_NOT_IN_CHOSEN_SLOT'), None),
+    ('ARRIVED claim 2/2', ('CLAIM_INCOMPLETE',), None),
+    ('로봇 간 접촉 0', ('CONTACT_UNAVAILABLE', 'ROBOT_CONTACT'), None),
+    ('실행(NOT_RUN·HOST_ERROR·SHA·평가 없음)', ('NOT_RUN', 'HOST_ERROR', 'SHA_MISMATCH', 'EVAL_MISSING'), None))
+L1_INCOMPLETE = 5          # PREREG §7-6: NOT_RUN + HOST_ERROR >= 5 of 24 -> "실행 불완전", no comparison
 
 
 def l1lite(args, inputs):
-    """Rows: header {"type":"header","prereg_sha256"} + {"type":"run","condition","seed",
-    "report"|"report_path"} where report = harness.e2ewarp_l1lite_eval.evaluate_run(run_dir).
-    Conditions/seeds come from the prereg keys "conditions"/"seeds" when present, else the
-    dsh/l1lite-alloc defaults (prereg schema [확인 필요]: Claude writes it 10/22)."""
-    rows = inputs.jsonl(args.rows)
-    _, rec = header_sha(rows, args.rows)
-    pre = check_prereg(inputs, args.prereg, recorded_sha={'rows header': rec},
+    """Input = scripts/analyze_l1lite.py --out-json (dsh/l1lite-alloc), which already applies PREREG §7
+    (24 planned cells, first attempt per cell, NOT_RUN/HOST_ERROR/SHA_MISMATCH/EVAL_MISSING = failure,
+    smoke/dev rows excluded).  The prereg sha256 is the ledger key prereg_sha256 copied into the analysis;
+    --ledger (optional) must hash to analysis.ledger.sha256."""
+    an = inputs.json(args.analysis)
+    if an.get('schema') != L1_ANALYSIS_SCHEMA:
+        raise ReportError(f'analysis schema {an.get("schema")!r} is not {L1_ANALYSIS_SCHEMA}')
+    if args.ledger:
+        led = sha256_file(args.ledger)
+        inputs.raw(args.ledger)
+        if (an.get('ledger') or {}).get('sha256') != led:
+            raise ReportError(f'ledger sha256 {led} != analysis.ledger.sha256 {(an.get("ledger") or {}).get("sha256")}')
+    pre = check_prereg(inputs, args.prereg, recorded_sha={'analysis prereg_sha256 (ledger)': an.get('prereg_sha256')},
                        expect_sha=args.expect_prereg_sha, allow_draft=args.allow_draft)
-    try:
-        prereg = json.loads(Path(args.prereg).read_text())
-    except json.JSONDecodeError:
-        prereg = {}
-    conds = list(prereg.get('conditions') or L1_CONDITIONS)
-    seeds = [int(s) for s in (prereg.get('seeds') or L1_TEST_SEEDS)]
-    runs = load_report_rows(inputs, rows, Path(args.rows).parent)
-    grid = {}
-    for r in runs:
-        c, s = r['condition'], int(r['seed'])
-        if c not in conds:
-            raise ReportError(f'condition {c!r} not registered {conds}')
-        if s not in seeds:
-            raise ReportError(f'seed {s} is not a registered test seed {seeds} (DEV seeds are never pooled)')
-        if (c, s) in grid:
-            raise ReportError(f'duplicate run {c}/{s} (seed당 run 1개)')
-        rep = r['report']
-        if rep.get('schema') != 'ugrp.e2ewarp.l1lite_evaluation.v1':
-            raise ReportError(f'{c}/{s}: report schema {rep.get("schema")!r}')
-        grid[(c, s)] = rep
-    N = len(seeds)
+    table, cells = an['table'], an['cells']
+    if list(table) != list(L1_CONDITIONS):
+        raise ReportError(f'analysis conditions {list(table)} != {list(L1_CONDITIONS)}')
+    keys = sorted((c['condition'], int(c['seed'])) for c in cells)
+    if keys != sorted((c, s) for c in L1_CONDITIONS for s in L1_TEST_SEEDS):
+        raise ReportError('analysis cells are not exactly 4 conditions x test seeds 601-606 (DEV seeds never pooled)')
+    N = len(L1_TEST_SEEDS)
     stat = {}
-    for c in conds:
-        reps = [grid.get((c, s)) for s in seeds]
-        done = [x for x in reps if x is not None]
-        comp = {k: sum(1 for x in done if x['success_components'].get(k) is True) for k in L1_COMPONENTS}
-        compl = [x['aux']['completion_sim_s'] for x in done if x['aux'].get('completion_sim_s') is not None]
-        stat[c] = dict(n=sum(1 for x in done if x['success'] is True), missing=[s for s, x in zip(seeds, reps) if x is None],
-                       components=comp, completion_median=(sorted(compl)[len(compl) // 2] if compl else None),
-                       utterances=sum(int(x['aux'].get('utterances') or 0) for x in done),
-                       deadlock=sum(1 for x in done if x['aux'].get('deadlock_60s')),
-                       hallucination=sum(1 for x in done if (x['aux'].get('hallucination') or {}).get('count')),
-                       cost=round(sum(float((x['aux'].get('llm') or {}).get('cost_usd') or 0) for x in done), 4))
-    body = [md_table(['조건', f'성공 n/{N}', '미실행'] + list(L1_COMPONENTS),
-                     [[c, nn(stat[c]['n'], N), len(stat[c]['missing'])] + [f'{stat[c]["components"][k]}/{N}' for k in L1_COMPONENTS]
-                      for c in conds]),
-            md_table(['조건', '완료 SIM s(중앙값)', '발화 수', '60 s 교착', '환각 run', 'LLM 비용 USD'],
-                     [[c, stat[c]['completion_median'], stat[c]['utterances'], stat[c]['deadlock'],
-                       stat[c]['hallucination'], stat[c]['cost']] for c in conds]),
-            'seed × 조건(✓ 성공, ✗ 실패, – 미실행):',
-            md_table(['seed'] + conds, [[s] + ['–' if grid.get((c, s)) is None else ('✓' if grid[(c, s)]['success'] else '✗')
-                                          for c in conds] for s in seeds])]
-    notes = [f'분모: 조건당 {N}(seed당 run 1개) 고정. 실패·HOST_ERROR·L1LITE_ALLOCATION_FAILED도 분모에 남깁니다. 미실행은 표에 따로 적고 판정 보류.',
-             '성공 = 배정 유효 + 서로 다른 슬롯 + GT 슬롯 도착 + ARRIVED claim 2/2 + 사적 제약 준수 + 로봇 간 접촉 0(채널 관측 시). '
-             '도착 claim은 물리 성공 주장이 아닙니다(집기·내려놓기 제외).',
-             'no_comm 기대값 2/6(충돌 seed 4/6). DEV seed 701·702는 합산하지 않습니다.']
-    if not prereg.get('conditions'):
-        notes.append(f'조건·seed 목록은 dsh/l1lite-alloc 기본값을 썼습니다 {CHECK}(L1-lite 사전 등록 필드 이름 미정).')
-    figs = [bar_figure(Path(args.out) / 'fig-l1lite.png', f'L1-lite: 조건별 성공 (n/{N})', conds,
-                       [('성공', [(stat[c]['n'], N) for c in conds])])]
-    return dict(track='l1lite', title='(c) L1-lite 통신 조건 비교', prereg=pre, body=body, notes=notes, figures=figs,
-                data=dict(conditions=stat, N=N), headline=', '.join(f'{c} {stat[c]["n"]}/{N}' for c in conds))
+    for c in L1_CONDITIONS:
+        mine = sorted((x for x in cells if x['condition'] == c), key=lambda x: x['seed'])
+        n = sum(1 for x in mine if x['success'] is True)
+        if n != table[c]['n_success'] or table[c]['n_total'] != N:
+            raise ReportError(f'{c}: table {table[c]["n_success"]}/{table[c]["n_total"]} disagrees with cells {n}/{N}')
+        comp = {}
+        for label, names, prefix in L1_COMPONENT_REASONS:
+            comp[label] = sum(1 for x in mine if any(r in names or (prefix and r.startswith(prefix)) for r in x['reasons']))
+        stat[c] = dict(n=n, per_seed={int(x['seed']): x['success'] is True for x in mine},
+                       primary=dict(table[c]['primary_failure_reasons']), component_failures=comp,
+                       host_error=table[c]['host_error'], not_run=table[c]['not_run'], aux=table[c]['aux'],
+                       extra_attempts=sum(1 for x in mine if x.get('attempts', 0) > 1))
+    lost = sum(stat[c]['host_error'] + stat[c]['not_run'] for c in L1_CONDITIONS)
+    incomplete = lost >= L1_INCOMPLETE
+    body = [md_table(['조건', f'성공 n/{N}', 'HOST_ERROR', '미실행', '1차 실패 사유'],
+                     [[c, nn(stat[c]['n'], N), stat[c]['host_error'], stat[c]['not_run'],
+                       '; '.join(f'{k} {v}' for k, v in sorted(stat[c]['primary'].items())) or '-'] for c in L1_CONDITIONS]),
+            '성분별 실패 run 수(한 run이 여러 성분에 걸칠 수 있음):',
+            md_table(['성분'] + list(L1_CONDITIONS),
+                     [[label] + [f'{stat[c]["component_failures"][label]}/{N}' for c in L1_CONDITIONS]
+                      for label, _, _ in L1_COMPONENT_REASONS]),
+            md_table(['조건', '완료 SIM s(성공 중앙값)', '최소 차체 간격 m(최소/중앙)', '발화/run', '60 s 교착 run',
+                      '환각(수/run)', 'LLM 호출/토큰/USD'],
+                     [[c, a['completion_sim_s_success_median'], f'{a["min_body_gap_m_min"]} / {a["min_body_gap_m_median"]}',
+                       a['utterances_per_run_mean'], a['deadlock_runs'], f'{a["hallucination_total"]} / {a["hallucination_runs"]}',
+                       f'{a["llm_calls_total"]} / {a["llm_tokens_total"]} / {a["llm_cost_usd_total"]}']
+                      for c, a in ((c, stat[c]['aux']) for c in L1_CONDITIONS)]),
+            'seed × 조건(✓ 성공, ✗ 실패):',
+            md_table(['seed'] + list(L1_CONDITIONS),
+                     [[s] + ['✓' if stat[c]['per_seed'][s] else '✗' for c in L1_CONDITIONS] for s in L1_TEST_SEEDS])]
+    notes = [f'분모: 조건당 {N}칸 고정(PREREG §7). NOT_RUN·HOST_ERROR·SHA_MISMATCH·EVAL_MISSING은 실패로 셉니다. '
+             '재실행은 칸을 바꾸지 않습니다(첫 시도만, 추가 시도는 미합산).',
+             '성공 = 배정 유효 + 서로 다른 슬롯 + 제약 준수 + GT 도착 2/2 + ARRIVED claim 2/2 + 로봇 간 접촉 0(채널 관측 시). '
+             'L1-lite(이동·배정 과제, 집기 제외)이며 claim은 물리 성공 주장이 아닙니다.',
+             'n=6/조건은 탐색 수준입니다. 통계 검정과 효과 유무 결론을 쓰지 않습니다. no_comm 상한 2/6은 설계상 기대값입니다.',
+             f'frozen source SHA `{an.get("frozen_source_sha")}`; analysis 원장 sha256 `{(an.get("ledger") or {}).get("sha256")}`.']
+    if incomplete:
+        notes.insert(0, f'*실행 불완전*: NOT_RUN + HOST_ERROR = {lost}/24 ≥ {L1_INCOMPLETE}. 표만 보고하고 조건 비교 문장을 쓰지 않습니다.')
+    if an.get('excluded'):
+        notes.append('제외 행(합산 안 함): ' + ', '.join(f'o{r["order"]} {r["condition"]}/{r["seed"]}({r["reason"]})'
+                                                     for r in an['excluded']))
+    if an.get('protocol_deviations'):
+        notes.append('프로토콜 편차: ' + '; '.join(f'{d["condition"]}/{d["seed"]} {",".join(d["items"])}'
+                                              for d in an['protocol_deviations']))
+    figs = [bar_figure(Path(args.out) / 'fig-l1lite.png', f'L1-lite: 조건별 성공 (n/{N})', list(L1_CONDITIONS),
+                       [('성공', [(stat[c]['n'], N) for c in L1_CONDITIONS])])]
+    head = ', '.join(f'{c} {stat[c]["n"]}/{N}' for c in L1_CONDITIONS)
+    return dict(track='l1lite', title='(c) L1-lite 통신 조건 비교 (이동·배정 과제, 집기 제외)', prereg=pre, body=body,
+                notes=notes, figures=figs, data=dict(conditions=stat, N=N, incomplete=incomplete),
+                headline=head + (' (실행 불완전)' if incomplete else ''))
 
 
 # ------------------------------------------------------------------ (d) E2E
 
-E2E_PLANNED = {'E2E-1p': 3, 'E2E-2': 6}            # PREREG_DRAFT.md §2 (smoke excluded)
+E2E_PLANNED = {'E2E-1p': 3, 'E2E-2': 6}            # registered N, fixed (claude/e2e-min-runner PREREG_DRAFT.md §2; smoke excluded)
 E2E_DISPLAY = {'E2E-1p': "E2E-1' 혼합", 'E2E-2': 'E2E-2 순수'}
 E2E_STAGES = ('allocate', 'grasp', 'carry', 'release', 'done')
 
 
 def e2e(args, inputs):
-    """Rows: header {"type":"header","prereg_sha256"} + {"type":"run","level","seed","smoke":bool,
-    "report"|"report_path"} where report = harness.e2e_min_eval.recount_run(run_dir)."""
+    """Rows (PREREG_DRAFT.md §10): header {"type":"header","prereg_sha256"} + {"type":"run","level","seed",
+    "smoke":bool,"status":"complete"|"HOST_ERROR","report"|"report_path"} where report =
+    harness.e2e_min_eval.recount_run(run_dir).  A HOST_ERROR row may omit the report (failure, reach 0)."""
     rows = inputs.jsonl(args.rows)
     _, rec = header_sha(rows, args.rows)
     pre = check_prereg(inputs, args.prereg, recorded_sha={'rows header': rec},
                        expect_sha=args.expect_prereg_sha, allow_draft=args.allow_draft)
     planned = dict(E2E_PLANNED)
-    for item in args.planned or ():
-        k, v = item.split('=')
-        planned[k] = int(v)
-    runs = load_report_rows(inputs, rows, Path(args.rows).parent)
+    runs = load_report_rows(inputs, rows, Path(args.rows).parent, host_error_without_report=True)
     by, smoke = {k: [] for k in planned}, []
     for r in runs:
+        if r.get('status', 'complete') not in ('complete', 'HOST_ERROR'):
+            raise ReportError(f'run status {r.get("status")!r} is not complete/HOST_ERROR')
+        if r['level'] not in planned:
+            raise ReportError(f'unknown level {r["level"]!r}')
         rep = r['report']
+        if rep is None:
+            (smoke if r.get('smoke') else by[r['level']]).append(r)
+            continue
         if rep.get('schema') != 'ugrp.e2e_min.evaluation.v1':
             raise ReportError(f'report schema {rep.get("schema")!r}')
         if rep.get('level') != r['level'] or r['level'] not in planned:
@@ -578,19 +771,22 @@ def e2e(args, inputs):
         N = planned[lv]
         if len(rs) > N:
             raise ReportError(f'{lv}: {len(rs)} runs > registered N={N}')
-        reach = {s: sum(1 for r in rs for rb in r['report']['aux']['stage_reach'].values() if rb['reached'][s]) for s in E2E_STAGES}
+        ev = [r for r in rs if r['report'] is not None and r.get('status', 'complete') != 'HOST_ERROR']
+        reach = {s: sum(1 for r in ev for rb in r['report']['aux']['stage_reach'].values() if rb['reached'][s]) for s in E2E_STAGES}
         codes = {}
-        for r in rs:
+        for r in ev:
             for rb in r['report']['aux']['stage_reach'].values():
                 if rb.get('fail_code'):
                     codes[rb['fail_code']] = codes.get(rb['fail_code'], 0) + 1
-        subs = sorted({json.dumps(x, sort_keys=True) for r in rs for x in r['report']['e2e_substitutions']})
-        stat[lv] = dict(n=sum(1 for r in rs if r['report']['success'] is True), N=N, ran=len(rs), reach=reach,
+        subs = sorted({json.dumps(x, sort_keys=True) for r in ev for x in r['report']['e2e_substitutions']})
+        stat[lv] = dict(n=sum(1 for r in ev if r['report']['success'] is True), N=N, ran=len(rs), reach=reach,
                         robot_N=2 * N, fail_codes=codes, substitutions=[json.loads(x) for x in subs],
-                        drops=sum(1 for r in rs if r['report']['success_components'].get('drops_zero') is False))
+                        host_error=len(rs) - len(ev),
+                        drops=sum(1 for r in ev if r['report']['success_components'].get('drops_zero') is False))
     lv_list = list(planned)
-    body = [md_table(['레벨', '표기', '성공 n/N', '실행/N', '대체 단계', '낙하 run', 'FAIL 코드'],
+    body = [md_table(['레벨', '표기', '성공 n/N', '실행/N', 'HOST_ERROR', '대체 단계', '낙하 run', 'FAIL 코드'],
                      [[lv, E2E_DISPLAY.get(lv, lv), nn(stat[lv]['n'], stat[lv]['N']), f'{stat[lv]["ran"]}/{stat[lv]["N"]}',
+                       stat[lv]['host_error'],
                        '; '.join(f'{x["stage"]}←{x["by"]}' for x in stat[lv]['substitutions']) or '없음(순수)',
                        stat[lv]['drops'], '; '.join(f'{k} {v}' for k, v in stat[lv]['fail_codes'].items()) or '-']
                       for lv in lv_list]),
@@ -599,10 +795,11 @@ def e2e(args, inputs):
                                          for s in E2E_STAGES])]
     if smoke:
         body.append(f'smoke {len(smoke)}회는 배관 확인용이라 위 n/N에 넣지 않습니다: '
-                    + ', '.join(f'{r["level"]}/{r["seed"]} {"성공" if r["report"]["success"] else "실패"}' for r in smoke))
+                    + ', '.join(f'{r["level"]}/{r["seed"]} {"HOST_ERROR" if r["report"] is None else "성공" if r["report"]["success"] else "실패"}'
+                               for r in smoke))
     notes = ["레벨끼리 합산하지 않습니다. E2E-1'은 내려놓기를 규칙 스크립트 release_open_v1로 대체한 혼합 결과입니다.",
-             '실패와 HOST_ERROR도 분모에 넣습니다. 미실행은 실행/N 열로 보이며 판정 보류입니다.',
-             f'등록 N: {planned} (PREREG_DRAFT.md §2 기본값, --planned로 바꿀 수 있음{"" if args.planned else " " + CHECK})',
+             '실패와 HOST_ERROR도 분모에 넣습니다. HOST_ERROR는 재실행하지 않습니다(PREREG_DRAFT §3). 미실행은 실행/N 열로 보이며 판정 보류입니다.',
+             "등록 N(고정, PREREG_DRAFT §2): E2E-1' 3, E2E-2 6. smoke는 N 밖입니다.",
              '성공 = 배정 유효 + GT 큐브가 배정 슬롯 안 + 낙하 0(측정됨) + 로봇 간 접촉 0 + claim 2/2. 미측정은 실패.']
     figs = [bar_figure(Path(args.out) / 'fig-e2e-stages.png', 'E2E: 단계 도달 (로봇 단위)', list(E2E_STAGES),
                        [(E2E_DISPLAY.get(lv, lv), [(stat[lv]['reach'][s], stat[lv]['robot_N']) for s in E2E_STAGES])
@@ -636,7 +833,7 @@ def render(result, inputs):
     return '\n'.join(lines)
 
 
-TRACKS = {'tournament': tournament, 'pairact-collect': pairact_collect, 'pairact-eval': pairact_eval,
+TRACKS = {'tournament': tournament, 'pairact-p1': pairact_p1, 'pairact-collect': pairact_collect, 'pairact-eval': pairact_eval,
           'l1lite': l1lite, 'e2e': e2e}
 
 
@@ -651,13 +848,14 @@ def build_parser():
         p.add_argument('--allow-draft', action='store_true', help='allow a DRAFT prereg (output labelled, no verdict)')
         return p
     common(sub.add_parser('tournament')).add_argument('--ledger', required=True)
+    common(sub.add_parser('pairact-p1')).add_argument('--ledger', required=True, help='OUT_ROOT/p1-ledger.jsonl')
     common(sub.add_parser('pairact-collect')).add_argument('--report', required=True,
                                                            help='run root report.json (run_pairact_collect.py report)')
     common(sub.add_parser('pairact-eval')).add_argument('--rows', required=True)
-    common(sub.add_parser('l1lite')).add_argument('--rows', required=True)
-    p = common(sub.add_parser('e2e'))
-    p.add_argument('--rows', required=True)
-    p.add_argument('--planned', action='append', help='LEVEL=N registered runs, e.g. E2E-1p=3')
+    p = common(sub.add_parser('l1lite'))
+    p.add_argument('--analysis', required=True, help='scripts/analyze_l1lite.py --out-json output')
+    p.add_argument('--ledger', help='ledger.json; its sha256 must equal analysis.ledger.sha256')
+    common(sub.add_parser('e2e')).add_argument('--rows', required=True)
     return ap
 
 

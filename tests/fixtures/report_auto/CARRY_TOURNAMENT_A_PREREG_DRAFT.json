@@ -230,7 +230,7 @@
       "rule": "arm G - A-base G < -2/24 -> arm eliminated (equal to -2 is allowed)"
     },
     "tie_break": [
-      "early open during grasp (pwm1 >= 1900 issued in the grasp skill) = 0 required",
+      "early open during grasp = 0 required: in the grasp skill an issued pwm['1'] >= 1900 after the first issued pwm['1'] < 1900 (re-open after closing; actor-actions.jsonl, scripts/act18_tournament_ledger.py early_open_grasp)",
       "fewer drop_detected"
     ],
     "descriptive": [
@@ -246,6 +246,17 @@
     "no arm meets +3/24 -> no winner; open A-r1 (plan D)",
     "every arm, winners and losers, is recorded in TOURNAMENT_LEDGER.md"
   ],
+  "host_error": {
+    "rule": "HOST_ERROR is never re-run. A world-run whose group evaluation has no summary.json, status HOST_ERROR or student_scores not covering every plan is recorded as status HOST_ERROR and stays in the per-arm denominator 24 as a failure (not primary, not G)",
+    "not_executed": "a registered run directory that never started is listed as not executed; the tournament verdict is held until it runs once (first run counts; no replacement of an executed run)",
+    "same_rule_as": "pairact P1 teacher gate tournament (PAIRACT_P1_PREREG_DRAFT.json host_error)"
+  },
+  "ledger": {
+    "writer": "scripts/act18_tournament_ledger.py --prereg <this file> --run-root <tournament run root> --out <new dir>/tournament-ledger.jsonl",
+    "run_layout": "<run_root>/<arm>-<ho4|train4>-rep<k>/R8-<diag|train>/group-NNN/{plans.json,evaluation/} (C2c driver layout)",
+    "schema": "ugrp.act18.tournament_ledger.v1: header {prereg_sha256} + one world_run row per arm x rep x seed {arm, rep, cohort, seed, status complete|HOST_ERROR, release_success, physical_success, drop_detected, G, early_open_grasp, open_issued, release_done, cap_end}",
+    "report": "scripts/report_tables.py tournament --prereg <this file> --ledger <ledger> --out <new dir> (branch dsh/report-auto)"
+  },
   "confirmation": {
     "seeds": "[확인 필요] 4 unused VAL40 seeds not overlapping TRAIN200/HO4/VAL8/FINAL40",
     "N": 2,
