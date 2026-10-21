@@ -196,6 +196,26 @@ def select_band(verdicts):
                 stop='NO_BAND_PASSED: report, do not run Step B, no new band after results')
 
 
+def analysis_checks(rows):
+    """``checks.zone_free`` in the r3 render_check spelling for nav_v230_r5_analysis.
+
+    FP frames for the Step B FP row = r1 zone-free frames + ablated lane frames
+    (both robots) of the selected band (B0 when none is selected).
+    """
+    free = [(r['m']['detected'], (r['m']['largest'] or {}).get('px', 0))
+            for r in rows if r['group'] == 'zone_free' and r['robot'] == 'r1']
+    lane = [(r['m']['nonzone']['detected'], (r['m']['nonzone']['largest'] or {}).get('px', 0))
+            for r in rows if r['group'] in ('step_a', 'path')]
+    both = free + lane
+    return dict(zone_free=dict(frame_n=len(both), detections_total=sum(int(d) for d, _ in both),
+                               max_largest_component_px=max((px for _, px in both), default=0),
+                               hard_rule='detections==0 and max<600',
+                               passed=bool(both) and all(not d and px < MIN_COMPONENT_PX
+                                                         for d, px in both),
+                               composition='r1 zone-free frames + zone-B-repainted lane '
+                                           'frames (both robots)'))
+
+
 # ---- render (VM only) ------------------------------------------------------
 def render_batch(out, values, head, poses, prefix, xml_transform=None):
     from scripts.e2e_warp_physics import build_context, transport
@@ -312,6 +332,8 @@ def main(argv=None):
         verdicts = {b: evaluate_band(r) for b, r in rows.items()}
         scenes[label] = dict(info=info, frames=meta, rows=rows, verdicts=verdicts)
     selection = select_band(scenes['v5']['verdicts'])
+    checks = analysis_checks(scenes['v5']['rows'][selection['selected'] or 'B0'])
+    checks['band'] = selection['selected'] or 'B0'
     measure = dict(
         schema='ugrp.e2ewarp.nav_v5_recal_render_sweep.v1',
         purpose='render-only BRANCH_NAV_V5 band check on the ACT v5 scene; v6 same-session '
@@ -327,6 +349,7 @@ def main(argv=None):
         scenes=scenes,
         selection=dict(scene='v5', rule='B0 if pass; else first passing of B1, B2; else stop',
                        **selection),
+        checks=checks,
         v6_control_note='v6 verdicts are a same-session control of the method; they do not '
                         'select the band and are never pooled with v5',
         input_boundary=dict(render_only=True, controller_n=0, llm_calls=0,

@@ -134,3 +134,15 @@ def test_prereg_draft_matches_the_script():
     assert set(draft['criteria']) == {'C1_zone_free', 'C2_nonzone_fp0', 'C3_step_a_r1_detect',
                                       'C4_no_floor_merge'}
     assert draft['criteria_constants']['edge_tol_px'] == sweep.EDGE_TOL_PX
+
+
+def test_analysis_checks_use_the_r3_render_check_spelling():
+    rows = [_row('zone_free', 'r1', _measure(detected=False)),
+            _row('zone_free', 'r2', _measure()),  # r2 zone-free frames are not counted
+            _row('step_a', 'r1', _measure()),
+            _row('path', 'r2', _measure(detected=False, nonzone_px=900))]
+    c = sweep.analysis_checks(rows)['zone_free']
+    assert c['frame_n'] == 3 and c['detections_total'] == 1
+    assert c['max_largest_component_px'] == 900 and c['passed'] is False
+    clean = sweep.analysis_checks(rows[:3])['zone_free']
+    assert clean['detections_total'] == 0 and clean['passed'] is True
