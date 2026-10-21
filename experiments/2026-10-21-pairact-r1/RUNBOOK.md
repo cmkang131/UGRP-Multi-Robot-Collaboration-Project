@@ -231,5 +231,30 @@ python scripts/pairact_r1_offline.py --run runs/pairact-carry-r1-<TS>/main --dat
 ```
 `selection.json`의 verdict가 `NOT_READY_NO_CHECKPOINT_PASSES`이면 P5를 돌리지 않고 보고합니다.
 
-## 5. P5 (보류 20 seed, 학생·teacher 같은 seed)
-`PAIRACT_R1_EVAL_PREREG_DRAFT.json`의 [확인 필요] 항목(에피소드 cap)을 채워 커밋한 뒤에 실행합니다. 체크포인트 SHA를 커밋한 뒤 보류 20 seed에 규칙 A 정적 검사를 적용하고, 제외 seed 목록을 커밋한 다음에만 rollout합니다(제외 seed는 분모에서 빼고 대체하지 않음). 그 전에는 heldout 결과를 만들거나 읽지 않습니다. 평가 runner는 P2 evaluator와 PairActBarrier 연결이 필요하고, 아직 구현되지 않았습니다(남은 일).
+## 4-1. 판정 단계 확인 + 체크포인트 동결 (CPU, 수 분) — train-ready 추가
+학습 전에 `TRAIN_PLAN.json`의 단계를 확인합니다. 학습 설정(20k step·seed·sampler)은 판정 단계와 무관하게 같고, 단계는 표기와 P5 헤드라인만 바꿉니다.
+```
+python -c "import json;from harness.pairact_r1_plan import train_plan;d=json.load(open('$RUNP3T/report.json'))['decision'];print(json.dumps(train_plan(d['decision'],d.get('labels',()),d.get('limited_bins',())),ensure_ascii=False,indent=1))"
+```
+- `train=false`(NO_TRAIN_*)이면 §3 이후를 하지 않고 보고합니다.
+- 오프라인 gate 뒤(§4) 동결 파일을 만들어 *커밋·push한 다음에만* §5로 갑니다.
+```
+python scripts/pairact_r1_freeze_checkpoint.py --offline runs/pairact-carry-r1-<TS>/offline --run runs/pairact-carry-r1-<TS>/main \
+  --dataset datasets/pairact-r1-<TS> --stage-targets $ST --config $CFG --collect-report $RUNP3T/report.json \
+  --out experiments/2026-10-21-pairact-r1/CHECKPOINT_FREEZE.json
+```
+
+## 5. P5 (보류 seed, 학생·teacher 같은 seed) — 사전 등록 v2
+1. `PAIRACT_R1_EVAL_PREREG_DRAFT.json` v2의 `episode_cap_sim_s`를 P2 teacher smoke(-c5)의 운반 시간으로 계산해 채웁니다: `harness.pairact_r1_plan.episode_cap_s([carry_s...], any_timeout=...)`. 완료된 운반이 0이면 P5를 시작하지 않습니다.
+2. 체크포인트 동결(§4-1) 커밋 → 보류 20 seed에 규칙 A 정적 검사 → 제외 seed 목록과 검사 출력 sha256 커밋 → prereg `status: FROZEN` 커밋. 그 전에는 보류 결과를 만들거나 읽지 않습니다.
+3. 실행은 root `dsh/pairact-p2-carrypath-r-c5`의 `experiments/2026-10-21-pairact-p2/P5_STUDENT_EVAL.md` §3(학생 `--student-eval`, teacher는 같은 명령에서 플래그만 뺌, 같은 cases·cap).
+4. 집계:
+```
+python scripts/pairact_p5_rows.py --prereg <v2 FROZEN> --cases p5-heldout-cases.json --student RUN/p5-student \
+  --teacher RUN/p5-teacher [--static-check rule-A.json] --out RUN-report/p5-rows.jsonl            # root -r-c5
+python scripts/report_tables.py pairact-eval --prereg <v2 FROZEN> --rows RUN-report/p5-rows.jsonl --out RUN-report/report   # dsh/report-auto
+python scripts/pairact_r1_p5_decide.py --prereg <v2 FROZEN> --rows RUN-report/p5-rows.jsonl \
+  --freeze experiments/2026-10-21-pairact-r1/CHECKPOINT_FREEZE.json --out RUN-report/p5-decision.json   # 이 브랜치
+```
+- 보고: 학생 n/N_eff와 같은 seed teacher n/N_eff(제외 seed 목록 병기), 단계 퍼널, 보정 감사, hybrid 판정(`HYBRID_SWITCH_RULE.md`). 판정은 다음에 무엇을 만들지 정하는 것이고 결과가 아닙니다.
+- HOST_ERROR는 같은 seed 1회 재실행만 허용합니다(`--student-rerun`/`--teacher-rerun`).
