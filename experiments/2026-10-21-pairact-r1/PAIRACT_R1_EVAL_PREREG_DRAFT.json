@@ -28,7 +28,7 @@
    "policy": "pairact-r1 arm N checkpoint (PAIRACT_R1_TRAIN_CONFIG_ARM_N.json, segment scope near_only_v1) chosen by the same select_checkpoint rule on validation with the near-only offline scope; frozen in CHECKPOINT_FREEZE_ARM_N.json",
    "segments": "student: approach -> alignment -> READY -> grasp -> 3 s joint hold; code: carry (hold end -> door passage -> zone B alignment); student: lower/open/raise/retreat (place) -> done",
    "switch": "hold -> code: both robots' own HybridSegmentArbiter see own grasp done >= 0.65 sustained 3.0 s own clock and PairCarrySync GO (task carry); code -> student: own carry_status arrived (own sensors) and PairCarrySync GO (task place). No GT signal triggers a switch",
-   "code_carry": "harness/hybrid_carry.py on dsh/pairact-p2-carrypath-r-c5-hybrid (HYBRID_RUN.md), runner flag --hybrid-carry <config> (default off), carry_mode 'nav' (own camera zone/door detection + own odometry, no static map)",
+   "code_carry": "harness/hybrid_carry.py on teacher dsh/pairact-p2-carrypath-c5-hybrid 60ef0b14, root dsh/pairact-p2-carrypath-r-c5-hybrid 013e0d91a (HYBRID_RUN.md), runner flag --hybrid-carry <config> (default off), carry_mode 'nav' (own camera zone/door detection + own odometry, no static map)",
    "carry_mode_rule": "only carry_mode 'nav' rows are countable. 'map' (static door/zone coordinates + own odometry) is refused by the code until the owner (창민) approves static-map use for pair carry; if approved before P5, the map rows are a separate arm id 'hybrid_n_map' labelled '학습 근거리 + 코드 운반(hybrid, 정적 지도)', never pooled with 'hybrid_n'",
    "inputs": "student: same as arm F; code: own RGB, own issued commands, own odometry/VO, partner messages (seq, observed_at_s, plan_version). No GT, teacher, partner pose or simulator truth",
    "forbidden": "teacher, GT pose, partner raw pose, evaluator values in student or code inputs; arm N is never run as a pure student"
@@ -108,7 +108,7 @@
   "teacher_runner": "dsh/pairact-p2-carrypath-c5 75929e77 (pinned by the root; harness/pairact_student_eval.py StudentFunnel, harness/pair_carry_eval.py)",
   "student_worker": "dsh/pairact-p5-student (run_warp_flow_teacher.STUDENT_SHA must match, else the run refuses) [확인 필요: STUDENT_SHA pin on -r-c5 still points at the current worker commit]",
   "same_for_both_arms": "the teacher arm is the same command on the same cases without --student-eval",
-  "hybrid_root": "dsh/pairact-p2-carrypath-r-c5-hybrid (scripts/run_warp_flow_teacher.py --student-eval --hybrid-carry <config>; default off keeps the -r-c5 paths byte-equal) [SHA filled at freeze]"
+  "hybrid_root": "dsh/pairact-p2-carrypath-r-c5-hybrid 013e0d91a (scripts/run_warp_flow_teacher.py --student-eval --hybrid-carry <config>; default off keeps the -r-c5 pins). Hybrid stack pins: adapter -a-c5-hybrid 6e957a42, teacher -c5-hybrid 60ef0b14 (harness/hybrid_carry.py), worker dsh/pairact-p5-student-hybrid bdc41a3f (shadow op), nav dsh/nav-v5-recal ceacd474b. Run doc: experiments/2026-10-21-pairact-p2/HYBRID_RUN.md"
  },
  "teacher_same_seed": {
   "rule": "teacher n/N_eff is always printed next to student n/N_eff on the same N_eff seeds, same order, same cap, same evaluator",
@@ -132,7 +132,7 @@
   "evaluated": "once, on the final P5 counts of this prereg; the decision selects the next build, it is not a result"
  },
  "report_commands": [
-  "python scripts/pairact_p5_rows.py --prereg <this file> --cases p5-heldout-cases.json --student RUN/p5-student --hybrid-n RUN/p5-hybrid-n --teacher RUN/p5-teacher [--static-check rule-A.json] [--student-rerun ...] [--teacher-rerun ...] --out RUN-report/p5-rows.jsonl   (root -r-c5) [확인 필요: --hybrid-n flag of pairact_p5_rows.py is on -r-c5-hybrid]",
+  "python scripts/pairact_p5_rows.py --prereg <this file> --cases p5-heldout-cases.json --student RUN/p5-student --hybrid-n RUN/p5-hybrid-n --teacher RUN/p5-teacher [--static-check rule-A.json] [--student-rerun ...] [--teacher-rerun ...] --out RUN-report/p5-rows.jsonl   (root -r-c5-hybrid 013e0d91a for --hybrid-n)",
   "python scripts/report_tables.py pairact-eval --prereg <this file> --rows RUN-report/p5-rows.jsonl --out RUN-report/report   (dsh/report-auto da9212e3c)",
   "python scripts/pairact_r1_p5_decide.py --prereg <this file> --rows RUN-report/p5-rows.jsonl --out RUN-report/p5-decision.json   (this branch)"
  ],
