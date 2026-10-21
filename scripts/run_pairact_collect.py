@@ -340,7 +340,9 @@ def main():
     if a.command == 'convert-input':
         if not a.teacher_sha or not a.out:
             p.error('--teacher-sha and --out required')
-        core, _ = frozen_gate(a, prereg, sha, stage='final', need_clean=False)
+        if a.recording_check is None:
+            p.error('convert-input needs --recording-check RUNC/recording-check.json (stage final gate)')
+        core, _ = frozen_gate(a, prereg, sha, stage='final', recording_dir=a.recording_check.parent, need_clean=False)
         print(json.dumps(pc.convert_input(prereg, st, a.out, prereg_sha=sha, teacher_sha=a.teacher_sha, core=core)))
         return
     if stage not in pc.FREEZE_STAGES and a.command in ('probe-cases', 'probe-episode', 'check-rows'):

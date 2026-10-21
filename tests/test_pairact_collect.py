@@ -1285,3 +1285,16 @@ def test_prereg_has_no_bracket_placeholder_and_gate_refuses_one(prereg):
     m = filled_manifest(bad)
     with pytest.raises(ValueError, match='placeholder in prereg dart_noise.gpu_status'):
         pc.check_run_manifest(m, stage='core', prereg=bad)
+
+
+def test_runner_cli_gates_by_freeze_stage(tmp_path):
+    """B2 wiring: probe-cases refuses a READY prereg; training refuses a non-FROZEN prereg (before any GPU work)."""
+    def cli(*args):
+        return subprocess.run([sys.executable, str(ROOT / 'scripts/run_pairact_collect.py'), *args],
+                              capture_output=True, text=True, timeout=120)
+    (tmp_path / 'ledger.jsonl').write_text(json.dumps(pc.header('x', mode='measurement', noise='off', batch_size=20)) + '\n')
+    out = cli('probe-cases', '--prereg', str(PREREG), '--run-root', str(tmp_path), '--out', str(tmp_path / 'p.json'))
+    assert out.returncode != 0 and ('FROZEN_CORE' in out.stderr or 'prereg sha256' in out.stderr)
+    out = cli('collect', '--prereg', str(PREREG), '--run-root', str(tmp_path / 't'), '--mode', 'training',
+              '--episode-cmd', EP_CMD)
+    assert out.returncode != 0 and 'not allowed for training' in out.stderr
