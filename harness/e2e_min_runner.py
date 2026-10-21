@@ -30,6 +30,7 @@ import json
 import os
 from pathlib import Path
 
+from harness import e2e_min_actuation as A
 from harness import e2e_min_handoff as H
 from harness.e2e_min_world import validate_cubes
 
@@ -77,10 +78,14 @@ def check_config(config):
     return config
 
 
-def queue_fields(record):
+def queue_fields(record, environ=None):
     value = record['value']
     fields = H.queue_fields(value['level'])
     fields['e2e_config'] = dict(path=record['path'], sha256=record['sha256'], value=value)
+    actuation = A.mode(environ)
+    if actuation != 'direct':
+        # Opt-in only; the default queue stays byte-identical.
+        fields['e2e_actuation'] = actuation
     return fields
 
 
@@ -90,6 +95,8 @@ def validate_queue(queue, environ=None):
     bound = queue.get('e2e_config') or {}
     if bound.get('sha256') != record['sha256'] or bound.get('value') != record['value']:
         raise ValueError('E2E_CONFIG_CHANGED_SINCE_PREPARE')
+    if queue.get('e2e_actuation', 'direct') != A.mode(environ):
+        raise ValueError('E2E_ACTUATION_CHANGED_SINCE_PREPARE')
     return record
 
 

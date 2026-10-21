@@ -291,6 +291,11 @@ def issue(context, robot, command):
     port = context['ports'][robot]
     port._motor_commands = tuple(wheels)
     port._wheel_deadlines = [command['t']+v if v else None for v in command['duration_s']]
+    from harness import e2e_min_actuation
+    if e2e_min_actuation.mode() == 'duty_port_v1':
+        # E2E-min opt-in: ACT owner (DutyActPort) servo-update order.
+        e2e_min_actuation.duty_port_servos(port, command['pwm'], command['t'])
+        return
     port._servo_targets.update({int(k): v for k, v in command['pwm'].items()})
 
 
