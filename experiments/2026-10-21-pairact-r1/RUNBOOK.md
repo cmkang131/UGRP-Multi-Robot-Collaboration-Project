@@ -232,7 +232,7 @@ python scripts/train_grasp_act.py $COMMON --output runs/pairact-carry-r1-<TS>-<A
 python scripts/pairact_r1_offline.py --run runs/pairact-carry-r1-<TS>-<A>/main --dataset datasets/pairact-r1-<TS> \
   --stage-targets $ST --output runs/pairact-carry-r1-<TS>-<A>/offline
 ```
-`selection.json`의 verdict가 `NOT_READY_NO_CHECKPOINT_PASSES`이면 그 arm의 P5를 돌리지 않고 보고합니다(다른 arm은 그대로 진행). arm N 체크포인트는 adapter의 `segment_scope=near_only_v1`을 읽어 carry 행을 빼고 채점하며, carry→place 전이(반환 지점)는 그대로 봅니다. 기준값은 두 arm이 같습니다.
+`selection.json`의 verdict가 `NOT_READY_NO_CHECKPOINT_PASSES`이면 그 arm의 P5를 돌리지 않고 보고합니다(다른 arm은 그대로 진행). arm N은 위 명령에 `--train-config experiments/2026-10-21-pairact-r1/PAIRACT_R1_TRAIN_CONFIG_ARM_N.json`을 붙여 carry 행을 빼고 채점하며(빠뜨리면 selection.json의 `segment_scope`가 `full_v1`이 되어 동결 단계에서 거부됩니다), carry→place 전이(반환 지점)는 그대로 봅니다. 기준값은 두 arm이 같습니다.
 
 ## 4-1. 판정 단계 확인 + 체크포인트 동결 (CPU, 수 분) — train-ready 추가
 학습 전에 `TRAIN_PLAN.json`의 단계를 확인합니다. 학습 설정(20k step·seed·sampler)은 판정 단계와 무관하게 같고, 단계는 표기와 P5 헤드라인만 바꿉니다.
