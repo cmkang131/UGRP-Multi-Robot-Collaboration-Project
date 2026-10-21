@@ -1,55 +1,123 @@
 {
-  "schema": "ugrp.pairact_r1.eval-prereg.draft.v1",
-  "status": "DRAFT_NOT_REGISTERED",
-  "stage": "P5 same-seed closed-loop evaluation",
-  "commit_before_run": "this file + selected checkpoint SHA256 + OFFLINE_GATE selection.json must be committed before any P5 rollout",
-  "seeds": {"split": "heldout", "first": 8342000, "last": 8342019, "n": 20,
-            "rule": "never collected as demonstrations, never used for checkpoint selection"},
-  "arms": [
-    {"id": "student", "policy": "pairact-r1 checkpoint chosen by harness.pairact_r1.select_checkpoint on validation",
-     "inputs": "own RGB 4 lags, own 16 issued commands, task tokens, own v7 clocks (deadband 2)",
-     "runtime": "PairActBarrier(place_sync off) + PairActChunkExecutor(done_recovery beamact4_done_recovery_v1)",
-     "forbidden": "teacher, GT pose, partner pose, stage or geometry inputs; any GT/teacher correction of student commands"},
-    {"id": "teacher", "policy": "P2 MJWarp GT pair-carry teacher (same source SHA as P3 collection)",
-     "note": "GT allowed; reported side by side as the reference, not as a learned result"}
+ "schema": "ugrp.pairact_r1.eval-prereg.draft.v1",
+ "status": "DRAFT_NOT_REGISTERED",
+ "revision": "v2 (2026-10-21, task b73e43dd): episode cap rule fixed to the -c5 stack, n/N_eff with rule A, same-seed teacher n/N_eff beside the student, funnel definitions bound to code, student correction audit, hybrid switch rule (HYBRID_SWITCH_RULE.md). v1: rule A, N_eff, heldout access.",
+ "stage": "P5 same-seed closed-loop evaluation",
+ "commit_before_run": "this file + selected checkpoint SHA256 + OFFLINE_GATE selection.json must be committed before any P5 rollout",
+ "seeds": {
+  "split": "heldout",
+  "first": 8342000,
+  "last": 8342019,
+  "n": 20,
+  "rule": "never collected as demonstrations, never used for checkpoint selection"
+ },
+ "arms": [
+  {
+   "id": "student",
+   "policy": "pairact-r1 checkpoint chosen by harness.pairact_r1.select_checkpoint on validation",
+   "inputs": "own RGB 4 lags, own 16 issued commands, task tokens, own v7 clocks (deadband 2)",
+   "runtime": "PairActBarrier(place_sync off) + PairActChunkExecutor(done_recovery beamact4_done_recovery_v1)",
+   "forbidden": "teacher, GT pose, partner pose, stage or geometry inputs; any GT/teacher correction of student commands"
+  },
+  {
+   "id": "teacher",
+   "policy": "P2 MJWarp GT pair-carry teacher (same source SHA as P3 collection)",
+   "note": "GT allowed; reported side by side as the reference, not as a learned result"
+  }
+ ],
+ "start_distribution": "same generator as P3: each robot 0.3-1.2 m from its assigned beam end",
+ "episode_cap_sim_s": {
+  "value": "computed by harness.pairact_r1_plan.episode_cap_s from the P2 teacher smoke on the -c5 stack and committed with this file before P5 [VM 기입 전 미정]",
+  "rule": "cap = 60 (grasp cap, P1 gate) + carry_budget; carry_budget = min(120, ceil10(1.5 x max_k carry_s[k]) + 3.0 (release instruction) + 1.5 (finish)); carry_s[k] = SIM s from handover to the teacher done phase in P2 smoke world k (only worlds whose teacher command sequence completed)",
+  "if_no_complete_carry": "no cap, P5 does not start (report)",
+  "if_timeout": "any smoke world with carry_total_timeout -> carry_budget = 120, recorded",
+  "implementation": "runner runs cap_s + carry_cap_s from the start; if the computed budget differs from the -a-c5 candidate carry_cap_s, a new adapter candidate carries the value (existing candidates unchanged)",
+  "same_for_both_arms": true,
+  "cap_end": "an episode reaching the cap is a failure with termination cap_end; it stays in N_eff"
+ },
+ "success": {
+  "definition": "placed_in_zone_B AND drop_events == 0 AND robot_robot_contacts == 0 (harness/pair_carry_eval.py, GT evaluator only)",
+  "student_extra": "student_gt_corrections == 0 and teacher_commands_issued_to_student == 0",
+  "wall_contacts": "recorded, not a failure term"
+ },
+ "funnel": {
+  "order": [
+   "approach",
+   "alignment",
+   "READY",
+   "grasp",
+   "hold_3s",
+   "carry_1m",
+   "door",
+   "place"
   ],
-  "start_distribution": "same generator as P3: each robot 0.3-1.2 m from its assigned beam end",
-  "episode_cap_sim_s": "[확인 필요] P2 teacher total phase caps + 60 s grasp cap; fix before registration",
-  "success": {
-    "definition": "placed_in_zone_B AND drop_events == 0 AND robot_robot_contacts == 0 (harness/pair_carry_eval.py, GT evaluator only)",
-    "student_extra": "student_gt_corrections == 0 and teacher_commands_issued_to_student == 0",
-    "wall_contacts": "recorded, not a failure term"
+  "definitions": {
+   "approach": "both robots within the registered grasp-approach radius of their assigned ends (beamact4 funnel)",
+   "alignment": "both robots pass the nominal alignment check (beamact4 funnel)",
+   "READY": "both own learned stage heads declared READY and pinned GO/ACK issued",
+   "grasp": "both grippers closed on the beam (beamact4 funnel grasp)",
+   "hold_3s": "joint lift held 3 s (P1 gate criterion)",
+   "carry_1m": "beam centre moved >= 1.0 m from its post-hold position without a drop event",
+   "door": "beam centre passed the door plane (P2 evaluator door_t not None)",
+   "place": "success definition above"
   },
-  "funnel": {
-    "order": ["approach", "alignment", "READY", "grasp", "hold_3s", "carry_1m", "door", "place"],
-    "definitions": {
-      "approach": "both robots within the registered grasp-approach radius of their assigned ends (beamact4 funnel)",
-      "alignment": "both robots pass the nominal alignment check (beamact4 funnel)",
-      "READY": "both own learned stage heads declared READY and pinned GO/ACK issued",
-      "grasp": "both grippers closed on the beam (beamact4 funnel grasp)",
-      "hold_3s": "joint lift held 3 s (P1 gate criterion)",
-      "carry_1m": "beam centre moved >= 1.0 m from its post-hold position without a drop event",
-      "door": "beam centre passed the door plane (P2 evaluator door_t not None)",
-      "place": "success definition above"
-    },
-    "report": "count reaching each stage, n/N_eff per arm (denominator_rule), same seed order"
-  },
-  "report": {
-    "primary": "student n/N_eff and teacher n/N_eff on the same N_eff heldout seeds (denominator_rule); the excluded seeds are listed next to it",
-    "secondary": ["funnel per arm", "termination reasons (cap_end, drop, contact, HOST_ERROR)",
-                  "first-failure stage per seed", "one-side done stuck count", "GO before alignment count"],
-    "independent_recount": "Codex recounts from eval-only rows"
-  },
-  "exclusions": {
-    "pre_run_static_check": "rule A only (P0/P1 static stance check, experiments/2026-10-21-pairact-p1 README D2 and run_p1.sh static: flagged['overlap'] of static_stance_check.py = every certified grasp stance of one beam end overlaps a box). Applied mechanically to all 20 heldout seeds after the checkpoint SHA is committed and before any P5 rollout; the excluded seed list and the static-check output sha256 are committed before the run. Rule B (11.07 mm) is not used",
-    "denominator": "excluded seeds leave the denominator (N_eff = 20 - excluded), no replacement seed is drawn, both arms use the same N_eff seeds; reported as n/N_eff with the excluded seeds listed",
-    "no_filter_meaning": "'no filter' (COLLECT_PREREG heldout) means no success filter and no selection by outcome; the pre-registered rule A static exclusion is the only exclusion",
-    "host_error": "one rerun of the same seed; a second HOST_ERROR counts as failure and is reported separately",
-    "post_hoc_exclusion": "forbidden"
-  },
-  "denominator_rule": "v3 (Codex v2 B6): one denominator everywhere (primary, funnel, minimum success): N_eff = 20 - (rule A excluded seeds); N_eff = 20 when nothing is excluded. Reported as n/N_eff with N_eff and the excluded seed list, also when N_eff < 20",
-  "heldout_access": "no heldout rollout, result, video or log is produced or read before the selected checkpoint SHA256 and OFFLINE_GATE selection.json are committed (commit_before_run); heldout seeds are never collected (COLLECT_PREREG v2 seeds.heldout) and never used for checkpoint selection",
-  "runs_per_arm": 1,
-  "minimum_success_claim": ">= 1/N_eff student success meets the r1 minimum; 0/N_eff is reported with the funnel as the result",
-  "compute_estimate_gpu_h": "2-3 (pair-act-carry-plan.md P5) [확인 필요]"
+  "report": "count reaching each stage, n/N_eff per arm (denominator_rule), same seed order",
+  "code": "student: harness/pairact_student_eval.StudentFunnel (approach/alignment from GT eval-only rows, READY = both learned stage heads READY and GO issued, grasp, hold_3s) + pair_carry_eval funnel (carried_1m without drop, door_passed, success) chained; teacher: pairact_p5_rows.teacher_funnel",
+  "monotone": "each stage counts only seeds that reached every earlier recorded stage (chain); a non-monotone row is reported as a recorder fault"
+ },
+ "report": {
+  "primary": "student n/N_eff and teacher n/N_eff on the same N_eff heldout seeds (denominator_rule); the excluded seeds are listed next to it",
+  "secondary": [
+   "funnel per arm",
+   "termination reasons (cap_end, drop, contact, HOST_ERROR)",
+   "first-failure stage per seed",
+   "one-side done stuck count",
+   "GO before alignment count"
+  ],
+  "independent_recount": "Codex recounts from eval-only rows"
+ },
+ "exclusions": {
+  "pre_run_static_check": "rule A only (P0/P1 static stance check, experiments/2026-10-21-pairact-p1 README D2 and run_p1.sh static: flagged['overlap'] of static_stance_check.py = every certified grasp stance of one beam end overlaps a box). Applied mechanically to all 20 heldout seeds after the checkpoint SHA is committed and before any P5 rollout; the excluded seed list and the static-check output sha256 are committed before the run. Rule B (11.07 mm) is not used",
+  "denominator": "excluded seeds leave the denominator (N_eff = 20 - excluded), no replacement seed is drawn, both arms use the same N_eff seeds; reported as n/N_eff with the excluded seeds listed",
+  "no_filter_meaning": "'no filter' (COLLECT_PREREG heldout) means no success filter and no selection by outcome; the pre-registered rule A static exclusion is the only exclusion",
+  "host_error": "one rerun of the same seed; a second HOST_ERROR counts as failure and is reported separately",
+  "post_hoc_exclusion": "forbidden"
+ },
+ "denominator_rule": "v3 (Codex v2 B6): one denominator everywhere (primary, funnel, minimum success): N_eff = 20 - (rule A excluded seeds); N_eff = 20 when nothing is excluded. Reported as n/N_eff with N_eff and the excluded seed list, also when N_eff < 20",
+ "heldout_access": "no heldout rollout, result, video or log is produced or read before the selected checkpoint SHA256 and OFFLINE_GATE selection.json are committed (commit_before_run); heldout seeds are never collected (COLLECT_PREREG v2 seeds.heldout) and never used for checkpoint selection",
+ "runs_per_arm": 1,
+ "minimum_success_claim": ">= 1/N_eff student success meets the r1 minimum; 0/N_eff is reported with the funnel as the result",
+ "compute_estimate_gpu_h": "2-3 for both arms (pair-act-carry-plan.md P5) [확인 필요: P2 smoke wall per SIM s]",
+ "stack": {
+  "root": "dsh/pairact-p2-carrypath-r-c5 a93082c34 (scripts/run_warp_flow_teacher.py --student-eval, scripts/pairact_p5_rows.py)",
+  "adapter": "dsh/pairact-p2-carrypath-a-c5 3779d961 (pinned by the root)",
+  "teacher_runner": "dsh/pairact-p2-carrypath-c5 75929e77 (pinned by the root; harness/pairact_student_eval.py StudentFunnel, harness/pair_carry_eval.py)",
+  "student_worker": "dsh/pairact-p5-student (run_warp_flow_teacher.STUDENT_SHA must match, else the run refuses) [확인 필요: STUDENT_SHA pin on -r-c5 still points at the current worker commit]",
+  "same_for_both_arms": "the teacher arm is the same command on the same cases without --student-eval"
+ },
+ "teacher_same_seed": {
+  "rule": "teacher n/N_eff is always printed next to student n/N_eff on the same N_eff seeds, same order, same cap, same evaluator",
+  "label": "teacher = GT reference (교사, 학습 결과 아님); never pooled with student, collection A or gate B",
+  "unrecorded_stages": "the teacher runner does not record approach/alignment/READY/grasp; these cells are reported as 미기록, not 0"
+ },
+ "student_correction_audit": {
+  "per_episode": "student_gt_corrections (raw student_eval.gt_inputs_to_student) == 0 AND teacher_commands_issued_to_student (summary teacher_steps) == 0",
+  "unknown": "a null counter means unverified: the episode is not a success and the hybrid rule returns UNVERIFIED_CORRECTIONS",
+  "nonzero": "any nonzero counter invalidates the student arm (INVALID_STUDENT_CORRECTED); reported, no student number is claimed",
+  "static": "student-eval.json has exactly the 6 registered keys (no GT/teacher/partner key); worker process isolated, STUDENT_SHA pinned",
+  "recount": "harness.pairact_r1_plan.p5_counts on the rows file; Codex recounts independently from eval-only rows"
+ },
+ "heldout_bins": "heldout case index i uses bin B(i % 6) from the P3 generator (no success filter); for TRAIN_DATA_RANGE_LIMITED / TRAIN_SMALL_DATA the per-bin rows are reported, never dropped",
+ "training_tier_link": "TRAIN_PLAN.json tiers: the headline is success n/N_eff for TRAIN / TRAIN_DATA_RANGE_LIMITED and the funnel for TRAIN_SMALL_DATA; NO_TRAIN* has no P5",
+ "hybrid_switch": {
+  "rule_id": "pairact_r1_hybrid_switch_v1",
+  "document": "experiments/2026-10-21-pairact-r1/HYBRID_SWITCH_RULE.md",
+  "code": "harness.pairact_r1_plan.hybrid_decision(p5_counts(...))",
+  "evaluated": "once, on the final P5 counts of this prereg; the decision selects the next build, it is not a result"
+ },
+ "report_commands": [
+  "python scripts/pairact_p5_rows.py --prereg <this file> --cases p5-heldout-cases.json --student RUN/p5-student --teacher RUN/p5-teacher [--static-check rule-A.json] [--student-rerun ...] [--teacher-rerun ...] --out RUN-report/p5-rows.jsonl   (root -r-c5)",
+  "python scripts/report_tables.py pairact-eval --prereg <this file> --rows RUN-report/p5-rows.jsonl --out RUN-report/report   (dsh/report-auto da9212e3c)",
+  "python scripts/pairact_r1_p5_decide.py --prereg <this file> --rows RUN-report/p5-rows.jsonl --out RUN-report/p5-decision.json   (this branch)"
+ ]
 }

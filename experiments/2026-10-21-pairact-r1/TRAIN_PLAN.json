@@ -1,0 +1,52 @@
+{
+  "schema": "ugrp.pairact_r1.train_plan.v1",
+  "status": "READY_FOR_REVIEW",
+  "written": "2026-10-21, Claude implementation worker (task b73e43dd). Not run: no data, no training, no GPU.",
+  "base": "origin/dsh/pairact-carry-r1-v3-shard 6a68e4ca8 (collect prereg v3s, -c5 stack pins)",
+  "config": {
+    "file": "experiments/2026-10-21-pairact-r1/PAIRACT_R1_TRAIN_CONFIG_DRAFT.json",
+    "validated_by": "harness.pairact_r1.validate_config (trainer refuses any other steps/interval/seed/arm)",
+    "fixed": {"steps": 20000, "checkpoint_every": 1000, "seed": 20261020, "batch_size": 8, "chunk": 8,
+              "base_arm": "A", "init": "fresh ImageNet ResNet18", "lr": "1e-5 AdamW wd 1e-4",
+              "history_augmentation": "dither 6 PWM p 0.5, dropout p 0.1 k 12..15",
+              "sampling": "transition window 10 rows weight 3", "issued_clock_deadband": 2,
+              "done_recovery": "beamact4_done_recovery_v1", "place_sync": "off"}
+  },
+  "pipeline": [
+    {"step": 1, "name": "decision", "input": "RUNP3T/report.json decision (harness.pairact_collect.decision)",
+     "rule": "only TRAIN / TRAIN_DATA_RANGE_LIMITED / TRAIN_SMALL_DATA continue (harness.pairact_r1_plan.train_plan)"},
+    {"step": 2, "name": "convert", "cmd": "run_pairact_collect.py convert-input (FROZEN prereg, --recording-check) -> harness.grasp_act_data.convert",
+     "out": "datasets/pairact-r1-<TS>/ (train + validation admitted seeds only; heldout refused)"},
+    {"step": 3, "name": "stage sidecar", "cmd": "scripts/build_pairact_r1_stage_targets.py",
+     "stop_if": "missing_stages contains any of approach, alignment, ready, execute, carry, place, complete"},
+    {"step": 4, "name": "smoke", "cmd": "train_grasp_act.py --stage smoke --steps 300 --max-wall-s 1800"},
+    {"step": 5, "name": "approval", "by": "Claude owner", "file": "runs/pairact-carry-r1-<TS>/approval.json",
+     "binds": ["source_sha", "dataset_manifest_sha256", "smoke_summary_sha256", "pairact_r1_config_sha256",
+               "pairact_r1_stage_targets_sha256", "steps=20000"]},
+    {"step": 6, "name": "train", "cmd": "train_grasp_act.py --stage main --steps 20000 --checkpoint-every 1000 --max-wall-s 25200 --profile-timing",
+     "resume": "WALL_CAP -> same command + --resume step-<last>", "budget_gpu_h": 4.6},
+    {"step": 7, "name": "offline gate + selection", "cmd": "scripts/pairact_r1_offline.py",
+     "data": "validation split only (8341000-8341019 admitted); heldout never loaded",
+     "rule": "OFFLINE_GATE.md G1-G5 clean + dithered; pick max min-G4 recall, then G1, then earliest step",
+     "stop_if": "NOT_READY_NO_CHECKPOINT_PASSES -> no P5, report; no threshold change, no heldout look"},
+    {"step": 8, "name": "freeze", "cmd": "scripts/pairact_r1_freeze_checkpoint.py",
+     "out": "experiments/2026-10-21-pairact-r1/CHECKPOINT_FREEZE.json, committed and pushed before any heldout rollout"},
+    {"step": 9, "name": "P5", "prereg": "PAIRACT_R1_EVAL_PREREG_DRAFT.json v2 (status FROZEN, sha in rows header)"}
+  ],
+  "tiers": {
+    "rule": "training hyperparameters are identical in every trainable tier (no tier-dependent tuning: it would be a choice made after seeing the yield). Tiers change only labels, the P5 headline and per-bin reporting.",
+    "TRAIN": {"when": "A >= 150 and every bin >= 20 (+ validation gate)", "train": true, "config_deltas": {},
+              "p5_headline": "student success n/N_eff beside teacher n/N_eff; funnel secondary", "label": null},
+    "TRAIN_DATA_RANGE_LIMITED": {"when": "A >= 150, some bin < 20", "train": true, "config_deltas": {},
+              "p5_headline": "same as TRAIN; heldout seeds whose bin (index % 6) is limited get their own row, never dropped",
+              "label": "데이터 범위 제한(구간 부족: <bins>)"},
+    "TRAIN_SMALL_DATA": {"when": "80 <= A < 150", "train": true, "config_deltas": {},
+              "p5_headline": "stage funnel n/N_eff per arm is the headline; success n/N_eff still reported and still counts for the r1 minimum",
+              "label": "소량 데이터(A<150): 결과 해석은 단계 퍼널 중심으로 제한",
+              "note": "20k steps x batch 8 = 160k samples; rows per episode unmeasured [확인 필요] — with ~1000 rows per robot stream, A=80 gives ~160k rows (~1 epoch), A=200 ~400k rows (~0.4 epoch) [추정]"},
+    "NO_TRAIN": {"when": "NO_TRAIN_BELOW_FLOOR (A < 80) / NO_TRAIN_DISTANCE_GATE / NO_TRAIN_VALIDATION_INSUFFICIENT / NO_TRAIN_RECORD_ERROR",
+              "train": false, "p5": false, "report": "A only; no C row", "next": "A < 80 -> back to P2; others -> report to Claude owner"}
+  },
+  "gpu_estimate": {"smoke_h": 0.1, "train_h": 4.6, "offline_gate_h": "0.5-1.5 [확인 필요]", "p5_h": "2-3 [확인 필요]",
+                   "basis": "DESIGN.md section 3 (beamact2 10k 2.29 h linear, beamact3 20k 2.8-3.6 h)"}
+}
