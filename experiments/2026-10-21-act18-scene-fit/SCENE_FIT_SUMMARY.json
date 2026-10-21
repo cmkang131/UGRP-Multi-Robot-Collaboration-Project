@@ -1,0 +1,325 @@
+{
+  "schema": "ugrp.act18.scene_fit_summary.v1",
+  "experiment": "2026-10-21-act18-scene-fit",
+  "phase": "D4 scene fit (C2c config on nav v6 neutral pickup paint)",
+  "title": "R8 + v7 own-issued clock (deadband 2) on v6 pickup paint, HO4 x N=1",
+  "scope": "engineering-only / sim / HO4 diagnostic / not a promotion gate / pooling forbidden",
+  "branch": "dsh/act18-scene-v6-fit",
+  "source_sha": "7aa8c3d873f47abfaaea93cf9c59668de44b73fc",
+  "code_commit": "d46fe8af7c833db9a8fde623f37396f62bd5c8a8",
+  "prereg": {
+    "path": "experiments/2026-10-21-act18-scene-fit/SCENE_FIT_PREREG.json",
+    "sha256": "9c2b5ba220e314a34f80d369dadbb2e01d1f793c987772f2d25a32fff30b5bab",
+    "status": "FROZEN",
+    "pre_registered_utc": "2026-10-21T02:48:01Z",
+    "run_root_declared": "/home/ugrp/ugrp-sim/runs/act18/scene-fit-v6-20261021T0248Z"
+  },
+  "checkpoint": {
+    "path": "/home/ugrp/ugrp-sim/runs/act18/training-r1/R8/step-100000",
+    "model_sha256": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a",
+    "unchanged_before_after": true
+  },
+  "scene_fit": {
+    "env": "UGRP_ACT18_SCENE_FIT=v6_neutral_pickup_v1",
+    "mode": "v6_neutral_pickup_v1",
+    "neutral_module_sha256": "76d28879101c0fdb2ca2cce6173f239adfc432ae8629d2844e57ed2811ea71d8",
+    "appearance_equivalent_to": "walls_floor_contrast_v6_indigo110_s80_neutral_start",
+    "launch_env_recorded": "v6_neutral_pickup_v1"
+  },
+  "references": {
+    "root_used": "/home/ugrp/ugrp-sim/runs/act18/scene-fit-v6-refs-teacher-20261021T0300Z",
+    "generator": "scripts/act17_v7_prepare.py per-case command (act17_v7.py --action launch --mode teacher --export-compiled-only)",
+    "n_generated": 4,
+    "n_usable": 4,
+    "cases": [
+      {
+        "index": 68,
+        "seed": 88668,
+        "xml_sha256": "7dfe607d06c39f82caf4334980e8012669472e442d4c9bdfd5fe07668c758dbd",
+        "scene_xml": "/home/ugrp/ugrp-sim/runs/act18/scene-fit-v6-refs-teacher-20261021T0300Z/case-068/runtime-scene.xml",
+        "actuator": "/home/ugrp/ugrp-sim/runs/act18/scene-fit-v6-refs-teacher-20261021T0300Z/case-068/compiled-312.json",
+        "geometry": "/home/ugrp/ugrp-sim/runs/act18/scene-fit-v6-refs-teacher-20261021T0300Z/case-068/compiled-geometry312.npz",
+        "scene_fit": "v6_neutral_pickup_v1",
+        "tiles": 60
+      },
+      {
+        "index": 69,
+        "seed": 88669,
+        "xml_sha256": "7576c1679a78f0dd25936479cfd1adb45f487219192b68c228a9b1b1ac4b175b",
+        "scene_xml": "/home/ugrp/ugrp-sim/runs/act18/scene-fit-v6-refs-teacher-20261021T0300Z/case-069/runtime-scene.xml",
+        "actuator": "/home/ugrp/ugrp-sim/runs/act18/scene-fit-v6-refs-teacher-20261021T0300Z/case-069/compiled-312.json",
+        "geometry": "/home/ugrp/ugrp-sim/runs/act18/scene-fit-v6-refs-teacher-20261021T0300Z/case-069/compiled-geometry312.npz",
+        "scene_fit": "v6_neutral_pickup_v1",
+        "tiles": 60
+      },
+      {
+        "index": 70,
+        "seed": 88670,
+        "xml_sha256": "e560e3e621cd6a48445794450207fdbde3c4240fa0cd41f877a8c9819ae83cb1",
+        "scene_xml": "/home/ugrp/ugrp-sim/runs/act18/scene-fit-v6-refs-teacher-20261021T0300Z/case-070/runtime-scene.xml",
+        "actuator": "/home/ugrp/ugrp-sim/runs/act18/scene-fit-v6-refs-teacher-20261021T0300Z/case-070/compiled-312.json",
+        "geometry": "/home/ugrp/ugrp-sim/runs/act18/scene-fit-v6-refs-teacher-20261021T0300Z/case-070/compiled-geometry312.npz",
+        "scene_fit": "v6_neutral_pickup_v1",
+        "tiles": 60
+      },
+      {
+        "index": 71,
+        "seed": 88671,
+        "xml_sha256": "2189b0e3cf743e107d22b17346f9dc640c30a01648e710f6f17ed840879fa500",
+        "scene_xml": "/home/ugrp/ugrp-sim/runs/act18/scene-fit-v6-refs-teacher-20261021T0300Z/case-071/runtime-scene.xml",
+        "actuator": "/home/ugrp/ugrp-sim/runs/act18/scene-fit-v6-refs-teacher-20261021T0300Z/case-071/compiled-312.json",
+        "geometry": "/home/ugrp/ugrp-sim/runs/act18/scene-fit-v6-refs-teacher-20261021T0300Z/case-071/compiled-geometry312.npz",
+        "scene_fit": "v6_neutral_pickup_v1",
+        "tiles": 60
+      }
+    ],
+    "scene_xml_matches_eval_owner": true,
+    "tiles_per_case": 60,
+    "ngeom": {
+      "case-068": 1446,
+      "case-069": 1444,
+      "case-070": 1446,
+      "case-071": 1446
+    },
+    "ngeom_delta_vs_v5": {
+      "case-068": 59,
+      "case-069": 59,
+      "case-070": 59,
+      "case-071": 59
+    },
+    "rejected_draft_attempt": {
+      "root": "/home/ugrp/ugrp-sim/runs/act18/scene-fit-v6-refs-20261021T0248Z",
+      "tool": "scripts/act17_v7_rebuild_compiled_references.py",
+      "n_generated": 4,
+      "n_usable": 0,
+      "reason": "tool builds the owner scene without the act17_v7 annotations (teal/blue beam bands, scene_profile/end_color_scene custom text) that the C2c eval owner applies; eval owner XML sha differs, simalt_compiled_compat fails closed."
+    }
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "run_root": "/home/ugrp/ugrp-sim/runs/act18/scene-fit-v6-20261021T0248Z",
+      "status": "HOST_ERROR",
+      "group_exit": {
+        "0": 1,
+        "1": 1,
+        "2": 1
+      },
+      "reason": "compiled geometry reference version/XML/hash mismatch (simalt_compiled_compat.apply_geometry)",
+      "raw_preserved": true,
+      "used_for_verdict": false
+    },
+    {
+      "attempt": 2,
+      "run_root": "/home/ugrp/ugrp-sim/runs/act18/scene-fit-v6-20261021T0304Z",
+      "status": "DONE",
+      "group_exit": {
+        "0": 0,
+        "1": 0,
+        "2": 0
+      },
+      "wall_s": 861.2,
+      "finished_utc": "2026-10-21T03:12:01.790831+00:00",
+      "used_for_verdict": true
+    }
+  ],
+  "run_root": "/home/ugrp/ugrp-sim/runs/act18/scene-fit-v6-20261021T0304Z",
+  "run": {
+    "run": "C2c-ho4-rep1",
+    "arm": "C2c",
+    "queue": "ho4",
+    "rep": 1,
+    "stage": "diag",
+    "deadband": 2,
+    "status": "DONE",
+    "group_exit": {
+      "0": 0,
+      "1": 0,
+      "2": 0
+    },
+    "wall_s": 861.2,
+    "checkpoint_sha256_after": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a",
+    "finished_utc": "2026-10-21T03:12:01.790831+00:00"
+  },
+  "worlds": [
+    {
+      "group": 0,
+      "world": 0,
+      "seed": 88668,
+      "done": 31.600000000000154,
+      "release_done": null,
+      "G": true,
+      "Pre": false,
+      "lift": true,
+      "release": false,
+      "task": false,
+      "cap_end": true,
+      "failure_reason": "release_done_not_requested",
+      "lift_complete_t": 22.500000000000153,
+      "post_lift_max_pe": 14.4
+    },
+    {
+      "group": 1,
+      "world": 0,
+      "seed": 88669,
+      "done": null,
+      "release_done": null,
+      "G": false,
+      "Pre": false,
+      "lift": false,
+      "release": false,
+      "task": false,
+      "cap_end": true,
+      "failure_reason": "grasp_done_not_requested",
+      "lift_complete_t": null,
+      "post_lift_max_pe": null
+    },
+    {
+      "group": 2,
+      "world": 0,
+      "seed": 88670,
+      "done": 31.700000000000152,
+      "release_done": 43.400000000000155,
+      "G": false,
+      "Pre": true,
+      "lift": false,
+      "release": false,
+      "task": false,
+      "cap_end": false,
+      "failure_reason": "lift_not_stable",
+      "lift_complete_t": null,
+      "post_lift_max_pe": null
+    },
+    {
+      "group": 2,
+      "world": 1,
+      "seed": 88671,
+      "done": 30.200000000000152,
+      "release_done": 41.000000000000156,
+      "G": false,
+      "Pre": true,
+      "lift": false,
+      "release": false,
+      "task": false,
+      "cap_end": false,
+      "failure_reason": "lift_not_stable",
+      "lift_complete_t": null,
+      "post_lift_max_pe": null
+    }
+  ],
+  "aggregate": {
+    "N": 4,
+    "G": 1,
+    "Pre": 2,
+    "done": 3,
+    "lift": 1,
+    "release": 0,
+    "task": 0,
+    "cap_end": 2
+  },
+  "acceptance": {
+    "UNIFY_V6": false,
+    "BRANCH_NAV_V5": true,
+    "verdict": "BRANCH_NAV_V5",
+    "basis": "G(v6 C2c-HO4, N=1) = 1/4 <= 1/4",
+    "criteria": {
+      "UNIFY_V6": "G(v6 C2c-HO4, N=1) >= 2/4 (v5 rep1 4/4 minus 2; e2e-by-1105-plan.md §3 10/21 row)",
+      "BRANCH_NAV_V5": "G(v6 C2c-HO4, N=1) <= 1/4 -> recalibrate nav on v5 scene (+1 day), E2E-2 after 11/5",
+      "HOST_ERROR": "any group HOST_ERROR or compiled-reference mismatch -> no verdict; fix and rerun in a new root",
+      "reported_only": [
+        "lift",
+        "release",
+        "task",
+        "done",
+        "Pre",
+        "post_lift_max_pe"
+      ]
+    },
+    "analyzer_generic_verdict": "FAIL",
+    "note": "analyzer verdict FAIL is its generic C2c gate (needs 4/4); the D4 prereg verdict is BRANCH_NAV_V5"
+  },
+  "reported_only": {
+    "lift": 1,
+    "release": 0,
+    "task": 0,
+    "done": 3,
+    "Pre": 2,
+    "cap_end": 2,
+    "note": "release is measured on the pickup floor and is the most directly affected by the v6 paint; not interpreted as a gate"
+  },
+  "sim": {
+    "worlds_per_group": [
+      1,
+      1,
+      2
+    ],
+    "elapsed_sim_s": [
+      90.0,
+      90.0,
+      44.9
+    ],
+    "cap_s": 90
+  },
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "wall": {
+    "vm_start_utc": "2026-10-21T02:44:20Z",
+    "vm_stop_utc": "2026-10-21T03:17:35Z",
+    "vm_minutes": 33.25,
+    "gpu_hours_estimate": 0.554,
+    "rate_usd_per_hour": 1.096,
+    "cost_usd_estimate": 0.607,
+    "cost_note": "estimate from the recorded 1.096 USD/h VM rate; billing ledger amount unconfirmed",
+    "stage_wall_s": 861.2
+  },
+  "raw": {
+    "vm_run_root": "/home/ugrp/ugrp-sim/runs/act18/scene-fit-v6-20261021T0304Z",
+    "vm_refs_root": "/home/ugrp/ugrp-sim/runs/act18/scene-fit-v6-refs-teacher-20261021T0300Z",
+    "vm_host_error_root": "/home/ugrp/ugrp-sim/runs/act18/scene-fit-v6-20261021T0248Z",
+    "local_copy": "/home/ubuntu/UGRP/outputs/act18-scene-fit-20261021/raw",
+    "sha_manifests": [
+      "/home/ubuntu/UGRP/outputs/act18-scene-fit-20261021/raw/scene-fit-run-full-sha256.txt",
+      "/home/ubuntu/UGRP/outputs/act18-scene-fit-20261021/raw/scene-fit-refs-full-sha256.txt"
+    ],
+    "tarballs_sha256": {
+      "scene-fit-frames.tgz": "dc5940ba3099a2d784af6b5cb65b2e7a7e042e0ce612218c423cc1161aecebe0",
+      "scene-fit-refs.tgz": "09c0baa6e11ccbc6b56ada6f89bd265c0f02edf72a635010c0c0dec78363c96b",
+      "scene-fit-run.tgz": "337d337abb6dbc74b287e82a8d7bd7b8ee75f2d6fd70ec6f0683fc33a096ef80"
+    },
+    "frames_checked": 17,
+    "frame_montage": "/home/ubuntu/UGRP/outputs/act18-scene-fit-20261021/raw/frames/montage.jpg",
+    "frame_montage_sha256": "473cee0eef57129aa55c26d767976d933e5db7355de03977ce116a57b7870e8f"
+  },
+  "verification": {
+    "g_recount_from_raw": {
+      "N": 4,
+      "G": 1,
+      "Pre": 2,
+      "matches_analysis": true,
+      "inputs": "evaluation-only.jsonl + evaluation/summary.json student_scores + initial-plans.json"
+    },
+    "checkpoint_unchanged": true,
+    "current_stack_check": "pass (current-stack-check.json: ok=true, current_compliant=true)",
+    "allowed_seeds": "HO4 88668-88671 only, no overlap with locked gate seeds (evaluator diag_holdout)",
+    "llm_calls": 0,
+    "weld": false,
+    "top_camera_control": false,
+    "held_world_reads": 0,
+    "scene_xml_sha_match": "4/4 eval owner world scene.xml == regenerated reference runtime-scene.xml",
+    "originals_modified": false,
+    "code_modified": false,
+    "code_note": "only the frozen prereg file was added (commit 7aa8c3d) on top of the code commit d46fe8af7"
+  },
+  "unconfirmed": [
+    "창민 직접 승인 문구는 이 작업자가 확인하지 못했다(상위 DSH 세션의 위임 지시로 실행).",
+    "실제 GCP 청구 원장 금액은 미확인(위 비용은 1.096 USD/h × VM 가동시간 추정).",
+    "leases/에 이전 작업의 stale lease 5개가 남아 있다(2026-10-18/19, 프로세스 없음). 이 작업의 lease는 제거했고 다른 lease 파일은 건드리지 않았다.",
+    "실패 원인은 지표(done/lift/release/cap_end)로만 기록했다. 영상 17프레임을 확인했으나 조기 done·과노출 프레임의 제어 원인을 독립 진단하지 않았다.",
+    "초안의 act17_v7_rebuild_compiled_references.py 경로는 이 eval 경로에 쓸 수 없다(코드 수정 금지로 고치지 않음)."
+  ],
+  "status": "DONE"
+}
