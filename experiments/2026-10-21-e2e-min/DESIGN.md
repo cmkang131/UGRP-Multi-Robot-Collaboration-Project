@@ -100,7 +100,7 @@ ALLOCATE ─(LLM 배정 성공: success_eligible ∧ 좌·우 각 1)→ ACT_GRAS
   - `skill_elapsed_s`는 v6 시계, `pwm_elapsed_s`는 v7 deadband-2 시계로 계산합니다. C2c 평가기도 `pwm_elapsed_s`만 다시 계산했습니다 [ACT `act18_evaluate.py:116-159`].
   - 프레임과 실제 issued 명령은 매 tick observer(`route_tick` observers)로 받아, 운반·hold 중에도 owner와 같은 방식으로 history가 쌓입니다.
 - r2: 정책 context에는 robot id 차원이 없습니다 [`grasp_act_contract.py:27`]. 그래서 관측의 `robot_id`는 실제 값(`r2`)을 넣습니다(`validate_observation` 허용 범위). 학습은 r1 단독이었으므로, r2에서 정책이 어떻게 행동할지는 측정 전입니다.
-- **[확인 필요] actuation 동등성:** ACT는 `DutyActPort.apply`(wheel_pulse, arm, look)로 명령을 적용했습니다 [O `warp_act_api.py:383-391`]. nav runner는 `e2e_warp_physics.issue`로 포트 필드를 직접 씁니다 [`scripts/e2e_warp_physics.py:271-294`]. servo slew와 바퀴 펄스의 적용 방식이 같은지는 아직 확인하지 않았습니다.
+- **actuation 동등성(2026-10-21 코드 대조 완료):** 아래 §3.5 표를 봅니다. 바퀴 펄스는 같고, servo는 기본 경로에서 1 substep(0.25 ms) 앞섭니다. 정확히 맞추는 옵션 `E2E_MIN_ACTUATION=duty_port_v1`(default off)을 넣었습니다.
 
 **규칙 스크립트 내려놓기 `release_open_v1` (E2E-1', 구현됨, `harness/e2e_min_release.py`)**
 - 자기 명령만 씁니다. 순서는 다음과 같습니다.
@@ -114,6 +114,34 @@ ALLOCATE ─(LLM 배정 성공: success_eligible ∧ 좌·우 각 1)→ ACT_GRAS
 **ACT release (E2E-2)**: 같은 `ActSkillClient`에 skill='release'를 줍니다. zone B 바닥 위의 release는 학습 분포 밖입니다.
 
 **teacher (`teacher_skill`): 경로 폐기.** E2E-0이 폐기되어 쓰지 않습니다. 기록용으로 NotImplemented 상태를 유지합니다.
+
+### 3.5 명령 적용 경로 대조: ACT owner vs nav runner (2026-10-21)
+ACT C2c 평가는 `[O] warp_act_api.Owner`가 `DutyActPort.apply`로 명령을 포트에 넣고 [O `scripts/warp_act_api.py:384-391`], `[Q] WarpTransport.step`이 포트 필드를 읽어 `control_tape`로 0.1 s(400 substep) tape를 만듭니다 [Q `scripts/warp_act_backend.py:466-491`]. `DutyActPort`·`CameraRobotPort`는 `[T]` 것이 import됩니다(`sim.__path__`에 T가 먼저) [O `warp_act_api.py:85-92`, T `sim/grasp_act_port.py`, T `sim/camera_robot_port.py`]. ACT 학습 데이터(teacher)도 같은 `DutyActPort` 계약을 씁니다 [T `sim/grasp_act_port.py:68-69` docstring]. 단, 학습 데이터가 Warp tape 경로와 CPU `port.tick` 경로 중 어디서 기록됐는지는 [확인 필요]입니다. `control_tape` docstring은 두 경로가 같다고 적고 있습니다.
+
+nav runner는 `e2e_warp_physics.issue`가 포트 필드를 직접 쓰고 [`scripts/e2e_warp_physics.py:271-299`], vendored `WarpTransport.prepare_step`이 같은 tape를 만듭니다 [`scripts/e2ewarp_vendor/warp_act_backend.py:293-330`].
+
+| 항목 | ACT owner (C2c) | nav runner (`issue`) | 같음? |
+|---|---|---|---|
+| tape 디코더 | `control_tape` [Q `warp_act_core.py`] | vendored `control_tape` | **같음**. 함수 본문이 바이트 동일합니다(`relay`, `build_lookup`도 동일). vendored는 로봇별 열을 합치는 `multi_control_tape`만 더했습니다 |
+| 구동 상수 | `DriveParameters()` 기본값 [T·Q `sim/masterpi_drive_friction_v7.py:29-50`, `build_world` `params=None`] | `DriveParameters()` [`e2e_warp_physics.py:191`] | **같음**(파일 동일) |
+| 바퀴 값 단위 | 정규화 0 또는 ±.31–.40 그대로 `_set_motors` | 정규화 값은 그대로. 31–40(퍼센트)이면 /100 [`e2e_warp_physics.py:280-290`] | **같음**. 계약 `command()`가 정규화 값만 내므로 /100 분기는 타지 않습니다 |
+| 바퀴 펄스 마감 | `_wheel_deadlines = now + d` (d=0이면 None) | `command['t'] + d`. E2E 명령은 모두 `t=now` [`e2e_min_handoff.py:175,339`, `e2e_min_release.py:59`] | **같음** |
+| relay(start .325 / kinetic) | 로봇 1대 상태 | 로봇별 상태 | **같음**(로봇마다 독립) |
+| servo slew 속도 | 2000 PWM/s, 소수 누적, 완료 1e-9 | 같음(같은 tape) | **같음** |
+| servo 목표 갱신 | 이전 명령과 **다른 pulse만** `arm`/`look`로 큐잉. 큐잉 전에 대기 목표를 명령 시각까지 진행시킵니다(`_advance_servos(now)`) | **모든 pulse를** 목표에 바로 씁니다. 진행은 tape 첫 substep이 합니다 | **다름(미세)** |
+| 기타 포트 필드 | `_busy_until`, `_drive_expires_at`, `_command_expires_at` 갱신 | 갱신 안 함 | 영향 없음. Warp tape는 이 필드를 읽지 않습니다 |
+
+차이와 영향:
+- 목표가 바뀌는 tick에서, owner는 직전 substep 구간(0.25 ms)을 **옛 목표**로 진행한 뒤 새 목표로 바꿉니다. runner는 그 구간을 **새 목표**로 진행합니다. 그래서 runner의 servo 궤적이 owner보다 정확히 1 substep(0.25 ms, 0.5 PWM) 앞섭니다.
+- 같은 pulse를 다시 쓰는 것은 영향이 없습니다(목표 = 현재값이면 움직이지 않고 바로 완료 처리).
+- CPU 재현 테스트(`tests/test_e2e_min_actuation.py`, 30 tick·12,000 substep, frozen T `DutyActPort` 사용): 바퀴 열은 완전히 같습니다. servo 열은 slew 중인 substep 1,379개에서 최대 1 PWM(반올림) 다르고, `runner[k] == owner[k+1]`이 99.97%입니다. 정지 상태는 같습니다.
+- 물리적 영향은 매우 작다고 봅니다(관절 목표 0.5 PWM, 0.25 ms). 다만 바이트 동일은 아니므로, ACT 분포 차이 요인을 없애려면 아래 옵션을 씁니다. 실제 rollout에서 차이가 결과를 바꾸는지는 측정하지 않았습니다 [확인 필요].
+
+맞추는 패치(default off):
+- `E2E_MIN_ACTUATION=duty_port_v1`([`harness/e2e_min_actuation.py`]). `E2E_MIN_HANDOFF=on_v1`이 없으면 fail-closed입니다.
+- prepare 때 큐에 `e2e_actuation`으로 묶이고, run에서 env와 다르면 `E2E_ACTUATION_CHANGED_SINCE_PREPARE`로 멈춥니다. 플래그가 없으면 큐 키가 생기지 않아 기존 큐와 바이트가 같습니다.
+- 켜면 `issue`가 owner 순서(바뀐 pulse만, 먼저 진행 후 큐잉)를 그대로 따릅니다. 위 테스트에서 owner tape와 **완전히 같습니다**.
+- 권고: E2E-1' smoke와 본실행은 `duty_port_v1`을 켭니다(학습 분포 쪽에 맞춤). nav 단독 run에는 쓰지 않습니다.
 
 ## 4. 대체 단계 표기
 - queue 필드는 `queue_fields(level)`이 만들고 `validate_queue`가 fail-closed로 검사합니다.
@@ -142,7 +170,7 @@ ALLOCATE ─(LLM 배정 성공: success_eligible ∧ 좌·우 각 1)→ ACT_GRAS
 | `runner_loop`(core) | `harness/e2e_min_runtime.route_tick` + `harness/e2e_min_runner.E2ESession` | config는 hash로 묶이고, executor·observer·`e2e-handoff.json`을 이 세션이 관리합니다 |
 | `act_skill_client` | `harness/e2e_min_act.py` + `scripts/e2e_min_act_server.py` | §3.4 |
 | `release_open_v1` | `harness/e2e_min_release.py` | §3.4 |
-| `runner_wiring` | **패치 파일** `patches/run_e2e_warp.patch` | `run_e2e_warp.py`는 DeepSeek 소유라 적용과 테스트는 DeepSeek이 맡습니다(§6.4) |
+| `runner_wiring` | `scripts/run_e2e_warp.py`에 적용됨(`7169bcae5`, 패치 sha256 `ba33f50b…`) | 브랜치 `claude/e2e-min-runner`. 10/21 라우팅 변경으로 Claude가 직접 관리합니다(§6.4) |
 
 ### 6.2 남음 (NotImplementedError)
 | id | 상태 | 근거 |
@@ -153,24 +181,25 @@ ALLOCATE ─(LLM 배정 성공: success_eligible ∧ 좌·우 각 1)→ ACT_GRAS
 | `contact_pair_parity` | 감사만 하고 단정하지 않습니다 | ACT owner의 finger/cargo pair와 같은지 확인하지 않았습니다 |
 
 추가로 남은 검증 항목(코드가 아님, [확인 필요]):
-- actuation 동등성(§3.4).
+- actuation 동등성: 코드 대조 완료(§3.5). 실제 rollout 영향은 [확인 필요].
 - nav r5의 2.4 m forward cap과 calibration이 집은 뒤 자세에서도 맞는지.
 - ACT checkpoint·env는 gcp2에 있고 nav runner admission은 gcp6 전용입니다(`run_e2e_warp.py` INSTANCE). 둘 중 한 VM에 두 env와 checkpoint를 모두 갖춰야 합니다.
 
 ### 6.3 운반 자세 렌더 시험
 `CARRY_POSE_RENDER_DRAFT.md`, `carry_pose_render.py`, `carry_pose_candidates.json`에 있습니다. 판정에 따라 `nav_carry_adapter`의 hold 규칙을 정합니다.
 
-### 6.4 runner 패치 (DeepSeek 적용)
+### 6.4 runner 패치 (적용됨, `claude/e2e-min-runner`)
 - 패치: `experiments/2026-10-21-e2e-min/patches/run_e2e_warp.patch`. 이 브랜치의 HEAD에서 `git apply --check`가 통과하는 것을 확인했습니다.
 - 내용: `E2E_MIN_HANDOFF=on_v1`(+`E2E_MIN_CONFIG=<json>`)일 때만 동작하고, L1-lite pair·1 world를 요구합니다.
   - prepare에서 `e2e_config`를 큐에 묶습니다.
   - run에서 다시 검증하고, `build_context(nav_cubes=...)`로 world를 만듭니다.
   - task 생성 뒤 `E2ESession`을 만들고, tick마다 frame만 모은 뒤 `session.step`으로 명령을 정해 `issue`합니다. OwnFrame의 issued history는 실제로 내보낸 명령입니다.
   - nav 도착 시 조기 종료하지 않고 `E2E_EPISODE_FINISHED`로 끝냅니다. 예산은 config의 `sim_budget_s`입니다. finally에서 `e2e-handoff.json`을 씁니다.
-- DeepSeek이 확인할 것:
-  - (1) `check_current_stack.check_document`가 새 큐 키(`e2e_*`)를 허용하는지
-  - (2) gcp6에 ACT env와 checkpoint가 있는지
-  - (3) 플래그를 끈 상태에서 기존 nav·L1-lite 테스트가 그대로 통과하는지
+- 적용과 확인(2026-10-21, `claude/e2e-min-runner`):
+  - (1) `check_current_stack`: 새 큐 키(`e2e_*`)는 어떤 규칙 selector나 record container에도 닿지 않습니다. 키가 있든 없든 행이 같습니다. 허용 목록 변경은 필요 없습니다(`tests/test_e2e_min_actuation.py`).
+  - (2) gcp6에 ACT env와 checkpoint가 있는지는 [확인 필요]입니다. DeepSeek이 smoke 전에 확인합니다(`SMOKE.md` 0단계).
+  - (3) 플래그를 끈 상태의 e2e_min·L1-lite·nav 테스트가 통과합니다(`SMOKE.md` 끝의 테스트 명령).
+- smoke 명령: `experiments/2026-10-21-e2e-min/SMOKE.md`.
 
 ### 6.5 nav r5 브랜치 갱신분
 `origin/dsh/nav-v230-r5` 219d08779..e11efbeb9는 eval-only 분석 도구 수정(`ef5ebcd9c`)과 결과 문서·summary(`e11efbeb9`)뿐입니다. 런타임 코드 변경이 없어 e2e-min에는 merge하지 않았습니다.
@@ -182,5 +211,5 @@ ALLOCATE ─(LLM 배정 성공: success_eligible ∧ 좌·우 각 1)→ ACT_GRAS
 
 ## 8. 가장 큰 위험
 1. **nav 카메라 기하.** 카메라가 그리퍼에 붙어 있어서, 집은 뒤 hold 자세에서는 nav 검출과 투영이 SEARCH 보정과 어긋납니다. 운반 자세 렌더 시험(10/21 밤)이 판정합니다. 채택된 자세가 SEARCH가 아니면 nav 투영을 다시 맞춰야 합니다.
-2. **ACT를 nav runner 안에서 돌릴 때의 분포 차이.** v6 픽업 바닥(D4), 같은 world의 다른 활성 로봇·큐브, r2 시점, actuation 경로 차이(owner의 DutyActPort와 nav의 `issue`)가 겹칩니다.
-3. **물체를 든 채 GPU에서 주행한 적이 없습니다.** 바퀴 펄스로 낙하할 수 있고, finger/cargo pair가 ACT owner와 같은지 확인하지 않았습니다. runner 연결은 패치 형태라 DeepSeek의 적용·검증 일정에 묶입니다.
+2. **ACT를 nav runner 안에서 돌릴 때의 분포 차이.** v6 픽업 바닥(D4), 같은 world의 다른 활성 로봇·큐브, r2 시점이 겹칩니다. actuation 경로 차이는 1 substep뿐이고 `duty_port_v1`로 없앨 수 있습니다(§3.5).
+3. **물체를 든 채 GPU에서 주행한 적이 없습니다.** 바퀴 펄스로 낙하할 수 있고, finger/cargo pair가 ACT owner와 같은지 확인하지 않았습니다. runner 연결은 적용됐고, 남은 것은 gcp6 smoke입니다.
