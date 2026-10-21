@@ -22,7 +22,7 @@ def test_p2_candidate_is_r13_plus_carry_only():
 
 def test_dependency_pin_is_p2_teacher():
     text = (ROOT/'harness/beampair_teacher.py').read_text()
-    assert "DEPENDENCY_SHA = '4b080d35a3dcbbd8fb8a992e1f1106a7289757b2'" in text   # teacher -c2 (P3 collect admission)
+    assert "DEPENDENCY_SHA = 'dbc08211c776117dddff7f3fec05f7327ba497a3'" in text   # teacher -c3 (carry_route detour_v1)
 
 
 def test_floor_candidate_only_adds_lower_mode():
@@ -63,7 +63,8 @@ def test_existing_candidates_keep_the_exact_recording_off_call():
     assert text.count('runner.run(') == 1
     assert "run_kwargs=dict(record_training=False,noise=False,execution_host=host,**selected)" in text
     assert "report=runner.run(plan,out,cap_s=cap_s,**run_kwargs)" in text
-    assert "if candidate==COLLECT_CANDIDATE:" in text and "COLLECT_CANDIDATE='pairact_p3_collect'" in text
+    assert "if candidate in COLLECT_CANDIDATES:" in text and "COLLECT_CANDIDATE='pairact_p3_collect'" in text
+    assert "COLLECT_CANDIDATES=(COLLECT_CANDIDATE,'pairact_p3_collect_detour')" in text
 
 
 def test_run_kwargs_equal_the_old_calls():
@@ -76,6 +77,7 @@ def test_run_kwargs_equal_the_old_calls():
                               ('pairact_p3_collect', dict(record_training=True, noise=False, execution_host='h',
                                                           recording_proof='proof', recording_probe=False, **selected))):
         ns = dict(candidate=candidate, COLLECT_CANDIDATE='pairact_p3_collect', host='h', selected=selected,
+                  COLLECT_CANDIDATES=('pairact_p3_collect', 'pairact_p3_collect_detour'),
                   collect_proof=lambda host, sel: 'proof', collect_probe=lambda: False)
         exec(textwrap.dedent(block), ns)
         assert ns['run_kwargs'] == expect
@@ -103,3 +105,32 @@ def test_collect_env_is_required_and_probe_flag_strict(monkeypatch):
     assert ns['collect_probe']() is True
     monkeypatch.delenv('PAIRACT_P3_RECORDING_PROBE')
     assert ns['collect_probe']() is False
+
+
+# ------------------------------------------- -c3 carry detour (teacher carry_route detour_v1)
+
+def test_detour_candidate_only_adds_carry_route():
+    profiles = _profiles()
+    det, p2 = profiles('pairact_p2_r13_detour'), profiles('pairact_p2_r13')
+    assert {k: v for k, v in det.items() if k != 'carry_route'} == p2
+    assert det['carry_route'] == 'detour_v1' and 'carry_route' not in p2
+    assert profiles('pairact_p3_collect_detour') == det
+    for name in ('pairact_p2_r13', 'pairact_p2_r13_floor', 'pairact_p3_collect', 'beamact5_r13'):
+        assert 'carry_route' not in profiles(name)
+
+
+def test_detour_collect_records_like_collect_and_detour_does_not():
+    import textwrap
+    src = (ROOT/'scripts/run_beampair1.py').read_text()
+    block = src[src.index('                run_kwargs=dict('):src.index('                report=runner.run(plan,out,cap_s=cap_s,**run_kwargs)')]
+    selected = {'teacher_profile': 'p', 'carry_route': 'detour_v1'}
+    rec = dict(record_training=True, noise=False, execution_host='h', recording_proof='proof', recording_probe=False,
+               **selected)
+    for candidate, expect in (('pairact_p2_r13_detour', dict(record_training=False, noise=False, execution_host='h',
+                                                             **selected)),
+                              ('pairact_p3_collect_detour', rec)):
+        ns = dict(candidate=candidate, COLLECT_CANDIDATE='pairact_p3_collect', host='h', selected=selected,
+                  COLLECT_CANDIDATES=('pairact_p3_collect', 'pairact_p3_collect_detour'),
+                  collect_proof=lambda host, sel: 'proof', collect_probe=lambda: False)
+        exec(textwrap.dedent(block), ns)
+        assert ns['run_kwargs'] == expect

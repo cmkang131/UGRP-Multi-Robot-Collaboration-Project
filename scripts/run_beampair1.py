@@ -96,6 +96,8 @@ def record_partial_candidates(record, teacher, world, rows, now):
 
 
 COLLECT_CANDIDATE='pairact_p3_collect'
+# recording-on candidates: the frozen P3 collect + the same collect with the opt-in carry detour (-c3)
+COLLECT_CANDIDATES=(COLLECT_CANDIDATE,'pairact_p3_collect_detour')
 COLLECT_ENV=('PAIRACT_P3_COLLECT_PREREG','PAIRACT_P3_COLLECT_PREREG_SHA256','PAIRACT_P3_RECORDING_CHECK',
              'PAIRACT_P3_RECORDING_PROBE')
 
@@ -136,6 +138,12 @@ def profiles(candidate):
     # only for this candidate, with the teacher's pairact_p3_collect admission (no gate change here)
     if candidate=='pairact_p3_collect':
         return dict(profiles('pairact_p2_r13'))
+    # -c3: P2 + teacher carry_route detour_v1 (formation-space A* only when both straight
+    # first-leg variants are blocked; a clear straight route is byte-identical). Separate candidates.
+    if candidate=='pairact_p2_r13_detour':
+        return {**profiles('pairact_p2_r13'),'carry_route':'detour_v1'}
+    if candidate=='pairact_p3_collect_detour':
+        return dict(profiles('pairact_p2_r13_detour'))
     values=dict(teacher_profile='visible_only',self_pose_source='issued',
         teacher_stability='align_relook_v1',teacher_search='search_body_scan_v2',
         approach_goal_set='approach_goal_set_v1',nominal_blocked_handoff='nominal_blocked_handoff_v1',
@@ -451,7 +459,7 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
             with recording_json(runner):
                 # one runner.run call site: the root warp bridge AST audit requires exactly one (runner_call=1)
                 run_kwargs=dict(record_training=False,noise=False,execution_host=host,**selected)
-                if candidate==COLLECT_CANDIDATE:
+                if candidate in COLLECT_CANDIDATES:
                     run_kwargs.update(record_training=True,recording_proof=collect_proof(host,selected),
                         recording_probe=collect_probe())
                 report=runner.run(plan,out,cap_s=cap_s,**run_kwargs)
