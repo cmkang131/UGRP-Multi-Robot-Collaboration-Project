@@ -8,6 +8,8 @@ fed with the case file this script writes.
     E2E_L2=on_v1 python scripts/run_e2e_l2.py select   --cases P3_GEN.json --out RUN/l2-base-cases.json
     E2E_L2=on_v1 python scripts/run_e2e_l2.py decide   --cases RUN/l2-base-cases.json --condition peer_en \
         --llm replay --replies REPLIES.json --arm student --out RUN/peer_en
+    E2E_L2=on_v1 python scripts/run_e2e_l2.py rebind   --cases RUN/l2-base-cases.json \
+        --decisions RUN/peer_en/decisions.json --arm teacher_fallback --out RUN/peer_en-teacher
     (DeepSeek: run_warp_flow_teacher ... --cases RUN/peer_en/exec-cases.json [--student-eval ...])
     E2E_L2=on_v1 python scripts/run_e2e_l2.py evaluate --decisions RUN/peer_en/decisions.json \
         --summary RUN/peer_en/run/summary.json --out RUN/peer_en/l2-eval.json
@@ -70,12 +72,12 @@ def decide(cases, condition, ask_for_seed, arm):
     for case in cases:
         seed = case['plan']['seed']
         record = l2.run_stage(condition, case, ask=ask_for_seed(seed))
-        record['geometry'] = l2.geometry_record(case)   # admin/eval-only, written after the stage
-        records.append(record)
         if record['success_eligible']:
-            exec_cases.append(l2.build_l2_case(case, record, arm=arm))
+            exec_cases.append(l2.build_l2_case(case, record, arm=arm))   # sha over the stage record only
         else:
             skipped.append(dict(seed=seed, errors=record['errors']))
+        record['geometry'] = l2.geometry_record(case)   # admin/eval-only, written after the stage
+        records.append(record)
     return records, exec_cases, skipped
 
 
@@ -92,6 +94,11 @@ def main(argv=None):
     d.add_argument('--replies', type=Path)
     d.add_argument('--arm', choices=l2.ARMS, required=True)
     d.add_argument('--out', type=Path, required=True)
+    b = sub.add_parser('rebind', help='same recorded LLM decisions, other arm (no LLM call)')
+    b.add_argument('--cases', type=Path, required=True)
+    b.add_argument('--decisions', type=Path, required=True)
+    b.add_argument('--arm', choices=l2.ARMS, required=True)
+    b.add_argument('--out', type=Path, required=True)
     e = sub.add_parser('evaluate')
     e.add_argument('--decisions', type=Path, required=True)
     e.add_argument('--summary', type=Path, help='runner summary.json; omit if no seed was executable')
@@ -132,6 +139,20 @@ def main(argv=None):
         return 0
 
     data = json.loads(a.decisions.read_text())
+    if a.cmd == 'rebind':
+        if data['cases_sha256'] != sha256(a.cases):
+            p.error('cases file differs from the one the decisions were made on')
+        if a.arm == data['arm']:
+            p.error('rebind is for the other arm')
+        by_seed = {c['plan']['seed']: c for c in json.loads(a.cases.read_text())}
+        exec_cases = [l2.build_l2_case(by_seed[r['seed']], {k: v for k, v in r.items() if k != 'geometry'}, arm=a.arm)
+                      for r in data['records'] if r['success_eligible']]
+        write(a.out / 'decisions.json', {**data, 'arm': a.arm, 'arm_label': l2.ARM_LABEL[a.arm],
+                                         'rebound_from': dict(path=str(a.decisions), sha256=sha256(a.decisions))})
+        if exec_cases:
+            write(a.out / 'exec-cases.json', exec_cases)
+        print(json.dumps(dict(executable=len(exec_cases))))
+        return 0
     summary = json.loads(a.summary.read_text()) if a.summary else None
     prices = l2.price_table(a.prices)
     results = [ev.seed_result(r, r['geometry'], summary, arm=data['arm'], prices=prices) for r in data['records']]

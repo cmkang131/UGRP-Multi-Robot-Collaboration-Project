@@ -60,3 +60,22 @@ def test_decide_and_evaluate_dry_run(on, tmp_path, monkeypatch):
     assert [s['failure_stage'] for s in result['seeds']] == [None, 'llm']
     with pytest.raises(SystemExit):   # never overwrite
         cli.main(['evaluate', '--decisions', str(out / 'decisions.json'), '--out', str(out / 'l2-eval.json')])
+
+
+def test_rebind_reuses_decisions_without_llm(on, tmp_path):
+    cases = [make_case(seed=8343000)]
+    (tmp_path / 'c.json').write_text(json.dumps(cases))
+    r = lambda act: {'need_partner': True, 'act': act, 'message': None}
+    (tmp_path / 'rep.json').write_text(json.dumps({'8343000|r1|1': r('end_east'), '8343000|r2|1': r('end_west')}))
+    cli.main(['decide', '--cases', str(tmp_path / 'c.json'), '--condition', 'no_comm', '--llm', 'replay',
+              '--replies', str(tmp_path / 'rep.json'), '--arm', 'student', '--out', str(tmp_path / 's')])
+    cli.main(['rebind', '--cases', str(tmp_path / 'c.json'), '--decisions', str(tmp_path / 's' / 'decisions.json'),
+              '--arm', 'teacher_fallback', '--out', str(tmp_path / 't')])
+    s = json.loads((tmp_path / 's' / 'exec-cases.json').read_text())[0]
+    t = json.loads((tmp_path / 't' / 'exec-cases.json').read_text())[0]
+    assert s['plan'] == t['plan'] and s['plan']['roles'] == {'r1': 'blue', 'r2': 'teal'}
+    assert s['l2_admin']['record_sha256'] == t['l2_admin']['record_sha256']
+    assert t['l2_admin']['arm'] == 'teacher_fallback'
+    with pytest.raises(SystemExit):   # same arm is refused
+        cli.main(['rebind', '--cases', str(tmp_path / 'c.json'), '--decisions', str(tmp_path / 's' / 'decisions.json'),
+                  '--arm', 'student', '--out', str(tmp_path / 'u')])

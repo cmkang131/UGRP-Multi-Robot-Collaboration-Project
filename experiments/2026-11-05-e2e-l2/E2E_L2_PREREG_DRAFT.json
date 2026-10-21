@@ -1,0 +1,83 @@
+{
+  "schema": "ugrp.e2e_l2.prereg.draft.v1",
+  "status": "DRAFT_NOT_REGISTERED",
+  "owner": "Claude (pick-carry-place owner); review: Codex; execution: DeepSeek",
+  "basis": [
+    "outputs/reports/claude-arch-parallel-20261019/aggressive-replan-1105.md §2 (10/31-11/2 L2 row), §6 (L2 minimum success)",
+    "outputs/reports/claude-arch-parallel-20261019/pair-act-carry-plan.md §3 (success definition)",
+    "dsh/pairact-p5-student experiments/2026-10-21-pairact-r1/PAIRACT_R1_EVAL_PREREG_DRAFT.json (execution success, funnel, exclusions)",
+    "dsh/l1lite-alloc harness/e2ewarp_l1lite.py (four-channel protocol design)"
+  ],
+  "commit_before_run": "this file (status REGISTERED) + selected P4 checkpoint SHA256 + base case file SHA256 + l2-base-cases-admissibility.json must be committed before any L2 LLM call or rollout",
+  "code": {
+    "branch": "dsh/e2e-l2",
+    "llm_stage": "harness/e2e_l2.py allocate_ends",
+    "evaluator": "harness/e2e_l2_eval.py seed_result / aggregate",
+    "driver": "scripts/run_e2e_l2.py select|decide|evaluate (E2E_L2=on_v1)",
+    "execution": "scripts/run_warp_flow_teacher.py of this root stack, unchanged; student arm adds --student-eval (worker SHA pinned 3c9337d5)"
+  },
+  "task": {
+    "order_sheet": "v_l2: one long_beam to zone B, assigned_robot null, no single-robot-impossible flag",
+    "llm_decides": ["need_partner (bool)", "own beam end: west | east"],
+    "binding": "west/east -> teal/blue grip band by world x of the band (+x = east); written only into case.plan.roles (student role token and teacher end); nothing else in the case changes",
+    "robot_input": "own order sheet + own distances to the two grip bands (source plan_geometry_v1 [대체: perception not wired]) + inbox of the condition channel; never the peer's distances or the band colours"
+  },
+  "seeds": {
+    "generator": "P3 case generator (same start distribution as P5: each robot 0.3-1.2 m from its generator end) [확인 필요: P3 command fixed by DeepSeek/worker ⑤]",
+    "candidate_range": {"first": 8343000, "last": 8343099},
+    "overlap_check": "scripts/check_pairact_r1_seeds.py known_ranges + pairact-r1 train/validation/heldout (8340000-8340199, 8341000-8341019, 8342000-8342019) must not intersect [확인 필요: add the L2 range to seeds.json before run]",
+    "selection_rule": "ascending seed order, keep a case iff |cos(beam_yaw)| >= 0.5 (harness/e2e_l2.case_admissible), take the first 6; static and outcome-free, applied before any LLM call",
+    "N": 6,
+    "same_seeds_for_all_conditions_and_arms": true
+  },
+  "conditions": {
+    "llm_stage_all": ["no_comm", "structured", "peer_en", "leader_en"],
+    "primary_execution": "peer_en",
+    "secondary_execution": "leader_en, structured, no_comm only if GPU night time remains after primary (order fixed: leader_en, structured, no_comm); never pooled",
+    "leader_rule": "leader = r1 if seed % 2 == 0 else r2",
+    "rounds": "no_comm 1; structured/peer_en min 2 max 3 (stop once ends are distinct after round >= 2); leader_en 2 (assign + ack)",
+    "planner": "pinned planner of configs/model_endpoints.json at run time [확인 필요: live planner binding not wired, harness/e2e_l2.planner_ask raises NotImplementedError]",
+    "temperature_and_sampling": "[미정: same as L1-lite prereg]"
+  },
+  "arms": [
+    {
+      "id": "student",
+      "policy": "pairact-r1 checkpoint chosen by harness.pairact_r1.select_checkpoint on validation (same as P5)",
+      "counts_as_result": true
+    },
+    {
+      "id": "teacher_fallback",
+      "policy": "P2 MJWarp GT pair-carry teacher, same root stack, without --student-eval",
+      "label": "[대체 단계] teacher, NOT a learned result",
+      "counts_as_result": false,
+      "use": "grade C demo video and reference n/6 only; reported side by side, never merged"
+    }
+  ],
+  "episode_cap_sim_s": "same value as the registered P5 cap (PAIRACT_R1_EVAL_PREREG_DRAFT.json episode_cap_sim_s rule); [미정 until P5 cap is committed]",
+  "success": {
+    "per_seed": "llm.success_eligible AND executed AND carry_success == true AND (student arm) teacher_steps == 0 AND summary.student_eval present",
+    "llm_success_eligible": "both robots need_partner == true, both chose an end, ends distinct, no named error (L2_SOLO_DECISION, L2_DUPLICATE_END, L2_INVALID_*, L2_MESSAGE_INVALID, L2_LEADER_*)",
+    "carry_success": "unchanged GT evaluator of the root runner: placed in zone B AND drop_events == 0 AND robot_robot_contacts == 0",
+    "not_executed": "a seed whose LLM stage is not success_eligible is not rolled out and counts as failure in N=6",
+    "assignment_match": "measured (decided ends == generator ends), NOT a success term: a swapped but distinct assignment is executed as decided",
+    "claim": "primary: student peer_en n/6. Minimum L2 claim (replan §6) = >= 1/6 student success in peer_en or another condition, each condition reported separately"
+  },
+  "metrics": {
+    "llm_stage": ["cooperate_ok_n", "assignment_match_n", "min_distance_match_n", "conflict_n (duplicate end)", "named errors", "hallucination_n (heuristic: foreign end name, ungrounded distance; Codex re-annotates)", "rounds", "utterances", "language_slips", "llm_calls", "tokens", "usd (pinned planner price)"],
+    "execution": ["carry_success_n", "student funnel (approach, alignment, READY, grasp, hold_3s, carry_1m, door, place)", "failure_stage (llm | not_executed | student_contaminated | execution)", "termination reasons"],
+    "report": "per condition and per arm n/6, same seed order; LLM-stage metrics also reported for conditions not executed"
+  },
+  "exclusions": {
+    "pre_run": "only case_admissible (east/west) and the P0 static stance-feasibility check registered for P5, both applied before any LLM call",
+    "host_error": "one rerun of the same seed with the SAME recorded LLM decision (no second LLM call); a second HOST_ERROR counts as failure and is reported separately",
+    "llm_retry": "forbidden; a transport error is recorded as L2_NO_DECISION failure [확인 필요: whether the live planner retries internally]",
+    "post_hoc_exclusion": "forbidden"
+  },
+  "compute_estimate": {
+    "llm": "4 conditions x 6 seeds x <= 6 calls, < 0.1 USD at pinned prices [확인 필요: token counts]",
+    "gpu_h": "about 0.6-1 per condition-arm of 6 worlds (P5 estimate 2-3 GPU-h per 20) [확인 필요]",
+    "window": "off-peak only (UTC 16:30-00:30), gcp6 or gcp2, stop VM after"
+  },
+  "runs_per_arm": 1,
+  "replay_mode": "scripts/run_e2e_l2.py --llm replay is for dry runs/tests only and is never reported as a result"
+}
