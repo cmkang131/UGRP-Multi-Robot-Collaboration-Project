@@ -126,3 +126,52 @@ def test_release_switch_needs_both_flags_continuously_for_three_seconds():
     assert ctrl.segment == 'grasp'
     ctrl._sequence(3.5)
     assert ctrl.segment == 'release' and ctrl.switch_t == 3.5
+
+
+def _to_release(ctrl):
+    t = 0.
+    while ctrl.segment != 'release':
+        tick(ctrl, t, permits={r: True for r in ROLES})
+        t = round(t + .1, 6)
+    return t
+
+
+def _grasp_then_place(o):
+    if o['skill'] == 'release':
+        return ('place', False)
+    return ('ready', False) if o['t'] < .45 else ('execute', True)
+
+
+def test_shadow_appends_applied_code_commands_and_discards_student_proposals():
+    policy = Script(_grasp_then_place)
+    ctrl = s.PairStudentController(policy, ROLES, 'ep', INIT, done_recovery='off')
+    with pytest.raises(ValueError, match='release instruction'):
+        ctrl.shadow(0., {r: {'jpeg': b'x', 'applied': INIT[r]} for r in ROLES})
+    t = _to_release(ctrl)
+    code = {r: {'t': t, 'wheels': [.35, .35, .35, .35], 'duration_s': [.1] * 4, 'pwm': dict(PWM)} for r in ROLES}
+    calls = len(policy.calls)
+    out = ctrl.shadow(t, {r: {'jpeg': b'frame', 'applied': code[r]} for r in ROLES})
+    assert len(policy.calls) == calls + 2 and out['r1']['stage'] == 'place'
+    assert out['r1']['observation']['skill'] == 'release' and out['r1']['observation']['destination_zone'] == 'B'
+    for r in ROLES:
+        assert ctrl.inputs[r].issued[-1] == c.command(code[r])
+        assert not ctrl.executors[r].core.pending and not ctrl.executors[r].stage_plan
+    # next observation sees the code command in its own history
+    obs = ctrl.shadow(round(t + .1, 6), {r: {'jpeg': b'f2', 'applied': code[r]} for r in ROLES}, predict=False)
+    assert obs['r1']['stage'] is None and obs['r1']['observation']['issued'][-1] == c.command(code['r1'])
+    assert len(policy.calls) == calls + 2 and ctrl.summary()['shadow_ticks'] == 2 and not ctrl.finished
+    with pytest.raises(ValueError, match='own camera'):
+        ctrl.shadow(t, {r: {'jpeg': b'x', 'applied': code[r], 'pose': [0, 0, 0]} for r in ROLES})
+
+
+def test_worker_shadow_op_allowlist():
+    from scripts import pairact_r1_student_worker as w
+    config = {'done_recovery': 'off', 'place_sync': 'off', 'issued_clock_deadband': 2}
+    b64 = lambda x: base64.b64encode(x).decode()
+    lines = [json.dumps({'op': 'reset', 'roles': ROLES, 'episode_id': 'ep', 'initial': INIT}),
+             json.dumps({'op': 'shadow', 't': 0., 'robots': {r: {'jpeg': b64(b'a'), 'applied': INIT[r]} for r in ROLES},
+                         'predict': False})]
+    with pytest.raises(ValueError, match='release instruction'):
+        w.serve(Script(lambda o: ('alignment', False)), lines, [].append, config=config)
+    with pytest.raises(ValueError, match='bool'):
+        w.serve(Script(lambda o: ('alignment', False)), [lines[0], lines[1].replace('false', '1')], [].append, config=config)

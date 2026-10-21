@@ -36,6 +36,7 @@ DESTINATION = 'B'
 RELEASE_AFTER_S = 3.     # same 3 s as the joint-hold gate, timed on the shared SIM clock
 FINISH_AFTER_S = 1.5     # same passive tail as the teacher runner after carry done
 REQUEST_KEYS = {'jpeg', 'issued'}
+SHADOW_KEYS = {'jpeg', 'applied'}
 
 
 class OwnInputs:
@@ -92,6 +93,7 @@ class PairStudentController:
         self.done_since = {r: None for r in roles}
         self.switch_t = self.finish_t = None
         self.events = []
+        self.shadow_ticks = 0
 
     def _token(self, rid):
         if self.segment == 'release':
@@ -141,6 +143,36 @@ class PairStudentController:
         self._sequence(now)
         return out
 
+    def shadow(self, now, robots, *, predict=True):
+        """Hybrid carry segment (default unused): the code drives, the student only watches.
+
+        robots[rid] = {'jpeg': own camera bytes, 'applied': the code command applied at ``now``}.
+        The own observation is built exactly as in ``propose`` (own RGB + own issued history +
+        v7 clock), the policy may run for the log (``predict``), its proposal is discarded, and
+        the command the robot actually executed is appended to the own issued history, so the
+        history after hand-back holds the real (code) commands. Barrier, permits and the
+        segment sequence are not touched; done flags stay cleared."""
+        if self.segment != 'release':
+            raise ValueError('shadow is only valid after the release instruction (hybrid carry segment)')
+        if set(robots) != set(self.roles) or any(set(v) != SHADOW_KEYS for v in robots.values()):
+            raise ValueError('own camera + own applied command only')
+        out = {}
+        for rid, req in robots.items():
+            obs, jpegs, path = self.inputs[rid].observe(now, req['jpeg'], skill='release', role=self.roles[rid],
+                                                        destination_zone=DESTINATION)
+            ex = self.executors[rid]
+            stage = None
+            if predict:
+                ex.step(obs, jpegs)
+                stage = ex.stage
+                ex.discard_pending()
+            self.inputs[rid].issue(req['applied'])
+            out[rid] = {'stage': stage, 'observation': obs, 'rgb_path': path}
+        self.proposals = {}
+        self.done_since = {r: None for r in self.roles}
+        self.shadow_ticks += 1
+        return out
+
     def _held(self, now, span):
         return all(s is not None and now - s >= span - 1e-8 for s in self.done_since.values())
 
@@ -164,4 +196,5 @@ class PairStudentController:
                 'finished_t': self.finish_t, 'events': deepcopy(self.events),
                 'barrier_events': {r: deepcopy(b.events) for r, b in self.barriers.items()},
                 'clock_resets': {r: v.clock.resets for r, v in self.inputs.items()},
-                'stages': list(STAGES), 'teacher_actions': 0, 'truth_inputs': 0}
+                'stages': list(STAGES), 'teacher_actions': 0, 'truth_inputs': 0,
+                'shadow_ticks': self.shadow_ticks}

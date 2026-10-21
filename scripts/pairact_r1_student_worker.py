@@ -6,6 +6,8 @@ JSON lines on stdin/stdout (one request -> one response):
       -> {"robots": {rid: {"ready", "observation", "rgb_path", "stage"}}}
   {"op": "issue", "t": float, "permits": {rid: bool}}
       -> {"robots": {rid: {"command", "done", "stage", "segment", "permit", "blocked"}}, "finished": bool}
+  {"op": "shadow", "t": float, "robots": {rid: {"jpeg": b64, "applied": command}}, "predict": bool}
+      -> {"robots": {rid: {"stage", "observation", "rgb_path"}}}   (hybrid carry segment only)
   {"op": "summary"} -> controller summary
 No simulator, truth, teacher or partner pose is importable through this protocol.
 """
@@ -15,7 +17,7 @@ import json
 import sys
 
 OPS = {'reset': {'op', 'roles', 'episode_id', 'initial'}, 'propose': {'op', 't', 'robots'},
-       'issue': {'op', 't', 'permits'}, 'summary': {'op'}}
+       'issue': {'op', 't', 'permits'}, 'shadow': {'op', 't', 'robots', 'predict'}, 'summary': {'op'}}
 
 
 def serve(predict, lines, write, *, config):
@@ -35,6 +37,12 @@ def serve(predict, lines, write, *, config):
             robots = {rid: {'jpeg': base64.b64decode(v['jpeg'], validate=True), 'issued': v['issued']}
                       for rid, v in request['robots'].items()}
             result = {'robots': controller.propose(float(request['t']), robots)}
+        elif op == 'shadow':
+            if type(request['predict']) is not bool:
+                raise ValueError('shadow predict flag must be a bool')
+            robots = {rid: {'jpeg': base64.b64decode(v['jpeg'], validate=True), 'applied': v['applied']}
+                      for rid, v in request['robots'].items()}
+            result = {'robots': controller.shadow(float(request['t']), robots, predict=request['predict'])}
         elif op == 'issue':
             result = {'robots': controller.issue(float(request['t']), request['permits']),
                       'finished': controller.finished}
