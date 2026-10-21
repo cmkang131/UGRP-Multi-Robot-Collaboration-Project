@@ -106,4 +106,4 @@ print(json.dumps(recount_run(sys.argv[1]), ensure_ascii=False, indent=1))" $RUNS
   tests/test_e2ewarp_nav_*.py tests/test_nav_v230_fwd24_prereg.py tests/test_e2ewarp_selfnav.py \
   tests/test_e2e_warp.py
 ```
-2026-10-21 브랜치 HEAD 기준 311 passed입니다.
+2026-10-21 브랜치 HEAD 기준 302 passed입니다.
