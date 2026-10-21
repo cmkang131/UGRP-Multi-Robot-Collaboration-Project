@@ -84,7 +84,11 @@ def scene_queue_fields(selection=None):
 
 def validate_scene_queue(queue, selection=None):
     """Re-check env <-> queue <-> stack_values binding before physics import."""
+    from harness.e2ewarp_nav_gate import V5_BAND_GATE_MODES
     sel = selection or scene_selection()
+    if queue.get('nav_gate_mode') in V5_BAND_GATE_MODES and sel['profile'] != V5_PROFILE:
+        # The raised-hue-floor bands were measured for the v5 floor only.
+        raise ValueError('NAV_V5_BAND_REQUIRES_SCENE_V5')
     marker = queue.get('nav_scene_profile_selection')
     profile = queue.get('nav_scene_profile')
     applied = (queue.get('stack_values') or {}).get('scene_profile')

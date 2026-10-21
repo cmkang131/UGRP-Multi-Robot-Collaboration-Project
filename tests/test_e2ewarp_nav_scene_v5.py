@@ -146,3 +146,39 @@ def test_scene_env_requires_nav_mode(tmp_path):
     os.environ[scene.SCENE_ENV] = 'v5'
     with pytest.raises(SystemExit):
         runner.main(['--output', str(tmp_path / 'x')])
+
+
+def test_v5_band_modes_are_r5_with_only_the_hue_floor_raised():
+    from harness import e2ewarp_selfnav as sn
+    r5 = gate.GATE_MODES[gate.GATE_MODE_V230_R5]
+    for mode, profile, floor in ((gate.GATE_MODE_V230_R5_V5H111, 'gpu_calib_v5_h111', 111.0),
+                                 (gate.GATE_MODE_V230_R5_V5H112, 'gpu_calib_v5_h112', 112.0)):
+        spec = gate.GATE_MODES[mode]
+        assert {k: v for k, v in spec.items() if k != 'zone_profile'} == \
+            {k: v for k, v in r5.items() if k != 'zone_profile'}
+        assert spec['zone_profile'] == profile
+        band = sn.GPU_CALIB_PROFILES[profile]
+        assert band['hue_cv'] == (floor, 114.0)
+        assert {k: v for k, v in band.items() if k != 'hue_cv'} == \
+            {k: v for k, v in sn.GPU_CALIB_V230.items() if k != 'hue_cv'}
+        assert mode in gate.SLOT_GATE_MODES and mode in gate.STAGE2_GATE_MODES
+        assert mode in gate.PROJECTION_GATE_MODES and mode in gate.ACQUISITION_QUALITY_MODES
+    # frozen profiles untouched
+    assert sn.GPU_CALIB_V230['hue_cv'] == (110.0, 114.0)
+    assert sn.DEFAULT_GPU_CALIB_PROFILE == 'gpu_calib_v1'
+    assert gate.DEFAULT_GATE_MODE == gate.GATE_MODE_V1
+
+
+def test_v5_band_mode_queue_requires_scene_v5(tmp_path, monkeypatch):
+    os.environ[scene.SCENE_ENV] = 'v5'
+    q = _prepare(tmp_path, monkeypatch, 'b0')
+    assert q['nav_gate_mode'] == 'v230_r5' and q['nav_zone_profile'] == 'gpu_calib_v230'
+    os.environ[gate.GATE_MODE_ENV] = gate.GATE_MODE_V230_R5_V5H111
+    queue = gate.gate_queue_fields(601, calibration=gate.load_calibration(
+        os.environ[gate.CALIBRATION_ENV]))
+    queue['sim_budget_s'] = queue['nav_sim_budget_s']
+    gate.validate_gate_queue(queue)
+    assert queue['nav_zone_profile'] == 'gpu_calib_v5_h111'
+    assert queue['nav_slot_stage2_ground_m'] == 1.5
+    with pytest.raises(ValueError, match='NAV_V5_BAND_REQUIRES_SCENE_V5'):
+        scene.validate_scene_queue(queue, scene.scene_selection('stack'))

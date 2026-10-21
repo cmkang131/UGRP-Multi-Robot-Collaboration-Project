@@ -121,7 +121,16 @@ GATE_MODE_V230_R4 = 'v230_r4'
 GATE_MODE_V230_R5 = 'v230_r5'
 #: Modes that carry the order-sheet slot (r4/r5).  r4 keeps its frozen
 #: always-on slot; r5 resolves the slot through the stage-2 ground gate.
-SLOT_GATE_MODES = (GATE_MODE_V230_R4, GATE_MODE_V230_R5)
+# BRANCH_NAV_V5 (2026-10-21, default OFF): r5 byte-for-byte with only the zone
+# band hue floor raised (candidates B1/B2 of the v5 recal prereg).  Admitted only
+# with E2EWARP_NAV_SCENE_PROFILE=v5 (harness.e2ewarp_nav_scene).  The v5 scene
+# with the unchanged band (B0) runs as plain ``v230_r5``.
+GATE_MODE_V230_R5_V5H111 = 'v230_r5_v5h111'
+GATE_MODE_V230_R5_V5H112 = 'v230_r5_v5h112'
+V5_BAND_GATE_MODES = (GATE_MODE_V230_R5_V5H111, GATE_MODE_V230_R5_V5H112)
+#: Modes with the r5 two-stage slot markers.
+STAGE2_GATE_MODES = (GATE_MODE_V230_R5,) + V5_BAND_GATE_MODES
+SLOT_GATE_MODES = (GATE_MODE_V230_R4,) + STAGE2_GATE_MODES
 #: r1 keeps the authored north lane (LANE_Y -2.375) and r2 the south lane
 #: (-2.875).  Facing the destination (+x east), robot-left is +y (north), so the
 #: north-lane robot owns the left half of the marking and the south-lane robot
@@ -200,13 +209,18 @@ GATE_MODES = {
                             slot_stage2_ground_m=SLOT_STAGE2_GROUND_M,
                             slot_offset_limit_deg=SLOT_OFFSET_LIMIT_DEG),
 }
+GATE_MODES[GATE_MODE_V230_R5_V5H111] = dict(GATE_MODES[GATE_MODE_V230_R5],
+                                            zone_profile='gpu_calib_v5_h111')
+GATE_MODES[GATE_MODE_V230_R5_V5H112] = dict(GATE_MODES[GATE_MODE_V230_R5],
+                                            zone_profile='gpu_calib_v5_h112')
 DEFAULT_GATE_MODE = GATE_MODE_V1
 #: Modes that carry the C acquisition-quality block.  Every other mode stays
 #: byte-identical to its frozen condition (no new queue markers are written).
 ACQUISITION_QUALITY_MODES = (GATE_MODE_V230_R2, GATE_MODE_V230_R3, GATE_MODE_V230_R4,
-                             GATE_MODE_V230_R5)
+                             GATE_MODE_V230_R5) + V5_BAND_GATE_MODES
 #: Modes that admit (and require) the r3/r4/r5 projection arrival claim.
-PROJECTION_GATE_MODES = (GATE_MODE_V230_R3, GATE_MODE_V230_R4, GATE_MODE_V230_R5)
+PROJECTION_GATE_MODES = (GATE_MODE_V230_R3, GATE_MODE_V230_R4,
+                         GATE_MODE_V230_R5) + V5_BAND_GATE_MODES
 
 
 def gate_robots(solo_robot=None):
@@ -430,7 +444,7 @@ def navigation_factory(robot_id, static=None, **kwargs):
         if arrival['mode'] == ARRIVAL_ODOM_PROJECTION:
             extra.update(arrival_projection_m=arrival['projection_m'],
                          arrival_projection_path_cap_m=arrival['projection_path_cap_m'])
-        if mode['name'] == GATE_MODE_V230_R5:
+        if mode['name'] in STAGE2_GATE_MODES:
             # r5 two-stage slot: fixed code constants, bound into the run so a
             # process cannot silently run r4 timing under an r5 queue.
             extra.update(slot_stage2_ground_m=mode['slot_stage2_ground_m'])
@@ -483,7 +497,7 @@ def gate_queue_fields(seed, calibration=None, sim_budget_s=SIM_BUDGET_S, robots=
             # Order-sheet per-robot slot (r4/r5).  v1/fwd24/r2/r3 queues carry
             # no slot marker at all, so their bytes are unchanged.
             fields.update(nav_slots=slot_assignment(robots))
-        if mode['name'] == GATE_MODE_V230_R5:
+        if mode['name'] in STAGE2_GATE_MODES:
             # r5-only two-stage slot markers (threshold and clamp are frozen code
             # constants; r4 queues stay byte-identical without them).
             fields.update(nav_slot_stage2_ground_m=float(mode['slot_stage2_ground_m']),
@@ -593,7 +607,7 @@ def validate_gate_queue(queue):
             raise ValueError('NAV_SLOTS_REQUIRED')
     elif queue.get('nav_slots') is not None:
         raise ValueError('NAV_SLOTS_REQUIRE_V230_R4')
-    if mode['name'] == GATE_MODE_V230_R5:
+    if mode['name'] in STAGE2_GATE_MODES:
         # The two-stage threshold and clamp are frozen code constants; the queue
         # must carry the exact values and no other mode may carry them.
         try:

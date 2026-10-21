@@ -1177,7 +1177,17 @@ GPU_CALIB_V1 = dict(hue_cv=(110.0, 114.0), sat_min=100.0, val=(30.0, 110.0),
 # unchanged and remains the default; results from the two bands are not pooled.
 GPU_CALIB_V230 = dict(hue_cv=(110.0, 114.0), sat_min=100.0, val=(30.0, 230.0),
                       min_pixels=600, units='opencv_h_0_180_sv_0_255')
-GPU_CALIB_PROFILES = {'gpu_calib_v1': GPU_CALIB_V1, 'gpu_calib_v230': GPU_CALIB_V230}
+# BRANCH_NAV_V5 band candidates (2026-10-21, pre-registered in
+# experiments/2026-10-21-nav-v5-recal/NAV_V5_RECAL_PREREG_DRAFT.json, default
+# OFF).  On the v5 scene the pickup floor overlay renders opaque at OpenCV
+# H 107-108 / S~212 / V~90 (experiments/2026-10-18-nav-gate-1), 2-3 hue units
+# below zone B; only the hue floor is raised, everything else equals v230.  They
+# are selected only by the v5 gate modes in harness.e2ewarp_nav_gate.
+GPU_CALIB_V5_H111 = dict(GPU_CALIB_V230, hue_cv=(111.0, 114.0))
+GPU_CALIB_V5_H112 = dict(GPU_CALIB_V230, hue_cv=(112.0, 114.0))
+GPU_CALIB_PROFILES = {'gpu_calib_v1': GPU_CALIB_V1, 'gpu_calib_v230': GPU_CALIB_V230,
+                      'gpu_calib_v5_h111': GPU_CALIB_V5_H111,
+                      'gpu_calib_v5_h112': GPU_CALIB_V5_H112}
 DEFAULT_GPU_CALIB_PROFILE = 'gpu_calib_v1'
 # Bearing convention of the detector.  ``positive_right`` is the legacy
 # image-column convention (cx right of centre -> positive); the frozen v1 gate
