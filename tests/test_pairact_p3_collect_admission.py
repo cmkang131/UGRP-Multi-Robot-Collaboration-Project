@@ -21,9 +21,9 @@ S15 = {k: 'off' for k in ALL_MODES}
 S15[next(iter(ALL_MODES))] = ALL_MODES[next(iter(ALL_MODES))]
 
 
-def prereg(tmp_path, status='FROZEN'):
+def prereg(tmp_path, status='FROZEN', schema=adm.COLLECT_PREREG_SCHEMA, **extra):
     path = tmp_path / 'prereg.json'
-    path.write_text(json.dumps({'schema': adm.COLLECT_PREREG_SCHEMA, 'status': status}))
+    path.write_text(json.dumps({'schema': schema, 'status': status, **extra}))
     return path, hashlib.sha256(path.read_bytes()).hexdigest()
 
 
@@ -79,11 +79,10 @@ def test_check_required_unless_probe_and_bound_to_machine(tmp_path):
 
 
 def _diff(path):
-    try:
-        out = subprocess.run(['git', '-C', str(ROOT), 'diff', '-U0', BASE, '--', path],
-                             capture_output=True, text=True, check=True).stdout
-    except (subprocess.CalledProcessError, FileNotFoundError) as error:
-        pytest.skip(f'base commit unavailable: {error}')
+    # v3 (Codex v2 N3): a missing base commit is a failure, never a skip (CI fetches full history)
+    run = subprocess.run(['git', '-C', str(ROOT), 'diff', '-U0', BASE, '--', path], capture_output=True, text=True)
+    assert run.returncode == 0, f'base commit {BASE} unavailable: {run.stderr[-300:]}'
+    out = run.stdout
     removed = [l for l in out.splitlines() if l.startswith('-') and not l.startswith('---')]
     return removed
 
@@ -95,3 +94,40 @@ def test_existing_gate_path_is_byte_identical():
     text = (ROOT / 'scripts/run_grasp_act_teacher.py').read_text()
     assert "    elif a.record_training:\n        if a.teacher_gate is None:raise ValueError('verified >=38/40 teacher gate required before recording')" in text
     assert "default='teacher_gate_v1'" in text
+
+
+# ---------------------------------------------- v3 two-stage freeze (pairact-r1 collect prereg v3)
+
+V2 = 'ugrp.pairact_r1.collect_prereg.v2'
+
+
+def test_collector_prereg_v2_schema_is_accepted(tmp_path):
+    path, sha = prereg(tmp_path, schema=V2)
+    assert admit(path, sha, check())['qualified'] is True
+    path, sha = prereg(tmp_path, schema='ugrp.pairact_r1.collect_prereg.v9')
+    with pytest.raises(ValueError, match='schema'):
+        admit(path, sha, check())
+
+
+def test_frozen_core_allows_only_the_recording_probe(tmp_path):
+    path, sha = prereg(tmp_path, status='FROZEN_CORE', schema=V2, bins=[1, 2])
+    proof = admit(path, sha, None, recording_probe=True)
+    assert proof['freeze_stage'] == 'FROZEN_CORE' and 'recording_check_sha256' not in proof
+    with pytest.raises(ValueError, match='FROZEN collect'):
+        admit(path, sha, check())                                   # data recording needs FROZEN
+    path2, sha2 = prereg(tmp_path, status='READY_FOR_REVIEW', schema=V2, bins=[1, 2])
+    with pytest.raises(ValueError, match='FROZEN_CORE or FROZEN'):
+        admit(path2, sha2, None, recording_probe=True)
+
+
+def test_core_sha_excludes_status_and_binds_content(tmp_path):
+    path, sha = prereg(tmp_path, status='FROZEN_CORE', schema=V2, bins=[1, 2])
+    core = admit(path, sha, None, recording_probe=True)['collect_prereg_core_sha256']
+    want = hashlib.sha256(json.dumps({'bins': [1, 2], 'schema': V2}, sort_keys=True,
+                                     separators=(',', ':')).encode()).hexdigest()
+    assert core == want
+    path, sha = prereg(tmp_path, status='FROZEN', schema=V2, bins=[1, 2])
+    proof = admit(path, sha, check(), expected_core_sha256=core)
+    assert proof['collect_prereg_core_sha256'] == core and proof['freeze_stage'] == 'FROZEN'
+    with pytest.raises(ValueError, match='core sha256 mismatch'):
+        admit(path, sha, check(), expected_core_sha256='0' * 64)

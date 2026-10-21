@@ -1,5 +1,6 @@
 """Recording admission tied to the measured executable and frozen gate plan."""
 import hashlib
+import json
 from pathlib import Path
 
 CRITERIA={'min_z_m':.012,'max_tilt_deg':10.,'hold_s':3.}
@@ -93,12 +94,24 @@ def recording_mode_equivalence(gate_rows,recorded_rows):
 COLLECT_CANDIDATE='pairact_p3_collect'
 COLLECT_ADMISSION='pairact_p3_collect_prereg_v1'
 COLLECT_PREREG_SCHEMA='ugrp.pairact_r1.collect_prereg.v1'
+# v3 two-stage freeze (pairact-r1 collect prereg v3, Codex v2 B2): the collector prereg schema is v2;
+# the recording probe (data_admitted false) accepts FROZEN_CORE, data recording needs FROZEN.
+# core sha256 = sha256 of the canonical prereg JSON without 'status' (harness.pairact_collect.prereg_core_sha256).
+COLLECT_PREREG_SCHEMAS=(COLLECT_PREREG_SCHEMA,'ugrp.pairact_r1.collect_prereg.v2')
+COLLECT_PROBE_STATUSES=('FROZEN_CORE','FROZEN')
+
+
+def collect_prereg_core_sha256(prereg):
+    body=json.dumps({k:v for k,v in prereg.items() if k!='status'},sort_keys=True,separators=(',',':'),
+                    ensure_ascii=False,allow_nan=False).encode()
+    return hashlib.sha256(body).hexdigest()
 RECORDING_CHECK_MODES=('teacher_stability','teacher_search','approach_goal_set','nominal_blocked_handoff',
                        'approach_progress','approach_recovery','approach_coordination','handoff_observation')
 
 
 def collect_recording_admission(prereg_path,expected_sha256,check,*,source_sha,teacher_profile,modes,
-                                search15_options,execution_host,recording_probe=False,check_sha256=None):
+                                search15_options,execution_host,recording_probe=False,check_sha256=None,
+                                expected_core_sha256=None):
     """Recording proof for the pairact P3 collection; same check rule as run_grasp_act_teacher.main."""
     from scripts.grasp_act_host import same_machine
     from sim.grasp_act_search15_modes import match
@@ -106,12 +119,16 @@ def collect_recording_admission(prereg_path,expected_sha256,check,*,source_sha,t
     digest=hashlib.sha256(raw).hexdigest()
     if not expected_sha256 or digest!=expected_sha256:
         raise ValueError('collect pre-registration sha256 mismatch')
-    import json
     prereg=json.loads(raw)
-    if prereg.get('schema')!=COLLECT_PREREG_SCHEMA:raise ValueError('collect pre-registration schema required')
-    if prereg.get('status')!='FROZEN':raise ValueError('FROZEN collect pre-registration required before recording')
+    if prereg.get('schema') not in COLLECT_PREREG_SCHEMAS:raise ValueError('collect pre-registration schema required')
+    allowed=COLLECT_PROBE_STATUSES if recording_probe else ('FROZEN',)
+    if prereg.get('status') not in allowed:
+        raise ValueError(('FROZEN_CORE or FROZEN' if recording_probe else 'FROZEN')+' collect pre-registration required before recording')
+    core=collect_prereg_core_sha256(prereg)
+    if expected_core_sha256 is not None and core!=expected_core_sha256:raise ValueError('collect pre-registration core sha256 mismatch')
     proof={'admission':COLLECT_ADMISSION,'teacher_gate':'not_required_success_filtered_collection',
-           'collect_prereg_sha256':digest,'source_sha':source_sha,'teacher_profile':teacher_profile,
+           'collect_prereg_sha256':digest,'collect_prereg_core_sha256':core,'freeze_stage':prereg['status'],
+           'source_sha':source_sha,'teacher_profile':teacher_profile,
            **{k:modes.get(k,'off') for k in RECORDING_CHECK_MODES},**search15_options,
            'qualified':True,'criteria':CRITERIA,'execution_host':execution_host}
     if not recording_probe:
