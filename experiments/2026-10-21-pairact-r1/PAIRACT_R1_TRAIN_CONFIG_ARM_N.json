@@ -40,7 +40,7 @@
   },
   "trainer": {
     "script": "scripts/train_grasp_act.py",
-    "fixed_flags": "--beamact3-v1 A --done-loss balanced_bce_v1 --execution-host-profile beamact1_gcp2 --seed 20261020",
+    "fixed_flags": "--beamact3-v1 A --done-loss balanced_bce_v1 --execution-host-profile pairact_r1_l4 --seed 20261020",
     "init": "fresh (pretrained ResNet18 backbone, same as beamact2/3); no beamact3 checkpoint init",
     "lr": "1e-5 AdamW wd 1e-4 (unchanged trainer)",
     "max_wall_s_per_session": 25200

@@ -10,6 +10,10 @@ rollout (PAIRACT_R1_EVAL_PREREG_DRAFT.json commit_before_run). No checkpoint is 
     --dataset datasets/pairact-r1-<TS> --stage-targets datasets/pairact-r1-<TS>-stage/stage-targets.json \
     --config experiments/2026-10-21-pairact-r1/PAIRACT_R1_TRAIN_CONFIG_DRAFT.json \
     --collect-report RUNP3T/report.json --out experiments/2026-10-21-pairact-r1/CHECKPOINT_FREEZE.json
+
+  arm N: same command with --run RUN-N/main --offline RUN-N/offline
+    --config experiments/2026-10-21-pairact-r1/PAIRACT_R1_TRAIN_CONFIG_ARM_N.json
+    --out experiments/2026-10-21-pairact-r1/CHECKPOINT_FREEZE_ARM_N.json
 """
 from __future__ import annotations
 
@@ -33,6 +37,11 @@ def freeze(offline, run, dataset, stage_targets, config, collect_report=None):
     if sel.get('verdict') != 'SELECTED' or sel.get('selected_step') is None:
         raise ValueError(f'no checkpoint to freeze: verdict {sel.get("verdict")!r} (P5 does not run)')
     step = int(sel['selected_step'])
+    cfg = json.loads(Path(config).read_text())
+    arm = cfg.get('arm', 'F')
+    scope = cfg.get('segment_scope', 'full_v1')
+    if sel.get('segment_scope', scope) != scope:
+        raise ValueError(f'selection segment scope {sel.get("segment_scope")!r} differs from config {scope!r}')
     if sel.get('dataset_manifest_sha256') != sha256(Path(dataset) / 'manifest.json'):
         raise ValueError('selection dataset manifest sha differs from --dataset')
     if sel.get('stage_targets_sha256') != sha256(stage_targets):
@@ -45,7 +54,7 @@ def freeze(offline, run, dataset, stage_targets, config, collect_report=None):
     actor_sha = json.loads((actor / 'SHA256.json').read_text())
     if actor_sha != chosen[0]['actor_sha256']:
         raise ValueError(f'step {step}: actor SHA256.json differs from the gated checkpoint')
-    out = dict(schema=SCHEMA, selected_step=step, actor_dir=str(actor), actor_sha256=actor_sha,
+    out = dict(schema=SCHEMA, arm=arm, segment_scope=scope, selected_step=step, actor_dir=str(actor), actor_sha256=actor_sha,
                actor_sha256_file_sha256=sha256(actor / 'SHA256.json'),
                selection_sha256=sha256(offline / 'selection.json'),
                checkpoints_jsonl_sha256=sha256(offline / 'checkpoints.jsonl'),

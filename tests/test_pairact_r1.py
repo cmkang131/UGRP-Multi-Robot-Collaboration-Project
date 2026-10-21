@@ -206,7 +206,7 @@ def test_trainer_pairact_flags_are_default_off_and_validated(tmp_path):
     r = run(*common, '--seed', '20261020')
     assert r.returncode == 2 and 'registered base arm' in r.stderr
     r = run(*common, '--seed', '20261020', '--beamact3-v1', 'A', '--done-loss', 'balanced_bce_v1',
-            '--execution-host-profile', 'beamact1_gcp2', '--checkpoint-every', '500')
+            '--execution-host-profile', 'pairact_r1_l4', '--checkpoint-every', '500')
     assert r.returncode == 2 and 'registered steps' in r.stderr
 
 

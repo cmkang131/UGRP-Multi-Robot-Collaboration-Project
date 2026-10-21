@@ -206,30 +206,33 @@ python scripts/build_pairact_r1_stage_targets.py --dataset datasets/pairact-r1-<
 ```
 `missing_stages`에 approach·alignment·ready·execute·carry·place·complete 중 하나라도 있으면 멈추고 보고합니다. recover는 teacher 시연에 없을 수 있습니다.
 
-## 3. P4 학습 (gcp2 L4, 학습 4.6 GPU-h 예산)
+## 3. P4 학습 — arm F(gcp2)와 arm N(gcp6) 병렬, 각 4.6 GPU-h 예산
+두 arm은 같은 데이터셋·같은 sidecar·같은 하이퍼파라미터·seed 20261020입니다. 다른 것은 설정 파일의 `arm`/`segment_scope`뿐이고 `harness.pairact_r1.assert_arm_pair`가 이를 강제합니다. arm N은 carry 단계 행(teacher `carry:carry_hold`–`carry:zone_settle`, 운반·문 통과)을 sampler에서 빼고 carry horizon을 손실에서 가립니다. 아래 명령을 arm마다 한 번씩, VM마다 따로 돌립니다(`<A>`=F 또는 N). 호스트 profile `pairact_r1_l4`는 gcp2(`ugrp-act-l4-gcp2`)·gcp6(`ugrp-act-l4-gcp6`) L4만 받습니다.
 ```
-CFG=experiments/2026-10-21-pairact-r1/PAIRACT_R1_TRAIN_CONFIG_DRAFT.json
+python -c "from harness import pairact_r1 as p; p.assert_arm_pair(p.load_config('experiments/2026-10-21-pairact-r1/PAIRACT_R1_TRAIN_CONFIG_DRAFT.json'), p.load_config('experiments/2026-10-21-pairact-r1/PAIRACT_R1_TRAIN_CONFIG_ARM_N.json')); print('arm pair ok')"
+CFG=experiments/2026-10-21-pairact-r1/PAIRACT_R1_TRAIN_CONFIG_DRAFT.json      # arm F (gcp2)
+# CFG=experiments/2026-10-21-pairact-r1/PAIRACT_R1_TRAIN_CONFIG_ARM_N.json    # arm N (gcp6)
 ST=datasets/pairact-r1-<TS>-stage/stage-targets.json
 COMMON="--dataset datasets/pairact-r1-<TS> --seed 20261020 --beamact3-v1 A --done-loss balanced_bce_v1 \
-  --execution-host-profile beamact1_gcp2 --pairact-r1-config $CFG --pairact-r1-stage-targets $ST"
+  --execution-host-profile pairact_r1_l4 --pairact-r1-config $CFG --pairact-r1-stage-targets $ST"
 # smoke
-python scripts/train_grasp_act.py $COMMON --output runs/pairact-carry-r1-<TS>/smoke --stage smoke --steps 300 --max-wall-s 1800
+python scripts/train_grasp_act.py $COMMON --output runs/pairact-carry-r1-<TS>-<A>/smoke --stage smoke --steps 300 --max-wall-s 1800
 # approval.json: approved=true, stage=main, source_sha, dataset_manifest_sha256, smoke_summary_sha256,
 #   steps=20000, blank_images=false, gate_promotion_authorized_if_all_conditions_pass=false, beamact3_v1="A",
 #   pairact_r1_config_sha256, pairact_r1_stage_targets_sha256  (Claude 본체 승인 후 작성)
-python scripts/train_grasp_act.py $COMMON --output runs/pairact-carry-r1-<TS>/main --stage main --steps 20000 \
-  --checkpoint-every 1000 --max-wall-s 25200 --smoke-summary runs/pairact-carry-r1-<TS>/smoke/summary.json \
-  --approval runs/pairact-carry-r1-<TS>/approval.json --profile-timing
-# WALL_CAP이면: 같은 명령에 --resume runs/pairact-carry-r1-<TS>/main/step-<마지막>
+python scripts/train_grasp_act.py $COMMON --output runs/pairact-carry-r1-<TS>-<A>/main --stage main --steps 20000 \
+  --checkpoint-every 1000 --max-wall-s 25200 --smoke-summary runs/pairact-carry-r1-<TS>-<A>/smoke/summary.json \
+  --approval runs/pairact-carry-r1-<TS>-<A>/approval.json --profile-timing
+# WALL_CAP이면: 같은 명령에 --resume runs/pairact-carry-r1-<TS>-<A>/main/step-<마지막>
 ```
-`--profile-timing`으로 step 시간 실측을 남깁니다. GPU-h 실측은 STATUS에 적습니다.
+`--profile-timing`으로 step 시간 실측을 남깁니다. GPU-h 실측은 STATUS에 적습니다. 데이터셋과 sidecar는 한 번 만들어 두 VM에 같은 바이트로 복사하고 `manifest.json`·`stage-targets.json` sha256이 같은지 먼저 확인합니다. approval.json은 arm마다 하나씩 씁니다. arm N 학습 report의 `sampled_rows`로 운반 구간 비중을 기록합니다. 한 VM을 못 쓰면 같은 VM에서 차례로 돌리고 설정은 바꾸지 않습니다. [확인 필요] gcp6에 학습 환경(torch·lerobot·beamact3 의존성)이 gcp2와 같은지 smoke 전에 확인합니다.
 
 ## 4. 오프라인 gate + 선택 (gcp2, 0.5–1.5 GPU-h [확인 필요])
 ```
-python scripts/pairact_r1_offline.py --run runs/pairact-carry-r1-<TS>/main --dataset datasets/pairact-r1-<TS> \
-  --stage-targets $ST --output runs/pairact-carry-r1-<TS>/offline
+python scripts/pairact_r1_offline.py --run runs/pairact-carry-r1-<TS>-<A>/main --dataset datasets/pairact-r1-<TS> \
+  --stage-targets $ST --output runs/pairact-carry-r1-<TS>-<A>/offline
 ```
-`selection.json`의 verdict가 `NOT_READY_NO_CHECKPOINT_PASSES`이면 P5를 돌리지 않고 보고합니다.
+`selection.json`의 verdict가 `NOT_READY_NO_CHECKPOINT_PASSES`이면 그 arm의 P5를 돌리지 않고 보고합니다(다른 arm은 그대로 진행). arm N 체크포인트는 adapter의 `segment_scope=near_only_v1`을 읽어 carry 행을 빼고 채점하며, carry→place 전이(반환 지점)는 그대로 봅니다. 기준값은 두 arm이 같습니다.
 
 ## 4-1. 판정 단계 확인 + 체크포인트 동결 (CPU, 수 분) — train-ready 추가
 학습 전에 `TRAIN_PLAN.json`의 단계를 확인합니다. 학습 설정(20k step·seed·sampler)은 판정 단계와 무관하게 같고, 단계는 표기와 P5 헤드라인만 바꿉니다.
@@ -239,15 +242,15 @@ python -c "import json;from harness.pairact_r1_plan import train_plan;d=json.loa
 - `train=false`(NO_TRAIN_*)이면 §3 이후를 하지 않고 보고합니다.
 - 오프라인 gate 뒤(§4) 동결 파일을 만들어 *커밋·push한 다음에만* §5로 갑니다.
 ```
-python scripts/pairact_r1_freeze_checkpoint.py --offline runs/pairact-carry-r1-<TS>/offline --run runs/pairact-carry-r1-<TS>/main \
+python scripts/pairact_r1_freeze_checkpoint.py --offline runs/pairact-carry-r1-<TS>-<A>/offline --run runs/pairact-carry-r1-<TS>-<A>/main \
   --dataset datasets/pairact-r1-<TS> --stage-targets $ST --config $CFG --collect-report $RUNP3T/report.json \
-  --out experiments/2026-10-21-pairact-r1/CHECKPOINT_FREEZE.json
+  --out experiments/2026-10-21-pairact-r1/CHECKPOINT_FREEZE.json      # arm N: --config ...ARM_N.json --out .../CHECKPOINT_FREEZE_ARM_N.json
 ```
 
 ## 5. P5 (보류 seed, 학생·teacher 같은 seed) — 사전 등록 v2
 1. `PAIRACT_R1_EVAL_PREREG_DRAFT.json` v2의 `episode_cap_sim_s`를 P2 teacher smoke(-c5)의 운반 시간으로 계산해 채웁니다: `harness.pairact_r1_plan.episode_cap_s([carry_s...], any_timeout=...)`. 완료된 운반이 0이면 P5를 시작하지 않습니다.
 2. 체크포인트 동결(§4-1) 커밋 → 보류 20 seed에 규칙 A 정적 검사 → 제외 seed 목록과 검사 출력 sha256 커밋 → prereg `status: FROZEN` 커밋. 그 전에는 보류 결과를 만들거나 읽지 않습니다.
-3. 실행은 root `dsh/pairact-p2-carrypath-r-c5`의 `experiments/2026-10-21-pairact-p2/P5_STUDENT_EVAL.md` §3(학생 `--student-eval`, teacher는 같은 명령에서 플래그만 뺌, 같은 cases·cap).
+3. 실행은 root `dsh/pairact-p2-carrypath-r-c5`의 `experiments/2026-10-21-pairact-p2/P5_STUDENT_EVAL.md` §3(학생 `--student-eval`, teacher는 같은 명령에서 플래그만 뺌, 같은 cases·cap). arm N(`hybrid_n`)은 root `dsh/pairact-p2-carrypath-r-c5-hybrid`의 `experiments/2026-10-21-pairact-p2/HYBRID_RUN.md`대로 `--student-eval` + `--hybrid-carry <config>`(carry_mode `nav`)로 같은 cases·cap에서 돌립니다. arm N은 순수 학생으로 돌리지 않습니다.
 4. 집계:
 ```
 python scripts/pairact_p5_rows.py --prereg <v2 FROZEN> --cases p5-heldout-cases.json --student RUN/p5-student \
@@ -256,5 +259,5 @@ python scripts/report_tables.py pairact-eval --prereg <v2 FROZEN> --rows RUN-rep
 python scripts/pairact_r1_p5_decide.py --prereg <v2 FROZEN> --rows RUN-report/p5-rows.jsonl \
   --freeze experiments/2026-10-21-pairact-r1/CHECKPOINT_FREEZE.json --out RUN-report/p5-decision.json   # 이 브랜치
 ```
-- 보고: 학생 n/N_eff와 같은 seed teacher n/N_eff(제외 seed 목록 병기), 단계 퍼널, 보정 감사, hybrid 판정(`HYBRID_SWITCH_RULE.md`). 판정은 다음에 무엇을 만들지 정하는 것이고 결과가 아닙니다.
+- 보고: 세 줄을 따로 씁니다 — `학습 전 구간`(arm F) n/N_eff, `학습 근거리 + 코드 운반(hybrid)`(arm N) n/N_eff, teacher n/N_eff. 합치거나 하나로 바꿔 쓰지 않습니다. 그리고 (제외 seed 목록 병기), 단계 퍼널, 보정 감사, hybrid 판정(`HYBRID_SWITCH_RULE.md`). 판정은 다음에 무엇을 만들지 정하는 것이고 결과가 아닙니다.
 - HOST_ERROR는 같은 seed 1회 재실행만 허용합니다(`--student-rerun`/`--teacher-rerun`).

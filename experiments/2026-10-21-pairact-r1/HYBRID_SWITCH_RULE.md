@@ -5,7 +5,15 @@
 
 ## 1. hybrid가 무엇인가
 학생 ACT가 *접근 → 정렬 → READY → 파지 → 3초 공동 유지*를 맡고, 마지막 *하강·열기·후진*도 맡습니다. 그 사이의 *문 통과 운반 구간*(유지 후 출발부터 zone B 정렬까지)만 코드가 맡습니다. 이 코드는 *자기 센서 협조 주행*입니다. 입력은 자기 카메라, 자기 발행 명령, 자기 odometry/VO, 그리고 상대가 보낸 메시지뿐입니다. GT, teacher, 상대 자세 원본은 쓰지 않습니다.
-- 보고 표기는 "혼합(운반 구간 코드)"입니다. 순수 학생 결과(n/N_eff)와 합산하거나 바꿔 쓰지 않습니다.
+- 보고 표기는 "학습 근거리 + 코드 운반(hybrid)"입니다(이전 초안 표기 "혼합(운반 구간 코드)"를 사전 등록 v2.1 표기로 통일). 순수 학생 결과(n/N_eff)와 합산하거나 바꿔 쓰지 않습니다.
+
+## 1-1. arm N과의 관계 (2026-10-21 추가, 결과 전)
+- 학습 arm은 둘입니다(`TRAIN_PLAN.json` `arms`). arm F는 전 구간을 학습하고 P5 arm id `student`, 표기 "학습 전 구간"입니다. arm N은 운반·문 통과 구간 프레임을 손실에서 빼고 근거리만 학습하며 P5 arm id `hybrid_n`, 표기 "학습 근거리 + 코드 운반(hybrid)"입니다.
+- *이 전환 규칙은 arm F의 결과만 입력으로 받습니다.* `hybrid_decision`은 `student`(arm F) 행만 읽고, `hybrid_n`을 넣으면 거부합니다(`harness/pairact_r1_plan.py`).
+- arm N은 처음부터 hybrid로 평가됩니다. 운반 구간은 코드가 맡으므로 순수 학생으로 돌리지 않고, 이 규칙의 판정과 무관하게 P5에서 같은 보류 seed로 한 번 돌립니다(사전 등록 v2.1 `arm_rules`).
+- 이 규칙이 정하는 것은 둘입니다. (1) arm F 체크포인트도 코드 운반과 묶어 볼지(규칙 3 `HYBRID_CARRY` → 별도 사전 등록, arm id `hybrid_f`, 같은 seed), (2) 2회차에 무엇을 고칠지. arm N 결과가 좋아도 arm F의 판정을 바꾸지 않고, arm F 판정이 무엇이든 arm N 결과는 자기 표기로 그대로 보고합니다.
+- 세 줄(`student`, `hybrid_n`, `teacher`)은 같은 N_eff seed, 같은 상한, 같은 evaluator로 나란히 쓰고 합치지 않습니다. arm N 성공은 "학습 공동 운반" 성공으로 세지 않습니다.
+- 코드 운반 모드는 `nav`(자기 카메라 문·zone 검출 + 자기 odometry, 정적 지도 없음)만 셉니다. `map`(정적 지도 좌표)은 창민 승인 전에는 코드가 거부하고, 승인되면 별도 arm id `hybrid_n_map`과 "(정적 지도)" 표기로 따로 보고합니다.
 
 ## 2. 판정 (P5 최종 count에서 한 번만, 아래 순서대로)
 기호는 같은 보류 seed N_eff개 기준입니다(규칙 A 정적 제외 후). H = 학생 `hold_3s` 도달 수, D = 학생 `door` 도달 수, P = 학생 성공 수(`place`, 보정 0 확인된 것만), TD = 같은 seed teacher `door` 도달 수, k = max(3, ⌈0.15·N_eff⌉)(N_eff=20이면 3)입니다.
@@ -41,7 +49,7 @@
 | I6 | 문·zone B 인식 | 자기 RGB | 자기 중심 랜드마크(문 양쪽 기둥, zone B 경계), 거리 | GPU E2E 계약 v1은 정적 지도를 금지합니다. zone B 인식기와 문 인식기는 [확인 필요: 공동 운반에도 계약 v1이 적용되는지 창민 확인] |
 | I7 | 학생 shadow 추론 | 학생 입력 그대로 | 실행하지 않는 학생 행동(기록만) | 신규(작음). 코드 운반 중에도 학생 `release` skill stream을 계속 돌려 이력·시계를 유지합니다. 이력에는 *실제로 발행된 코드 명령*이 들어갑니다(자기 발행 명령이므로 계약 위반 아님). 학생 행동은 로그에만 남깁니다 |
 | I8 | 반환(STUDENT_PLACE 진입) | I3 `carry_status=arrived`(자기 판정), 두 로봇 I2 GO | 학생 명령 실행 재개 | 신규. 반환 시점의 학생 입력 분포가 teacher 데이터(zone_settle 끝)와 맞는지 *오프라인 검사 G-H*를 validation 데이터에서 먼저 봅니다: zone_settle 마지막 10행에서 단계 head가 `carry` 또는 `place`, done score < 0.65 |
-| I9 | runner 플래그 | `--hybrid-carry <config.json>`(기본 off) | 학생 worker + 운반 코드 동시 실행 | root(-r-c5 다음 -r-c6)·adapter 후보 신규. 기존 후보·`--student-eval` 경로는 바이트 동일(회귀 테스트) |
+| I9 | runner 플래그 | `--hybrid-carry <config.json>`(기본 off) | 학생 worker + 운반 코드 동시 실행 | root `dsh/pairact-p2-carrypath-r-c5-hybrid`(HYBRID_RUN.md). 기존 후보·`--student-eval` 경로는 바이트 동일(회귀 테스트) |
 | I10 | 감사 필드 | 런타임 카운터 | `code_segment_s`, `student_commands_executed_ratio`, `gt_inputs_to_code = 0`, `teacher_steps = 0`, 전환 이벤트 | 신규. `pairact_p5_rows.py`에 arm `hybrid` 행 추가, report-auto `pairact-eval`은 arm 목록을 prereg에서 읽으므로 prereg에 `hybrid` arm만 추가하면 됩니다 |
 | I11 | 정적 import 감사 | 운반 코드 소스 | 시뮬레이터 truth·evaluator import 0 | `e2ewarp_selfnav.order_sheet` 방식(지도 접근 거부)과 같은 테스트 |
 

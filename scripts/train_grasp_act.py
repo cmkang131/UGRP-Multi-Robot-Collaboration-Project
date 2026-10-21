@@ -44,7 +44,7 @@ def main():
                    help='training only: replace whole normalized issued history with train mean; default off')
     p.add_argument('--history-causal-split-v1', choices=('off', 'wheel_pulse_train_mean'), default='off',
                    help='ACT16 wheel/pulse history mask, identical at train/deploy; default off')
-    p.add_argument('--execution-host-profile', choices=('legacy', 'beamact1_gcp2'), default='legacy')
+    p.add_argument('--execution-host-profile', choices=('legacy', 'beamact1_gcp2', 'pairact_r1_l4'), default='legacy')
     p.add_argument('--pairact-r1-config', type=Path, default=None,
                    help='pairact-r1 pair carry config (default off); requires --beamact3-v1 A')
     p.add_argument('--pairact-r1-stage-targets', type=Path, default=None,
@@ -56,13 +56,17 @@ def main():
     if a.beamact3_v1 != 'off':
         expected_mask = 'off' if a.beamact3_v1 == 'A' else 'wheel_pulse_train_mean'
         if (a.blank_images or a.command_history_dropout != 0. or a.done_loss != 'balanced_bce_v1'
-                or a.history_causal_split_v1 != expected_mask or a.execution_host_profile != 'beamact1_gcp2'):
+                or a.history_causal_split_v1 != expected_mask
+                or a.execution_host_profile not in (('beamact1_gcp2', 'pairact_r1_l4') if a.pairact_r1_config
+                                                    else ('beamact1_gcp2',))):
             p.error('beamact3 requires matching A/B mask, dropout0, balanced BCE, own RGB and GCP2')
         from harness.beamact3 import transform_batch as compact_batch
         transform_batch = lambda batch, mode='off': compact_batch(batch, a.beamact3_v1)
     if a.history_causal_split_v1 != 'off' and a.blank_images:
         p.error('beamact1 history intervention requires own RGB')
     pair_config = None
+    if a.execution_host_profile == 'pairact_r1_l4' and a.pairact_r1_config is None:
+        p.error('pairact_r1_l4 host profile is for pairact-r1 training only')
     if (a.pairact_r1_config is None) != (a.pairact_r1_stage_targets is None):
         p.error('pairact-r1 needs both --pairact-r1-config and --pairact-r1-stage-targets')
     if a.pairact_r1_config is not None:
@@ -86,6 +90,9 @@ def main():
     if a.execution_host_profile == 'beamact1_gcp2':
         from scripts.beamact1_runtime import require_gcp2
         host = require_gcp2(training=True)
+    elif a.execution_host_profile == 'pairact_r1_l4':
+        from scripts.beamact1_runtime import require_pairact_l4
+        host = require_pairact_l4()
     else:
         host = require_gcp(training=True)
     source = source_sha()

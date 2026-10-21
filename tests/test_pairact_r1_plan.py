@@ -209,3 +209,93 @@ def test_freeze_refuses_no_selection(tmp_path):
     off, run, ds, st, cfg = make_run(tmp_path, verdict='NOT_READY_NO_CHECKPOINT_PASSES')
     with pytest.raises(ValueError, match='no checkpoint'):
         fz.freeze(off, run, ds, st, cfg)
+
+
+# ------------------------------------------------------------------ arm N (v2.1)
+
+def hyb(seed, last, *, mode='nav', code=0, corr=0, status='complete'):
+    r = ep('hybrid_n', seed, last, corr=corr, status=status)
+    r.update(carry_mode=mode, gt_inputs_to_code=code)
+    return r
+
+
+def test_train_plan_lists_both_arms_with_labels_and_vms():
+    tp = json.loads((EXP / 'TRAIN_PLAN.json').read_text())
+    assert tp['arms']['F']['vm'] == 'gcp2' and tp['arms']['N']['vm'] == 'gcp6'
+    assert tp['arms']['F']['budget_gpu_h'] == tp['arms']['N']['budget_gpu_h'] == 4.6
+    for a in ('F', 'N'):
+        assert (EXP / Path(tp['arms'][a]['config']).name).exists()
+        assert tp['arms'][a]['label'] == plan.ARM_LABELS[tp['arms'][a]['p5_arm']]
+    arms = plan.train_plan('TRAIN')['arms']
+    assert arms['N'] == dict(config='PAIRACT_R1_TRAIN_CONFIG_ARM_N.json', p5_arm='hybrid_n',
+                             label='학습 근거리 + 코드 운반(hybrid)')
+    assert arms['F']['label'] == '학습 전 구간'
+
+
+def test_prereg_v21_registers_arm_n_hybrid_only_and_no_pooling():
+    e = json.loads((EXP / 'PAIRACT_R1_EVAL_PREREG_DRAFT.json').read_text())
+    ids = [a['id'] for a in e['arms']]
+    assert ids == ['student', 'hybrid_n', 'teacher']
+    a = {x['id']: x for x in e['arms']}
+    assert a['student']['label'] == plan.ARM_LABELS['student'] and a['hybrid_n']['label'] == plan.ARM_LABELS['hybrid_n']
+    assert a['hybrid_n']['training_arm'] == 'N' and 'never run as a pure student' in a['hybrid_n']['forbidden']
+    assert "'nav'" in a['hybrid_n']['carry_mode_rule'] and '창민' in a['hybrid_n']['carry_mode_rule']
+    r = e['arm_rules']
+    assert 'never added' in r['no_pooling'] and 'same N_eff' in r['same_seeds']
+    assert 'arm F' in r['hybrid_switch_relation'] and 'not an input' in r['hybrid_switch_relation']
+    assert e['revision'].startswith('v2') and 'v2.1' in e['revision']
+
+
+def test_hybrid_arm_counts_need_code_audit_and_nav_mode():
+    h = dict(type='header', schema=plan.ROWS_SCHEMA, excluded_seeds=[])
+    eps = [ep('student', s, 'hold_3s') for s in SEEDS] + [ep('teacher', s, 'place') for s in SEEDS]
+    eps += [hyb(s, 'place') for s in SEEDS[:5]] + [hyb(s, 'hold_3s') for s in SEEDS[5:]]
+    arms = ['student', 'hybrid_n', 'teacher']
+    c = plan.p5_counts(h, eps, seeds=SEEDS, arms=arms)
+    assert c['arms']['hybrid_n']['success'] == 5 and c['arms']['student']['success'] == 0
+    table = {r['arm']: r['text'] for r in plan.arm_table(c)}
+    assert table == {'student': '학습 전 구간 0/20', 'hybrid_n': '학습 근거리 + 코드 운반(hybrid) 5/20',
+                     'teacher': 'teacher = GT 기준(학습 결과 아님) 20/20'}
+    # the switch rule reads arm F only; arm N success does not change it
+    assert plan.hybrid_decision(c)['decision'] == 'HYBRID_CARRY'
+    with pytest.raises(ValueError, match='arm F student only'):
+        plan.hybrid_decision(c, student='hybrid_n')
+    eps2 = list(eps); eps2[-1] = hyb(SEEDS[-1], 'place', code=1)
+    eps2[-2] = hyb(SEEDS[-2], 'place', code=None)
+    c2 = plan.p5_counts(h, eps2, seeds=SEEDS, arms=arms)['arms']['hybrid_n']
+    assert c2['corrections_nonzero'] == [SEEDS[-1]] and c2['corrections_unknown'] == [SEEDS[-2]]
+    eps3 = list(eps); eps3[-1] = hyb(SEEDS[-1], 'place', mode='map')
+    with pytest.raises(ValueError, match='not approved'):
+        plan.p5_counts(h, eps3, seeds=SEEDS, arms=arms)
+    assert plan.p5_counts(h, eps3, seeds=SEEDS, arms=arms, hybrid_modes=('nav', 'map'))['arms']['hybrid_n']['success'] == 6
+
+
+def test_freeze_records_arm_and_checks_scope(tmp_path):
+    off, run, ds, st, cfg = make_run(tmp_path)
+    cfg.write_text(json.dumps({'arm': 'N', 'segment_scope': 'near_only_v1'}))
+    sel = json.loads((off / 'selection.json').read_text())
+    (off / 'selection.json').write_text(json.dumps(dict(sel, segment_scope='near_only_v1')))
+    rec = fz.freeze(off, run, ds, st, cfg)
+    assert (rec['arm'], rec['segment_scope']) == ('N', 'near_only_v1')
+    (off / 'selection.json').write_text(json.dumps(dict(sel, segment_scope='full_v1')))
+    with pytest.raises(ValueError, match='segment scope'):
+        fz.freeze(off, run, ds, st, cfg)
+
+
+def test_pairact_l4_host_profile_admits_gcp2_and_gcp6_only():
+    from scripts.beamact1_runtime import host_profile_check
+    assert host_profile_check('ugrp-sim-b-1014', 'ugrp-act-l4-gcp2', 'g2-standard-8')['vm'] == 'gcp2'
+    assert host_profile_check('ugrp-sim-f-1016', 'ugrp-act-l4-gcp6', 'g2-standard-8')['vm'] == 'gcp6'
+    for bad in (('ugrp-sim-b-1014', 'ugrp-sim-gcp2', 'n4-highcpu-64'), ('ugrp-sim-f-1016', 'ugrp-act-l4-gcp2', 'g2-standard-8')):
+        with pytest.raises(ValueError):
+            host_profile_check(*bad)
+    import subprocess
+    r = subprocess.run([sys.executable, str(ROOT / 'scripts/train_grasp_act.py'), '--dataset', str(tmp_path_dummy()),
+                        '--output', '/nonexistent/out', '--stage', 'smoke', '--steps', '300',
+                        '--execution-host-profile', 'pairact_r1_l4'],
+                       capture_output=True, text=True, cwd=ROOT)
+    assert r.returncode == 2 and 'pairact-r1 training only' in r.stderr
+
+
+def tmp_path_dummy():
+    return ROOT / 'experiments'

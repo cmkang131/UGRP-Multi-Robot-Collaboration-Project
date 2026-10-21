@@ -40,6 +40,8 @@ def decide(prereg_path, rows_path, freeze_path=None):
                                                fr.get('limited_bins', ()))
     n = counts['n_eff']
     out['text'] = {a: f'{a} {r["success"]}/{n}' for a, r in counts['arms'].items()}
+    out['arm_table'] = plan.arm_table(counts)
+    out['pooling'] = 'none: arm F (student) and arm N (hybrid_n) are separate rows on the same seeds'
     if prereg.get('status') != 'FROZEN':
         out['label'] = 'DRAFT prereg: table only, no verdict'
     return out

@@ -9,7 +9,9 @@ DeepSeek (runner side), Codex (recount) and the report.
 - ``episode_cap_s``: P5 episode cap from P2 teacher smoke carry durations (same cap both arms).
 - ``p5_counts``: rows (``ugrp.pairact.p5_rows.v1``, scripts/pairact_p5_rows.py) -> per-arm
   n/N_eff, funnel, correction audit. Same semantics as dsh/report-auto ``pairact_eval``.
-- ``hybrid_decision``: registered switch rule (pure student vs hybrid carry vs other fixes).
+- ``hybrid_decision``: registered switch rule (pure student vs hybrid carry vs other fixes), on arm F only.
+- ``arm_table``: per-arm labelled n/N_eff lines; arm F ('학습 전 구간') and arm N ('학습 근거리 +
+  코드 운반(hybrid)') are never pooled or substituted for each other.
 """
 from __future__ import annotations
 
@@ -19,6 +21,22 @@ from pathlib import Path
 
 FUNNEL = ('approach', 'alignment', 'READY', 'grasp', 'hold_3s', 'carry_1m', 'door', 'place')
 ROWS_SCHEMA = 'ugrp.pairact.p5_rows.v1'
+
+# P5 arm ids (PAIRACT_R1_EVAL_PREREG_DRAFT.json v2 ``arms``) -> training arm and registered label.
+ARM_LABELS = {
+    'student': '학습 전 구간',                       # arm F, pure student
+    'hybrid_n': '학습 근거리 + 코드 운반(hybrid)',   # arm N, always with the code carry segment
+    'teacher': 'teacher = GT 기준(학습 결과 아님)',
+}
+TRAIN_ARM = {'student': 'F', 'hybrid_n': 'N'}
+TRAIN_CONFIGS = {'F': 'PAIRACT_R1_TRAIN_CONFIG_DRAFT.json', 'N': 'PAIRACT_R1_TRAIN_CONFIG_ARM_N.json'}
+# Code carry modes (HYBRID_RUN.md on -r-c5-hybrid). 'map' needs the owner's (창민) approval of
+# static-map use for pair carry; until then only 'nav' rows are countable.
+HYBRID_MODES_APPROVED = ('nav',)
+
+
+def is_hybrid(arm):
+    return arm.startswith('hybrid')
 
 # --------------------------------------------------------------------------- training tiers
 
@@ -53,7 +71,9 @@ def train_plan(decision, labels=(), limited_bins=()):
                     per_bin_report=t['per_bin_report'],
                     labels=list(labels) or ([t['label']] if t['label'] else []),
                     limited_bins=[b['bin'] if isinstance(b, dict) else b for b in limited_bins],
-                    hybrid_rule=True)
+                    hybrid_rule=True,
+                    arms={a: dict(config=TRAIN_CONFIGS[a], p5_arm=p5, label=ARM_LABELS[p5])
+                          for p5, a in TRAIN_ARM.items()})
     if decision in NO_TRAIN:
         nxt = {'NO_TRAIN_BELOW_FLOOR': 'P2 teacher path fix (owner 2026-10-21: A < 80 -> back to P2)',
                'NO_TRAIN_DISTANCE_GATE': 'report; start-distance coverage fails COLLECT_SPEC 2',
@@ -103,12 +123,14 @@ def read_rows(path):
     return rows[0], rows[1:]
 
 
-def p5_counts(header, episodes, *, seeds, arms):
+def p5_counts(header, episodes, *, seeds, arms, hybrid_modes=HYBRID_MODES_APPROVED):
     """Per arm: success n/N_eff, funnel n/N_eff, correction audit. Mirrors report-auto pairact_eval.
 
     One final row per (arm, seed): attempt 2 replaces attempt 1 only when attempt 1 was HOST_ERROR.
     Excluded seeds (rule A, header) leave the denominator; an episode on an excluded seed is an error.
-    A student success needs both correction counters == 0; None = unverified = not a success."""
+    A student success needs both correction counters == 0; None = unverified = not a success.
+    Hybrid arms also need ``gt_inputs_to_code == 0`` (code carry segment) and a ``carry_mode`` in
+    ``hybrid_modes``; a row in an unapproved mode is an error, not a failure."""
     excluded = {int(s) for s in header.get('excluded_seeds') or ()}
     if excluded - set(seeds):
         raise ValueError('excluded seed outside the heldout range')
@@ -124,6 +146,8 @@ def p5_counts(header, episodes, *, seeds, arms):
             raise ValueError(f'arm {a!r} not registered')
         if s in excluded:
             raise ValueError(f'episode on excluded seed {s}')
+        if is_hybrid(a) and r.get('status') != 'HOST_ERROR' and r.get('carry_mode') not in hybrid_modes:
+            raise ValueError(f'{a} seed {s}: carry_mode {r.get("carry_mode")!r} not approved {list(hybrid_modes)}')
         prev = final[a].get(s)
         if prev is not None and not (prev['status'] == 'HOST_ERROR' and int(r.get('attempt', 1)) == 2):
             raise ValueError(f'duplicate {a} seed {s}')
@@ -143,6 +167,8 @@ def p5_counts(header, episodes, *, seeds, arms):
             ok = r.get('success') is True
             if a != 'teacher':
                 c = (r.get('student_gt_corrections'), r.get('teacher_commands_issued_to_student'))
+                if is_hybrid(a):
+                    c += (r.get('gt_inputs_to_code'),)
                 if any(v is None for v in c):
                     res['corrections_unknown'].append(s)
                     ok = False
@@ -184,6 +210,8 @@ def hybrid_decision(counts, *, student='student', teacher='teacher'):
     4 PLACE_FIRST                 P <= floor(D/2)  (carry works, lowering/releasing fails)
     5 PURE_CONTINUE               otherwise
     H, D, P = student hold_3s, door, place counts; N = N_eff; k = max(3, ceil(0.15 N))."""
+    if is_hybrid(student) or TRAIN_ARM.get(student) != 'F':
+        raise ValueError('the switch rule reads the pure arm F student only (arm N is hybrid from the start)')
     n = counts['n_eff']
     s, t = counts['arms'][student], counts['arms'][teacher]
     h, d, p = s['funnel']['hold_3s'], s['funnel']['door'], s['funnel']['place']
@@ -206,3 +234,14 @@ def hybrid_decision(counts, *, student='student', teacher='teacher'):
     if p <= d // 2:
         return dict(base, decision='PLACE_FIRST')
     return dict(base, decision='PURE_CONTINUE')
+
+
+def arm_table(counts):
+    """One labelled line per arm, same N_eff seeds; arms are never pooled or substituted."""
+    n = counts['n_eff']
+    out = []
+    for a, r in counts['arms'].items():
+        out.append(dict(arm=a, train_arm=TRAIN_ARM.get(a), label=ARM_LABELS.get(a, a),
+                        text=f'{ARM_LABELS.get(a, a)} {r["success"]}/{n}', success=r['success'], n_eff=n,
+                        funnel=r['funnel'], unrecorded=r['unrecorded']))
+    return out
