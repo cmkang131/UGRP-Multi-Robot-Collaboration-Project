@@ -288,7 +288,7 @@ def require_probe_source(st, core):
 def replay(prereg, rows):
     ids = bin_ids(prereg)
     st = dict(header=None, attempt_rows=[], setup_rows=[], batches={}, consumed={}, requeue=[],
-              last_rr=-1, limited={}, open_batch=None)
+              last_rr=-1, limited={}, open_batch=None, barrier=None)
     requeued = Counter()
     for r in rows:
         kind = r.get('type')
@@ -306,7 +306,12 @@ def replay(prereg, rows):
         elif kind == 'bin_limited':
             st['limited'][r['bin']] = r
         elif kind == 'train_closed':
-            st.setdefault('train_closed', r)        # sharded runs only: the first stop seen ends train planning
+            st.setdefault('train_closed', r)        # sharded runs only: the stop fixed on the drained view
+            st['barrier'] = None                     # the close resolves a held barrier
+        elif kind == 'train_barrier':
+            # sharded runs only (v4 stop barrier): 'hold' stops new train planning until every in-flight
+            # batch is done; 'release' lifts it when the drained view has no stop
+            st['barrier'] = r if r.get('action') == 'hold' else None
         elif kind == 'batch_planned':
             st['batches'][r['batch']] = dict(r, done=False, clean=None, ingested=set())
             st['open_batch'] = r['batch']
@@ -361,10 +366,11 @@ def pending_bin_limits(prereg, st):
     for b, c in bin_counts(prereg, st).items():
         if b in st['limited'] or c['attempts'] < rule['min_attempts']:
             continue
-        rate = c['successes'] / c['attempts']
-        if rate < rule['max_success_rate']:
+        rate = c['admitted'] / c['attempts']        # v4 (xreview R1): the allocation quantity A_b, not S_b
+        if rate < rule['max_admitted_rate']:
             out.append(dict(type='bin_limited', bin=b, attempts=c['attempts'], successes=c['successes'],
-                            admitted=c['admitted'], success_rate=rate, rule=rule['id']))
+                            admitted=c['admitted'], admitted_rate=rate,
+                            success_rate=c['successes'] / c['attempts'], rule=rule['id']))
     return out
 
 
@@ -376,17 +382,55 @@ def admitted_starts(st, split='train'):
     return [v['distance_m'] for r in split_rows(st, split) if r['admitted'] for v in (r.get('start') or {}).values()]
 
 
+def excluded_bands(prereg, st):
+    """Distance bands [lo, hi] whose every start bin is bin_limited (distance gate v3, xreview R2)."""
+    by_band = {}
+    for b in prereg['bins']['list']:
+        by_band.setdefault(tuple(b['distance_m']), []).append(b['id'])
+    return [list(band) for band, ids in sorted(by_band.items()) if all(i in st['limited'] for i in ids)]
+
+
+def _overlap(lo, hi, a, b):
+    return max(0., min(hi, b) - max(lo, a))
+
+
 def distance_gate(prereg, st):
+    """start_distance_gate_v3: the v2 gate on the distance range of the bands that are not fully bin_limited.
+
+    A band (both yaw bins of one distance range) that is entirely bin_limited leaves the gate: its
+    admitted robot starts leave the denominator, its 0.1 m cells leave the occupancy check and the
+    required share above over_m is scaled by the uniform share of the remaining range
+    (min_share_over x u_open / u_full; 25 % when nothing is excluded).  Reported as range_excluded.
+    """
     g = prereg['distance_gate']['edges']
-    dist = admitted_starts(st)
     top = g['first_m'] + g['width_m'] * g['n']
+    excluded = excluded_bands(prereg, st)
+    band_of = {b['id']: tuple(b['distance_m']) for b in prereg['bins']['list']}
+    dist = [v['distance_m'] for r in split_rows(st, 'train') if r['admitted']
+            and list(band_of.get(r['bin'], ())) not in excluded for v in (r.get('start') or {}).values()]
+    cells = [i for i in range(g['n'])
+             if not any(lo - 1e-9 <= g['first_m'] + g['width_m'] * (i + .5) <= hi + 1e-9 for lo, hi in excluded)]
     hist = Counter(min(g['n'] - 1, int((d - g['first_m']) // g['width_m'])) for d in dist
                    if g['first_m'] <= d <= top + 1e-9)
     share = (sum(d > g['over_m'] for d in dist) / len(dist)) if dist else None
-    occupied = all(hist[i] >= 1 for i in range(g['n']))
+    occupied = all(hist[i] >= 1 for i in cells)
+    required = g['min_share_over']
+    if excluded:
+        full = top - g['first_m']
+        open_len = full - sum(_overlap(lo, hi, g['first_m'], top) for lo, hi in excluded)
+        over = lambda lo, hi: _overlap(lo, hi, g['over_m'], top)
+        u_full = over(g['first_m'], top) / full
+        u_open = (over(g['first_m'], top) - sum(over(lo, hi) for lo, hi in excluded)) / open_len if open_len > 0 else 0.
+        required = g['min_share_over'] * u_open / u_full
+    label = None
+    if excluded:
+        label = '거리 관문 축소(제한 구간 제외: ' + ', '.join(f'{lo:.1f}-{hi:.1f} m' for lo, hi in excluded) + \
+                f', 요구 비율 {required:.3f})'
     return dict(robot_starts=len(dist), hist_0p1m={f'{g["first_m"] + g["width_m"] * i:.1f}': hist[i] for i in range(g['n'])},
-                all_bins_occupied=occupied, share_over_0p8=share,
-                passed=bool(dist) and occupied and share >= g['min_share_over'])
+                cells_required=[f'{g["first_m"] + g["width_m"] * i:.1f}' for i in cells],
+                all_bins_occupied=occupied, share_over_0p8=share, min_share_required=required,
+                range_excluded=excluded, label=label,
+                passed=bool(dist) and occupied and share >= required - 1e-12)
 
 
 def consecutive_unclean_batches(st, split='train'):
@@ -401,12 +445,56 @@ def consecutive_unclean_batches(st, split='train'):
     return n
 
 
+def shard_count(st):
+    return int(((st['header'] or {}).get('shard') or {}).get('count') or 1)
+
+
+def _train_flags(st, owner=None, count=1, split='train'):
+    """clean flags of the finished train batches in batch order (optionally of one shard k % count == owner)."""
+    return [st['batches'][k]['clean'] for k in sorted(st['batches'])
+            if st['batches'][k]['done'] and st['batches'][k]['split'] == split and (owner is None or k % count == owner)]
+
+
+def _unclean_run(flags, n):
+    run = 0
+    for c in flags:
+        run = 0 if c else run + 1
+        if run >= n:
+            return True
+    return False
+
+
+def host_unclean_pair(st):
+    """STOP_HOST global part (v4): two consecutive finished train batches (batch order) are both unclean.
+    In a serial run this is 'the last two' at the boundary where it first holds; as a property of the
+    ordered results it is not undone by later clean batches (Codex H1)."""
+    return _unclean_run(_train_flags(st), 2)
+
+
+def shard_host(prereg, st, split='train'):
+    """Per-shard host health (v4, xreview R3): shards whose finished train batches (owner k % K, batch order)
+    contain ``consecutive`` unclean batches in a row, or a prefix of >= ``min_batches`` batches with an unclean
+    share >= ``max_share``.  Prefix properties of the ordered results, so a serial run stops where it first
+    holds and later batches cannot undo it.  K = 1 (serial) is one shard."""
+    rule = prereg['stop_rules']['shard_host']
+    count, out = shard_count(st), []
+    for i in range(count):
+        fin = _train_flags(st, i, count, split)
+        bad = [sum(not c for c in fin[:m]) for m in range(len(fin) + 1)]
+        ratio = [m for m in range(rule['min_batches'], len(fin) + 1) if bad[m] / m >= rule['max_share']]
+        if _unclean_run(fin, rule['consecutive']) or ratio:
+            out.append(dict(shard=i, finished=len(fin), unclean=bad[-1],
+                            ratio_prefix=ratio[0] if ratio else None))
+    return out
+
+
 def train_stop(prereg, st):
-    """First true stop rule (prereg stop_rules.list order), or None."""
+    """First true stop rule (prereg stop_rules.list order), or None.  A pure function of the train/validation
+    results: the same function for every K (v4: train_closed is never read here)."""
     tg, ids = prereg['targets'], bin_ids(prereg)
     if any(r['category'] == 'record_error' for r in st['attempt_rows']):
         return 'STOP_RECORD'
-    if consecutive_unclean_batches(st) >= 2:
+    if host_unclean_pair(st) or shard_host(prereg, st):
         return 'STOP_HOST'
     t, per = totals(st), bin_counts(prereg, st)
     if t['admitted'] >= tg['admitted_minimum_pairs'] and not distance_gate(prereg, st)['passed']:
@@ -422,11 +510,19 @@ def train_stop(prereg, st):
     if not [q for q in st['requeue'] if q['split'] == 'train'] and \
             not [s for s in pool(prereg, 'train') if s not in st['consumed'].get('train', set())]:
         return 'STOP_SEEDS'
-    if st.get('train_closed'):
-        # sharded run (v3s): a stop seen at an earlier planning boundary stays (a serial run would have
-        # ended there); serial ledgers never carry train_closed
-        return st['train_closed']['stop']
     return None
+
+
+def check_train_closed(prereg, st):
+    """A sharded ledger's train_closed must equal the stop of its own data (v4 barrier: it is written on the
+    drained view, after which no train result arrives).  STOP_RECORD of a later validation row may override."""
+    closed = st.get('train_closed')
+    if closed is None:
+        return
+    stop = train_stop(prereg, st)
+    if stop not in (closed['stop'], 'STOP_RECORD'):
+        raise ValueError(f"train_closed {closed['stop']} at boundary {closed.get('planning_batch')} disagrees with "
+                         f'the stop of the ledger data ({stop})')
 
 
 def validation_done(prereg, st):
@@ -450,8 +546,12 @@ def decision(prereg, st):
     A >= 150 and all bins >= 20 -> TRAIN; A >= 150, some bin < 20 -> TRAIN_DATA_RANGE_LIMITED;
     80 <= A < 150 -> TRAIN_SMALL_DATA (funnel-centred interpretation); A < 80 -> NO_TRAIN_BELOW_FLOOR.
     """
+    check_train_closed(prereg, st)
     stop = train_stop(prereg, st)
     out = dict(train_stop=stop, decision='COLLECTING', limited_bins=[], validation=None, labels=[])
+    if stop == 'STOP_HOST':
+        out['host_stop'] = dict(unclean_pair=host_unclean_pair(st), last_unclean=consecutive_unclean_batches(st),
+                                shards=shard_host(prereg, st))
     if stop is None:
         return out
     t, per = totals(st), bin_counts(prereg, st)
@@ -473,6 +573,9 @@ def decision(prereg, st):
         out['labels'].append('소량 데이터(A<150): 결과 해석은 단계 퍼널 중심으로 제한')
     if out['decision'] in TRAINABLE and out['limited_bins']:
         out['labels'].append('데이터 범위 제한(구간 부족: ' + ', '.join(x['bin'] for x in out['limited_bins']) + ')')
+    gate_label = distance_gate(prereg, st)['label']
+    if out['decision'] in TRAINABLE + ('NO_TRAIN_DISTANCE_GATE',) and gate_label:
+        out['labels'].append(gate_label)
     if out['decision'] in TRAINABLE and stop in TRAIN_STOPS_WITH_VALIDATION:
         if validation_done(prereg, st):
             out['validation'] = validation_gate(prereg, st)
@@ -635,6 +738,17 @@ def judge(result, *, mode, batch_clean, sidecar=None):
             why.append('sidecar_failed')
     return dict(out, outcome='success', success=True, admitted=not why,
                 reason=None if not why else 'success_not_admitted:' + '+'.join(why))
+
+
+def validation_unclean(j, *, split, requeue, batch_clean):
+    """v4 (xreview B3): a judged world of an unclean *validation* batch is re-queued once with the same seed,
+    like an environment failure (category environment, not in N).  The re-queued run is judged as usual;
+    if its batch is unclean again the seed stays not admitted (success_not_admitted:batch_not_clean)."""
+    if split != 'validation' or batch_clean or requeue or j['category'] != 'behavior':
+        return j
+    return dict(j, category='environment', outcome='unclean_batch_requeue', failure_stage='host',
+                reason=f"validation_batch_not_clean:{j['outcome']}", success=False, admitted=False,
+                requeue_eligible=True, judged_outcome=j['outcome'], judged_success=j['success'])
 
 
 def batch_is_clean(summary, exit_code):
@@ -860,6 +974,11 @@ def convert_input(prereg, st, out_dir, *, prereg_sha, teacher_sha, run_pattern='
     d = decision(prereg, st)
     if d['decision'] not in TRAINABLE or d['validation'] in (None, 'pending'):
         raise ValueError(f'convert input refused: decision {d["decision"]}, validation {d["validation"]}')
+    missing = [r['raw'] for r in st['attempt_rows'] if r['admitted'] and r['split'] in ('train', 'validation')
+               and not (r.get('raw') and Path(r['raw']).is_dir())]
+    if missing:
+        raise ValueError(f'convert input refused: {len(missing)} admitted world raw directories missing '
+                         f'(copy them to this host first), e.g. {missing[0]}')
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=False)
     train, val = [], []
@@ -1209,7 +1328,8 @@ def _span_len(r):
 # row.  The view only depends on immutable rows, so the plan of batch k is the same whatever the
 # wall-clock order of the shards; a shard waits until the view is complete.
 
-SHARD_PLAN_ROWS = ('bin_limited', 'train_closed', 'setup_rejected', 'batch_planned', 'batch_skipped', 'run_end')
+SHARD_PLAN_ROWS = ('bin_limited', 'train_barrier', 'train_closed', 'setup_rejected', 'batch_planned', 'batch_skipped',
+                   'run_end')
 PLAN_DONE_ROWS = ('batch_planned', 'batch_skipped', 'run_end')
 RESULT_ROWS = ('attempt', 'batch_done')
 
@@ -1231,7 +1351,7 @@ def owner(batch, count):
 
 def row_batch(r):
     """Batch index a shard ledger row belongs to (plan rows: the planning boundary)."""
-    if r.get('type') in ('setup_rejected', 'bin_limited', 'train_closed'):
+    if r.get('type') in ('setup_rejected', 'bin_limited', 'train_barrier', 'train_closed'):
         return r.get('planning_batch')
     return r.get('batch')
 
@@ -1361,8 +1481,76 @@ def boundary_rows(prereg, st, k):
     return out
 
 
-def close_row(prereg, st, k):
+def stop_control(prereg, st, k, inflight):
+    """v4 stop barrier (owner 2026-10-21, xreview B1/B2): the row the planner appends at boundary k, or None.
+
+    The first stop seen on the lagged view (in-flight batches present) writes train_barrier 'hold': no new
+    batch is planned until every in-flight batch is done.  On the drained view (no batch in flight, every
+    result present) the unchanged train_stop decides once: a stop -> train_closed (fixed; no train result
+    can arrive after it), no stop -> train_barrier 'release' and planning resumes exactly as a serial run
+    on the same ledger would.  K = 1 never has batches in flight, so a stop is closed at once.
+    """
     if (st['header'] or {}).get('mode') != 'training' or st.get('train_closed'):
         return None
     stop = train_stop(prereg, st)
-    return None if stop is None else dict(type='train_closed', planning_batch=k, stop=stop)
+    t = totals(st)
+    if inflight:
+        if stop is not None and st.get('barrier') is None:
+            return dict(type='train_barrier', planning_batch=k, action='hold', stop=stop, inflight=list(inflight),
+                        attempts=t['attempts'], admitted=t['admitted'])
+        return None
+    if stop is not None:
+        return dict(type='train_closed', planning_batch=k, stop=stop, attempts=t['attempts'], admitted=t['admitted'],
+                    barrier=None if st.get('barrier') is None else st['barrier']['planning_batch'])
+    if st.get('barrier') is not None:
+        return dict(type='train_barrier', planning_batch=k, action='release', stop=None,
+                    held_at=st['barrier']['planning_batch'], held_stop=st['barrier']['stop'],
+                    attempts=t['attempts'], admitted=t['admitted'])
+    return None
+
+
+def check_seed_history(rows):
+    """Merged ledger audit (v4, xreview R7 / Codex H5): per split a seed is planned fresh at most once
+    (batch slot or setup rejection) and re-queued at most once, only after an environment failure of the
+    same seed that is visible earlier in the serial-order ledger."""
+    fresh, requeued, env = Counter(), Counter(), set()
+    for r in rows:
+        kind = r.get('type')
+        if kind == 'attempt' and r.get('category') == 'environment':
+            env.add((r['split'], r['seed']))
+        plans = r['slots'] if kind == 'batch_planned' else [r] if kind == 'setup_rejected' else []
+        for s in plans:
+            key = (s['split'], s['seed'])
+            if s.get('requeue'):
+                if key not in env:
+                    raise ValueError(f'seed {key} re-queued without an earlier environment failure')
+                requeued[key] += 1
+                if requeued[key] > 1 and kind == 'batch_planned':
+                    raise ValueError(f'seed {key} re-queued twice')
+            else:
+                fresh[key] += 1
+                if fresh[key] > 1:
+                    raise ValueError(f'seed {key} planned fresh twice')
+    return dict(fresh=sum(fresh.values()), requeued=sum(requeued.values()))
+
+
+def check_stack_heads(manifest, roots, *, rev_parse=None):
+    """v4 (Codex H4): the teacher / adapter / root checkouts the generator and episodes use must be at
+    RUN_MANIFEST stack.<role>.sha with no tracked change.  ``roots`` maps role -> checkout path."""
+    def git(path, *args):
+        return subprocess.check_output(['git', '-C', str(path), *args], text=True).strip()
+    rev_parse = rev_parse or (lambda path: (git(path, 'rev-parse', 'HEAD'),
+                                            bool(git(path, 'status', '--porcelain', '--untracked-files=no'))))
+    out = {}
+    for role in ('teacher', 'adapter', 'root'):
+        path = roots.get(role)
+        if path is None:
+            raise ValueError(f'stack check: {role} checkout path required')
+        head, dirty = rev_parse(path)
+        want = manifest['stack'][role]['sha']
+        if head != want:
+            raise ValueError(f'stack {role} checkout {path} is at {head}, RUN_MANIFEST pins {want}')
+        if dirty:
+            raise ValueError(f'stack {role} checkout {path} has tracked changes')
+        out[role] = head
+    return out

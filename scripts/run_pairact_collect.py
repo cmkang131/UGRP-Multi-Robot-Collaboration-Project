@@ -113,6 +113,7 @@ def ingest(ledger, batch, try_no, slots, cases, summary, code, *, mode, noise, d
             continue
         w = by_seed.get(int(s['seed']))
         j, result, sidecar = judge_world(s, cases[s['slot']], w, summary, mode=mode, clean=clean, read_rows=read_rows)
+        j = pc.validation_unclean(j, split=s['split'], requeue=s.get('requeue', False), batch_clean=clean)
         row = dict(type='attempt', batch=batch, attempt_try=try_no, slot=s['slot'], seed=s['seed'], bin=s['bin'],
                    split=s['split'], requeue=s.get('requeue', False), noise=noise,
                    start=pc.start_from_case(cases[s['slot']]), raw=w['raw'] if w else None,
@@ -370,9 +371,13 @@ def run_shard(run_root, prereg, prereg_sha, *, shard, count, vm, mode, noise, ba
                 pc.append(ledger, row)
             if extra:
                 continue            # replan on the view with the bin limits
-            close = pc.close_row(prereg, st, k)
-            if close is not None:
-                pc.append(ledger, close)
+            control = pc.stop_control(prereg, st, k, inflight)
+            if control is not None:
+                pc.append(ledger, control)
+                continue            # train_barrier hold / release or train_closed, then replan on the same view
+            if st.get('barrier') is not None:
+                # stop barrier held: no new batch until every in-flight batch is done (no seed consumed)
+                pc.append(ledger, dict(type='batch_skipped', batch=k, inflight=inflight, reason='stop_barrier'))
                 continue
             if not slots:
                 state = pc.run_state(prereg, st)
@@ -397,7 +402,8 @@ def blocked_state(prereg, ledgers, count, k, batch_size, validation_after_host_f
         return None
     st, slots, inflight = planned
     if not slots and not inflight and not pc.boundary_rows(prereg, st, first) and \
-            pc.close_row(prereg, st, first) is None and pc.run_state(prereg, st) == 'STOP_HOST':
+            pc.stop_control(prereg, st, first, inflight) is None and st.get('barrier') is None and \
+            pc.run_state(prereg, st) == 'STOP_HOST':
         return 'STOP_HOST'
     return None
 
@@ -433,10 +439,21 @@ def merge(run_root, prereg, prereg_sha, count, *, prereg_core=None, out=None):
     if view is None:
         raise ValueError(f'{run_root}: no shard ledger')
     rows, info = view
+    previous = out / 'merge.json'
+    if previous.exists():
+        # v4 (xreview R7): every shard ledger must extend the bytes the previous merge saw (append-only;
+        # a wrong-direction rsync that shortens or rewrites a ledger is refused)
+        old = json.loads(previous.read_text())
+        for name, size in (old.get('shard_ledger_bytes') or {}).items():
+            path = shard_dir(run_root, int(name[1:])) / 'ledger.jsonl'
+            data = path.read_bytes() if path.exists() else b''
+            if size and (len(data) < size or hashlib.sha256(data[:size]).hexdigest() != old['shard_ledger_sha256'][name]):
+                raise ValueError(f'{path}: not an append-only extension of the ledger recorded by the previous merge')
     seen = {}
     for j, bs in pc.running_seeds(ledgers, count).items():
         if len(bs) > 1:
             raise ValueError(f'seed {j} planned in two running batches {bs}')
+    pc.check_seed_history(rows)
     for r in rows:
         if r.get('type') == 'batch_planned':
             r['batch_dir'] = str((shard_dir(run_root, pc.owner(r['batch'], count)) / 'batches' / f"b{r['batch']:03d}").resolve())
@@ -453,12 +470,35 @@ def merge(run_root, prereg, prereg_sha, count, *, prereg_core=None, out=None):
     rep = pc.report(prereg, st, prereg_sha=prereg_sha, prereg_core=prereg_core)
     rep['sharding'] = dict(count=count, **info)
     write(out / 'report.json', rep)
-    shards = {f's{i:02d}': (pc.file_sha256(shard_dir(run_root, i) / 'ledger.jsonl')
-                            if (shard_dir(run_root, i) / 'ledger.jsonl').exists() else None) for i in range(count)}
-    meta = dict(count=count, shard_ledger_sha256=shards, merged_ledger_sha256=pc.file_sha256(out / 'ledger.jsonl'),
-                **info)
+    paths = {f's{i:02d}': shard_dir(run_root, i) / 'ledger.jsonl' for i in range(count)}
+    shards = {n: (pc.file_sha256(q) if q.exists() else None) for n, q in paths.items()}
+    sizes = {n: (q.stat().st_size if q.exists() else 0) for n, q in paths.items()}
+    meta = dict(count=count, shard_ledger_sha256=shards, shard_ledger_bytes=sizes,
+                merged_ledger_sha256=pc.file_sha256(out / 'ledger.jsonl'), **info)
     write(out / 'merge.json', meta)
     return rep, meta
+
+
+def merged_meta(run_root, *, require_finished):
+    """v4 (Codex H2/H3): a sharded run is read only through its merged root; convert-input needs it finished.
+
+    Returns merge.json of a merged root (None for a serial run root).  Refuses a sharded run root itself,
+    a merged ledger that differs from the one merge.json recorded and, with ``require_finished``, an
+    unfinished merge (run_end missing or batches still running).
+    """
+    run_root = Path(run_root)
+    if (run_root / 'shards').is_dir():
+        raise ValueError(f'{run_root} is a sharded run root: run merge and use --run-root {run_root / "merged"}')
+    path = run_root / 'merge.json'
+    if not path.exists():
+        return None
+    meta = json.loads(path.read_text())
+    if pc.file_sha256(run_root / 'ledger.jsonl') != meta.get('merged_ledger_sha256'):
+        raise ValueError(f'{run_root}/ledger.jsonl differs from merge.json: rerun merge')
+    if require_finished and (not meta.get('finished') or meta.get('running')):
+        raise ValueError(f'{run_root}: merge not finished (finished={meta.get("finished")}, running={meta.get("running")}); '
+                         'every shard must reach run_end with every planned batch done')
+    return meta
 
 
 def tree_dirty():
@@ -561,6 +601,9 @@ def main():
         return
     if a.command == 'report':
         rep = pc.report(prereg, st, prereg_sha=sha, prereg_core=prereg_core)
+        meta = merged_meta(a.run_root, require_finished=False)
+        if meta is not None:
+            rep['sharding'] = {k: v for k, v in meta.items() if k != 'shard_ledger_bytes'}
         write(a.run_root / 'report.json', rep)
         print(json.dumps(dict(state=rep['run_state'], text=(rep.get('A') or rep.get('pilot'))['text']), ensure_ascii=False))
         return
@@ -570,6 +613,7 @@ def main():
         if a.recording_check is None:
             p.error('convert-input needs --recording-check RUNC/recording-check.json (stage final gate)')
         core, _ = frozen_gate(a, prereg, sha, stage='final', recording_dir=a.recording_check.parent, need_clean=False)
+        merged_meta(a.run_root, require_finished=True)
         print(json.dumps(pc.convert_input(prereg, st, a.out, prereg_sha=sha, teacher_sha=a.teacher_sha, core=core)))
         return
     if stage not in pc.FREEZE_STAGES and a.command in ('probe-cases', 'probe-episode', 'check-rows'):
@@ -657,6 +701,10 @@ def main():
                 p.error(f'run manifest schema {pc.MANIFEST_SCHEMA} required')
             manifest_sha = hashlib.sha256(raw).hexdigest()
         freeze = dict(stage=stage, purpose=pc.PURPOSE_PILOT, prereg_core_sha256=prereg_core, core_sha256=None)
+    if stage in pc.FREEZE_STAGES:
+        # v4 (Codex H4): generator and episodes use the RUN_MANIFEST -c pins, not just any consistent stack
+        pc.check_stack_heads(json.loads(a.run_manifest.read_bytes()),
+                             dict(teacher=a.dependency_root, adapter=a.adapter_root, root=a.frozen_root))
     env = collect_env(a.mode, a.prereg, sha, a.recording_check, prereg_core=prereg_core)
     sys.path.insert(0, str(ROOT / 'experiments/2026-10-21-pairact-r1'))
     import collect_cases

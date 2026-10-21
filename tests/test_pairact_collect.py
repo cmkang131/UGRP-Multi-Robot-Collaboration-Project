@@ -148,7 +148,7 @@ def test_prereg_v2_numbers_unit_and_start_trigger(prereg):
     trig = prereg['start_trigger']
     assert 'NOT a start condition' in trig['rule'] and trig['evidence']['seeds'] == [8420001, 8420011, 8420017]
     assert trig['evidence']['report_file'].endswith('1197dc28e64711aa88b8031cb0406f9456687b56a54a6a05d23ee79c8fba75e4')
-    assert prereg['bins']['bin_limit']['min_attempts'] == 20 and prereg['bins']['bin_limit']['max_success_rate'] == .2
+    assert prereg['bins']['bin_limit']['min_attempts'] == 20 and prereg['bins']['bin_limit']['max_admitted_rate'] == .2
     assert prereg['validation_gate']['min_admitted'] == 8
     assert prereg['dart_noise']['default'] == 'off'
     assert set(prereg['reporting']) >= {'A', 'B', 'C', 'pilot', 'validation'}
