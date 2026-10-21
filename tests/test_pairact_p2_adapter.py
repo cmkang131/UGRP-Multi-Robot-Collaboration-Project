@@ -22,7 +22,7 @@ def test_p2_candidate_is_r13_plus_carry_only():
 
 def test_dependency_pin_is_p2_teacher():
     text = (ROOT/'harness/beampair_teacher.py').read_text()
-    assert "DEPENDENCY_SHA = '01ed171fc93140683227072a10aecff55150b45f'" in text   # teacher -c (P3 collect admission)
+    assert "DEPENDENCY_SHA = '4b080d35a3dcbbd8fb8a992e1f1106a7289757b2'" in text   # teacher -c2 (P3 collect admission)
 
 
 def test_floor_candidate_only_adds_lower_mode():
@@ -48,19 +48,37 @@ def test_p3_collect_candidate_is_p2_profile_unchanged():
 
 
 def test_existing_candidates_keep_the_exact_recording_off_call():
+    """Existing candidates still call runner.run(plan,out,cap_s=cap_s,record_training=False,noise=False,
+    execution_host=host,**selected); the collect candidate only overrides three keywords. One call site."""
     try:
         out = subprocess.run(['git', '-C', str(ROOT), 'diff', '-U0', BASE, '--', 'scripts/run_beampair1.py',
                               'harness/beampair_teacher.py'], capture_output=True, text=True, check=True).stdout
     except (subprocess.CalledProcessError, FileNotFoundError) as error:
-        pytest.skip(f'base commit unavailable: {error}')
+        pytest.fail(f'base commit {BASE} unavailable ({error}): git fetch origin {BASE} (required check, not skippable)')
     removed = sorted(l[1:].strip() for l in out.splitlines() if l.startswith('-') and not l.startswith('---'))
     assert removed == sorted([
         "DEPENDENCY_SHA = '59299f903f4a2f9a2eabe5ff0e442e0ce25e8266'",
         "report=runner.run(plan,out,cap_s=cap_s,record_training=False,noise=False,execution_host=host,**selected)"])
     text = (ROOT/'scripts/run_beampair1.py').read_text()
-    assert ("                else:\n                    report=runner.run(plan,out,cap_s=cap_s,record_training=False,"
-            "noise=False,execution_host=host,**selected)\n") in text
+    assert text.count('runner.run(') == 1
+    assert "run_kwargs=dict(record_training=False,noise=False,execution_host=host,**selected)" in text
+    assert "report=runner.run(plan,out,cap_s=cap_s,**run_kwargs)" in text
     assert "if candidate==COLLECT_CANDIDATE:" in text and "COLLECT_CANDIDATE='pairact_p3_collect'" in text
+
+
+def test_run_kwargs_equal_the_old_calls():
+    """The merged call passes exactly the old keyword sets (existing candidate / collect candidate)."""
+    import textwrap
+    src = (ROOT/'scripts/run_beampair1.py').read_text()
+    block = src[src.index('                run_kwargs=dict('):src.index('                report=runner.run(plan,out,cap_s=cap_s,**run_kwargs)')]
+    selected = {'teacher_profile': 'p'}
+    for candidate, expect in (('pairact_p2_r13', dict(record_training=False, noise=False, execution_host='h', **selected)),
+                              ('pairact_p3_collect', dict(record_training=True, noise=False, execution_host='h',
+                                                          recording_proof='proof', recording_probe=False, **selected))):
+        ns = dict(candidate=candidate, COLLECT_CANDIDATE='pairact_p3_collect', host='h', selected=selected,
+                  collect_proof=lambda host, sel: 'proof', collect_probe=lambda: False)
+        exec(textwrap.dedent(block), ns)
+        assert ns['run_kwargs'] == expect
 
 
 def _adapter_funcs():

@@ -449,11 +449,12 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
         report=None
         try:
             with recording_json(runner):
+                # one runner.run call site: the root warp bridge AST audit requires exactly one (runner_call=1)
+                run_kwargs=dict(record_training=False,noise=False,execution_host=host,**selected)
                 if candidate==COLLECT_CANDIDATE:
-                    report=runner.run(plan,out,cap_s=cap_s,record_training=True,noise=False,execution_host=host,
-                        recording_proof=collect_proof(host,selected),recording_probe=collect_probe(),**selected)
-                else:
-                    report=runner.run(plan,out,cap_s=cap_s,record_training=False,noise=False,execution_host=host,**selected)
+                    run_kwargs.update(record_training=True,recording_proof=collect_proof(host,selected),
+                        recording_probe=collect_probe())
+                report=runner.run(plan,out,cap_s=cap_s,**run_kwargs)
         finally:
             scene_module.make_scene=original_make_scene;measurements_module.measurements=original_measure
             world_module.VisibleWorld=original_world;teacher_module.VisibleOnlyGraspTeacher=original_teacher
