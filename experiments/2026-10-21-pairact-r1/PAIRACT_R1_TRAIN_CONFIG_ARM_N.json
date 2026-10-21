@@ -1,0 +1,57 @@
+{
+  "schema": "ugrp.pairact_r1.train-config.draft.v1",
+  "status": "DRAFT_NOT_RUN",
+  "arm": "N",
+  "segment_scope": "near_only_v1",
+  "mode": "pairact_r1_v1",
+  "base_arm": "A",
+  "stages": [
+    "approach",
+    "alignment",
+    "ready",
+    "execute",
+    "carry",
+    "place",
+    "recover",
+    "complete"
+  ],
+  "done_recovery": "beamact4_done_recovery_v1",
+  "place_sync": "off",
+  "issued_clock_deadband": 2,
+  "history_augmentation": {
+    "dither_max_pwm": 6,
+    "dither_prob": 0.5,
+    "dropout_prob": 0.1,
+    "dropout_min_k": 12
+  },
+  "sampling": {
+    "mode": "pairact_r1_transition_weighted_v1",
+    "window_rows": 10,
+    "weight": 3.0
+  },
+  "steps": 20000,
+  "seed": 20261020,
+  "batch_size": 8,
+  "chunk": 8,
+  "checkpoint_every": 1000,
+  "selection": {
+    "split": "validation",
+    "rule": "harness.pairact_r1.select_checkpoint over OFFLINE_GATE.md G1-G5; heldout never used"
+  },
+  "trainer": {
+    "script": "scripts/train_grasp_act.py",
+    "fixed_flags": "--beamact3-v1 A --done-loss balanced_bce_v1 --execution-host-profile beamact1_gcp2 --seed 20261020",
+    "init": "fresh (pretrained ResNet18 backbone, same as beamact2/3); no beamact3 checkpoint init",
+    "lr": "1e-5 AdamW wd 1e-4 (unchanged trainer)",
+    "max_wall_s_per_session": 25200
+  },
+  "notes": [
+    "arm N (t5-architecture-advice.md): same collected dataset, same stage sidecar, same hyperparameters and seed as arm F (PAIRACT_R1_TRAIN_CONFIG_DRAFT.json). harness.pairact_r1.assert_arm_pair enforces the equality.",
+    "near_only_v1: rows whose h0 stage target is 'carry' (teacher carry:carry_hold .. carry:zone_settle = carry and door passage) get sampler weight 0; carry horizon entries of the remaining rows are masked like padding in the action, done and stage losses.",
+    "trained: approach, alignment, READY, grasp (execute), 3 s hold, recover, place (lower/open/raise/retreat), complete. At evaluation the carry segment is run by code (hybrid, HYBRID_RUN.md); arm N is never evaluated as a pure student.",
+    "label: '학습 근거리 + 코드 운반(hybrid)'. Never pooled with arm F ('학습 전 구간').",
+    "issued_clock_deadband applies at COLLECTION (recorder clocks) and EVALUATION; training reads recorded clocks only.",
+    "dropout_min_k=12 deviates from act18 A-r1 (k in 1..15) because beamact3 arm A zeroes history entries 0..10; see DESIGN.md D2.",
+    "place_sync stays off for r1 (second barrier is P2 pair_carry_sync scope) [확인 필요]."
+  ]
+}

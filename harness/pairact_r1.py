@@ -90,6 +90,14 @@ VISIBLE_MIN_K = 12
 # Stage transition oversampling (h0 stage change, both sides of the change).
 TRANSITIONS = (('alignment', 'ready'), ('ready', 'execute'), ('carry', 'place'), ('place', 'complete'))
 REGISTERED_SAMPLING = dict(mode='pairact_r1_transition_weighted_v1', window_rows=10, weight=3.)
+# Training arms on the same collected data (t5-architecture-advice.md, TRAIN_PLAN.json ``arms``).
+# F = every segment ("학습 전 구간"); N = near-field only ("학습 근거리 + 코드 운반(hybrid)"):
+# rows whose stage target is ``carry`` (teacher carry_hold .. zone_settle, i.e. carry and door
+# passage) leave both the action and the stage loss. Everything else is identical to arm F.
+ARM_SCOPE = {'F': 'full_v1', 'N': 'near_only_v1'}
+NEAR_EXCLUDED_STAGES = ('carry',)
+# Keys that may differ between the arm F and arm N config files (everything else must match).
+ARM_FREE_KEYS = ('schema', 'status', 'arm', 'segment_scope', 'notes', 'written')
 
 
 # ---------------------------------------------------------------- config
@@ -123,7 +131,54 @@ def validate_config(config):
         raise ValueError('checkpoint interval must divide the step count')
     if config['selection'].get('split') != 'validation':
         raise ValueError('checkpoint selection uses validation seeds only')
+    arm, scope = config_arm(config), segment_scope(config)
+    if ARM_SCOPE[arm] != scope:
+        raise ValueError(f'arm {arm} is registered with segment scope {ARM_SCOPE[arm]}')
     return config
+
+
+def config_arm(config):
+    """Arm id; the original draft file has no ``arm`` key and is arm F."""
+    arm = config.get('arm', 'F')
+    if arm not in ARM_SCOPE:
+        raise ValueError(f'unknown pairact-r1 arm {arm!r}')
+    return arm
+
+
+def segment_scope(config):
+    scope = config.get('segment_scope', 'full_v1')
+    if scope not in ARM_SCOPE.values():
+        raise ValueError(f'unknown segment scope {scope!r}')
+    return scope
+
+
+def assert_arm_pair(full, near):
+    """Arm N differs from arm F only in arm/segment_scope (same seed, steps, sampling, ...)."""
+    validate_config(full), validate_config(near)
+    if (config_arm(full), config_arm(near)) != ('F', 'N'):
+        raise ValueError('expected one arm F and one arm N config')
+    keys = (set(full) | set(near)) - set(ARM_FREE_KEYS)
+    diff = sorted(k for k in keys if full.get(k) != near.get(k))
+    if diff:
+        raise ValueError(f'arm N must reuse arm F hyperparameters; differs in {diff}')
+    return True
+
+
+def near_only_keep(target):
+    """(rows, CHUNK) stage targets -> bool mask of horizon entries arm N trains on."""
+    target = np.asarray(target)
+    excluded = [stage_index(s) for s in NEAR_EXCLUDED_STAGES]
+    return (target != PAD) & ~np.isin(target, excluded)
+
+
+def scoped_row_weights(weights, target, scope):
+    """Sampler mass under the arm's segment scope: arm N never samples an h0 carry row."""
+    weights = np.asarray(weights, float)
+    if scope == 'full_v1':
+        return weights
+    if scope != 'near_only_v1':
+        raise ValueError(f'unknown segment scope {scope!r}')
+    return weights * near_only_keep(target)[:, 0]
 
 
 def load_config(path):
@@ -428,14 +483,18 @@ def pair_dataset_class():
     from harness.grasp_act_data import GraspDataset, safe_path, sha256
 
     class PairActDataset(GraspDataset):
-        def __init__(self, root, split, *, stage_manifest, seed=None, history=None, sampling=None, blank=False):
+        def __init__(self, root, split, *, stage_manifest, seed=None, history=None, sampling=None, blank=False,
+                     scope='full_v1'):
             history = dict(history or {})
             validate_history_options(**history)
             sampling = validate_sampling(sampling)
-            if split != 'train' and (any(v is not None for v in history.values()) or sampling):
-                raise ValueError('history augmentation / transition sampling are TRAIN only')
+            if scope not in ARM_SCOPE.values():
+                raise ValueError(f'unknown segment scope {scope!r}')
+            if split != 'train' and (any(v is not None for v in history.values()) or sampling
+                                     or scope != 'full_v1'):
+                raise ValueError('history augmentation / transition sampling / segment scope are TRAIN only')
             super().__init__(root, split, blank=blank)
-            self.sampling = sampling
+            self.sampling, self.scope = sampling, scope
             self.history, self.augment = history, False
             self.rng = np.random.default_rng(seed)
             sidecar = json.loads(Path(stage_manifest).read_text())
@@ -476,11 +535,14 @@ def pair_dataset_class():
                                                           weight=float(sampling['weight'])))
                 else:
                     weights.append(np.ones(len(target)))
+                weights[-1] = scoped_row_weights(weights[-1], target, scope)
             self.row_weights = np.concatenate(weights)
+            if not self.row_weights.any():
+                raise ValueError('no trainable rows under the segment scope')
 
         def sample(self, generator, batch_size):
             import torch
-            if not self.sampling:
+            if not self.sampling and self.scope == 'full_v1':
                 return torch.randint(len(self), (batch_size,), generator=generator).tolist()
             weights = torch.from_numpy(self.row_weights)
             return torch.multinomial(weights, batch_size, replacement=True, generator=generator).tolist()
@@ -503,6 +565,11 @@ def pair_dataset_class():
                 batch['observation.state'] = ((raw - np.asarray(self.stats['state_mean'], np.float32))
                                               / np.asarray(self.stats['state_std'], np.float32))
             batch['stage_target'] = self.targets[j][i].copy()
+            if self.scope == 'near_only_v1':
+                # carry horizons leave the action, done and stage losses (all key off action_is_pad).
+                keep = near_only_keep(batch['stage_target'][None])[0]
+                batch['action_is_pad'] = ~keep
+                batch['stage_target'][~keep] = PAD
             return batch
 
     return PairActDataset
@@ -570,6 +637,7 @@ def save_actor(policy, output, stats, provenance, *, config, blank=False, done_m
                 stage_decoder='unique_argmax', done_recovery=config['done_recovery'],
                 place_sync=config['place_sync'], issued_clock_deadband=config['issued_clock_deadband'],
                 training_history_augmentation=config['history_augmentation'],
+                pairact_arm=config_arm(config), segment_scope=segment_scope(config),
                 pairact_source_sha256=sha256(Path(__file__)))
     write_json(output / 'adapter.json', meta)
     write_json(output / 'SHA256.json', {n: sha256(output / n)
@@ -653,21 +721,30 @@ def transition_recall(pred, target, segments, window_rows):
     return out
 
 
-def offline_metrics(pred, target, segments, done_score, done_target, *, window_rows=GATE['transition_window_rows']):
-    """h0 metrics over one split. pred/target are stage indices, done_* per row."""
+def offline_metrics(pred, target, segments, done_score, done_target, *, window_rows=GATE['transition_window_rows'],
+                    scope='full_v1'):
+    """h0 metrics over one split. pred/target are stage indices, done_* per row.
+
+    scope='near_only_v1' (arm N): carry rows are run by code at evaluation, so they leave the
+    per-stage accuracy and the done rates. The carry->place transition is still measured on the
+    full sequence: its hits are predictions on the first place rows, i.e. the hand-back point."""
     pred, target = np.asarray(pred), np.asarray(target)
     done_score, done_target = np.asarray(done_score, float), np.asarray(done_target, float)
     if not (len(pred) == len(target) == len(segments) == len(done_score) == len(done_target)) or not len(pred):
         raise ValueError('aligned nonempty offline rows required')
+    if scope not in ARM_SCOPE.values():
+        raise ValueError(f'unknown segment scope {scope!r}')
+    scored = (near_only_keep(target[:, None])[:, 0] if scope == 'near_only_v1'
+              else np.ones(len(target), bool))
     per_stage = {}
     for i, name in enumerate(STAGES):
-        rows = target == i
+        rows = (target == i) & scored
         if rows.any():
             per_stage[name] = dict(n=int(rows.sum()), acc=float((pred[rows] == i).mean()))
     pre = np.isin(target, [stage_index(s) for s in PRE_GO])
     done_pred = done_score >= DONE_THRESHOLD
-    negatives, positives = done_target == 0, done_target == 1
-    return dict(rows=int(len(pred)), per_stage=per_stage,
+    negatives, positives = (done_target == 0) & scored, (done_target == 1) & scored
+    return dict(rows=int(len(pred)), scored_rows=int(scored.sum()), segment_scope=scope, per_stage=per_stage,
                 stage_macro_acc=float(np.mean([v['acc'] for v in per_stage.values()])),
                 premature_ready=float((pred[pre] == stage_index('ready')).mean()) if pre.any() else None,
                 premature_post_go=float(np.isin(pred[pre], [stage_index(s) for s in POST_GO_STAGES]).mean())

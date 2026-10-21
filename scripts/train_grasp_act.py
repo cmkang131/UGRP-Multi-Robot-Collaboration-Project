@@ -172,7 +172,7 @@ def main():
         if pair_config:
             data = pairact_r1.pair_dataset_class()(a.dataset, 'train', stage_manifest=a.pairact_r1_stage_targets,
                 seed=a.seed, history=pair_config['history_augmentation'], sampling=pair_config['sampling'],
-                blank=a.blank_images)
+                blank=a.blank_images, scope=pairact_r1.segment_scope(pair_config))
         else:
             data = GraspDataset(a.dataset, 'train', blank=a.blank_images)
         data_load_s = time.monotonic() - data_started
@@ -217,6 +217,10 @@ def main():
         # prefetched sampler positions to lose when resuming a finite session.
         report['environment'] = {k: importlib.metadata.version(k) for k in ('torch', 'torchvision', 'lerobot', 'numpy')}
         report['training_rows'] = len(data)
+        if pair_config:
+            report['pairact_arm'] = pairact_r1.config_arm(pair_config)
+            report['segment_scope'] = pairact_r1.segment_scope(pair_config)
+            report['sampled_rows'] = int((data.row_weights > 0).sum())
         report['gpu'] = torch.cuda.get_device_name(0)
         report['cuda'] = torch.version.cuda
         report['python'] = sys.version

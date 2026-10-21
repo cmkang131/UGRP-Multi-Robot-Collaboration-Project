@@ -26,7 +26,7 @@ from harness.grasp_act_data import sha256, write_json
 DITHER_SEED = 20261021
 
 
-def evaluate(actor, data, *, dither, batch_size=64):
+def evaluate(actor, data, *, dither, batch_size=64, scope='full_v1'):
     import torch
     rng = np.random.default_rng(DITHER_SEED)
     mean, std = (np.asarray(data.stats[k], np.float32) for k in ('state_mean', 'state_std'))
@@ -58,7 +58,7 @@ def evaluate(actor, data, *, dither, batch_size=64):
         pred.extend(logits[:, 0].argmax(-1).tolist())
         done_score.extend(actor.beam3.decode_predictions(values)[:, 0, -1].tolist())
     segments = seg_global
-    return p.offline_metrics(pred, target, segments, done_score, done_target)
+    return p.offline_metrics(pred, target, segments, done_score, done_target, scope=scope)
 
 
 def main(argv=None):
@@ -74,11 +74,13 @@ def main(argv=None):
         raise ValueError('heldout episodes must not be in the offline dataset')
     data = p.pair_dataset_class()(args.dataset, 'validation', stage_manifest=args.stage_targets)
     args.output.mkdir(parents=True, exist_ok=False)
-    rows = []
+    rows, scopes = [], set()
     for folder in sorted(args.run.glob('step-*')):
         actor = p.PairActActor.load(folder / 'actor', device=args.device)
-        clean = evaluate(actor, data, dither=False)
-        dithered = evaluate(actor, data, dither=True)
+        scope = actor.meta.get('segment_scope', 'full_v1')
+        scopes.add(scope)
+        clean = evaluate(actor, data, dither=False, scope=scope)
+        dithered = evaluate(actor, data, dither=True, scope=scope)
         passed, reasons = p.gate(clean, dithered)
         row = dict(step=int(folder.name.removeprefix('step-')), passed=passed, reasons=reasons,
                    clean=clean, dithered=dithered,
@@ -86,9 +88,11 @@ def main(argv=None):
         rows.append(row)
         with (args.output / 'checkpoints.jsonl').open('a') as f:
             f.write(json.dumps(row) + '\n')
+    if len(scopes) > 1:
+        raise ValueError(f'one run must hold one arm; segment scopes {sorted(scopes)}')
     selected = p.select_checkpoint(rows)
     write_json(args.output / 'selection.json', dict(
-        split='validation', gate=p.GATE, selected_step=selected,
+        split='validation', gate=p.GATE, selected_step=selected, segment_scope=next(iter(scopes), None),
         verdict='SELECTED' if selected is not None else 'NOT_READY_NO_CHECKPOINT_PASSES',
         dataset_manifest_sha256=sha256(args.dataset / 'manifest.json'),
         stage_targets_sha256=sha256(args.stage_targets), checkpoints=len(rows),
