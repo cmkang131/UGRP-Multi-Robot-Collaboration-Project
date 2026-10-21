@@ -578,7 +578,10 @@ def queue_fields(seed, robots=ROBOTS):
     return dict(nav_l1lite='on_v1',
                 nav_l1lite_order_sheet=ORDER_SHEET_VERSION,
                 nav_l1lite_constraints_sha256=constraint_table_digest(),
-                nav_l1lite_slot_assignment='llm_decision')
+                nav_l1lite_slot_assignment='llm_decision',
+                # test (main experiment) or dev (shared-component tournament);
+                # the analysis never pools the two (PREREG_L1LITE §5).
+                nav_l1lite_seed_split=seed_split(seed))
 
 
 def validate_queue(queue, *, seed, condition, robots=ROBOTS):
@@ -601,6 +604,9 @@ def validate_queue(queue, *, seed, condition, robots=ROBOTS):
         raise L1LiteError('L1LITE_CONSTRAINT_TABLE_MISMATCH')
     if queue.get('nav_l1lite_slot_assignment') != 'llm_decision':
         raise L1LiteError('L1LITE_SLOT_SOURCE_MISMATCH')
+    if queue.get('nav_l1lite_seed_split') != seed_split(seed):
+        raise L1LiteError('L1LITE_SEED_SPLIT_MISMATCH',
+                          detail=str(queue.get('nav_l1lite_seed_split')))
     if queue.get('nav_slots') is not None:
         raise L1LiteError('L1LITE_SLOTS_RUNTIME_DECISION')
     if tuple(robots) != ROBOTS or tuple(queue.get('nav_robots') or ()) != ROBOTS:

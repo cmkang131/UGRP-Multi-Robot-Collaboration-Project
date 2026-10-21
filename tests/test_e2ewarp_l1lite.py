@@ -509,6 +509,21 @@ def test_l1lite_queue_pins_the_table_and_forbids_prepared_slots(tmp_path):
         L.validate_queue(tampered, seed=607, condition='structured')
 
 
+def test_l1lite_queue_records_the_seed_split(tmp_path):
+    queue, _record = r5_queue(tmp_path, l1lite=True)
+    assert queue['nav_l1lite_seed_split'] == 'test'
+    gate.validate_gate_queue(queue)
+    (tmp_path / 'dev').mkdir()
+    dev, _record = r5_queue(tmp_path / 'dev', seed=701, l1lite=True)
+    assert dev['nav_l1lite_seed_split'] == 'dev'
+    L.validate_queue(dev, seed=701, condition='structured')
+    tampered = copy.deepcopy(queue)
+    tampered['nav_l1lite_seed_split'] = 'dev'
+    with pytest.raises(L.L1LiteError) as info:
+        L.validate_queue(tampered, seed=601, condition='structured')
+    assert info.value.code == 'L1LITE_SEED_SPLIT_MISMATCH'
+
+
 def test_l1lite_markers_require_the_environment(tmp_path):
     queue, _record = r5_queue(tmp_path, l1lite=True)
     os.environ.pop(gate.L1LITE_ENV)
