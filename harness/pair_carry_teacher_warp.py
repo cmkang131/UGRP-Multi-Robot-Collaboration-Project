@@ -34,8 +34,16 @@ LOWER_MODES = ('grasp_height', 'floor_contact_v1')
 # variants only (default). 'detour_v1' runs a formation-space grid A* for the
 # first leg (handover -> west staging) ONLY when both straight variants are
 # blocked; a nominal or rotate-first route that is clear is returned unchanged.
-ROUTE_MODES = ('straight_v1', 'detour_v1')
-NO_PATH = 'route_blocked_no_path'                 # detour_v1: search found no clear path
+ROUTE_MODES = ('straight_v1', 'detour_v1', 'detour_v2')
+NO_PATH = 'route_blocked_no_path'                 # detour_v1/v2: search found no clear path
+# -c6 detour_v2 (opt-in, same trigger as detour_v1): (a) start-pocket escape - near
+# the handover the formation may keep the start clearance instead of the full
+# node margin (it may never get closer than it already is), (b) several
+# object-aware west staging goals searched by ONE multi-goal A*, (c) 16 headings.
+# All numbers are new -c6 candidate constants, not measured values.
+DETOUR_V2 = {'res': .05, 'headings': 16, 'margin': .03, 'max_nodes': 60000, 'escape_radius_m': .30,
+             'start_overlap_tol_m': .03, 'stage_dx': (.95, 1.15, .75, 1.35), 'goals_per_dx': 2, 'max_goals': 7,
+             'goal_margin_m': .03}
 SCHEMA = 'ugrp.pairact.carry_teacher.v1'
 ROUTE_RECORD_SCHEMA = 'ugrp.pairact.carry_route_plan.v1'   # -c4 carry-route.json
 ROLES = ('teal', 'blue')
@@ -501,6 +509,195 @@ def detour_route(start, route, offsets, rects, obstacles, **search):
     return new, info
 
 
+# ------------------------------------------------- -c6 detour_v2 (opt-in)
+
+def escape_route_clear(start, route, offsets, rects, obstacles, *, floor, escape_radius, step=.05):
+    """route_clear with the detour_v2 start-pocket rule: a sampled pose within
+    ``escape_radius`` of ``start`` may keep clearance >= min(0, floor) (floor =
+    the start clearance, never lower); everywhere else clearance >= 0, i.e. the
+    same bodies and the same interpolation as segment_clear(margin=0)."""
+    prev = start
+    for tag, b in route:
+        a = prev
+        n = max(1, int(math.ceil(max(math.dist(a[:2], b[:2]), abs(wrap(b[2]-a[2]))*formation_radius(offsets))/step)))
+        for i in range(n + 1):
+            u = i/n
+            p = (a[0]+(b[0]-a[0])*u, a[1]+(b[1]-a[1])*u, wrap(a[2]+wrap(b[2]-a[2])*u))
+            thr = min(0., floor) if math.dist(p[:2], start[:2]) <= escape_radius + 1e-9 else 0.
+            if formation_clearance(p, offsets, rects, obstacles) < thr - 1e-12:
+                return False, {'segment': tag, 'hit': ('clearance', i/n)}
+        prev = b
+    return True, None
+
+
+def staging_candidates(door, west, door_yaw, downstream, offsets, rects, obstacles, *, radius, params=Params(),
+                       cfg=DETOUR_V2):
+    """West staging goals for detour_v2, planned west first. A goal must keep
+    the in-place rotation circle off the walls (same test as staging_point),
+    keep >= goal_margin_m from walls/object discs at the door yaw, and have a
+    clear downstream (goal -> door entry -> ... -> zone, walls + object discs)."""
+    def ok(xy):
+        pose = (xy[0], xy[1], door_yaw)
+        return (circle_clear(xy, radius, rects, margin=params.clear_margin_m)
+                and formation_clearance(pose, offsets, rects, obstacles) >= cfg['goal_margin_m']
+                and route_clear(pose, downstream, offsets, rects, obstacles)[0])
+    out = [tuple(west)] if ok(west) else []
+    for dx in cfg['stage_dx']:
+        x, found = door['x'] - dx, 0
+        for k in range(int(2./.05) + 1):
+            for sgn in ((1,) if k == 0 else (1, -1)):
+                xy = (x, door['cy'] + sgn*k*.05)
+                if found < cfg['goals_per_dx'] and math.dist(xy, west) > 1e-9 and ok(xy):
+                    out.append(xy)
+                    found += 1
+    head, rest = out[:1] if out and out[0] == tuple(west) else [], [g for g in out if g != tuple(west)]
+    rest.sort(key=lambda g: math.dist(g, west))
+    return (head + rest)[:cfg['max_goals']]
+
+
+def plan_formation_path_multi(start, goals, final_yaw, offsets, rects, obstacles, *, cfg=DETOUR_V2):
+    """detour_v2 A*: same state space, moves and node rule as plan_formation_path
+    (detour_v1 is left byte-identical) except (a) the start-pocket escape: within
+    escape_radius_m of the start a node / rotation only needs clearance >=
+    min(start clearance, node margin), and (b) several goals: heuristic = distance
+    to the nearest goal, success at the first goal whose straight move and
+    rotation to ``final_yaw`` are clear. Returns (poses or None, goal index, stats)."""
+    import heapq
+    res, headings, margin = cfg['res'], cfg['headings'], cfg['margin']
+    yaws = [wrap(start[2] + 2*math.pi*k/headings) for k in range(headings)]
+    radius = formation_radius(offsets)
+    node_margin = margin + res*math.sqrt(2)/2
+    c0 = formation_clearance(start, offsets, rects, obstacles)
+    floor = min(c0, node_margin)
+    esc = cfg['escape_radius_m']
+    stats = {'res_m': res, 'headings': headings, 'margin_m': margin, 'max_nodes': cfg['max_nodes'],
+             'escape_radius_m': esc, 'start_clearance_m': c0, 'escape_floor_m': floor, 'goals': len(goals),
+             'expanded': 0, 'found': False}
+    if c0 < -cfg['start_overlap_tol_m']:
+        stats['reason'] = 'start_in_collision'
+        return None, None, stats
+    if not goals:
+        stats['reason'] = 'no_staging_goal'
+        return None, None, stats
+    free_cache, rot_cache = {}, {}
+
+    def pose(i, j, k):
+        return (start[0] + i*res, start[1] + j*res, yaws[k])
+
+    def near(i, j):
+        return math.hypot(i*res, j*res) <= esc + 1e-9
+
+    def free(i, j, k):
+        key = (i, j, k)
+        if key not in free_cache:
+            c = formation_clearance(pose(i, j, k), offsets, rects, obstacles)
+            free_cache[key] = c >= node_margin or (near(i, j) and c >= floor - 1e-12)
+        return free_cache[key]
+
+    def rot_ok(i, j, k, k2):
+        key = (i, j, min(k, k2), max(k, k2))
+        if key not in rot_cache:
+            m = min(margin, floor) if near(i, j) else margin
+            rot_cache[key] = segment_clear(pose(i, j, k), pose(i, j, k2), offsets, rects, obstacles, margin=m)[0]
+        return rot_cache[key]
+
+    def h(i, j):
+        p = (start[0] + i*res, start[1] + j*res)
+        return min(math.dist(p, g) for g in goals)
+
+    def goal_hit(i, j, k):
+        p = pose(i, j, k)
+        for gi, g in enumerate(goals):
+            if math.dist(p[:2], g) > 1.5*res + 1e-9:
+                continue
+            q = (g[0], g[1], yaws[k])
+            if (segment_clear(p, q, offsets, rects, obstacles)[0]
+                    and segment_clear(q, (g[0], g[1], final_yaw), offsets, rects, obstacles)[0]):
+                return gi
+        return None
+
+    s0 = (0, 0, 0)
+    g_cost, parent = {s0: 0.}, {s0: None}
+    heap = [(h(0, 0), 0., s0)]
+    moves = [(di, dj) for di in (-1, 0, 1) for dj in (-1, 0, 1) if di or dj]
+    rot_cost = 2*math.pi/headings*radius
+    end = goal = None
+    while heap:
+        f, g, node = heapq.heappop(heap)
+        if g > g_cost.get(node, math.inf) + 1e-12:
+            continue
+        stats['expanded'] += 1
+        if stats['expanded'] > cfg['max_nodes']:
+            stats['reason'] = 'node_budget'
+            break
+        i, j, k = node
+        goal = goal_hit(i, j, k)
+        if goal is not None:
+            end = node
+            break
+        nbrs = []
+        for di, dj in moves:
+            n = (i + di, j + dj, k)
+            if free(*n):
+                nbrs.append((n, res*math.hypot(di, dj)))
+        for dk in (-1, 1):
+            k2 = (k + dk) % headings
+            if free(i, j, k2) and rot_ok(i, j, k, k2):
+                nbrs.append(((i, j, k2), rot_cost))
+        for n, c in nbrs:
+            ng = g + c
+            if ng < g_cost.get(n, math.inf) - 1e-12:
+                g_cost[n], parent[n] = ng, node
+                heapq.heappush(heap, (ng + h(n[0], n[1]), ng, n))
+    else:
+        stats['reason'] = 'exhausted'
+    if end is None:
+        return None, None, stats
+    chain = []
+    while end is not None:
+        chain.append(end)
+        end = parent[end]
+    chain.reverse()
+    gxy = goals[goal]
+    poses = [pose(*n) for n in chain] + [(gxy[0], gxy[1], yaws[chain[-1][2]])]
+    # shortcut only outside the escape pocket rule: merged segments are re-checked at the full margin
+    out = _shortcut(poses, offsets, rects, obstacles, margin=margin)
+    stats.update(found=True, raw_poses=len(poses), waypoints=len(out) - 1, goal_index=goal)
+    return out[1:], goal, stats
+
+
+def detour_route_v2(start, route, offsets, rects, obstacles, door, *, radius, params=Params(), cfg=DETOUR_V2):
+    """detour_v2: first leg by the multi-goal escape A* above; the door/zone
+    legs stay as planned, only the rotate_door point moves to the reached
+    staging goal. Final check = escape_route_clear over the whole new route."""
+    (_, west), (_, rot) = route[0], route[1]
+    door_yaw = rot[2]
+    downstream = route[2:]
+    goals = staging_candidates(door, west[:2], door_yaw, downstream, offsets, rects, obstacles, radius=radius,
+                               params=params, cfg=cfg)
+    info = {'mode': 'detour_v2', 'goals': [list(g) for g in goals]}
+    if not goals:
+        _, why = route_clear((west[0], west[1], door_yaw), downstream, offsets, rects, obstacles)
+        info['downstream_blocked'] = why
+    path, gi, stats = plan_formation_path_multi(start, goals, door_yaw, offsets, rects, obstacles, cfg=cfg)
+    info['search'] = stats
+    if path is None:
+        return None, info
+    goal = goals[gi]
+    new = ([('to_west_staging', tuple(p)) for p in path] + [('rotate_door', (goal[0], goal[1], door_yaw))]
+           + downstream)
+    ok, why = escape_route_clear(start, new, offsets, rects, obstacles, floor=stats['escape_floor_m'],
+                                 escape_radius=cfg['escape_radius_m'])
+    if not ok:
+        info['search']['reason'] = 'final_check'
+        info['final_check'] = why
+        return None, info
+    info.update(waypoints=[list(p) for p in path], nodes_expanded=stats['expanded'], goal=list(goal),
+                goal_is_planned_west=gi == 0 and math.dist(goal, west[:2]) < 1e-9,
+                min_clearance_m=route_min_clearance(start, new, offsets, rects, obstacles))
+    return new, info
+
+
 # --------------------------------------------------------- control helpers
 
 def body_command(pose, target, ff=(0., 0., 0.), *, params=Params()):
@@ -614,10 +811,15 @@ class PairCarryTeacherWarp:
         self.route, blocked = check_route(beam, self.route, self.offsets, wall_rects(static_map),
                                           list(obstacles or ()))
         self.route_info['variant'] = 'translate_first' if blocked is None or blocked[0] else 'rotate_first'
-        if blocked is not None and not blocked[0] and route_mode == 'detour_v1':
+        if blocked is not None and not blocked[0] and route_mode in ('detour_v1', 'detour_v2'):
             # both straight variants blocked: formation-space search (GT, teacher only)
             self.detour_searches += 1
-            detour, info = detour_route(beam, planned, self.offsets, wall_rects(static_map), list(obstacles or ()))
+            if route_mode == 'detour_v1':
+                detour, info = detour_route(beam, planned, self.offsets, wall_rects(static_map), list(obstacles or ()))
+            else:
+                detour, info = detour_route_v2(beam, planned, self.offsets, wall_rects(static_map),
+                                               list(obstacles or ()), self.route_info['door'],
+                                               radius=self.route_info['formation_radius_m'], params=params)
             self.route_info['route_mode'] = route_mode
             self.route_info['straight_blocked'] = blocked[1]
             self.route_info['detour'] = info

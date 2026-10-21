@@ -565,7 +565,7 @@ def main():
     p.add_argument('--pair-carry',choices=('off','pair_carry_gt_v1'),default='off')
     p.add_argument('--carry-cap-s',type=float,default=110.)
     p.add_argument('--carry-lower',choices=('grasp_height','floor_contact_v1'),default='grasp_height')
-    p.add_argument('--carry-route',choices=('straight_v1','detour_v1'),default='straight_v1')
+    p.add_argument('--carry-route',choices=('straight_v1','detour_v1','detour_v2'),default='straight_v1')
     p.add_argument('--student-eval',type=Path,help='P5 student eval config JSON (default off)')
     # pairact P3 (default off): replace ONLY the >=38/40 gate requirement by a FROZEN collect prereg sha256
     p.add_argument('--recording-admission',choices=('teacher_gate_v1','pairact_p3_collect'),default='teacher_gate_v1')
