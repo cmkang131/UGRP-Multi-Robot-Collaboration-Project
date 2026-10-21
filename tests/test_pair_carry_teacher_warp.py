@@ -560,25 +560,49 @@ def test_phase_table_matches_design_doc():
     assert dict(rows) == cr.TEACHER_PHASE_TO_STAGE
 
 
-def test_phase_table_matches_pairact_r1_copy():
-    """Same mapping as harness/pairact_r1.py on dsh/pairact-carry-r1 (skipped
-    when that ref is not fetched)."""
+# repo audit 4 (2026-10-21): compare with a pinned commit, not the mutable ref
+# origin/dsh/pairact-carry-r1, and never skip a required contract check.
+PAIRACT_R1_SHA = '0c22a2826c46497b7a0068e3c3ed63a6115c572e'
+PAIRACT_R1_FIXTURE = ROOT/'tests/fixtures/pairact_r1_phase_table.json'
+
+
+def _pairact_r1_table(src):
     import re
-    import subprocess
-    try:
-        src = subprocess.check_output(['git', 'show', 'origin/dsh/pairact-carry-r1:harness/pairact_r1.py'],
-                                      cwd=ROOT, text=True, stderr=subprocess.DEVNULL)
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        pytest.skip('origin/dsh/pairact-carry-r1 not available')
     m = re.search(r"^TEACHER_PHASE_TO_STAGE = \{.*?^TEACHER_PHASE_TO_STAGE\['carry:done'\] = 'complete'$", src, re.S | re.M)
     ns = {}
     exec(m.group(0), ns)
-    r1 = ns['TEACHER_PHASE_TO_STAGE']
-    stages = re.search(r"^STAGES = (\(.*?\))$", src, re.M).group(1)
-    assert eval(stages) == cr.STAGES
-    missing = set(cr.TEACHER_PHASE_TO_STAGE) - set(r1)
+    return ns['TEACHER_PHASE_TO_STAGE'], list(eval(re.search(r"^STAGES = (\(.*?\))$", src, re.M).group(1)))
+
+
+def test_phase_table_matches_pairact_r1_fixture():
+    """Same mapping as harness/pairact_r1.py at the pinned pairact-r1 commit (frozen fixture, always runs)."""
+    fx = json.loads(PAIRACT_R1_FIXTURE.read_text())
+    assert fx['source_sha'] == PAIRACT_R1_SHA
+    assert tuple(fx['stages']) == cr.STAGES
+    missing = set(cr.TEACHER_PHASE_TO_STAGE) - set(fx['table'])
     assert not missing, f'pairact_r1 lacks {sorted(missing)}'
-    assert {k: r1[k] for k in cr.TEACHER_PHASE_TO_STAGE} == cr.TEACHER_PHASE_TO_STAGE
+    assert {k: fx['table'][k] for k in cr.TEACHER_PHASE_TO_STAGE} == cr.TEACHER_PHASE_TO_STAGE
+
+
+def test_pairact_r1_fixture_matches_pinned_commit():
+    """The fixture is the pinned commit's table. A clone without that commit FAILS (CI shows it red)."""
+    import subprocess
+    try:
+        src = subprocess.check_output(['git', 'show', f'{PAIRACT_R1_SHA}:harness/pairact_r1.py'],
+                                      cwd=ROOT, text=True, stderr=subprocess.DEVNULL)
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        pytest.fail(f'pinned pairact-r1 commit {PAIRACT_R1_SHA} is not in this clone: '
+                    f'git fetch origin {PAIRACT_R1_SHA} (required contract check, not skippable)')
+    table, stages = _pairact_r1_table(src)
+    fx = json.loads(PAIRACT_R1_FIXTURE.read_text())
+    assert table == fx['table'] and stages == fx['stages']
+
+
+def test_pinned_commit_missing_fails_instead_of_skipping(monkeypatch):
+    import sys
+    monkeypatch.setattr(sys.modules[__name__], 'PAIRACT_R1_SHA', '0' * 40)
+    with pytest.raises(pytest.fail.Exception, match='not skippable'):
+        test_pairact_r1_fixture_matches_pinned_commit()
 
 
 def test_runner_records_carry_with_recorder_and_v7_clock():
