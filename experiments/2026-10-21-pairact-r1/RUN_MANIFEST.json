@@ -26,11 +26,11 @@
     "pin_rule": "the three -c5 SHAs are pushed (2026-10-21); before FROZEN_CORE check git ls-remote origin and git -C $SRC/teacher (adapter, root) rev-parse HEAD against stack.*.sha (RUNBOOK 1-0); any change of the stack is a new FROZEN_CORE"
   },
   "collector": {
-    "branch": "dsh/pairact-carry-r1-v5",
+    "branch": "dsh/pairact-carry-r1-v6",
     "source_sha": "[VM 기입] commit X, the collector code commit; HEAD may be a descendant",
     "files_rule": "harness.pairact_collect.COLLECTOR_FILES (runner code, direct setup-geometry imports and inputs) and the generator: identical at X and HEAD, clean in the checkout",
     "file_sha256": {
-      "harness/pairact_collect.py": "d4c7d217fbd546e3ef9a27d9c57963ca57c1932736652fe59e25b5444dd19661",
+      "harness/pairact_collect.py": "03260786a56ad999a4f6435ab12466f2ababf87e01fed0d37a81012c2d497304",
       "harness/pairact_r1.py": "8a9869248740bf5ad2da7194cdd9a582347ac09e88783cd6ea127ef3f208a210",
       "scripts/run_pairact_collect.py": "4115b5059620d99cc6e928eeaa3feddb0f5e30539424dcddd6c0301e0e2ce881",
       "scripts/pairact_r1_freeze.py": "3b1f752dae2e0642eedc9fe30903cc921b2f22f8b75f7b9ec7535bcdb6301a57",

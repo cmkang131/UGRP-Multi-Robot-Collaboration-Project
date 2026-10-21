@@ -228,6 +228,45 @@ def append(path, row):
         os.fsync(f.fileno())
 
 
+# v6 (Codex v5 re-review 3): options the gates read from the episode command.  argparse keeps the *last* of a
+# repeated option, accepts ``--flag=value`` and unique prefixes, so a first-match reader could check one path
+# while the wrapper runs another.  Every gate reads them through episode_option(), which refuses all of that.
+EPISODE_VALUE_FLAGS = ('--teacher-source', '--adapter-source', '--canonical-xml', '--per-world-model-references-v1',
+                       '--rejection-table', '--cap-s')
+
+
+def episode_option(tokens, flag):
+    """The single value of ``flag`` in the episode command tokens (``flag v`` or ``flag=v``), None if absent.
+    Raises ValueError when the option is given more than once, abbreviated, or lacks a value."""
+    hits = []
+    for i, t in enumerate(tokens):
+        name, eq, val = t.partition('=')
+        if name == flag:
+            if not eq and i + 1 >= len(tokens):
+                raise ValueError(f'episode command {flag} has no value')
+            hits.append(val if eq else tokens[i + 1])
+        elif len(name) > 2 and name.startswith('--') and flag.startswith(name):
+            raise ValueError(f'episode command abbreviates {flag} as {name}; spell it out')
+    if len(hits) > 1:
+        raise ValueError(f'episode command names {flag} {len(hits)} times; give it once')
+    return hits[0] if hits else None
+
+
+def episode_option_problems(template):
+    """v6: every gated option of the episode command is unambiguous (once, unabbreviated), and so is the root."""
+    tokens, out = shlex.split(template), []
+    for flag in EPISODE_VALUE_FLAGS:
+        try:
+            episode_option(tokens, flag)
+        except ValueError as error:
+            out.append(str(error))
+    if sum(t.startswith('WARP_SOURCE_ROOT=') for t in tokens) > 1:
+        out.append('episode command sets WARP_SOURCE_ROOT more than once; give it once')
+    if sum(t.endswith('.py') for t in tokens) > 1:
+        out.append('episode command names more than one .py; the wrapper must be unambiguous')
+    return out
+
+
 def episode_cmd_audit(template):
     """The episode command is part of the frozen run: rejection table must be absolute, cap explicit."""
     if not template or any(k not in template for k in ('{cases}', '{indices}', '{out}')):
@@ -235,9 +274,10 @@ def episode_cmd_audit(template):
     tokens = shlex.split(template)
 
     def value(flag):
-        if tokens.count(flag) != 1 or tokens.index(flag) + 1 >= len(tokens):
+        got = episode_option(tokens, flag)
+        if got is None:
             raise ValueError(f'episode command needs exactly one {flag} <value>')
-        return tokens[tokens.index(flag) + 1]
+        return got
     table = value('--rejection-table')
     if not os.path.isabs(table):
         raise ValueError(f'--rejection-table must be an absolute path, got {table!r}')
@@ -1268,7 +1308,7 @@ def episode_assets(template):
     tokens = shlex.split(template)
 
     def flag(name):
-        return tokens[tokens.index(name) + 1] if name in tokens and tokens.index(name) + 1 < len(tokens) else None
+        return episode_option(tokens, name)
     wrapper = next((t for t in tokens if t.endswith('.py')), None)
     return dict(wrapper_sha256=wrapper, canonical_xml_sha256=flag('--canonical-xml'),
                 per_world_model_references_sha256=flag('--per-world-model-references-v1'),
@@ -1418,6 +1458,7 @@ def check_run_manifest(manifest, *, stage, prereg, batch_size=None, episode=None
             problems.append('command.episode_template_sha256 is not sha256(command.episode_template)')
         if '$' in template:
             problems.append('command.episode_template has an unexpanded shell variable')
+        problems += episode_option_problems(template)
     if episode is not None and m('command', 'episode_template_sha256') != episode['template_sha256']:
         problems.append('run manifest episode template sha256 differs')
     if episode is not None and m('limits', 'grasp_cap_sim_s') != episode['cap_s']:
@@ -1436,7 +1477,7 @@ def check_run_manifest(manifest, *, stage, prereg, batch_size=None, episode=None
             path = Path(repo) / rel
             if not path.is_file() or file_sha256(path) != want:
                 problems.append(f'file sha256 differs from the manifest: {rel}')
-    if verify_assets and isinstance(template, str):
+    if verify_assets and isinstance(template, str) and not episode_option_problems(template):
         for key, path in episode_assets(template).items():
             if path is None or not os.path.isfile(path):
                 problems.append(f'asset for assets.{key} missing: {path}')
@@ -1703,7 +1744,9 @@ def check_seed_history(rows):
 def check_attempt_identity(st):
     """v5 (Codex v4 re-review 5): every completed attempt is one planned slot, judged once.
 
-    (batch, slot) appears at most once and names a planned slot with the same seed / split / requeue flag;
+    (batch, slot) appears at most once and names a planned slot with the same seed / split / requeue flag
+    and -- v6 (Codex v5 re-review, bin binding) -- the same bin, since bin_counts() and the distance stop trust
+    attempt.bin;
     (split, seed, requeue) appears at most once (a seed is judged fresh once and re-queued at most once).
     A duplicated append (ledger damage, double sync) would otherwise count twice in N / S / A.
     Returns the number of attempt rows."""
@@ -1711,8 +1754,8 @@ def check_attempt_identity(st):
     for r in st['attempt_rows']:
         b = st['batches'].get(r.get('batch'))
         planned = next((s for s in (b or {}).get('slots', []) if s.get('slot') == r.get('slot')), None)
-        if planned is None or (planned['seed'], planned['split'], bool(planned.get('requeue'))) != \
-                (r.get('seed'), r.get('split'), bool(r.get('requeue'))):
+        if planned is None or (planned['seed'], planned['split'], bool(planned.get('requeue')), planned.get('bin')) != \
+                (r.get('seed'), r.get('split'), bool(r.get('requeue')), r.get('bin')):
             raise ValueError(f'attempt batch {r.get("batch")} slot {r.get("slot")} seed {r.get("seed")} '
                              f'is not that planned slot')
         key, ident = (r['batch'], r['slot']), (r['split'], r['seed'], bool(r.get('requeue')))
@@ -1731,10 +1774,13 @@ def episode_sources(template, env=None):
     """v5 (Codex v4 re-review 3): the source checkouts the episode command runs: --teacher-source,
     --adapter-source and the root (the wrapper's WARP_SOURCE_ROOT: a ``WARP_SOURCE_ROOT=...`` token of the
     template, else ``env``).  None where the command does not name one."""
+    problems = episode_option_problems(template)
+    if problems:
+        raise ValueError(problems[0])
     tokens = shlex.split(template)
 
     def flag(name):
-        return tokens[tokens.index(name) + 1] if name in tokens and tokens.index(name) + 1 < len(tokens) else None
+        return episode_option(tokens, name)
     root = next((x.split('=', 1)[1] for x in tokens if x.startswith('WARP_SOURCE_ROOT=')), None)
     if root is None and env is not None:
         root = env.get('WARP_SOURCE_ROOT')
