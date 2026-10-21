@@ -284,3 +284,21 @@ def test_hybrid_module_imports_no_simulator_truth_or_evaluator():
         if isinstance(node, ast.FunctionDef):
             params |= {a.arg for a in node.args.args + node.args.kwonlyargs}
     assert not params & {'truth', 'gt', 'world', 'contacts', 'carry_eval', 'teacher', 'partner_pose'}
+
+
+# ------------------------------------------------------------------ I9 runner flag
+
+def test_runner_hybrid_flag_is_default_off_and_needs_student_eval(tmp_path):
+    import inspect
+    pytest.importorskip('numpy')
+    try:
+        from scripts import run_grasp_act_teacher as runner
+    except ImportError as error:          # simulator-only imports on a CPU venv
+        pytest.skip(f'runner import needs the simulator stack: {error}')
+    assert inspect.signature(runner.run).parameters['hybrid_carry'].default is None
+    plan = {'roles': ROLES}
+    with pytest.raises(ValueError, match='student eval'):
+        runner.run(plan, tmp_path, pair_carry='pair_carry_gt_v1', teacher_profile='visible_only', hybrid_carry=cfg())
+    with pytest.raises(h.MapModeNotApproved):
+        runner.run(plan, tmp_path, pair_carry='pair_carry_gt_v1', teacher_profile='visible_only',
+                   hybrid_carry=cfg(carry_mode='map', nav=None, map={'approval': 'x'}))

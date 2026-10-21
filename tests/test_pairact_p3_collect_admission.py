@@ -93,6 +93,10 @@ def _diff(path, added=False):
 # existing lines (run signature, start_from_runner call, CLI run call). Those lines may change ONLY by
 # inserting exactly these keyword fragments; every other line of the gate path stays byte identical.
 CARRY_ROUTE_INSERTS = ('carry_route="straight_v1",', ',route_mode=carry_route', 'carry_route=a.carry_route,')
+# -c5-hybrid (default off): the hybrid carry keyword on the run signature and one guard on the
+# student tick branch (``if student_ep is not None`` -> ``... and not hybrid_code``). Nothing else
+# on the gate path changes; every new hybrid line is an insertion.
+HYBRID_INSERTS = (',hybrid_carry=None', ' and not hybrid_code')
 
 
 def test_existing_gate_path_is_byte_identical():
@@ -102,11 +106,11 @@ def test_existing_gate_path_is_byte_identical():
     assert '-    if a.record_training:' in removed
     stripped = []
     for line in added:
-        for frag in CARRY_ROUTE_INSERTS:
+        for frag in CARRY_ROUTE_INSERTS + HYBRID_INSERTS:
             line = line.replace(frag, '')
         stripped.append('-' + line[1:])
     others = [l for l in removed if l != '-    if a.record_training:']
-    assert len(others) == 3, others
+    assert len(others) == 3 + 1, others          # 3 carry_route lines + the student tick guard
     for line in others:
         assert line in stripped, f'gate-path line changed beyond carry_route keyword insert: {line[:120]}'
     text = (ROOT / 'scripts/run_grasp_act_teacher.py').read_text()

@@ -107,7 +107,7 @@ def validate_recording_inputs(record_training,teacher_profile,self_pose_source):
         raise ValueError('recording requires visible_only and issued pose; GT labels forbidden')
 
 
-def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teacher_profile="legacy",self_pose_source="issued",recording_proof=None,recording_probe=False,execution_host=None,teacher_stability="off",teacher_search="off",approach_goal_set="off",nominal_blocked_handoff="off",approach_progress="off",approach_recovery="off",approach_coordination="off",handoff_observation="off",pregrasp_sampling="off",obstacle_reobserve="off",peer_reobserve="off",search17_candidates="off",search17_escape="off",search17_odometry="off",search18_footprint="off",search18_start_plan="off",search18_free_space="off",search19_motion="off",search19_footprint="off",search20="off",search21="off",search22="off",search23="off",search24_irm="off",search24_budget="off",search25_inflation="off",search25_memory="off",search25_view="off",search25_budget="off",search23_rects="off",search26_circles="off",search26_circles_farfirst="off",search26_static_peer="off",search26_peer_memory="off",search26_reobserve="off",search26_reobserve_refresh="off",search26_reobserve_refresh_open="off",search26_commit_plan="off",search26_wide_rescue="off",search26_align_diag="off",search26_align_pulse="off",search26_wide_stance="off",pair_carry="off",carry_cap_s=110.,carry_lower="grasp_height",carry_route="straight_v1",student_eval=None):
+def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teacher_profile="legacy",self_pose_source="issued",recording_proof=None,recording_probe=False,execution_host=None,teacher_stability="off",teacher_search="off",approach_goal_set="off",nominal_blocked_handoff="off",approach_progress="off",approach_recovery="off",approach_coordination="off",handoff_observation="off",pregrasp_sampling="off",obstacle_reobserve="off",peer_reobserve="off",search17_candidates="off",search17_escape="off",search17_odometry="off",search18_footprint="off",search18_start_plan="off",search18_free_space="off",search19_motion="off",search19_footprint="off",search20="off",search21="off",search22="off",search23="off",search24_irm="off",search24_budget="off",search25_inflation="off",search25_memory="off",search25_view="off",search25_budget="off",search23_rects="off",search26_circles="off",search26_circles_farfirst="off",search26_static_peer="off",search26_peer_memory="off",search26_reobserve="off",search26_reobserve_refresh="off",search26_reobserve_refresh_open="off",search26_commit_plan="off",search26_wide_rescue="off",search26_align_diag="off",search26_align_pulse="off",search26_wide_stance="off",pair_carry="off",carry_cap_s=110.,carry_lower="grasp_height",carry_route="straight_v1",student_eval=None,hybrid_carry=None):
     validate_recording_inputs(record_training,teacher_profile,self_pose_source)
     from harness.pair_carry_teacher_warp import MODES as CARRY_MODES
     if pair_carry not in CARRY_MODES:raise ValueError('unknown pair carry mode')
@@ -132,6 +132,11 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
         validate_student(student_eval)
         if pair_carry=='off' or teacher_profile!='visible_only':raise ValueError('student eval requires the visible_only pair carry episode')
         if record_training or noise or probe:raise ValueError('student eval never records, perturbs or probes')
+    if hybrid_carry is not None:
+        # pairact hybrid (default off): student near field + code carry (harness/hybrid_carry.py) + student place
+        from harness.hybrid_carry import validate_config as validate_hybrid
+        validate_hybrid(hybrid_carry)
+        if student_eval is None:raise ValueError('hybrid carry runs on top of the student eval episode')
     from sim.grasp_act_search15_modes import validate
     search15={'peer_reobserve':peer_reobserve,'search17_candidates':search17_candidates,'search17_escape':search17_escape,'search17_odometry':search17_odometry,'search18_footprint':search18_footprint,'search18_start_plan':search18_start_plan,'search18_free_space':search18_free_space,'search19_motion':search19_motion,'search19_footprint':search19_footprint,'search20':search20,'search21':search21,'search22':search22,'search23':search23,'search24_irm':search24_irm,'search24_budget':search24_budget,'search25_inflation':search25_inflation,'search25_memory':search25_memory,'search25_view':search25_view,'search25_budget':search25_budget,'search23_rects':search23_rects,'search26_circles':search26_circles,'search26_static_peer':search26_static_peer,'search26_peer_memory':search26_peer_memory,'search26_circles_farfirst':search26_circles_farfirst,'search26_reobserve':search26_reobserve,'search26_reobserve_refresh':search26_reobserve_refresh,'search26_reobserve_refresh_open':search26_reobserve_refresh_open,'search26_commit_plan':search26_commit_plan,'search26_wide_rescue':search26_wide_rescue,'search26_align_diag':search26_align_diag,'search26_align_pulse':search26_align_pulse,'search26_wide_stance':search26_wide_stance,'obstacle_reobserve':obstacle_reobserve,'pregrasp_sampling':pregrasp_sampling}
     validate(search15,recovery=approach_recovery,profile=teacher_profile,pose_source=self_pose_source,coordination=approach_coordination)
@@ -281,6 +286,15 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
             student_ep,student_delays=start_student(student_eval,plan['roles'],plan['episode_id'],previous,seed=plan['seed'],factory=GraspStartSync)
             student_funnel=StudentFunnel();student_log=(out/'student-eval.jsonl').open('w');streams+=[student_log,student_ep.client]
             report.update(student_execution=True,student_eval={'mode':student_eval['mode'],'model':student_eval['model'],'protocol_delays_s':student_delays})
+        hybrid=None
+        if hybrid_carry is not None:
+            from harness.hybrid_carry import HybridRun,NavZoneSensor
+            from harness.pair_carry_teacher_warp import static_map_for as hybrid_static_map
+            hybrid=HybridRun(hybrid_carry,plan['roles'],
+                sensor=NavZoneSensor.from_config(hybrid_carry['nav']) if hybrid_carry['carry_mode']=='nav' else None,
+                static_map=hybrid_static_map(scene.config) if hybrid_carry['carry_mode']=='map' else None,
+                start_poses=plan.get('start_poses') if hybrid_carry['carry_mode']=='map' else None)
+            report['hybrid']={'mode':hybrid_carry['mode'],'carry_mode':hybrid_carry['carry_mode']}
         while float(world.data.time)-origin < (cap_s if carry is None and student_ep is None else cap_s+carry_cap_s)-1e-8:
             now=float(world.data.time);at=time.monotonic()
             if search23!='off' and now-origin>=30.-1e-8 and 'first30_speed' not in report:
@@ -347,7 +361,22 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
                 permits=sync.tick(ready,now)
             elif observable and carry is None and student_ep is None:
                 permit=permit and all(x.phase!='ready' or truth['visibility'][rid]['visible_probes']>=3 for rid,x in teachers.items())
-            if student_ep is not None:
+            hybrid_code=False
+            if hybrid is not None and not hybrid.student_controls() and hybrid.segment()!='ABORT':
+                # hybrid code segment: own frames -> code commands; the student only shadows (I7)
+                hybrid_code=True;at=time.monotonic()
+                frames={rid:ports[rid].capture()['image'] for rid in plan['roles']}
+                code=hybrid.code_tick(now,{rid:base64.b64decode(v) for rid,v in frames.items()})
+                applied_code={rid:command(json.loads(json.dumps(row))) for rid,row in code.items()}
+                shadow=student_ep.client.request(hybrid.shadow_request(now,frames,applied_code))['robots']
+                for rid,applied in applied_code.items():
+                    apply(ports[rid],applied,now,previous[rid]);previous[rid]=applied;history[rid].append(applied)
+                    models[rid].issue(applied)
+                student_log.write(json.dumps({'t':now,'hybrid_segment':hybrid.segment(),'code':applied_code,
+                    'shadow_stage':{r:v['stage'] for r,v in shadow.items()},
+                    'eval_passed':student_funnel.add(now,truth,plan['roles'],student_ep.ready,student_hold_t is not None)},allow_nan=False)+'\n')
+                timings['teacher']+=time.monotonic()-at
+            if student_ep is not None and not hybrid_code:
                 at=time.monotonic()
                 jpegs={rid:base64.b64decode(ports[rid].capture()['image']) for rid in plan['roles']}
                 proposed,issued=student_ep.tick(now,jpegs,previous)
@@ -358,6 +387,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
                 student_log.write(json.dumps({'t':now,'inputs':{r:v['observation'] for r,v in proposed.items()},
                     'ready':student_ep.ready,'issued':issued,
                     'eval_passed':student_funnel.add(now,truth,plan['roles'],student_ep.ready,student_hold_t is not None)},allow_nan=False)+'\n')
+                if hybrid is not None:hybrid.after_student_tick(now,issued,{rid:previous[rid] for rid in issued})
                 timings['teacher']+=time.monotonic()-at
             for rid,t in (teachers.items() if carry is None and student_ep is None else ()):
                 at=time.monotonic()
@@ -435,6 +465,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
                     writers[rid][1].write(json.dumps(label)+'\n')
                 timings['teacher']+=time.monotonic()-at
             written+=1
+            if hybrid is not None and hybrid.segment()=='ABORT':break
             if student_ep is not None:
                 if student_ep.finished:break
             elif carry is not None:
@@ -482,6 +513,9 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
                 report['carry_eval']['setdown_boundary']='zone_entry_v1'
                 write(out/'carry-eval.json',report['carry_eval'])
             report['student_eval']['funnel']=student_funnel.record(report.get('carry_eval'))
+            if hybrid is not None:
+                if student_ep.finished:hybrid.student_finished(now)
+                report['hybrid'].update(hybrid.summary())
         if carry is not None:
             from harness.pair_carry_eval import evaluate,drive_response,phase_report
             lower=next((e['t'] for e in carry.events if e.get('event')=='phase' and e.get('to')=='lower'),None)
