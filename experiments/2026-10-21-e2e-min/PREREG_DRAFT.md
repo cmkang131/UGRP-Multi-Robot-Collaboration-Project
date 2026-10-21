@@ -17,6 +17,7 @@
 | **E2E-1'** (`E2E-1p`) | LLM | ACT 학생(R8 + v7 시계, deadband 2, C2c 구성) | nav r5 코드 | 규칙 스크립트 `release_open_v1` | `[{"stage":"release","by":"rule_script:release_open_v1"}]` | smoke 1(합산하지 않음) + 본 3 | "혼합 E2E(학생 집기 + nav 운반 + 규칙 내려놓기)" |
 | E2E-2 (`E2E-2`) | LLM | ACT 학생 | nav r5 코드 | ACT 학생(release 승자 구성) [확인 필요] | `[]` | 6 | "순수 E2E n/6" |
 
+- **등록 N(고정):** E2E-1' 3, E2E-2 6. smoke는 이 N 밖이며 합산하지 않습니다. `scripts/report_tables.py e2e`(브랜치 `dsh/report-auto`)가 같은 값을 상수로 갖고, 등록 N보다 많은 본 run은 거부합니다.
 - E2E-1' smoke 1회는 배관 확인용입니다. 폐기된 E2E-0이 맡던 역할을 대신합니다. 판정과 합산에는 쓰지 않습니다. smoke를 둘지는 Claude가 [확인 필요]합니다.
 - `release_open_v1`은 자기 명령만 씁니다(GT, 지도, 상단 카메라 없음).
   1. 정지 `stop_ticks`
@@ -42,7 +43,7 @@
 - 실행 순서는 E2E-1' smoke → 본 3회 → (내려놓기 승자가 정해지면) E2E-2 6회입니다. 같은 레벨 안에서는 같은 seed를 반복합니다.
 - run root는 새로 만듭니다: `runs/e2e-min-<level>-<UTC TS>/`.
 - VM은 ACT env와 checkpoint, nav env를 모두 갖춘 L4 한 대입니다. [확인 필요] nav runner admission은 gcp6 전용이고 ACT 자산은 gcp2에 있습니다.
-- 실패와 HOST_ERROR도 분모에 넣습니다.
+- 실패와 HOST_ERROR도 분모에 넣습니다. HOST_ERROR는 재실행하지 않습니다(단독 ACT·공동 운반 tournament와 같은 규칙). 시작하지 못한 run만 순서대로 이어서 돌립니다.
 
 ## 4. 성공 기준 (사전 등록, 결과를 본 뒤 바꾸지 않음)
 run 하나가 성공하려면 아래가 **모두** 참이어야 합니다. 계산은 `harness/e2e_min_eval.evaluate`와 `recount_run`이 합니다.
@@ -83,3 +84,9 @@ run 하나가 성공하려면 아래가 **모두** 참이어야 합니다. 계�
 - E2E-1' 성공은 "학생 집기 + 코드 운반 + 규칙 내려놓기의 통합이 돌아간다"는 증거입니다. 내려놓기를 학생이 해냈다는 증거가 아닙니다.
 - r2의 ACT 집기는 학습 분포(r1 단독) 밖일 수 있습니다.
 - 협력 운반(L2)은 범위 밖입니다.
+
+## 10. 보고 행 (report_tables.py e2e)
+- 행 파일 `e2e-rows.jsonl`은 run root 밖의 새 report 디렉터리에 둡니다. 첫 행은 `{"type":"header","prereg_sha256":"<FROZEN 문서 sha256>"}`입니다.
+- run마다 `{"type":"run","level":"E2E-1p"|"E2E-2","seed":<S>,"smoke":true|false,"status":"complete"|"HOST_ERROR","report_path":"<recount_run 출력 JSON>"}` 한 행을 씁니다. report는 `harness.e2e_min_eval.recount_run(run_dir)` 출력(`ugrp.e2e_min.evaluation.v1`)입니다.
+- HOST_ERROR run은 report 없이 `status: "HOST_ERROR"`만 적어도 되고, 실패로 세며 단계 도달은 0입니다.
+- 명령: `python scripts/report_tables.py e2e --prereg experiments/2026-10-21-e2e-min/PREREG.md --rows <report>/e2e-rows.jsonl --out <report>`.
