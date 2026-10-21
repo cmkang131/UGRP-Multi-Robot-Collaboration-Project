@@ -1,0 +1,124 @@
+{
+ "approach_handoff": false,
+ "cap_end": false,
+ "carry": {
+  "events": [
+   {
+    "beam": [
+     0.7995785474777222,
+     0.1248924657702446,
+     1.902654977996628
+    ],
+    "d12_m": 0.9427009536054242,
+    "event": "handover",
+    "offsets": {
+     "r1": [
+      0.4697708150721554,
+      0.005180942813889644,
+      3.1364323208458424
+     ],
+     "r2": [
+      -0.47286477382501013,
+      -0.005920159521916463,
+      0.04083892635165043
+     ]
+    },
+    "t": 61.70000000000015
+   },
+   {
+    "code": "route_blocked",
+    "detail": {
+     "hit": [
+      "object",
+      0.7884615384615384
+     ],
+     "segment": "to_west_staging"
+    },
+    "event": "fail",
+    "phase": "carry_hold",
+    "t": 61.70000000000015
+   }
+  ],
+  "outcome": "route_blocked"
+ },
+ "carry_eval": {
+  "carried_max_m": 0.0003889406601286522,
+  "contact_source": "gt_geometry_proxy_v1",
+  "criteria": {
+   "carried_min_m": 1.0,
+   "door_clear_m": 0.2,
+   "drop_dwell_s": 0.3,
+   "drop_fall_mps": 0.25,
+   "drop_min_z_m": 0.012,
+   "drop_tilt_deg": 30.0,
+   "released_max_force": 0.5,
+   "rest_max_tilt_deg": 5.0,
+   "rest_max_z_m": 0.006,
+   "rest_still_m": 0.005,
+   "rest_still_s": 1.0,
+   "robot_contact_gap_m": 0.0,
+   "robot_radius_m": 0.17,
+   "wall_contact_gap_m": 0.0,
+   "zone_margin_m": 0.0
+  },
+  "door": "door_wide",
+  "door_passed_t": null,
+  "drive_response": {
+   "affects_phase_timeout": false,
+   "affects_success": false,
+   "criteria": {
+    "max_dt_s": 0.15,
+    "moving_cmd_mps": 0.02,
+    "moving_cmd_radps": 0.05,
+    "stall_ratio": 0.25
+   },
+   "phases": {},
+   "schema": "ugrp.pairact.carry_drive_response.v1",
+   "source": "gt_pose_finite_difference_eval_only"
+  },
+  "drop_events": [],
+  "end_t": 63.30000000000015,
+  "failure": "not_through_door",
+  "final_beam_pose": [
+   0.7996569275856018,
+   0.12453827261924744,
+   1.9033215048371797
+  ],
+  "final_min_z": 0.06375659701365473,
+  "final_tilt_deg": 0.2337836540307107,
+  "funnel": {
+   "carried_1m": false,
+   "door_passed": false,
+   "handover": true,
+   "lowered_resting": false,
+   "released": false,
+   "still_1s": true,
+   "zone_inside_final": false
+  },
+  "handover_t": 61.70000000000015,
+  "lower_start_t": null,
+  "phase_report": {
+   "drive_source": "gt_pose_finite_difference_eval_only",
+   "phases": [],
+   "teacher_outcome": "route_blocked",
+   "timeout_source": "teacher_events"
+  },
+  "placed_in_zone": false,
+  "robot_robot_contact_ticks": 0,
+  "robot_robot_first_t": null,
+  "schema": "ugrp.pairact.carry_eval.v1",
+  "success": false,
+  "wall_contact_bodies": [],
+  "wall_contact_first": null,
+  "wall_contact_ticks": 0,
+  "zone": "zone_B"
+ },
+ "carry_success": false,
+ "data_admitted": false,
+ "end_reason": "teacher_terminal",
+ "grasp_physical_success": true,
+ "physical_success": true,
+ "search_handoff": false,
+ "sim_s": 61.1,
+ "status": "complete"
+}

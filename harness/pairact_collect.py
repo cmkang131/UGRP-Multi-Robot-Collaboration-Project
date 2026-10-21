@@ -704,7 +704,9 @@ def _last_fail(carry):
 
 
 def _record_error(out, reason):
-    return dict(out, category='record_error', outcome='record_error', failure_stage='record', reason=reason)
+    # v5: also when applied to a judged success (runner carry_success check): never S or A
+    return dict(out, category='record_error', outcome='record_error', failure_stage='record', reason=reason,
+                success=False, admitted=False)
 
 
 def judge(result, *, mode, batch_clean, sidecar=None):

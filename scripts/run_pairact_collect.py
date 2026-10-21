@@ -99,8 +99,10 @@ def judge_world(s, case, w, summary, *, mode, clean, read_rows):
         j = pc.judge(result, mode=mode, batch_clean=clean, sidecar=sidecar)
     if w is None and j['outcome'] == 'host_error':
         j['reason'] = summary.get('error_type') or 'world_missing_from_summary'
-    if j['category'] == 'behavior' and j['failure_stage'] != 'grasp' and \
-            w.get('carry_success') != (result.get('carry_eval') or {}).get('success'):
+    # v5: result.carry_eval.success is the single truth.  A summary without worlds[].carry_success (the gcp6
+    # wrapper, gcp2 shard smoke 2026-10-21: 25 record_error) is not a disagreement; a present, different value is.
+    if j['category'] == 'behavior' and j['failure_stage'] != 'grasp' and 'carry_success' in w and \
+            w['carry_success'] != (result.get('carry_eval') or {}).get('success'):
         j = pc._record_error(j, f'summary/result carry_success disagree for seed {s["seed"]}')
     return j, result, sidecar
 
