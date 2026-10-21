@@ -1001,6 +1001,7 @@ def convert_input(prereg, st, out_dir, *, prereg_sha, teacher_sha, run_pattern='
         raise ValueError('convert input needs a training-mode ledger (measurement runs have no tensors)')
     if core is not None and (h.get('freeze_stage') != 'FROZEN' or h.get('core_sha256') != core):
         raise ValueError('convert input needs a FROZEN training ledger bound to the current core_sha256')
+    check_attempt_identity(st)
     d = decision(prereg, st)
     if d['decision'] not in TRAINABLE or d['validation'] in (None, 'pending'):
         raise ValueError(f'convert input refused: decision {d["decision"]}, validation {d["validation"]}')
@@ -1569,6 +1570,29 @@ def check_seed_history(rows):
                 if fresh[key] > 1:
                     raise ValueError(f'seed {key} planned fresh twice')
     return dict(fresh=sum(fresh.values()), requeued=sum(requeued.values()))
+
+
+def check_attempt_identity(st):
+    """v5 (Codex v4 re-review 5): every completed attempt is one planned slot, judged once.
+
+    (batch, slot) appears at most once and names a planned slot with the same seed / split / requeue flag;
+    (split, seed, requeue) appears at most once (a seed is judged fresh once and re-queued at most once).
+    A duplicated append (ledger damage, double sync) would otherwise count twice in N / S / A.
+    Returns the number of attempt rows."""
+    slots, ids = set(), set()
+    for r in st['attempt_rows']:
+        b = st['batches'].get(r.get('batch'))
+        planned = next((s for s in (b or {}).get('slots', []) if s.get('slot') == r.get('slot')), None)
+        if planned is None or (planned['seed'], planned['split'], bool(planned.get('requeue'))) != \
+                (r.get('seed'), r.get('split'), bool(r.get('requeue'))):
+            raise ValueError(f'attempt batch {r.get("batch")} slot {r.get("slot")} seed {r.get("seed")} '
+                             f'is not that planned slot')
+        key, ident = (r['batch'], r['slot']), (r['split'], r['seed'], bool(r.get('requeue')))
+        if key in slots or ident in ids:
+            raise ValueError(f'duplicate attempt: batch {key[0]} slot {key[1]} / {ident} judged twice')
+        slots.add(key)
+        ids.add(ident)
+    return len(st['attempt_rows'])
 
 
 def check_stack_heads(manifest, roots, *, rev_parse=None):

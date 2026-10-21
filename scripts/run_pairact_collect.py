@@ -467,11 +467,12 @@ def merge(run_root, prereg, prereg_sha, count, *, prereg_core=None, out=None):
                 if key in seen:
                     raise ValueError(f'duplicate slot {key}')
                 seen[key] = True
+    st = pc.replay(prereg, rows)
+    pc.check_attempt_identity(st)           # v5: a duplicated completed attempt never reaches the merged report
     out.mkdir(parents=True, exist_ok=True)
     tmp = out / 'ledger.jsonl.tmp'
     tmp.write_text(''.join(json.dumps(r, sort_keys=True, allow_nan=False) + '\n' for r in rows))
     tmp.replace(out / 'ledger.jsonl')
-    st = pc.replay(prereg, rows)
     rep = pc.report(prereg, st, prereg_sha=prereg_sha, prereg_core=prereg_core)
     rep['sharding'] = dict(count=count, **info)
     write(out / 'report.json', rep)
@@ -596,6 +597,7 @@ def main():
         merged_meta(a.run_root, require_finished=False)     # v4: a sharded run root is read through merged/ only
         st = pc.replay(prereg, pc.read_ledger(a.run_root / 'ledger.jsonl'))
         pc.require_header_sha(st, sha, prereg_core)     # audit 2: never relabel a ledger under another prereg
+        pc.check_attempt_identity(st)                   # v5: no completed attempt counted twice
     if a.command == 'merge':
         if not a.shards:
             p.error('merge needs --shards K')

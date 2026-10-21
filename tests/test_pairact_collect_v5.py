@@ -156,3 +156,49 @@ def test_valid_json_without_newline_is_uncommitted_for_reader_and_repair(tmp_pat
     assert pc.read_ledger(torn) == before
     pc.append(torn, PLAN0)
     assert pc.read_ledger(torn) == [h, PLAN0]
+
+
+# ------------------------------------------------------------ 5. completed attempt identity
+
+def test_duplicate_completed_attempt_is_refused_by_merge(tmp_path, prereg):
+    """sharding-probe duplicate_attempt: v4 merged a re-appended attempt as N=41 with finished=true."""
+    from test_pairact_collect_shard import run_cooperative
+    eps = {i: FakeEpisode(lambda s, c: result()) for i in range(2)}
+    run_cooperative(tmp_path, prereg, 2, eps, mode='measurement')
+    rep, meta = runner.merge(tmp_path, prereg, 'sha', 2)
+    assert meta['finished'] and rep['pilot']['attempts'] == 40
+    led = runner.shard_dir(tmp_path, 0) / 'ledger.jsonl'
+    dup = next(r for r in pc.read_ledger(led) if r.get('type') == 'attempt')
+    pc.append(led, copy.deepcopy(dup))
+    with pytest.raises(ValueError, match='duplicate attempt'):
+        runner.merge(tmp_path, prereg, 'sha', 2)
+    assert json.loads((tmp_path / 'merged' / 'report.json').read_text())['pilot']['attempts'] == 40   # not rewritten
+
+
+def test_attempt_identity_audit(prereg):
+    plan = lambda b, seeds, rq=False: dict(type='batch_planned', batch=b, split='train', bin='B0',
+                                           slots=[dict(seed=s, bin='B0', split='train', slot=i, requeue=rq)
+                                                  for i, s in enumerate(seeds)])
+    att = lambda b, slot, seed, rq=False: dict(type='attempt', batch=b, slot=slot, seed=seed, split='train',
+                                               bin='B0', requeue=rq)
+    hdr = pc.header('sha', mode='training', noise='off', batch_size=20)
+    ok = [hdr, plan(0, [1, 2]), att(0, 0, 1), att(0, 1, 2), plan(1, [2], rq=True), att(1, 0, 2, rq=True)]
+    assert pc.check_attempt_identity(pc.replay(prereg, ok)) == 3
+    for rows, match in ((ok + [att(0, 1, 2)], 'duplicate attempt'),
+                        ([hdr, plan(0, [1, 2]), att(0, 0, 2)], 'planned slot'),
+                        ([hdr, plan(0, [1]), att(0, 3, 1)], 'planned slot'),
+                        ([hdr, plan(0, [1]), att(0, 0, 1), plan(1, [1]), att(1, 0, 1)], 'duplicate attempt')):
+        with pytest.raises(ValueError, match=match):
+            pc.check_attempt_identity(pc.replay(prereg, rows))
+
+
+def test_convert_input_refuses_a_duplicated_attempt(tmp_path, prereg):
+    from test_pairact_collect import collect
+    state, st, _ = collect(tmp_path / 'run', prereg, lambda s, c: result())
+    assert state == 'TRAIN'
+    rows = pc.read_ledger(tmp_path / 'run' / 'ledger.jsonl')
+    first = next(r for r in rows if r.get('type') == 'attempt' and r['admitted'])
+    st2 = pc.replay(prereg, rows + [dict(first)])
+    with pytest.raises(ValueError, match='duplicate attempt'):
+        pc.convert_input(prereg, st2, tmp_path / 'out', prereg_sha='sha', teacher_sha='t' * 40)
+    assert not (tmp_path / 'out').exists()
