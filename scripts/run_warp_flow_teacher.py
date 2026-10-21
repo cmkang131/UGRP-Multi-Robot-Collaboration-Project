@@ -118,6 +118,9 @@ def main():
     p=parser();a=p.parse_args()
     if platform.system()!='Linux':
         p.error('Mac physics/render forbidden; approved Linux GCP host required')
+    # pairact -c4: fail closed on MuJoCo/Warp versions before any model or CUDA work
+    from runtime_pins import check as check_runtime_pins,mode_for as runtime_pin_mode
+    runtime_pins=check_runtime_pins(runtime_pin_mode(a.physics_backend,a.export_compiled_only))
     if not 0<a.cap_s<=180 or not 0<a.vm_hourly_usd<float('inf'):
         p.error('finite existing SIM cap and explicit positive hourly price required')
     if a.diagnostic_ticks is not None and a.diagnostic_ticks<=0:
@@ -213,6 +216,7 @@ def main():
         cuda_runtime_profile=('gcp3_isolated_no_mps_v1' if a.gcp3_isolated_v1 else
             'warp4_private_mps_v1' if a.mps_shared_v1 else 'shared_contexts_baseline'),
         price_basis='inherited regional VM estimate; billing unverified',reproduce=sys.argv)
+    report['runtime_pins']=runtime_pins
     if student_eval is not None:
         # P5: success below is the student's (joint hold reached AND the unchanged GT evaluator).
         report.update(model_calls=None,student_eval=dict(student_eval,
@@ -221,6 +225,8 @@ def main():
     lanes=[];bridges=[];contexts=[];results={};recent=[deque(maxlen=100) for _ in indices]
     disk_rings=[DiskRing(a.out/f'world-{i:03d}'/'tail-ring-10hz') for i in range(len(indices))]
     active=np.ones(len(indices),bool);ticks=0;start=time.perf_counter();loop=None
+    # pairact -c4: host-side serial per-world loop cost (hooks.seconds covers physics/render/JPEG)
+    host_loop=Counter()
     try:
         for i,case in enumerate(selected):
             lane,bridge=make_lane(a.adapter_source,a.teacher_source,case['plan'],a.out/f'world-{i:03d}',hooks,i,a.cap_s,
@@ -284,22 +290,27 @@ def main():
         loop=time.perf_counter()
         while active.any():
             for i in np.flatnonzero(active):
+                host_t=time.perf_counter()
                 sample=dict(world_t=float(contexts[i]['world'].data.time),
                     images={r:hooks.capture(i,contexts[i]['world'],r) for r in contexts[i]['ports']})
+                host_loop['capture_s']+=time.perf_counter()-host_t;host_t=time.perf_counter()
                 recent[i].append(sample)
                 disk_rings[i].add(sample['world_t'],sample['images'])
                 if ticks%5==0:
                     for rid,jpg in sample['images'].items():
                         path=a.out/f'world-{i:03d}'/'review-2hz'/rid/f'{ticks:06d}.jpg'
                         path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(jpg)
+                host_loop['rings_review_s']+=time.perf_counter()-host_t;host_t=time.perf_counter()
                 try:next(lanes[i])
                 except StopIteration as done:
                     active[i]=False;results[int(i)]=done.value
+                host_loop['lane_teacher_s']+=time.perf_counter()-host_t;host_loop['world_ticks']+=1
             if active.any():hooks.step(contexts,active)
             ticks+=1
             elapsed=time.perf_counter()-loop
             progress=dict(ticks=ticks,active_N=int(active.sum()),completed_N=len(results),
                 sim_s=ticks*.1,loop_wall_s=elapsed,timing=dict(hooks.seconds))
+            progress['host_loop_s']=dict(host_loop)
             if a.batch_per_world_speed_v1:
                 # User-supplied coordinator decision 2026-10-16, user
                 # unconfirmed: admission uses wall / (batch SIM * world count).
@@ -364,6 +375,7 @@ def main():
                 certification_sha=TEACHER_SHA,teacher_sha=TEACHER_SHA if a.flow=='beampair' else RELEASE_SHA,
                 ast_transforms=[b.transforms for b in bridges]),
             native_initialization_only_sim_s=[float(c['origin']) for c in contexts])
+        report['host_loop_s']=dict(host_loop)
         report['solver_samples']=getattr(hooks,'solver_samples',[])
         sim=sum(r['sim_s'] for r in worlds)
         report.update(aggregate_completed_task_sim_s=sim,loop_wall_s=loop_wall,
