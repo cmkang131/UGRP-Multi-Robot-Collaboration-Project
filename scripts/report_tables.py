@@ -166,7 +166,7 @@ def bar_figure(path, title, groups, series, ylabel='성공 비율 (Wilson 95% CI
     plt.rcParams['axes.unicode_minus'] = False
     k = len(series)
     width = 0.8 / max(k, 1)
-    fig, ax = plt.subplots(figsize=(max(5.0, 1.1 * len(groups) * max(k, 1) + 1.5), 3.8))
+    fig, ax = plt.subplots(figsize=(min(11.0, max(5.0, 0.7 * len(groups) * max(k, 1) + 1.5)), 3.8))
     for j, (label, vals) in enumerate(series):
         xs, ys, lo, hi, texts = [], [], [], [], []
         for i, (n, N) in enumerate(vals):
@@ -176,7 +176,7 @@ def bar_figure(path, title, groups, series, ylabel='성공 비율 (Wilson 95% CI
                 continue
             p = n / N
             a, b = wilson(n, N)
-            xs.append(x), ys.append(p), lo.append(p - a), hi.append(b - p), texts.append(f'{n}/{N}')
+            xs.append(x), ys.append(p), lo.append(max(0.0, p - a)), hi.append(max(0.0, b - p)), texts.append(f'{n}/{N}')
         ax.bar(xs, ys, width * 0.92, yerr=[lo, hi], capsize=3, label=label)
         for x, y, t in zip(xs, ys, texts):
             ax.text(x, min(y + 0.04, 1.02), t, ha='center', fontsize=7)
@@ -447,7 +447,12 @@ def pairact_eval(args, inputs):
                 continue
             f = r.get('funnel', {})
             stop = next((st for st in funnel if f.get(st) is not True), None)
-            row.append('성공' if success(a, r) else f'{stop or "?"}에서 멈춤')
+            if success(a, r):
+                row.append('성공')
+            elif stop is None:
+                row.append('전 단계 도달, 성공 불인정(상태·보정 기록)')
+            else:
+                row.append(f'{stop}에서 멈춤')
         first_fail.append(row)
     body.append('seed별 첫 실패 단계:')
     body.append(md_table(['seed'] + arms, first_fail))

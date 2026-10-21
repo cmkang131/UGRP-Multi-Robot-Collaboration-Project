@@ -158,6 +158,7 @@ TEST_PATTERNS = (
     "tests/test_cloud_preflight.py",
     "tests/test_carry_failure_measurement.py",
     "tests/test_repeated_skill_summary.py",
+    "tests/test_report_tables.py",
     "tests/test_colab_simulation.py",
     "tests/test_cpu_model_diagnostic.py",
     "tests/test_mac_skill_cohort.py",
