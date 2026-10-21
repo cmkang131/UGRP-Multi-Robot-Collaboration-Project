@@ -197,3 +197,24 @@ def test_smoke_eval_module_is_not_imported_by_the_code_path():
     mods = {n.module for n in ast.walk(tree) if isinstance(n, ast.ImportFrom)} | {
         a.name for n in ast.walk(tree) if isinstance(n, ast.Import) for a in n.names}
     assert not {m for m in mods if m and ('hybrid_smoke_eval' in m or 'pair_carry_eval' in m)}
+
+
+def test_smoke_summary_table_from_runner_files(tmp_path):
+    spec = importlib.util.spec_from_file_location('summarize_hybrid_smoke', ROOT/'scripts/summarize_hybrid_smoke.py')
+    sm = importlib.util.module_from_spec(spec); spec.loader.exec_module(sm)
+    run, rows, logged = smoke_episode(FakeWorld())
+    for r in logged:
+        r['eval_only'].update(camera_mount={'height_m': .36, 'pitch_down_deg': 12., 'yaw_rel_deg': 0.},
+                              occlusion={'in_fov': 20, 'blocked_by_beam': 5, 'visible_frac_of_fov': .75})
+    raw = tmp_path/'s'/'world-000'/'raw'; raw.mkdir(parents=True)
+    (raw/'hybrid-drive.jsonl').write_text(''.join(json.dumps(r) + '\n' for r in logged))
+    (raw/'result.json').write_text(json.dumps({'status': 'complete', 'hybrid_smoke': run.summary(),
+                                               'carry': {'code_outcome': 'handed_back', 'place_teacher': None}}))
+    (raw/'carry-eval.json').write_text(json.dumps({'success': False, 'failure': 'not_in_zone',
+                                                   'funnel': {'door_passed': True, 'zone_inside_final': False}}))
+    (tmp_path/'s'/'summary.json').write_text(json.dumps({'worlds': [{'world': 0, 'seed': 8343003, 'success': True}]}))
+    rep = sm.main(['--run', str(tmp_path/'s'), '--out', str(tmp_path/'o')])
+    w = rep['worlds'][0]
+    assert rep['counts'] == {'code_started': 1, 'handed_back': 1, 'through_door': 1, 'carry_success': 0}
+    assert w['camera_height_m']['median'] == pytest.approx(.36) and w['phases']['acquire']['gt_beam_blocked_frac']['median'] == .25
+    assert 'teacher 근거리 + 코드 운반, 학습 아님' in (tmp_path/'o'/'hybrid-smoke-summary.md').read_text()
