@@ -5,7 +5,7 @@
 
 ## 0. 사전 확인 (CPU, 수 분)
 ```
-/home/ubuntu/ugrp-e1-venv/bin/python -m pytest -q tests/test_pairact_collect.py tests/test_pairact_r1.py   # 67 passed 기대
+/home/ubuntu/ugrp-e1-venv/bin/python -m pytest -q tests/test_pairact_collect.py tests/test_pairact_r1.py   # 68 passed 기대
 ```
 
 ## 1. P3 수집 — 성공 시연만 학습 (오프피크)
@@ -32,7 +32,7 @@ done
 (cd $SRC/root && python -m pytest -q tests/test_pairact_p2_root.py)                  # 기대: 10 passed (고정 adapter run() bridge 변환 runner_call=1)
 COL=/home/ugrp/ugrp-sim/src/pairact-r1v2      # 이 브랜치(dsh/pairact-carry-r1-v2) worktree, FROZEN 커밋
 git -C /home/ugrp/ugrp-sim/ugrp worktree add --detach $COL origin/dsh/pairact-carry-r1-v2   # 레포 경로는 [확인 필요]
-cd $COL && python -m pytest -q tests/test_pairact_collect.py tests/test_pairact_r1.py     # 기대: 67 passed
+cd $COL && python -m pytest -q tests/test_pairact_collect.py tests/test_pairact_r1.py     # 기대: 68 passed
 P=$COL/experiments/2026-10-21-pairact-r1/COLLECT_PREREG_DRAFT.json
 M=$COL/experiments/2026-10-21-pairact-r1/RUN_MANIFEST.json
 RUNP=/home/ugrp/ugrp-sim/runs/pairact-p3-pilot-$(date -u +%Y%m%dT%H%M)                  # 새 run root만
@@ -94,14 +94,14 @@ python $COL/scripts/run_pairact_collect.py report --prereg $P --run-root $RUNT  
 ```
 - `report.json`: `A.text`(그대로 인용: 물리 성공 S/시도 N, 최종 채택 A/시도 N), `A.bins`(구간별 N·S·A·성공률·need·환경 실패·생성기 거부·구간 범위 제한·운반 실패 하위 사유), `A.by_seed_phase`(확장 전후), `validation.text`(S/20·A/20), `ks`(세 그룹, pair 단위), `distance_gate`, `decision`, `run_state`.
 - 보고 표기: n/200은 쓰지 않습니다. 200은 채택 목표입니다. pilot은 "수율 측정, 시연 아님"입니다. B(교사 관문 n/40), C(학습 n/20)와 섞지 않습니다.
-- 멈춤·판정(사전 등록 `stop_rules`·`training_decision`): STOP_RECORD(필수 필드 누락 → 새 run root), STOP_HOST(batch 2개 연속 비정상), STOP_DISTANCE, STOP_TARGET(채택 200 ∧ 구간마다 ≥20 또는 구간 범위 제한), STOP_ALL_BINS_LIMITED, STOP_CAP(시도 600), STOP_SEEDS(seed 소진, 환경 실패로 시도 <600일 수 있음). 판정: TRAIN / TRAIN_DATA_RANGE_LIMITED / NO_TRAIN_BELOW_MINIMUM / NO_TRAIN_DISTANCE_GATE / NO_TRAIN_VALIDATION_INSUFFICIENT / NO_TRAIN_RECORD_ERROR. MAX_BATCHES·DEADLINE은 다음 밤 같은 명령으로 이어갑니다.
+- 멈춤·판정(사전 등록 `stop_rules`·`training_decision`): STOP_RECORD(필수 필드 누락 → 새 run root), STOP_HOST(batch 2개 연속 비정상), STOP_DISTANCE, STOP_TARGET(채택 200 ∧ 구간마다 ≥20 또는 구간 범위 제한), STOP_ALL_BINS_LIMITED, STOP_CAP(시도 600), STOP_SEEDS(seed 소진, 환경 실패로 시도 <600일 수 있음). 판정(4단계): TRAIN(A≥150 ∧ 구간마다 ≥20) / TRAIN_DATA_RANGE_LIMITED(A≥150, 구간 부족 표기) / TRAIN_SMALL_DATA(80≤A<150, '소량 데이터(A<150)' 표기, 퍼널 중심 해석) / NO_TRAIN_BELOW_FLOOR(A<80, P2로 복귀·보고) / NO_TRAIN_DISTANCE_GATE / NO_TRAIN_VALIDATION_INSUFFICIENT / NO_TRAIN_RECORD_ERROR. MAX_BATCHES·DEADLINE은 다음 밤 같은 명령으로 이어갑니다.
 - DART 노이즈는 기본 off입니다.
 
-### 1-4. 변환 입력 (학습 모드, 판정 TRAIN 또는 TRAIN_DATA_RANGE_LIMITED, validation 끝난 뒤)
+### 1-4. 변환 입력 (학습 모드, 판정 TRAIN·TRAIN_DATA_RANGE_LIMITED·TRAIN_SMALL_DATA, validation 끝난 뒤)
 ```bash
 python $COL/scripts/run_pairact_collect.py convert-input --prereg $P --run-root $RUNT \
   --teacher-sha 4b080d35a3dcbbd8fb8a992e1f1106a7289757b2 --out $RUNT/convert-input
-# -> seed-<seed>/{SOURCE_SHA,EXIT,raw -> 원본 world raw symlink} + protocol.json(train/validation = 채택 seed, decision, data_range_limited)
+# -> seed-<seed>/{SOURCE_SHA,EXIT,raw -> 원본 world raw symlink} + protocol.json(train/validation = 채택 seed, decision, data_range_limited, small_data, result_labels — 결과 보고에 그대로 표기)
 ```
 원장 header의 사전 등록 sha256이 다르거나 판정이 학습 불가면 runner가 거부합니다. [확인 필요] world result.json의 `source_sha`가 teacher -c2 SHA(4b080d35)인지 첫 배치에서 확인합니다(convert가 대조).
 

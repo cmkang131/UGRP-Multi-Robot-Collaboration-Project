@@ -1,7 +1,7 @@
 {
   "schema": "ugrp.pairact_r1.collect_prereg.v2",
   "status": "READY_FOR_REVIEW",
-  "revision": "v2 (2026-10-21): Codex gpt-6-astra review 01-collect-prereg-review.md 13 items + repo audit 03 items 1/2/4 + owner decisions 1-13 (task 11cb2d69). Response table: experiments/2026-10-21-pairact-r1/CODEX_RESPONSE_V2.md",
+  "revision": "v2 (2026-10-21): Codex gpt-6-astra review 01-collect-prereg-review.md 13 items + repo audit 03 items 1/2/4 + owner decisions 1-13 (task 11cb2d69). Response table: experiments/2026-10-21-pairact-r1/CODEX_RESPONSE_V2.md; decision 4 tiers per owner answer 2026-10-21 (80 floor)",
   "freeze_rule": "Codex re-review, then status FROZEN together with RUN_MANIFEST.json (all [VM 기입] filled by DeepSeek before the freeze commit). The prereg sha256 is written into every ledger header and into RUN_MANIFEST.json. Training mode refuses any status other than FROZEN; measurement (pilot) mode accepts READY_FOR_REVIEW or FROZEN. report and convert-input refuse a ledger whose header sha256 differs from the prereg passed on the command line. No field changes during collection.",
   "decision_source": "outputs/reports/claude-arch-parallel-20261019/pairact-success-filter-decision.md (2026-10-20, success-filtered BC adopted; P1 tournament non-blocking)",
   "start_trigger": {
@@ -9,8 +9,16 @@
     "evidence": {
       "run": "gcp6 /home/ugrp/ugrp-sim/runs/pairact-p2/smoke-1c (status complete, HOST_ERROR 0, wall 1501 s)",
       "stack": "root dsh/pairact-p2-carrypath-r 0e60345d7, teacher pin 59299f903, adapter pin 6843fcaa9 (Codex follow-up REVIEW.md table; raw not independently recounted)",
-      "seeds": [8420001, 8420011, 8420017],
-      "carry_outcome": {"8420001": "carry_eval.success false, failure not_through_door, carried_max_m 0.000576", "8420011": "carry_eval.success true", "8420017": "carry_eval.success true"},
+      "seeds": [
+        8420001,
+        8420011,
+        8420017
+      ],
+      "carry_outcome": {
+        "8420001": "carry_eval.success false, failure not_through_door, carried_max_m 0.000576",
+        "8420011": "carry_eval.success true",
+        "8420017": "carry_eval.success true"
+      },
       "full_path_success": "2/3 (P2 smoke trigger only; not a teacher reliability rate, never pooled with A/B/C)",
       "report_file": "outputs/reports/pairact-p2-teacher-clips-20261020.md sha256 1197dc28e64711aa88b8031cb0406f9456687b56a54a6a05d23ee79c8fba75e4",
       "summary_json_sha256": "[VM 기입] sha256 of smoke-1c/summary.json (filled into RUN_MANIFEST.json smoke.summary_sha256 before FROZEN)",
@@ -40,8 +48,17 @@
       "interrupted_twice": "after MAX_TRIES=2 tries without a final summary the remaining slots are environment host_error (closed as unclean)"
     },
     "required_fields": {
-      "result_complete": ["grasp_physical_success (bool)", "search_handoff (bool)", "approach_handoff (bool)", "data_admitted (bool)", "end_reason"],
-      "result_after_grasp": ["carry (dict with outcome and events list)", "carry_eval (dict with success bool, failure, drop_events list, robot_robot_contact_ticks int)"],
+      "result_complete": [
+        "grasp_physical_success (bool)",
+        "search_handoff (bool)",
+        "approach_handoff (bool)",
+        "data_admitted (bool)",
+        "end_reason"
+      ],
+      "result_after_grasp": [
+        "carry (dict with outcome and events list)",
+        "carry_eval (dict with success bool, failure, drop_events list, robot_robot_contact_ticks int)"
+      ],
       "summary_world": "carry_success must equal carry_eval.success",
       "missing_or_wrong_type": "record_error: the attempt is neither success nor failure, it is rejected; STOP_RECORD stops collection after that batch (no defaults such as 0 drops or physical_success fallback)"
     }
@@ -49,7 +66,11 @@
   "success": {
     "id": "pairact_r1_collect_success_v2",
     "physical_success_S": "world status complete AND grasp_physical_success is true AND carry_eval.success is true AND carry_eval.drop_events == [] AND carry_eval.robot_robot_contact_ticks == 0 (P2 evaluator harness/pair_carry_eval.evaluate unchanged)",
-    "recorded_only": ["wall_contact_* (never a failure)", "drive_response", "phase_report"],
+    "recorded_only": [
+      "wall_contact_* (never a failure)",
+      "drive_response",
+      "phase_report"
+    ],
     "truth_scope": "GT is read only by the eval-only evaluator after the episode; never by the teacher controller or student inputs"
   },
   "filter": {
@@ -64,7 +85,17 @@
   "carry_failure_detail": {
     "id": "carry_subreason_v1",
     "why": "world 1 of smoke-1c (seed 8420001) failed not_through_door with 0.6 mm displacement and an unknown cause (02-world1-failure.md); the evaluator label is a priority label, not a root cause",
-    "fields_per_attempt": ["failure_stage (grasp | carry)", "eval_failure (carry_eval.failure: drop, robot_robot_contact, not_through_door, not_in_zone, not_resting, not_released, not_still)", "carry_outcome (teacher carry.outcome as written, e.g. route_blocked, door_pass_timeout, carry_total_timeout, command_sequence_complete)", "carry_fail (last carry.events entry with event == fail: code, phase, detail)", "funnel_last", "carried_max_m", "drop_kinds", "end_reason", "cap_end"],
+    "fields_per_attempt": [
+      "failure_stage (grasp | carry)",
+      "eval_failure (carry_eval.failure: drop, robot_robot_contact, not_through_door, not_in_zone, not_resting, not_released, not_still)",
+      "carry_outcome (teacher carry.outcome as written, e.g. route_blocked, door_pass_timeout, carry_total_timeout, command_sequence_complete)",
+      "carry_fail (last carry.events entry with event == fail: code, phase, detail)",
+      "funnel_last",
+      "carried_max_m",
+      "drop_kinds",
+      "end_reason",
+      "cap_end"
+    ],
     "report": "per bin table of failure_stage:eval_failure:carry_outcome counts"
   },
   "recording_admission": {
@@ -85,17 +116,64 @@
     "id": "pairact_r1_start_bins_v1",
     "unit": "pair episode; both robots of one attempt are drawn inside the same bin (not independent robot-level uniform draws)",
     "distance": "planar distance from the robot spawn to the grasp point of its assigned beam end (start_layers.<rid>.target_distance_m)",
-    "distance_edges_m": [0.3, 0.6, 0.9, 1.2],
+    "distance_edges_m": [
+      0.3,
+      0.6,
+      0.9,
+      1.2
+    ],
     "yaw": "own heading offset relative to the assigned-end outward direction (wide_start convention). facing: wrapped offset within 90 deg of pi (robot looks at its end); away: otherwise",
     "roles": "r1 end = teal if random.Random('pairact_r1_collect_v1:<seed>:role').random() < 0.5 else blue (not seed parity, which would tie roles to round-robin bins)",
     "position_bearing": "radially outward from the assigned end (wide_start bearing bin 0), unchanged from the r13 wide gate",
     "list": [
-      {"id": "B0", "distance_m": [0.3, 0.6], "yaw": "facing"},
-      {"id": "B1", "distance_m": [0.3, 0.6], "yaw": "away"},
-      {"id": "B2", "distance_m": [0.6, 0.9], "yaw": "facing"},
-      {"id": "B3", "distance_m": [0.6, 0.9], "yaw": "away"},
-      {"id": "B4", "distance_m": [0.9, 1.2], "yaw": "facing"},
-      {"id": "B5", "distance_m": [0.9, 1.2], "yaw": "away"}
+      {
+        "id": "B0",
+        "distance_m": [
+          0.3,
+          0.6
+        ],
+        "yaw": "facing"
+      },
+      {
+        "id": "B1",
+        "distance_m": [
+          0.3,
+          0.6
+        ],
+        "yaw": "away"
+      },
+      {
+        "id": "B2",
+        "distance_m": [
+          0.6,
+          0.9
+        ],
+        "yaw": "facing"
+      },
+      {
+        "id": "B3",
+        "distance_m": [
+          0.6,
+          0.9
+        ],
+        "yaw": "away"
+      },
+      {
+        "id": "B4",
+        "distance_m": [
+          0.9,
+          1.2
+        ],
+        "yaw": "facing"
+      },
+      {
+        "id": "B5",
+        "distance_m": [
+          0.9,
+          1.2
+        ],
+        "yaw": "away"
+      }
     ],
     "draw_within_bin": "per robot: distance uniform in the bin range, yaw offset uniform in the bin half-circle, rng = random.Random('pairact_r1_collect_v1:<seed>:<bin id>:<robot index>') (str seed, sha512, independent of PYTHONHASHSEED) [setup only]",
     "min_admitted_per_bin": 20,
@@ -114,7 +192,9 @@
     "not_a_denominator": "200 is the admitted target and a stop condition, never a denominator. Reports use S/N and A/N (N = behavior attempts) and validation S/20, A/20",
     "attempt_definition": "N counts behavior attempts only (status table). Environment failures consume their seed but are not attempts",
     "overshoot": "a batch that crosses 200 runs to its end; every admitted episode of that batch is kept (no trimming, trimming would be a selection)",
-    "rationale": "200 = TRAIN200 of solo ACT R8 and close to beamact2's 185 successful pairs; 150 = 75% of it, the smallest set the success-filter decision accepts; 600 = 200 / 0.33 assumed yield (decision doc 3); 20 per bin x 6 = 120 < 150, so the per-bin minimum and the total minimum are separate AND conditions"
+    "rationale": "200 = TRAIN200 of solo ACT R8 and close to beamact2's 185 successful pairs; 150 = 75% of it, the smallest set the success-filter decision accepts; 600 = 200 / 0.33 assumed yield (decision doc 3); 20 per bin x 6 = 120 < 150, so the per-bin minimum and the total minimum are separate AND conditions; 80 = training floor (owner 2026-10-21, fixed before any result): below it no training, back to P2",
+    "admitted_floor_pairs": 80,
+    "replaces_decision_doc": "the decision document's '진행 가능한 최소치 150' (pairact-success-filter-decision.md section 3) is replaced by the four training_decision tiers; 150 now separates TRAIN* from TRAIN_SMALL_DATA and 80 is the no-training floor"
   },
   "stop_rules": {
     "order": "evaluated at every batch boundary in this order; the first true rule stops train collection",
@@ -130,23 +210,32 @@
     "seed_consumption_note": "environment failures consume seeds without adding to N, so STOP_SEEDS can occur with N < 600 (e.g. 600 seeds / 599 attempts after one final HOST_ERROR). STOP_SEEDS is treated exactly like STOP_CAP; there is no seed range beyond 8340599 and no replacement seed"
   },
   "training_decision": {
-    "id": "train_permission_v1",
-    "rule": "after a train stop: NO_TRAIN_RECORD_ERROR if STOP_RECORD; else NO_TRAIN_BELOW_MINIMUM if A < 150; else NO_TRAIN_DISTANCE_GATE if the distance gate fails on the final admitted set; else TRAIN if every bin A_b >= 20, otherwise TRAIN_DATA_RANGE_LIMITED (bins below 20 listed with cause bin_limited or the stop rule). Then validation runs (only for TRAIN or TRAIN_DATA_RANGE_LIMITED) and the validation gate may turn it into NO_TRAIN_VALIDATION_INSUFFICIENT",
+    "id": "train_permission_v2",
+    "rule": "after a train stop: NO_TRAIN_RECORD_ERROR if STOP_RECORD; else NO_TRAIN_BELOW_FLOOR if A < 80; else NO_TRAIN_DISTANCE_GATE if the distance gate fails on the final admitted set; else the tiers above (TRAIN_SMALL_DATA if A < 150, TRAIN_DATA_RANGE_LIMITED if some bin < 20, TRAIN otherwise). Then validation runs for any TRAIN* decision and the validation gate may turn it into NO_TRAIN_VALIDATION_INSUFFICIENT",
     "per_stop": {
       "STOP_TARGET": "TRAIN, or TRAIN_DATA_RANGE_LIMITED when some bin is bin_limited",
-      "STOP_CAP": "A >= 150 and all bins >= 20 -> TRAIN; A >= 150 and some bin < 20 -> TRAIN_DATA_RANGE_LIMITED; A < 150 -> NO_TRAIN_BELOW_MINIMUM (report to Claude)",
+      "STOP_CAP": "tiers 1-4 on the admitted set: A >= 150 -> TRAIN / TRAIN_DATA_RANGE_LIMITED; 80 <= A < 150 -> TRAIN_SMALL_DATA; A < 80 -> NO_TRAIN_BELOW_FLOOR (back to P2, report)",
       "STOP_SEEDS": "same as STOP_CAP (N may be < 600 because environment failures consumed seeds)",
       "STOP_HOST": "same as STOP_CAP on the attempts so far; the run root is closed for train collection. Validation is run only by a later invocation with --validation-after-host-fix after DeepSeek reports the host fix; its own HOST_ERRORs follow the status table",
       "STOP_ALL_BINS_LIMITED": "same as STOP_CAP",
       "STOP_DISTANCE": "NO_TRAIN_DISTANCE_GATE; stop and report, no extra collection and no post-hoc seed selection",
       "STOP_RECORD": "NO_TRAIN_RECORD_ERROR; the recorder/judge is fixed and a NEW run root with a new prereg revision is used"
     },
-    "data_range_limited_label": "every result trained on TRAIN_DATA_RANGE_LIMITED data carries '데이터 범위 제한' with the list of bins and their A_b",
-    "pending_owner_answer": "[확인 필요] interpretation (가) A < 150 -> no training was asked to the parent on 2026-10-21; if the owner chooses (나), only this rule text and pairact_collect.decision change"
+    "data_range_limited_label": "results on TRAIN_DATA_RANGE_LIMITED (or TRAIN_SMALL_DATA with bins < 20) carry '데이터 범위 제한(구간 부족: <bin list>)' with each bin's A_b; TRAIN_SMALL_DATA results also carry '소량 데이터(A<150)'",
+    "tiers": [
+      "1. A >= 150 AND every bin A_b >= 20 -> TRAIN (normal)",
+      "2. A >= 150 AND some bin A_b < 20 -> TRAIN_DATA_RANGE_LIMITED; every result carries '데이터 범위 제한(구간 부족: <bin list>)'",
+      "3. 80 <= A < 150 -> TRAIN_SMALL_DATA; every result carries '소량 데이터(A<150)' (plus the range label if bins < 20) and interpretation is limited to the stage funnel. Rationale: with the 11/5 schedule one train+eval pass is needed to see the failing stage, and training (~4.6 GPU-h) costs less than a collection retry. Fixed before seeing any result",
+      "4. A < 80 -> NO_TRAIN_BELOW_FLOOR: no training; return to the P2 teacher carry path and report it"
+    ],
+    "owner_answer": "2026-10-21 owner answer to task 11cb2d69: interpretation (가) plus the 80 floor (tiers above)"
   },
   "allocation": {
     "id": "deficit_weighted_v2",
-    "params": {"warmup_attempts": 4, "p_floor": 0.05},
+    "params": {
+      "warmup_attempts": 4,
+      "p_floor": 0.05
+    },
     "adaptive": "adaptive collection: the bin of the next train attempt depends on earlier outcomes. Seeds are consumed in strict ascending order independent of the bin, so the start of a seed depends on the ledger. Yields are therefore adaptive-collection yields, not the yield of the original robot-level uniform start distribution; reports give per-bin tables and primary (8340000-199) vs extension (8340200-599) tables separately",
     "batch_size": "fixed per run root (--batch-size, default 20); recorded in the ledger header",
     "quantity": "success_b in every rule below is A_b (admitted, the same quantity as the stop rules); N_b is behavior attempts",
@@ -164,18 +253,45 @@
   },
   "seeds": {
     "consumption": "per split, new attempts take the next unused seed in strict ascending order regardless of bin; a HOST_ERROR re-queue reuses its own seed and bin and consumes no new seed; setup rejections and admission errors consume the seed and are never re-queued",
-    "pilot": {"first": 8343000, "last": 8343039, "rule": "measurement mode only (recording off, candidate pairact_p2_r13): yield, bins and wall/SIM. Bin = (seed - 8343000) % 6, no adaptive allocation. Never in tensors, never pooled with A of the training run. Also the source of the 3 recording-probe starts"},
-    "train_primary": {"first": 8340000, "last": 8340199},
-    "train_extension": {"first": 8340200, "last": 8340599, "rule": "used only after 8340199 is consumed"},
-    "validation": {"first": 8341000, "last": 8341019, "rule": "training mode only and only after the train stop (never during or before collection, never in measurement mode). Bin = index % 6, collected once each, HOST_ERROR re-queued once, not counted toward targets, cap or allocation; admitted episodes go to validation tensors"},
-    "heldout": {"first": 8342000, "last": 8342019, "rule": "never collected; P5 only (PAIRACT_R1_EVAL_PREREG_DRAFT.json heldout)"},
+    "pilot": {
+      "first": 8343000,
+      "last": 8343039,
+      "rule": "measurement mode only (recording off, candidate pairact_p2_r13): yield, bins and wall/SIM. Bin = (seed - 8343000) % 6, no adaptive allocation. Never in tensors, never pooled with A of the training run. Also the source of the 3 recording-probe starts"
+    },
+    "train_primary": {
+      "first": 8340000,
+      "last": 8340199
+    },
+    "train_extension": {
+      "first": 8340200,
+      "last": 8340599,
+      "rule": "used only after 8340199 is consumed"
+    },
+    "validation": {
+      "first": 8341000,
+      "last": 8341019,
+      "rule": "training mode only and only after the train stop (never during or before collection, never in measurement mode). Bin = index % 6, collected once each, HOST_ERROR re-queued once, not counted toward targets, cap or allocation; admitted episodes go to validation tensors"
+    },
+    "heldout": {
+      "first": 8342000,
+      "last": 8342019,
+      "rule": "never collected; P5 only (PAIRACT_R1_EVAL_PREREG_DRAFT.json heldout)"
+    },
     "overlap_check": "pilot, train, validation and heldout are pairwise disjoint and disjoint from seeds.json known_ranges (harness.pairact_collect.check_seed_ranges at load; scripts/check_pairact_r1_seeds.py --scan-refs for git refs, output saved as seed-check.json in the run root)"
   },
   "validation_gate": {
     "id": "validation_minimum_v1",
     "rule": "after validation: admitted validation pairs >= 8 of 20 AND the union of sidecar stages over admitted validation episodes contains approach, alignment, ready, execute, carry, place, complete. Otherwise NO_TRAIN_VALIDATION_INSUFFICIENT: stop and report; no extra validation seeds, no replacement, no relaxing",
     "min_admitted": 8,
-    "required_stages": ["approach", "alignment", "ready", "execute", "carry", "place", "complete"],
+    "required_stages": [
+      "approach",
+      "alignment",
+      "ready",
+      "execute",
+      "carry",
+      "place",
+      "complete"
+    ],
     "rationale": "OFFLINE_GATE G4 needs every registered transition present in validation and fails otherwise; 8 pairs = 16 robot streams give >= 16 instances per transition so the 0.80 recall threshold is resolved at 1/16; the required stages are the RUNBOOK section 2 missing_stages list (recover may be absent)",
     "report": "validation S/20 and A/20 with environment failures listed separately"
   },
@@ -196,7 +312,13 @@
     "id": "start_distance_gate_v2",
     "applies_to": "robot-level start distances of ADMITTED train pair episodes (both robots of every admitted pair)",
     "rule": "all nine 0.1 m bins of [0.3, 1.2] occupied AND share of distances > 0.8 m >= 25%",
-    "edges": {"first_m": 0.3, "width_m": 0.1, "n": 9, "over_m": 0.8, "min_share_over": 0.25},
+    "edges": {
+      "first_m": 0.3,
+      "width_m": 0.1,
+      "n": 9,
+      "over_m": 0.8,
+      "min_share_over": 0.25
+    },
     "when": "at every batch boundary once A >= 150 (STOP_DISTANCE) and on the final admitted set (training_decision)",
     "on_failure": "stop and report; no post-hoc seed selection, no extra collection, no relaxing",
     "rationale": "uniform 0.3-1.2 m gives 44% above 0.8 m; 25% keeps the beamact4 failure mode (TRAIN 0.09% above 0.8 m) out while allowing the far bins to be bin_limited"
@@ -226,7 +348,7 @@
     "status table and batch rule: complete/cap_end/mission failures in N; HOST_ERROR/admission excluded and counted; unclean batch admits nothing (audit 1)",
     "required fields rejected, never defaulted; sidecar before eligible",
     "S/N, A/N, validation S/20 separated; 200 is not a denominator; pair episode unit",
-    "training decision for every stop rule, incl. 600 seeds / 599 attempts",
+    "training decision tiers (150 / per-bin 20 / 80 floor) for every stop rule, incl. 600 seeds / 599 attempts",
     "adaptive allocation disclosed; warmup any-bin rule; A_b used everywhere; constant rationale",
     "distance gate on admitted starts, in the stop rules, no post-hoc selection",
     "three-group pair-level KS",

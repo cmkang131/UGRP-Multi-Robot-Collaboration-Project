@@ -40,7 +40,7 @@ WORLD_STATUS = {'complete': 'behavior', 'HOST_ERROR': 'environment', 'interrupte
                 'running': 'environment'}
 REQUIRED_BOOL = ('grasp_physical_success', 'search_handoff', 'approach_handoff', 'data_admitted')
 TRAIN_STOPS_WITH_VALIDATION = ('STOP_TARGET', 'STOP_CAP', 'STOP_SEEDS', 'STOP_ALL_BINS_LIMITED', 'STOP_HOST')
-TRAINABLE = ('TRAIN', 'TRAIN_DATA_RANGE_LIMITED')
+TRAINABLE = ('TRAIN', 'TRAIN_DATA_RANGE_LIMITED', 'TRAIN_SMALL_DATA')
 
 
 # ------------------------------------------------------------------ prereg
@@ -364,9 +364,13 @@ def validation_gate(prereg, st):
 
 
 def decision(prereg, st):
-    """training_decision.rule; the validation gate applies once validation is done."""
+    """training_decision tiers (owner 2026-10-21); the validation gate applies once validation is done.
+
+    A >= 150 and all bins >= 20 -> TRAIN; A >= 150, some bin < 20 -> TRAIN_DATA_RANGE_LIMITED;
+    80 <= A < 150 -> TRAIN_SMALL_DATA (funnel-centred interpretation); A < 80 -> NO_TRAIN_BELOW_FLOOR.
+    """
     stop = train_stop(prereg, st)
-    out = dict(train_stop=stop, decision='COLLECTING', limited_bins=[], validation=None)
+    out = dict(train_stop=stop, decision='COLLECTING', limited_bins=[], validation=None, labels=[])
     if stop is None:
         return out
     t, per = totals(st), bin_counts(prereg, st)
@@ -376,12 +380,18 @@ def decision(prereg, st):
                            for b in bin_ids(prereg) if per[b]['admitted'] < min_bin]
     if stop == 'STOP_RECORD':
         out['decision'] = 'NO_TRAIN_RECORD_ERROR'
-    elif t['admitted'] < prereg['targets']['admitted_minimum_pairs']:
-        out['decision'] = 'NO_TRAIN_BELOW_MINIMUM'
+    elif t['admitted'] < prereg['targets']['admitted_floor_pairs']:
+        out['decision'] = 'NO_TRAIN_BELOW_FLOOR'
     elif not distance_gate(prereg, st)['passed']:
         out['decision'] = 'NO_TRAIN_DISTANCE_GATE'
+    elif t['admitted'] < prereg['targets']['admitted_minimum_pairs']:
+        out['decision'] = 'TRAIN_SMALL_DATA'
     else:
         out['decision'] = 'TRAIN_DATA_RANGE_LIMITED' if out['limited_bins'] else 'TRAIN'
+    if out['decision'] == 'TRAIN_SMALL_DATA':
+        out['labels'].append('소량 데이터(A<150): 결과 해석은 단계 퍼널 중심으로 제한')
+    if out['decision'] in TRAINABLE and out['limited_bins']:
+        out['labels'].append('데이터 범위 제한(구간 부족: ' + ', '.join(x['bin'] for x in out['limited_bins']) + ')')
     if out['decision'] in TRAINABLE and stop in TRAIN_STOPS_WITH_VALIDATION:
         if validation_done(prereg, st):
             out['validation'] = validation_gate(prereg, st)
@@ -716,7 +726,8 @@ def report(prereg, st, *, prereg_sha):
     out['ks'] = ks_groups(rows)
     out['distance_gate'] = distance_gate(prereg, st)
     out['decision'] = decision(prereg, st)
-    out['data_range_limited'] = out['decision']['decision'] == 'TRAIN_DATA_RANGE_LIMITED'
+    out['data_range_limited'] = bool(out['decision']['limited_bins']) and out['decision']['decision'] in TRAINABLE
+    out['result_labels'] = out['decision']['labels']
     out['recover_rows_admitted'] = sum((r.get('sidecar') or {}).get('recover_rows', 0) for r in rows if r['admitted'])
     return out
 
@@ -773,7 +784,8 @@ def convert_input(prereg, st, out_dir, *, prereg_sha, teacher_sha, run_pattern='
         (train if r['split'] == 'train' else val).append(r['seed'])
     protocol = dict(train_seeds=sorted(train), validation_seeds=sorted(val), run_pattern=run_pattern,
                     teacher_sha=teacher_sha, prereg_sha256=prereg_sha, decision=d['decision'],
-                    data_range_limited=d['decision'] == 'TRAIN_DATA_RANGE_LIMITED', limited_bins=d['limited_bins'],
+                    data_range_limited=bool(d['limited_bins']), small_data=d['decision'] == 'TRAIN_SMALL_DATA',
+                    result_labels=d['labels'], limited_bins=d['limited_bins'],
                     admission='pairact_r1 success_only_v2 (COLLECT_PREREG v2)')
     (out_dir / 'protocol.json').write_text(json.dumps(protocol, indent=1) + '\n')
     return protocol

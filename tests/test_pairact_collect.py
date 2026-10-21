@@ -435,21 +435,42 @@ def test_stop_target_needs_every_bin_and_overshoot_is_kept(tmp_path, prereg):
     assert pc.totals(st30)['admitted'] == 210 and state == 'TRAIN'
 
 
-def test_stop_cap_decisions_below_minimum_and_range_limited(prereg):
-    """Owner 4: STOP_CAP -> NO_TRAIN_BELOW_MINIMUM (A<150) / TRAIN_DATA_RANGE_LIMITED (bins<20)."""
+def _cap_state(prereg, n_ok, skip_bin=None):
     ok = pc.judge(result(), mode='measurement', batch_clean=True)
     fail = pc.judge(result(success=False), mode='measurement', batch_clean=True)
     rows = []
-    seeds = iter(pc.pool(prereg, 'train'))
     for k in range(600):
         b = pc.bin_ids(prereg)[k % 6]
         d, y = pc.draw_start(prereg, 8340000 + k, b, 0)
         start = {'r1': dict(distance_m=d, yaw_offset_rad=y), 'r2': dict(distance_m=d, yaw_offset_rad=y)}
-        rows.append(attempt_row(next(seeds), b, ok if k < 120 else fail, start=start))
-    st = ledger_state(prereg, rows)
+        rows.append(attempt_row(8340000 + k, b, ok if k < n_ok and b != skip_bin else fail, start=start))
+    return ledger_state(prereg, rows)
+
+
+def test_training_decision_four_tiers(prereg):
+    """Owner answer 2026-10-21: 150 / per-bin 20 / 80 floor, fixed before any result."""
+    t = prereg['training_decision']
+    assert len(t['tiers']) == 4 and prereg['targets']['admitted_floor_pairs'] == 80
+    assert '진행 가능한 최소치 150' in prereg['targets']['replaces_decision_doc']
+    st = _cap_state(prereg, 180)                       # A = 180, every bin 30
     d = pc.decision(prereg, st)
-    assert d['train_stop'] == 'STOP_CAP' and d['decision'] == 'NO_TRAIN_BELOW_MINIMUM'
-    # 155 admitted, B5 short of 20 -> data range limited
+    assert d['train_stop'] == 'STOP_CAP' and d['decision'] == 'TRAIN' and d['labels'] == []
+    st = _cap_state(prereg, 120)                       # A = 120 -> small data
+    d = pc.decision(prereg, st)
+    assert pc.totals(st)['admitted'] == 120 and d['decision'] == 'TRAIN_SMALL_DATA'
+    assert d['labels'] == ['소량 데이터(A<150): 결과 해석은 단계 퍼널 중심으로 제한']
+    st = _cap_state(prereg, 96, skip_bin='B5')         # A = 80, B5 = 0 -> small data + range label
+    d = pc.decision(prereg, st)
+    assert pc.totals(st)['admitted'] == 80 and d['decision'] == 'TRAIN_SMALL_DATA'
+    assert d['labels'][1] == '데이터 범위 제한(구간 부족: B0, B1, B2, B3, B4, B5)'   # 16 each, B5 0
+    st = _cap_state(prereg, 78)                        # A = 78 < 80 -> no training, back to P2
+    assert pc.decision(prereg, st)['decision'] == 'NO_TRAIN_BELOW_FLOOR'
+
+
+def test_stop_cap_decisions_range_limited(prereg):
+    # 160 admitted, B5 short of 20 -> data range limited
+    ok = pc.judge(result(), mode='measurement', batch_clean=True)
+    fail = pc.judge(result(success=False), mode='measurement', batch_clean=True)
     rows = []
     for k in range(600):
         b = pc.bin_ids(prereg)[k % 6]
@@ -462,6 +483,7 @@ def test_stop_cap_decisions_below_minimum_and_range_limited(prereg):
     assert pc.totals(st)['admitted'] == 160
     assert d['decision'] == 'TRAIN_DATA_RANGE_LIMITED' and [x['bin'] for x in d['limited_bins']] == ['B5']
     assert d['limited_bins'][0]['cause'] == 'STOP_CAP' and d['validation'] == 'pending'
+    assert d['labels'] == ['데이터 범위 제한(구간 부족: B5)']
 
 
 def test_stop_seeds_with_599_attempts_after_final_host_error(tmp_path, prereg):
@@ -476,7 +498,7 @@ def test_stop_seeds_with_599_attempts_after_final_host_error(tmp_path, prereg):
     st = ledger_state(prereg, planned + rows + [attempt_row(8340599, 'B0', host, batch=1)])
     assert pc.totals(st)['attempts'] == 599 and pc.totals(st)['env_failures'] == 2
     assert pc.train_stop(prereg, st) == 'STOP_SEEDS'
-    assert pc.decision(prereg, st)['decision'] == 'NO_TRAIN_BELOW_MINIMUM'
+    assert pc.decision(prereg, st)['decision'] == 'NO_TRAIN_BELOW_FLOOR'
     assert 'STOP_SEEDS' in prereg['stop_rules']['seed_consumption_note'] and '599' in \
         prereg['stop_rules']['seed_consumption_note']
 
@@ -536,7 +558,7 @@ def test_bin_limit_closes_hopeless_bin_and_marks_range_limited(tmp_path, prereg)
 
 def test_all_bins_limited_stops(tmp_path, prereg):
     state, st, _ = collect(tmp_path, prereg, lambda s, c: result(success=False))
-    assert pc.train_stop(prereg, st) == 'STOP_ALL_BINS_LIMITED' and state == 'NO_TRAIN_BELOW_MINIMUM'
+    assert pc.train_stop(prereg, st) == 'STOP_ALL_BINS_LIMITED' and state == 'NO_TRAIN_BELOW_FLOOR'
     per = pc.bin_counts(prereg, st)
     assert all(per[b]['attempts'] >= 20 for b in per) and 120 <= pc.totals(st)['attempts'] <= 160
 
