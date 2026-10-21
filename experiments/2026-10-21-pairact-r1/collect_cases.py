@@ -17,13 +17,18 @@ code.  Nothing here runs physics, renders or reads evaluation truth.
 
 Audit (COLLECT_PREREG v2 audit_outputs): every case plan and every generator budget
 exhaustion carries the gate funnel (per gate cumulative passed / rejected), the blocking
-objects, the minimum gap per gate, the generator SHA / file sha256 and a reproduce command.
+objects by their map / scenario names (static obstacle id, cargo item id, ``bounds``, the
+certified-stance blocker reported by the runtime admission), the minimum gap per gate or
+``not_measured`` when the gate has no gap measure, the generator SHA / file sha256 and a
+reproduce command with concrete absolute paths (no placeholders, v3 / Codex N2).
 An exhausted seed is returned as ``{'setup_rejected': audit}`` (written to the ledger by the
 runner, seed consumed, never re-queued) instead of raising before the ledger.
 
     python experiments/2026-10-21-pairact-r1/collect_cases.py --prereg P --slots slots.json \
         --out cases.json --dependency-root TEACHER --frozen-root ROOT --adapter-root ADAPTER \
         [--candidate pairact_p2_r13]
+    python .../collect_cases.py --prereg P --slot-json '{"seed": 8340000, "bin": "B0", "split": "train"}' \
+        --stdout ...                              # one slot, printed (the audit reproduce command)
 """
 from __future__ import annotations
 
@@ -47,6 +52,7 @@ from harness.pairact_collect import draw_start  # noqa: E402
 
 CANDIDATE = 'pairact_p2_r13'
 PROPOSALS = 5000
+NOT_MEASURED = 'not_measured'
 GATES = ('beam_static_overlap', 'beam_cargo_overlap', 'placement_graspable_filter', 'robot_environment_overlap',
          'robot_peer_overlap', 'initial_static_los', 'parking')
 
@@ -90,14 +96,26 @@ class Funnel:
     def audit(self, proposals):
         return dict(proposals=proposals, gates=[dict(gate=g, passed_cumulative=self.passed[g], rejected=self.rejected[g])
                                                 for g in GATES],
-                    blocked_objects=dict(self.blockers), min_gap_m={g: round(v, 6) for g, v in self.min_gap.items()})
+                    blocked_objects=dict(self.blockers),
+                    min_gap_m={g: round(self.min_gap[g], 6) if g in self.min_gap else NOT_MEASURED for g in GATES})
 
 
-def reproduce_command(slot, candidate):
-    return ['python', 'experiments/2026-10-21-pairact-r1/collect_cases.py', '--prereg', '<COLLECT_PREREG_DRAFT.json>',
-            '--slots', '<json: [%s]>' % json.dumps(dict(seed=int(slot['seed']), bin=slot['bin'], split=slot['split'])),
-            '--out', '<new file>', '--dependency-root', '<teacher>', '--frozen-root', '<root>', '--adapter-root',
-            '<adapter>', '--candidate', candidate]
+DEFAULT_PREREG = HERE / 'COLLECT_PREREG_DRAFT.json'
+
+
+def reproduce_command(slot, candidate, geo=None, prereg_path=None):
+    """Concrete argv that regenerates exactly this slot (prints the case / rejection to stdout)."""
+    roots = getattr(geo, 'roots', None) or {}
+    cmd = [sys.executable or 'python', str(HERE / 'collect_cases.py'),
+           '--prereg', str(Path(prereg_path or DEFAULT_PREREG).resolve()),
+           '--slot-json', json.dumps(dict(seed=int(slot['seed']), bin=slot['bin'], split=slot['split'])),
+           '--stdout', '--candidate', candidate]
+    if roots:
+        cmd += ['--dependency-root', roots['dependency'], '--frozen-root', roots['frozen'],
+                '--adapter-root', roots['adapter']]
+    else:
+        cmd += ['--no-setup-validity']
+    return cmd
 
 
 @contextmanager
@@ -142,6 +160,8 @@ class Geometry:
                         math.hypot(*(BOX_HALF[:2] if p['kind'] in COLORS else kind(p['kind']).landing_half_extents_m)))
                        for p in cargo]
         self.validity = self.validity_meta = None
+        self.names = [o['id'] for o in self.static['obstacles']]      # keepout_rects(perimeter=True) order
+        self.roots = None
         self.generator = generator_source()
         if setup_validity:
             if adapter_root is None:
@@ -150,21 +170,42 @@ class Geometry:
                 self.validity, self.validity_meta = ws.build_admission(dependency, frozen_root, self.scenario,
                                                                        self.static)
                 self.validity_meta = dict(self.validity_meta, adapter_root=str(adapter_root))
+            self.roots = dict(dependency=str(Path(dependency).resolve()), frozen=str(Path(frozen_root).resolve()),
+                              adapter=str(Path(adapter_root).resolve()))
 
     def robot_gap(self, point):
         from harness.static_keepouts import rect_distance
         b, r = self.bounds, self.radius
         gaps = [('bounds', min(point[0] - b[0], b[1] - point[0], point[1] - b[2], b[3] - point[1]) - r)]
-        gaps += [(f'static_wall_{j}', rect_distance(point, q) - r) for j, q in enumerate(self.rects)]
+        gaps += [(self.names[j], rect_distance(point, q) - r) for j, q in enumerate(self.rects)]
         gaps += [(n, math.dist(point, p) - r - rr) for n, p, rr in self.others]
         return min(gaps, key=lambda v: v[1])
+
+
+    def static_blocker(self, pose, footprint):
+        """Name of the first static obstacle (or 'bounds') the beam footprint overlaps."""
+        from harness.static_keepouts import pose_clear
+        if not pose_clear(pose, footprint, (), bounds=self.bounds, margin=0.):
+            return 'bounds'
+        return next((self.names[j] for j, q in enumerate(self.rects) if not pose_clear(pose, footprint, (q,))),
+                    'static_unresolved')
+
+
+def stance_blocker(stance):
+    """Blocking object(s) / gap the runtime certified-stance admission reported for the rejected end(s)."""
+    ends = stance.get('ends') or {}
+    bad = [(e, v) for e, v in sorted(ends.items()) if not v.get('free_goal_N')]
+    if not bad:
+        return 'admission_rejected_no_end_detail', None
+    gaps = [v.get('min_gap_m') for _, v in bad if isinstance(v.get('min_gap_m'), (int, float))]
+    return '+'.join(f"{e}:{v.get('blocked_object') or 'unreported'}" for e, v in bad), (min(gaps) if gaps else None)
 
 
 def role_of(seed):
     return 'teal' if random.Random(f'pairact_r1_collect_v1:{seed}:role').random() < .5 else 'blue'
 
 
-def make_case(geo, prereg, slot, *, candidate=CANDIDATE):
+def make_case(geo, prereg, slot, *, candidate=CANDIDATE, prereg_path=None):
     from harness.static_keepouts import pose_clear
     ws, seed, bin_id = geo.ws, int(slot['seed']), slot['bin']
     (d1, y1), (d2, y2) = draw_start(prereg, seed, bin_id, 0), draw_start(prereg, seed, bin_id, 1)
@@ -181,7 +222,7 @@ def make_case(geo, prereg, slot, *, candidate=CANDIDATE):
         a = 2 * math.pi * rng.random()
         pose = [rng.uniform(cx - hx + bhx, cx + hx - bhx), rng.uniform(cy - hy + bhy, cy + hy - bhy), a]
         if not pose_clear(pose, footprint, geo.rects, bounds=geo.bounds, margin=0.):
-            funnel.reject('beam_static_overlap', 'static_map'); continue
+            funnel.reject('beam_static_overlap', geo.static_blocker(pose, footprint)); continue
         funnel.ok('beam_static_overlap')
         name, gap = min(((n, math.dist(pose[:2], p) - math.hypot(bhx, bhy) - r) for n, p, r in geo.others),
                         key=lambda v: v[1])
@@ -192,7 +233,7 @@ def make_case(geo, prereg, slot, *, candidate=CANDIDATE):
         if geo.validity is not None:
             stance = geo.validity(pose)
             if not stance['accepted']:
-                funnel.reject('placement_graspable_filter', 'certified_stance_set'); continue
+                funnel.reject('placement_graspable_filter', *stance_blocker(stance)); continue
         funnel.ok('placement_graspable_filter')
 
         def assigned(end, distance):
@@ -216,7 +257,7 @@ def make_case(geo, prereg, slot, *, candidate=CANDIDATE):
         hit = next((j for p, e in ((own, e1), (peer, e2)) for j, rect in enumerate(geo.rects)
                     if ws.segment_hits_rect(p, e, rect)), None)
         if hit is not None:
-            funnel.reject('initial_static_los', f'static_wall_{hit}'); continue
+            funnel.reject('initial_static_los', geo.names[hit]); continue
         funnel.ok('initial_static_los')
         park = None
         for _ in range(PROPOSALS):
@@ -228,7 +269,7 @@ def make_case(geo, prereg, slot, *, candidate=CANDIDATE):
         if park is None:
             funnel.reject('parking', 'parking_budget_exhausted'); continue
         funnel.ok('parking')
-        audit = dict(funnel.audit(proposal + 1), generator=gen, reproduce=reproduce_command(slot, candidate))
+        audit = dict(funnel.audit(proposal + 1), generator=gen, reproduce=reproduce_command(slot, candidate, geo, prereg_path))
         z = .032355118817659255
         plan = dict(
             episode_id=f'pairact-r1-collect-{seed}', batch='pairact-r1-p3-collect', seed=seed, split=slot['split'],
@@ -251,15 +292,15 @@ def make_case(geo, prereg, slot, *, candidate=CANDIDATE):
                                             teacher_visibility='visible_only', top_camera_control=False),
                     candidate=candidate)
     raise SetupRejected(dict(seed=seed, bin=bin_id, split=slot['split'], rejected=dict(funnel.rejected),
-                             **funnel.audit(PROPOSALS), generator=gen, reproduce=reproduce_command(slot, candidate)))
+                             **funnel.audit(PROPOSALS), generator=gen, reproduce=reproduce_command(slot, candidate, geo, prereg_path)))
 
 
-def make_cases(geo, prereg, slots, *, candidate=CANDIDATE):
+def make_cases(geo, prereg, slots, *, candidate=CANDIDATE, prereg_path=None):
     """One entry per slot: a case, or {'setup_rejected': audit} when the proposal budget is exhausted."""
     out = []
     for s in slots:
         try:
-            out.append(make_case(geo, prereg, s, candidate=candidate))
+            out.append(make_case(geo, prereg, s, candidate=candidate, prereg_path=prereg_path))
         except SetupRejected as rejected:
             out.append(dict(setup_rejected=rejected.audit))
     return out
@@ -268,20 +309,28 @@ def make_cases(geo, prereg, slots, *, candidate=CANDIDATE):
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--prereg', type=Path, required=True)
-    p.add_argument('--slots', type=Path, required=True, help='[{seed, bin, split}] json')
-    p.add_argument('--out', type=Path, required=True)
+    src = p.add_mutually_exclusive_group(required=True)
+    src.add_argument('--slots', type=Path, help='[{seed, bin, split}] json')
+    src.add_argument('--slot-json', help='one {seed, bin, split} object (audit reproduce command)')
+    dst = p.add_mutually_exclusive_group(required=True)
+    dst.add_argument('--out', type=Path)
+    dst.add_argument('--stdout', action='store_true', help='print the cases instead of writing a file')
     p.add_argument('--dependency-root', type=Path)
     p.add_argument('--frozen-root', type=Path)
     p.add_argument('--adapter-root', type=Path)
     p.add_argument('--no-setup-validity', action='store_true', help='CPU preview only; never for collection')
     p.add_argument('--candidate', default=CANDIDATE)
     a = p.parse_args()
-    if a.out.exists():
+    if a.out is not None and a.out.exists():
         raise SystemExit('refusing to overwrite existing cases file')
     prereg = json.loads(a.prereg.read_text())
     geo = Geometry(a.dependency_root, a.frozen_root, setup_validity=not a.no_setup_validity,
                    adapter_root=a.adapter_root)
-    cases = make_cases(geo, prereg, json.loads(a.slots.read_text()), candidate=a.candidate)
+    slots = [json.loads(a.slot_json)] if a.slot_json else json.loads(a.slots.read_text())
+    cases = make_cases(geo, prereg, slots, candidate=a.candidate, prereg_path=a.prereg)
+    if a.stdout:
+        print(json.dumps(cases, indent=1))
+        return
     a.out.write_text(json.dumps(cases, indent=1) + '\n')
     print(json.dumps({'out': str(a.out), 'sha256': hashlib.sha256(a.out.read_bytes()).hexdigest(), 'n': len(cases)}))
 

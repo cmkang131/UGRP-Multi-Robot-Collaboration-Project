@@ -374,7 +374,8 @@ def main():
     state = run(a.run_root, prereg, sha, mode=a.mode, noise=a.noise, batch_size=a.batch_size,
                 max_batches=a.max_batches, deadline=deadline, episode=episode, run_manifest_sha256=manifest_sha,
                 validation_after_host_fix=a.validation_after_host_fix,
-                make_cases=lambda slots: collect_cases.make_cases(geo, prereg, slots, candidate=candidate),
+                make_cases=lambda slots: collect_cases.make_cases(geo, prereg, slots, candidate=candidate,
+                                                                  prereg_path=a.prereg),
                 run_episode=shell_episode(a.episode_cmd, env))
     rep = json.loads((a.run_root / 'report.json').read_text())
     print(json.dumps(dict(state=state, text=(rep.get('A') or rep.get('pilot'))['text']), ensure_ascii=False))

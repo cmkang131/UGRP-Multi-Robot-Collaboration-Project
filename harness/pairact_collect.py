@@ -557,10 +557,10 @@ def judge(result, *, mode, batch_clean, sidecar=None):
 
 
 def batch_is_clean(summary, exit_code):
-    """status table batch.clean (audit 1)."""
+    """status table batch.clean (audit 1); the rejection table must be an existing absolute file (v3 N2)."""
     table = summary.get('rejection_table')
     return (summary.get('status') == 'complete' and summary.get('HOST_ERROR') == 0 and exit_code == 0
-            and isinstance(table, str) and os.path.isabs(table))
+            and isinstance(table, str) and os.path.isabs(table) and os.path.isfile(table))
 
 
 # ---------------------------------------------------------------- sidecar

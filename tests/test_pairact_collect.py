@@ -10,6 +10,10 @@ import json
 import math
 from pathlib import Path
 
+import subprocess
+import sys
+import tempfile
+
 import pytest
 
 from harness import pairact_collect as pc
@@ -23,7 +27,9 @@ spec.loader.exec_module(runner)
 
 # teacher phases covering every validation_gate stage (approach .. complete)
 PHASES = ['approach', 'align', 'ready', 'pick', 'carry:carry_hold', 'carry:door_pass', 'carry:lower', 'carry:done']
-TABLE = '/runs/b/rejection_table.json'
+_TABLE_DIR = Path(tempfile.mkdtemp(prefix='pairact-r1-test-table-'))
+TABLE = str(_TABLE_DIR / 'rejection_table.json')          # v3 N2: a clean batch needs the file to exist
+Path(TABLE).write_text('{}\n')
 EP_CMD = ('python wrap.py --flow beampair --cases {cases} --indices {indices} --cap-s 60 '
           '--rejection-table /home/ugrp/ugrp-sim/runs/beamact5/gate-40-r13/rejection_table.json --out {out}')
 
@@ -335,6 +341,7 @@ def test_exit_code_and_rejection_table_decide_batch_cleanliness():
     assert pc.batch_is_clean(ok, 0)
     assert not pc.batch_is_clean(ok, 1) and not pc.batch_is_clean(ok, None)
     assert not pc.batch_is_clean(dict(ok, rejection_table='rel/table.json'), 0)
+    assert not pc.batch_is_clean(dict(ok, rejection_table=str(_TABLE_DIR / 'missing.json')), 0)
     assert not pc.batch_is_clean(dict(ok, HOST_ERROR=None), 0)
     assert not pc.batch_is_clean(dict(ok, status='admission_rejected'), 0)
 
@@ -848,14 +855,35 @@ def test_check_rows():
 
 # ------------------------------------------------- case generator (setup only)
 
+def _collect_cases():
+    if str(EXP) not in sys.path:
+        sys.path.insert(0, str(EXP))
+    import collect_cases as cc          # v3 N3: an import failure is a test failure, never a skip
+    return cc
+
+
 def _geometry():
-    import sys
-    sys.path.insert(0, str(EXP))
-    try:
-        import collect_cases as cc
-        return cc, cc.Geometry(setup_validity=False)
-    except ModuleNotFoundError as error:
-        pytest.skip(f'geometry imports unavailable: {error}')
+    cc = _collect_cases()
+    return cc, cc.Geometry(setup_validity=False)
+
+
+@pytest.fixture(scope='module')
+def pinned_stack(tmp_path_factory):
+    """teacher / root / adapter at the RUN_MANIFEST stack SHAs, exported with git archive (missing commit = fail)."""
+    m = json.loads((EXP / 'RUN_MANIFEST.json').read_text())
+    base = tmp_path_factory.mktemp('pinned-stack')
+    roots = {}
+    for name in ('teacher', 'root', 'adapter'):
+        # the adapter's dependency_modules needs a clean git checkout at the pinned teacher SHA:
+        # shared sparse clone (no worktree registered in this repo)
+        sha, out = m['stack'][name]['sha'], base / name
+        for cmd in (['git', 'clone', '-q', '--shared', '--no-checkout', str(ROOT), str(out)],
+                    ['git', '-C', str(out), 'sparse-checkout', 'set', 'harness', 'sim', 'scripts'],
+                    ['git', '-C', str(out), 'checkout', '-q', '--detach', sha]):
+            run = subprocess.run(cmd, capture_output=True, text=True)
+            assert run.returncode == 0, f'{name} {sha}: {" ".join(cmd[:3])} failed: {run.stderr[-300:]}'
+        roots[name] = out
+    return roots
 
 
 def test_collect_cases_geometry_respects_bins_and_carries_audit(prereg):
@@ -952,3 +980,52 @@ def test_setup_rejected_requeue_slot_leaves_the_queue(tmp_path, prereg, monkeypa
     planned = [s['seed'] for b in st['batches'].values() for s in b['slots']]
     assert planned.count(8340003) == 1                                   # only the original slot
     assert sum(c.count((8340003, True)) for c in calls) == 1              # re-queued once, then gone
+
+
+# ------------------------------------------------- v3: Codex v2 re-review N2 / N3
+
+def test_audit_names_blockers_marks_unmeasured_gaps_and_has_no_placeholders(prereg, monkeypatch):
+    cc, geo = _geometry()
+    case = cc.make_case(geo, prereg, dict(seed=8340000, bin='B0', split='train'))
+    audit = case['plan']['setup_audit']
+    assert set(audit['min_gap_m']) == set(cc.GATES)
+    assert all(isinstance(v, float) or v == cc.NOT_MEASURED for v in audit['min_gap_m'].values())
+    names = set(geo.names) | {n for n, _, _ in geo.others} | {'bounds', 'beam_1', 'peer_robot',
+                                                               'parking_budget_exhausted'}
+    for key in audit['blocked_objects']:
+        gate, obj = key.split(':', 1)
+        assert gate in cc.GATES and obj in names, key
+    text = json.dumps(audit['reproduce'])
+    assert '<' not in text and '[VM' not in text and '확인 필요' not in text
+    monkeypatch.setattr(cc, 'PROPOSALS', 30)
+    geo.validity = lambda pose: dict(accepted=False, ends={'teal': dict(free_goal_N=0, blocked_object='box_3',
+                                                                        min_gap_m=-0.01),
+                                                           'blue': dict(free_goal_N=4, blocked_object='none')})
+    rej = cc.make_cases(geo, prereg, [dict(seed=8340000, bin='B0', split='train')])[0]['setup_rejected']
+    assert 'placement_graspable_filter:teal:box_3' in rej['blocked_objects']
+    assert rej['min_gap_m']['placement_graspable_filter'] == -0.01
+    assert rej['min_gap_m']['parking'] == cc.NOT_MEASURED
+
+
+def test_audit_reproduce_command_regenerates_the_case(prereg):
+    cc, geo = _geometry()
+    case = cc.make_case(geo, prereg, dict(seed=8340007, bin='B3', split='train'), prereg_path=PREREG)
+    cmd = case['plan']['setup_audit']['reproduce']
+    assert cmd[1] == str(EXP / 'collect_cases.py') and Path(cmd[cmd.index('--prereg') + 1]).is_absolute()
+    out = subprocess.run(cmd, capture_output=True, text=True, cwd='/', timeout=300)
+    assert out.returncode == 0, out.stderr[-500:]
+    assert json.loads(out.stdout) == [case]
+
+
+def test_collect_cases_real_admission_path_with_pinned_stack(prereg, pinned_stack):
+    """N3: setup_validity=True through the runtime placement-graspable admission of the pinned -c2 stack."""
+    cc = _collect_cases()
+    geo = cc.Geometry(pinned_stack['teacher'], pinned_stack['root'], setup_validity=True,
+                      adapter_root=pinned_stack['adapter'])
+    assert geo.validity_meta['mode'] == 'placement_graspable_filter_v1'
+    for b in pc.bins(prereg):
+        case = cc.make_case(geo, prereg, dict(seed=8340000, bin=b['id'], split='train'), prereg_path=PREREG)
+        plan = case['plan']
+        assert plan['setup_validity'] == 'placement_graspable_filter_v1' and plan['placement_validity']['accepted']
+        cmd = plan['setup_audit']['reproduce']
+        assert cmd[cmd.index('--adapter-root') + 1] == str(Path(pinned_stack['adapter']).resolve())
