@@ -46,7 +46,7 @@ from harness.pair_carry_sync import PairCarrySync
 from harness.pair_carry_teacher_warp import (Params, body_command, carry_route, compose, inverse, make_command,
                                              relative, wrap)
 
-MODE = 'pairact_r1_hybrid_carry_v1'
+MODE = 'pairact_r1_hybrid_carry_v2'   # v2: loaded-odometry calibration (gain + latency + bias) with fit provenance
 CARRY_MODES = ('nav', 'map')
 DEFAULT_CARRY_MODE = 'nav'
 # Nav detector tree: dsh/nav-v5-recal (contains nav r5 e11efbeb9 and the v5 hue profiles).
@@ -60,9 +60,23 @@ _NEXT = {'STUDENT_GRASP': ('CARRY_SYNC',), 'CARRY_SYNC': ('CODE_CARRY',), 'CODE_
          'PLACE_SYNC': ('STUDENT_PLACE',), 'STUDENT_PLACE': ('DONE',), 'DONE': (), 'ABORT': ()}
 STUDENT_SEGMENTS = ('STUDENT_GRASP', 'STUDENT_PLACE')
 
-CONFIG_KEYS = {'mode', 'carry_mode', 'navigator', 'calibration', 'formation', 'limits', 'nav', 'map',
-               'shadow_predict'}
-CALIBRATION_KEYS = {'forward_m_per_pct_s', 'lateral_m_per_pct_s', 'yaw_deg_per_pct_s'}
+CONFIG_KEYS = {'mode', 'carry_mode', 'navigator', 'calibration', 'calibration_provenance', 'formation', 'limits',
+               'nav', 'map', 'shadow_predict'}
+GAIN_KEYS = ('forward_m_per_pct_s', 'lateral_m_per_pct_s', 'yaw_deg_per_pct_s')
+BIAS_KEYS = ('forward_bias_m_per_s', 'lateral_bias_m_per_s', 'yaw_bias_deg_per_s')
+CALIBRATION_KEYS = set(GAIN_KEYS) | set(BIAS_KEYS) | {'latency_ticks'}
+MAX_LATENCY_TICKS = 10
+# Loaded-state odometry fit (root scripts/fit_loaded_odom.py -> scripts/make_hybrid_config.py). The calibration
+# block and the two sigma growth rates may come ONLY from that tool: the config carries the tool's
+# values_sha256 and validate_config recomputes it, so a hand-filled or edited number is refused.
+FIT_SCHEMA = 'ugrp.pairact.loaded_odom_fit.v1'
+PROVENANCE_KEYS = {'schema', 'fit_sha256', 'values_sha256', 'fit_quality', 'seeds', 'sources', 'tool'}
+FIT_QUALITIES = ('per_tick', 'aggregate_coarse')
+SIGMA_FIT_KEYS = ('sigma_xy_per_m', 'sigma_yaw_per_rad')
+# Fit data may come only from pilot (8343000-8343039) and P2 smoke worlds 1/11/17 of the r13 cases
+# (seed = 8420000 + world). Never training, validation or held-out seeds.
+FIT_SEEDS = frozenset(range(8343000, 8343040)) | frozenset({8420001, 8420011, 8420017})
+PURPOSES = ('hybrid_n', 'teacher_smoke')
 FORMATION_KEYS = {'beam_half_m', 'station_m'}
 LIMIT_KEYS = {'carry_budget_s', 'v_max', 'w_max', 'hold_settle_s', 'settle_s', 'message_ttl_s',
               'stretch_pause_m', 'stretch_fail_m', 'stretch_fail_s', 'sigma_xy_max_m', 'sigma_yaw_max_deg',
@@ -86,8 +100,56 @@ def _positive(d, keys, what):
             raise ValueError(f'{what}.{k} must be a positive number (measured value, no default)')
 
 
-def validate_config(cfg, *, approval_root=None):
-    """Exact hybrid config. Every number is owner-supplied; nothing is defaulted silently."""
+def calibration_values_sha256(calibration, limits):
+    """Canonical hash of the fitted numbers (same function in root scripts/make_hybrid_config.py)."""
+    payload = {'calibration': {k: calibration[k] for k in sorted(CALIBRATION_KEYS)},
+               'sigma': {k: limits[k] for k in SIGMA_FIT_KEYS}}
+    return hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+
+
+def _hex64(v):
+    return isinstance(v, str) and len(v) == 64 and all(c in '0123456789abcdef' for c in v)
+
+
+def validate_calibration(cal):
+    for k in GAIN_KEYS:
+        v = cal[k]
+        if isinstance(v, bool) or not isinstance(v, (int, float)) or not math.isfinite(v) or v <= 0:
+            raise ValueError(f'calibration.{k} must be a positive fitted number')
+    for k in BIAS_KEYS:
+        v = cal[k]
+        if isinstance(v, bool) or not isinstance(v, (int, float)) or not math.isfinite(v):
+            raise ValueError(f'calibration.{k} must be a finite fitted number')
+    lat = cal['latency_ticks']
+    if type(lat) is not int or not 0 <= lat <= MAX_LATENCY_TICKS:
+        raise ValueError(f'calibration.latency_ticks must be an int in [0, {MAX_LATENCY_TICKS}]')
+
+
+def validate_provenance(cfg, purpose):
+    """The [확인 필요] refusal of the template is lifted only by the fit tool's output."""
+    prov = cfg['calibration_provenance']
+    if not isinstance(prov, dict) or set(prov) != PROVENANCE_KEYS or prov['schema'] != FIT_SCHEMA:
+        raise ValueError('calibration_provenance must be the fit tool block ' + str(sorted(PROVENANCE_KEYS)))
+    if not _hex64(prov['fit_sha256']) or not _hex64(prov['values_sha256']):
+        raise ValueError('calibration_provenance needs the fit file sha256 and the values sha256')
+    if prov['values_sha256'] != calibration_values_sha256(cfg['calibration'], cfg['limits']):
+        raise ValueError('calibration/sigma numbers differ from the fit tool output (values_sha256); '
+                         'regenerate with scripts/make_hybrid_config.py, never edit by hand')
+    if prov['fit_quality'] not in FIT_QUALITIES:
+        raise ValueError(f'unknown fit quality {prov["fit_quality"]!r}')
+    if purpose == 'hybrid_n' and prov['fit_quality'] != 'per_tick':
+        raise ValueError('hybrid_n (student) runs need a per_tick loaded-odometry fit; aggregate_coarse is '
+                         'allowed only for the teacher near-field smoke')
+    seeds = prov['seeds']
+    if (not isinstance(seeds, list) or not seeds or any(type(x) is not int for x in seeds)
+            or not set(seeds) <= FIT_SEEDS):
+        raise ValueError('fit seeds must be pilot 8343000-8343039 / smoke 8420001,8420011,8420017 only')
+
+
+def validate_config(cfg, *, approval_root=None, purpose='hybrid_n'):
+    """Exact hybrid config. Every number is owner-supplied or fit-tool output; nothing is defaulted silently."""
+    if purpose not in PURPOSES:
+        raise ValueError(f'unknown hybrid purpose {purpose!r}')
     if not isinstance(cfg, dict) or set(cfg) != CONFIG_KEYS or cfg['mode'] != MODE:
         raise ValueError('hybrid carry config must be exactly ' + str(sorted(CONFIG_KEYS)))
     if cfg['carry_mode'] not in CARRY_MODES:
@@ -96,10 +158,16 @@ def validate_config(cfg, *, approval_root=None):
         raise ValueError('navigator is a beam-end role (teal/blue)')
     if type(cfg['shadow_predict']) is not bool:
         raise ValueError('shadow_predict must be a bool')
+    if purpose == 'teacher_smoke' and cfg['shadow_predict']:
+        raise ValueError('teacher near-field smoke has no student worker: shadow_predict must be false')
     for key, keys in (('calibration', CALIBRATION_KEYS), ('formation', FORMATION_KEYS), ('limits', LIMIT_KEYS)):
         if not isinstance(cfg[key], dict) or set(cfg[key]) != keys:
             raise ValueError(f'{key} must be exactly {sorted(keys)}')
-        _positive(cfg[key], keys, key)
+        if key == 'calibration':
+            validate_calibration(cfg[key])
+        else:
+            _positive(cfg[key], keys, key)
+    validate_provenance(cfg, purpose)
     if cfg['carry_mode'] == 'nav':
         nav = cfg['nav']
         if not isinstance(nav, dict) or set(nav) != NAV_KEYS or cfg['map'] is not None:
@@ -152,7 +220,10 @@ def wheel_body(command):
 
 
 class OwnOdometry:
-    """Dead reckoning from the robot's OWN applied commands (injected calibration)."""
+    """Dead reckoning from the robot's OWN applied commands (fitted loaded-state calibration).
+
+    v2: the body moves ``latency_ticks`` control ticks after the command is issued, and a moving
+    tick (non-zero delayed command) adds the fitted per-axis bias. Both come from the fit tool."""
 
     def __init__(self, calibration, *, sigma_xy_per_m, sigma_yaw_per_rad, pose=(0., 0., 0.)):
         self.cal = dict(calibration)
@@ -160,11 +231,17 @@ class OwnOdometry:
         self.k_xy, self.k_yaw = float(sigma_xy_per_m), float(sigma_yaw_per_rad)
         self.sigma_xy = self.sigma_yaw = 0.
         self.distance_m = self.turn_rad = 0.
+        self.pending = [(0., 0., 0.)]*int(self.cal.get('latency_ticks', 0))
 
     def step(self, command):
-        f, l, t = wheel_body(command)
+        self.pending.append(wheel_body(command))
+        f, l, t = self.pending.pop(0)
         dx, dy = f*self.cal['forward_m_per_pct_s'], l*self.cal['lateral_m_per_pct_s']
         dth = math.radians(t*self.cal['yaw_deg_per_pct_s'])
+        if f or l or t:
+            dx += self.cal.get('forward_bias_m_per_s', 0.)*DT
+            dy += self.cal.get('lateral_bias_m_per_s', 0.)*DT
+            dth += math.radians(self.cal.get('yaw_bias_deg_per_s', 0.)*DT)
         self.pose = compose(self.pose, (dx, dy, dth))
         ds = math.hypot(dx, dy)
         self.distance_m += ds; self.turn_rad += abs(dth)
@@ -430,8 +507,10 @@ class HybridRun:
       summary()                              I10 audit fields
     """
 
-    def __init__(self, cfg, roles, *, sensor=None, static_map=None, wheel_fn=None, start_poses=None):
-        validate_config(cfg)
+    def __init__(self, cfg, roles, *, sensor=None, static_map=None, wheel_fn=None, start_poses=None,
+                 purpose='hybrid_n'):
+        validate_config(cfg, purpose=purpose)
+        self.purpose = purpose
         if sorted(roles.values()) != ['blue', 'teal']:
             raise ValueError('one robot per beam end required')
         self.cfg, self.roles = cfg, dict(roles)
@@ -623,5 +702,5 @@ def map_route_b0(static_map, start_pose_map, odom_pose, offsets, leader_offset):
     return [(tag, relative(beam_map, wp)) for tag, wp in route]
 
 
-def load_config(path, *, approval_root=None):
-    return validate_config(json.loads(Path(path).read_text()), approval_root=approval_root)
+def load_config(path, *, approval_root=None, purpose='hybrid_n'):
+    return validate_config(json.loads(Path(path).read_text()), approval_root=approval_root, purpose=purpose)

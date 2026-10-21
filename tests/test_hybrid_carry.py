@@ -14,7 +14,14 @@ from harness.pair_carry_teacher_warp import compose, relative
 ROOT = Path(__file__).resolve().parents[1]
 ROLES = {'r1': 'teal', 'r2': 'blue'}
 PWM = {str(k): 1500 for k in (1, 3, 4, 5, 6)}
-CAL = {'forward_m_per_pct_s': .004, 'lateral_m_per_pct_s': .004, 'yaw_deg_per_pct_s': .6}
+CAL = {'forward_m_per_pct_s': .004, 'lateral_m_per_pct_s': .004, 'yaw_deg_per_pct_s': .6, 'latency_ticks': 0,
+       'forward_bias_m_per_s': 0., 'lateral_bias_m_per_s': 0., 'yaw_bias_deg_per_s': 0.}
+
+
+def provenance(c, **over):
+    return {'schema': h.FIT_SCHEMA, 'fit_sha256': 'a'*64, 'values_sha256': h.calibration_values_sha256(
+                c['calibration'], c['limits']), 'fit_quality': 'per_tick', 'seeds': [8343000, 8420011],
+            'sources': ['pilot/world-000'], 'tool': 'scripts/fit_loaded_odom.py', **over}
 
 
 def cfg(**over):
@@ -29,11 +36,13 @@ def cfg(**over):
                  'bearing_convention': 'positive_right', 'arm_ground_m': .9, 'advance_m': .4,
                  'confirm_ticks': 3, 'door_detector': None},
          'map': None}
+    prov = over.pop('calibration_provenance', None)
     for k, v in over.items():
         if isinstance(v, dict) and isinstance(c.get(k), dict):
             c[k] = {**c[k], **v}
         else:
             c[k] = v
+    c['calibration_provenance'] = provenance(c) if prov is None else prov
     return c
 
 
@@ -302,3 +311,58 @@ def test_runner_hybrid_flag_is_default_off_and_needs_student_eval(tmp_path):
     with pytest.raises(h.MapModeNotApproved):
         runner.run(plan, tmp_path, pair_carry='pair_carry_gt_v1', teacher_profile='visible_only',
                    hybrid_carry=cfg(carry_mode='map', nav=None, map={'approval': 'x'}))
+
+
+# ------------------------------------------------------------------ v2: fitted loaded-odometry calibration
+
+def test_calibration_numbers_only_from_the_fit_tool():
+    c = cfg()
+    c['calibration']['forward_m_per_pct_s'] = .0041          # hand edit after the tool wrote the config
+    with pytest.raises(ValueError, match='values_sha256'):
+        h.validate_config(c)
+    c = cfg(); c['limits']['sigma_xy_per_m'] = .03            # sigma growth rates are fitted too
+    with pytest.raises(ValueError, match='values_sha256'):
+        h.validate_config(c)
+    c = cfg(); del c['calibration_provenance']
+    with pytest.raises(ValueError, match='exactly'):
+        h.validate_config(c)
+    tmpl = cfg(); tmpl['calibration']['latency_ticks'] = '[확인 필요]'
+    with pytest.raises(ValueError, match='latency_ticks'):
+        h.validate_config(tmpl)
+    for bad in ({'schema': 'x'}, {'fit_sha256': 'nothex'}, {'fit_quality': 'guess'}, {'seeds': []}):
+        c = cfg(); c['calibration_provenance'].update(bad)
+        with pytest.raises(ValueError):
+            h.validate_config(c)
+
+
+def test_fit_seeds_are_pilot_and_smoke_only():
+    for seed in (8340000, 8341000, 8343040, 8420000, 8420002):   # training / validation / outside pilot / other r13
+        c = cfg(); c['calibration_provenance']['seeds'] = [8343001, seed]
+        with pytest.raises(ValueError, match='fit seeds'):
+            h.validate_config(c)
+    c = cfg(); c['calibration_provenance']['seeds'] = [8343039, 8420001, 8420011, 8420017]
+    assert h.validate_config(c)
+
+
+def test_coarse_fit_only_for_teacher_smoke():
+    c = cfg(); c['calibration_provenance']['fit_quality'] = 'aggregate_coarse'
+    with pytest.raises(ValueError, match='per_tick'):
+        h.validate_config(c)
+    assert h.validate_config(c, purpose='teacher_smoke')
+    with pytest.raises(ValueError, match='shadow_predict'):
+        h.validate_config(cfg(shadow_predict=True), purpose='teacher_smoke')
+    with pytest.raises(ValueError, match='purpose'):
+        h.validate_config(cfg(), purpose='gt')
+
+
+def test_odometry_latency_and_bias():
+    cal = dict(CAL, latency_ticks=2, forward_bias_m_per_s=.01, yaw_bias_deg_per_s=-1.)
+    o = h.OwnOdometry(cal, sigma_xy_per_m=0, sigma_yaw_per_rad=0)
+    fwd = command(0., (.35,)*4)
+    assert o.step(fwd) == (0., 0., 0.) and o.step(fwd) == (0., 0., 0.)   # two ticks of latency
+    x, y, yaw = o.step(command(.2))                                       # the first command lands now
+    assert x == pytest.approx(.35*100*.1*.004 + .001, abs=1e-9)
+    assert yaw == pytest.approx(math.radians(-.1), abs=1e-9)
+    o2 = h.OwnOdometry(CAL, sigma_xy_per_m=0, sigma_yaw_per_rad=0)
+    o2.step(command(0.))
+    assert o2.pose == (0., 0., 0.)                                        # no bias while standing still
