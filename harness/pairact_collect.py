@@ -18,6 +18,7 @@ import math
 import os
 from pathlib import Path
 import random
+import re
 import shlex
 import subprocess
 import xml.etree.ElementTree as ET
@@ -271,6 +272,10 @@ def episode_cmd_audit(template):
     """The episode command is part of the frozen run: rejection table must be absolute, cap explicit."""
     if not template or any(k not in template for k in ('{cases}', '{indices}', '{out}')):
         raise ValueError('--episode-cmd with {cases} {indices} {out} required')
+    episode_command_form(template)      # v7 risk 2: one wrapper argv, no shell syntax
+    problems = episode_command_problems(template)
+    if problems:
+        raise ValueError(problems[0])
     tokens = shlex.split(template)
 
     def value(flag):
@@ -1320,14 +1325,19 @@ def episode_assets(template):
 # strippath keeps the file name only; include and <model file> resolve against the main model directory.
 XML_FILE_ATTRS = {'mesh': ('file',), 'skin': ('file',), 'hfield': ('file',),
                   'texture': ('file', 'fileright', 'fileleft', 'fileup', 'filedown', 'filefront', 'fileback')}
-XML_MESHDIR_TAGS = ('mesh', 'skin', 'hfield')
+XML_MESHDIR_TAGS = ('mesh', 'skin', 'hfield', 'flexcomp')
+XML_FILE_ATTRS['flexcomp'] = ('file',)     # v7: flexcomp file (mesh / gmsh) resolves under meshdir like <mesh>
 
 
-def xml_dependencies(xml_path):
+def xml_dependencies(xml_path, base=None):
     """Every file a MuJoCo XML pulls in (includes recursively, assets, sub-models): sorted absolute paths.
-    Raises ET.ParseError / OSError on an unreadable file and ValueError on an include cycle."""
+    Raises ET.ParseError / OSError on an unreadable file and ValueError on an include cycle.
+
+    v7: ``base`` is the directory relative names resolve against -- the XML's directory for
+    ``from_xml_path`` (default), the compiling process's cwd for ``from_xml_string`` (the teacher reads
+    --canonical-xml as text; see episode_xml_problems)."""
     main = Path(os.path.realpath(xml_path))
-    base, deps, elements = main.parent, set(), []
+    base, deps, elements = (main.parent if base is None else Path(os.path.realpath(base))), set(), []
 
     def at(directory, name):
         return os.path.realpath(name if os.path.isabs(name) else base / (directory or '') / name)
@@ -1420,7 +1430,7 @@ def recording_hashes_for(manifest, vm=None):
 
 
 def check_run_manifest(manifest, *, stage, prereg, batch_size=None, episode=None, repo=None,
-                       recording_dir=None, verify_assets=False, shard=None):
+                       recording_dir=None, verify_assets=False, shard=None, episode_cwd=None):
     """Freeze gate (B3).  stage 'core' (probe source / probe / check rows) or 'final' (training / convert).
 
     Fixed schema with types for every field, no placeholder anywhere, prereg / manifest status
@@ -1459,6 +1469,7 @@ def check_run_manifest(manifest, *, stage, prereg, batch_size=None, episode=None
         if '$' in template:
             problems.append('command.episode_template has an unexpanded shell variable')
         problems += episode_option_problems(template)
+        problems += episode_command_problems(template)      # v7 risk 2: explicit form + wrapper parser
     if episode is not None and m('command', 'episode_template_sha256') != episode['template_sha256']:
         problems.append('run manifest episode template sha256 differs')
     if episode is not None and m('limits', 'grasp_cap_sim_s') != episode['cap_s']:
@@ -1489,7 +1500,8 @@ def check_run_manifest(manifest, *, stage, prereg, batch_size=None, episode=None
         problems += episode_source_problems(manifest, template)
         xml = episode_assets(template)['canonical_xml_sha256']
         if xml is not None and os.path.isfile(xml) and isinstance(m('assets', 'mesh_assets_sha256'), dict):
-            problems += xml_asset_problems(xml, m('assets', 'mesh_assets_sha256'))
+            problems += (xml_asset_problems(xml, m('assets', 'mesh_assets_sha256')) if episode_cwd is None else
+                         episode_xml_problems(xml, m('assets', 'mesh_assets_sha256'), episode_cwd))
     if stage == 'final':
         if recording_dir is None:
             problems.append('final stage needs the recording check directory')
@@ -1854,3 +1866,214 @@ def check_stack_heads(manifest, roots, *, rev_parse=None, env=None):
             raise ValueError(problems[0])
         out[role] = manifest['stack'][role]['sha']
     return out
+
+
+# ------------------------------------------------------------- v7 (Codex v6 re-review: risk 2, 1b, XML base)
+
+# Risk 2: the gates read tokens of the template while the runner used to hand the string to a shell.  The
+# episode command now has one explicit form, ``[WARP_SOURCE_ROOT=/abs] python[3[.N]] /path/wrapper.py --opt ...``,
+# and runs as that argv (no shell): no operators, no env/cd prefix, no standalone ``--``, no short options.
+EPISODE_PYTHON = re.compile(r'(?:.*/)?python(?:3(?:\.\d+)?)?')
+EPISODE_ASSIGNMENTS = ('WARP_SOURCE_ROOT',)
+EPISODE_PLACEHOLDERS = dict(cases='/pairact-placeholder/cases.json', indices='0', out='/pairact-placeholder/out')
+REPO_WRAPPER = Path(__file__).resolve().parents[1] / 'experiments/2026-10-17-beamact5/teacher/run_warp_flow_teacher_gcp6.py'
+
+
+def episode_command_form(template):
+    """v7: (assignments, python, wrapper, args) of the one accepted episode command shape; ValueError otherwise."""
+    if not isinstance(template, str) or '\n' in template or '`' in template or '$' in template:
+        raise ValueError('episode command must be one line without $ / backtick substitutions')
+    lex = shlex.shlex(template, posix=True, punctuation_chars=True)
+    lex.whitespace_split = True
+    tokens = list(lex)
+    ops = [t for t in tokens if t and set(t) <= set(lex.punctuation_chars)]
+    if ops:
+        raise ValueError(f'episode command has shell operators {ops}; one wrapper argv only')
+    if tokens != shlex.split(template):
+        raise ValueError('episode command tokenizes differently with shell operators; quote nothing special')
+    assign, i = {}, 0
+    while i < len(tokens) and re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]*=.*', tokens[i]):
+        name, _, val = tokens[i].partition('=')
+        if name not in EPISODE_ASSIGNMENTS or name in assign:
+            raise ValueError(f'episode command may only set {EPISODE_ASSIGNMENTS} once, got {name}')
+        if not os.path.isabs(val):
+            raise ValueError(f'episode command {name} must be absolute, got {val!r}')
+        assign[name], i = val, i + 1
+    if i >= len(tokens) or not EPISODE_PYTHON.fullmatch(tokens[i]):
+        raise ValueError(f'episode command must start with python (no env/cd/sh/exec prefix), got '
+                         f'{tokens[i] if i < len(tokens) else None!r}')
+    python, rest = tokens[i], tokens[i + 1:]
+    if not rest or not rest[0].endswith('.py') or rest[0].startswith('-'):
+        raise ValueError('episode command must be python <wrapper.py> (no interpreter options, -c or -m)')
+    wrapper, args = rest[0], rest[1:]
+    if '--' in args:
+        raise ValueError('episode command has a standalone --; argparse would stop reading options there')
+    short = [t for t in args if t.startswith('-') and not t.startswith('--') and len(t) > 1
+             and not re.fullmatch(r'-\d+(\.\d*)?(e-?\d+)?', t)]
+    if short:
+        raise ValueError(f'episode command has short options {short}; long options only')
+    return assign, python, wrapper, args
+
+
+class EpisodeParseError(ValueError):
+    pass
+
+
+def wrapper_parser(path):
+    """v7: the wrapper's own ``parser()`` (taken from its source without importing the module, which needs
+    WARP_SOURCE_ROOT and the simulator); argparse errors raise EpisodeParseError instead of exiting."""
+    import argparse as _argparse
+    import ast
+
+    class Parser(_argparse.ArgumentParser):
+        def error(self, message):
+            raise EpisodeParseError(message)
+
+        def exit(self, status=0, message=None):
+            raise EpisodeParseError(message or f'exit {status}')
+    src = Path(path).read_text()
+    tree = ast.parse(src)
+    node = next((n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == 'parser'), None)
+    if node is None:
+        raise ValueError(f'wrapper {path} has no parser() to read the episode command with')
+    shim = type('argparse_shim', (), dict(vars(_argparse)))
+    shim.ArgumentParser = Parser
+    ns = dict(argparse=shim, Path=Path, __doc__=ast.get_docstring(tree))
+    exec(compile(ast.Module(body=[node], type_ignores=[]), str(path), 'exec'), ns)
+    return ns['parser']()
+
+
+def episode_parse_problems(template, parser):
+    """v7: read the command with the wrapper's real parser (placeholders filled) before running it: every
+    option is spelled exactly, nothing is left over, and each gated value is the one argparse will run."""
+    try:
+        _, _, _, args = episode_command_form(template)
+    except ValueError as error:
+        return [str(error)]
+    args = [_fill(t, EPISODE_PLACEHOLDERS) for t in args]
+    known = parser._option_string_actions
+    out = [f'episode command option {t.partition("=")[0]} is not a wrapper option (exact spelling required)'
+           for t in args if t.startswith('--') and t.partition('=')[0] not in known]
+    try:
+        ns, extra = parser.parse_known_args(args)
+    except EpisodeParseError as error:
+        return out + [f'wrapper parser refuses the episode command: {error}']
+    if extra:
+        out.append(f'wrapper parser leaves arguments unread: {extra}')
+    for flag in EPISODE_VALUE_FLAGS:
+        action = known.get(flag)
+        if action is None:
+            continue
+        try:
+            mine = episode_option(args, flag)
+        except ValueError as error:
+            out.append(str(error))
+            continue
+        got = getattr(ns, action.dest)
+        want = None if mine is None else (action.type(mine) if action.type else mine)
+        if got != want:
+            out.append(f'episode command {flag}: gate reads {want!r}, wrapper parser runs {got!r}')
+    return out
+
+
+def _fill(token, values):
+    for k, v in values.items():
+        token = token.replace('{' + k + '}', str(v))
+    return token
+
+
+def episode_command_problems(template, *, wrapper=None):
+    """v7 static + parser check of the episode command.  ``wrapper``: the wrapper file whose parser reads it
+    (the template's own .py when it exists, else the repository copy when the template names the gcp6 wrapper)."""
+    try:
+        _, _, named, _ = episode_command_form(template)
+    except ValueError as error:
+        return [str(error)]
+    if wrapper is None:
+        if os.path.isfile(named):
+            wrapper = named
+        elif os.path.basename(named) == REPO_WRAPPER.name:
+            wrapper = REPO_WRAPPER
+    if wrapper is None:
+        return []
+    try:
+        parser = wrapper_parser(wrapper)
+    except (OSError, SyntaxError, ValueError) as error:
+        if os.path.basename(str(wrapper)) != REPO_WRAPPER.name:
+            return []       # another wrapper without parser(): form check only (pinned by assets.wrapper_sha256)
+        return [f'episode wrapper parser unreadable: {error}']
+    return episode_parse_problems(template, parser)
+
+
+def episode_argv(template, cases, indices, out):
+    """v7: (env assignments, argv) the runner executes -- the checked form, placeholders filled per token."""
+    assign, python, wrapper, args = episode_command_form(template)
+    values = dict(cases=cases, indices=','.join(map(str, indices)), out=out)
+    return assign, [python, _fill(wrapper, values)] + [_fill(t, values) for t in args]
+
+
+# XML base: the teacher reads --canonical-xml as text and compiles it from a string, so relative include /
+# compiler dirs / file names resolve against the episode process's cwd, not the XML's directory.
+def episode_xml_problems(xml_path, registered, cwd):
+    """v7: assets.mesh_assets_sha256 == the dependency set at the episode cwd (string compile), and the scene
+    must not depend on that choice silently: a set that differs from the file-relative one is reported."""
+    try:
+        at_cwd = set(xml_dependencies(xml_path, base=cwd))
+    except (ET.ParseError, OSError, ValueError) as error:
+        return [f'canonical XML dependencies unreadable at episode cwd {cwd}: {error}']
+    reg = {os.path.realpath(k) for k in registered}
+    out = []
+    if at_cwd - reg:
+        out.append(f'assets.mesh_assets_sha256 misses files the canonical XML references from cwd {cwd}: '
+                   + ', '.join(sorted(at_cwd - reg)))
+    if reg - at_cwd:
+        out.append(f'assets.mesh_assets_sha256 lists files the canonical XML does not reference from cwd {cwd}: '
+                   + ', '.join(sorted(reg - at_cwd)))
+    missing = sorted(p for p in at_cwd if not os.path.isfile(p))
+    if missing:
+        out.append('canonical XML dependencies missing at the episode cwd: ' + ', '.join(missing))
+    return out
+
+
+# 1b: the frozen teacher / wrapper cannot be edited (stack pins, assets.wrapper_sha256), so a process that
+# sets the PAIRACT_P3_* env by hand still runs.  What it cannot get is a launch binding: the runner writes
+# ``<out>.pairact-binding.json`` (core, manifest, template, argv, cwd) only after the manifest gate passed,
+# and every consumer of teacher output (check-rows probe raws, convert-input training raws) requires it.
+LAUNCH_BINDING_SCHEMA = 'ugrp.pairact_r1.launch_binding.v1'
+LAUNCH_BINDING_SUFFIX = '.pairact-binding.json'
+
+
+def launch_binding_path(out):
+    out = Path(out)
+    return out.parent / (out.name + LAUNCH_BINDING_SUFFIX)
+
+
+def launch_binding(*, stage, core, manifest_sha256, template, argv, cwd, out):
+    if stage not in ('core', 'final'):
+        raise ValueError(f'launch binding stage {stage!r}')
+    if not (isinstance(core, str) and len(core) == 64):
+        raise ValueError('launch binding needs the manifest-gate core sha256')
+    return dict(schema=LAUNCH_BINDING_SCHEMA, stage=stage, core_sha256=core, run_manifest_sha256=manifest_sha256,
+                episode_template_sha256=hashlib.sha256(template.encode()).hexdigest(),
+                argv_sha256=hashlib.sha256(json.dumps(argv).encode()).hexdigest(), cwd=str(cwd),
+                out=os.path.realpath(out))
+
+
+def launch_binding_problems(raw, core, stages):
+    """v7 1b: ``raw`` lies under a launch ``out`` whose binding carries this ``core`` at one of ``stages``."""
+    raw = Path(os.path.realpath(raw))
+    for d in (raw, *raw.parents):
+        b = launch_binding_path(d)
+        if b.is_file():
+            try:
+                rec = json.loads(b.read_text())
+            except json.JSONDecodeError:
+                return [f'launch binding unreadable: {b}']
+            if rec.get('schema') != LAUNCH_BINDING_SCHEMA or rec.get('out') != str(d):
+                return [f'launch binding {b} is not for {d}']
+            if rec.get('stage') not in stages:
+                return [f'launch binding {b} stage {rec.get("stage")!r} not in {stages}']
+            if rec.get('core_sha256') != core:
+                return [f'launch binding {b} core {rec.get("core_sha256")} != {core}']
+            return []
+    return [f'{raw} has no launch binding (teacher output not launched behind the manifest gate)']
