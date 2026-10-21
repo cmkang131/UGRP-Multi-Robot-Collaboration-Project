@@ -8,7 +8,7 @@ from harness import e2e_l2 as l2
 from harness import e2e_l2_eval as ev
 
 
-def make_case(seed=8343000, yaw=0.0, r1=(-.9, .2), r2=(1.0, -.3), roles=None):
+def make_case(seed=8344000, yaw=0.0, r1=(-.9, .2), r2=(1.0, -.3), roles=None):
     return {'plan': {'seed': seed, 'beam_pose': [0.0, 0.0, yaw], 'episode_id': f'ep{seed}',
                      'spawns': {'r1': [*r1, .05, 0.], 'r2': [*r2, .05, 0.]},
                      'roles': roles or {'r1': 'teal', 'r2': 'blue'}, 'object_kind': 'long_beam'},
@@ -83,7 +83,7 @@ def test_brief_has_only_own_observation():
 
 
 def test_leader_role_only_in_leader_condition():
-    case = make_case(seed=8343001)
+    case = make_case(seed=8344001)
     assert l2.robot_brief(case, 'r2', 'leader_en')['role'] == 'leader'
     assert l2.robot_brief(case, 'r2', 'peer_en')['role'] == 'worker'
 
@@ -180,7 +180,7 @@ def test_peer_en_language_slip_recorded():
 
 
 def test_leader_en_assign_and_ack():
-    case = make_case(seed=8343000)   # leader r1
+    case = make_case(seed=8344000)   # leader r1
     llm = FakeLLM({('r1', 1): reply('leader_west', to_peer('r1', {'text': 'I take west, you take east.'})),
                    ('r2', 2): reply('ack_assignment', to_peer('r2', {'text': 'Ack, east.'}))})
     rec = l2.allocate_ends('leader_en', case, ask=llm)
@@ -243,7 +243,7 @@ def fake_summary(seed, *, carry=True, teacher_steps=0, student=True):
 def test_seed_success_student():
     case = make_case()
     rec = _ok_record(case)
-    r = ev.seed_result(rec, l2.geometry_record(case), fake_summary(8343000), arm='student',
+    r = ev.seed_result(rec, l2.geometry_record(case), fake_summary(8344000), arm='student',
                        prices={'prompt': .09, 'completion': .34})
     assert r['success'] and r['llm']['assignment_match'] and r['failure_stage'] is None
     assert r['llm']['usd'] == round((2000 * .09 + 200 * .34) / 1e6, 6)
@@ -252,26 +252,26 @@ def test_seed_success_student():
 def test_student_contamination_and_teacher_summary_rejected():
     case = make_case()
     rec, g = _ok_record(case), l2.geometry_record(case)
-    r = ev.seed_result(rec, g, fake_summary(8343000, teacher_steps=3), arm='student')
+    r = ev.seed_result(rec, g, fake_summary(8344000, teacher_steps=3), arm='student')
     assert not r['success'] and r['failure_stage'] == 'student_contaminated'
-    r = ev.seed_result(rec, g, fake_summary(8343000, student=False), arm='student')
+    r = ev.seed_result(rec, g, fake_summary(8344000, student=False), arm='student')
     assert not r['success']
-    r = ev.seed_result(rec, g, fake_summary(8343000, student=False), arm='teacher_fallback')
+    r = ev.seed_result(rec, g, fake_summary(8344000, student=False), arm='teacher_fallback')
     assert r['success'] and 'NOT a learned result' in r['arm_label']
 
 
 def test_llm_failure_is_not_executed_even_if_summary_has_row():
     case = make_case()
     rec = l2.run_stage('no_comm', case, ask=FakeLLM({('r1', 1): reply(solo=True)}))
-    r = ev.seed_result(rec, l2.geometry_record(case), fake_summary(8343000), arm='student')
+    r = ev.seed_result(rec, l2.geometry_record(case), fake_summary(8344000), arm='student')
     assert not r['success'] and not r['executed'] and r['failure_stage'] == 'llm'
 
 
 def test_execution_failure_and_aggregate():
     case = make_case()
     rec, g = _ok_record(case), l2.geometry_record(case)
-    ok = ev.seed_result(rec, g, fake_summary(8343000), arm='student')
-    bad = ev.seed_result(rec, g, fake_summary(8343000, carry=False), arm='student')
+    ok = ev.seed_result(rec, g, fake_summary(8344000), arm='student')
+    bad = ev.seed_result(rec, g, fake_summary(8344000, carry=False), arm='student')
     missing = ev.seed_result(rec, g, {'worlds': []}, arm='student')
     assert bad['failure_stage'] == 'execution' and missing['failure_stage'] == 'not_executed'
     agg = ev.aggregate([ok, bad, missing])

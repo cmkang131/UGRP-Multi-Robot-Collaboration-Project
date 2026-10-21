@@ -18,20 +18,32 @@
   },
   "task": {
     "order_sheet": "v_l2: one long_beam to zone B, assigned_robot null, no single-robot-impossible flag",
-    "llm_decides": ["need_partner (bool)", "own beam end: west | east"],
+    "llm_decides": [
+      "need_partner (bool)",
+      "own beam end: west | east"
+    ],
     "binding": "west/east -> teal/blue grip band by world x of the band (+x = east); written only into case.plan.roles (student role token and teacher end); nothing else in the case changes",
     "robot_input": "own order sheet + own distances to the two grip bands (source plan_geometry_v1 [대체: perception not wired]) + inbox of the condition channel; never the peer's distances or the band colours"
   },
   "seeds": {
     "generator": "P3 case generator (same start distribution as P5: each robot 0.3-1.2 m from its generator end) [확인 필요: P3 command fixed by DeepSeek/worker ⑤]",
-    "candidate_range": {"first": 8343000, "last": 8343099},
-    "overlap_check": "scripts/check_pairact_r1_seeds.py known_ranges + pairact-r1 train/validation/heldout (8340000-8340199, 8341000-8341019, 8342000-8342019) must not intersect [확인 필요: add the L2 range to seeds.json before run]",
+    "candidate_range": {
+      "first": 8344000,
+      "last": 8344099
+    },
+    "overlap_check": "scripts/check_e2e_l2_seeds.py --pairact-ref bcfefaadc5ecbc24a65f898e44eabcdf886f7ef5 --scan-refs <all origin refs>: L2 range vs experiments/2026-11-05-e2e-l2/seeds.json registered_ranges (pairact-r1 train 8340000-8340599, validation 8341000-8341019, heldout 8342000-8342019, pilot 8343000-8343039, beampair/beamact ranges) must be 0; pinned by tests/test_check_e2e_l2_seeds.py",
     "selection_rule": "ascending seed order, keep a case iff |cos(beam_yaw)| >= 0.5 (harness/e2e_l2.case_admissible), take the first 6; static and outcome-free, applied before any LLM call",
     "N": 6,
-    "same_seeds_for_all_conditions_and_arms": true
+    "same_seeds_for_all_conditions_and_arms": true,
+    "note": "8343000-8343039 is the pairact-r1 v2 collection pilot (bcfefaadc); the earlier L2 draft range 8343000- was a collision and is withdrawn"
   },
   "conditions": {
-    "llm_stage_all": ["no_comm", "structured", "peer_en", "leader_en"],
+    "llm_stage_all": [
+      "no_comm",
+      "structured",
+      "peer_en",
+      "leader_en"
+    ],
     "primary_execution": "peer_en",
     "secondary_execution": "leader_en, structured, no_comm only if GPU night time remains after primary (order fixed: leader_en, structured, no_comm); never pooled",
     "leader_rule": "leader = r1 if seed % 2 == 0 else r2",
@@ -63,8 +75,26 @@
     "claim": "primary: student peer_en n/6. Minimum L2 claim (replan §6) = >= 1/6 student success in peer_en or another condition, each condition reported separately"
   },
   "metrics": {
-    "llm_stage": ["cooperate_ok_n", "assignment_match_n", "min_distance_match_n", "conflict_n (duplicate end)", "named errors", "hallucination_n (heuristic: foreign end name, ungrounded distance; Codex re-annotates)", "rounds", "utterances", "language_slips", "llm_calls", "tokens", "usd (pinned planner price)"],
-    "execution": ["carry_success_n", "student funnel (approach, alignment, READY, grasp, hold_3s, carry_1m, door, place)", "failure_stage (llm | not_executed | student_contaminated | execution)", "termination reasons"],
+    "llm_stage": [
+      "cooperate_ok_n",
+      "assignment_match_n",
+      "min_distance_match_n",
+      "conflict_n (duplicate end)",
+      "named errors",
+      "hallucination_n (heuristic: foreign end name, ungrounded distance; Codex re-annotates)",
+      "rounds",
+      "utterances",
+      "language_slips",
+      "llm_calls",
+      "tokens",
+      "usd (pinned planner price)"
+    ],
+    "execution": [
+      "carry_success_n",
+      "student funnel (approach, alignment, READY, grasp, hold_3s, carry_1m, door, place)",
+      "failure_stage (llm | not_executed | student_contaminated | execution)",
+      "termination reasons"
+    ],
     "report": "per condition and per arm n/6, same seed order; LLM-stage metrics also reported for conditions not executed"
   },
   "exclusions": {

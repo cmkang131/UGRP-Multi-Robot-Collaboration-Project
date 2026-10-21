@@ -1,0 +1,22 @@
+{
+  "schema": "ugrp.e2e_l2.seeds.v1",
+  "status": "DRAFT_NOT_RUN",
+  "l2": {"first": 8344000, "last": 8344099,
+         "rule": "candidate cases in ascending seed order; the first 6 that pass the pre-run N-S exclusion (|cos yaw| >= 0.5) are the L2 seeds (E2E_L2_PREREG_DRAFT.json seeds.selection_rule)"},
+  "pairact_r1_source": {"ref": "bcfefaadc5ecbc24a65f898e44eabcdf886f7ef5", "branch": "dsh/pairact-carry-r1-v2",
+                        "path": "experiments/2026-10-21-pairact-r1/seeds.json"},
+  "registered_ranges": [
+    {"name": "pairact_r1_train", "first": 8340000, "last": 8340199, "source": "pairact-r1 seeds.json splits.train"},
+    {"name": "pairact_r1_train_extension", "first": 8340200, "last": 8340599, "source": "pairact-r1 seeds.json train_extension"},
+    {"name": "pairact_r1_validation", "first": 8341000, "last": 8341019, "source": "pairact-r1 seeds.json splits.validation"},
+    {"name": "pairact_r1_heldout", "first": 8342000, "last": 8342019, "source": "pairact-r1 seeds.json splits.heldout"},
+    {"name": "pairact_r1_pilot", "first": 8343000, "last": 8343039, "source": "pairact-r1 seeds.json pilot (COLLECT_PREREG v2)"},
+    {"name": "beampair1_a", "first": 71001, "last": 71007, "source": "experiments/2026-10-15-beampair1/README.md:48"},
+    {"name": "beampair1_b", "first": 8316902, "last": 8316902, "source": "experiments/2026-10-15-beampair1/README.md:26"},
+    {"name": "beampair1_5", "first": 8318600, "last": 8318639, "source": "experiments/2026-10-15-beampair1/README.md:96"},
+    {"name": "beampair6_8", "first": 8318700, "last": 8318739, "source": "experiments/2026-10-16-beampair6/README.md:7,45"},
+    {"name": "beamact1_4", "first": 8328000, "last": 8328199, "source": "origin/claude/beampair8 README:45"},
+    {"name": "beamact2_3_heldout", "first": 8329000, "last": 8329019, "source": "origin/claude/beampair8 README:45; beamact3 README:17"},
+    {"name": "beamact5_wide_gate40", "first": 8420000, "last": 8420039, "source": "experiments/2026-10-17-beamact5/README.md:57"}
+  ]
+}

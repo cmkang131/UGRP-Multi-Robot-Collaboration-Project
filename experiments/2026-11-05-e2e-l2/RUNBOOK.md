@@ -7,7 +7,7 @@
 |---|---|
 | P4 체크포인트가 오프라인 gate 통과, P5 prereg(cap 값 포함) 커밋 | [미정] |
 | live planner 연결 (`harness/e2e_l2.planner_ask`) | *미연결*: NotImplementedError. `dsh/l1lite-alloc`의 `Planner`와 합친 뒤 구현 + 기록 응답 테스트 필요 |
-| L2 seed 범위 8343000–8343099를 `seeds.json`에 넣고 겹침 검사 | [확인 필요] |
+| L2 seed 범위 8344000–8344099, `experiments/2026-11-05-e2e-l2/seeds.json` + `scripts/check_e2e_l2_seeds.py` 겹침 0 (테스트 고정) | 완료 |
 | P3 생성기로 L2 후보 case 생성 명령 | [확인 필요: P3 수집 명령 확정 후] |
 | E2E_L2_PREREG_DRAFT.json → REGISTERED 커밋 (Codex 검토) | 초안 |
 
