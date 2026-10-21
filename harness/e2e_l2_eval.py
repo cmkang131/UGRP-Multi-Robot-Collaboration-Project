@@ -20,60 +20,53 @@ from __future__ import annotations
 
 import re
 
-from harness.e2e_l2 import ARM_LABEL, ARMS, ENDS, ROBOTS
+from harness.e2e_l2 import ARM_LABEL, ARMS, END_TOKENS, ROBOTS
 
-#: Words that name a beam end or a band the brief never shows (colour tokens
-#: are hidden from the LLM; north/south are not the order's end names).
-_FOREIGN_END = re.compile(r'\b(north|south)(ern)?\s+end\b|\b(teal|blue)\b', re.I)
+#: End names the brief never offers: compass sides (the LLM has no heading,
+#: so a compass end is invented) and image-side words used as an end name.
+_FOREIGN_END = re.compile(r'\b(north|south|east|west)(ern)?\s+(end|band|side)\b', re.I)
 _DIST = re.compile(r'(\d+(?:\.\d+)?)\s*(?:m\b|meters?\b|metres?\b)', re.I)
-#: A distance number is "grounded" if within this of any own brief distance
-#: (design value: 2x the 0.01 m brief resolution + rounding by the model).
-DIST_TOL_M = .1
 
 
-def hallucination_flags(record, geometry):
+def hallucination_flags(record, geometry=None):
     """Heuristic, conservative flags (Codex re-annotates by hand).
 
-    ``foreign_end``: names an end/band the brief does not contain.
-    ``ungrounded_distance``: states a distance in metres that matches none of
-    the sender's own brief distances (a robot never sees the peer's numbers
-    unless the peer sent them; numbers received from the peer are allowed).
+    ``foreign_end``: names an end by a compass side the robot cannot know.
+    ``stated_distance`` (recorded, NOT counted as hallucination): a metric
+    distance the robot can only have estimated from its image.
     """
     flags = []
-    received = {r: [] for r in ROBOTS}
     for msg in record.get('messages') or []:
         body = msg.get('body') or {}
         text = body.get('text') if isinstance(body, dict) else None
         if not isinstance(text, str):
             continue
-        sender = msg['sender']
         if _FOREIGN_END.search(text):
-            flags.append(dict(robot=sender, round=msg.get('round'), kind='foreign_end'))
-        allowed = list(geometry['own_distances'][sender].values()) + received[sender]
-        for value in (float(v) for v in _DIST.findall(text)):
-            if not any(abs(value - a) <= DIST_TOL_M for a in allowed):
-                flags.append(dict(robot=sender, round=msg.get('round'), kind='ungrounded_distance', value=value))
-        for to in msg.get('to') or []:
-            received[to].extend(float(v) for v in _DIST.findall(text))
+            flags.append(dict(robot=msg['sender'], kind='foreign_end'))
+        for value in _DIST.findall(text):
+            flags.append(dict(robot=msg['sender'], kind='stated_distance', value=float(value)))
     return flags
 
 
 def llm_metrics(record, geometry, prices=None):
     decisions = dict(record.get('decisions') or {})
     ref = geometry['reference_ends']
-    complete = set(decisions) == set(ROBOTS) and all(decisions[r] in ENDS for r in ROBOTS)
+    complete = set(decisions) == set(ROBOTS) and all(decisions[r] in END_TOKENS for r in ROBOTS)
     tokens = dict(prompt_tokens=sum(u.get('prompt_tokens', 0) for u in record.get('usage') or []),
                   completion_tokens=sum(u.get('completion_tokens', 0) for u in record.get('usage') or []))
     usd = None
     if prices is not None:
         usd = round((tokens['prompt_tokens'] * prices['prompt'] + tokens['completion_tokens'] * prices['completion'])
                     / 1e6, 6)
-    flags = hallucination_flags(record, geometry)
+    flags = hallucination_flags(record)
+    halluc = [f for f in flags if f['kind'] != 'stated_distance']
+    label = geometry.get('band_label') or {}
     return dict(
         condition=record.get('condition'), seed=record.get('seed'),
         cooperate_ok=bool(record.get('cooperate_ok')),
         need_partner=dict(record.get('need_partner') or {}),
         decisions=decisions,
+        decisions_west_east={r: label.get(e) for r, e in decisions.items()} if label else None,
         reference_ends=dict(ref),
         assignment_match=complete and decisions == ref,
         min_distance_match=complete and decisions == geometry['min_total_distance_ends'],
@@ -84,7 +77,7 @@ def llm_metrics(record, geometry, prices=None):
         rounds=record.get('rounds'), utterances=record.get('utterances'),
         language_slips=sum(1 for m in record.get('messages') or [] if m.get('language_slip')),
         message_drops=len(record.get('message_drops') or []),
-        hallucination_n=len(flags), hallucination_flags=flags,
+        hallucination_n=len(halluc), hallucination_flags=flags,
         llm_calls=len(record.get('calls') or []), tokens=tokens, usd=usd,
     )
 
