@@ -22,6 +22,8 @@ FUNNEL = HERE/'r13-funnel-attempt1.json'
 FUNNEL_SHA256 = '31027ffbdc5904a9a39a506e687a2138d9543906ec14ae6214292dc6f35f60c2'
 SMOKE_N = 3
 FROM, TO = 'beamact5_r13', 'pairact_p2_r13'
+# -c3 opt-in: same worlds/plans, candidate = the adapter's carry detour candidates (--to)
+TO_CHOICES = (TO, 'pairact_p2_r13_detour', 'pairact_p3_collect_detour')
 
 
 def select_worlds(funnel, n=SMOKE_N):
@@ -37,7 +39,9 @@ def load_funnel(path=FUNNEL):
     return json.loads(raw)
 
 
-def derive(raw, worlds=None):
+def derive(raw, worlds=None, to=TO):
+    if to not in TO_CHOICES:
+        raise ValueError(f'unknown target candidate {to!r}')
     if hashlib.sha256(raw).hexdigest() != R13_CASES_SHA256:
         raise ValueError('r13 cases hash mismatch')
     if worlds is None:
@@ -48,7 +52,7 @@ def derive(raw, worlds=None):
         case = cases[w]
         if case.get('candidate') != FROM:
             raise ValueError(f'world {w}: expected candidate {FROM!r}, got {case.get("candidate")!r}')
-        out.append({**case, 'candidate': TO, 'source_world_index': w})
+        out.append({**case, 'candidate': to, 'source_world_index': w})
     return out
 
 
@@ -56,11 +60,12 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--r13-cases', type=Path, required=True)
     p.add_argument('--out', type=Path, required=True)
+    p.add_argument('--to', choices=TO_CHOICES, default=TO)
     a = p.parse_args()
     if a.out.exists():
         raise SystemExit('refusing to overwrite existing cases file')
     worlds = select_worlds(load_funnel())
-    cases = derive(a.r13_cases.read_bytes(), worlds)
+    cases = derive(a.r13_cases.read_bytes(), worlds, to=a.to)
     a.out.parent.mkdir(parents=True, exist_ok=True)
     a.out.write_text(json.dumps(cases, indent=1) + '\n')
     print(json.dumps({'out': str(a.out), 'sha256': hashlib.sha256(a.out.read_bytes()).hexdigest(),

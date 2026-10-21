@@ -13,8 +13,8 @@ spec.loader.exec_module(p2)
 
 def test_pins_point_to_p2_trees():
     text = (ROOT/'scripts/warp_flow_episode.py').read_text()
-    assert "ADAPTER_SHA = 'aaabddb1725191ebaa11f0849bf6446f612e150b'" in text     # adapter -a-c2
-    assert "TEACHER_SHA = '4b080d35a3dcbbd8fb8a992e1f1106a7289757b2'" in text     # teacher -c2
+    assert "ADAPTER_SHA = '30dbc689b8e681d87881d1338693cced04f9d7b4'" in text     # adapter -a-c3
+    assert "TEACHER_SHA = 'dbc08211c776117dddff7f3fec05f7327ba497a3'" in text     # teacher -c3 (carry detour_v1)
 
 
 def test_pinned_adapter_run_passes_the_bridge_audit():
@@ -124,3 +124,31 @@ def test_collect_root_changes_only_the_two_pins():
     removed = sorted(l for l in out.splitlines() if l.startswith('-') and not l.startswith('---'))
     assert removed == ["-ADAPTER_SHA = '6843fcaa94785e46ee52ef1889e392ca988d604d'",
                        "-TEACHER_SHA = '59299f903f4a2f9a2eabe5ff0e442e0ce25e8266'"]
+
+
+# ------------------------------------------------- -c3 detour pilot cases
+
+def test_derive_to_detour_candidate_changes_only_candidate(monkeypatch):
+    cases = [{'plan': {'seed': 8420000 + i}, 'candidate': 'beamact5_r13'} for i in range(40)]
+    raw = json.dumps(cases).encode()
+    monkeypatch.setattr(p2, 'R13_CASES_SHA256', hashlib.sha256(raw).hexdigest())
+    assert p2.derive(raw) == p2.derive(raw, to='pairact_p2_r13')          # default unchanged
+    for to in ('pairact_p2_r13_detour', 'pairact_p3_collect_detour'):
+        out = p2.derive(raw, to=to)
+        assert all(c['candidate'] == to for c in out)
+        assert [c['plan'] for c in out] == [cases[i]['plan'] for i in (1, 11, 17)]
+    with pytest.raises(ValueError, match='candidate'):
+        p2.derive(raw, to='bogus')
+
+
+def test_pinned_adapter_has_the_detour_candidates():
+    import subprocess
+    text = (ROOT/'scripts/warp_flow_episode.py').read_text()
+    sha = next(l.split("'")[1] for l in text.splitlines() if l.startswith('ADAPTER_SHA = '))
+    try:
+        src = subprocess.check_output(['git', 'show', f'{sha}:scripts/run_beampair1.py'], cwd=ROOT, text=True,
+                                      stderr=subprocess.DEVNULL)
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        pytest.fail(f'pinned adapter {sha} not in this clone: git fetch origin {sha} (not skippable)')
+    assert "if candidate=='pairact_p2_r13_detour':" in src and "'carry_route':'detour_v1'" in src
+    assert "COLLECT_CANDIDATES=(COLLECT_CANDIDATE,'pairact_p3_collect_detour')" in src
