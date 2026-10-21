@@ -22,7 +22,7 @@ def test_p2_candidate_is_r13_plus_carry_only():
 
 def test_dependency_pin_is_p2_teacher():
     text = (ROOT/'harness/beampair_teacher.py').read_text()
-    assert "DEPENDENCY_SHA = '60ef0b1481082daad4cf5582d1542661c0b8664f'" in text   # teacher -c5-hybrid (-c5 + hybrid carry I1-I11, default off)
+    assert "DEPENDENCY_SHA = 'c51f3e7c2cd419c3fe9ef4199481ffc1c5f74fea'" in text   # teacher -c5-hybrid2 (-c5-hybrid + fit v2 + code-carry smoke, default off)
 
 
 def test_floor_candidate_only_adds_lower_mode():

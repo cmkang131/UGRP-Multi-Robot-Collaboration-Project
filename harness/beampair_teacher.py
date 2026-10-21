@@ -3,7 +3,7 @@ from copy import deepcopy
 from harness.grasp_act_perturb import RecoveryPerturb
 
 MODE = 'beampair1_v1'
-DEPENDENCY_SHA = '60ef0b1481082daad4cf5582d1542661c0b8664f'   # teacher -c5-hybrid (= -c5 + hybrid carry, default off)
+DEPENDENCY_SHA = 'c51f3e7c2cd419c3fe9ef4199481ffc1c5f74fea'   # teacher -c5-hybrid2 (= -c5-hybrid + loaded-odom fit v2 + code-carry smoke, default off)
 V7_SOURCE_SHA = '13f50f31a40f2e87e3964137c8c2d6d3075ba4e1'
 
 
