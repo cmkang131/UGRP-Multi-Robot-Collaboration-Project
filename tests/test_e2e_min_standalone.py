@@ -266,3 +266,118 @@ def test_synthetic_jpeg():
     pytest.importorskip('PIL')
     jpeg = S.synthetic_jpeg()
     assert jpeg[:2] == b'\xff\xd8'
+
+
+# -- nav-render loop on CPU: real NavRobot/factory/adapter, fake world -------------------
+class FakeWorld:
+    def __init__(self, out, head, *, nav_cubes=None, nav_arm_pwm=None, nav_keep=('r1', 'r2')):
+        self.arm, self.cubes = nav_arm_pwm, nav_cubes
+        self.geometry = dict(destination=dict(zone='B'), robot_qpos_adr={'r1': 0, 'r2': 7})
+        self.init_s, self.xml_sha256, self.issued, self.steps = 0.0, 'f' * 64, [], 0
+        FakeWorld.last = self
+
+    def capture(self, robot):
+        return S.synthetic_jpeg(90)
+
+    def issue(self, robot, command):
+        self.issued.append((robot, command))
+
+    def step(self, _tick=None):
+        self.steps += 1
+
+    def eval_xy(self, robot):
+        return [0.0, 0.0]
+
+    def close(self):
+        pass
+
+
+def test_nav_render_loop_with_fake_world(tmp_path, monkeypatch):
+    pytest.importorskip('PIL')
+    cal = calibration(tmp_path)
+    manifest = tmp_path / 'components.json'
+    from e2ewarp_nav_manifest import main as manifest_main
+    manifest_main(['--out', str(manifest), '--calibration', str(cal), '--source-sha', 'c' * 40])
+    for k, v in dict(E2EWARP_NAV_GATE_MODE='v230_r5', E2EWARP_NAV_ARRIVAL='odom_projection',
+                     E2EWARP_NAV_CALIBRATION=str(cal), E2EWARP_NAV_L1LITE='on_v1').items():
+        monkeypatch.setenv(k, v)
+    monkeypatch.delenv('E2E_MIN_ACTUATION', raising=False)
+    out = tmp_path / 'nav'
+
+    def admit(_sha, o):
+        Path(o).mkdir(parents=True)
+        return 'c' * 40, Path(o)
+    monkeypatch.setattr(S, 'admit_source', admit)
+    monkeypatch.setattr(S, 'OneWorld', FakeWorld)
+    rc = S.main(['nav-render', '--enabled', '--out', str(out), '--expected-source-sha', 'c' * 40,
+                 '--components', str(manifest), '--assume-verdict', 'act_lift_end', '--ticks', '12'])
+    record = json.loads((out / 'standalone-nav-render.json').read_text())
+    assert record.get('error') is None, record.get('error')
+    assert rc == 0 and record['status'] == 'PLUMBING_OK' and record['ticks'] == 12
+    assert record['label'] == S.LABEL and record['policy']['kind'] == 'scripted'
+    assert record['carry_pose_verdict']['source'].startswith('assumed')
+    w = FakeWorld.last
+    assert w.arm == {'r1': HOLD, 'r2': HOLD} and w.cubes is None
+    assert w.issued and all(c['pwm'] == HOLD for _, c in w.issued)
+    assert record['robots']['r1']['proposals'] == 12 and record['robots']['r1']['pwm_not_held'] == 0
+    assert len(list((out / 'frames').glob('r1-*.jpg'))) == 3
+
+
+def test_nav_render_rejects_untransitioned_verdict(tmp_path):
+    m = tmp_path / 'measure.json'
+    m.write_text(json.dumps(dict(verdict=dict(adopted='carry_look_v1'))))
+    import hashlib
+    with pytest.raises(SystemExit, match='carry_pose_transition'):
+        S.main(['nav-render', '--enabled', '--out', str(tmp_path / 'o'), '--expected-source-sha', 'c' * 40,
+                '--components', str(m), '--carry-pose-verdict', str(m),
+                '--carry-pose-verdict-sha256', hashlib.sha256(m.read_bytes()).hexdigest()])
+
+
+def _fake_admit(monkeypatch):
+    def admit(_sha, o):
+        Path(o).mkdir(parents=True)
+        return 'c' * 40, Path(o)
+    monkeypatch.setattr(S, 'admit_source', admit)
+    monkeypatch.setattr(S, 'OneWorld', FakeWorld)
+
+
+@pytest.mark.parametrize('frames', ['synthetic', 'render'])
+def test_act_server_command_with_loopback(tmp_path, monkeypatch, frames):
+    pytest.importorskip('PIL')
+    import harness.e2e_min_act as act_mod
+    _fake_admit(monkeypatch)
+    FakeWorld.eval_cube = lambda self, robot: [0.0, 0.0, 0.02]
+    seen = {}
+
+    def factory(argv, *, stderr_path):
+        seen['argv'] = argv
+        tr = LoopbackTransport(ActServerCore(predict, FakeExecutor, C))
+        tr.close = lambda: seen.setdefault('closed', True)
+        return tr
+    monkeypatch.setattr(act_mod, 'ActServerTransport', factory)
+    out = tmp_path / 'act'
+    rc = S.main(['act-server', '--enabled', '--out', str(out), '--expected-source-sha', 'c' * 40,
+                 *ACT_ARGS, '--frames', frames, '--ticks', '3'])
+    record = json.loads((out / 'standalone-act-server.json').read_text())
+    assert record.get('error') is None, record.get('error')
+    assert rc == 0 and record['status'] == 'PLUMBING_OK' and seen['closed']
+    assert record['label'] == S.LABEL and record['policy']['kind'] == 'learned'
+    assert record['receipt_problems'] == [] and len(record['rows']) == 6
+    if frames == 'render':
+        w = FakeWorld.last
+        assert w.cubes == S.cube_spec(('r1', 'r2')) and w.arm is None
+        assert len(w.issued) == 6 and w.steps == 3
+        assert record['eval_only']['cube_end']['r1'] == [0.0, 0.0, 0.02]
+
+
+def test_release_open_warp_path_with_fake_world(tmp_path, monkeypatch):
+    _fake_admit(monkeypatch)
+    out = tmp_path / 'rel'
+    rc = S.main(['release-open', '--enabled', '--out', str(out), '--expected-source-sha', 'c' * 40,
+                 '--calibration', str(calibration(tmp_path)), '--robots', 'r1'])
+    record = json.loads((out / 'standalone-release-open.json').read_text())
+    assert record.get('error') is None, record.get('error')
+    assert rc == 0 and record['status'] == 'PLUMBING_OK' and record['physics'] == 'warp'
+    w = FakeWorld.last
+    assert w.arm == {'r1': HOLD, 'r2': HOLD} and w.cubes is None
+    assert w.steps == record['ticks'] and record['eval_only']['base_displacement_m'] == {'r1': 0.0}

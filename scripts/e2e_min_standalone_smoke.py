@@ -461,16 +461,17 @@ def cmd_nav_render(a):
     from harness import e2ewarp_l1lite as l1lite
     from harness.e2e_warp_components import require_navigation
     from harness.e2e_warp_runtime import OwnFrame
-    from harness.e2ewarp_nav_gate import bind_slot_decisions, l1lite_enabled
+    from harness.e2ewarp_nav_gate import (bind_slot_decisions, l1lite_enabled, load_calibration,
+                                          validate_calibration_binding)
     from harness.e2ewarp_nav_mode import NavRobot, nav_static
     from harness.e2e_min_runtime import NavCarryAdapter
-    head, out = admit_source(a.expected_source_sha, a.out)
     verdict, verdict_source = load_carry_verdict(a)
-    if not l1lite_enabled():
-        raise SystemExit('E2EWARP_NAV_L1LITE=on_v1 required (same nav path as the E2E runner)')
     if verdict.get('adopted') != 'act_lift_end':
         # Same rule as NavCarryAdapter; checked before any GPU work.
         raise SystemExit('E2E_MIN_TODO:carry_pose_transition:' + str(verdict.get('adopted')))
+    if not l1lite_enabled():
+        raise SystemExit('E2EWARP_NAV_L1LITE=on_v1 required (same nav path as the E2E runner)')
+    head, out = admit_source(a.expected_source_sha, a.out)
     held = held_pose('act_lift_end')
     env = {k: os.environ.get(k) for k in ('E2EWARP_NAV_GATE_MODE', 'E2EWARP_NAV_ARRIVAL',
                                           'E2EWARP_NAV_CALIBRATION', 'E2EWARP_NAV_L1LITE',
@@ -485,6 +486,12 @@ def cmd_nav_render(a):
     t0 = time.perf_counter()
     try:
         components = require_navigation(a.components, ROOT)
+        # Same admission the runner does (validate_calibration_binding) for the
+        # E2EWARP_NAV_CALIBRATION file; the factory reads only this record.
+        calibration = load_calibration()
+        validate_calibration_binding(dict(nav_calibration=dict(sha256=calibration['sha256'])))
+        record['calibration'] = dict(path=calibration['path'], sha256=calibration['sha256'],
+                                     constants=dict(calibration['constants']))
         bind_slot_decisions({r: FIXED_SLOTS[r] for r in ROBOTS}, robots=ROBOTS)
         world = OneWorld(out, head, nav_arm_pwm={r: held for r in ROBOTS})
         record.update(world_init_s=round(world.init_s, 2), xml_sha256=world.xml_sha256,
