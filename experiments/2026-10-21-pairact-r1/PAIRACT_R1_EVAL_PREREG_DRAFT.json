@@ -146,7 +146,7 @@
   },
   "no_winner_selection": "no arm is chosen as 'the' result after seeing results. With N_eff <= 20 no difference test is claimed; both lines are printed side by side",
   "checkpoint_selection": "each arm selects its own checkpoint on validation (OFFLINE_GATE.md, same thresholds; arm N scores near-only rows, carry->place transition kept as the hand-back check). An arm with NOT_READY_NO_CHECKPOINT_PASSES is reported as such and the other arm still runs",
-  "training": "arm F and arm N train in parallel on the same dataset and stage sidecar, same hyperparameters and seed 20261020 (harness.pairact_r1.assert_arm_pair), gcp2 and gcp6, about 4.6 GPU-h each (TRAIN_PLAN.json arms)",
+  "training": "arm F and arm N train in parallel on the same dataset and stage sidecar, same hyperparameters and seed 20261020 (harness.pairact_r1_arms.assert_arm_pair), gcp2 and gcp6, about 4.6 GPU-h each (TRAIN_PLAN.json arms)",
   "funnel_attribution": "hybrid_n funnel stages carry_1m and door are reached by code, approach..hold_3s and place by the student; the funnel row says so",
   "hybrid_audit": "hybrid_n rows additionally need gt_inputs_to_code == 0 (null = unverified = not a success) and carry the I10 fields code_segment_s, student_commands_executed_ratio, switch events",
   "hybrid_switch_relation": "pairact_r1_hybrid_switch_v1 reads only the arm F student counts. arm N is hybrid by construction and is not an input of the rule; the rule decides whether arm F's checkpoint is also run with the code carry segment (a later prereg, arm id 'hybrid_f', same seeds) and what the next build is"

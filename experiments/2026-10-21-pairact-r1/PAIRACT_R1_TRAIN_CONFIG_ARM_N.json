@@ -46,7 +46,7 @@
     "max_wall_s_per_session": 25200
   },
   "notes": [
-    "arm N (t5-architecture-advice.md): same collected dataset, same stage sidecar, same hyperparameters and seed as arm F (PAIRACT_R1_TRAIN_CONFIG_DRAFT.json). harness.pairact_r1.assert_arm_pair enforces the equality.",
+    "arm N (t5-architecture-advice.md): same collected dataset, same stage sidecar, same hyperparameters and seed as arm F (PAIRACT_R1_TRAIN_CONFIG_DRAFT.json). harness.pairact_r1_arms.assert_arm_pair enforces the equality.",
     "near_only_v1: rows whose h0 stage target is 'carry' (teacher carry:carry_hold .. carry:zone_settle = carry and door passage) get sampler weight 0; carry horizon entries of the remaining rows are masked like padding in the action, done and stage losses.",
     "trained: approach, alignment, READY, grasp (execute), 3 s hold, recover, place (lower/open/raise/retreat), complete. At evaluation the carry segment is run by code (hybrid, HYBRID_RUN.md); arm N is never evaluated as a pure student.",
     "label: '학습 근거리 + 코드 운반(hybrid)'. Never pooled with arm F ('학습 전 구간').",

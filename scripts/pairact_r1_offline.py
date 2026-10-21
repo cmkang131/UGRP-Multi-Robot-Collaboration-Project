@@ -21,6 +21,7 @@ if str(Path(__file__).resolve().parents[1]) not in sys.path:
 
 from harness import beamact3
 from harness import pairact_r1 as p
+from harness import pairact_r1_arms as arms
 from harness.grasp_act_data import sha256, write_json
 
 DITHER_SEED = 20261021
@@ -58,7 +59,7 @@ def evaluate(actor, data, *, dither, batch_size=64, scope='full_v1'):
         pred.extend(logits[:, 0].argmax(-1).tolist())
         done_score.extend(actor.beam3.decode_predictions(values)[:, 0, -1].tolist())
     segments = seg_global
-    return p.offline_metrics(pred, target, segments, done_score, done_target, scope=scope)
+    return arms.offline_metrics(pred, target, segments, done_score, done_target, scope=scope)
 
 
 def main(argv=None):
@@ -68,17 +69,18 @@ def main(argv=None):
     a.add_argument('--stage-targets', type=Path, required=True)
     a.add_argument('--output', type=Path, required=True)
     a.add_argument('--device', default='cuda')
+    a.add_argument('--train-config', type=Path, help='arm config of the run (arm N: PAIRACT_R1_TRAIN_CONFIG_ARM_N.json); '
+                   'absent = arm F full scope')
     args = a.parse_args(argv)
+    scope = arms.segment_scope(arms.load_config(args.train_config)) if args.train_config else 'full_v1'
     manifest = json.loads((args.dataset / 'manifest.json').read_text())
     if {e['split'] for e in manifest['episodes']} - {'train', 'validation'}:
         raise ValueError('heldout episodes must not be in the offline dataset')
     data = p.pair_dataset_class()(args.dataset, 'validation', stage_manifest=args.stage_targets)
     args.output.mkdir(parents=True, exist_ok=False)
-    rows, scopes = [], set()
+    rows = []
     for folder in sorted(args.run.glob('step-*')):
         actor = p.PairActActor.load(folder / 'actor', device=args.device)
-        scope = actor.meta.get('segment_scope', 'full_v1')
-        scopes.add(scope)
         clean = evaluate(actor, data, dither=False, scope=scope)
         dithered = evaluate(actor, data, dither=True, scope=scope)
         passed, reasons = p.gate(clean, dithered)
@@ -88,11 +90,10 @@ def main(argv=None):
         rows.append(row)
         with (args.output / 'checkpoints.jsonl').open('a') as f:
             f.write(json.dumps(row) + '\n')
-    if len(scopes) > 1:
-        raise ValueError(f'one run must hold one arm; segment scopes {sorted(scopes)}')
     selected = p.select_checkpoint(rows)
     write_json(args.output / 'selection.json', dict(
-        split='validation', gate=p.GATE, selected_step=selected, segment_scope=next(iter(scopes), None),
+        split='validation', gate=p.GATE, selected_step=selected, segment_scope=scope,
+        train_config_sha256=sha256(args.train_config) if args.train_config else None,
         verdict='SELECTED' if selected is not None else 'NOT_READY_NO_CHECKPOINT_PASSES',
         dataset_manifest_sha256=sha256(args.dataset / 'manifest.json'),
         stage_targets_sha256=sha256(args.stage_targets), checkpoints=len(rows),

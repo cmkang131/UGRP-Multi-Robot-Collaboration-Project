@@ -127,7 +127,7 @@
     "basis": "DESIGN.md section 3 (beamact2 10k 2.29 h linear, beamact3 20k 2.8-3.6 h)"
   },
   "arms": {
-    "rule": "same collected dataset, same stage sidecar, same hyperparameters and seed; arm N differs only in segment_scope (harness.pairact_r1.assert_arm_pair refuses anything else). Arms train in parallel on two VMs; neither waits for the other.",
+    "rule": "same collected dataset, same stage sidecar, same hyperparameters and seed; arm N differs only in segment_scope (harness.pairact_r1_arms.assert_arm_pair refuses anything else). Arms train in parallel on two VMs; neither waits for the other.",
     "F": {
       "config": "experiments/2026-10-21-pairact-r1/PAIRACT_R1_TRAIN_CONFIG_DRAFT.json",
       "segment_scope": "full_v1",

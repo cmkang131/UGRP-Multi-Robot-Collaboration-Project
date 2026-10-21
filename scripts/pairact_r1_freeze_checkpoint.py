@@ -11,7 +11,7 @@ rollout (PAIRACT_R1_EVAL_PREREG_DRAFT.json commit_before_run). No checkpoint is 
     --config experiments/2026-10-21-pairact-r1/PAIRACT_R1_TRAIN_CONFIG_DRAFT.json \
     --collect-report RUNP3T/report.json --out experiments/2026-10-21-pairact-r1/CHECKPOINT_FREEZE.json
 
-  arm N: same command with --run RUN-N/main --offline RUN-N/offline
+  arm N: same command with --run RUN-N/main --offline RUN-N/offline (offline run with --train-config ...ARM_N.json)
     --config experiments/2026-10-21-pairact-r1/PAIRACT_R1_TRAIN_CONFIG_ARM_N.json
     --out experiments/2026-10-21-pairact-r1/CHECKPOINT_FREEZE_ARM_N.json
 """

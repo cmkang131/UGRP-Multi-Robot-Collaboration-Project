@@ -207,9 +207,9 @@ python scripts/build_pairact_r1_stage_targets.py --dataset datasets/pairact-r1-<
 `missing_stages`에 approach·alignment·ready·execute·carry·place·complete 중 하나라도 있으면 멈추고 보고합니다. recover는 teacher 시연에 없을 수 있습니다.
 
 ## 3. P4 학습 — arm F(gcp2)와 arm N(gcp6) 병렬, 각 4.6 GPU-h 예산
-두 arm은 같은 데이터셋·같은 sidecar·같은 하이퍼파라미터·seed 20261020입니다. 다른 것은 설정 파일의 `arm`/`segment_scope`뿐이고 `harness.pairact_r1.assert_arm_pair`가 이를 강제합니다. arm N은 carry 단계 행(teacher `carry:carry_hold`–`carry:zone_settle`, 운반·문 통과)을 sampler에서 빼고 carry horizon을 손실에서 가립니다. 아래 명령을 arm마다 한 번씩, VM마다 따로 돌립니다(`<A>`=F 또는 N). 호스트 profile `pairact_r1_l4`는 gcp2(`ugrp-act-l4-gcp2`)·gcp6(`ugrp-act-l4-gcp6`) L4만 받습니다.
+두 arm은 같은 데이터셋·같은 sidecar·같은 하이퍼파라미터·seed 20261020입니다. 다른 것은 설정 파일의 `arm`/`segment_scope`뿐이고 `harness.pairact_r1_arms.assert_arm_pair`가 이를 강제합니다. arm N은 carry 단계 행(teacher `carry:carry_hold`–`carry:zone_settle`, 운반·문 통과)을 sampler에서 빼고 carry horizon을 손실에서 가립니다. 아래 명령을 arm마다 한 번씩, VM마다 따로 돌립니다(`<A>`=F 또는 N). 호스트 profile `pairact_r1_l4`는 gcp2(`ugrp-act-l4-gcp2`)·gcp6(`ugrp-act-l4-gcp6`) L4만 받습니다.
 ```
-python -c "from harness import pairact_r1 as p; p.assert_arm_pair(p.load_config('experiments/2026-10-21-pairact-r1/PAIRACT_R1_TRAIN_CONFIG_DRAFT.json'), p.load_config('experiments/2026-10-21-pairact-r1/PAIRACT_R1_TRAIN_CONFIG_ARM_N.json')); print('arm pair ok')"
+python -c "from harness import pairact_r1_arms as p; p.assert_arm_pair(p.load_config('experiments/2026-10-21-pairact-r1/PAIRACT_R1_TRAIN_CONFIG_DRAFT.json'), p.load_config('experiments/2026-10-21-pairact-r1/PAIRACT_R1_TRAIN_CONFIG_ARM_N.json')); print('arm pair ok')"
 CFG=experiments/2026-10-21-pairact-r1/PAIRACT_R1_TRAIN_CONFIG_DRAFT.json      # arm F (gcp2)
 # CFG=experiments/2026-10-21-pairact-r1/PAIRACT_R1_TRAIN_CONFIG_ARM_N.json    # arm N (gcp6)
 ST=datasets/pairact-r1-<TS>-stage/stage-targets.json
