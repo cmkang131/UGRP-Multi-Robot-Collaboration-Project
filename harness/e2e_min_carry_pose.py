@@ -264,3 +264,78 @@ def measure_frame(rgb):
                 largest_component_px=0 if comp is None else int(comp['area']),
                 bbox_bottom_row=None if comp is None else int(comp['bottom']) - 1,
                 detections_v230=len(detections))
+
+
+# -- scene identity (render batch) ---------------------------------------------
+#: Only these attributes are normalised, and only on bodies that own a free
+#: joint.  For such a body MuJoCo's ``body_pos`` is just the free joint's
+#: ``qpos0`` (the initial pose); the rendered state is the per-world ``qpos``
+#: that ``build_context`` / ``place_cubes`` write explicitly.  ``quat`` (and any
+#: other attribute, geom, size, material, wall, extra body) is NOT normalised,
+#: so a different scene still fails closed.
+POSE_NORMALIZED_ATTRS = ('pos',)
+SCENE_XML_NOT_IDENTICAL = 'POSE_SCENE_XML_NOT_IDENTICAL'
+
+
+def _has_free_joint(body):
+    return body.find('freejoint') is not None or any(
+        j.get('type') == 'free' for j in body.findall('joint'))
+
+
+def normalize_scene_xml(xml):
+    """Drop free-joint body initial-pose attributes; return (normalised xml, fields)."""
+    import xml.etree.ElementTree as ET
+    root = ET.fromstring(xml)
+    fields = []
+    for body in root.iter('body'):
+        if not _has_free_joint(body):
+            continue
+        for attr in POSE_NORMALIZED_ATTRS:
+            if attr in body.attrib:
+                del body.attrib[attr]
+                fields.append(f"body[@name='{body.get('name')}']/@{attr}")
+    return ET.tostring(root, encoding='unicode'), fields
+
+
+def _sha(text):
+    return hashlib.sha256(text.encode()).hexdigest()
+
+
+def scene_identity(xmls):
+    """Scene identity record of one render batch.
+
+    ``raw_sha256``/``normalized_sha256`` are the distinct digests before/after
+    ``normalize_scene_xml``; ``normalized_fields`` are the attributes removed
+    (union) and ``differing_fields`` the subset whose raw values actually differ
+    between the XMLs.  ``identical`` is the normalised verdict.
+    """
+    import xml.etree.ElementTree as ET
+    xmls = list(xmls)
+    if not xmls:
+        raise ValueError(SCENE_XML_NOT_IDENTICAL + ':EMPTY')
+    raw = [_sha(x) for x in xmls]
+    norm, fields = [], set()
+    values = {}
+    for x in xmls:
+        n, f = normalize_scene_xml(x)
+        norm.append(_sha(n))
+        fields.update(f)
+        root = ET.fromstring(x)
+        for body in root.iter('body'):
+            if _has_free_joint(body):
+                for attr in POSE_NORMALIZED_ATTRS:
+                    key = f"body[@name='{body.get('name')}']/@{attr}"
+                    values.setdefault(key, set()).add(body.get(attr))
+    return dict(raw_sha256=sorted(set(raw)), normalized_sha256=sorted(set(norm)),
+                raw_identical=len(set(raw)) == 1, identical=len(set(norm)) == 1,
+                normalized_fields=sorted(fields),
+                differing_fields=sorted(k for k, v in values.items() if len(v) > 1),
+                n=len(xmls))
+
+
+def require_scene_identity(xmls, label=''):
+    """``scene_identity`` that raises POSE_SCENE_XML_NOT_IDENTICAL on a different scene."""
+    record = scene_identity(xmls)
+    if not record['identical']:
+        raise ValueError(SCENE_XML_NOT_IDENTICAL + ':' + str(label))
+    return record

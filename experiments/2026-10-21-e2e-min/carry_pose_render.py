@@ -6,7 +6,16 @@ gripper_hold_arm_search_v1 reference), both robots sit on their nav lanes
 (r1 y=-2.375, r2 y=-2.875, yaw 0) at x in RENDER_X with the arm set to that
 PWM (setup-only qpos via build_context(nav_arm_pwm=...)).  Each robot's own
 cube is placed at its finger-pad midpoint ("on") or hidden 0.5 m under the
-floor ("off"); both variants share one scene XML.  Only tick 0 is rendered:
+floor at (x+0.2, lane y) ("off").
+
+Scene identity: every world of one pose batch is built with the SAME setup cube
+xy (SETUP_CUBE_X, lane y), so the scene XML is byte-identical across x and
+on/off (transport() batches one exact model).  The per-x robot spawn, arm pose
+and cube placement are applied only after compile, as qpos/ctrl.  (Before this,
+nav_cubes xy = x+0.2 was written into the cargo body ``pos`` by
+sim/zone_arena.py and the XML differed per x -> POSE_SCENE_XML_NOT_IDENTICAL.)
+The check itself stays: harness.e2e_min_carry_pose.scene_identity is recorded
+per pose (raw/normalised sha256, normalised fields) in measure.json.  Only tick 0 is rendered:
 no hooks.step, no controller, no LLM, no GT input to anything.
 
 Per frame: v230 band largest 4-connected component (px), its bbox bottom row,
@@ -30,6 +39,9 @@ from pathlib import Path
 SEED = 601
 HIDE_Z = -0.5
 CUBES = {'r1': 'cyan_1', 'r2': 'red_1'}
+#: Setup-only cube x written into the scene XML (free-joint body pos = qpos0).
+#: Identical for every world; the rendered cube pose is set by place_cubes().
+SETUP_CUBE_X = 1.7
 
 
 def git(clone, *args):
@@ -48,7 +60,8 @@ def grip_center(model, data, robot):
     return (np.asarray(left) + np.asarray(right)) / 2.0
 
 
-def place_cubes(ctx, geometry, held):
+def place_cubes(ctx, geometry, held, off_xy):
+    """Set each cube's free-joint qpos: finger-pad midpoint (held) or off_xy at HIDE_Z."""
     import mujoco
     model, data = ctx['world'].model, ctx['world'].data
     placed = {}
@@ -57,7 +70,7 @@ def place_cubes(ctx, geometry, held):
             center = grip_center(model, data, robot)
             pos = [float(center[0]), float(center[1]), float(center[2])]
         else:
-            pos = [float(data.qpos[adr]), float(data.qpos[adr + 1]), HIDE_Z]
+            pos = [float(off_xy[robot][0]), float(off_xy[robot][1]), HIDE_Z]
         data.qpos[adr:adr + 7] = [*pos, 1, 0, 0, 0]
         data.qvel[:] = 0
         placed[robot] = [round(v, 4) for v in pos]
@@ -96,25 +109,34 @@ def main(argv=None):
     values = {r['id']: r['current'] for r in stack['rules'] if 'e2e_llm' in r['flows']}
     poses = {name: candidates['poses'][name] for name in (*C.CANDIDATES, C.REFERENCE)}
 
-    rows, geometry_rows = [], {}
+    rows, geometry_rows, identity, placements = [], {}, {}, {}
+    setup_cubes = {r: dict(item_id=CUBES[r], xy=[SETUP_CUBE_X, float(LANE_Y[r])]) for r in ('r1', 'r2')}
     for pose_name, pwm in poses.items():
         contexts, cells = [], []
         for x in C.RENDER_X:
             spawns = {r: [float(x), float(LANE_Y[r]), 0.032355118817659255, 0.0] for r in ('r1', 'r2')}
-            cubes = {r: dict(item_id=CUBES[r], xy=[float(x) + 0.2, float(LANE_Y[r])]) for r in ('r1', 'r2')}
+            off_xy = {r: [float(x) + 0.2, float(LANE_Y[r])] for r in ('r1', 'r2')}
             for held in (True, False):
                 folder = out / 'worlds' / f'{pose_name}-x{x:.1f}-{"on" if held else "off"}'
                 ctx = build_context(SEED, folder, values, nav_scene=True, nav_spawns=spawns,
-                                    nav_cubes=cubes, nav_arm_pwm={r: pwm for r in ('r1', 'r2')})
+                                    nav_cubes=setup_cubes, nav_arm_pwm={r: pwm for r in ('r1', 'r2')})
                 geometry = json.loads((folder / 'eval-geometry.json').read_text())
-                placed = place_cubes(ctx, geometry, held)
+                placed = place_cubes(ctx, geometry, held, off_xy)
                 contexts.append(ctx)
                 cells.append(dict(x=float(x), held=held, placed=placed))
+                placements[folder.name] = placed
                 geometry_rows[folder.name] = dict(cargo_contact_pairs=geometry.get('cargo_contact_pairs'),
                                                   cube_items=geometry.get('cube_items'))
-        xml = {hashlib.sha256(c['world'].scene_xml.encode()).hexdigest() for c in contexts}
-        if len(xml) != 1:
-            raise SystemExit('POSE_SCENE_XML_NOT_IDENTICAL:' + pose_name)
+        record = C.scene_identity(c['world'].scene_xml for c in contexts)
+        identity[pose_name] = record
+        if not (record['identical'] and record['raw_identical']):
+            # Written before failing so the VM report carries the evidence.
+            (out / f'scene-identity-{pose_name}.json').write_text(json.dumps(record, indent=1) + '\n')
+            if not record['identical']:
+                raise SystemExit(C.SCENE_XML_NOT_IDENTICAL + ':' + pose_name)
+            # Pose-only difference, but transport() needs one exact model per batch.
+            raise SystemExit('POSE_SCENE_XML_RAW_DIFFERS_POSE_ONLY:' + pose_name + ':'
+                             + ','.join(record['differing_fields']))
         hooks = transport(contexts, out / f'transport-{pose_name}', head, values)
         hooks.initialize(contexts)
         frames = {}
@@ -147,6 +169,9 @@ def main(argv=None):
                    candidates_sha256=sha(cand_path), poses=poses, render_x=list(C.RENDER_X),
                    ticks=[0], physics_steps=0, controller_n=0, llm_calls=0,
                    cube_placement='finger-pad midpoint (render only; fingers may interpenetrate)',
+                   cube_setup_xml_xy={r: c['xy'] for r, c in setup_cubes.items()},
+                   cube_off_rule='qpos (x+0.2, lane y, HIDE_Z) set after compile',
+                   placements=placements, scene_identity=identity,
                    rows=rows, geometry=geometry_rows, verdict=verdict,
                    scope='render-only camera test; not a physics or grasp-retention judgement')
     (out / 'measure.json').write_text(json.dumps(measure, ensure_ascii=False, indent=1) + '\n')

@@ -145,3 +145,62 @@ def test_arm_pwm_default_is_search_and_validates():
     assert W.arm_pwm({'r1': LIFT}, 'r1', search) == {int(k): v for k, v in LIFT.items()}
     with pytest.raises(W.E2EWorldError):
         W.arm_pwm({'r1': {'1': 1500}}, 'r1', search)
+
+
+# -- render-batch scene identity ----------------------------------------------
+def _scene(cube_x=1.7, robot_x=0.0, *, wall=False, cube_size='.016 .016 .016', cube_quat=None,
+           extra_body=False, free_style='freejoint'):
+    joint = ('<freejoint name="cargo_cyan_1_free"/>' if free_style == 'freejoint'
+             else '<joint name="cargo_cyan_1_free" type="free"/>')
+    quat = '' if cube_quat is None else f' quat="{cube_quat}"'
+    return ('<mujoco><worldbody>'
+            '<geom name="floor" type="plane" size="8 8 .1"/>'
+            + ('<geom name="wall_x" type="box" pos="2 0 .1" size=".1 1 .1"/>' if wall else '')
+            + f'<body name="r1__robot" pos="{robot_x} -2.375 .03"><freejoint name="r1__base_free"/>'
+            '<geom name="r1__chassis" type="box" size=".1 .1 .03"/>'
+            '<body name="r1__arm" pos=".05 0 .05"><joint name="r1__shoulder" type="hinge"/>'
+            '<geom name="r1__link" type="capsule" size=".01 .05"/></body></body>'
+            f'<body name="cargo_cyan_1" pos="{cube_x} -2.375 .016"{quat}>{joint}'
+            f'<geom name="cargo_cyan_1_geom" type="box" size="{cube_size}"/></body>'
+            + ('<body name="cargo_extra" pos="1 1 .016"><freejoint/><geom type="box" size=".01 .01 .01"/></body>'
+               if extra_body else '')
+            + '</worldbody></mujoco>')
+
+
+def test_scene_identity_spawn_pos_only_passes_and_records_shas():
+    xmls = [_scene(cube_x=x + 0.2, robot_x=x) for x in C.RENDER_X]
+    rec = C.require_scene_identity(xmls, 'act_lift_end')
+    assert rec['identical'] and not rec['raw_identical']
+    assert len(rec['raw_sha256']) == 4 and len(rec['normalized_sha256']) == 1
+    assert rec['differing_fields'] == ["body[@name='cargo_cyan_1']/@pos", "body[@name='r1__robot']/@pos"]
+    assert set(rec['differing_fields']) <= set(rec['normalized_fields'])
+    # byte-identical batch (the fixed render path): raw and normalised agree
+    same = C.scene_identity([_scene(), _scene()])
+    assert same['raw_identical'] and same['identical'] and same['differing_fields'] == []
+    # <joint type="free"> is treated like <freejoint>
+    assert C.scene_identity([_scene(1.7, free_style='joint'), _scene(2.2, free_style='joint')])['identical']
+
+
+def test_scene_identity_nested_non_free_body_pos_is_not_normalised():
+    a = _scene()
+    b = a.replace('<body name="r1__arm" pos=".05 0 .05">', '<body name="r1__arm" pos=".06 0 .05">')
+    assert a != b
+    with pytest.raises(ValueError, match='POSE_SCENE_XML_NOT_IDENTICAL'):
+        C.require_scene_identity([a, b])
+
+
+@pytest.mark.parametrize('other', [
+    dict(wall=True),                          # wall added
+    dict(extra_body=True),                    # object added
+    dict(cube_size='.02 .016 .016'),          # size changed
+    dict(cube_quat='0.92 0 0 0.38'),          # orientation is not normalised (fail closed)
+])
+def test_scene_identity_different_scene_fails(other):
+    with pytest.raises(ValueError, match='POSE_SCENE_XML_NOT_IDENTICAL'):
+        C.require_scene_identity([_scene(), _scene(cube_x=2.2, **other)], 'p')
+    assert not C.scene_identity([_scene(), _scene(**other)])['identical']
+
+
+def test_scene_identity_empty_fails():
+    with pytest.raises(ValueError, match='POSE_SCENE_XML_NOT_IDENTICAL'):
+        C.scene_identity([])
