@@ -292,3 +292,22 @@ def test_raw_recount_path_uses_evaluate_run(tmp_path):
     cell = next(c for c in summary['cells'] if (c['condition'], c['seed']) == ('structured', 601))
     assert cell['success'] is True, cell
     assert cell['aux']['completion_sim_s'] == 41.0
+
+
+def test_prereg_sha_is_carried_and_checked(tmp_path):
+    """report_tables.py l1lite reads analysis.prereg_sha256; --prereg must match the ledger."""
+    import hashlib
+    pre_sha = hashlib.sha256(PREREG.read_bytes()).hexdigest()
+    ledger = full_ledger(tmp_path)
+    ledger['prereg_sha256'] = pre_sha
+    path = tmp_path / 'ledger.json'
+    path.write_text(json.dumps(ledger))
+    out = tmp_path / 'analysis.json'
+    assert A.main([str(path), '--prereg', str(PREREG), '--out-json', str(out)]) == 0
+    summary = json.loads(out.read_text())
+    assert summary['prereg_sha256'] == pre_sha == summary['prereg']['sha256']
+    ledger['prereg_sha256'] = '0' * 64
+    path.write_text(json.dumps(ledger))
+    with pytest.raises(SystemExit):
+        A.main([str(path), '--prereg', str(PREREG), '--out-json', str(out)])
+    assert A.analyze(full_ledger(tmp_path), base=tmp_path)['prereg_sha256'] is None

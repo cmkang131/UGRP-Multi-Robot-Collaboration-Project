@@ -141,10 +141,11 @@ Codex 검토 요청 범위: 이 문서 + diff `2f62e62eb^..<이 문서 커밋>`(
 
 ## 10. 분석 절차
 
-1. DeepSeek가 run root `runs/e2ewarp-l1lite-<UTC TS>/`에 order별 디렉터리 `o<NN>-<condition>-s<seed>/`를 만들고, 원장 `ledger.json`(스키마 `ugrp.e2ewarp.l1lite_ledger.v1`, `scripts/analyze_l1lite.py` docstring)을 run마다 한 행씩 추가합니다. smoke/dev 행은 `kind`를 `smoke`/`dev`로 씁니다.
-2. 분석: `python scripts/analyze_l1lite.py runs/e2ewarp-l1lite-<TS>/ledger.json --out-json analysis.json --out-md analysis.md`. 스크립트는 run 디렉터리에 쓰지 않고, `evaluate_run`으로 raw를 다시 셉니다.
-3. 출력: 조건별 n/6과 seed별 O/x, 1차 실패 사유 집계, 보조 지표 표, run별 실패 사유 전체, 제외 행, 프로토콜 편차, 원장 sha256.
-4. 독립 재계수: Codex가 raw manifest로 GT 판정을 따로 계산해 스크립트 결과와 대조합니다(요약 성공 플래그를 그대로 세지 않음).
+1. DeepSeek가 run root `runs/e2ewarp-l1lite-<UTC TS>/`에 order별 디렉터리 `o<NN>-<condition>-s<seed>/`를 만들고, 원장 `ledger.json`(스키마 `ugrp.e2ewarp.l1lite_ledger.v1`, `scripts/analyze_l1lite.py` docstring)을 run마다 한 행씩 추가합니다. smoke/dev 행은 `kind`를 `smoke`/`dev`로 씁니다. 원장 맨 위 `prereg_sha256`에는 FROZEN 커밋의 이 문서 sha256을 적습니다.
+2. 분석: `python scripts/analyze_l1lite.py runs/e2ewarp-l1lite-<TS>/ledger.json --prereg experiments/2026-10-20-l1lite-alloc/PREREG_L1LITE.md --out-json analysis.json --out-md analysis.md`. 스크립트는 run 디렉터리에 쓰지 않고, `evaluate_run`으로 raw를 다시 셉니다. 원장 `prereg_sha256`과 이 문서 sha256이 다르면 거부합니다.
+3. 보고 표: `python scripts/report_tables.py l1lite --prereg experiments/2026-10-20-l1lite-alloc/PREREG_L1LITE.md --analysis analysis.json --ledger runs/e2ewarp-l1lite-<TS>/ledger.json --out <새 report 디렉터리>`(브랜치 `dsh/report-auto`). 같은 analysis에서 n/6(Wilson 95% CI), 성분별 실패, 보조 지표, 그림을 만듭니다. 분모·재실행 규칙은 §7을 analysis가 이미 적용한 그대로 씁니다.
+4. 출력: 조건별 n/6과 seed별 O/x, 1차 실패 사유 집계, 보조 지표 표, run별 실패 사유 전체, 제외 행, 프로토콜 편차, 원장 sha256.
+5. 독립 재계수: Codex가 raw manifest로 GT 판정을 따로 계산해 스크립트 결과와 대조합니다(요약 성공 플래그를 그대로 세지 않음).
 
 ## 11. 해석 한계 (보고서에 그대로 씁니다)
 

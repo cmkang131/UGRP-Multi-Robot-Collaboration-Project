@@ -13,6 +13,7 @@ Ledger (JSON)::
 
     {"schema": "ugrp.e2ewarp.l1lite_ledger.v1",
      "frozen_source_sha": "<40 hex>",
+     "prereg_sha256": "<sha256 of the FROZEN PREREG_L1LITE.md>",   # read by report_tables.py l1lite
      "runs": [{"order": 1, "condition": "no_comm", "seed": 601,
                "kind": "main",              # main | smoke | dev
                "status": "NAV_ARRIVAL_UNVERIFIED",   # runner status, HOST_ERROR, ...
@@ -24,9 +25,13 @@ A row's evaluation is ``evaluation_path`` if given, else a raw recount with
 ``harness.e2ewarp_l1lite_eval.evaluate_run(run_dir)``.  Nothing here writes
 into a run directory.
 
+``prereg_sha256`` is copied into the analysis; with ``--prereg`` the file's sha256 must
+equal it.  ``scripts/report_tables.py l1lite --analysis <out-json> --ledger LEDGER.json``
+(branch dsh/report-auto) turns the analysis into the n/6 report with Wilson intervals.
+
 Usage::
 
-    python scripts/analyze_l1lite.py LEDGER.json [--out-json X] [--out-md Y]
+    python scripts/analyze_l1lite.py LEDGER.json [--prereg PREREG_L1LITE.md] [--out-json X] [--out-md Y]
     python scripts/analyze_l1lite.py --print-order          # pre-registered order
 """
 from __future__ import annotations
@@ -249,6 +254,7 @@ def analyze(ledger, *, base=Path('.'), frozen_sha=None, evaluate_run=None):
     deviations = [dict(condition=c['condition'], seed=c['seed'], items=c['deviations'])
                   for c in cells if c['deviations']]
     return dict(schema=SCHEMA, frozen_source_sha=frozen_sha,
+                prereg_sha256=ledger.get('prereg_sha256'),
                 denominator_rule='every planned (condition, test seed) cell; '
                                  'NOT_RUN/HOST_ERROR/SHA_MISMATCH/EVAL_MISSING are failures',
                 statistical_test=None,
@@ -316,6 +322,7 @@ def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument('ledger', nargs='?', type=Path)
     p.add_argument('--frozen-sha')
+    p.add_argument('--prereg', type=Path, help='PREREG_L1LITE.md; sha256 must equal ledger prereg_sha256')
     p.add_argument('--out-json', type=Path)
     p.add_argument('--out-md', type=Path)
     p.add_argument('--print-order', action='store_true')
@@ -328,6 +335,11 @@ def main(argv=None):
     raw = a.ledger.read_bytes()
     summary = analyze(json.loads(raw), base=a.ledger.resolve().parent,
                       frozen_sha=a.frozen_sha)
+    if a.prereg:
+        pre_sha = hashlib.sha256(a.prereg.read_bytes()).hexdigest()
+        if summary['prereg_sha256'] != pre_sha:
+            p.error(f'ledger prereg_sha256 {summary["prereg_sha256"]} != {a.prereg} sha256 {pre_sha}')
+        summary['prereg'] = dict(path=str(a.prereg.resolve()), sha256=pre_sha)
     summary['ledger'] = dict(path=str(a.ledger.resolve()),
                              sha256=hashlib.sha256(raw).hexdigest())
     text = json.dumps(summary, indent=2, sort_keys=True)
