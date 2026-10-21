@@ -26,6 +26,7 @@ from scripts.check_ci_fixtures import check_fixtures
 TEST_PATTERNS = (
     "tests/test_e2e_warp.py",
     "tests/test_e2ewarp_l1lite.py",
+    "tests/test_analyze_l1lite.py",
     "tests/test_grasp_act_data.py",
     "tests/test_grasp_act_policy.py",
     "tests/test_grasp_act_pilot.py",
