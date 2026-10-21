@@ -228,6 +228,10 @@ def replay(prereg, rows):
         elif kind == 'setup_rejected':
             st['consumed'].setdefault(r['split'], set()).add(r['seed'])
             st['setup_rows'].append(r)
+            if r.get('requeue'):
+                # Codex v2 B5: a re-queued slot rejected by the generator leaves the queue (never re-queued)
+                requeued[(r['split'], r['seed'])] += 1
+                st['requeue'] = [q for q in st['requeue'] if (q['split'], q['seed']) != (r['split'], r['seed'])]
         elif kind == 'bin_limited':
             st['limited'][r['bin']] = r
         elif kind == 'batch_planned':

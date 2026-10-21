@@ -893,3 +893,62 @@ def test_collect_cases_budget_exhaustion_returns_ledger_audit(prereg, monkeypatc
     assert sum(audit['rejected'].values()) == 30
     assert any(k.startswith('placement_graspable_filter:') for k in audit['blocked_objects'])
     assert audit['reproduce'] and audit['generator']['file_sha256']
+
+
+# ------------------------------------------------- v3: Codex v2 re-review B4 / B5
+
+def _real_rejection_cases(prereg, monkeypatch, reject_seeds):
+    """make_cases through the real generator: rejected seeds exhaust a 30-proposal budget (real audit payload)."""
+    cc, geo = _geometry()
+    monkeypatch.setattr(cc, 'PROPOSALS', 30)
+
+    def cases(slots):
+        out = []
+        for s in slots:
+            geo.validity = (lambda pose: dict(accepted=False, ends={})) if s['seed'] in reject_seeds else None
+            out.extend(cc.make_cases(geo, prereg, [{k: v for k, v in s.items() if k != 'slot'}]))
+        return out
+    return cases
+
+
+def test_real_generator_setup_rejection_is_written_not_typeerror(tmp_path, prereg, monkeypatch):
+    """B4: the real audit carries seed/bin/split; v2 expanded it next to the same keywords -> TypeError."""
+    cases = _real_rejection_cases(prereg, monkeypatch, {8340002})
+    audit = cases([dict(seed=8340002, bin='B2', split='train')])[0]['setup_rejected']
+    assert {'seed', 'bin', 'split'} <= set(audit)                       # the payload that broke v2
+    with pytest.raises(TypeError):
+        dict(type='setup_rejected', seed=8340002, bin='B2', split='train', **audit)
+    _, st, _ = collect(tmp_path, prereg, None, max_batches=1, make_cases=cases,
+                       episode=FakeEpisode(lambda s, c: result()))
+    rows = st['setup_rows']
+    assert [r['seed'] for r in rows] == [8340002] and rows[0]['planning_batch'] == 0
+    assert rows[0]['gates'] and rows[0]['reproduce'] and rows[0]['requeue'] is False
+    assert pc.totals(st)['attempts'] == 19
+
+
+def test_setup_rejected_row_refuses_a_disagreeing_audit():
+    with pytest.raises(ValueError, match='seed'):
+        runner.setup_rejected_row(0, dict(seed=1, bin='B0', split='train'), dict(seed=2, bin='B0', split='train'))
+    row = runner.setup_rejected_row(3, dict(seed=1, bin='B0', split='train', requeue=True), dict(proposals=5))
+    assert row == dict(proposals=5, type='setup_rejected', planning_batch=3, seed=1, bin='B0', split='train',
+                       requeue=True)
+
+
+def test_setup_rejected_requeue_slot_leaves_the_queue(tmp_path, prereg, monkeypatch):
+    """B5: a host-error seed re-queued once and then rejected by the generator is never selected again."""
+    cases = _real_rejection_cases(prereg, monkeypatch, set())
+    calls = []
+
+    def flaky(slots):
+        calls.append([(s['seed'], bool(s.get('requeue'))) for s in slots])
+        out = cases(slots)
+        return [dict(setup_rejected=dict(seed=s['seed'], bin=s['bin'], split=s['split'], proposals=30))
+                if s.get('requeue') else c for s, c in zip(slots, out)]
+    ep = FakeEpisode(lambda s, c: result(), drop_seeds=[8340003])
+    _, st, _ = collect(tmp_path, prereg, None, max_batches=3, make_cases=flaky, episode=ep)
+    rej = [r for r in st['setup_rows'] if r['seed'] == 8340003]
+    assert len(rej) == 1 and rej[0]['requeue'] is True
+    assert st['requeue'] == []
+    planned = [s['seed'] for b in st['batches'].values() for s in b['slots']]
+    assert planned.count(8340003) == 1                                   # only the original slot
+    assert sum(c.count((8340003, True)) for c in calls) == 1              # re-queued once, then gone

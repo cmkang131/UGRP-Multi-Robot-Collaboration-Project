@@ -123,6 +123,19 @@ def ingest(ledger, batch, try_no, slots, cases, summary, code, *, mode, noise, d
                            source_sha=summary.get('source_sha'), source_contract=summary.get('source_contract')))
 
 
+def setup_rejected_row(k, slot, audit):
+    """Ledger row for a generator budget exhaustion (Codex v2 B4).
+
+    The generator audit already carries seed / bin / split; they must agree with the slot and the
+    slot values win (no duplicate keyword expansion).  ``requeue`` is the slot's flag.
+    """
+    for key in ('seed', 'bin', 'split'):
+        if key in audit and audit[key] != slot[key]:
+            raise ValueError(f'setup_rejected audit {key}={audit[key]!r} differs from slot {slot[key]!r}')
+    return dict(audit, type='setup_rejected', planning_batch=k, seed=slot['seed'], bin=slot['bin'],
+                split=slot['split'], requeue=bool(slot.get('requeue', False)))
+
+
 def plan_new_batch(ledger, run_root, prereg, st, slots, make_cases):
     """Cases first (in memory), generator rejections into the ledger, then batch_planned, then files.
 
@@ -134,8 +147,7 @@ def plan_new_batch(ledger, run_root, prereg, st, slots, make_cases):
     keep = []
     for s, c in zip(slots, built):
         if 'setup_rejected' in c:
-            pc.append(ledger, dict(type='setup_rejected', planning_batch=k, seed=s['seed'], bin=s['bin'],
-                                   split=s['split'], requeue=s.get('requeue', False), **c['setup_rejected']))
+            pc.append(ledger, setup_rejected_row(k, s, c['setup_rejected']))
         else:
             keep.append((s, c))
     if not keep:
