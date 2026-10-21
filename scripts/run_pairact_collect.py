@@ -520,7 +520,7 @@ def frozen_gate(a, prereg, sha, *, stage, episode=None, recording_dir=None, need
     raw = a.run_manifest.read_bytes()
     core = pc.check_run_manifest(json.loads(raw), stage=stage, prereg=prereg, batch_size=a.batch_size,
                                  episode=episode, repo=ROOT, recording_dir=recording_dir,
-                                 verify_assets=not a.no_verify_assets, shard=shard)
+                                 verify_assets=not a.no_verify_assets, shard=shard, episode_cwd=os.getcwd())
     return core, hashlib.sha256(raw).hexdigest()
 
 
@@ -544,12 +544,27 @@ def collect_env(mode, prereg_path, prereg_sha, recording_check=None, probe=False
     return env
 
 
-def shell_episode(template, env=None):
+def shell_episode(template, env=None, binding=None):
+    """v7 (Codex v6 risk 2): the checked argv of the episode command runs directly (no shell, explicit cwd).
+
+    ``binding`` (frozen stages): dict(stage, core, manifest_sha256) of the manifest gate that passed; the
+    launch binding beside ``out`` is written before the teacher starts (1b: consumers require it)."""
     def go(cases, indices, out):
-        cmd = template.format(cases=shlex.quote(str(cases)), indices=','.join(map(str, indices)),
-                              out=shlex.quote(str(out)))
-        return subprocess.call(cmd, shell=True, env=env)
+        assign, argv = pc.episode_argv(template, cases, indices, out)
+        cwd = os.getcwd()
+        if binding is not None:
+            write(pc.launch_binding_path(out), pc.launch_binding(
+                stage=binding['stage'], core=binding['core'], manifest_sha256=binding['manifest_sha256'],
+                template=template, argv=argv, cwd=cwd, out=out))
+        return subprocess.call(argv, env=dict(os.environ if env is None else env, **assign), cwd=cwd)
     return go
+
+
+def require_launch_bindings(raws, core, stages, what):
+    """v7 1b: teacher output is used only when launched behind the manifest gate of this core."""
+    problems = [p for raw in raws for p in pc.launch_binding_problems(raw, core, stages)]
+    if problems:
+        raise SystemExit(f'{what}: ' + '; '.join(problems[:5]))
 
 
 def main():
@@ -621,6 +636,9 @@ def main():
             p.error('convert-input needs --recording-check RUNC/recording-check.json (stage final gate)')
         core, _ = frozen_gate(a, prereg, sha, stage='final', recording_dir=a.recording_check.parent, need_clean=False)
         merged_meta(a.run_root, require_finished=True)
+        # v7 1b: every admitted training / validation raw was launched behind the final gate of this core
+        require_launch_bindings([r['raw'] for r in st['attempt_rows'] if r['admitted'] and r.get('raw')
+                                 and r['split'] in ('train', 'validation')], core, ('final',), 'convert-input')
         print(json.dumps(pc.convert_input(prereg, st, a.out, prereg_sha=sha, teacher_sha=a.teacher_sha, core=core)))
         return
     if stage not in pc.FREEZE_STAGES and a.command in ('probe-cases', 'probe-episode', 'check-rows'):
@@ -653,14 +671,15 @@ def main():
             episode = pc.episode_cmd_audit(a.episode_cmd)
         except ValueError as error:
             p.error(str(error))
-        core, _ = frozen_gate(a, prereg, sha, stage='core', episode=episode)
+        core, manifest_sha = frozen_gate(a, prereg, sha, stage='core', episode=episode)
         # v5 (Codex v4 re-review 3): the recording probe runs the pinned checkouts its command names
         pc.check_stack_heads(json.loads(a.run_manifest.read_bytes()),
                              dict(teacher=a.dependency_root, adapter=a.adapter_root, root=a.frozen_root))
         cases_path = a.run_root / 'probe-cases.json'
         n = len(json.loads(cases_path.read_text()))
         env = collect_env('training', a.prereg, sha, probe=True, prereg_core=prereg_core)
-        code = shell_episode(a.episode_cmd, env)(cases_path, list(range(n)), a.out)
+        bind = dict(stage='core', core=core, manifest_sha256=manifest_sha)
+        code = shell_episode(a.episode_cmd, env, bind)(cases_path, list(range(n)), a.out)
         print(json.dumps(dict(out=str(a.out), exit=code, core_sha256=core)))
         sys.exit(code)
     if a.command == 'check-rows':
@@ -668,6 +687,8 @@ def main():
         if not a.out or not a.baseline_raws or len(a.baseline_raws) != len(a.probe_raws):
             p.error('--out and equal-length --baseline-raws/--probe-raws required')
         core, _ = frozen_gate(a, prereg, sha, stage='core')
+        # v7 1b: both row sets come from launches behind this core's gate (probe source collect / probe-episode)
+        require_launch_bindings(list(a.baseline_raws) + list(a.probe_raws), core, ('core',), 'check-rows')
         rows = {}
         for name, raws in (('baseline', a.baseline_raws), ('recorded', a.probe_raws)):
             rows[name] = []
@@ -730,7 +751,9 @@ def main():
     deadline = dt.datetime.fromisoformat(a.deadline_utc.replace('Z', '+00:00')) if a.deadline_utc else None
     common = dict(mode=a.mode, noise=a.noise, batch_size=a.batch_size, max_batches=a.max_batches, deadline=deadline,
                   episode=episode, run_manifest_sha256=manifest_sha, validation_after_host_fix=a.validation_after_host_fix,
-                  freeze=freeze, run_episode=shell_episode(a.episode_cmd, env),
+                  freeze=freeze, run_episode=shell_episode(a.episode_cmd, env, None if freeze['core_sha256'] is None else
+                                                            dict(stage='final' if a.mode == 'training' else 'core',
+                                                                 core=freeze['core_sha256'], manifest_sha256=manifest_sha)),
                   make_cases=lambda slots: collect_cases.make_cases(geo, prereg, slots, candidate=candidate,
                                                                     prereg_path=a.prereg))
     if shard is not None:
