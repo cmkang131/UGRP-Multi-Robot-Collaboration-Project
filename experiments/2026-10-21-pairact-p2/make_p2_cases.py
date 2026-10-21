@@ -29,7 +29,9 @@ FUNNEL_SHA256 = '31027ffbdc5904a9a39a506e687a2138d9543906ec14ae6214292dc6f35f60c
 SMOKE_N = 3
 FROM, TO = 'beamact5_r13', 'pairact_p2_r13'
 # -c3 opt-in: same worlds/plans, candidate = the adapter's carry detour candidates (--to)
-TO_CHOICES = (TO, 'pairact_p2_r13_detour', 'pairact_p3_collect_detour')
+TO_CHOICES = (TO, 'pairact_p2_r13_detour', 'pairact_p3_collect_detour',
+              # -c6 opt-in (recording off): carry_route detour_v2, and + floor_contact_v1 set-down
+              'pairact_p2_r13_detour2', 'pairact_p2_r13_detour2_floor')
 
 
 def select_worlds(funnel, n=SMOKE_N):
