@@ -22,7 +22,7 @@ def test_p2_candidate_is_r13_plus_carry_only():
 
 def test_dependency_pin_is_p2_teacher():
     text = (ROOT/'harness/beampair_teacher.py').read_text()
-    assert "DEPENDENCY_SHA = '75929e7719ad98a089e3dda5251f4249d8bae511'" in text   # teacher -c5 (-c4 + c3 admission)
+    assert "DEPENDENCY_SHA = 'a3cb7ffdf4a31b32685be98f1eda178b4900730e'" in text   # teacher -c6 (-c5 + detour_v2 opt-in)
 
 
 def test_floor_candidate_only_adds_lower_mode():
@@ -134,3 +134,16 @@ def test_detour_collect_records_like_collect_and_detour_does_not():
                   collect_proof=lambda host, sel: 'proof', collect_probe=lambda: False)
         exec(textwrap.dedent(block), ns)
         assert ns['run_kwargs'] == expect
+
+
+# ------------------------------------------- -c6 carry detour_v2 (teacher carry_route detour_v2)
+
+def test_detour2_candidates_only_add_route_and_lower():
+    from scripts.run_beampair1 import profiles, COLLECT_CANDIDATES
+    d2, p2 = profiles('pairact_p2_r13_detour2'), profiles('pairact_p2_r13')
+    assert {k: v for k, v in d2.items() if k != 'carry_route'} == p2 and d2['carry_route'] == 'detour_v2'
+    d2f = profiles('pairact_p2_r13_detour2_floor')
+    assert {k: v for k, v in d2f.items() if k != 'carry_lower'} == d2 and d2f['carry_lower'] == 'floor_contact_v1'
+    assert profiles('pairact_p2_r13_detour')['carry_route'] == 'detour_v1'           # -c3 candidate unchanged
+    assert profiles('pairact_p2_r13_floor') == {**p2, 'carry_lower': 'floor_contact_v1'}
+    assert 'pairact_p2_r13_detour2' not in COLLECT_CANDIDATES and 'pairact_p2_r13_detour2_floor' not in COLLECT_CANDIDATES

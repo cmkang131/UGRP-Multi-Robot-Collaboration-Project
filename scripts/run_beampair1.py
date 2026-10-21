@@ -144,6 +144,13 @@ def profiles(candidate):
         return {**profiles('pairact_p2_r13'),'carry_route':'detour_v1'}
     if candidate=='pairact_p3_collect_detour':
         return dict(profiles('pairact_p2_r13_detour'))
+    # -c6 (opt-in, recording off; collection candidates unchanged): teacher carry_route
+    # detour_v2 (start-pocket escape + several object-aware west staging goals), and the
+    # same + the existing floor_contact_v1 set-down. Separate candidates.
+    if candidate=='pairact_p2_r13_detour2':
+        return {**profiles('pairact_p2_r13'),'carry_route':'detour_v2'}
+    if candidate=='pairact_p2_r13_detour2_floor':
+        return {**profiles('pairact_p2_r13_detour2'),'carry_lower':'floor_contact_v1'}
     values=dict(teacher_profile='visible_only',self_pose_source='issued',
         teacher_stability='align_relook_v1',teacher_search='search_body_scan_v2',
         approach_goal_set='approach_goal_set_v1',nominal_blocked_handoff='nominal_blocked_handoff_v1',
