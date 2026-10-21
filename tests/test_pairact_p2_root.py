@@ -13,8 +13,26 @@ spec.loader.exec_module(p2)
 
 def test_pins_point_to_p2_trees():
     text = (ROOT/'scripts/warp_flow_episode.py').read_text()
-    assert "ADAPTER_SHA = 'd128984d2fd3b136f6df1c07bb3d387fef22cd20'" in text
-    assert "TEACHER_SHA = '01ed171fc93140683227072a10aecff55150b45f'" in text
+    assert "ADAPTER_SHA = 'aaabddb1725191ebaa11f0849bf6446f612e150b'" in text     # adapter -a-c2
+    assert "TEACHER_SHA = '4b080d35a3dcbbd8fb8a992e1f1106a7289757b2'" in text     # teacher -c2
+
+
+def test_pinned_adapter_run_passes_the_bridge_audit():
+    """Codex follow-up (2026-10-20): adapter d128984d had two runner.run calls and the bridge required one
+    (ValueError before any VM step). Compile the pinned adapter's run() with this root's compile_function.
+    A clone without the pinned commit fails (required check, not skippable)."""
+    import subprocess
+    text = (ROOT/'scripts/warp_flow_episode.py').read_text()
+    sha = next(l.split("'")[1] for l in text.splitlines() if l.startswith('ADAPTER_SHA = '))
+    try:
+        src = subprocess.check_output(['git', 'show', f'{sha}:scripts/run_beampair1.py'], cwd=ROOT, text=True,
+                                      stderr=subprocess.DEVNULL)
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        pytest.fail(f'pinned adapter {sha} not in this clone: git fetch origin {sha} (not skippable)')
+    ns = {}
+    exec(compile(text, str(ROOT/'scripts/warp_flow_episode.py'), 'exec'), ns)
+    _, audit = ns['compile_function'](src, 'run', {})
+    assert audit['edits']['runner_call'] == 1
 
 
 def test_derive_rejects_other_cases_file():
@@ -97,12 +115,12 @@ def test_student_eval_default_off_and_injected_only_when_set():
 
 def test_collect_root_changes_only_the_two_pins():
     import subprocess
-    base = '0e60345d7'     # dsh/pairact-p2-carrypath-r
+    base = '0e60345d7e71b9249dc5317fa02d16ea6ab1ff55'     # dsh/pairact-p2-carrypath-r (pinned, not a ref)
     try:
         out = subprocess.run(['git', '-C', str(ROOT), 'diff', '-U0', base, '--', 'scripts/'],
                              capture_output=True, text=True, check=True).stdout
     except (subprocess.CalledProcessError, FileNotFoundError) as error:
-        pytest.skip(f'base commit unavailable: {error}')
+        pytest.fail(f'base commit {base} unavailable ({error}): git fetch origin {base} (not skippable, audit 4)')
     removed = sorted(l for l in out.splitlines() if l.startswith('-') and not l.startswith('---'))
     assert removed == ["-ADAPTER_SHA = '6843fcaa94785e46ee52ef1889e392ca988d604d'",
                        "-TEACHER_SHA = '59299f903f4a2f9a2eabe5ff0e442e0ce25e8266'"]

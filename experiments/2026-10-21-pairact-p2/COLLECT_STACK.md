@@ -1,4 +1,6 @@
-# pairact P3 수집 스택 (-c, 2026-10-21)
+# pairact P3 수집 스택 (-c2, 2026-10-21 갱신)
+
+*-c2 갱신(task 11cb2d69)*: Codex 후속 감사에서 adapter `d128984d`의 `run()`에 `runner.run` 호출이 2개라 root bridge AST 감사(`runner_call` 1개 요구)가 VM 진입 전에 ValueError를 내는 것이 재현됐습니다. adapter -a-c2 `aaabddb1`이 호출을 1곳으로 합쳤고(키워드 집합 동일, 테스트), root -r-c2가 pin 두 줄을 바꾸고 고정 adapter의 `run()`을 이 root의 `compile_function`으로 실제 변환하는 테스트를 더했습니다. teacher -c2 `4b080d35`는 테스트만 바뀌었습니다(repo audit ④: 가변 ref 대신 고정 SHA, 없으면 fail). 아래 표의 -c SHA는 이력입니다. 수집에는 `-c2` 세 SHA(`RUN_MANIFEST.json` stack)를 씁니다.
 
 P2 smoke 스택(`-r` 0e60345d / adapter 6843fcaa / teacher 59299f90)은 그대로 둡니다. 수집 녹화용으로만 아래 `-c` 스택을 씁니다.
 
