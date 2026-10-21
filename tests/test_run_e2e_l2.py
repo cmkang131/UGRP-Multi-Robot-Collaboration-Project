@@ -120,3 +120,12 @@ def test_replay_decide_rebind_evaluate(on, tmp_path):
     assert res['seeds'][0]['llm']['assignment_match'] is False   # swapped, executed as decided
     with pytest.raises(SystemExit):
         cli.main(['evaluate', '--decisions', str(out / 'decisions.json'), '--out', str(out / 'l2-eval.json')])
+
+
+def test_prereg_cap_references_p5_and_is_empty():
+    d = json.loads((cli.Path(cli.__file__).resolve().parents[1] / 'experiments/2026-11-05-e2e-l2/E2E_L2_PREREG_DRAFT.json').read_text())
+    cap = d['episode_cap_sim_s']
+    assert cap['value'] is None and 'PAIRACT_R1_EVAL_PREREG_DRAFT.json' in cap['rule']
+    assert d['seeds']['candidate_range'] == {'first': 8344000, 'last': 8344099}
+    assert 'excluded_ns_n' in d['seeds']['exclusion_report']
+    assert 'distance' not in d['task']['llm_input'].split('No ')[0]

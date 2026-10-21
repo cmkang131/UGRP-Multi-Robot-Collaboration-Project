@@ -6,7 +6,7 @@
     "outputs/reports/claude-arch-parallel-20261019/aggressive-replan-1105.md §2 (10/31-11/2 L2 row), §6 (L2 minimum success)",
     "outputs/reports/claude-arch-parallel-20261019/pair-act-carry-plan.md §3 (success definition)",
     "dsh/pairact-p5-student experiments/2026-10-21-pairact-r1/PAIRACT_R1_EVAL_PREREG_DRAFT.json (execution success, funnel, exclusions)",
-    "dsh/l1lite-alloc harness/e2ewarp_l1lite.py (four-channel protocol design)"
+    "dsh/l1lite-alloc 955c967d harness/e2e_warp_runtime.py (Channels, Planner) + harness/e2ewarp_l1lite.py, vendored byte-identical"
   ],
   "commit_before_run": "this file (status REGISTERED) + selected P4 checkpoint SHA256 + base case file SHA256 + l2-base-cases-admissibility.json must be committed before any L2 LLM call or rollout",
   "code": {
@@ -14,16 +14,17 @@
     "llm_stage": "harness/e2e_l2.py allocate_ends",
     "evaluator": "harness/e2e_l2_eval.py seed_result / aggregate",
     "driver": "scripts/run_e2e_l2.py select|decide|evaluate (E2E_L2=on_v1)",
-    "execution": "scripts/run_warp_flow_teacher.py of this root stack, unchanged; student arm adds --student-eval (worker SHA pinned 3c9337d5)"
+    "execution": "scripts/run_warp_flow_teacher.py of this root stack, unchanged; student arm adds --student-eval (worker SHA pinned 3c9337d5)",
+    "channels_and_planner": "vendored L1-lite Channels/Planner (blob pin in tests/test_e2e_l2.py); L2Channels only swaps the structured enum"
   },
   "task": {
-    "order_sheet": "v_l2: one long_beam to zone B, assigned_robot null, no single-robot-impossible flag",
-    "llm_decides": [
-      "need_partner (bool)",
-      "own beam end: west | east"
-    ],
-    "binding": "west/east -> teal/blue grip band by world x of the band (+x = east); written only into case.plan.roles (student role token and teacher end); nothing else in the case changes",
-    "robot_input": "own order sheet + own distances to the two grip bands (source plan_geometry_v1 [대체: perception not wired]) + inbox of the condition channel; never the peer's distances or the band colours"
+    "order_sheet": "v_l2: one long_beam to zone B, assigned_robot null, no single-robot-impossible flag; the sheet says the beam has a teal grip band near one end and a blue one near the other",
+    "llm_decides": "one candidate per call: solo_carry (need_partner=false, fail-closed L2_SOLO_DECISION) | end_teal | end_blue; leader_en: leader_teal | leader_blue then ack_assignment",
+    "llm_input": "order sheet + condition rule text (Planner static), own camera FIRST frame JPEG (one image per call), round/candidates/inbox (dynamic). No plan coordinate, distance, pose, peer value or reference end (tests: input_leaks == [] for every static/dynamic/request)",
+    "first_frame_source": "P2 root runner on the selected base cases with --diagnostic-ticks 1: world-00k/review-2hz/<robot>/000000.jpg = hooks.capture(robot) at tick 0 (scripts/warp_act_backend.py capture: robot_cam render when native_render) [확인 필요: native_render on, and that the tick-0 render does not depend on plan.roles]",
+    "binding": "the chosen band colour IS the pair-carry role token (KIND_ROLES long_beam = teal/blue); written only into case.plan.roles; no geometry used",
+    "why_not_east_west": "choosing west/east needs the robot's own heading, i.e. a plan pose (GT); west/east is kept only as an eval label",
+    "plan_geometry": "eval-only (harness/e2e_l2.geometry_record): reference (generator) ends, distances, nearer end, west/east label"
   },
   "seeds": {
     "generator": "P3 case generator (same start distribution as P5: each robot 0.3-1.2 m from its generator end) [확인 필요: P3 command fixed by DeepSeek/worker ⑤]",
@@ -32,10 +33,11 @@
       "last": 8344099
     },
     "overlap_check": "scripts/check_e2e_l2_seeds.py --pairact-ref bcfefaadc5ecbc24a65f898e44eabcdf886f7ef5 --scan-refs <all origin refs>: L2 range vs experiments/2026-11-05-e2e-l2/seeds.json registered_ranges (pairact-r1 train 8340000-8340599, validation 8341000-8341019, heldout 8342000-8342019, pilot 8343000-8343039, beampair/beamact ranges) must be 0; pinned by tests/test_check_e2e_l2_seeds.py",
-    "selection_rule": "ascending seed order, keep a case iff |cos(beam_yaw)| >= 0.5 (harness/e2e_l2.case_admissible), take the first 6; static and outcome-free, applied before any LLM call",
+    "selection_rule": "ascending seed order, keep a case iff |cos(beam_yaw)| >= 0.5 (harness/e2e_l2.case_admissible, the N-S exclusion), take the first 6; static and outcome-free, applied before any LLM call",
     "N": 6,
     "same_seeds_for_all_conditions_and_arms": true,
-    "note": "8343000-8343039 is the pairact-r1 v2 collection pilot (bcfefaadc); the earlier L2 draft range 8343000- was a collision and is withdrawn"
+    "note": "8343000-8343039 is the pairact-r1 v2 collection pilot (bcfefaadc); the earlier L2 draft range 8343000- was a collision and is withdrawn",
+    "exclusion_report": "select writes l2-base-cases-admissibility.json (scanned_n, selected_n, excluded_ns_n, excluded_seeds); evaluate --admissibility copies it into every l2-eval.json pre_run_exclusion; the final report states excluded_ns_n"
   },
   "conditions": {
     "llm_stage_all": [
@@ -48,8 +50,8 @@
     "secondary_execution": "leader_en, structured, no_comm only if GPU night time remains after primary (order fixed: leader_en, structured, no_comm); never pooled",
     "leader_rule": "leader = r1 if seed % 2 == 0 else r2",
     "rounds": "no_comm 1; structured/peer_en min 2 max 3 (stop once ends are distinct after round >= 2); leader_en 2 (assign + ack)",
-    "planner": "pinned planner of configs/model_endpoints.json at run time [확인 필요: live planner binding not wired, harness/e2e_l2.planner_ask raises NotImplementedError]",
-    "temperature_and_sampling": "[미정: same as L1-lite prereg]"
+    "planner": "L1-lite Planner via SSH-loopback relay; relay /identity upstream must be google/gemma-4-31b-it, CoreWeave, fp4, allow_fallbacks false, no alerts, balance > 0 (harness/e2e_l2.check_relay); request/response archived per call (image replaced by sha256), usage/cost in planner_ledger; API key only in the relay, credential env names on the host are refused",
+    "temperature_and_sampling": "L1-lite Planner body as vendored: temperature 0.2, max_tokens 512, json_object"
   },
   "arms": [
     {
@@ -65,13 +67,18 @@
       "use": "grade C demo video and reference n/6 only; reported side by side, never merged"
     }
   ],
-  "episode_cap_sim_s": "same value as the registered P5 cap (PAIRACT_R1_EVAL_PREREG_DRAFT.json episode_cap_sim_s rule); [미정 until P5 cap is committed]",
+  "episode_cap_sim_s": {
+    "value": null,
+    "status": "rule_reference_only",
+    "rule": "identical to the registered P5 cap: dsh/pairact-p5-student experiments/2026-10-21-pairact-r1/PAIRACT_R1_EVAL_PREREG_DRAFT.json episode_cap_sim_s (60 + carry_budget from P2 teacher smoke carry times)",
+    "note": "left empty on purpose; copy the P5 committed value here before registration, same for both arms"
+  },
   "success": {
     "per_seed": "llm.success_eligible AND executed AND carry_success == true AND (student arm) teacher_steps == 0 AND summary.student_eval present",
     "llm_success_eligible": "both robots need_partner == true, both chose an end, ends distinct, no named error (L2_SOLO_DECISION, L2_DUPLICATE_END, L2_INVALID_*, L2_MESSAGE_INVALID, L2_LEADER_*)",
     "carry_success": "unchanged GT evaluator of the root runner: placed in zone B AND drop_events == 0 AND robot_robot_contacts == 0",
     "not_executed": "a seed whose LLM stage is not success_eligible is not rolled out and counts as failure in N=6",
-    "assignment_match": "measured (decided ends == generator ends), NOT a success term: a swapped but distinct assignment is executed as decided",
+    "assignment_match": "measured (decided bands == generator bands), NOT a success term: a swapped but distinct assignment is executed as decided (start may then be outside the training start distribution)",
     "claim": "primary: student peer_en n/6. Minimum L2 claim (replan §6) = >= 1/6 student success in peer_en or another condition, each condition reported separately"
   },
   "metrics": {
@@ -81,13 +88,13 @@
       "min_distance_match_n",
       "conflict_n (duplicate end)",
       "named errors",
-      "hallucination_n (heuristic: foreign end name, ungrounded distance; Codex re-annotates)",
+      "hallucination_n (heuristic foreign_end: compass end names the robot cannot know; stated_distance recorded separately, not counted; Codex re-annotates)",
       "rounds",
       "utterances",
       "language_slips",
       "llm_calls",
       "tokens",
-      "usd (pinned planner price)"
+      "usd (L1-lite pinned price 0.1/0.34 per 1M)"
     ],
     "execution": [
       "carry_success_n",
@@ -98,13 +105,13 @@
     "report": "per condition and per arm n/6, same seed order; LLM-stage metrics also reported for conditions not executed"
   },
   "exclusions": {
-    "pre_run": "only case_admissible (east/west) and the P0 static stance-feasibility check registered for P5, both applied before any LLM call",
+    "pre_run": "only case_admissible (N-S, count reported) and the P0 static stance-feasibility check registered for P5, both applied before any LLM call",
     "host_error": "one rerun of the same seed with the SAME recorded LLM decision (no second LLM call); a second HOST_ERROR counts as failure and is reported separately",
-    "llm_retry": "forbidden; a transport error is recorded as L2_NO_DECISION failure [확인 필요: whether the live planner retries internally]",
+    "llm_retry": "forbidden; a rejected Planner call is L2_NO_DECISION (fatal, not executed); the vendored Planner does not retry internally (one HTTP request per decide)",
     "post_hoc_exclusion": "forbidden"
   },
   "compute_estimate": {
-    "llm": "4 conditions x 6 seeds x <= 6 calls, < 0.1 USD at pinned prices [확인 필요: token counts]",
+    "llm": "4 conditions x 6 seeds x <= 6 calls with one image each; L1-lite PR #552 measured about $0.000461/call -> < $0.1 total [확인 필요: L2 prompt size]",
     "gpu_h": "about 0.6-1 per condition-arm of 6 worlds (P5 estimate 2-3 GPU-h per 20) [확인 필요]",
     "window": "off-peak only (UTC 16:30-00:30), gcp6 or gcp2, stop VM after"
   },
