@@ -22,7 +22,7 @@ def test_p2_candidate_is_r13_plus_carry_only():
 
 def test_dependency_pin_is_p2_teacher():
     text = (ROOT/'harness/beampair_teacher.py').read_text()
-    assert "DEPENDENCY_SHA = 'dbc08211c776117dddff7f3fec05f7327ba497a3'" in text   # teacher -c3 (carry_route detour_v1)
+    assert "DEPENDENCY_SHA = '402bbf155ca162da7a74518eab9b8bd98138299a'" in text   # teacher -c4 (route 즉시 기록)
 
 
 def test_floor_candidate_only_adds_lower_mode():
