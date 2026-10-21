@@ -538,7 +538,10 @@ def test_distance_gate_uses_admitted_starts_and_stops(prereg):
     st = ledger_state(prereg, rows)
     g = pc.distance_gate(prereg, st)
     assert g['robot_starts'] == 300 and not g['passed'] and g['share_over_0p8'] == 0.
-    assert pc.train_stop(prereg, st) == 'STOP_DISTANCE'
+    assert pc.train_stop(prereg, st) is None          # D-v4-1: B4 / B5 not settled yet -> not a stop reason
+    st['limited'].update(B4=dict(type='bin_limited', bin='B4'), B5=dict(type='bin_limited', bin='B5'))  # far band settled ...
+    assert pc.far_bins_settled(prereg, st)
+    assert pc.train_stop(prereg, st) == 'STOP_DISTANCE'        # ... and B1-B3 cells empty: still fails
     assert pc.decision(prereg, st)['decision'] == 'NO_TRAIN_DISTANCE_GATE'
     spread = [attempt_row(8341000 + k, 'B0', ok, start={'r1': dict(distance_m=.3 + .1 * (k % 9) + .05, yaw_offset_rad=3.),
                                                         'r2': dict(distance_m=1.1, yaw_offset_rad=3.)}) for k in range(18)]

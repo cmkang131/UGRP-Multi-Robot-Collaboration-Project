@@ -488,6 +488,20 @@ def shard_host(prereg, st, split='train'):
     return out
 
 
+def far_bins(prereg):
+    """Bins of the farthest distance band (B4, B5)."""
+    top = max(b['distance_m'][1] for b in prereg['bins']['list'])
+    return [b['id'] for b in prereg['bins']['list'] if b['distance_m'][1] == top]
+
+
+def far_bins_settled(prereg, st, per=None):
+    """Owner decision D-v4-1 (2026-10-21, before freeze): STOP_DISTANCE is evaluated only once every far bin
+    has A_b >= min_admitted_per_bin or is bin_limited; before that the distance gate is not a stop reason."""
+    per = per or bin_counts(prereg, st)
+    need = prereg['bins']['min_admitted_per_bin']
+    return all(per[b]['admitted'] >= need or b in st['limited'] for b in far_bins(prereg))
+
+
 def train_stop(prereg, st):
     """First true stop rule (prereg stop_rules.list order), or None.  A pure function of the train/validation
     results: the same function for every K (v4: train_closed is never read here)."""
@@ -497,7 +511,8 @@ def train_stop(prereg, st):
     if host_unclean_pair(st) or shard_host(prereg, st):
         return 'STOP_HOST'
     t, per = totals(st), bin_counts(prereg, st)
-    if t['admitted'] >= tg['admitted_minimum_pairs'] and not distance_gate(prereg, st)['passed']:
+    if t['admitted'] >= tg['admitted_minimum_pairs'] and far_bins_settled(prereg, st, per) and \
+            not distance_gate(prereg, st)['passed']:
         return 'STOP_DISTANCE'
     min_bin = prereg['bins']['min_admitted_per_bin']
     if t['admitted'] >= tg['admitted_target_pairs'] and all(
@@ -1195,6 +1210,8 @@ def sharding_problems(manifest, *, stage, shard=None):
     if not isinstance(sh, dict) or not _int(sh.get('count')) or not _assignment(sh.get('assignment')):
         return []                     # schema problems are reported by _schema_problems
     out, count, assign = [], sh['count'], sh['assignment']
+    if count > MAX_SHARDS:
+        out.append(f'sharding.count {count} > {MAX_SHARDS} (owner decision D-v4-1: K <= {MAX_SHARDS})')
     flat = [i for v in assign.values() for i in v]
     if sorted(flat) != list(range(count)):
         out.append(f'sharding.assignment must cover shards 0..{count - 1} exactly once, got {sorted(flat)}')
@@ -1327,6 +1344,11 @@ def _span_len(r):
 # (results of batch j - K, then the plan rows of batch j).  K = 1 is the serial ledger row for
 # row.  The view only depends on immutable rows, so the plan of batch k is the same whatever the
 # wall-clock order of the shards; a shard waits until the view is complete.
+
+# Owner decision D-v4-1 (2026-10-21, before freeze): K <= 3.  With the distance stop deferred until the far
+# bins are settled, K = 2 and 3 reproduced the serial decision class on the cross-review fakes, K = 4 did not
+# (X7: lagged bin_limit closed B2 / B4 on a seed-periodic fake) -> prereg sharding.K_max.
+MAX_SHARDS = 3
 
 SHARD_PLAN_ROWS = ('bin_limited', 'train_barrier', 'train_closed', 'setup_rejected', 'batch_planned', 'batch_skipped',
                    'run_end')

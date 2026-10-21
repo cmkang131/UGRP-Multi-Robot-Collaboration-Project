@@ -30,9 +30,9 @@
     "source_sha": "[VM 기입] commit X, the collector code commit; HEAD may be a descendant",
     "files_rule": "harness.pairact_collect.COLLECTOR_FILES (runner code, direct setup-geometry imports and inputs) and the generator: identical at X and HEAD, clean in the checkout",
     "file_sha256": {
-      "harness/pairact_collect.py": "42352a6c8e994de51ff596dfaf6675e2466fd2bb2faaa8c48187f6fee41b92ab",
+      "harness/pairact_collect.py": "6d208e26acfd5ab5598d35f68fb6b1112031f6231cde6bb48ed242754b519ca3",
       "harness/pairact_r1.py": "8a9869248740bf5ad2da7194cdd9a582347ac09e88783cd6ea127ef3f208a210",
-      "scripts/run_pairact_collect.py": "1b4d651707903ce216096261642cf60a70909b4735c2fa4649ebaae039e85266",
+      "scripts/run_pairact_collect.py": "45a0a4a05f4a9d1a675374cbebdad9d5dbe6f7ea6ed1faf88fac4b9a6dc706da",
       "scripts/pairact_r1_freeze.py": "0668d8f0f6dec9f67b0c903f608d4fb9164bbb86dd56e57d7cbf7b31a312cbb8",
       "scripts/check_pairact_r1_seeds.py": "463054427877efd34dfd6e5ce291b4e06f2ad95c4e81e2d75e385af38c3b73de",
       "experiments/2026-10-21-pairact-r1/seeds.json": "eeb5cf615666e15d03c1d4cb54de8c83b0618cb6321d92e641dd237de8cd4735",
@@ -112,15 +112,14 @@
     "vm_seed_check_sha256": "[VM 기입] pilot run root seed-check.json"
   },
   "sharding": {
-    "rule": "COLLECT_PREREG sharding (batch_owner_lag_v1): batch k -> shard k % count, planned on the view that lags lag_batches = count batches. count, lag_batches, assignment and primary_vm are core content (fixed at FROZEN_CORE). Training collection checks --shard i/count and --vm against assignment (a serial training run needs count 1). vm_recording_check: for every assignment VM except primary_vm, the sha256 of that VM's own probe-cases / check-rows / recording-check files (the teacher recording check is machine-bound), filled at FROZEN like recording_check and excluded from core_sha256. Draft: one VM, 4 shards; the two-VM variant (RUNBOOK 1-6b) is count 6, assignment gcp6 [0,1,2] / gcp2 [3,4,5], decided before FROZEN_CORE. v4: count is set from the measurement-mode contention run on pilot seeds BEFORE FROZEN_CORE (RUNBOOK 1-6a); a training run root is never reopened with another count",
-    "count": 4,
-    "lag_batches": 4,
+    "rule": "COLLECT_PREREG sharding (batch_owner_lag_v1): batch k -> shard k % count, planned on the view that lags lag_batches = count batches. count, lag_batches, assignment and primary_vm are core content (fixed at FROZEN_CORE). Training collection checks --shard i/count and --vm against assignment (a serial training run needs count 1). vm_recording_check: for every assignment VM except primary_vm, the sha256 of that VM's own probe-cases / check-rows / recording-check files (the teacher recording check is machine-bound), filled at FROZEN like recording_check and excluded from core_sha256. Draft: one VM, 3 shards (owner decision D-v4-1: count <= 3); the two-VM variant (RUNBOOK 1-6b) is count 3, assignment gcp6 [0,1] / gcp2 [2], decided before FROZEN_CORE. v4: count is set from the measurement-mode contention run on pilot seeds BEFORE FROZEN_CORE (RUNBOOK 1-6a); a training run root is never reopened with another count",
+    "count": 3,
+    "lag_batches": 3,
     "assignment": {
       "gcp6": [
         0,
         1,
-        2,
-        3
+        2
       ]
     },
     "primary_vm": "gcp6",

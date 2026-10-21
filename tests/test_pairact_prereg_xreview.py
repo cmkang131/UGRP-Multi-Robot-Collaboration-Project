@@ -153,22 +153,27 @@ def test_x6_validation_never_planned_with_train_batches_in_flight(tmp_path, prer
     assert closed < first_val and rep['run_state'] == 'TRAIN'
 
 
-# X7 (권고 R4, disclosed): bin_limit reads lagged counts, so a hopeless bin gets more attempts with K = 4.
-# The stop is fixed on the drained data by the serial function; the drained data themselves differ from the
-# serial run (different bin sequence), so the class may differ: here serial STOP_TARGET (A 204), K = 4
-# STOP_DISTANCE on the drained ledger (A 181) -- disclosed in sharding.what_changes_vs_serial.
-def test_x7_hopeless_bin_gets_more_attempts_with_k4_and_the_stop_is_the_drained_stop(tmp_path, prereg):
+# X7 (권고 R4 + owner decision D-v4-1): bin_limit reads lagged counts, so a hopeless bin gets more attempts
+# with K > 1 (disclosed).  With STOP_DISTANCE deferred until B4 / B5 are settled, serial, K = 2 and K = 3 end in
+# the same class on this fake; K = 4 still does not (lagged bin_limit closes B2 and B4 at 2/22, 2/21 on this
+# seed-periodic fake -> STOP_DISTANCE, A 181), so K is capped at 3 (prereg sharding.K_max, disclosed in sharding.K).
+def test_x7_serial_k2_k3_same_class_and_k4_is_the_disclosed_case(tmp_path, prereg):
     from test_pairact_collect_shard import outcome
     _, st_serial, _ = collect(tmp_path / 'serial', prereg, None, episode=FakeEpisode(outcome))
-    rows, st_k4, rep, meta = _sharded(tmp_path / 'k4', prereg, 4, lambda: FakeEpisode(outcome), 2)
+    serial = pc.decision(prereg, st_serial)
+    assert (serial['train_stop'], pc.totals(st_serial)['admitted']) == ('STOP_TARGET', 204)
     n = lambda st: pc.bin_counts(prereg, st)['B5']['attempts']
-    assert 'B5' in st_serial['limited'] and 'B5' in st_k4['limited']
-    assert n(st_k4) > n(st_serial)                                  # 36 vs 22 on this fake
-    closed = next(r for r in rows if r['type'] == 'train_closed')
-    assert closed['stop'] == pc.train_stop(prereg, st_k4) == 'STOP_DISTANCE'
-    assert closed['admitted'] == pc.totals(st_k4)['admitted'] == 181          # nothing arrived after the close
-    assert pc.train_stop(prereg, st_serial) == 'STOP_TARGET' and pc.totals(st_serial)['admitted'] == 204
-    assert not pc.distance_gate(prereg, st_k4)['passed']                      # the drained data fail the gate
+    got = {}
+    for k in (2, 3, 4):
+        rows, st, rep, meta = _sharded(tmp_path / f'k{k}', prereg, k, lambda: FakeEpisode(outcome), 2)
+        closed = next(r for r in rows if r['type'] == 'train_closed')
+        assert closed['stop'] == pc.train_stop(prereg, st) and closed['admitted'] == pc.totals(st)['admitted']
+        assert 'B5' in st['limited'] and n(st) > n(st_serial)                 # disclosed lag effect (22 serial)
+        got[k] = (pc.decision(prereg, st)['decision'], pc.totals(st)['admitted'])
+    assert got[2] == (serial['decision'], 218) and got[3] == (serial['decision'], 235)
+    assert got[4] == ('NO_TRAIN_DISTANCE_GATE', 181) != (serial['decision'], 204)
+    assert pc.MAX_SHARDS == prereg['sharding']['K_max'] == 3
+    assert 'K = 4 ends STOP_DISTANCE' in prereg['sharding']['K']
 
 
 # X8 (권고 R3, v4 fixed): a permanently broken shard triggers STOP_HOST through stop_rules.shard_host

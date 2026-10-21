@@ -55,11 +55,32 @@
 - I4(STOP_HOST가 STOP_TARGET보다 먼저): 순서는 그대로 둡니다(판정 클래스 같음, 의도).
 - I5·I7: 변경 없음. I5의 validation 경로 위험은 B3 재큐로 줄었습니다(exit 파일 누락으로 unclean이 되어도 1회 재큐).
 
-## 남은 위험 (이 개정으로 해결되지 않은 것)
+## 오너 결정 D-v4-1–D-v4-4 (2026-10-21, 동결 전)
 
-1. *K>1의 정지 클래스가 직렬과 여전히 다를 수 있습니다.* barrier로 정지·판정 *함수*는 같아졌지만, 지연된 배정 때문에 소진된 원장 자체(N, A, 구간별 수)가 직렬과 다릅니다. X7 가짜 결과: 직렬 STOP_TARGET(A 204) / K=4 STOP_DISTANCE(소진 원장 A 181, 거리 관문 실패). K=2·3은 이 가짜에서 직렬과 같은 클래스였습니다. prereg `what_changes_vs_serial`에 공개했습니다.
-2. STOP_DISTANCE는 여전히 A≥150 이후 매 경계에서 평가되고 영구 정지입니다. 교차 검토 R2(ii)의 "원거리 구간이 need==0 또는 제한일 때만 평가"는 판정 규칙 변경이라 오너 지시 없이 넣지 않았습니다. 위 1번 위험을 줄이려면 이것이 가장 직접적인 수단입니다(❗오너 결정 후보).
-3. 거리 관문 요구 비율 축소식(R2)은 이 워커의 설계입니다(위 표).
+| # | 결정 | 반영 | 코드·문서 | 테스트 |
+|---|---|---|---|---|
+| D-v4-1 | STOP_DISTANCE는 원거리 구간(B4·B5)이 모두 A_b≥20이거나 bin_limited일 때만 평가. 그 전에는 거리 관문을 정지 사유로 쓰지 않음(최종 집합의 거리 관문 판정은 그대로). 동결 전 변경이라 사후 변경 아님. 그래도 K=4가 직렬과 다르면 사례 공개 + K 상한 3 | 구현. *X7에서 K=4가 여전히 달라* 상한 3을 넣음: manifest gate(`sharding_problems`)와 CLI `--shard`가 K>3 거부, RUN_MANIFEST 초안 `count` 3(gcp6 [0,1,2]), 두 VM 변형은 합쳐 3(gcp6 [0,1] / gcp2 [2]). 사례는 prereg `sharding.K`에 그대로 공개 | `pc.far_bins`·`far_bins_settled`·`train_stop`·`MAX_SHARDS`, runner CLI, prereg `owner_decisions_v4`·`stop_rules.list[2]`·`distance_gate.when`·`sharding.K_max`·`sharding.K`, RUNBOOK 상단·1-2b·1-3·1-6a/b/c | X7(직렬·K=2·K=3 같은 클래스, K=4 공개 사례), `test_distance_gate_uses_admitted_starts_and_stops`(미정착이면 정지 아님, 정착 뒤 정지), `test_manifest_sharding_binds_count_vm_and_per_vm_recording_check`(K=4 거부), `test_cli_shard_needs_vm_and_merge_writes_the_merged_root`(`--shard 0/4` 거부), `test_draft_manifest_and_prereg_carry_the_sharding_rule` |
+| D-v4-2 | 거리 관문 요구 비율 0.25×u_open/u_full 승인 | prereg `distance_gate.required_share_formula`에 식과 예(B4·B5 제외 → 0.094) 기입 | prereg | X5 |
+| D-v4-3 | STOP_HOST "batch 순서상 연속 2개 unclean" 승인 | 변경 없음(v4 그대로) | — | `test_stop_host_is_a_property_of_the_ordered_results` |
+| D-v4-4 | 보류 3건 유지 | R8(yaw 판정 규칙: 오너 지시 범위 밖 새 판정 규칙), H4'(c5 실제 admission fixture: -c5 세 브랜치 sparse clone 필요, 실행 시점 HEAD 검사로 대체), v3 B3(`smoke.video_sha256` world 개별 삭제 통과: 정지·판정 개정 범위 밖, FROZEN_CORE 전 별도 수정 항목) — 사유는 위 표와 같음 | — | — |
+
+### X7 K별 결과 (D-v4-1 적용 뒤, 가짜 에피소드)
+
+| 실행 | 정지 | 판정 | A | N | B5 시도 |
+|---|---|---|---|---|---|
+| 직렬 | STOP_TARGET | NO_TRAIN_VALIDATION_INSUFFICIENT | 204 | 480 | 22 |
+| K=2 | STOP_TARGET | NO_TRAIN_VALIDATION_INSUFFICIENT | 218 | 420 | 30 |
+| K=3 | STOP_TARGET | NO_TRAIN_VALIDATION_INSUFFICIENT | 235 | 460 | 38 |
+| K=4 | STOP_DISTANCE | NO_TRAIN_DISTANCE_GATE | 181 | 380 | 36 |
+
+- 판정이 NO_TRAIN_VALIDATION_INSUFFICIENT인 것은 이 가짜의 validation seed 결과 때문이고(직렬도 같음), 비교 대상은 클래스 일치 여부입니다. 스케줄 난수 1·2·3에서 같은 값이 나왔습니다.
+- K=4가 다른 원인: 지연된 bin_limit이 B2(2/22)와 B4(2/21)를 닫았습니다. 그래서 원거리 구간(B4·B5)이 정착(제한)되어 거리 관문이 평가되었고, B2·B3 시작점만으로는 0.8 m 초과가 5.7%라 축소 요구 9.4%에 못 미쳤습니다. 이 가짜는 성공이 `seed % 3`에 묶여 있어 batch 안 구간 배치와 주기적으로 겹칩니다. 비주기 가짜(구간별 성공률 0.6/0.5/0.45/0.4/0.35/0)에서는 K=2·3·4 모두 직렬과 같은 TRAIN_DATA_RANGE_LIMITED였습니다(정보, 테스트 미고정).
+
+## 남은 위험
+
+1. K≤3에서도 구간 배정 순서와 소진 원장(N·A·구간별 수)은 직렬과 다를 수 있습니다(공개). 판정 함수는 같고, 교차 검토 가짜에서는 K=2·3의 판정 클래스가 직렬과 같았습니다. 실제 수율에서의 일치는 보장하지 않습니다.
+2. 지연된 bin_limit이 운 나쁜 초기 결과로 구간을 닫는 효과는 K가 클수록 큽니다(X7 K=4). K 상한 3은 이 효과를 줄일 뿐 없애지는 않습니다.
+3. 거리 관문 요구 비율 축소식은 D-v4-2로 승인되었습니다.
 
 ## 해시·테스트 (이 커밋 기준)
 

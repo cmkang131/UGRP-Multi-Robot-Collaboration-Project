@@ -682,6 +682,8 @@ def main():
     shard = pc.parse_shard(a.shard) if a.shard else None
     if shard is not None and not a.vm:
         p.error('--shard needs --vm (RUN_MANIFEST sharding.assignment key)')
+    if shard is not None and shard[1] > pc.MAX_SHARDS:
+        p.error(f'--shard K must be <= {pc.MAX_SHARDS} (prereg sharding.K_max, owner decision D-v4-1)')
     if a.mode == 'training':
         if a.recording_check is None or a.recording_check.name != pc.RECORDING_FILES['recording_check_sha256']:
             p.error('training needs --recording-check RUNC/recording-check.json')

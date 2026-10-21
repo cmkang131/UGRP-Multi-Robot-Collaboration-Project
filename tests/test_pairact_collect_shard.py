@@ -345,26 +345,26 @@ def test_manifest_sharding_binds_count_vm_and_per_vm_recording_check(tmp_path, p
     d, rec = recording_dir(tmp_path)
     m = filled_manifest(pre, status='FROZEN', recording=rec)
     assert m['sharding']['count'] >= 1
-    m['sharding'].update(count=4, lag_batches=4, assignment={'gcp6': [0, 1], 'gcp2': [2, 3]}, primary_vm='gcp6',
+    m['sharding'].update(count=3, lag_batches=3, assignment={'gcp6': [0, 1], 'gcp2': [2]}, primary_vm='gcp6',
                          vm_recording_check={})
     with pytest.raises(ValueError, match='non-primary VMs'):
-        pc.check_run_manifest(m, stage='final', prereg=pre, recording_dir=d, shard=(0, 4, 'gcp6'))
+        pc.check_run_manifest(m, stage='final', prereg=pre, recording_dir=d, shard=(0, 3, 'gcp6'))
     core_before = pc.core_sha256(pre, m)
     d2 = tmp_path / 'b'
     shutil.copytree(d, d2)
     (d2 / 'recording-check.json').write_text(json.dumps(dict(qualified=True, N=3, n=3, vm='gcp2')) + '\n')
     m['sharding']['vm_recording_check'] = {'gcp2': {k: pc.file_sha256(d2 / n) for k, n in pc.RECORDING_FILES.items()}}
     assert pc.core_sha256(pre, m) == core_before                 # filled at FROZEN, not part of the core
-    pc.check_run_manifest(m, stage='final', prereg=pre, recording_dir=d, shard=(1, 4, 'gcp6'))
-    pc.check_run_manifest(m, stage='final', prereg=pre, recording_dir=d2, shard=(2, 4, 'gcp2'))
+    pc.check_run_manifest(m, stage='final', prereg=pre, recording_dir=d, shard=(1, 3, 'gcp6'))
+    pc.check_run_manifest(m, stage='final', prereg=pre, recording_dir=d2, shard=(2, 3, 'gcp2'))
     with pytest.raises(ValueError, match='recording_check.recording_check_sha256 differs'):
-        pc.check_run_manifest(m, stage='final', prereg=pre, recording_dir=d, shard=(2, 4, 'gcp2'))
+        pc.check_run_manifest(m, stage='final', prereg=pre, recording_dir=d, shard=(2, 3, 'gcp2'))
     with pytest.raises(ValueError, match='not assigned'):
-        pc.check_run_manifest(m, stage='final', prereg=pre, recording_dir=d, shard=(2, 4, 'gcp6'))
+        pc.check_run_manifest(m, stage='final', prereg=pre, recording_dir=d, shard=(2, 3, 'gcp6'))
     with pytest.raises(ValueError, match='shard count'):
         pc.check_run_manifest(m, stage='final', prereg=pre, recording_dir=d, shard=(0, 1, None))   # serial run
     bad = copy.deepcopy(m)
-    bad['sharding']['assignment'] = {'gcp6': [0, 1], 'gcp2': [1, 3]}
+    bad['sharding']['assignment'] = {'gcp6': [0, 1], 'gcp2': [1]}
     with pytest.raises(ValueError, match='exactly once'):
         pc.check_run_manifest(bad, stage='final', prereg=pre, recording_dir=d)
     bad = copy.deepcopy(m)
@@ -374,6 +374,10 @@ def test_manifest_sharding_binds_count_vm_and_per_vm_recording_check(tmp_path, p
     bad = copy.deepcopy(m)
     bad['sharding']['count'] = 2
     assert pc.core_sha256(pre, bad) != core_before                # the shard count is core content
+    bad = copy.deepcopy(m)                                        # D-v4-1: K <= 3
+    bad['sharding'].update(count=4, lag_batches=4, assignment={'gcp6': [0, 1], 'gcp2': [2, 3]})
+    with pytest.raises(ValueError, match='D-v4-1'):
+        pc.check_run_manifest(bad, stage='final', prereg=pre, recording_dir=d)
 
 
 def test_draft_manifest_and_prereg_carry_the_sharding_rule(prereg):
@@ -385,6 +389,7 @@ def test_draft_manifest_and_prereg_carry_the_sharding_rule(prereg):
     rule = prereg['sharding']
     assert 'execution' in rule['scope'] and rule['lag_batches'] == 'K'
     assert prereg['status'] == 'READY_FOR_REVIEW'
+    assert rule['K_max'] == pc.MAX_SHARDS == 3 and sh['count'] <= 3
 
 
 def test_freeze_final_fills_the_second_vm_recording_check_without_moving_core(tmp_path, prereg, monkeypatch):
@@ -399,7 +404,7 @@ def test_freeze_final_fills_the_second_vm_recording_check_without_moving_core(tm
     m = filled_manifest(prereg, status='DRAFT_VM_FILL')
     for k in pc.RECORDING_FIELDS:
         m['recording_check'][k] = '[VM 기입] filled at FROZEN'
-    m['sharding'].update(count=6, lag_batches=6, assignment={'gcp6': [0, 1, 2], 'gcp2': [3, 4, 5]})
+    m['sharding'].update(count=3, lag_batches=3, assignment={'gcp6': [0, 1], 'gcp2': [2]})
     mp.write_text(json.dumps(m, indent=2, ensure_ascii=False))
     out = fz.freeze('core', prereg_path=pp, manifest_path=mp, repo=ROOT, collector_sha=G('f'))
     d, _ = recording_dir(tmp_path)
@@ -427,6 +432,9 @@ def test_cli_shard_needs_vm_and_merge_writes_the_merged_root(tmp_path, prereg):
     out = cli('collect', '--prereg', str(PREREG), '--run-root', str(tmp_path / 'x'), '--episode-cmd', EP_CMD,
               '--shard', '2/2', '--vm', 'gcp6')
     assert out.returncode != 0 and 'need 0 <= i < K' in out.stderr
+    out = cli('collect', '--prereg', str(PREREG), '--run-root', str(tmp_path / 'x'), '--episode-cmd', EP_CMD,
+              '--shard', '0/4', '--vm', 'gcp6')
+    assert out.returncode != 0 and 'D-v4-1' in out.stderr
     root = tmp_path / 'm'
     _, real_sha = pc.load_prereg(PREREG)
     run_cooperative(root, prereg, 2, {i: FakeEpisode(lambda s, c: result()) for i in range(2)}, mode='measurement',
