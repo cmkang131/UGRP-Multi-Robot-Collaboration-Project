@@ -321,32 +321,62 @@ def test_peer_en_exchange_can_disclose_a_constraint():
 
 
 # ---------------------------------------------------------------------------
-# leader_en: the leader assigns both slots, the follower acknowledges
+# leader_en: the follower reports, the leader assigns both slots, the follower acks
+
+
+def _report(text='I can only use B-right.'):
+    return reply('report_status', {'text': text}, to='r2')
 
 
 def test_leader_assigns_both_slots_and_the_follower_acks():
     ask = scripted({
+        'r1': [_report(),
+               reply('ack_assignment', {'text': 'Acknowledged: I take B-right.'}, to='r2')],
         'r2': [reply('take_left', {'text': 'I take B-left; you take B-right.'}, to='r1')],
-        'r1': [reply('ack_assignment', {'text': 'Acknowledged: I take B-right.'}, to='r2')],
     })
     record = L.allocate_slots('leader_en', 601, ask=ask)  # 601 % 2 -> r2 leader
     assert record['leader'] == 'r2'
     assert record['decisions'] == {'r2': 'left', 'r1': 'right'}
-    assert record['rounds'] == 2
-    assert record['utterances'] == 2
+    assert record['rounds'] == 3
+    assert record['utterances'] == 3
     assert record['success_eligible'] is True
+    assert [(row['robot'], row['round']) for row in record['transcript']] == [
+        ('r1', 1), ('r2', 2), ('r1', 3)]
+
+
+def test_leader_sees_the_follower_report_before_assigning():
+    """Codex 2026-10-20 §2: the follower's constraint can reach the leader."""
+    ask = scripted({
+        'r1': [_report('My private constraint: I can only use B-right.'),
+               reply('ack_assignment', {'text': 'ok'}, to='r2')],
+        'r2': [reply('take_left', {'text': 'You take B-right.'}, to='r1')],
+    })
+    L.allocate_slots('leader_en', 601, ask=ask)
+    leader_call = next(c for c in ask.calls if c['robot'] == 'r2')
+    texts = [row['body']['text'] for row in leader_call['dynamic']['inbox']]
+    assert texts == ['My private constraint: I can only use B-right.']
+    # The follower's first call had an empty inbox (it speaks first).
+    assert ask.calls[0]['robot'] == 'r1' and not ask.calls[0]['dynamic']['inbox']
+
+
+def test_follower_report_message_is_required():
+    ask = scripted({'r1': [reply('report_status')], 'r2': []})
+    with pytest.raises(L.L1LiteError) as info:
+        L.allocate_slots('leader_en', 601, ask=ask)
+    assert info.value.code == 'L1LITE_LEADER_REPORT_MISSING'
+    assert info.value.record['fatal'] is True
 
 
 def test_leader_assignment_message_is_required():
-    ask = scripted({'r2': [reply('take_left')], 'r1': []})
+    ask = scripted({'r1': [_report()], 'r2': [reply('take_left')]})
     with pytest.raises(L.L1LiteError) as info:
         L.allocate_slots('leader_en', 601, ask=ask)
     assert info.value.code == 'L1LITE_LEADER_UNASSIGNED'
 
 
 def test_follower_ack_is_required():
-    ask = scripted({'r2': [reply('take_left', {'text': 'assignment'}, to='r1')],
-                    'r1': [reply('ack_assignment')]})  # decision but no ack message
+    ask = scripted({'r1': [_report(), reply('ack_assignment')],  # ack without message
+                    'r2': [reply('take_left', {'text': 'assignment'}, to='r1')]})
     with pytest.raises(L.L1LiteError) as info:
         L.allocate_slots('leader_en', 601, ask=ask)
     assert info.value.code == 'L1LITE_LEADER_ACK_MISSING'

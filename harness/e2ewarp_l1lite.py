@@ -506,28 +506,42 @@ def allocate_slots(condition, seed, *, ask, max_rounds=MAX_ROUNDS, channels=None
             if not record['distinct']:
                 record['errors'].append('L1LITE_DUPLICATE_SLOT')
         else:  # leader_en
+            # Report -> assign -> ack (Codex review 2026-10-20 §2): the
+            # follower first reports its own status to the leader, so the
+            # leader's assignment is made with the follower's private
+            # constraint available on the channel, as in the other channel
+            # conditions.  Whether the follower mentions it is the model's
+            # choice; the protocol only guarantees the round exists.
+            report = dict(id='report_status')
+            _chosen, _report_message, report_sent = _ask_round(
+                record, channels, ask, follower, 1, [report])
+            if not report_sent:
+                record['errors'].append('L1LITE_LEADER_REPORT_MISSING')
+                raise L1LiteError('L1LITE_LEADER_REPORT_MISSING',
+                                  detail=f'{follower}:round1',
+                                  record=_finish(record, channels))
             take_left = dict(id='take_left', slots={leader: SLOT_LEFT,
                                                     follower: SLOT_RIGHT})
             take_right = dict(id='take_right', slots={leader: SLOT_RIGHT,
                                                       follower: SLOT_LEFT})
             leader_decision, message, sent = _ask_round(
-                record, channels, ask, leader, 1, [take_left, take_right])
+                record, channels, ask, leader, 2, [take_left, take_right])
             if not sent:
                 # Without the assignment message the follower has nothing to
                 # acknowledge; this is a named fail-closed error, not a retry.
                 record['errors'].append('L1LITE_LEADER_UNASSIGNED')
                 raise L1LiteError('L1LITE_LEADER_UNASSIGNED',
-                                  detail=f'{leader}:round1', record=_finish(record, channels))
+                                  detail=f'{leader}:round2', record=_finish(record, channels))
             record['decisions'].update(leader_decision['slots'])
             ack = dict(id='ack_assignment')
             chosen, _ack_message, ack_sent = _ask_round(
-                record, channels, ask, follower, 2, [ack])
+                record, channels, ask, follower, 3, [ack])
             if chosen['id'] != 'ack_assignment' or not ack_sent:
                 record['errors'].append('L1LITE_LEADER_ACK_MISSING')
                 raise L1LiteError('L1LITE_LEADER_ACK_MISSING',
-                                  detail=f'{follower}:round2',
+                                  detail=f'{follower}:round3',
                                   record=_finish(record, channels))
-            record['rounds'] = 2
+            record['rounds'] = 3
     except L1LiteError as exc:
         # Every fatal decision keeps its stable code in the record as well as in
         # the exception, so ``slot-decisions.json`` names the failure.  Rebuild

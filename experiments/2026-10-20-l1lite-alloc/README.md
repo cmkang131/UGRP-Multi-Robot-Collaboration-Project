@@ -62,13 +62,14 @@ B-right 1건, required_robots=1, assigned_robot=None
 | `no_comm` | 0 (전송 시도도 drop) | — | 후보는 기본 규칙 슬롯 1개뿐, 벗어나면 `L1LITE_INVALID_SLOT` |
 | `structured` | 고정 enum | `{"act": "my_constraint"\|"claim_slot"\|"ack", "slot": "left"\|"right"}` | 자유 텍스트 거부 |
 | `peer_en` | 자유 영어 | `{"text": "..."}` (≤400자) | 한국어는 전달하되 언어 slip으로 기록(차단 아님) |
-| `leader_en` | 자유 영어 | `{"text": "..."}` | leader=`seed % 2`, leader가 두 슬롯 배정, follower는 `ack_assignment`만 |
+| `leader_en` | 자유 영어 | `{"text": "..."}` | leader=`seed % 2`. follower 보고(`report_status`) → leader가 두 슬롯 배정 → follower `ack_assignment` |
 
 - 네 조건 모두 LLM이 슬롯을 결정한다. no_comm만 결정 후보가 기본 규칙 1개로 제한된다
   (사전 등록 baseline; LLM은 여전히 그 후보를 선택해야 하고, 없거나 다르면 named error).
 - `structured`/`peer_en`: 라운드 1(claim) + 라운드 2(응답)를 **항상** 수행하고, 2라운드에서도
   두 선택이 같으면 라운드 3까지 간다. 3라운드에도 같으면 `L1LITE_DUPLICATE_SLOT`.
-- `leader_en`: 라운드 1 leader 배정(메시지 필수) → 라운드 2 follower ack(메시지 필수).
+- `leader_en`: 라운드 1 follower 보고(메시지 필수) → 라운드 2 leader 배정(메시지 필수) → 라운드 3 follower ack(메시지 필수).
+  2026-10-21 Codex 검토(10/20 §2) 반영: 이전 2라운드 구조에서는 leader가 follower의 사적 제약을 받기 전에 배정했다.
 - 같은 라운드의 전송은 그 라운드의 상대 입력에 들어가지 않는다(라운드 시작 시 inbox 스냅샷).
 
 ## 4. 결정 → 주행 연결 (default off 보장)
@@ -98,6 +99,7 @@ Queue marker(opt-in에서만): `nav_l1lite=on_v1`, `nav_l1lite_order_sheet=v_l1l
 | `L1LITE_INVALID_DECISION` | 응답 형식 불일치(`act`/`message` 외 키 등) | 위와 같음 |
 | `L1LITE_INVALID_SLOT` | 후보에 없는 슬롯/act | 위와 같음 |
 | `L1LITE_DUPLICATE_SLOT` | 두 로봇 같은 슬롯(no_comm 충돌, 협상 실패) | slot은 bind되어 주행(충돌 측정), `success_eligible=false` → evaluator 성공 불가 |
+| `L1LITE_LEADER_REPORT_MISSING` | follower 보고 메시지 없음/무효 | 주행 없음 |
 | `L1LITE_LEADER_UNASSIGNED` | leader 배정 메시지 없음/무효 | 주행 없음 |
 | `L1LITE_LEADER_ACK_MISSING` | follower ack 결정/메시지 없음 | 주행 없음 |
 | `L1LITE_MESSAGE_INVALID` | 채널 스키마 위반 메시지(전달 안 됨) | 메시지 drop 기록, `success_eligible=false` |
@@ -155,7 +157,7 @@ leader 배정/ack, evaluator 성공·각 실패 성분·aux·60s deadlock·환�
 - 24 run 설계(4조건 × 6 seed), 조건×seed 교차 순서, run root: 계획 §1 그대로. 실행 없음.
 - seed 표: 위 601–606. 3/6 충돌을 원하면 균형(3/3, 3/3)을 깨야 함(§2).
 - 할당 호출은 로봇 자기 첫 프레임 1장을 포함한다(t=0, 주행 전 1회). 조건별 라운드 수:
-  no_comm 1, structured/peer_en 2(+충돌 시 3), leader_en 2 → 로봇당 1–3 호출.
+  no_comm 1, structured/peer_en 2(+충돌 시 3), leader_en 3(follower 2회, leader 1회) → 로봇당 1–3 호출.
 - `nworld=1`만 허용(결정 binding이 run 전역). seed당 run 1개.
 - `no_comm`은 후보를 기본 규칙 1개로 제한했다(LLM은 그 후보를 선택·확인). prereg에서
   "두 후보 + 기본 규칙 검증"으로 바꿀 수 있으나, 그러면 조건 baseline이 LLM 추첨이 된다.
