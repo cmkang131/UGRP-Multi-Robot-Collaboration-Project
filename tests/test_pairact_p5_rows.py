@@ -31,7 +31,10 @@ def run_dir(path, arm, indices, *, missing=(), host=(), win=()):
         w = dict(world=k, seed=SEEDS[i], success=ok or arm == 'teacher', carry_success=ok, cap_end=False,
                  carry_failure=None if ok else 'carry_total_timeout')
         raw = dict(status='HOST_ERROR' if i in host else 'complete')
-        if arm == 'student':
+        if arm in ('student', 'hybrid_n'):
+            if arm == 'hybrid_n':
+                w['hybrid'] = dict(carry_mode='nav', gt_inputs_to_code=0, code_segment_s=40., outcome='handed_back',
+                                   student_commands_executed_ratio=.5)
             w.update(student_funnel=dict(reached=dict(STUDENT_REACHED, **({s: True for s in pr.FUNNEL} if ok else {}))),
                      teacher_steps=0)
             raw['student_eval'] = dict(gt_inputs_to_student=0, teacher_steps=0)
@@ -113,3 +116,22 @@ def test_missing_gt_record_is_null_not_zero(tmp_path):
                                           teacher_rerun=None, static_check=None))
     r = next(x for x in rows if x.get('arm') == 'student')
     assert r['student_gt_corrections'] is None and r['teacher_commands_issued_to_student'] is None
+
+
+def test_hybrid_n_arm_rows_are_separate_and_carry_the_code_audit(tmp_path):
+    pre, cases = setup(tmp_path)
+    idx = list(range(20))
+    st = run_dir(tmp_path / 'student', 'student', idx)
+    hy = run_dir(tmp_path / 'hybrid', 'hybrid_n', idx, win=(0, 1))
+    te = run_dir(tmp_path / 'teacher', 'teacher', idx, win=(0, 1, 2))
+    out = tmp_path / 'rows.jsonl'
+    assert pr.main(args(pre, cases, st, te, out, hybrid_n=hy)) == 0
+    rows = [json.loads(x) for x in out.read_text().splitlines()]
+    assert set(rows[0]['runs']) == {'student', 'hybrid_n', 'teacher'}
+    h = [r for r in rows[1:] if r['arm'] == 'hybrid_n']
+    assert len(h) == 20 and sum(r['success'] for r in h) == 2
+    assert all(r['carry_mode'] == 'nav' and r['gt_inputs_to_code'] == 0 for r in h)
+    assert sum(r['success'] for r in rows[1:] if r['arm'] == 'student') == 0
+    # a plain student run cannot pose as hybrid_n
+    with pytest.raises(ValueError, match='no hybrid block'):
+        pr.main(args(pre, cases, st, te, tmp_path / 'o2.jsonl', hybrid_n=st))

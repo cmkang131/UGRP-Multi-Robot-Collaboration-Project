@@ -89,15 +89,40 @@ def parser():
     p.add_argument('--mps-shared-v1',action='store_true',help='explicit private warp4 MPS runtime cohort; default OFF')
     p.add_argument('--vm-hourly-usd',type=float,required=True)
     p.add_argument('--student-eval',type=Path,help='pairact P5: student ACT issues every command (teacher DESIGN §9); default OFF')
+    p.add_argument('--hybrid-carry',type=Path,help='pairact hybrid (arm N): student near field + code carry + student place '
+                   '(experiments/2026-10-21-pairact-p2/HYBRID_RUN.md); needs --student-eval; default OFF')
     return p
 
 
 STUDENT_EVAL_KEYS={'mode','python','source','model','config','device'}
 STUDENT_EVAL_MODE='pairact_r1_student_eval_v1'
 STUDENT_SHA='3c9337d5f5c9deefd49139b26ae7117022e3d5cc'   # dsh/pairact-p5-student worker tree
+HYBRID_STUDENT_SHA='bdc41a3fa8ec151889a1c6559147f495a9619dad'   # dsh/pairact-p5-student-hybrid (+ shadow op)
+HYBRID_MODE='pairact_r1_hybrid_carry_v1'
+HYBRID_NAV_SHA='ceacd474b9e03110c1b35c0cd0fc2cca40594ec9'   # dsh/nav-v5-recal (nav r5 detector + v5 profiles)
+# Static-map use for pair carry awaits the owner's (창민) decision; 'map' is refused here and in the teacher.
+HYBRID_MAP_MODE_APPROVED=False
 
 
-def load_student_eval(path):
+def load_hybrid_carry(path,student_eval):
+    """Root-side checks of the hybrid config (full validation: teacher harness/hybrid_carry.py)."""
+    if path is None:return None
+    if student_eval is None:raise ValueError('--hybrid-carry needs --student-eval (arm N student worker)')
+    cfg=json.loads(Path(path).read_text())
+    if cfg.get('mode')!=HYBRID_MODE:raise ValueError(f'hybrid carry mode must be {HYBRID_MODE}')
+    if cfg.get('carry_mode')=='map' and not HYBRID_MAP_MODE_APPROVED:
+        raise PermissionError('carry_mode "map" (static map coordinates) is refused until the owner approves static-map use for pair carry')
+    if cfg.get('carry_mode')!='nav' and not HYBRID_MAP_MODE_APPROVED:
+        raise ValueError('carry_mode must be "nav"')
+    if cfg.get('carry_mode')=='nav':
+        nav=cfg.get('nav') or {}
+        if not Path(nav.get('source','')).is_absolute():raise ValueError('absolute nav source path required')
+        if nav.get('sha')!=HYBRID_NAV_SHA or source_head(nav['source'])!=HYBRID_NAV_SHA:
+            raise ValueError(f'nav detector tree must be at {HYBRID_NAV_SHA}')
+    return cfg
+
+
+def load_student_eval(path,pinned=STUDENT_SHA):
     """Exact P5 config: the isolated worker's python/source/model/config. No GT key exists."""
     if path is None:return None
     cfg=json.loads(Path(path).read_text())
@@ -106,7 +131,7 @@ def load_student_eval(path):
     for key in ('python','source','model','config'):
         if not Path(cfg[key]).is_absolute():raise ValueError(f'absolute {key} path required')
     head=source_head(cfg['source'])
-    if head!=STUDENT_SHA:raise ValueError(f'student worker source {head} != pinned {STUDENT_SHA}')
+    if head!=pinned:raise ValueError(f'student worker source {head} != pinned {pinned}')
     return cfg
 
 
@@ -125,7 +150,8 @@ def main():
         p.error('finite existing SIM cap and explicit positive hourly price required')
     if a.diagnostic_ticks is not None and a.diagnostic_ticks<=0:
         p.error('positive diagnostic control-tick budget required')
-    student_eval=load_student_eval(a.student_eval)
+    student_eval=load_student_eval(a.student_eval,HYBRID_STUDENT_SHA if a.hybrid_carry else STUDENT_SHA)
+    hybrid_carry=load_hybrid_carry(a.hybrid_carry,student_eval)
     if student_eval is not None and a.flow!='beampair':
         p.error('student eval is a beampair pair-carry flow option')
     if a.batch_per_world_speed_v1 and (not a.gcp3_isolated_v1 or a.rejection_table is None
@@ -153,6 +179,9 @@ def main():
         import warp as wp
         wp.config.mode='debug'
     from warp_flow_episode import ADAPTER_SHA,TEACHER_SHA,RELEASE_SHA,make_lane
+    if hybrid_carry is not None:
+        # hybrid stack: -a-c5-hybrid adapter + -c5-hybrid teacher (default path below is unchanged)
+        from warp_flow_episode import HYBRID_ADAPTER_SHA as ADAPTER_SHA,HYBRID_TEACHER_SHA as TEACHER_SHA
     require_source(a.adapter_source,ADAPTER_SHA if a.flow=='beampair' else RELEASE_SHA)
     if a.flow=='beampair':
         if not a.teacher_source:p.error('beampair needs pinned teacher source')
@@ -221,6 +250,9 @@ def main():
         # P5: success below is the student's (joint hold reached AND the unchanged GT evaluator).
         report.update(model_calls=None,student_eval=dict(student_eval,
             config_sha256=hashlib.sha256(Path(student_eval['config']).read_bytes()).hexdigest()))
+    if hybrid_carry is not None:
+        report['hybrid_carry']=dict(hybrid_carry,config_sha256=hashlib.sha256(a.hybrid_carry.read_bytes()).hexdigest(),
+            label='학습 근거리 + 코드 운반(hybrid)')
     write(a.out/'summary.json',report)
     lanes=[];bridges=[];contexts=[];results={};recent=[deque(maxlen=100) for _ in indices]
     disk_rings=[DiskRing(a.out/f'world-{i:03d}'/'tail-ring-10hz') for i in range(len(indices))]
@@ -231,7 +263,7 @@ def main():
         for i,case in enumerate(selected):
             lane,bridge=make_lane(a.adapter_source,a.teacher_source,case['plan'],a.out/f'world-{i:03d}',hooks,i,a.cap_s,
                 flow=a.flow,profile=case.get('profile'),canonical=canonical,
-                candidate=case.get('candidate','baseline'),student_eval=student_eval)
+                candidate=case.get('candidate','baseline'),student_eval=student_eval,hybrid_carry=hybrid_carry)
             lanes.append(lane);bridges.append(bridge)
             contexts.append(next(lane));report['started_N']+=1
         write(a.out/'single-model-audit.json',model_arrays_equal([c['world'].model for c in contexts]))
@@ -357,6 +389,9 @@ def main():
                     'teacher_steps':(raw.get('student_eval') or {}).get('teacher_steps'),
                     'student_worker_requests':(raw.get('student_eval') or {}).get('worker_requests')}
                    if student_eval is not None else {}),
+                **({'hybrid':{k:(raw.get('hybrid') or {}).get(k) for k in ('carry_mode','outcome','segment',
+                    'gt_inputs_to_code','teacher_steps','code_segment_s','student_commands_executed_ratio')}}
+                   if hybrid_carry is not None else {}),
                 input_audit=raw.get('input_audit'),raw=str(a.out/f'world-{i:03d}'/'raw')))
         # Recording-only native JPEG ring, including bootstrap exceptions and
         # supervisor interrupts. No extra render/capture calls enter control.

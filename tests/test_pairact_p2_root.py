@@ -108,7 +108,7 @@ def test_student_eval_default_off_and_injected_only_when_set():
     runner = (ROOT/'scripts/run_warp_flow_teacher.py').read_text()
     episode = (ROOT/'scripts/warp_flow_episode.py').read_text()
     assert "p.add_argument('--student-eval',type=Path" in runner and 'default OFF' in runner
-    assert "student_eval=None):" in episode and 'bridge.student_eval = student_eval' in episode
+    assert "student_eval=None, hybrid_carry=None):" in episode and 'bridge.student_eval = student_eval' in episode
     assert "if self.student_eval is not None:" in episode
     assert "STUDENT_SHA='3c9337d5f5c9deefd49139b26ae7117022e3d5cc'" in runner
 
@@ -122,8 +122,16 @@ def test_collect_root_changes_only_the_two_pins():
     except (subprocess.CalledProcessError, FileNotFoundError) as error:
         pytest.fail(f'base commit {base} unavailable ({error}): git fetch origin {base} (not skippable, audit 4)')
     removed = sorted(l for l in out.splitlines() if l.startswith('-') and not l.startswith('---'))
-    assert removed == ["-ADAPTER_SHA = '6843fcaa94785e46ee52ef1889e392ca988d604d'",
-                       "-TEACHER_SHA = '59299f903f4a2f9a2eabe5ff0e442e0ce25e8266'"]
+    # -r-c5-hybrid: collection still runs from -r-c5 (two pins only). The hybrid root additionally edits
+    # exactly these five lines (student pin parameter, hybrid keyword threading); everything else is added.
+    hybrid_edits = ["-def load_student_eval(path):",
+                    "-    if head!=STUDENT_SHA:raise ValueError(f'student worker source {head} != pinned {STUDENT_SHA}')",
+                    "-    student_eval=load_student_eval(a.student_eval)",
+                    "-                candidate=case.get('candidate','baseline'),student_eval=student_eval)",
+                    "-def make_lane(adapter_source, teacher_source, plan, out, hooks, index, cap_s, *, flow='beampair', "
+                    "profile=None, canonical=None, candidate='baseline', student_eval=None):"]
+    assert removed == sorted(["-ADAPTER_SHA = '6843fcaa94785e46ee52ef1889e392ca988d604d'",
+                              "-TEACHER_SHA = '59299f903f4a2f9a2eabe5ff0e442e0ce25e8266'"] + hybrid_edits)
 
 
 # ------------------------------------------------- -c3 detour pilot cases
@@ -152,3 +160,60 @@ def test_pinned_adapter_has_the_detour_candidates():
         pytest.fail(f'pinned adapter {sha} not in this clone: git fetch origin {sha} (not skippable)')
     assert "if candidate=='pairact_p2_r13_detour':" in src and "'carry_route':'detour_v1'" in src
     assert "COLLECT_CANDIDATES=(COLLECT_CANDIDATE,'pairact_p3_collect_detour')" in src
+
+
+# ------------------------------------------------- hybrid carry (arm N, default off)
+
+HYB = {'mode': 'pairact_r1_hybrid_carry_v1', 'carry_mode': 'nav',
+       'nav': {'source': '/src/nav', 'sha': 'ceacd474b9e03110c1b35c0cd0fc2cca40594ec9'}}
+
+
+def test_hybrid_pins_and_default_off():
+    runner = (ROOT/'scripts/run_warp_flow_teacher.py').read_text()
+    episode = (ROOT/'scripts/warp_flow_episode.py').read_text()
+    assert "HYBRID_ADAPTER_SHA = '6e957a42665ce98e40aae8afcb79023f669b5e65'" in episode    # -a-c5-hybrid
+    assert "HYBRID_TEACHER_SHA = '60ef0b1481082daad4cf5582d1542661c0b8664f'" in episode    # -c5-hybrid
+    assert "HYBRID_STUDENT_SHA='bdc41a3fa8ec151889a1c6559147f495a9619dad'" in runner      # p5-student-hybrid
+    assert "HYBRID_MAP_MODE_APPROVED=False" in runner
+    assert "p.add_argument('--hybrid-carry',type=Path" in runner and 'default OFF' in runner
+    assert "if self.hybrid_carry is not None:" in episode
+    # default path keeps the -c5 pins
+    assert "ADAPTER_SHA = '3779d9615ef6dc8e38f57ab968a14a9e45189ecc'" in episode
+    assert "STUDENT_SHA='3c9337d5f5c9deefd49139b26ae7117022e3d5cc'" in runner
+
+
+def test_hybrid_config_needs_student_eval_nav_pin_and_refuses_map(tmp_path, monkeypatch):
+    mod = _runner_module()
+    path = tmp_path/'h.json'
+    path.write_text(json.dumps(HYB))
+    assert mod.load_hybrid_carry(None, CFG) is None
+    with pytest.raises(ValueError, match='student-eval'):
+        mod.load_hybrid_carry(path, None)
+    monkeypatch.setattr(mod, 'source_head', lambda p: mod.HYBRID_NAV_SHA)
+    assert mod.load_hybrid_carry(path, CFG)['carry_mode'] == 'nav'
+    monkeypatch.setattr(mod, 'source_head', lambda p: '0'*40)
+    with pytest.raises(ValueError, match='nav detector tree'):
+        mod.load_hybrid_carry(path, CFG)
+    path.write_text(json.dumps(dict(HYB, carry_mode='map', nav=None)))
+    with pytest.raises(PermissionError, match='owner'):
+        mod.load_hybrid_carry(path, CFG)
+    path.write_text(json.dumps(dict(HYB, nav={'source': 'rel', 'sha': mod.HYBRID_NAV_SHA})))
+    with pytest.raises(ValueError, match='absolute'):
+        mod.load_hybrid_carry(path, CFG)
+
+
+def test_hybrid_student_pin_is_used_with_hybrid_flag(tmp_path, monkeypatch):
+    mod = _runner_module()
+    path = tmp_path/'s.json'; path.write_text(json.dumps(CFG))
+    monkeypatch.setattr(mod, 'source_head', lambda p: mod.HYBRID_STUDENT_SHA)
+    assert mod.load_student_eval(path, mod.HYBRID_STUDENT_SHA) == CFG
+    with pytest.raises(ValueError, match='pinned'):
+        mod.load_student_eval(path)
+
+
+def test_hybrid_template_is_nav_and_unfilled_values_stay_marked():
+    t = json.loads((ROOT/'experiments/2026-10-21-pairact-p2/HYBRID_CARRY_NAV_TEMPLATE.json').read_text())
+    assert t['mode'] == 'pairact_r1_hybrid_carry_v1' and t['carry_mode'] == 'nav' and t['map'] is None
+    assert t['nav']['sha'] == 'ceacd474b9e03110c1b35c0cd0fc2cca40594ec9' and t['nav']['door_detector'] is None
+    # calibration is measured, never defaulted: the template keeps the marker until filled
+    assert all('[확인 필요' in str(v) for v in t['calibration'].values())

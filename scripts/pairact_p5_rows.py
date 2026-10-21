@@ -23,6 +23,11 @@ Per world (summary.json worlds[k], k -> case index via world_indices):
   teacher_commands_issued_to_student summary teacher_steps (null if absent)
   termination 'success' | 'HOST_ERROR' | 'cap_end' | carry_failure | 'failure'
 
+Arm 'hybrid_n' (--hybrid-n, arm N '학습 근거리 + 코드 운반(hybrid)', run with --hybrid-carry): same as
+'student' plus carry_mode, gt_inputs_to_code, code_segment_s, student_commands_executed_ratio and
+hybrid_outcome from summary worlds[k].hybrid (raw result.json hybrid). A world without the hybrid
+block is an error (the run was not a hybrid run). Never merged with 'student'.
+
 Prereg exclusions.host_error (P5 only): one rerun of the same seed.  --student-rerun/--teacher-rerun
 give attempt 2 rows, accepted only for seeds that were HOST_ERROR in attempt 1.
 Rule A static exclusion: --static-check (static_stance_check.py output on the same cases);
@@ -43,6 +48,7 @@ import subprocess
 import sys
 
 SCHEMA = 'ugrp.pairact.p5_rows.v1'
+STUDENT_ARMS = ('student', 'hybrid_n')
 FUNNEL = ('approach', 'alignment', 'READY', 'grasp', 'hold_3s', 'carry_1m', 'door', 'place')
 
 
@@ -100,10 +106,19 @@ def arm_rows(arm, run_dir, *, attempt, seeds, only=None):
         if w is None or (raw or {}).get('status') == 'HOST_ERROR':
             rows.append(dict(base, status='HOST_ERROR', success=False, funnel={s: None for s in FUNNEL},
                              termination='HOST_ERROR', student_gt_corrections=None,
-                             teacher_commands_issued_to_student=None))
+                             teacher_commands_issued_to_student=None,
+                             **({'carry_mode': None, 'gt_inputs_to_code': None} if arm == 'hybrid_n' else {})))
             continue
         success = w.get('success') is True and w.get('carry_success') is True
-        if arm == 'student':
+        extra = {}
+        if arm == 'hybrid_n':
+            hy = w.get('hybrid')
+            if not isinstance(hy, dict):
+                raise ValueError(f'hybrid_n world {i}: no hybrid block (run was not --hybrid-carry)')
+            extra = dict(carry_mode=hy.get('carry_mode'), gt_inputs_to_code=hy.get('gt_inputs_to_code'),
+                         code_segment_s=hy.get('code_segment_s'), hybrid_outcome=hy.get('outcome'),
+                         student_commands_executed_ratio=hy.get('student_commands_executed_ratio'))
+        if arm in STUDENT_ARMS:
             reached = (w.get('student_funnel') or {}).get('reached') or {}
             funnel = {s: reached.get(s) for s in FUNNEL}
             gt = ((raw or {}).get('student_eval') or {}).get('gt_inputs_to_student')
@@ -115,7 +130,7 @@ def arm_rows(arm, run_dir, *, attempt, seeds, only=None):
         term = ('success' if success else 'cap_end' if w.get('cap_end') or (raw or {}).get('cap_end')
                 else w.get('carry_failure') or 'failure')
         rows.append(dict(base, status='complete', success=success, funnel=funnel, termination=term,
-                         student_gt_corrections=gt, teacher_commands_issued_to_student=teacher_steps))
+                         student_gt_corrections=gt, teacher_commands_issued_to_student=teacher_steps, **extra))
     return rows
 
 
@@ -130,7 +145,10 @@ def build(a):
                 static_check_sha256=static_sha, cases_sha256=sha256(a.cases), runs={},
                 host_error_rule='prereg exclusions.host_error: one rerun of the same seed; second HOST_ERROR is a failure')
     rows = [head]
-    for arm, first, rerun in (('student', a.student, a.student_rerun), ('teacher', a.teacher, a.teacher_rerun)):
+    arms = [('student', a.student, a.student_rerun), ('teacher', a.teacher, a.teacher_rerun)]
+    if getattr(a, 'hybrid_n', None):
+        arms.insert(1, ('hybrid_n', a.hybrid_n, getattr(a, 'hybrid_n_rerun', None)))
+    for arm, first, rerun in arms:
         head['runs'][arm] = []
         r1 = arm_rows(arm, first, attempt=1, seeds=seeds)
         head['runs'][arm].append(dict(attempt=1, dir=str(first), summary_sha256=sha256(Path(first) / 'summary.json')))
@@ -153,6 +171,8 @@ def main(argv=None):
     p.add_argument('--teacher', type=Path, required=True)
     p.add_argument('--student-rerun', type=Path)
     p.add_argument('--teacher-rerun', type=Path)
+    p.add_argument('--hybrid-n', type=Path, help="arm N hybrid run dir (--hybrid-carry); P5 arm 'hybrid_n'")
+    p.add_argument('--hybrid-n-rerun', type=Path)
     p.add_argument('--static-check', type=Path)
     p.add_argument('--out', type=Path, required=True)
     a = p.parse_args(argv)
