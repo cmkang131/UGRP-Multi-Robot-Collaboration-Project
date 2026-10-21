@@ -1,6 +1,7 @@
 """pairact-r1 seed separation check (P3). Read-only; no simulator.
 
 1. train/validation/heldout sizes are 200/20/20 and pairwise disjoint;
+   (plus train_extension and pilot from COLLECT_PREREG v2, also disjoint);
 2. no proposed seed lies in a registered earlier beampair/beamact range;
 3. optional ``--scan-refs``: ``git grep`` each ref for any 7-digit literal inside
    the proposed ranges, outside this experiment directory (catches seeds another
@@ -20,6 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT = ROOT / 'experiments/2026-10-21-pairact-r1/seeds.json'
 SIZES = {'train': 200, 'validation': 20, 'heldout': 20}
 OWN_DIR = 'experiments/2026-10-21-pairact-r1/'
+EXTRA = ('train_extension', 'pilot')
 
 
 # Same-project references that are not episodes (reviewed 2026-10-21, listed in the scan report):
@@ -42,9 +44,10 @@ def check(spec):
     for name, n in SIZES.items():
         if len(splits.get(name, ())) != n:
             problems.append(f'{name} has {len(splits.get(name, ()))} seeds, expected {n}')
-    if 'train_extension' in spec:
-        # COLLECT_PREREG: used only after train is consumed; must be disjoint like a split
-        splits['train_extension'] = expand(spec['train_extension'])
+    for extra in EXTRA:
+        # COLLECT_PREREG: train_extension (after train) and pilot (measurement only); disjoint like a split
+        if extra in spec:
+            splits[extra] = expand(spec[extra])
     names = sorted(splits)
     for i, a in enumerate(names):
         for b in names[i + 1:]:
@@ -58,7 +61,7 @@ def check(spec):
 
 
 def scan(spec, refs):
-    ranges = list(spec['splits'].values()) + ([spec['train_extension']] if 'train_extension' in spec else [])
+    ranges = list(spec['splits'].values()) + [spec[k] for k in EXTRA if k in spec]
     proposed = set().union(*(expand(v) for v in ranges))
     prefixes = sorted({str(s)[:4] for s in proposed})
     # -P lookarounds: a seed is not part of a hex digest or a decimal fraction

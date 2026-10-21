@@ -7,10 +7,12 @@
     "heldout": {"first": 8342000, "last": 8342019}
   },
   "train_extension": {"first": 8340200, "last": 8340599, "rule": "COLLECT_PREREG_DRAFT.json seeds.train_extension: consumed in order only after 8340199; same use as train"},
+  "pilot": {"first": 8343000, "last": 8343039, "rule": "COLLECT_PREREG_DRAFT.json v2 seeds.pilot: measurement (recording off) yield run only; never in tensors; recording-probe starts"},
   "use": {
     "train": "teacher demonstrations; only teacher-success episodes enter TRAIN tensors",
     "validation": "teacher demonstrations; offline gate and checkpoint selection only",
-    "heldout": "P5 closed-loop only (student and teacher, same seed); never collected for tensors, never used for selection"
+    "heldout": "P5 closed-loop only (student and teacher, same seed); never collected for tensors, never used for selection",
+    "pilot": "measurement-mode yield run only (COLLECT_PREREG v2); validation and heldout are never run in measurement mode"
   },
   "known_ranges": [
     {"first": 71001, "last": 71007, "source": "experiments/2026-10-15-beampair1/README.md:48"},

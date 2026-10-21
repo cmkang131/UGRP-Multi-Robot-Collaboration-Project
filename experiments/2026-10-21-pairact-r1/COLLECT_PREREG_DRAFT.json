@@ -1,33 +1,71 @@
 {
-  "schema": "ugrp.pairact_r1.collect_prereg.v1",
+  "schema": "ugrp.pairact_r1.collect_prereg.v2",
   "status": "READY_FOR_REVIEW",
-  "freeze_rule": "Codex review, then status FROZEN and the file sha256 is written into every ledger header. The runner refuses any status other than READY_FOR_REVIEW (dry/measurement only) or FROZEN (training recording). No field changes during collection.",
+  "revision": "v2 (2026-10-21): Codex gpt-6-astra review 01-collect-prereg-review.md 13 items + repo audit 03 items 1/2/4 + owner decisions 1-13 (task 11cb2d69). Response table: experiments/2026-10-21-pairact-r1/CODEX_RESPONSE_V2.md",
+  "freeze_rule": "Codex re-review, then status FROZEN together with RUN_MANIFEST.json (all [VM 기입] filled by DeepSeek before the freeze commit). The prereg sha256 is written into every ledger header and into RUN_MANIFEST.json. Training mode refuses any status other than FROZEN; measurement (pilot) mode accepts READY_FOR_REVIEW or FROZEN. report and convert-input refuse a ledger whose header sha256 differs from the prereg passed on the command line. No field changes during collection.",
   "decision_source": "outputs/reports/claude-arch-parallel-20261019/pairact-success-filter-decision.md (2026-10-20, success-filtered BC adopted; P1 tournament non-blocking)",
-  "start_trigger": "P2 smoke passed with >=1 full-path success (grasp + carry_success) out of the smoke worlds; 0 successes -> do not collect, fix P2",
+  "start_trigger": {
+    "rule": "P2 smoke full-path success >= 1 (grasp_physical_success AND carry_eval.success in the same world). P1 teacher gate (>=38/40) is NOT a start condition (non-blocking, decision 1).",
+    "evidence": {
+      "run": "gcp6 /home/ugrp/ugrp-sim/runs/pairact-p2/smoke-1c (status complete, HOST_ERROR 0, wall 1501 s)",
+      "stack": "root dsh/pairact-p2-carrypath-r 0e60345d7, teacher pin 59299f903, adapter pin 6843fcaa9 (Codex follow-up REVIEW.md table; raw not independently recounted)",
+      "seeds": [8420001, 8420011, 8420017],
+      "carry_outcome": {"8420001": "carry_eval.success false, failure not_through_door, carried_max_m 0.000576", "8420011": "carry_eval.success true", "8420017": "carry_eval.success true"},
+      "full_path_success": "2/3 (P2 smoke trigger only; not a teacher reliability rate, never pooled with A/B/C)",
+      "report_file": "outputs/reports/pairact-p2-teacher-clips-20261020.md sha256 1197dc28e64711aa88b8031cb0406f9456687b56a54a6a05d23ee79c8fba75e4",
+      "summary_json_sha256": "[VM 기입] sha256 of smoke-1c/summary.json (filled into RUN_MANIFEST.json smoke.summary_sha256 before FROZEN)",
+      "carry_eval_sha256": "[VM 기입] smoke-1c/world-00{0,1,2}/raw/carry-eval.json (RUN_MANIFEST.json smoke.carry_eval_sha256)",
+      "artifact_manifest_sha256": "[VM 기입] smoke-1c/artifact-sha256.json (root writes it; RUN_MANIFEST.json smoke.artifact_manifest_sha256)"
+    },
+    "selection_caveat": "smoke seeds were chosen from earlier r13 successes (SMOKE.md); the trigger only shows the path can succeed, it is not an unbiased yield estimate. The pilot run (seeds.pilot) is the unselected yield measurement."
+  },
+  "unit": {
+    "id": "pair_episode",
+    "rule": "one attempt = one pair episode (both robots, one seed, one bin). Every count N/S/A/E below is in pair episodes, never robot rows or streams. A pair episode contributes two robot streams to the tensors only when admitted."
+  },
+  "status_table": {
+    "id": "pairact_r1_status_table_v1",
+    "world": {
+      "complete": "behavior: judged; in the denominator N (includes end_reason cap_end, planning_wall_safety_cap and teacher_terminal mission failures)",
+      "HOST_ERROR": "environment: excluded from N, counted in E.host_error, seed consumed, re-queued once (same seed, same bin)",
+      "interrupted": "environment: as HOST_ERROR",
+      "running": "environment: as HOST_ERROR (result.json written before the final update)",
+      "missing": "environment: world absent from summary.worlds or no raw result.json; as HOST_ERROR",
+      "other": "record_error: unregistered status -> STOP_RECORD"
+    },
+    "batch": {
+      "clean": "summary.status == complete AND summary.HOST_ERROR == 0 AND episode command exit code == 0 (exit-try-<n>.json present) AND summary.rejection_table is an absolute path",
+      "admission_rejected": "environment: every un-ingested slot -> E.admission_error, seed consumed, NOT re-queued (the case is deterministic)",
+      "HOST_ERROR_or_exit_nonzero_or_unknown_exit": "unclean: worlds present in summary.worlds are judged (behavior, in N and S) but NEVER admitted (audit 1); worlds missing -> environment host_error",
+      "interrupted_twice": "after MAX_TRIES=2 tries without a final summary the remaining slots are environment host_error (closed as unclean)"
+    },
+    "required_fields": {
+      "result_complete": ["grasp_physical_success (bool)", "search_handoff (bool)", "approach_handoff (bool)", "data_admitted (bool)", "end_reason"],
+      "result_after_grasp": ["carry (dict with outcome and events list)", "carry_eval (dict with success bool, failure, drop_events list, robot_robot_contact_ticks int)"],
+      "summary_world": "carry_success must equal carry_eval.success",
+      "missing_or_wrong_type": "record_error: the attempt is neither success nor failure, it is rejected; STOP_RECORD stops collection after that batch (no defaults such as 0 drops or physical_success fallback)"
+    }
+  },
   "success": {
-    "id": "pairact_r1_collect_success_v1",
-    "same_as": "P2 evaluator harness/pair_carry_eval.evaluate (dsh/pairact-p2-carrypath DESIGN section 5), unchanged",
-    "all_of": [
-      "summary.json status == complete and HOST_ERROR == 0 for the batch, world present in summary.worlds",
-      "raw result.json status == complete (no HOST_ERROR, not interrupted)",
-      "grasp_physical_success is true (joint pick + 3 s joint hold, P1 definition)",
-      "carry_eval.success is true: beam GT footprint inside zone B, lowered, released, at rest",
-      "carry_eval.drop_events is empty (drop count 0)",
-      "carry_eval.robot_robot_contact_ticks == 0"
-    ],
-    "recorded_only": [
-      "wall_contact_* (never a failure)",
-      "drive_response",
-      "phase_report"
-    ],
+    "id": "pairact_r1_collect_success_v2",
+    "physical_success_S": "world status complete AND grasp_physical_success is true AND carry_eval.success is true AND carry_eval.drop_events == [] AND carry_eval.robot_robot_contact_ticks == 0 (P2 evaluator harness/pair_carry_eval.evaluate unchanged)",
+    "recorded_only": ["wall_contact_* (never a failure)", "drive_response", "phase_report"],
     "truth_scope": "GT is read only by the eval-only evaluator after the episode; never by the teacher controller or student inputs"
   },
   "filter": {
-    "id": "success_only_v1",
-    "train_tensor_admission": "success (above) AND search_handoff == false AND approach_handoff == false AND (recording run) data_admitted == true AND both robot streams pass the stage sidecar",
-    "failures": "never enter tensors; raw outputs are kept untouched in the batch directories and listed in the ledger with failure stage/reason for bias analysis",
-    "success_not_admitted": "teacher success with a map-code handoff is counted as success for yield A but tagged success_not_admitted and excluded from tensors",
-    "no_relabel": "the filter is a pure function of result.json fields named above; no manual selection, no re-judging after viewing videos"
+    "id": "success_only_v2",
+    "admitted_A": "S AND search_handoff == false AND approach_handoff == false AND batch clean AND (training) data_admitted == true AND (training) both robot streams pass the stage sidecar check",
+    "sidecar_check": "per robot r1/r2: teacher-<rid>.jsonl(.zst) and student-<rid>.jsonl(.zst) exist, every teacher row has sample_id and a teacher_phase mapped by harness.pairact_r1.TEACHER_PHASE_TO_STAGE, teacher sample_id set == student sample_id set, >= 1 row. Run at ingest, before the attempt row is written; eligible/admitted is counted only after both robots pass",
+    "measurement_mode": "no recording -> no sidecar; A in pilot is 'admission candidate' (S AND no handoff AND batch clean) and is labelled '수율 측정, 시연 아님'",
+    "success_not_admitted": "S but not A: counted in S, tagged success_not_admitted:<reasons> (handoff, batch_not_clean, recording_not_admitted, sidecar_failed), never in tensors",
+    "failures": "never enter tensors; raw outputs are kept untouched in the batch directories and listed in the ledger with failure stage and carry sub-reason",
+    "no_relabel": "the filter is a pure function of result.json / summary.json / stream fields named above; no manual selection, no re-judging after viewing videos"
+  },
+  "carry_failure_detail": {
+    "id": "carry_subreason_v1",
+    "why": "world 1 of smoke-1c (seed 8420001) failed not_through_door with 0.6 mm displacement and an unknown cause (02-world1-failure.md); the evaluator label is a priority label, not a root cause",
+    "fields_per_attempt": ["failure_stage (grasp | carry)", "eval_failure (carry_eval.failure: drop, robot_robot_contact, not_through_door, not_in_zone, not_resting, not_released, not_still)", "carry_outcome (teacher carry.outcome as written, e.g. route_blocked, door_pass_timeout, carry_total_timeout, command_sequence_complete)", "carry_fail (last carry.events entry with event == fail: code, phase, detail)", "funnel_last", "carried_max_m", "drop_kinds", "end_reason", "cap_end"],
+    "report": "per bin table of failure_stage:eval_failure:carry_outcome counts"
   },
   "recording_admission": {
     "id": "pairact_p3_collect_prereg_v1",
@@ -38,158 +76,163 @@
       "visible_only + issued pose + visible_handoff_v1 recording requirements",
       "data_admitted excludes search/approach handoffs and recording probes"
     ],
-    "rationale": "pairact-success-filter-decision.md: the teacher gate (B) measures teacher reliability and does not block data collection; the data filter is per-episode success (this file), so teacher reliability and data filtering are separated",
-    "stack": {
-      "teacher": "dsh/pairact-p2-carrypath-c 01ed171fc93140683227072a10aecff55150b45f (--recording-admission pairact_p3_collect, harness.grasp_act_admission.collect_recording_admission)",
-      "adapter": "dsh/pairact-p2-carrypath-a-c d128984d2fd3b136f6df1c07bb3d387fef22cd20 (candidate pairact_p3_collect = pairact_p2_r13 profile + recording on; env PAIRACT_P3_COLLECT_PREREG, PAIRACT_P3_COLLECT_PREREG_SHA256, PAIRACT_P3_RECORDING_CHECK, PAIRACT_P3_RECORDING_PROBE)",
-      "root": "dsh/pairact-p2-carrypath-r-c e3803d423d1b039764b2727d1eecf2063c7360f7 (pins only)"
-    },
+    "check_scope": "metadata and physical-result comparison only; it does not verify pixel content, measured cadence or trajectory identity (Codex follow-up REVIEW.md)",
+    "stack": "RUN_MANIFEST.json stack (teacher -c, adapter -a-c, root -r-c SHAs); RUN_MANIFEST.json is frozen together with this file",
     "default_off": "existing candidates and the gate path are byte-identical (regression tests in each -c branch)",
-    "fallback": "if the recording path fails on the VM the first time, pass 1 runs in measurement mode (recording off, candidate pairact_p2_r13 on the -c stack) and is reported as '수율 측정, 시연 아님' (A only)"
+    "fallback": "if the recording path fails on the VM the first time, only the pilot measurement run is done (seeds.pilot, recording off, candidate pairact_p2_r13) and reported as '수율 측정, 시연 아님'"
   },
   "bins": {
     "id": "pairact_r1_start_bins_v1",
-    "unit": "episode; both robots of one attempt are drawn inside the same bin",
+    "unit": "pair episode; both robots of one attempt are drawn inside the same bin (not independent robot-level uniform draws)",
     "distance": "planar distance from the robot spawn to the grasp point of its assigned beam end (start_layers.<rid>.target_distance_m)",
-    "distance_edges_m": [
-      0.3,
-      0.6,
-      0.9,
-      1.2
-    ],
+    "distance_edges_m": [0.3, 0.6, 0.9, 1.2],
     "yaw": "own heading offset relative to the assigned-end outward direction (wide_start convention). facing: wrapped offset within 90 deg of pi (robot looks at its end); away: otherwise",
     "roles": "r1 end = teal if random.Random('pairact_r1_collect_v1:<seed>:role').random() < 0.5 else blue (not seed parity, which would tie roles to round-robin bins)",
     "position_bearing": "radially outward from the assigned end (wide_start bearing bin 0), unchanged from the r13 wide gate",
     "list": [
-      {
-        "id": "B0",
-        "distance_m": [
-          0.3,
-          0.6
-        ],
-        "yaw": "facing"
-      },
-      {
-        "id": "B1",
-        "distance_m": [
-          0.3,
-          0.6
-        ],
-        "yaw": "away"
-      },
-      {
-        "id": "B2",
-        "distance_m": [
-          0.6,
-          0.9
-        ],
-        "yaw": "facing"
-      },
-      {
-        "id": "B3",
-        "distance_m": [
-          0.6,
-          0.9
-        ],
-        "yaw": "away"
-      },
-      {
-        "id": "B4",
-        "distance_m": [
-          0.9,
-          1.2
-        ],
-        "yaw": "facing"
-      },
-      {
-        "id": "B5",
-        "distance_m": [
-          0.9,
-          1.2
-        ],
-        "yaw": "away"
-      }
+      {"id": "B0", "distance_m": [0.3, 0.6], "yaw": "facing"},
+      {"id": "B1", "distance_m": [0.3, 0.6], "yaw": "away"},
+      {"id": "B2", "distance_m": [0.6, 0.9], "yaw": "facing"},
+      {"id": "B3", "distance_m": [0.6, 0.9], "yaw": "away"},
+      {"id": "B4", "distance_m": [0.9, 1.2], "yaw": "facing"},
+      {"id": "B5", "distance_m": [0.9, 1.2], "yaw": "away"}
     ],
     "draw_within_bin": "per robot: distance uniform in the bin range, yaw offset uniform in the bin half-circle, rng = random.Random('pairact_r1_collect_v1:<seed>:<bin id>:<robot index>') (str seed, sha512, independent of PYTHONHASHSEED) [setup only]",
-    "min_success_per_bin": 20
+    "min_admitted_per_bin": 20,
+    "bin_limit": {
+      "id": "bin_range_limit_v1",
+      "rule": "at a batch boundary, a bin with N_b >= 20 attempts and S_b / N_b < 0.20 (physical carry success rate) gets a ledger row bin_limited and receives no further new attempts (re-queues of its own HOST_ERROR seeds still run). It is reported as '구간 범위 제한' with its N_b, S_b, A_b and failure sub-reasons. Closing is permanent for the run root",
+      "min_attempts": 20,
+      "max_success_rate": 0.2,
+      "rationale": "at 20 attempts and < 20% success the expected attempts to reach 20 admitted exceed 100 (~1/6 of the cap) for one bin; spending them would starve the other bins. 20 attempts keeps the binomial 95% upper bound of a 3/20 rate (~0.38) below the 33% yield the cap of 600 assumes"
+    }
   },
   "targets": {
-    "success_target_pairs": 200,
-    "success_minimum_pairs": 150,
+    "admitted_target_pairs": 200,
+    "admitted_minimum_pairs": 150,
     "attempt_cap": 600,
-    "attempt_definition": "one completed train-split teacher episode (world in summary.worlds). HOST_ERROR worlds are not attempts; they are re-queued once with the same seed and bin, a second HOST_ERROR is recorded as host_error_final and the seed is not reused",
-    "stop_rules": [
-      "STOP_TARGET: admitted successes >= 200 and every bin >= 20",
-      "STOP_CAP: attempts >= 600 (report; train only if admitted >= 150, results marked 'data range limited' if any bin < 20)",
-      "STOP_HOST: two consecutive batches end with batch status HOST_ERROR",
-      "STOP_SEEDS: train seed pool exhausted (cannot happen before the cap: pool 600 = cap)"
+    "not_a_denominator": "200 is the admitted target and a stop condition, never a denominator. Reports use S/N and A/N (N = behavior attempts) and validation S/20, A/20",
+    "attempt_definition": "N counts behavior attempts only (status table). Environment failures consume their seed but are not attempts",
+    "overshoot": "a batch that crosses 200 runs to its end; every admitted episode of that batch is kept (no trimming, trimming would be a selection)",
+    "rationale": "200 = TRAIN200 of solo ACT R8 and close to beamact2's 185 successful pairs; 150 = 75% of it, the smallest set the success-filter decision accepts; 600 = 200 / 0.33 assumed yield (decision doc 3); 20 per bin x 6 = 120 < 150, so the per-bin minimum and the total minimum are separate AND conditions"
+  },
+  "stop_rules": {
+    "order": "evaluated at every batch boundary in this order; the first true rule stops train collection",
+    "list": [
+      "STOP_RECORD: any record_error attempt (missing/ill-typed required field, unregistered status, summary/result carry disagreement)",
+      "STOP_HOST: the last two finished train batches are both unclean (status table batch)",
+      "STOP_DISTANCE: A >= 150 and the distance gate fails on the current admitted set (checked at every boundary from then on)",
+      "STOP_TARGET: A >= 200 and every bin has A_b >= 20 or is bin_limited",
+      "STOP_ALL_BINS_LIMITED: every bin is bin_limited",
+      "STOP_CAP: N >= 600",
+      "STOP_SEEDS: every train seed (8340000-8340599) is consumed and no train re-queue is pending"
     ],
-    "below_minimum": "admitted < 150 at STOP_CAP -> no P4 training; report to Claude"
+    "seed_consumption_note": "environment failures consume seeds without adding to N, so STOP_SEEDS can occur with N < 600 (e.g. 600 seeds / 599 attempts after one final HOST_ERROR). STOP_SEEDS is treated exactly like STOP_CAP; there is no seed range beyond 8340599 and no replacement seed"
+  },
+  "training_decision": {
+    "id": "train_permission_v1",
+    "rule": "after a train stop: NO_TRAIN_RECORD_ERROR if STOP_RECORD; else NO_TRAIN_BELOW_MINIMUM if A < 150; else NO_TRAIN_DISTANCE_GATE if the distance gate fails on the final admitted set; else TRAIN if every bin A_b >= 20, otherwise TRAIN_DATA_RANGE_LIMITED (bins below 20 listed with cause bin_limited or the stop rule). Then validation runs (only for TRAIN or TRAIN_DATA_RANGE_LIMITED) and the validation gate may turn it into NO_TRAIN_VALIDATION_INSUFFICIENT",
+    "per_stop": {
+      "STOP_TARGET": "TRAIN, or TRAIN_DATA_RANGE_LIMITED when some bin is bin_limited",
+      "STOP_CAP": "A >= 150 and all bins >= 20 -> TRAIN; A >= 150 and some bin < 20 -> TRAIN_DATA_RANGE_LIMITED; A < 150 -> NO_TRAIN_BELOW_MINIMUM (report to Claude)",
+      "STOP_SEEDS": "same as STOP_CAP (N may be < 600 because environment failures consumed seeds)",
+      "STOP_HOST": "same as STOP_CAP on the attempts so far; the run root is closed for train collection. Validation is run only by a later invocation with --validation-after-host-fix after DeepSeek reports the host fix; its own HOST_ERRORs follow the status table",
+      "STOP_ALL_BINS_LIMITED": "same as STOP_CAP",
+      "STOP_DISTANCE": "NO_TRAIN_DISTANCE_GATE; stop and report, no extra collection and no post-hoc seed selection",
+      "STOP_RECORD": "NO_TRAIN_RECORD_ERROR; the recorder/judge is fixed and a NEW run root with a new prereg revision is used"
+    },
+    "data_range_limited_label": "every result trained on TRAIN_DATA_RANGE_LIMITED data carries '데이터 범위 제한' with the list of bins and their A_b",
+    "pending_owner_answer": "[확인 필요] interpretation (가) A < 150 -> no training was asked to the parent on 2026-10-21; if the owner chooses (나), only this rule text and pairact_collect.decision change"
   },
   "allocation": {
-    "id": "deficit_weighted_v1",
-    "batch_size": "fixed per run invocation (--batch-size, default 20); recorded in the ledger header",
-    "warmup": "while every bin has < 4 attempts: slots are round-robin over B0..B5 continuing from the last assigned bin",
-    "deficit": "need_b = max(0, 20 - success_b); p_b = (success_b + 1) / (attempts_b + 2); weight_b = need_b / max(p_b, 0.05). Slots split by largest remainder over weight_b, ties to the lower bin index",
-    "after_minimums": "when every need_b == 0 but total < 200: round-robin over all bins (keeps the overall distribution near uniform)",
+    "id": "deficit_weighted_v2",
+    "params": {"warmup_attempts": 4, "p_floor": 0.05},
+    "adaptive": "adaptive collection: the bin of the next train attempt depends on earlier outcomes. Seeds are consumed in strict ascending order independent of the bin, so the start of a seed depends on the ledger. Yields are therefore adaptive-collection yields, not the yield of the original robot-level uniform start distribution; reports give per-bin tables and primary (8340000-199) vs extension (8340200-599) tables separately",
+    "batch_size": "fixed per run root (--batch-size, default 20); recorded in the ledger header",
+    "quantity": "success_b in every rule below is A_b (admitted, the same quantity as the stop rules); N_b is behavior attempts",
+    "warmup": "while ANY open bin has N_b < 4: slots are round-robin over the open bins B0..B5 continuing after the last assigned bin (implementation = document)",
+    "deficit": "need_b = max(0, 20 - A_b); p_b = (A_b + 1) / (N_b + 2); weight_b = need_b / max(p_b, 0.05); bin_limited bins get weight 0. Slots split by largest remainder over weight_b, ties to the lower bin index",
+    "after_minimums": "when every open bin has need_b == 0 but A < 200: round-robin over the open bins",
     "slot_order": "slots are interleaved bin by bin (B0,B1,..) so a partially run batch stays balanced",
-    "deterministic": "allocation reads only the ledger; identical ledger -> identical next batch"
+    "deterministic": "allocation reads only the ledger; identical ledger -> identical next batch",
+    "constants_rationale": {
+      "warmup_4": "4 attempts per bin (24 total, about one batch) before any rate is used: the Laplace estimate (A+1)/(N+2) is then within [1/6, 5/6] and cannot zero a bin",
+      "p_floor_0.05": "caps one bin's weight at 20x need so a 0/k bin cannot take a whole batch; the bin_limit rule, not the floor, retires a hopeless bin",
+      "laplace": "(A+1)/(N+2) is the posterior mean under a uniform prior; it is defined at N = 0",
+      "20_150_200_25pct": "see targets.rationale and distance_gate.rationale"
+    }
   },
   "seeds": {
-    "consumption": "new train attempts take the next unused seed in strict ascending order regardless of bin; a HOST_ERROR re-queue reuses its own seed and bin and consumes no new seed",
-    "train_primary": {
-      "first": 8340000,
-      "last": 8340199
-    },
-    "train_extension": {
-      "first": 8340200,
-      "last": 8340599,
-      "rule": "used only after 8340199 is consumed"
-    },
-    "validation": {
-      "first": 8341000,
-      "last": 8341019,
-      "rule": "collected once each, bin round-robin index % 6, not counted toward targets, cap or allocation; success-only into validation tensors"
-    },
-    "heldout": {
-      "first": 8342000,
-      "last": 8342019,
-      "rule": "never collected; P5 only; cases are drawn with bin = index % 6 from the same generator, no filter"
-    },
-    "overlap_check": "train 8340000-8340599 must not overlap validation, heldout or seeds.json known_ranges (checked by harness.pairact_collect.check_seed_ranges and scripts/check_pairact_r1_seeds.py)",
-    "note": "the train extension is registered in seeds.json train_extension and scanned by scripts/check_pairact_r1_seeds.py"
+    "consumption": "per split, new attempts take the next unused seed in strict ascending order regardless of bin; a HOST_ERROR re-queue reuses its own seed and bin and consumes no new seed; setup rejections and admission errors consume the seed and are never re-queued",
+    "pilot": {"first": 8343000, "last": 8343039, "rule": "measurement mode only (recording off, candidate pairact_p2_r13): yield, bins and wall/SIM. Bin = (seed - 8343000) % 6, no adaptive allocation. Never in tensors, never pooled with A of the training run. Also the source of the 3 recording-probe starts"},
+    "train_primary": {"first": 8340000, "last": 8340199},
+    "train_extension": {"first": 8340200, "last": 8340599, "rule": "used only after 8340199 is consumed"},
+    "validation": {"first": 8341000, "last": 8341019, "rule": "training mode only and only after the train stop (never during or before collection, never in measurement mode). Bin = index % 6, collected once each, HOST_ERROR re-queued once, not counted toward targets, cap or allocation; admitted episodes go to validation tensors"},
+    "heldout": {"first": 8342000, "last": 8342019, "rule": "never collected; P5 only (PAIRACT_R1_EVAL_PREREG_DRAFT.json heldout)"},
+    "overlap_check": "pilot, train, validation and heldout are pairwise disjoint and disjoint from seeds.json known_ranges (harness.pairact_collect.check_seed_ranges at load; scripts/check_pairact_r1_seeds.py --scan-refs for git refs, output saved as seed-check.json in the run root)"
+  },
+  "validation_gate": {
+    "id": "validation_minimum_v1",
+    "rule": "after validation: admitted validation pairs >= 8 of 20 AND the union of sidecar stages over admitted validation episodes contains approach, alignment, ready, execute, carry, place, complete. Otherwise NO_TRAIN_VALIDATION_INSUFFICIENT: stop and report; no extra validation seeds, no replacement, no relaxing",
+    "min_admitted": 8,
+    "required_stages": ["approach", "alignment", "ready", "execute", "carry", "place", "complete"],
+    "rationale": "OFFLINE_GATE G4 needs every registered transition present in validation and fails otherwise; 8 pairs = 16 robot streams give >= 16 instances per transition so the 0.80 recall threshold is resolved at 1/16; the required stages are the RUNBOOK section 2 missing_stages list (recover may be absent)",
+    "report": "validation S/20 and A/20 with environment failures listed separately"
   },
   "dart_noise": {
     "id": "teacher_action_noise_candidate_v1",
     "default": "off",
-    "mechanism": "existing teacher --noise (result.noise = 'DART-inspired_fixed_pilot'): 5% of grasp-segment steps outside done/complete/ready apply a perturbed command; the label keeps clean_teacher_command and perturbed=true. Carry segment rows are never perturbed (pair_carry_recorder writes perturbed=false)",
-    "when_on": "a separate run root and ledger tag noise=on; every attempt records noise mode and perturbed_rows / total_rows per robot; reports give noise-on and noise-off counts separately and never pool them silently",
-    "trigger_candidate": "only if recover-stage rows in admitted successes are < 5% of rows after collection pass 1; needs Claude approval and a new prereg revision",
-    "gpu_status": "[확인 필요] the -c adapter keeps noise=False for every candidate; turning DART on needs a new prereg revision and adapter change"
+    "mechanism": "existing teacher --noise (result.noise = 'DART-inspired_fixed_pilot'): 5% of grasp-segment steps outside done/complete/ready apply a perturbed command; the label keeps clean_teacher_command and perturbed=true. Carry segment rows are never perturbed",
+    "when_on": "a separate run root and ledger tag noise=on; every attempt records perturbed_rows / total_rows per robot; reports never pool noise-on and noise-off",
+    "trigger_candidate": "only if recover-stage rows in admitted successes are < 5% of rows after collection; needs Claude approval and a new prereg revision",
+    "gpu_status": "[확인 필요] the -c adapter keeps noise=False for every candidate"
   },
   "bias_report": {
-    "ks": "two-sample Kolmogorov-Smirnov (asymptotic p) between admitted successes and failures for robot-level start distance and |yaw offset|; reported with n per group, D, p. Informational, not a gate",
-    "per_bin_table": "bin, attempts, successes, admitted, success rate, need",
-    "recover_count": "rows with teacher_phase mapped to stage recover in admitted episodes (from the stage sidecar)",
-    "distance_gate": "COLLECT_SPEC section 2: all nine 0.1 m distance bins occupied and > 0.8 m share >= 25% among admitted robot starts"
+    "ks": "two-sample KS (asymptotic p) on PAIR-level values (mean of the two robots' start distance; mean |yaw offset|) between the three groups physical_failure, success_not_admitted, admitted (three pairwise comparisons); one value per pair episode because both robots share the bin. Informational, not a gate; conditional on the adaptive allocation",
+    "per_bin_table": "bin, N, S, A, S/N, A/N, need, environment failures by kind, setup rejections, bin_limited, failure sub-reasons; also split primary vs extension seeds",
+    "recover_count": "rows with teacher_phase mapped to stage recover in admitted episodes (sidecar)"
+  },
+  "distance_gate": {
+    "id": "start_distance_gate_v2",
+    "applies_to": "robot-level start distances of ADMITTED train pair episodes (both robots of every admitted pair)",
+    "rule": "all nine 0.1 m bins of [0.3, 1.2] occupied AND share of distances > 0.8 m >= 25%",
+    "edges": {"first_m": 0.3, "width_m": 0.1, "n": 9, "over_m": 0.8, "min_share_over": 0.25},
+    "when": "at every batch boundary once A >= 150 (STOP_DISTANCE) and on the final admitted set (training_decision)",
+    "on_failure": "stop and report; no post-hoc seed selection, no extra collection, no relaxing",
+    "rationale": "uniform 0.3-1.2 m gives 44% above 0.8 m; 25% keeps the beamact4 failure mode (TRAIN 0.09% above 0.8 m) out while allowing the far bins to be bin_limited"
+  },
+  "audit_outputs": {
+    "ledger": "every attempt (behavior or environment), every setup rejection (generator budget exhaustion included), bin_limited rows and batch_done rows with status, HOST_ERROR, exit code, rejection_table absolute path, artifact manifest sha256",
+    "setup_rejection_row": "seed, bin, split, gate funnel (per gate cumulative passed / rejected), blocked objects with counts, minimum gap (m) per gate, generator source sha and file sha256, reproduce command",
+    "case_plan": "every accepted case carries the same generator audit (gate funnel, blockers, min gaps, reproduce)",
+    "episode_command": "the --episode-cmd template must contain --rejection-table <absolute path> and --cap-s; template sha256, the input rejection table path and cap are in the ledger header",
+    "batch_rejection_table": "summary.rejection_table (absolute) is required for a clean batch"
   },
   "reporting": {
-    "A": "교사 시연 수집: 성공 n / 시도 N (데이터 필터용, 학습 결과 아님) + 구간별 표. Denominator: attempts incl. failures",
+    "A": "교사 시연 수집(적응형 구간 배정, pair episode 단위): 물리 성공 S / 시도 N, 최종 채택 A / 시도 N (데이터 필터용, 학습 결과 아님). 200은 채택 목표이고 분모가 아님 + 구간별 표 + 환경 실패 별도",
+    "pilot": "pilot 수율 측정: 물리 성공 S / 시도 N (수율 측정, 시연 아님; seed 8343000-039)",
+    "validation": "validation: 물리 성공 S / 20, 채택 A / 20 (환경 실패 별도)",
     "B": "교사 관문 n/40 (교사 신뢰도, 학습 결과 아님). Separate run; never computed from collection attempts",
-    "C": "학습 정책 n/20, 같은 seed 교사 n/20 (보류 8342000-019, 필터 없음) + 단계 퍼널",
-    "never_pool": "A, B, C are never added or averaged; CPU results and r13/smoke outcomes are never pooled with A"
+    "C": "학습 정책 n/20, 같은 seed 교사 n/20 (보류 8342000-019, PAIRACT_R1_EVAL_PREREG_DRAFT.json) + 단계 퍼널",
+    "never_pool": "A, pilot, validation, B, C are never added or averaged; CPU results, P2 smoke and r13 outcomes are never pooled with A"
   },
+  "heldout_link": "PAIRACT_R1_EVAL_PREREG_DRAFT.json exclusions: rule A static check applied to the 20 heldout seeds before P5, excluded seeds leave the denominator without replacement, no access to heldout results before the checkpoint SHA is committed",
   "known_blockers": [
     "[확인 필요] MJWarp render at 640x480 when recording (checked by the recording-mode check before training mode)",
-    "[확인 필요] first VM batch must show no admission_rejected (case generator uses the adapter-pinned placement filter)"
+    "[확인 필요] first VM batch must show no admission_rejected (case generator uses the adapter-pinned placement filter)",
+    "adapter -a-c run() had two runner.run calls while the root AST bridge requires exactly one (Codex follow-up); fixed in the -a-c revision named in RUN_MANIFEST.json stack"
   ],
   "codex_review_items": [
-    "success definition identical to P2 evaluator harness/pair_carry_eval.evaluate (no extra or missing condition)",
-    "filter is a pure function of result.json fields; failures preserved and excluded",
-    "recording admission: only the >=38/40 gate requirement is replaced; confirm the 640x480 recording-mode check is kept unchanged (teacher -c collect_recording_admission vs run_grasp_act_teacher.main check block) — 녹화 동등성 check 유지 확인",
-    "FROZEN status and sha256 binding: non-FROZEN or mismatched sha refuses recording",
-    "bins, allocation and seed consumption are deterministic and cannot touch validation/heldout seeds",
-    "role and burst_ticks draws are independent of the round-robin bin",
-    "A/B/C reporting separation and measurement-mode label"
+    "status table and batch rule: complete/cap_end/mission failures in N; HOST_ERROR/admission excluded and counted; unclean batch admits nothing (audit 1)",
+    "required fields rejected, never defaulted; sidecar before eligible",
+    "S/N, A/N, validation S/20 separated; 200 is not a denominator; pair episode unit",
+    "training decision for every stop rule, incl. 600 seeds / 599 attempts",
+    "adaptive allocation disclosed; warmup any-bin rule; A_b used everywhere; constant rationale",
+    "distance gate on admitted starts, in the stop rules, no post-hoc selection",
+    "three-group pair-level KS",
+    "pilot seeds 8343000-039 for measurement; validation only after collection; validation gate",
+    "heldout rule A, no replacement, no access before checkpoint freeze",
+    "RUN_MANIFEST.json frozen with this file; report/convert-input check the header sha (audit 2)",
+    "generator rejections in the ledger; per-bin carry failure sub-reasons; bin_limit rule (world 1)"
   ]
 }

@@ -15,6 +15,12 @@ Position bearing stays radially outward (wide_start bearing bin 0), the clearanc
 cargo, line-of-sight, parking and placement-graspable admission checks are the same
 code.  Nothing here runs physics, renders or reads evaluation truth.
 
+Audit (COLLECT_PREREG v2 audit_outputs): every case plan and every generator budget
+exhaustion carries the gate funnel (per gate cumulative passed / rejected), the blocking
+objects, the minimum gap per gate, the generator SHA / file sha256 and a reproduce command.
+An exhausted seed is returned as ``{'setup_rejected': audit}`` (written to the ledger by the
+runner, seed consumed, never re-queued) instead of raising before the ledger.
+
     python experiments/2026-10-21-pairact-r1/collect_cases.py --prereg P --slots slots.json \
         --out cases.json --dependency-root TEACHER --frozen-root ROOT --adapter-root ADAPTER \
         [--candidate pairact_p2_r13]
@@ -41,6 +47,57 @@ from harness.pairact_collect import draw_start  # noqa: E402
 
 CANDIDATE = 'pairact_p2_r13'
 PROPOSALS = 5000
+GATES = ('beam_static_overlap', 'beam_cargo_overlap', 'placement_graspable_filter', 'robot_environment_overlap',
+         'robot_peer_overlap', 'initial_static_los', 'parking')
+
+
+class SetupRejected(ValueError):
+    def __init__(self, audit):
+        super().__init__(f"seed {audit['seed']} bin {audit['bin']}: setup proposal budget exhausted {audit['rejected']}")
+        self.audit = audit
+
+
+def generator_source():
+    """Generator identity for the audit: repo HEAD (None outside git) and file sha256s."""
+    import subprocess
+    try:
+        sha = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=REPO, text=True,
+                                      stderr=subprocess.DEVNULL).strip()
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        sha = None
+    files = {str(f.relative_to(REPO)): hashlib.sha256(f.read_bytes()).hexdigest()
+             for f in (HERE / 'collect_cases.py', REPO / 'harness/pairact_collect.py')}
+    return dict(source_sha=sha, file_sha256=files)
+
+
+class Funnel:
+    """Per gate cumulative passed / rejected, blockers and the smallest observed gap (m)."""
+    def __init__(self):
+        self.passed, self.rejected, self.blockers, self.min_gap = Counter(), Counter(), Counter(), {}
+
+    def ok(self, gate):
+        self.passed[gate] += 1
+        return True
+
+    def reject(self, gate, blocker=None, gap=None):
+        self.rejected[gate] += 1
+        if blocker is not None:
+            self.blockers[f'{gate}:{blocker}'] += 1
+        if gap is not None:
+            self.min_gap[gate] = min(gap, self.min_gap.get(gate, math.inf))
+        return False
+
+    def audit(self, proposals):
+        return dict(proposals=proposals, gates=[dict(gate=g, passed_cumulative=self.passed[g], rejected=self.rejected[g])
+                                                for g in GATES],
+                    blocked_objects=dict(self.blockers), min_gap_m={g: round(v, 6) for g, v in self.min_gap.items()})
+
+
+def reproduce_command(slot, candidate):
+    return ['python', 'experiments/2026-10-21-pairact-r1/collect_cases.py', '--prereg', '<COLLECT_PREREG_DRAFT.json>',
+            '--slots', '<json: [%s]>' % json.dumps(dict(seed=int(slot['seed']), bin=slot['bin'], split=slot['split'])),
+            '--out', '<new file>', '--dependency-root', '<teacher>', '--frozen-root', '<root>', '--adapter-root',
+            '<adapter>', '--candidate', candidate]
 
 
 @contextmanager
@@ -85,6 +142,7 @@ class Geometry:
                         math.hypot(*(BOX_HALF[:2] if p['kind'] in COLORS else kind(p['kind']).landing_half_extents_m)))
                        for p in cargo]
         self.validity = self.validity_meta = None
+        self.generator = generator_source()
         if setup_validity:
             if adapter_root is None:
                 raise ValueError('adapter root required: the admission family must match the runtime adapter pin')
@@ -117,20 +175,25 @@ def make_case(geo, prereg, slot, *, candidate=CANDIDATE):
     bhx, bhy = geo.beam.landing_half_extents_m
     footprint = [(-bhx, -bhy), (bhx, -bhy), (bhx, bhy), (-bhx, bhy)]
     grip = abs(geo.beam.grasps[0].grip_xyz[0])
-    rejected = Counter()
+    funnel, gen = Funnel(), getattr(geo, 'generator', None) or generator_source()
     for proposal in range(PROPOSALS):
         rng = random.Random(f'pairact_r1_collect_v1:{seed}:beam:{proposal}')
         a = 2 * math.pi * rng.random()
         pose = [rng.uniform(cx - hx + bhx, cx + hx - bhx), rng.uniform(cy - hy + bhy, cy + hy - bhy), a]
         if not pose_clear(pose, footprint, geo.rects, bounds=geo.bounds, margin=0.):
-            rejected['beam_static_overlap'] += 1; continue
-        if min(math.dist(pose[:2], p) - math.hypot(bhx, bhy) - r for _, p, r in geo.others) < 0:
-            rejected['beam_cargo_overlap'] += 1; continue
+            funnel.reject('beam_static_overlap', 'static_map'); continue
+        funnel.ok('beam_static_overlap')
+        name, gap = min(((n, math.dist(pose[:2], p) - math.hypot(bhx, bhy) - r) for n, p, r in geo.others),
+                        key=lambda v: v[1])
+        if gap < 0:
+            funnel.reject('beam_cargo_overlap', name, gap); continue
+        funnel.ok('beam_cargo_overlap')
         stance = None
         if geo.validity is not None:
             stance = geo.validity(pose)
             if not stance['accepted']:
-                rejected['placement_graspable_filter'] += 1; continue
+                funnel.reject('placement_graspable_filter', 'certified_stance_set'); continue
+        funnel.ok('placement_graspable_filter')
 
         def assigned(end, distance):
             sign = -1. if end == 'teal' else 1.
@@ -140,13 +203,21 @@ def make_case(geo, prereg, slot, *, candidate=CANDIDATE):
 
         e1, own, out1 = assigned(end1, d1)
         e2, peer, out2 = assigned(end2, d2)
-        if any(geo.robot_gap(p)[1] < 0 or math.dist(p, pose[:2]) - math.hypot(bhx, bhy) - geo.radius < 0
-               for p in (own, peer)):
-            rejected['robot_environment_overlap'] += 1; continue
-        if math.dist(own, peer) - 2 * geo.radius < 0:
-            rejected['robot_peer_overlap'] += 1; continue
-        if any(ws.segment_hits_rect(p, e, rect) for p, e in ((own, e1), (peer, e2)) for rect in geo.rects):
-            rejected['initial_static_los'] += 1; continue
+        gaps = [geo.robot_gap(p) for p in (own, peer)]
+        gaps += [('beam_1', math.dist(p, pose[:2]) - math.hypot(bhx, bhy) - geo.radius) for p in (own, peer)]
+        name, gap = min(gaps, key=lambda v: v[1])
+        if gap < 0:
+            funnel.reject('robot_environment_overlap', name, gap); continue
+        funnel.ok('robot_environment_overlap')
+        gap = math.dist(own, peer) - 2 * geo.radius
+        if gap < 0:
+            funnel.reject('robot_peer_overlap', 'peer_robot', gap); continue
+        funnel.ok('robot_peer_overlap')
+        hit = next((j for p, e in ((own, e1), (peer, e2)) for j, rect in enumerate(geo.rects)
+                    if ws.segment_hits_rect(p, e, rect)), None)
+        if hit is not None:
+            funnel.reject('initial_static_los', f'static_wall_{hit}'); continue
+        funnel.ok('initial_static_los')
         park = None
         for _ in range(PROPOSALS):
             p = [rng.uniform(geo.bounds[0] + geo.radius, geo.bounds[1] - geo.radius),
@@ -155,7 +226,9 @@ def make_case(geo, prereg, slot, *, candidate=CANDIDATE):
                    math.dist(p, pose[:2]) - math.hypot(bhx, bhy) - geo.radius) >= 0:
                 park = p; break
         if park is None:
-            raise ValueError('parking computation budget exhausted')
+            funnel.reject('parking', 'parking_budget_exhausted'); continue
+        funnel.ok('parking')
+        audit = dict(funnel.audit(proposal + 1), generator=gen, reproduce=reproduce_command(slot, candidate))
         z = .032355118817659255
         plan = dict(
             episode_id=f'pairact-r1-collect-{seed}', batch='pairact-r1-p3-collect', seed=seed, split=slot['split'],
@@ -171,17 +244,25 @@ def make_case(geo, prereg, slot, *, candidate=CANDIDATE):
                                      bearing_bin=dict(index=0, angle_rad=out1)),
                           'r2': dict(layer=bin_id, target_distance_m=d2, yaw_bin=dict(index=None, offset_rad=y2),
                                      bearing_bin=dict(index=0, angle_rad=out2))},
-            assigned_end_xy={'r1': e1, 'r2': e2}, setup_rejections=dict(rejected))
+            assigned_end_xy={'r1': e1, 'r2': e2}, setup_rejections=dict(funnel.rejected), setup_audit=audit)
         if stance is not None:
             plan.update(setup_validity=geo.validity_meta['mode'], placement_validity=stance)
         return dict(plan=plan, profile=dict(scene_profile=ws.SCENE_PROFILE, held_object='hidden_v1',
                                             teacher_visibility='visible_only', top_camera_control=False),
                     candidate=candidate)
-    raise ValueError(f'seed {seed} bin {bin_id}: setup proposal budget exhausted {dict(rejected)}')
+    raise SetupRejected(dict(seed=seed, bin=bin_id, split=slot['split'], rejected=dict(funnel.rejected),
+                             **funnel.audit(PROPOSALS), generator=gen, reproduce=reproduce_command(slot, candidate)))
 
 
 def make_cases(geo, prereg, slots, *, candidate=CANDIDATE):
-    return [make_case(geo, prereg, s, candidate=candidate) for s in slots]
+    """One entry per slot: a case, or {'setup_rejected': audit} when the proposal budget is exhausted."""
+    out = []
+    for s in slots:
+        try:
+            out.append(make_case(geo, prereg, s, candidate=candidate))
+        except SetupRejected as rejected:
+            out.append(dict(setup_rejected=rejected.audit))
+    return out
 
 
 def main():

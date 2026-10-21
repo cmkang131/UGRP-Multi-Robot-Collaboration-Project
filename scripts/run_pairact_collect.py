@@ -8,15 +8,22 @@ an interrupted batch is retried once for its un-ingested slots in a new try dir.
 Nothing is overwritten: every try writes a new directory.
 
     python scripts/run_pairact_collect.py collect --prereg P --run-root R --mode measurement \
-        --batch-size 20 --max-batches 3 --dependency-root TEACHER --frozen-root ROOT --adapter-root ADAPTER \
-        --episode-cmd 'python WRAPPER --flow beampair ... --cases {cases} --indices {indices} --out {out}'
+        --batch-size 20 --max-batches 2 --dependency-root TEACHER --frozen-root ROOT --adapter-root ADAPTER \
+        --episode-cmd 'python WRAPPER --flow beampair ... --cap-s 60 --rejection-table /abs/rejection_table.json \
+                       --cases {cases} --indices {indices} --out {out}'
+    python scripts/run_pairact_collect.py collect ... --mode training --run-manifest RUN_MANIFEST.json ...
     python scripts/run_pairact_collect.py report --prereg P --run-root R
     python scripts/run_pairact_collect.py convert-input --prereg P --run-root R --teacher-sha SHA --out DIR
+
+Batch status, required fields and the sidecar check follow COLLECT_PREREG v2 status_table / filter:
+an unclean batch (HOST_ERROR, exit != 0 or unknown) admits nothing; a missing field is a record
+error (STOP_RECORD), never a default.  Generator budget exhaustion is a setup_rejected ledger row.
 """
 from __future__ import annotations
 
 import argparse
 import datetime as dt
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -47,11 +54,15 @@ def raw_result(raw_dir):
     return None
 
 
+def dumps(value):
+    return (json.dumps(value, indent=1, allow_nan=False, default=str) + '\n').encode()
+
+
 def write(path, value):
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp = path.with_suffix(path.suffix + '.tmp')
-    tmp.write_text(json.dumps(value, indent=1, allow_nan=False, default=str) + '\n')
+    tmp.write_bytes(dumps(value))
     tmp.replace(path)
 
 
@@ -64,82 +75,148 @@ def final_summary(out):
     return s if 'worlds' in s else None
 
 
-def ingest(ledger, batch, try_no, slots, cases, summary, *, mode, noise, done_slots):
+def exit_code(bdir, try_no):
+    path = Path(bdir) / f'exit-try-{try_no}.json'
+    return json.loads(path.read_text()).get('exit') if path.exists() else None    # unknown -> batch unclean
+
+
+def judge_world(s, case, w, summary, *, mode, clean, read_rows):
+    """Status-table judgement of one slot (sidecar only for training-mode successes)."""
+    if w is None and summary.get('status') == 'admission_rejected':
+        return dict(pc.judge(None, mode=mode, batch_clean=False), outcome='admission_error',
+                    reason=summary.get('error_type') or 'admission_rejected', requeue_eligible=False), None, None
+    result = raw_result(w['raw']) if w else None
+    j = pc.judge(result, mode=mode, batch_clean=clean)
+    sidecar = None
+    if j['outcome'] == 'success' and mode == 'training':
+        sidecar = pc.sidecar_check(w['raw'], robots=tuple(case['plan']['roles']), read_rows=read_rows)
+        j = pc.judge(result, mode=mode, batch_clean=clean, sidecar=sidecar)
+    if w is None and j['outcome'] == 'host_error':
+        j['reason'] = summary.get('error_type') or 'world_missing_from_summary'
+    if j['category'] == 'behavior' and j['failure_stage'] != 'grasp' and \
+            w.get('carry_success') != (result.get('carry_eval') or {}).get('success'):
+        j = pc._record_error(j, f'summary/result carry_success disagree for seed {s["seed"]}')
+    return j, result, sidecar
+
+
+def ingest(ledger, batch, try_no, slots, cases, summary, code, *, mode, noise, done_slots, read_rows=pc.read_jsonl):
+    clean = pc.batch_is_clean(summary, code)
     by_seed = {int(w['seed']): w for w in summary.get('worlds', [])}
     for s in slots:
         if s['slot'] in done_slots:
             continue
         w = by_seed.get(int(s['seed']))
-        result = raw_result(w['raw']) if w else None
-        j = pc.judge(result, mode=mode)
-        if w is None and j['outcome'] == 'host_error':
-            j['reason'] = summary.get('error_type') or 'world_missing_from_summary'
+        j, result, sidecar = judge_world(s, cases[s['slot']], w, summary, mode=mode, clean=clean, read_rows=read_rows)
         row = dict(type='attempt', batch=batch, attempt_try=try_no, slot=s['slot'], seed=s['seed'], bin=s['bin'],
                    split=s['split'], requeue=s.get('requeue', False), noise=noise,
-                   start=pc.start_from_case(cases[s['slot']]),
-                   raw=w['raw'] if w else None, sim_s=(w or {}).get('sim_s'),
-                   summary_carry_success=(w or {}).get('carry_success'), **j)
+                   start=pc.start_from_case(cases[s['slot']]), raw=w['raw'] if w else None,
+                   sim_s=(w or {}).get('sim_s'), summary_carry_success=(w or {}).get('carry_success'),
+                   batch_clean=clean, sidecar=sidecar, **j)
         if result is not None and noise == 'on':
-            row['perturbed'] = pc.perturbed_ratio(w['raw'])
-        if result is not None and row['summary_carry_success'] is not None and \
-                bool(row['summary_carry_success']) != bool((result.get('carry_eval') or {}).get('success')):
-            raise ValueError(f'summary/result carry_success disagree for seed {s["seed"]}')
+            row['perturbed'] = pc.perturbed_ratio(w['raw'], read_rows=read_rows)
         pc.append(ledger, row)
     pc.append(ledger, dict(type='batch_done', batch=batch, attempt_try=try_no, split=slots[0]['split'],
-                           status=summary.get('status'), host_error=summary.get('HOST_ERROR'),
+                           status=summary.get('status'), host_error=summary.get('HOST_ERROR'), exit=code, clean=clean,
+                           error_type=summary.get('error_type'), rejection_table=summary.get('rejection_table'),
+                           artifact_sha256_manifest=summary.get('artifact_sha256_manifest'),
                            wall_s=summary.get('wall_s'), vm_cost_estimate_usd=summary.get('vm_cost_estimate_usd'),
-                           source_sha=summary.get('source_sha')))
+                           source_sha=summary.get('source_sha'), source_contract=summary.get('source_contract')))
+
+
+def plan_new_batch(ledger, run_root, prereg, st, slots, make_cases):
+    """Cases first (in memory), generator rejections into the ledger, then batch_planned, then files.
+
+    A crash while building cases leaves nothing behind; a crash after batch_planned is resumed from
+    the ledger (cases are regenerated and must hash to the recorded cases_sha256).
+    """
+    k = max(st['batches'], default=-1) + 1
+    built = make_cases(slots)
+    keep = []
+    for s, c in zip(slots, built):
+        if 'setup_rejected' in c:
+            pc.append(ledger, dict(type='setup_rejected', planning_batch=k, seed=s['seed'], bin=s['bin'],
+                                   split=s['split'], requeue=s.get('requeue', False), **c['setup_rejected']))
+        else:
+            keep.append((s, c))
+    if not keep:
+        return None
+    slots = [dict(s, slot=i) for i, (s, _) in enumerate(keep)]
+    cases = [c for _, c in keep]
+    pc.append(ledger, dict(type='batch_planned', batch=k, slots=slots, split=slots[0]['split'],
+                           cases_sha256=hashlib.sha256(dumps(cases)).hexdigest()))
+    return k
+
+
+def batch_cases(bdir, planned, slots, make_cases):
+    path = Path(bdir) / 'cases.json'
+    if not path.exists():
+        cases = make_cases([{k: v for k, v in s.items() if k != 'slot'} for s in slots])
+        if any('setup_rejected' in c for c in cases):
+            raise ValueError(f'{bdir}: regenerated cases differ from the planned batch')
+        write(path, cases)
+        write(Path(bdir) / 'slots.json', slots)
+    if hashlib.sha256(path.read_bytes()).hexdigest() != planned['cases_sha256']:
+        raise ValueError(f'{bdir}: cases.json sha256 differs from the ledger')
+    cases = json.loads(path.read_text())
+    if [c['plan']['seed'] for c in cases] != [s['seed'] for s in slots]:
+        raise ValueError(f'{bdir}: cases.json does not match planned slots')
+    return cases
 
 
 def run(run_root, prereg, prereg_sha, *, mode, noise, batch_size, max_batches, make_cases, run_episode,
-        deadline=None, now=None):
-    """Returns the stop reason (or 'MAX_BATCHES' / 'DEADLINE'). Fakes plug in via make_cases / run_episode."""
+        episode=None, run_manifest_sha256=None, deadline=None, now=None, validation_after_host_fix=False,
+        read_rows=pc.read_jsonl):
+    """Returns the run state (stop/decision) or 'MAX_BATCHES' / 'DEADLINE'. Fakes plug in via make_cases / run_episode."""
     run_root = Path(run_root)
     run_root.mkdir(parents=True, exist_ok=True)
     ledger = run_root / 'ledger.jsonl'
-    hdr = pc.header(prereg_sha, mode=mode, noise=noise, batch_size=batch_size)
+    hdr = pc.header(prereg_sha, mode=mode, noise=noise, batch_size=batch_size, episode=episode,
+                    run_manifest_sha256=run_manifest_sha256)
     pc.repair_ledger(ledger)
     rows = pc.read_ledger(ledger)
     if not rows:
         pc.append(ledger, hdr)
     elif rows[0] != hdr:
-        raise ValueError('ledger header mismatch: same prereg sha, mode, noise and batch size required')
+        raise ValueError('ledger header mismatch: same prereg sha, mode, noise, batch size, episode command '
+                         'and run manifest required')
     now = now or (lambda: dt.datetime.now(dt.timezone.utc))
     started = 0
     while True:
         st = pc.replay(prereg, pc.read_ledger(ledger))
-        write(run_root / 'report.json', pc.report(prereg, st, prereg_sha=prereg_sha))
         k = st['open_batch']
+        if k is None and mode == 'training' and not any(b['split'] == 'validation' for b in st['batches'].values()):
+            limits = pc.pending_bin_limits(prereg, st)
+            for row in limits:
+                pc.append(ledger, row)
+            if limits:
+                st = pc.replay(prereg, pc.read_ledger(ledger))
+        write(run_root / 'report.json', pc.report(prereg, st, prereg_sha=prereg_sha))
         if k is None:
-            slots = pc.plan_batch(prereg, st, batch_size)
+            slots = pc.plan_batch(prereg, st, batch_size, validation_after_host_fix=validation_after_host_fix)
             if not slots:
-                return pc.stop_reason(prereg, st)
+                return pc.run_state(prereg, st)
             if started >= max_batches:
                 return 'MAX_BATCHES'
             if deadline is not None and now() >= deadline:
                 return 'DEADLINE'
-            k = max(st['batches'], default=-1) + 1
-            bdir = run_root / 'batches' / f'b{k:03d}'
-            bdir.mkdir(parents=True, exist_ok=False)
-            cases = make_cases(slots)
-            write(bdir / 'cases.json', cases)
-            write(bdir / 'slots.json', slots)
-            pc.append(ledger, dict(type='batch_planned', batch=k, slots=slots, split=slots[0]['split']))
+            k = plan_new_batch(ledger, run_root, prereg, st, slots, make_cases)
+            if k is None:
+                continue        # every slot rejected by the generator: seeds consumed, plan again
             st = pc.replay(prereg, pc.read_ledger(ledger))
         bdir = run_root / 'batches' / f'b{k:03d}'
+        bdir.mkdir(parents=True, exist_ok=True)
         slots = st['batches'][k]['slots']
-        cases = json.loads((bdir / 'cases.json').read_text())
-        if [c['plan']['seed'] for c in cases] != [s['seed'] for s in slots]:
-            raise ValueError(f'batch {k}: cases.json does not match planned slots')
+        cases = batch_cases(bdir, st['batches'][k], slots, make_cases)
         done = st['batches'][k]['ingested']
         tries = sorted(int(p.name.split('-')[1]) for p in bdir.glob('try-*') if p.is_dir())
         last = tries[-1] if tries else 0
         summary = final_summary(bdir / f'try-{last}') if last else None
         if summary is None:
             if last >= MAX_TRIES:
-                # interrupted twice: remaining slots become host errors, batch closed as HOST_ERROR
+                # interrupted twice: remaining slots become host errors, batch closed as unclean
                 ingest(ledger, k, last, slots, cases, dict(status='HOST_ERROR', HOST_ERROR=1,
-                       error_type='interrupted_twice', worlds=[]), mode=mode, noise=noise, done_slots=done)
+                       error_type='interrupted_twice', worlds=[]), None, mode=mode, noise=noise, done_slots=done,
+                       read_rows=read_rows)
                 continue
             if started >= max_batches:
                 return 'MAX_BATCHES'
@@ -154,7 +231,14 @@ def run(run_root, prereg, prereg_sha, *, mode, noise, batch_size, max_batches, m
             summary = final_summary(out)
             if summary is None:
                 continue        # interrupted / crashed before the final summary: retried or closed above
-        ingest(ledger, k, last, slots, cases, summary, mode=mode, noise=noise, done_slots=done)
+        ingest(ledger, k, last, slots, cases, summary, exit_code(bdir, last), mode=mode, noise=noise,
+               done_slots=done, read_rows=read_rows)
+
+
+def collector_sha():
+    sha = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
+    dirty = subprocess.check_output(['git', 'status', '--porcelain', '--untracked-files=no'], cwd=ROOT, text=True)
+    return sha, bool(dirty.strip())
 
 
 def collect_env(mode, prereg_path, prereg_sha, recording_check=None, probe=False):
@@ -188,7 +272,10 @@ def main():
     p.add_argument('--batch-size', type=int, default=20)
     p.add_argument('--max-batches', type=int, default=1)
     p.add_argument('--deadline-utc', help='do not start a new batch at or after this ISO time (e.g. 2026-10-22T00:00Z)')
-    p.add_argument('--episode-cmd', help='shell template with {cases} {indices} {out}')
+    p.add_argument('--episode-cmd', help='shell template with {cases} {indices} {out}; needs --rejection-table ABS and --cap-s')
+    p.add_argument('--run-manifest', type=Path, help='RUN_MANIFEST.json (required, FROZEN and fully filled, for training)')
+    p.add_argument('--validation-after-host-fix', action='store_true',
+                   help='after STOP_HOST: run validation once DeepSeek has reported the host fix')
     p.add_argument('--dependency-root', type=Path)
     p.add_argument('--frozen-root', type=Path)
     p.add_argument('--adapter-root', type=Path, help='pinned adapter checkout (runtime placement filter family)')
@@ -199,28 +286,29 @@ def main():
     p.add_argument('--teacher-sha')
     p.add_argument('--out', type=Path)
     a = p.parse_args()
-    prereg, sha = pc.load_prereg(a.prereg, mode=a.mode)
-    if a.command == 'report':
+    # report/probe/check read any status; convert-input and training collection need FROZEN
+    load_mode = 'training' if a.command == 'convert-input' or (a.command == 'collect' and a.mode == 'training') \
+        else 'measurement'
+    prereg, sha = pc.load_prereg(a.prereg, mode=load_mode)
+    if a.command in ('report', 'convert-input', 'probe-cases'):
         st = pc.replay(prereg, pc.read_ledger(a.run_root / 'ledger.jsonl'))
+        pc.require_header_sha(st, sha)       # audit 2: never relabel a ledger under another prereg
+    if a.command == 'report':
         rep = pc.report(prereg, st, prereg_sha=sha)
         write(a.run_root / 'report.json', rep)
-        print(json.dumps(dict(stop=rep['stop'], A=rep['A']['text']), ensure_ascii=False))
+        print(json.dumps(dict(state=rep['run_state'], text=(rep.get('A') or rep.get('pilot'))['text']), ensure_ascii=False))
         return
     if a.command == 'convert-input':
         if not a.teacher_sha or not a.out:
             p.error('--teacher-sha and --out required')
-        st = pc.replay(prereg, pc.read_ledger(a.run_root / 'ledger.jsonl'))
-        if (st['header'] or {}).get('mode') != 'training':
-            p.error('convert input needs a training-mode ledger (measurement runs have no tensors)')
-        print(json.dumps(pc.convert_input(st, a.out, teacher_sha=a.teacher_sha)))
+        print(json.dumps(pc.convert_input(prereg, st, a.out, prereg_sha=sha, teacher_sha=a.teacher_sha)))
         return
     if a.command == 'probe-cases':
-        # starts for the recording probe: first 3 measured successes, cases copied byte-for-byte from their batch
+        # starts for the recording probe: first 3 admitted pilot successes, cases copied byte-for-byte
         if not a.out:
             p.error('--out required')
         if a.out.exists():
             p.error('refusing to overwrite')
-        st = pc.replay(prereg, pc.read_ledger(a.run_root / 'ledger.jsonl'))
         cases = []
         for r in pc.probe_slots(st):
             batch = json.loads((a.run_root / 'batches' / f"b{r['batch']:03d}" / 'cases.json').read_text())
@@ -251,19 +339,33 @@ def main():
     candidate = a.candidate or pc.CANDIDATE_BY_MODE[a.mode]
     if candidate != pc.CANDIDATE_BY_MODE[a.mode]:
         p.error(f'{a.mode} mode uses candidate {pc.CANDIDATE_BY_MODE[a.mode]}')
+    try:
+        episode = pc.episode_cmd_audit(a.episode_cmd)
+    except ValueError as error:
+        p.error(str(error))
+    manifest_sha = None
+    if a.run_manifest is not None:
+        raw = a.run_manifest.read_bytes()
+        manifest_sha = hashlib.sha256(raw).hexdigest()
+        src, dirty = collector_sha()
+        if dirty and a.mode == 'training':
+            p.error('training needs a clean collector checkout')
+        pc.check_run_manifest(json.loads(raw), mode=a.mode, prereg_sha=sha, collector_sha=src, episode=episode,
+                              batch_size=a.batch_size)
+    elif a.mode == 'training':
+        p.error('training mode needs --run-manifest (FROZEN RUN_MANIFEST.json, no [VM 기입] left)')
     env = collect_env(a.mode, a.prereg, sha, a.recording_check)
-    if not a.episode_cmd or '{out}' not in a.episode_cmd or '{cases}' not in a.episode_cmd:
-        p.error('--episode-cmd with {cases} {indices} {out} required')
     sys.path.insert(0, str(ROOT / 'experiments/2026-10-21-pairact-r1'))
     import collect_cases
     geo = collect_cases.Geometry(a.dependency_root, a.frozen_root, setup_validity=True, adapter_root=a.adapter_root)
     deadline = dt.datetime.fromisoformat(a.deadline_utc.replace('Z', '+00:00')) if a.deadline_utc else None
-    stop = run(a.run_root, prereg, sha, mode=a.mode, noise=a.noise, batch_size=a.batch_size,
-               max_batches=a.max_batches, deadline=deadline,
-               make_cases=lambda slots: collect_cases.make_cases(geo, prereg, slots, candidate=candidate),
-               run_episode=shell_episode(a.episode_cmd, env))
+    state = run(a.run_root, prereg, sha, mode=a.mode, noise=a.noise, batch_size=a.batch_size,
+                max_batches=a.max_batches, deadline=deadline, episode=episode, run_manifest_sha256=manifest_sha,
+                validation_after_host_fix=a.validation_after_host_fix,
+                make_cases=lambda slots: collect_cases.make_cases(geo, prereg, slots, candidate=candidate),
+                run_episode=shell_episode(a.episode_cmd, env))
     rep = json.loads((a.run_root / 'report.json').read_text())
-    print(json.dumps(dict(stop=stop, A=rep['A']['text']), ensure_ascii=False))
+    print(json.dumps(dict(state=state, text=(rep.get('A') or rep.get('pilot'))['text']), ensure_ascii=False))
 
 
 if __name__ == '__main__':
