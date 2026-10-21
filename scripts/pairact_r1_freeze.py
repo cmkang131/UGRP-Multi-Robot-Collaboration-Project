@@ -2,6 +2,7 @@
 
     # commit Y: every VM-fill field except the three recording_check hashes is already filled
     python scripts/pairact_r1_freeze.py xml-assets --canonical-xml XML   # -> assets.mesh_assets_sha256 (v5)
+    python scripts/pairact_r1_freeze.py per-world-refs --refs JSON       # -> assets.per_world_reference_files_sha256 (v7)
     python scripts/pairact_r1_freeze.py core --collector-sha X [--verify-assets]
     git commit -m 'pairact-r1 FROZEN_CORE'          # prints core_sha256; record it in the commit message
     # probe source run, probe-cases, recording probe, check-rows, recording-check (RUNBOOK 1-2b)
@@ -87,9 +88,15 @@ def xml_assets(canonical_xml):
     return {path: pc.file_sha256(path) for path in pc.xml_dependencies(canonical_xml)}
 
 
+def per_world_refs(refs):
+    """v7: assets.per_world_reference_files_sha256 and the (relative path, sha256) rows it digests."""
+    files = [[rel, pc.file_sha256(path)] for rel, path in pc.per_world_reference_files(refs)]
+    return dict(per_world_reference_files_sha256=pc.per_world_reference_digest(refs), files=files)
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument('stage', choices=('core', 'final', 'xml-assets'))
+    p.add_argument('stage', choices=('core', 'final', 'xml-assets', 'per-world-refs'))
     p.add_argument('--prereg', type=Path, default=EXP / 'COLLECT_PREREG_DRAFT.json')
     p.add_argument('--manifest', type=Path, default=EXP / 'RUN_MANIFEST.json')
     p.add_argument('--collector-sha', help='core: commit X (collector code)')
@@ -99,7 +106,13 @@ def main():
                    help='final, sharded over VMs: recording files of a non-primary VM (repeat per VM)')
     p.add_argument('--verify-assets', action='store_true', help='re-hash the episode assets (on the collection VM)')
     p.add_argument('--canonical-xml', type=Path, help='xml-assets: the --canonical-xml of the episode template')
+    p.add_argument('--refs', help='per-world-refs: the absolute --per-world-model-references-v1 of the episode template')
     a = p.parse_args()
+    if a.stage == 'per-world-refs':
+        if a.refs is None:
+            p.error('per-world-refs needs --refs')
+        print(json.dumps(per_world_refs(a.refs), indent=2))     # -> RUN_MANIFEST assets.per_world_reference_files_sha256
+        return
     if a.stage == 'xml-assets':
         if a.canonical_xml is None:
             p.error('xml-assets needs --canonical-xml')

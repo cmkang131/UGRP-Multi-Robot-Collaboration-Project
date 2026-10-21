@@ -1199,7 +1199,7 @@ def _stack_entry():
     return dict(branch=_text, sha=_git40, note=_text)
 
 
-# Fixed schema: every key, nothing extra (B3).  VM-fill fields (22) are marked with VM_FIELDS below.
+# Fixed schema: every key, nothing extra (B3).  VM-fill fields (23, v7) are marked with VM_FIELDS below.
 MANIFEST_SPEC = dict(
     schema=_text, status=_text, freeze_rule=_text,
     prereg=dict(path=_text, schema=_text, core_sha256=_sha64),
@@ -1213,6 +1213,7 @@ MANIFEST_SPEC = dict(
                 speed_gate=_text, attempt_cap=_int, pilot_seeds=_int, validation_seeds=_int,
                 max_tries_per_batch=_int, host_error_requeue=_int),
     assets=dict(canonical_xml_sha256=_sha64, per_world_model_references_sha256=_sha64,
+                per_world_reference_files_sha256=_sha64,
                 rejection_table_input_sha256=_sha64, mesh_assets_sha256=_abs_sha_map, wrapper_sha256=_sha64),
     host=dict(machine=_text, gpu=_text, cuda_warp_mujoco=_text, python=_text, warp_kernel_cache=_text),
     smoke=dict(run=_text, summary_sha256=_sha64, carry_eval_sha256=_smoke_worlds, artifact_manifest_sha256=_sha64,
@@ -1226,7 +1227,8 @@ MANIFEST_SPEC = dict(
     fill_commands=_text_list)
 VM_FIELDS = ('prereg.core_sha256', 'collector.source_sha', 'command.episode_template',
              'command.episode_template_sha256', 'assets.canonical_xml_sha256',
-             'assets.per_world_model_references_sha256', 'assets.rejection_table_input_sha256',
+             'assets.per_world_model_references_sha256', 'assets.per_world_reference_files_sha256',
+             'assets.rejection_table_input_sha256',
              'assets.mesh_assets_sha256', 'assets.wrapper_sha256', 'host.machine', 'host.gpu',
              'host.cuda_warp_mujoco', 'host.python', 'host.warp_kernel_cache', 'smoke.summary_sha256',
              'smoke.carry_eval_sha256', 'smoke.artifact_manifest_sha256', 'smoke.world1_raw_result_sha256',
@@ -1379,6 +1381,76 @@ def xml_asset_problems(xml_path, registered):
     return out
 
 
+# v7 (Codex v6 re-review 2b): the per-world model references JSON is only a pointer file.  The wrapper reads it as
+# {scene-xml sha256: {actuator, geometry}} and opens Path(actuator), Path(geometry) and the geometry sidecar
+# str(geometry) + '.json' (simalt_compiled_compat.apply_reference / apply_geometry) -- relative paths against its
+# own cwd, not the JSON's directory.  Hashing the JSON alone left those model inputs free under one core, so the
+# manifest binds a transitive digest of every file it names.  Root = the directory of the references JSON.
+PER_WORLD_REF_KEYS = ('actuator', 'geometry')
+GEOMETRY_SIDECAR_SUFFIX = '.json'
+
+
+def _no_duplicate_keys(pairs):
+    keys = [k for k, _ in pairs]
+    if len(keys) != len(set(keys)):
+        raise ValueError('per-world references JSON repeats a key (json.loads would keep the last one)')
+    return dict(pairs)
+
+
+def per_world_reference_files(refs_path):
+    """The single reading of the per-world references JSON: sorted (path relative to the JSON's directory,
+    absolute path) of every model-input file it makes the wrapper open (actuator, geometry, geometry sidecar).
+    Raises ValueError for a format the wrapper could resolve differently or a path that leaves the root:
+    a relative JSON path, duplicate keys, other keys, relative or '..' paths, a path outside the JSON's directory, a symlink at the
+    JSON or on any component below the root.  Missing files are reported by per_world_reference_digest."""
+    if not os.path.isabs(refs_path):
+        raise ValueError(f'--per-world-model-references-v1 must be an absolute path, got {str(refs_path)!r}')
+    refs_path = os.path.normpath(refs_path)
+    root = os.path.dirname(refs_path)
+    if os.path.islink(refs_path):
+        raise ValueError(f'per-world references JSON is a symlink: {refs_path}')
+    refs = json.loads(Path(refs_path).read_bytes(), object_pairs_hook=_no_duplicate_keys)
+    if not isinstance(refs, dict):
+        raise ValueError('per-world references JSON must be an object {xml_sha256: {actuator, geometry}}')
+    files = set()
+    for key, entry in refs.items():
+        if not _sha64(key):
+            raise ValueError(f'per-world references key {key!r:.80} is not a scene XML sha256')
+        if not isinstance(entry, dict) or set(entry) != set(PER_WORLD_REF_KEYS):
+            raise ValueError(f'per-world references[{key[:12]}] must have exactly {PER_WORLD_REF_KEYS}')
+        for role in PER_WORLD_REF_KEYS:
+            path = entry[role]
+            if not isinstance(path, str) or not path:
+                raise ValueError(f'per-world references[{key[:12]}].{role} must be a path string')
+            if not os.path.isabs(path) or '..' in Path(path).parts or os.path.normpath(path) != path:
+                raise ValueError(f'per-world references[{key[:12]}].{role} must be a normalized absolute path '
+                                 f'(the wrapper resolves it against its cwd): {path!r}')
+            names = [path] + ([path + GEOMETRY_SIDECAR_SUFFIX] if role == 'geometry' else [])
+            for name in names:
+                if os.path.commonpath([root, name]) != root:
+                    raise ValueError(f'per-world reference outside {root}: {name}')
+                walk = root
+                for part in Path(os.path.relpath(name, root)).parts:
+                    walk = os.path.join(walk, part)
+                    if os.path.islink(walk):
+                        raise ValueError(f'per-world reference goes through a symlink: {walk}')
+                if os.path.commonpath([os.path.realpath(root), os.path.realpath(name)]) != os.path.realpath(root):
+                    raise ValueError(f'per-world reference resolves outside {root}: {name}')
+                files.add((os.path.relpath(name, root), name))
+    return sorted(files)
+
+
+def per_world_reference_digest(refs_path):
+    """assets.per_world_reference_files_sha256: sha256 of the canonical sorted [[relative path, sha256], ...] of
+    per_world_reference_files.  Raises ValueError on a refused reference or a missing / non-regular file."""
+    rows = []
+    for rel, path in per_world_reference_files(refs_path):
+        if not os.path.isfile(path):
+            raise ValueError(f'per-world reference file missing: {path}')
+        rows.append([rel, file_sha256(path)])
+    return hashlib.sha256(canonical(rows)).hexdigest()
+
+
 def sharding_problems(manifest, *, stage, shard=None):
     """v3s: shard count / VM assignment of the run (core) and, at final, one recording check per extra VM.
 
@@ -1487,6 +1559,15 @@ def check_run_manifest(manifest, *, stage, prereg, batch_size=None, episode=None
             if not os.path.isfile(path) or file_sha256(path) != want:
                 problems.append(f'assets.mesh_assets_sha256 differs or missing: {path}')
         problems += episode_source_problems(manifest, template)
+        refs = episode_assets(template)['per_world_model_references_sha256']
+        if refs is not None:                    # v7 2b: every file the references JSON makes the wrapper open
+            try:
+                got = per_world_reference_digest(refs)
+            except (OSError, ValueError) as error:
+                problems.append(f'per-world reference files refused: {error}')
+            else:
+                if got != m('assets', 'per_world_reference_files_sha256'):
+                    problems.append(f'assets.per_world_reference_files_sha256 differs from the files {refs} references')
         xml = episode_assets(template)['canonical_xml_sha256']
         if xml is not None and os.path.isfile(xml) and isinstance(m('assets', 'mesh_assets_sha256'), dict):
             problems += xml_asset_problems(xml, m('assets', 'mesh_assets_sha256'))

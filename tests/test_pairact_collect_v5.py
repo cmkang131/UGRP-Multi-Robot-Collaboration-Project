@@ -340,6 +340,7 @@ def _asset_case(tmp_path, scene, files):
         m['stack'][role]['sha'] = sha
     m['assets'] = dict(wrapper_sha256=pc.file_sha256(a / 'wrap.py'), canonical_xml_sha256=pc.file_sha256(a / 'scene.xml'),
                        per_world_model_references_sha256=pc.file_sha256(a / 'refs.json'),
+                       per_world_reference_files_sha256=pc.per_world_reference_digest(a / 'refs.json'),
                        rejection_table_input_sha256=pc.file_sha256(a / 'table.json'), mesh_assets_sha256={})
     return a, m
 

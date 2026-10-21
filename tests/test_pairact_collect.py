@@ -783,11 +783,11 @@ def test_episode_command_needs_absolute_rejection_table_and_cap():
         pc.episode_cmd_audit(EP_CMD.replace('{out}', 'x'))
 
 
-def test_run_manifest_draft_has_22_vm_fields_and_blocks_frozen_stages(prereg):
-    """Codex (4) / owner 10 + v3 B3: one RUN_MANIFEST.json, fixed schema, 22 VM-fill fields."""
+def test_run_manifest_draft_has_23_vm_fields_and_blocks_frozen_stages(prereg):
+    """Codex (4) / owner 10 + v3 B3: one RUN_MANIFEST.json, fixed schema, 23 VM-fill fields (v7: + 2b digest)."""
     m = json.loads((EXP / 'RUN_MANIFEST.json').read_text())
     assert m['schema'] == pc.MANIFEST_SCHEMA and set(m) == set(pc.MANIFEST_SPEC)
-    assert sorted(pc.manifest_unfilled(m)) == sorted(pc.VM_FIELDS) and len(pc.VM_FIELDS) == 22
+    assert sorted(pc.manifest_unfilled(m)) == sorted(pc.VM_FIELDS) and len(pc.VM_FIELDS) == 23
     for stage in ('core', 'final'):
         with pytest.raises(ValueError, match='placeholder'):
             pc.check_run_manifest(m, stage=stage, prereg=dict(prereg, status='FROZEN_CORE'))
@@ -1047,6 +1047,7 @@ def filled_manifest(prereg, status='FROZEN_CORE', template=EP_CMD, recording=Non
     m['command']['episode_template'] = template
     m['command']['episode_template_sha256'] = hashlib.sha256(template.encode()).hexdigest()
     m['assets'].update(canonical_xml_sha256=H('1'), per_world_model_references_sha256=H('2'),
+                       per_world_reference_files_sha256=H('e'),
                        rejection_table_input_sha256=H('3'), mesh_assets_sha256={'/vm/mesh/fuji_roller_v2.obj': H('4')},
                        wrapper_sha256=H('5'))
     m['host'] = dict(machine='ugrp-act-l4-gcp6 us-central1-a g2-standard-8', gpu='NVIDIA L4, 550.54, 23034 MiB',
@@ -1149,6 +1150,7 @@ def test_verify_assets_rehashes_episode_files(tmp_path, prereg):
     for name in ('wrap.py', 'scene.xml', 'refs.json', 'table.json', 'mesh.obj'):
         (tmp_path / name).write_text(name)
         files[name] = str(tmp_path / name)
+    (tmp_path / 'refs.json').write_text('{}\n')                                    # v7: parsed (no references)
     (tmp_path / 'scene.xml').write_text('<mujoco><asset><mesh file="mesh.obj"/></asset></mujoco>')   # v5: parsed
     from test_pairact_collect_v5 import _repo
     pins = {role: _repo(tmp_path / role) for role in ('teacher', 'adapter')}       # v5: existing pinned sources
@@ -1161,6 +1163,7 @@ def test_verify_assets_rehashes_episode_files(tmp_path, prereg):
         m['stack'][role]['sha'] = sha
     m['assets'] = dict(wrapper_sha256=pc.file_sha256(files['wrap.py']), canonical_xml_sha256=pc.file_sha256(files['scene.xml']),
                        per_world_model_references_sha256=pc.file_sha256(files['refs.json']),
+                       per_world_reference_files_sha256=pc.per_world_reference_digest(files['refs.json']),
                        rejection_table_input_sha256=pc.file_sha256(files['table.json']),
                        mesh_assets_sha256={files['mesh.obj']: pc.file_sha256(files['mesh.obj'])})
     pr = dict(prereg, status='FROZEN_CORE')
