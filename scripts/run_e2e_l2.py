@@ -14,8 +14,7 @@ here; frames and execution come from the unchanged P2 root runner
         --decisions RUN/peer_en/decisions.json --arm teacher_fallback --out RUN/peer_en-teacher
     (DeepSeek: runner on RUN/peer_en/exec-cases.json [--student-eval ...] -> RUN/peer_en/run)
     E2E_L2=on_v1 python scripts/run_e2e_l2.py evaluate --decisions RUN/peer_en/decisions.json \
-        --summary RUN/peer_en/run/summary.json --admissibility RUN/l2-base-cases-admissibility.json \
-        --out RUN/peer_en/l2-eval.json
+        --summary RUN/peer_en/run/summary.json --out RUN/peer_en/l2-eval.json
 
 ``--llm replay`` reads recorded replies keyed ``"<seed>|<robot>|<round>"``
 (dry runs/tests only; never a result).  ``--llm live`` uses the L1-lite
@@ -50,24 +49,14 @@ def sha256(path):
 
 
 def select(cases, n=N_CASES):
-    """First ``n`` admissible cases in ascending seed order (pre-run, outcome-free)."""
-    log, chosen = [], []
-    for case in sorted(cases, key=lambda c: c['plan']['seed']):
-        if len(chosen) == n:
-            break
-        ok, why = l2.case_admissible(case)
-        log.append(dict(seed=case['plan']['seed'], admissible=ok, reason=why))
-        if ok:
-            chosen.append(case)
-    if len(chosen) < n:
-        raise SystemExit(f'only {len(chosen)} admissible cases, {n} required')
-    return chosen, log
-
-
-def exclusion_summary(log):
-    excluded = [r['seed'] for r in log if not r['admissible']]
-    return dict(scanned_n=len(log), selected_n=len(log) - len(excluded), excluded_ns_n=len(excluded),
-                excluded_seeds=excluded, rule=f'|cos(yaw)| < {l2.MIN_ABS_COS_YAW} excluded before any LLM call')
+    """First ``n`` cases in ascending seed order; no exclusion of any kind (owner 2026-10-21)."""
+    ordered = sorted(cases, key=lambda c: c['plan']['seed'])
+    if len(ordered) < n:
+        raise SystemExit(f'only {len(ordered)} cases, {n} required')
+    chosen = ordered[:n]
+    for case in chosen:
+        l2.plan_of(case)   # structural check only (pair roles teal/blue)
+    return chosen
 
 
 def load_frames(frames_run, cases_path, cases):
@@ -133,7 +122,6 @@ def main(argv=None):
     e = sub.add_parser('evaluate')
     e.add_argument('--decisions', type=Path, required=True)
     e.add_argument('--summary', type=Path, help='runner summary.json; omit if no seed was executable')
-    e.add_argument('--admissibility', type=Path, help='select output *-admissibility.json (N-S exclusion count)')
     e.add_argument('--out', type=Path, required=True)
     a = p.parse_args(argv)
     try:
@@ -142,11 +130,9 @@ def main(argv=None):
         p.error(str(exc))
 
     if a.cmd == 'select':
-        chosen, log = select(json.loads(a.cases.read_text()))
+        chosen = select(json.loads(a.cases.read_text()))
         write(a.out, chosen)
-        write(a.out.with_name(a.out.stem + '-admissibility.json'),
-              dict(source=str(a.cases), source_sha256=sha256(a.cases), n=N_CASES, log=log, **exclusion_summary(log)))
-        print(json.dumps(exclusion_summary(log)))
+        print(json.dumps(dict(source_sha256=sha256(a.cases), seeds=[c['plan']['seed'] for c in chosen])))
         return 0
 
     if a.cmd == 'decide':
@@ -205,16 +191,12 @@ def main(argv=None):
         return 0
 
     summary = json.loads(a.summary.read_text()) if a.summary else None
-    admissibility = json.loads(a.admissibility.read_text()) if a.admissibility else None
     results = [ev.seed_result(r, r['geometry'], summary, arm=data['arm'], prices=l2.PRICE_USD_PER_MILLION)
                for r in data['records']]
     write(a.out, dict(schema='ugrp.e2e_l2.eval.v2', condition=data['condition'], arm=data['arm'],
                       arm_label=data['arm_label'], llm=data['llm'], llm_note=data.get('llm_note'),
                       decisions_sha256=sha256(a.decisions),
                       summary_sha256=sha256(a.summary) if a.summary else None,
-                      pre_run_exclusion=(None if admissibility is None else
-                                         {k: admissibility[k] for k in ('scanned_n', 'selected_n', 'excluded_ns_n',
-                                                                        'excluded_seeds', 'rule')}),
                       prices=l2.PRICE_USD_PER_MILLION, aggregate=ev.aggregate(results), seeds=results))
     return 0
 

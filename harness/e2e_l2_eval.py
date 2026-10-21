@@ -67,6 +67,8 @@ def llm_metrics(record, geometry, prices=None):
         need_partner=dict(record.get('need_partner') or {}),
         decisions=decisions,
         decisions_west_east={r: label.get(e) for r, e in decisions.items()} if label else None,
+        beam_yaw_deg=geometry.get('beam_yaw_deg'), abs_cos_yaw=geometry.get('abs_cos_yaw'),
+        ew_ambiguous=geometry.get('ew_ambiguous'),
         reference_ends=dict(ref),
         assignment_match=complete and decisions == ref,
         min_distance_match=complete and decisions == geometry['min_total_distance_ends'],
@@ -102,7 +104,8 @@ def seed_result(record, geometry, summary, *, arm, prices=None):
     if arm == 'student' and summary is not None and executed and summary.get('student_eval') is None:
         student_clean = False   # a summary without --student-eval is a teacher run
     success = bool(llm['success_eligible'] and executed and carry is True and student_clean)
-    return dict(seed=record.get('seed'), arm=arm, arm_label=ARM_LABEL[arm], llm=llm, executed=executed,
+    return dict(seed=record.get('seed'), arm=arm, arm_label=ARM_LABEL[arm], beam_yaw_deg=llm['beam_yaw_deg'],
+                ew_ambiguous=llm['ew_ambiguous'], llm=llm, executed=executed,
                 carry_success=carry, carry_failure=None if row is None else row.get('carry_failure'),
                 teacher_steps=teacher_steps, student_funnel=None if row is None else row.get('student_funnel'),
                 student_clean=student_clean, success=success,
@@ -118,7 +121,7 @@ def aggregate(results):
         a = by.setdefault(key, dict(condition=key[0], arm=key[1], arm_label=ARM_LABEL[key[1]], N=0, success_n=0,
                                     llm_eligible_n=0, assignment_match_n=0, conflict_n=0, cooperate_ok_n=0,
                                     hallucination_n=0, executed_n=0, carry_success_n=0, tokens=0, usd=0.,
-                                    failure_stage={}))
+                                    failure_stage={}, by_beam_direction={}))
         a['N'] += 1
         a['success_n'] += r['success']
         a['llm_eligible_n'] += r['llm']['success_eligible']
@@ -130,6 +133,11 @@ def aggregate(results):
         a['carry_success_n'] += r['carry_success'] is True
         a['tokens'] += sum(r['llm']['tokens'].values())
         a['usd'] = None if a['usd'] is None or r['llm']['usd'] is None else round(a['usd'] + r['llm']['usd'], 6)
+        d = 'near_north_south' if r.get('ew_ambiguous') else 'near_east_west'
+        cell = a['by_beam_direction'].setdefault(d, dict(N=0, success_n=0, llm_eligible_n=0))
+        cell['N'] += 1
+        cell['success_n'] += r['success']
+        cell['llm_eligible_n'] += r['llm']['success_eligible']
         stage = r['failure_stage'] or 'success'
         a['failure_stage'][stage] = a['failure_stage'].get(stage, 0) + 1
     for a in by.values():

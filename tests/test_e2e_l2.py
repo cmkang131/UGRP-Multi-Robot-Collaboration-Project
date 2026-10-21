@@ -59,9 +59,13 @@ def test_no_own_channel_class_left():
 
 # --- geometry is eval-only ---------------------------------------------------
 
-def test_ns_beam_is_inadmissible_and_ew_label_follows_yaw():
-    assert not l2.case_admissible(make_case(yaw=math.pi / 2))[0]
-    assert l2.case_admissible(make_case(yaw=math.radians(59)))[0]
+def test_no_orientation_exclusion_and_yaw_recorded():
+    assert not hasattr(l2, 'case_admissible') and not hasattr(l2, 'MIN_ABS_COS_YAW')
+    g = l2.geometry_record(make_case(yaw=math.pi / 2))
+    assert g['beam_yaw_deg'] == 90.0 and g['ew_ambiguous'] and g['abs_cos_yaw'] < 1e-6
+    assert set(g['band_label'].values()) == {'west', 'east'}
+    assert not l2.geometry_record(make_case(yaw=math.radians(-30)))['ew_ambiguous']
+    assert l2.geometry_record(make_case(yaw=math.radians(-30)))['beam_yaw_deg'] == 330.0
     assert l2.geometry_record(make_case(yaw=0.0))['band_label'] == {'teal': 'west', 'blue': 'east'}
     assert l2.geometry_record(make_case(yaw=math.pi))['band_label'] == {'teal': 'east', 'blue': 'west'}
 
@@ -343,6 +347,8 @@ def test_aggregate():
             ev.seed_result(rec, g, {'worlds': []}, arm='student')]
     agg = ev.aggregate(rows)
     assert agg[0]['report'] == '1/3' and agg[0]['failure_stage'] == {'success': 1, 'execution': 1, 'not_executed': 1}
+    assert agg[0]['by_beam_direction'] == {'near_east_west': {'N': 3, 'success_n': 1, 'llm_eligible_n': 3}}
+    assert rows[0]['beam_yaw_deg'] == 0.0 and rows[0]['llm']['beam_yaw_deg'] == 0.0
 
 
 def test_hallucination_flags():

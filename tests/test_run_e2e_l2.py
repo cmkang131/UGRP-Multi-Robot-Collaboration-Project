@@ -28,14 +28,13 @@ def test_default_off(monkeypatch, tmp_path):
         cli.main(['select', '--cases', str(tmp_path / 'x.json'), '--out', str(tmp_path / 'y.json')])
 
 
-def test_select_reports_ns_exclusions(on, tmp_path):
+def test_select_first_six_in_seed_order_without_exclusion(on, tmp_path):
     cases = [make_case(seed=8344000 + i, yaw=(math.pi / 2 if i in (1, 4) else 0.)) for i in range(9)][::-1]
     (tmp_path / 'c.json').write_text(json.dumps(cases))
     cli.main(['select', '--cases', str(tmp_path / 'c.json'), '--out', str(tmp_path / 'base.json')])
     seeds = [c['plan']['seed'] for c in json.loads((tmp_path / 'base.json').read_text())]
-    assert seeds == [8344000, 8344002, 8344003, 8344005, 8344006, 8344007]
-    adm = json.loads((tmp_path / 'base-admissibility.json').read_text())
-    assert adm['excluded_ns_n'] == 2 and adm['excluded_seeds'] == [8344001, 8344004] and adm['scanned_n'] == 8
+    assert seeds == list(range(8344000, 8344006))   # N-S beams 8344001/8344004 stay in
+    assert not (tmp_path / 'base-admissibility.json').exists()
 
 
 def write_frames(tmp_path, cases_path, n):
@@ -109,13 +108,11 @@ def test_replay_decide_rebind_evaluate(on, tmp_path):
                   '--arm', 'student', '--out', str(tmp_path / 'u')])
     (out / 'summary.json').write_text(json.dumps({'student_eval': {'mode': 'x'},
                                                   'worlds': [{'seed': 8344000, 'carry_success': True, 'teacher_steps': 0}]}))
-    (tmp_path / 'adm.json').write_text(json.dumps({'scanned_n': 7, 'selected_n': 6, 'excluded_ns_n': 1,
-                                                   'excluded_seeds': [1], 'rule': 'x'}))
     cli.main(['evaluate', '--decisions', str(out / 'decisions.json'), '--summary', str(out / 'summary.json'),
-              '--admissibility', str(tmp_path / 'adm.json'), '--out', str(out / 'l2-eval.json')])
+              '--out', str(out / 'l2-eval.json')])
     res = json.loads((out / 'l2-eval.json').read_text())
     assert res['aggregate'][0]['report'] == '1/2' and res['llm_note'].startswith('REPLAY')
-    assert res['pre_run_exclusion']['excluded_ns_n'] == 1
+    assert 'pre_run_exclusion' not in res and res['seeds'][0]['beam_yaw_deg'] == 0.0
     assert [s['failure_stage'] for s in res['seeds']] == [None, 'llm']
     assert res['seeds'][0]['llm']['assignment_match'] is False   # swapped, executed as decided
     with pytest.raises(SystemExit):
@@ -127,5 +124,5 @@ def test_prereg_cap_references_p5_and_is_empty():
     cap = d['episode_cap_sim_s']
     assert cap['value'] is None and 'PAIRACT_R1_EVAL_PREREG_DRAFT.json' in cap['rule']
     assert d['seeds']['candidate_range'] == {'first': 8344000, 'last': 8344099}
-    assert 'excluded_ns_n' in d['seeds']['exclusion_report']
+    assert 'cos' not in d['seeds']['selection_rule'] and 'beam_yaw' in d['seeds']['orientation_record']
     assert 'distance' not in d['task']['llm_input'].split('No ')[0]

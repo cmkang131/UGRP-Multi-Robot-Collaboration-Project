@@ -6,7 +6,8 @@
 - seed: 8343000–039는 pairact-r1 v2 pilot(`bcfefaadc`)이라 L2는 *8344000–8344099*로 옮겼습니다. `seeds.json` + `scripts/check_e2e_l2_seeds.py`로 겹침 0을 테스트에 고정했습니다.
 - GT 누출 제거: plan 좌표로 계산한 거리 입력을 없앴습니다. plan 좌표는 evaluator(`geometry_record`)에서만 씁니다. 후보 이름은 이미지에 보이는 band 색(`end_teal`/`end_blue`)입니다. 이 색이 곧 학생 role 토큰이라 바인딩에 좌표가 필요 없습니다. west/east는 평가 표기로만 남겼습니다. LLM이 west/east를 고르려면 자기 heading(= plan pose)이 필요하기 때문입니다.
 - 실제 LLM: `dsh/l1lite-alloc` `955c967d`의 `e2e_warp_runtime.py`(Channels, Planner), `e2ewarp_l1lite.py`, `e2ewarp_selfnav.py`를 byte 동일하게 가져와 재사용합니다(blob pin 테스트). 별도로 만들었던 채널 코드는 지웠고, structured enum만 `L2Channels` 하위 클래스로 바꿨습니다.
-- N-S 사전 제외: 규칙은 그대로 두고, 제외 수를 `*-admissibility.json`과 `l2-eval.json`의 `pre_run_exclusion`에 남깁니다.
+- 후보 이름(오너 승인 10/21): `end_teal`/`end_blue`를 씁니다. east/west 후보와 heading 입력은 넣지 않습니다.
+- N-S 사전 제외 *삭제*(오너 10/21): seed 8344000부터 순서대로 6개를 제외 없이 씁니다. 대신 각 seed의 빔 yaw(`beam_yaw_deg`, `abs_cos_yaw`, `ew_ambiguous`)를 evaluator에만 기록하고, `l2-eval.json` aggregate에 `by_beam_direction`으로 방향별 성공 수를 나눠 보여 줍니다.
 - P5 cap: 값은 비워 두고, P5 사전 등록의 규칙만 참조합니다.
 
 ## 0. 전제 (모두 충족 전에는 실행하지 않음)
@@ -34,7 +35,7 @@ export E2E_L2=on_v1 RUN=/home/ugrp/ugrp-sim/runs/e2e-l2-<TS>
 cd $SRC/root      # dsh/e2e-l2 checkout
 python scripts/check_e2e_l2_seeds.py --pairact-ref bcfefaadc5ecbc24a65f898e44eabcdf886f7ef5   # passed=true여야 함
 
-# (a) case 6개 선택 (정적 N-S 제외, 제외 수 출력)
+# (a) case 6개 선택 (seed 순서 앞 6개, 제외 없음)
 python scripts/run_e2e_l2.py select --cases $RUN/l2-candidate-cases.json --out $RUN/l2-base-cases.json
 
 # (b) 첫 프레임: 같은 case 파일로 runner 1 tick (teacher flow, 학생 없음)
@@ -58,8 +59,7 @@ python /home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py \
 
 # (e) 판정
 python scripts/run_e2e_l2.py evaluate --decisions $RUN/peer_en/decisions.json \
-  --summary $RUN/peer_en/run/summary.json --admissibility $RUN/l2-base-cases-admissibility.json \
-  --out $RUN/peer_en/l2-eval.json
+  --summary $RUN/peer_en/run/summary.json --out $RUN/peer_en/l2-eval.json
 ```
 - teacher_fallback arm은 LLM을 다시 부르지 않고 같은 결정을 재사용합니다: `run_e2e_l2.py rebind --cases $RUN/l2-base-cases.json --decisions $RUN/peer_en/decisions.json --arm teacher_fallback --out $RUN/peer_en-teacher`. 그다음 runner를 `--student-eval` 없이 돌립니다. 결과에는 `[대체 단계] teacher, NOT a learned result` 라벨이 붙고 학습 결과와 합산하지 않습니다.
 - HOST_ERROR: 같은 exec-case(같은 LLM 결정)로 1회 재실행합니다. LLM은 다시 부르지 않습니다.
@@ -69,12 +69,11 @@ python scripts/run_e2e_l2.py evaluate --decisions $RUN/peer_en/decisions.json \
 ## 3. 출력
 | 파일 | 내용 |
 |---|---|
-| `l2-base-cases-admissibility.json` | 스캔 수, 선택 6, *N-S 제외 수와 seed* |
 | `frames/world-00k/review-2hz/<robot>/000000.jpg` | LLM에 들어간 자기 카메라 첫 프레임 (decisions의 `frames_sha256`과 대조) |
 | `$C/decisions.json` | 조건별 LLM 기록(transcript, 메시지, 결정, 오류, usage, planner_ledger) + eval-only geometry |
 | `$C/llm/world-XX/<robot>/NNNNN.{request,response}.json` | Planner archive (이미지는 sha256으로 대체, 키 없음) |
 | `$C/exec-cases.json` | 실행 가능한 seed만, `plan.roles`만 LLM 결정으로 바꾼 case + `l2_admin` |
-| `$C/l2-eval.json` | seed별 L2 판정, 조건×arm n/6, LLM 지표, `pre_run_exclusion` |
+| `$C/l2-eval.json` | seed별 L2 판정, 조건×arm n/6, LLM 지표, 빔 yaw·방향별 집계(eval-only) |
 
 ## 4. 남은 것
 1. 첫 프레임 run의 카메라·roles 독립성 확인 (§0).

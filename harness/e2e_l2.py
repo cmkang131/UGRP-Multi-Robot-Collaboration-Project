@@ -23,6 +23,7 @@ Scope (aggressive-replan-1105.md §2 10/31-11/2 row, §6 L2 definition):
   byte-identical (``tests/test_e2e_l2.py`` pins the blobs).  The only L2
   addition is the structured body enum ``need_partner|claim_end|ack`` + end
   (``L2Channels``); free English uses the unchanged L1-lite validator.
+- seeds: the first 6 candidate cases in seed order, no orientation exclusion.
 - every missing, malformed, solo or duplicate decision fails closed with a
   stable code; such a seed is NOT executed and counts as a failure in N.
 
@@ -65,9 +66,6 @@ PRICE_USD_PER_MILLION = dict(l1lite.PLANNER_PRICE_USD_PER_MILLION)
 #: Env names that must not exist on the run host (same list as the L1-lite
 #: live guard): the API key stays in the off-VM relay, never in code or logs.
 CREDENTIAL_ENV_MARKERS = ('OPENROUTER_API', 'OPENAI_API', 'KAGGLE_KEY', 'GOOGLE_APPLICATION_CREDENTIALS')
-#: Pre-run case admissibility (kept from the first draft, owner item 4):
-#: ``|cos(yaw)| >= 0.5`` so the eval-only west/east label is meaningful.
-MIN_ABS_COS_YAW = .5
 BAND_OFFSET_M = {'teal': -.27, 'blue': .27}   # teacher tree make_grasp_act_plan.py
 
 ORDER_SHEET = dict(
@@ -131,22 +129,20 @@ def plan_of(case):
     return plan
 
 
-def case_admissible(case):
-    """(ok, reason). Pre-run static N-S exclusion; never applied after outcomes."""
-    plan = plan_of(case)
-    cos_yaw = abs(math.cos(float(plan['beam_pose'][2])))
-    if cos_yaw < MIN_ABS_COS_YAW - 1e-12:
-        return False, f'beam within 60 deg of north-south (|cos yaw|={cos_yaw:.3f})'
-    return True, None
-
-
 def band_positions(plan):
     x, y, yaw = (float(v) for v in plan['beam_pose'][:3])
     return {b: (x + d * math.cos(yaw), y + d * math.sin(yaw)) for b, d in BAND_OFFSET_M.items()}
 
 
 def geometry_record(case):
-    """EVAL-ONLY: generator ends, own distances, west/east labels."""
+    """EVAL-ONLY: generator ends, own distances, beam yaw, west/east labels.
+
+    No case is excluded by orientation (owner 2026-10-21: the N-S pre-run
+    exclusion is removed).  ``beam_yaw_deg`` and ``abs_cos_yaw`` are recorded
+    so failures can be split by beam direction afterwards; ``band_label``
+    (west = smaller world x) is an eval label only and ``ew_ambiguous`` marks
+    beams within 60 deg of north-south where that label is weak.
+    """
     plan = plan_of(case)
     pos = band_positions(plan)
     dist = {r: {b: round(math.dist(plan['spawns'][r][:2], pos[b]), 3) for b in END_TOKENS} for r in ROBOTS}
@@ -154,12 +150,14 @@ def geometry_record(case):
     pair = {('teal', 'blue'): dist['r1']['teal'] + dist['r2']['blue'],
             ('blue', 'teal'): dist['r1']['blue'] + dist['r2']['teal']}
     best = min(pair, key=pair.get)
-    west = min(END_TOKENS, key=lambda b: pos[b][0])
-    ok, _ = case_admissible(case)
+    west = min(END_TOKENS, key=lambda b: (pos[b][0], b))
+    yaw = float(plan['beam_pose'][2])
     return dict(seed=plan['seed'], reference_ends=dict(plan['roles']), own_distances_m=dist, nearer_end=nearer,
                 nearer_end_conflict=nearer['r1'] == nearer['r2'],
                 min_total_distance_ends={'r1': best[0], 'r2': best[1]},
-                band_label=({west: 'west', ('blue' if west == 'teal' else 'teal'): 'east'} if ok else None))
+                beam_yaw_deg=round(math.degrees(yaw) % 360., 2), abs_cos_yaw=round(abs(math.cos(yaw)), 4),
+                ew_ambiguous=abs(math.cos(yaw)) < .5,
+                band_label={west: 'west', ('blue' if west == 'teal' else 'teal'): 'east'})
 
 
 # ---------------------------------------------------------------------------
