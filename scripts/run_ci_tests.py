@@ -197,6 +197,7 @@ TEST_PATTERNS = (
     "tests/test_highpose_pf_consistency.py",  # v98 PF consistency (one stationary view counts once)
     "tests/test_highpose_relook.py",  # v98 dock look pans + bounded look recovery (synthetic closed loop)
     "tests/test_pair_llm_*.py",  # v100 pair LLM layer: stub model only, fake physics
+    "tests/test_e2e_l2.py", "tests/test_run_e2e_l2.py",  # 2026-10-21 L2 E2E: fake LLM + fake runner summary, no physics
     "tests/test_s4_live_stage.py",  # S4 stage admission and transport: stub model, fake physics
     "tests/test_gemma_fallback_proxy.py",  # Mac DEV fallback/quota/Keychain: fake API only
     "tests/test_gemma_multi_key.py",  # Opt-in independent key buckets: fake API only
