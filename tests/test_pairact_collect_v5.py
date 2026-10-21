@@ -202,3 +202,119 @@ def test_convert_input_refuses_a_duplicated_attempt(tmp_path, prereg):
     with pytest.raises(ValueError, match='duplicate attempt'):
         pc.convert_input(prereg, st2, tmp_path / 'out', prereg_sha='sha', teacher_sha='t' * 40)
     assert not (tmp_path / 'out').exists()
+
+
+# ------------------------------------------------------------ 1. recording evidence bound to the current core
+
+def _fz():
+    import importlib.util
+    from test_pairact_collect import ROOT
+    spec = importlib.util.spec_from_file_location('pairact_r1_freeze', ROOT / 'scripts/pairact_r1_freeze.py')
+    fz = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fz)
+    return fz
+
+
+def _final(prereg):
+    from test_pairact_collect import filled_manifest
+    pre = dict(prereg, status='FROZEN')
+    m = filled_manifest(pre, status='FROZEN')
+    return pre, m, pc.core_sha256(pre, m)
+
+
+def _bind(m, d):
+    m['recording_check'].update({k: pc.file_sha256(d / n) for k, n in pc.RECORDING_FILES.items()})
+
+
+def test_final_refuses_recording_evidence_of_another_core(tmp_path, prereg):
+    """admission-probe REPRO recording: check-rows core_sha256 = 0*64 passed v4 final with qualified + hashes."""
+    from test_pairact_collect import recording_dir
+    pre, m, core = _final(prereg)
+    stale, _ = recording_dir(tmp_path / 'a' if (tmp_path / 'a').mkdir() is None else None, core='0' * 64)
+    _bind(m, stale)
+    with pytest.raises(ValueError, match='another core'):
+        pc.check_run_manifest(m, stage='final', prereg=pre, recording_dir=stale)
+    good, _ = recording_dir(tmp_path, core=core)
+    _bind(m, good)
+    assert pc.check_run_manifest(m, stage='final', prereg=pre, recording_dir=good) == core
+
+
+@pytest.mark.parametrize('edit, match', [
+    (lambda d: _edit(d, 'check-rows.json', lambda r: r['probe_source'].update(core_sha256='e' * 64)),
+     'probe_source'),
+    (lambda d: _edit(d, 'check-rows.json', lambda r: r['probe_source'].update(purpose=pc.PURPOSE_PILOT)),
+     'probe_source'),
+    (lambda d: _edit(d, 'probe-cases.json', lambda c: c[0]['plan'].update(seed=8343009)), 'probe_cases_sha256'),
+    (lambda d: _edit(d, 'check-rows.json', lambda r: r['recorded'][2].update(index=8343009)), 'seeds differ'),
+    (lambda d: _edit(d, 'recording-check.json', lambda c: c.update(indices=[8343000, 8343001, 8343009])),
+     'recording-check.json indices'),
+    (lambda d: _edit(d, 'probe-cases.json', lambda c: c[1].update(candidate='pairact_p2_r13'), rehash=True),
+     'candidate'),
+])
+def test_recording_evidence_chain_probe_source_cases_rows_check(tmp_path, prereg, edit, match):
+    from test_pairact_collect import recording_dir
+    pre, m, core = _final(prereg)
+    d, _ = recording_dir(tmp_path, core=core)
+    edit(d)
+    _bind(m, d)                                     # the manifest hashes the edited files: only the chain differs
+    with pytest.raises(ValueError, match=match):
+        pc.check_run_manifest(m, stage='final', prereg=pre, recording_dir=d)
+
+
+def _edit(d, name, fn, rehash=False):
+    value = json.loads((d / name).read_text())
+    fn(value)
+    (d / name).write_text(json.dumps(value) + '\n')
+    if rehash:                                      # keep check-rows' probe_cases_sha256 in step with the edit
+        _edit(d, 'check-rows.json', lambda r: r.update(probe_cases_sha256=pc.file_sha256(d / 'probe-cases.json')))
+
+
+def test_freeze_final_refuses_stale_primary_and_vm_recording(tmp_path, prereg, monkeypatch):
+    from test_pairact_collect import G, ROOT, filled_manifest, recording_dir
+    fz = _fz()
+    monkeypatch.setattr(pc, 'collector_provenance', lambda repo, sha, files: [])
+    pp, mp = tmp_path / 'prereg.json', tmp_path / 'manifest.json'
+    pp.write_text(PREREG.read_text())
+    m = filled_manifest(prereg, status='DRAFT_VM_FILL')
+    for k in pc.RECORDING_FIELDS:
+        m['recording_check'][k] = '[VM 기입] filled at FROZEN'
+    m['sharding'].update(count=3, lag_batches=3, assignment={'gcp6': [0, 1], 'gcp2': [2]})
+    mp.write_text(json.dumps(m, indent=2, ensure_ascii=False))
+    core = fz.freeze('core', prereg_path=pp, manifest_path=mp, repo=ROOT, collector_sha=G('f'))['core_sha256']
+    dirs = {}
+    for name, c in (('good', core), ('stale', '0' * 64), ('good_b', core), ('stale_b', '0' * 64)):
+        (tmp_path / name).mkdir()
+        dirs[name] = recording_dir(tmp_path / name, core=c)[0]
+    before = (pp.read_bytes(), mp.read_bytes())
+    with pytest.raises(ValueError, match='another core'):
+        fz.freeze('final', prereg_path=pp, manifest_path=mp, repo=ROOT, recording_dir=dirs['stale'],
+                  expect_core=core, vm_recording_dirs={'gcp2': dirs['good_b']})
+    with pytest.raises(ValueError, match='another core'):
+        fz.freeze('final', prereg_path=pp, manifest_path=mp, repo=ROOT, recording_dir=dirs['good'],
+                  expect_core=core, vm_recording_dirs={'gcp2': dirs['stale_b']})
+    assert (pp.read_bytes(), mp.read_bytes()) == before                  # nothing written on refusal
+    fin = fz.freeze('final', prereg_path=pp, manifest_path=mp, repo=ROOT, recording_dir=dirs['good'],
+                    expect_core=core, vm_recording_dirs={'gcp2': dirs['good_b']})
+    assert fin['core_sha256'] == core
+
+
+def test_check_rows_binding_reads_the_probe_source_ledger(tmp_path, prereg):
+    from test_pairact_collect import H, _probe_ledger
+    st = _probe_ledger(tmp_path / 'runc', prereg, pc.PURPOSE_PROBE_SOURCE, H('c'))
+    seeds = [r['seed'] for r in pc.probe_slots(st)]
+    cases = tmp_path / 'probe-cases.json'
+    cases.write_text(json.dumps([dict(plan=dict(seed=s), candidate='pairact_p3_collect') for s in seeds]))
+    rows = [dict(index=s) for s in seeds]
+    b = pc.check_rows_binding(st, H('c'), cases, rows, rows)
+    assert b == dict(core_sha256=H('c'), probe_cases_sha256=pc.file_sha256(cases),
+                     probe_source=dict(purpose=pc.PURPOSE_PROBE_SOURCE, core_sha256=H('c'), seeds=seeds))
+    with pytest.raises(ValueError, match='core_sha256'):
+        pc.check_rows_binding(st, H('d'), cases, rows, rows)
+    with pytest.raises(ValueError, match='seeds'):
+        pc.check_rows_binding(st, H('c'), cases, rows, rows[::-1])
+    cases.write_text(json.dumps([dict(plan=dict(seed=s + 1), candidate='pairact_p3_collect') for s in seeds]))
+    with pytest.raises(ValueError, match='seeds'):
+        pc.check_rows_binding(st, H('c'), cases, rows, rows)
+    pilot = _probe_ledger(tmp_path / 'pilot', prereg, pc.PURPOSE_PILOT, None)
+    with pytest.raises(ValueError, match='pilot_yield_only'):
+        pc.check_rows_binding(pilot, H('c'), cases, rows, rows)

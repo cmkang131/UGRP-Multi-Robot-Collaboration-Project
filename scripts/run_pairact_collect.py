@@ -665,7 +665,7 @@ def main():
         if not a.out or not a.baseline_raws or len(a.baseline_raws) != len(a.probe_raws):
             p.error('--out and equal-length --baseline-raws/--probe-raws required')
         core, _ = frozen_gate(a, prereg, sha, stage='core')
-        rows = dict(core_sha256=core)
+        rows = {}
         for name, raws in (('baseline', a.baseline_raws), ('recorded', a.probe_raws)):
             rows[name] = []
             for raw in raws:
@@ -673,6 +673,11 @@ def main():
                 seed = json.loads((Path(raw) / 'plan.json').read_text())['seed'] if (Path(raw) / 'plan.json').exists() \
                     else res.get('seed')
                 rows[name].append(pc.check_row(res, seed, search15_keys=[k for k in res if k.startswith(('search', 'peer_reobserve', 'obstacle_reobserve', 'pregrasp_sampling'))]))
+        # v5 (Codex v4 re-review 1): bind the rows to this core's probe source ledger and probe-cases.json
+        src = pc.replay(prereg, pc.read_ledger(a.run_root / 'ledger.jsonl'))
+        pc.require_header_sha(src, sha, prereg_core)
+        rows = dict(pc.check_rows_binding(src, core, a.run_root / 'probe-cases.json', rows['baseline'],
+                                          rows['recorded']), **rows)
         write(a.out, rows)
         print(json.dumps(dict(out=str(a.out), baseline=[r['index'] for r in rows['baseline']],
                               recorded=[r['index'] for r in rows['recorded']])))

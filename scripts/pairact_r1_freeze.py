@@ -62,6 +62,9 @@ def freeze(stage, *, prereg_path, manifest_path, repo=ROOT, collector_sha=None, 
             check = json.loads((Path(d) / pc.RECORDING_FILES['recording_check_sha256']).read_text())
             if check.get('qualified') is not True:
                 raise ValueError(f'{d}: recording-check.json of vm {vm} is not qualified')
+            bound = pc.recording_binding_problems(d, core_before)       # v5: that VM's probe of this core
+            if bound:
+                raise ValueError(f'{d}: recording evidence of vm {vm}: ' + '; '.join(bound))
             manifest['sharding']['vm_recording_check'][vm] = {
                 key: pc.file_sha256(Path(d) / name) for key, name in pc.RECORDING_FILES.items()}
     new_prereg_text = set_prereg_status(prereg_text, status)

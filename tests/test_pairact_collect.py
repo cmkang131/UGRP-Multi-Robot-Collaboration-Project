@@ -1059,12 +1059,23 @@ def filled_manifest(prereg, status='FROZEN_CORE', template=EP_CMD, recording=Non
     return m
 
 
-def recording_dir(tmp_path, qualified=True):
+PROBE_SEEDS = [8343000, 8343001, 8343002]
+
+
+def recording_dir(tmp_path, qualified=True, core=None, seeds=PROBE_SEEDS):
+    """The three recording files as RUNBOOK 1-4 writes them, bound to ``core`` (v5: probe source -> probe-cases
+    -> check-rows -> recording-check chain; recording-check.json is the teacher function's output shape)."""
     d = tmp_path / 'runc'
     d.mkdir()
-    (d / 'probe-cases.json').write_text('[]\n')
-    (d / 'check-rows.json').write_text('{}\n')
-    (d / 'recording-check.json').write_text(json.dumps(dict(qualified=qualified, N=3, n=3)) + '\n')
+    cases = [dict(plan=dict(seed=s), candidate=pc.CANDIDATE_BY_MODE['training']) for s in seeds]
+    (d / 'probe-cases.json').write_text(json.dumps(cases) + '\n')
+    rows = dict(core_sha256=core, probe_source=dict(purpose=pc.PURPOSE_PROBE_SOURCE, core_sha256=core, seeds=seeds),
+                probe_cases_sha256=pc.file_sha256(d / 'probe-cases.json'),
+                baseline=[dict(index=s, status='complete', exit=0) for s in seeds],
+                recorded=[dict(index=s, status='complete', exit=0) for s in seeds])
+    (d / 'check-rows.json').write_text(json.dumps(rows) + '\n')
+    (d / 'recording-check.json').write_text(json.dumps(dict(qualified=qualified, N=len(seeds), n=len(seeds),
+                                                            indices=sorted(seeds))) + '\n')
     return d, {k: pc.file_sha256(d / name) for k, name in pc.RECORDING_FILES.items()}
 
 
@@ -1074,7 +1085,7 @@ def test_filled_manifest_passes_core_and_final_with_recording_files(tmp_path, pr
     ep = pc.episode_cmd_audit(EP_CMD)
     core = pc.check_run_manifest(m, stage='core', prereg=core_prereg, batch_size=20, episode=ep)
     assert core == pc.core_sha256(core_prereg, m)
-    d, hashes = recording_dir(tmp_path)
+    d, hashes = recording_dir(tmp_path, core=core)
     final = filled_manifest(prereg, status='FROZEN', recording=hashes)
     assert pc.check_run_manifest(final, stage='final', prereg=dict(prereg, status='FROZEN'), batch_size=20,
                                  episode=ep, recording_dir=d) == core          # status + recording excluded
@@ -1122,7 +1133,7 @@ def test_manifest_gate_checks_every_field(prereg, edit, match):
 
 
 def test_final_stage_hashes_the_recording_files(tmp_path, prereg):
-    d, hashes = recording_dir(tmp_path)
+    d, hashes = recording_dir(tmp_path, core=pc.core_sha256(dict(prereg, status='FROZEN'), filled_manifest(prereg)))
     final = filled_manifest(prereg, status='FROZEN', recording=hashes)
     (d / 'check-rows.json').write_text('{"changed": 1}\n')
     with pytest.raises(ValueError, match='recording_check.check_rows_sha256 differs'):
@@ -1259,7 +1270,7 @@ def test_freeze_script_core_then_final_keeps_core_sha(tmp_path, prereg, monkeypa
     p1 = json.loads(pp.read_text())
     assert p1['status'] == 'FROZEN_CORE' and json.loads(mp.read_text())['status'] == 'FROZEN_CORE'
     assert pp.read_text() == PREREG.read_text().replace('"status": "READY_FOR_REVIEW"', '"status": "FROZEN_CORE"', 1)
-    d, _ = recording_dir(tmp_path)
+    d, _ = recording_dir(tmp_path, core=out['core_sha256'])
     with pytest.raises(ValueError, match='expected'):
         fz.freeze('final', prereg_path=pp, manifest_path=mp, repo=ROOT, recording_dir=d, expect_core=H('0'))
     fin = fz.freeze('final', prereg_path=pp, manifest_path=mp, repo=ROOT, recording_dir=d,

@@ -17,8 +17,8 @@ import time
 import pytest
 
 from harness import pairact_collect as pc
-from test_pairact_collect import (EXP, PREREG, FakeEpisode, case_for, filled_manifest, make, recording_dir,
-                                        result, runner)
+from test_pairact_collect import (EXP, PREREG, PROBE_SEEDS, FakeEpisode, case_for, filled_manifest, make,
+                                        recording_dir, result, runner)
 
 SHARD_ONLY = ('train_closed', 'batch_skipped', 'run_end')
 
@@ -342,17 +342,19 @@ def test_two_vms_with_ledger_sync_equal_one_vm(tmp_path, prereg):
 
 def test_manifest_sharding_binds_count_vm_and_per_vm_recording_check(tmp_path, prereg):
     pre = dict(prereg, status='FROZEN')
-    d, rec = recording_dir(tmp_path)
-    m = filled_manifest(pre, status='FROZEN', recording=rec)
+    m = filled_manifest(pre, status='FROZEN')
     assert m['sharding']['count'] >= 1
     m['sharding'].update(count=3, lag_batches=3, assignment={'gcp6': [0, 1], 'gcp2': [2]}, primary_vm='gcp6',
                          vm_recording_check={})
+    d, rec = recording_dir(tmp_path, core=pc.core_sha256(pre, m))
+    m['recording_check'].update(rec)
     with pytest.raises(ValueError, match='non-primary VMs'):
         pc.check_run_manifest(m, stage='final', prereg=pre, recording_dir=d, shard=(0, 3, 'gcp6'))
     core_before = pc.core_sha256(pre, m)
     d2 = tmp_path / 'b'
     shutil.copytree(d, d2)
-    (d2 / 'recording-check.json').write_text(json.dumps(dict(qualified=True, N=3, n=3, vm='gcp2')) + '\n')
+    (d2 / 'recording-check.json').write_text(json.dumps(dict(qualified=True, N=3, n=3, indices=PROBE_SEEDS,
+                                                             vm='gcp2')) + '\n')
     m['sharding']['vm_recording_check'] = {'gcp2': {k: pc.file_sha256(d2 / n) for k, n in pc.RECORDING_FILES.items()}}
     assert pc.core_sha256(pre, m) == core_before                 # filled at FROZEN, not part of the core
     pc.check_run_manifest(m, stage='final', prereg=pre, recording_dir=d, shard=(1, 3, 'gcp6'))
@@ -407,11 +409,11 @@ def test_freeze_final_fills_the_second_vm_recording_check_without_moving_core(tm
     m['sharding'].update(count=3, lag_batches=3, assignment={'gcp6': [0, 1], 'gcp2': [2]})
     mp.write_text(json.dumps(m, indent=2, ensure_ascii=False))
     out = fz.freeze('core', prereg_path=pp, manifest_path=mp, repo=ROOT, collector_sha=G('f'))
-    d, _ = recording_dir(tmp_path)
+    d, _ = recording_dir(tmp_path, core=out['core_sha256'])
     with pytest.raises(ValueError, match='non-primary VMs'):
         fz.freeze('final', prereg_path=pp, manifest_path=mp, repo=ROOT, recording_dir=d)
     (tmp_path / 'b').mkdir()
-    d2, _ = recording_dir(tmp_path / 'b')
+    d2, _ = recording_dir(tmp_path / 'b', core=out['core_sha256'])
     fin = fz.freeze('final', prereg_path=pp, manifest_path=mp, repo=ROOT, recording_dir=d,
                     expect_core=out['core_sha256'], vm_recording_dirs={'gcp2': str(d2)})
     assert fin['core_sha256'] == out['core_sha256']

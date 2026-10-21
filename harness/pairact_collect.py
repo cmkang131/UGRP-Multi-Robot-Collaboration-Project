@@ -986,6 +986,63 @@ def check_row(result, seed, search15_keys=()):
     return row
 
 
+def _index_list(rows):
+    return [r.get('index') if isinstance(r, dict) else None for r in rows] if isinstance(rows, list) else None
+
+
+def _case_seeds(cases):
+    return [_dig(c, ('plan', 'seed')) for c in cases] if isinstance(cases, list) else None
+
+
+def check_rows_binding(st, core, probe_cases_path, baseline, recorded):
+    """v5 (Codex v4 re-review 1): what check-rows.json records so the final gate can tie the recording check to
+    the current core: the FROZEN_CORE probe source ledger (purpose, core, first admitted seeds), the sha256 of
+    the probe-cases.json those seeds became, and the same seeds in baseline / recorded order."""
+    h = require_probe_source(st, core)
+    seeds = [r['seed'] for r in probe_slots(st)]
+    if _case_seeds(json.loads(Path(probe_cases_path).read_text())) != seeds:
+        raise ValueError(f'probe-cases.json seeds differ from the probe source ledger seeds {seeds}')
+    if _index_list(baseline) != seeds or _index_list(recorded) != seeds:
+        raise ValueError(f'check rows baseline / recorded seeds differ from the probe source seeds {seeds}')
+    return dict(core_sha256=core, probe_cases_sha256=file_sha256(probe_cases_path),
+                probe_source=dict(purpose=h['purpose'], core_sha256=h['core_sha256'], seeds=seeds))
+
+
+def recording_binding_problems(recording_dir, core):
+    """v5 (Codex v4 re-review 1): the final gate ties the three recording files to the current core.
+
+    check-rows.json core_sha256 and its probe_source (a probe_source ledger of this core) == ``core``;
+    probe_cases_sha256 hashes the probe-cases.json beside it (training candidate cases); probe source seeds ==
+    probe-cases seeds == baseline / recorded indices (same order); recording-check.json indices / N == those
+    seeds.  Evidence produced under another core (a revised manifest / prereg) is refused."""
+    d = Path(recording_dir)
+    try:
+        cases, rows, check = (json.loads((d / RECORDING_FILES[k]).read_text()) for k in RECORDING_FIELDS)
+    except (OSError, ValueError) as error:
+        return [f'recording evidence in {d} unreadable: {error}']
+    if not (isinstance(cases, list) and isinstance(rows, dict) and isinstance(check, dict)):
+        return [f'recording evidence in {d}: probe-cases list, check-rows / recording-check objects required']
+    out = []
+    if rows.get('core_sha256') != core:
+        out.append(f'check-rows.json core_sha256 {rows.get("core_sha256")} != current core {core} '
+                   '(recording evidence of another core)')
+    src = rows.get('probe_source') if isinstance(rows.get('probe_source'), dict) else {}
+    if src.get('purpose') != PURPOSE_PROBE_SOURCE or src.get('core_sha256') != core:
+        out.append(f'check-rows.json probe_source {src.get("purpose")!r}/{src.get("core_sha256")} is not a '
+                   f'{PURPOSE_PROBE_SOURCE} ledger of the current core')
+    if rows.get('probe_cases_sha256') != file_sha256(d / RECORDING_FILES['probe_cases_sha256']):
+        out.append('check-rows.json probe_cases_sha256 does not hash the probe-cases.json beside it')
+    if any(not isinstance(c, dict) or c.get('candidate') != CANDIDATE_BY_MODE['training'] for c in cases):
+        out.append(f'probe-cases.json: every case needs candidate {CANDIDATE_BY_MODE["training"]}')
+    seeds = _case_seeds(cases)
+    if not seeds or not (seeds == src.get('seeds') == _index_list(rows.get('baseline')) ==
+                         _index_list(rows.get('recorded'))):
+        out.append('probe source / probe-cases / check-rows baseline / recorded seeds differ')
+    if not seeds or sorted(check.get('indices') or []) != sorted(seeds) or check.get('N') != len(seeds):
+        out.append('recording-check.json indices / N do not match probe-cases.json')
+    return out
+
+
 # ------------------------------------------------------- convert hand-off
 
 def convert_input(prereg, st, out_dir, *, prereg_sha, teacher_sha, run_pattern='seed-{seed}', core=None):
@@ -1337,6 +1394,8 @@ def check_run_manifest(manifest, *, stage, prereg, batch_size=None, episode=None
             check = Path(recording_dir) / RECORDING_FILES['recording_check_sha256']
             if check.is_file() and json.loads(check.read_text()).get('qualified') is not True:
                 problems.append('recording-check.json is not qualified')
+            if all((Path(recording_dir) / name).is_file() for name in RECORDING_FILES.values()):
+                problems += recording_binding_problems(recording_dir, core_sha256(prereg, manifest))
     if problems:
         raise ValueError(f'run manifest not usable at stage {stage}: ' + '; '.join(problems))
     return core_sha256(prereg, manifest)
