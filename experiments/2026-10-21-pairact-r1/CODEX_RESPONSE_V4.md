@@ -63,4 +63,9 @@
 
 ## 해시·테스트 (이 커밋 기준)
 
-- 아래 값은 이 파일을 커밋한 뒤 최종 보고에 적습니다(이 파일 자체가 prereg 해시에 영향을 주지 않도록 표에서 분리).
+- 코드·prereg 커밋 `192da476d`(이 대응표의 해시 기입은 그 다음 커밋, 문서만).
+- `COLLECT_PREREG_DRAFT.json` 파일 sha256 `fa337d70f24bc8de43a6635616c89a85a9c8edb86eda8dc0ca5b6797761686d2`
+- prereg core(status 제외, `prereg_core_sha256`) `b271f16b71540a547bcfa7b7f0a5a842ff608de7741de0b890cfd4ffc1ddcd0c`
+- `core_sha256`(prereg + DRAFT manifest, 참고값 — VM 기입 뒤 FROZEN_CORE에서 바뀜) `759ea413efeca8369f900f1d8509bda924638de1c74c71c981d4c565f3d5da22`
+- `RUN_MANIFEST.json` 파일 sha256 `5be92e44f3f52d704bcded652aa5f5c90710bc024b41be141f4eef9a93d4da70`
+- 테스트(Oracle `/home/ubuntu/ugrp-e1-venv`, 가짜 에피소드·순수 함수만): `tests/test_pairact_collect.py` 89 + `tests/test_pairact_collect_shard.py` 17 + `tests/test_pairact_prereg_xreview.py` 8(X1–X8) + `tests/test_pairact_collect_v4.py` 11 + `tests/test_pairact_r1.py` 14 = *139 passed, skip 0*(155 s). 시뮬레이터·GPU 실행 없음.
