@@ -78,19 +78,37 @@ def test_check_required_unless_probe_and_bound_to_machine(tmp_path):
         admit(path, sha, check(execution_host={**HOST, 'instance': 'gcp2'}))
 
 
-def _diff(path):
+def _diff(path, added=False):
     # v3 (Codex v2 N3): a missing base commit is a failure, never a skip (CI fetches full history)
     run = subprocess.run(['git', '-C', str(ROOT), 'diff', '-U0', BASE, '--', path], capture_output=True, text=True)
     assert run.returncode == 0, f'base commit {BASE} unavailable: {run.stderr[-300:]}'
     out = run.stdout
     removed = [l for l in out.splitlines() if l.startswith('-') and not l.startswith('---')]
+    if added:
+        return removed, [l for l in out.splitlines() if l.startswith('+') and not l.startswith('+++')]
     return removed
+
+
+# -c5 (c4 teacher + c3 admission): the -c3/-c4 opt-in carry_route keyword is threaded through three
+# existing lines (run signature, start_from_runner call, CLI run call). Those lines may change ONLY by
+# inserting exactly these keyword fragments; every other line of the gate path stays byte identical.
+CARRY_ROUTE_INSERTS = ('carry_route="straight_v1",', ',route_mode=carry_route', 'carry_route=a.carry_route,')
 
 
 def test_existing_gate_path_is_byte_identical():
     # admission module: append-only; teacher main: the gate branch line becomes ``elif`` only
     assert _diff('harness/grasp_act_admission.py') == []
-    assert _diff('scripts/run_grasp_act_teacher.py') == ['-    if a.record_training:']
+    removed, added = _diff('scripts/run_grasp_act_teacher.py', added=True)
+    assert '-    if a.record_training:' in removed
+    stripped = []
+    for line in added:
+        for frag in CARRY_ROUTE_INSERTS:
+            line = line.replace(frag, '')
+        stripped.append('-' + line[1:])
+    others = [l for l in removed if l != '-    if a.record_training:']
+    assert len(others) == 3, others
+    for line in others:
+        assert line in stripped, f'gate-path line changed beyond carry_route keyword insert: {line[:120]}'
     text = (ROOT / 'scripts/run_grasp_act_teacher.py').read_text()
     assert "    elif a.record_training:\n        if a.teacher_gate is None:raise ValueError('verified >=38/40 teacher gate required before recording')" in text
     assert "default='teacher_gate_v1'" in text
