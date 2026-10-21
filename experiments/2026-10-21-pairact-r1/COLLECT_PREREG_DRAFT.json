@@ -1,7 +1,7 @@
 {
   "schema": "ugrp.pairact_r1.collect_prereg.v2",
   "status": "READY_FOR_REVIEW",
-  "revision": "v3 (2026-10-21): Codex gpt-6-astra v2 re-review HOLD (B1-B5, B6, #4, N2, N3) answered in CODEX_RESPONSE_V3.md: two-commit freeze, FROZEN_CORE -> FROZEN, fixed-schema RUN_MANIFEST gate, setup_rejected row / requeue fixes, audit outputs. Earlier: v2 (2026-10-21): Codex gpt-6-astra review 01-collect-prereg-review.md 13 items + repo audit 03 items 1/2/4 + owner decisions 1-13 (task 11cb2d69). Response table: experiments/2026-10-21-pairact-r1/CODEX_RESPONSE_V2.md; decision 4 tiers per owner answer 2026-10-21 (80 floor)",
+  "revision": "v3s (2026-10-21): execution-only sharding rule (sharding, batch_owner_lag_v1) for parallel collection on one or two VMs, stack pin -c5 (teacher -c4 + c3 admission). No count, judgement, stop, allocation, seed or decision rule changed. v3 (2026-10-21): Codex gpt-6-astra v2 re-review HOLD (B1-B5, B6, #4, N2, N3) answered in CODEX_RESPONSE_V3.md: two-commit freeze, FROZEN_CORE -> FROZEN, fixed-schema RUN_MANIFEST gate, setup_rejected row / requeue fixes, audit outputs. Earlier: v2 (2026-10-21): Codex gpt-6-astra review 01-collect-prereg-review.md 13 items + repo audit 03 items 1/2/4 + owner decisions 1-13 (task 11cb2d69). Response table: experiments/2026-10-21-pairact-r1/CODEX_RESPONSE_V2.md; decision 4 tiers per owner answer 2026-10-21 (80 floor)",
   "freeze_rule": "v3 two-stage freeze with RUN_MANIFEST.json (scripts/pairact_r1_freeze.py). READY_FOR_REVIEW: pilot measurement only, ledger purpose pilot_yield_only (never a recording probe source, never a training input). FROZEN_CORE (commit Y): every field of this file and every RUN_MANIFEST field except the three recording_check hashes is fixed; core_sha256 = sha256 canonical {this file without status, RUN_MANIFEST without status and recording_check hashes} (harness.pairact_collect.core_sha256) is recorded in ledger headers; the probe source measurement run, probe-cases, the recording probe and check-rows run here and are bound to core_sha256. FROZEN (commit Z): only status and the three recording_check hashes change (core_sha256 unchanged); training collection and convert-input need FROZEN. Collector code is commit X (RUN_MANIFEST collector.source_sha, ancestor of the checkout HEAD, collector files unchanged X..HEAD). report accepts the same file sha256 or the same content (status excluded); convert-input needs a FROZEN training ledger with the current core_sha256. No field changes during collection.",
   "decision_source": "outputs/reports/claude-arch-parallel-20261019/pairact-success-filter-decision.md (2026-10-20, success-filtered BC adopted; P1 tournament non-blocking)",
   "start_trigger": {
@@ -101,14 +101,14 @@
   "recording_admission": {
     "id": "pairact_p3_collect_prereg_v1",
     "approved_by": "carry owner (Claude), 2026-10-21 answer to task c46a4652",
-    "change": "ONLY the '>=38/40 teacher gate' requirement of the teacher recording admission is replaced by: sha256 of this pre-registration equals the value passed to the run, and status FROZEN for data recording (FROZEN_CORE or FROZEN for the recording probe, data_admitted false). Teacher -c3 harness/grasp_act_admission.py accepts schema ugrp.pairact_r1.collect_prereg.v2 and records the prereg core sha256 (status excluded) in the proof (branch dsh/pairact-p2-carrypath-c3-admission, cherry-picked into -c3). A READY_FOR_REVIEW pre-registration refuses recording.",
+    "change": "ONLY the '>=38/40 teacher gate' requirement of the teacher recording admission is replaced by: sha256 of this pre-registration equals the value passed to the run, and status FROZEN for data recording (FROZEN_CORE or FROZEN for the recording probe, data_admitted false). Teacher -c5 harness/grasp_act_admission.py accepts schema ugrp.pairact_r1.collect_prereg.v2 and records the prereg core sha256 (status excluded) in the proof (c6626187b of dsh/pairact-p2-carrypath-c3-admission, cherry-picked into -c5 as 5d6dab139). A READY_FOR_REVIEW pre-registration refuses recording.",
     "kept_unchanged": [
       "paired 640x480 recording-mode check (>=3 same starts, recording off vs recording probe on the same machine, both physical_success, rgb_size [640,480], rgb_hz 10, same source/profile/modes): data validity of the training input vs the student camera, not teacher reliability",
       "visible_only + issued pose + visible_handoff_v1 recording requirements",
       "data_admitted excludes search/approach handoffs and recording probes"
     ],
     "check_scope": "metadata and physical-result comparison only; it does not verify pixel content, measured cadence or trajectory identity (Codex follow-up REVIEW.md)",
-    "stack": "RUN_MANIFEST.json stack (teacher -c3, adapter -a-c3, root -r-c3 SHAs, filled when the -c3 stack is pushed); RUN_MANIFEST.json is frozen together with this file in two stages",
+    "stack": "RUN_MANIFEST.json stack (teacher -c5, adapter -a-c5, root -r-c5 SHAs, pushed 2026-10-21); RUN_MANIFEST.json is frozen together with this file in two stages",
     "default_off": "existing candidates and the gate path are byte-identical (regression tests in each -c branch)",
     "fallback": "if the recording path fails on the VM the first time, only measurement runs are done (seeds.pilot, recording off, candidate pairact_p2_r13) and reported as '수율 측정, 시연 아님'"
   },
@@ -251,6 +251,20 @@
       "20_150_200_25pct": "see targets.rationale and distance_gate.rationale"
     }
   },
+  "sharding": {
+    "id": "batch_owner_lag_v1",
+    "scope": "execution only: how batches are spread over processes and VMs. Episode judgement, the status table, the counts N/S/A/E, the stop rules, the allocation formula, bins, seed pools and their consumption order and the training decision tiers are unchanged and applied by the same functions (harness.pairact_collect plan_batch / allocate / train_stop / decision). Fixed before any result",
+    "K": "number of shard processes = RUN_MANIFEST sharding.count, core content (fixed at FROZEN_CORE, never changed within a run root). K = 1 is the serial runner",
+    "owner": "global batch index k is planned and run by shard k % K; each shard appends only to its own ledger run_root/shards/sII/ledger.jsonl (one process per shard: file lock; the header records shard index, K and VM)",
+    "lag_batches": "K",
+    "planning_view": "batch k is planned on the view = the plan rows of every batch < k plus the results of every batch <= k - K, in serial ledger order (results of batch j - K, then the plan rows of batch j). A shard waits until its view is complete. The view holds only immutable rows, so the plan of batch k does not depend on wall-clock order, VM speed or ledger sync timing (tests/test_pairact_collect_shard.py: K = 1 equals the serial ledger row for row; random schedules, threads and two run roots joined by ledger sync give the same merged ledger)",
+    "what_changes_vs_serial": "for K > 1 the adaptive allocation (warmup round robin, deficit_weighted_v2 weights, bin_limit, stop checks) reads counts that lag by up to K - 1 batches: in-flight batches are not counted yet. The rule is fixed in advance and never reads in-flight outcomes, but the bin sequence of a K > 1 run can differ from a serial run on the same seeds. Reports and the merged report state K",
+    "attempt_cap": "train slots of in-flight batches are reserved against attempt_cap (room = 600 - N - reserved), so N <= 600. A planning boundary without room while batches are in flight is a batch_skipped row (no seed consumed); environment failures of the in-flight batches free room and are re-queued as in the serial run",
+    "stop": "the first train stop seen at a planning boundary is written as train_closed and ends train planning (a serial run ends there). Batches already in flight run to their end and every attempt is kept (as targets.overshoot). Validation is planned after the close exactly as in the serial run. STOP_HOST without --validation-after-host-fix writes nothing and every shard returns STOP_HOST; after the host fix all shards are rerun with the flag",
+    "seeds": "a seed is planned only when unconsumed (every earlier plan is in the view) or as the re-queue of a HOST_ERROR of a finished batch, so no seed is in two running batches; merge refuses a ledger set that violates this (tested with real threads)",
+    "merge": "run_pairact_collect.py merge --shards K writes run_root/merged/{ledger.jsonl, report.json, merge.json}: the serial-order view of all shard ledgers. It is derived and rewritten at every merge; the shard ledgers are the originals. report / probe-cases / convert-input read --run-root run_root/merged; merge.json records every shard ledger sha256 and finished (run_end written and every planned batch done)",
+    "vms": "RUN_MANIFEST sharding.assignment maps VM -> shard indices. Two VMs exchange only the shard ledgers (rsync whole-file replace, a torn last line is ignored by the reader); the world raw directories are copied to the merge VM under the same absolute run root before convert-input. The teacher recording check is machine-bound (same_machine), so every non-primary VM runs its own recording probe and check (RUN_MANIFEST sharding.vm_recording_check, filled at FROZEN)"
+  },
   "seeds": {
     "consumption": "per split, new attempts take the next unused seed in strict ascending order regardless of bin; a HOST_ERROR re-queue reuses its own seed and bin and consumes no new seed; setup rejections and admission errors consume the seed and are never re-queued",
     "pilot": {
@@ -342,7 +356,8 @@
   "known_blockers": [
     "unverified, gated at run time: MJWarp render at 640x480 when recording (the FROZEN_CORE recording-mode check must be qualified before FROZEN and training mode)",
     "unverified, gated at run time: the first VM batch must show no admission_rejected (case generator uses the adapter-pinned placement filter; admission_rejected batches admit nothing)",
-    "adapter -a-c run() had two runner.run calls while the root AST bridge requires exactly one (Codex follow-up); fixed in the -a-c revision named in RUN_MANIFEST.json stack"
+    "adapter -a-c run() had two runner.run calls while the root AST bridge requires exactly one (Codex follow-up); fixed in the -a-c revision named in RUN_MANIFEST.json stack",
+    "unverified, gated at run time: GPU memory and CPU contention of K = 3-4 root processes on one g2-standard-8 / L4 (per process ~20 worlds); measure host_loop_s per process in the first sharded batch before using K = 4 (RUNBOOK 1-6a)"
   ],
   "codex_review_items": [
     "status table and batch rule: complete/cap_end/mission failures in N; HOST_ERROR/admission excluded and counted; unclean batch admits nothing (audit 1)",
@@ -355,6 +370,7 @@
     "pilot seeds 8343000-039 for measurement; validation only after collection; validation gate",
     "heldout rule A, no replacement, no access before checkpoint freeze",
     "RUN_MANIFEST.json frozen with this file; report/convert-input check the header sha (audit 2)",
-    "generator rejections in the ledger; per-bin carry failure sub-reasons; bin_limit rule (world 1)"
+    "generator rejections in the ledger; per-bin carry failure sub-reasons; bin_limit rule (world 1)",
+    "v3s sharding (batch_owner_lag_v1): execution only; K = 1 is the serial ledger; K > 1 allocation reads counts lagging K - 1 batches (disclosed in what_changes_vs_serial); in-flight reservation keeps N <= 600; first stop closes train planning; per-VM recording check for a second VM"
   ]
 }

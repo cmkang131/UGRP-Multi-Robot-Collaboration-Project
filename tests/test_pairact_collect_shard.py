@@ -51,9 +51,9 @@ def shard_kw(prereg, **kw):
                 max_batches=kw.pop('max_batches', 1000), make_cases=kw.pop('make_cases', None) or make(prereg), **kw)
 
 
-def step(root, prereg, i, count, episode, vm='vmA', **kw):
+def step(root, prereg, i, count, episode, vm='vmA', sha='sha', **kw):
     """One cooperative step of shard i: at most one episode run, never waits."""
-    return runner.run_shard(root, prereg, 'sha', shard=i, count=count, vm=vm, run_episode=episode,
+    return runner.run_shard(root, prereg, sha, shard=i, count=count, vm=vm, run_episode=episode,
                             wait=lambda: False, **shard_kw(prereg, max_batches=1, **kw))
 
 
@@ -385,3 +385,55 @@ def test_draft_manifest_and_prereg_carry_the_sharding_rule(prereg):
     rule = prereg['sharding']
     assert 'execution' in rule['scope'] and rule['lag_batches'] == 'K'
     assert prereg['status'] == 'READY_FOR_REVIEW'
+
+
+def test_freeze_final_fills_the_second_vm_recording_check_without_moving_core(tmp_path, prereg, monkeypatch):
+    import importlib.util
+    from test_pairact_collect import G, ROOT
+    spec = importlib.util.spec_from_file_location('pairact_r1_freeze', ROOT / 'scripts/pairact_r1_freeze.py')
+    fz = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fz)
+    monkeypatch.setattr(pc, 'collector_provenance', lambda repo, sha, files: [])
+    pp, mp = tmp_path / 'prereg.json', tmp_path / 'manifest.json'
+    pp.write_text(PREREG.read_text())
+    m = filled_manifest(prereg, status='DRAFT_VM_FILL')
+    for k in pc.RECORDING_FIELDS:
+        m['recording_check'][k] = '[VM 기입] filled at FROZEN'
+    m['sharding'].update(count=6, lag_batches=6, assignment={'gcp6': [0, 1, 2], 'gcp2': [3, 4, 5]})
+    mp.write_text(json.dumps(m, indent=2, ensure_ascii=False))
+    out = fz.freeze('core', prereg_path=pp, manifest_path=mp, repo=ROOT, collector_sha=G('f'))
+    d, _ = recording_dir(tmp_path)
+    with pytest.raises(ValueError, match='non-primary VMs'):
+        fz.freeze('final', prereg_path=pp, manifest_path=mp, repo=ROOT, recording_dir=d)
+    (tmp_path / 'b').mkdir()
+    d2, _ = recording_dir(tmp_path / 'b')
+    fin = fz.freeze('final', prereg_path=pp, manifest_path=mp, repo=ROOT, recording_dir=d,
+                    expect_core=out['core_sha256'], vm_recording_dirs={'gcp2': str(d2)})
+    assert fin['core_sha256'] == out['core_sha256']
+    assert set(json.loads(mp.read_text())['sharding']['vm_recording_check']) == {'gcp2'}
+
+
+def test_cli_shard_needs_vm_and_merge_writes_the_merged_root(tmp_path, prereg):
+    import subprocess
+    import sys
+    from test_pairact_collect import EP_CMD, ROOT
+
+    def cli(*args):
+        return subprocess.run([sys.executable, str(ROOT / 'scripts/run_pairact_collect.py'), *args],
+                              capture_output=True, text=True, timeout=120)
+    out = cli('collect', '--prereg', str(PREREG), '--run-root', str(tmp_path / 'x'), '--episode-cmd', EP_CMD,
+              '--shard', '0/2')
+    assert out.returncode != 0 and '--shard needs --vm' in out.stderr
+    out = cli('collect', '--prereg', str(PREREG), '--run-root', str(tmp_path / 'x'), '--episode-cmd', EP_CMD,
+              '--shard', '2/2', '--vm', 'gcp6')
+    assert out.returncode != 0 and 'need 0 <= i < K' in out.stderr
+    root = tmp_path / 'm'
+    _, real_sha = pc.load_prereg(PREREG)
+    run_cooperative(root, prereg, 2, {i: FakeEpisode(lambda s, c: result()) for i in range(2)}, mode='measurement',
+                    sha=real_sha)
+    out = cli('merge', '--prereg', str(PREREG), '--run-root', str(root), '--shards', '2')
+    assert out.returncode == 0, out.stderr
+    res = json.loads(out.stdout)
+    assert res['state'] == 'PILOT_DONE' and res['finished'] and (root / 'merged' / 'report.json').exists()
+    out = cli('report', '--prereg', str(PREREG), '--run-root', str(root / 'merged'))
+    assert out.returncode == 0 and '수율 측정' in out.stdout

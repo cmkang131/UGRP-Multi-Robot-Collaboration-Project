@@ -790,8 +790,12 @@ def test_run_manifest_draft_has_22_vm_fields_and_blocks_frozen_stages(prereg):
             pc.check_run_manifest(m, stage=stage, prereg=dict(prereg, status='FROZEN_CORE'))
     s = m['stack']
     assert [s[k]['branch'] for k in ('teacher', 'adapter', 'root')] == [
-        'dsh/pairact-p2-carrypath-c3', 'dsh/pairact-p2-carrypath-a-c3', 'dsh/pairact-p2-carrypath-r-c3']
-    assert all(s[k]['sha'] == '[-c3 SHA 기입]' for k in ('teacher', 'adapter', 'root'))     # pin pending
+        'dsh/pairact-p2-carrypath-c5', 'dsh/pairact-p2-carrypath-a-c5', 'dsh/pairact-p2-carrypath-r-c5']
+    # v3s: the -c5 stack is pushed and pinned (teacher -c4 + c3 admission)
+    assert [s[k]['sha'] for k in ('teacher', 'adapter', 'root')] == [
+        '75929e7719ad98a089e3dda5251f4249d8bae511', '3779d9615ef6dc8e38f57ab968a14a9e45189ecc',
+        'a93082c343ef5f3687851bf4b0c9fb0f2484ada1']
+    assert not [x for x in pc.manifest_placeholders(m) if x.startswith('stack.')]
 
 
 def test_run_manifest_file_hashes_match_this_checkout():

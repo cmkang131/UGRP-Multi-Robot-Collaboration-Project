@@ -4,14 +4,15 @@
     python scripts/pairact_r1_freeze.py core --collector-sha X [--verify-assets]
     git commit -m 'pairact-r1 FROZEN_CORE'          # prints core_sha256; record it in the commit message
     # probe source run, probe-cases, recording probe, check-rows, recording-check (RUNBOOK 1-2b)
-    python scripts/pairact_r1_freeze.py final --recording-dir RUNC [--verify-assets]
+    python scripts/pairact_r1_freeze.py final --recording-dir RUNC [--vm-recording-dir gcp2=RUNC_B] [--verify-assets]
     git commit -m 'pairact-r1 FROZEN'                # core_sha256 must be the one printed at FROZEN_CORE
 
 ``core`` writes collector.source_sha = X, prereg.core_sha256 and status FROZEN_CORE in both files,
 then runs the stage 'core' gate with the collector provenance check (X ancestor of HEAD, fixed
 collector files unchanged X..HEAD).  ``final`` fills the three recording_check sha256 from
 RUNC/{probe-cases,check-rows,recording-check}.json, sets FROZEN and runs the stage 'final' gate;
-it refuses when core_sha256 moved.  Only the status line of the prereg is rewritten (other bytes kept).
+it refuses when core_sha256 moved.  v3s: ``--vm-recording-dir VM=DIR`` fills
+sharding.vm_recording_check[VM] for every non-primary VM of sharding.assignment (that VM's own probe).  Only the status line of the prereg is rewritten (other bytes kept).
 Nothing is written when the gate fails.
 """
 from __future__ import annotations
@@ -40,7 +41,7 @@ def set_prereg_status(text, status):
 
 
 def freeze(stage, *, prereg_path, manifest_path, repo=ROOT, collector_sha=None, recording_dir=None,
-           verify_assets=False, expect_core=None):
+           verify_assets=False, expect_core=None, vm_recording_dirs=None):
     prereg_text = Path(prereg_path).read_text()
     manifest = json.loads(Path(manifest_path).read_text())
     status = 'FROZEN_CORE' if stage == 'core' else 'FROZEN'
@@ -57,6 +58,12 @@ def freeze(stage, *, prereg_path, manifest_path, repo=ROOT, collector_sha=None, 
             raise ValueError(f'core_sha256 {core_before} != expected {expect_core}')
         for key, name in pc.RECORDING_FILES.items():
             manifest['recording_check'][key] = pc.file_sha256(Path(recording_dir) / name)
+        for vm, d in (vm_recording_dirs or {}).items():
+            check = json.loads((Path(d) / pc.RECORDING_FILES['recording_check_sha256']).read_text())
+            if check.get('qualified') is not True:
+                raise ValueError(f'{d}: recording-check.json of vm {vm} is not qualified')
+            manifest['sharding']['vm_recording_check'][vm] = {
+                key: pc.file_sha256(Path(d) / name) for key, name in pc.RECORDING_FILES.items()}
     new_prereg_text = set_prereg_status(prereg_text, status)
     prereg = json.loads(new_prereg_text)
     manifest['prereg']['core_sha256'] = pc.prereg_core_sha256(prereg)
@@ -79,12 +86,18 @@ def main():
     p.add_argument('--collector-sha', help='core: commit X (collector code)')
     p.add_argument('--recording-dir', type=Path, help='final: probe source run root with the three recording files')
     p.add_argument('--expect-core', help='final: core_sha256 printed at FROZEN_CORE')
+    p.add_argument('--vm-recording-dir', action='append', default=[], metavar='VM=DIR',
+                   help='final, sharded over VMs: recording files of a non-primary VM (repeat per VM)')
     p.add_argument('--verify-assets', action='store_true', help='re-hash the episode assets (on the collection VM)')
     a = p.parse_args()
     if a.stage == 'final' and a.recording_dir is None:
         p.error('final needs --recording-dir')
+    if any('=' not in x for x in a.vm_recording_dir):
+        p.error('--vm-recording-dir VM=DIR')
+    vm_dirs = dict(x.split('=', 1) for x in a.vm_recording_dir)
     print(json.dumps(freeze(a.stage, prereg_path=a.prereg, manifest_path=a.manifest, collector_sha=a.collector_sha,
-                            recording_dir=a.recording_dir, verify_assets=a.verify_assets, expect_core=a.expect_core)))
+                            recording_dir=a.recording_dir, verify_assets=a.verify_assets, expect_core=a.expect_core,
+                            vm_recording_dirs=vm_dirs)))
 
 
 if __name__ == '__main__':

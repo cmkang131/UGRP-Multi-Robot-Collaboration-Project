@@ -9,31 +9,31 @@
   },
   "stack": {
     "teacher": {
-      "branch": "dsh/pairact-p2-carrypath-c3",
-      "sha": "[-c3 SHA 기입]",
-      "note": "c3 = c2 4b080d35a3dcbbd8fb8a992e1f1106a7289757b2 + formation detour path (other worker) + harness/grasp_act_admission.py FROZEN_CORE/FROZEN interface (separate commit, RUNBOOK 1-0)"
+      "branch": "dsh/pairact-p2-carrypath-c5",
+      "sha": "75929e7719ad98a089e3dda5251f4249d8bae511",
+      "note": "c5 = c4 402bbf155ca162da7a74518eab9b8bd98138299a (c3 formation detour + c4 carry route recorded at handover) + c3 admission c6626187b cherry-picked as 5d6dab139 (collect_recording_admission: prereg schema v2, probe FROZEN_CORE/FROZEN, data FROZEN) + 75929e771 test-only fix of the gate-path byte-identity test"
     },
     "adapter": {
-      "branch": "dsh/pairact-p2-carrypath-a-c3",
-      "sha": "[-c3 SHA 기입]",
-      "note": "c2 aaabddb1725191ebaa11f0849bf6446f612e150b with harness/beampair_teacher.py DEPENDENCY_SHA re-pinned to the teacher -c3 SHA"
+      "branch": "dsh/pairact-p2-carrypath-a-c5",
+      "sha": "3779d9615ef6dc8e38f57ab968a14a9e45189ecc",
+      "note": "a-c4 2e4460ee618894542e73e164f9f814a50426b3f8 with harness/beampair_teacher.py DEPENDENCY_SHA re-pinned to the teacher -c5 SHA (one line)"
     },
     "root": {
-      "branch": "dsh/pairact-p2-carrypath-r-c3",
-      "sha": "[-c3 SHA 기입]",
-      "note": "c2 612ef6437d1eab4ad98a3fa8ee331760c4dc5595 re-pinned to adapter -a-c3 and teacher -c3; its test compiles the pinned adapter run() (runner_call 1)"
+      "branch": "dsh/pairact-p2-carrypath-r-c5",
+      "sha": "a93082c343ef5f3687851bf4b0c9fb0f2484ada1",
+      "note": "r-c4 32d8490ed with ADAPTER_SHA / TEACHER_SHA re-pinned to -a-c5 / -c5 (two lines) + experiments/2026-10-21-pairact-p2/C5_STACK.md"
     },
-    "pin_rule": "fill the three -c3 SHAs from git ls-remote origin once the -c3 stack is pushed (RUNBOOK 1-0 stack pin update); a placeholder blocks every frozen stage"
+    "pin_rule": "the three -c5 SHAs are pushed (2026-10-21); before FROZEN_CORE check git ls-remote origin and git -C $SRC/teacher (adapter, root) rev-parse HEAD against stack.*.sha (RUNBOOK 1-0); any change of the stack is a new FROZEN_CORE"
   },
   "collector": {
-    "branch": "dsh/pairact-carry-r1-v3",
+    "branch": "dsh/pairact-carry-r1-v3-shard",
     "source_sha": "[VM 기입] commit X, the collector code commit; HEAD may be a descendant",
     "files_rule": "harness.pairact_collect.COLLECTOR_FILES (runner code, direct setup-geometry imports and inputs) and the generator: identical at X and HEAD, clean in the checkout",
     "file_sha256": {
-      "harness/pairact_collect.py": "620206036c8c6a1b7c240711668dc170048914775d1d86f04f53ac6393398e59",
+      "harness/pairact_collect.py": "9f1b2a1e43923c8cf7b82c775cae249cad966439cfa123e64d1d987f0d088d87",
       "harness/pairact_r1.py": "8a9869248740bf5ad2da7194cdd9a582347ac09e88783cd6ea127ef3f208a210",
-      "scripts/run_pairact_collect.py": "be9bbca64ed0cdf9d3c9390d3ab3a22513452badd643c66512fcadb49dd6f0f7",
-      "scripts/pairact_r1_freeze.py": "2d95a764d75f9102776c8d2704a2f62c531ea39d152238d1630fb027f3c458bc",
+      "scripts/run_pairact_collect.py": "60e1e7e46b2e6b61c9a135cfb76736167c835efbe35e91788b653b5472b590bd",
+      "scripts/pairact_r1_freeze.py": "0668d8f0f6dec9f67b0c903f608d4fb9164bbb86dd56e57d7cbf7b31a312cbb8",
       "scripts/check_pairact_r1_seeds.py": "463054427877efd34dfd6e5ce291b4e06f2ad95c4e81e2d75e385af38c3b73de",
       "experiments/2026-10-21-pairact-r1/seeds.json": "eeb5cf615666e15d03c1d4cb54de8c83b0618cb6321d92e641dd237de8cd4735",
       "harness/static_keepouts.py": "2b4faf26317f45cbdd7cb2deab8fae87a9e460f96778c8af185ec2ac00d57aa3",
@@ -57,7 +57,7 @@
     "batch_size": 20,
     "max_batches_per_night": "pilot 2 batches (40 pilot seeds); probe source 1 batch; training until --deadline-utc (UTC 00:30 offpeak end minus one batch wall)",
     "episode_template_draft": "python /home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py --flow beampair --adapter-source $SRC/adapter --teacher-source $SRC/teacher --cases {cases} --indices {indices} --cap-s 60 --out {out} --vm-hourly-usd 1.096 --gcp6-isolated-v1 --placement-graspable-filter-v1 --world-model-parameters-v1 --native-sleep-policy-compat-v1 --full-active-dof-workspace-v1 --warp-native-contact-v1 --canonical-xml /home/ugrp/ugrp-sim/runs/beamact5/wide-export-old-8420000e/canonical-scene.xml --per-world-model-references-v1 /home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/per-world-references.json --rejection-table /home/ugrp/ugrp-sim/runs/beamact5/gate-40-r13/rejection_table.json --batch-per-world-speed-v1",
-    "episode_template": "[VM 기입] the exact expanded --episode-cmd string (SRC replaced by the absolute -c3 checkout path)",
+    "episode_template": "[VM 기입] the exact expanded --episode-cmd string (SRC replaced by the absolute -c5 checkout path)",
     "episode_template_sha256": "[VM 기입] sha256 of episode_template (= ledger header episode.template_sha256)"
   },
   "limits": {
@@ -111,11 +111,27 @@
     "local_2026_10_21": "scripts/check_pairact_r1_seeds.py --scan-refs (15 refs incl. -c, -a-c, -r-c, p5-student): passed true, problems 0, scan_hits 0 (pilot 8343000-039 included)",
     "vm_seed_check_sha256": "[VM 기입] pilot run root seed-check.json"
   },
+  "sharding": {
+    "rule": "COLLECT_PREREG sharding (batch_owner_lag_v1): batch k -> shard k % count, planned on the view that lags lag_batches = count batches. count, lag_batches, assignment and primary_vm are core content (fixed at FROZEN_CORE). Training collection checks --shard i/count and --vm against assignment (a serial training run needs count 1). vm_recording_check: for every assignment VM except primary_vm, the sha256 of that VM's own probe-cases / check-rows / recording-check files (the teacher recording check is machine-bound), filled at FROZEN like recording_check and excluded from core_sha256. Draft: one VM, 4 shards; the two-VM variant (RUNBOOK 1-6b) is count 6, assignment gcp6 [0,1,2] / gcp2 [3,4,5], decided before FROZEN_CORE",
+    "count": 4,
+    "lag_batches": 4,
+    "assignment": {
+      "gcp6": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    "primary_vm": "gcp6",
+    "vm_recording_check": {}
+  },
   "fill_commands": [
     "sha256sum of each asset / smoke / seed-check file named in the VM-fill fields",
     "git -C $SRC/teacher rev-parse HEAD (and adapter, root): must equal stack.*.sha",
     "nvidia-smi --query-gpu=name,driver_version,memory.total --format=csv; python -c \"import warp, mujoco, mujoco_warp; print(warp.__version__, mujoco.__version__)\"",
     "printf %s \"$EP\" | sha256sum",
-    "python scripts/pairact_r1_freeze.py core --collector-sha X (FROZEN_CORE); after the probe: python scripts/pairact_r1_freeze.py final --recording-dir RUNC (FROZEN)"
+    "python scripts/pairact_r1_freeze.py core --collector-sha X (FROZEN_CORE); after the probe: python scripts/pairact_r1_freeze.py final --recording-dir RUNC (FROZEN)",
+    "sharding: count / assignment decided before FROZEN_CORE (one VM: 4 shards; two VMs: 6, gcp6 0-2, gcp2 3-5); for each non-primary VM run its own probe (RUNBOOK 1-6b) and pass --vm-recording-dir VM=DIR to scripts/pairact_r1_freeze.py final"
   ]
 }
