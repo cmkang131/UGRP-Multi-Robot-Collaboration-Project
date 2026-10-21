@@ -97,6 +97,10 @@ CARRY_ROUTE_INSERTS = ('carry_route="straight_v1",', ',route_mode=carry_route', 
 # student tick branch (``if student_ep is not None`` -> ``... and not hybrid_code``). Nothing else
 # on the gate path changes; every new hybrid line is an insertion.
 HYBRID_INSERTS = (',hybrid_carry=None', ' and not hybrid_code')
+# -c5-hybrid2 (default off): the hybrid code-carry smoke keyword and six gate-path conditions that gain one
+# inserted clause each (while cap, eval rows, grasp-teacher loop, carry handover, early break, cap_end).
+# With hybrid_smoke=None, smoke_on stays False and smoke stays None, so every clause is a no-op.
+HYBRID_SMOKE_INSERTS = (',hybrid_smoke=None', ' and not smoke_on', ' or smoke_on', ' and smoke is None')
 
 
 def test_existing_gate_path_is_byte_identical():
@@ -106,11 +110,11 @@ def test_existing_gate_path_is_byte_identical():
     assert '-    if a.record_training:' in removed
     stripped = []
     for line in added:
-        for frag in CARRY_ROUTE_INSERTS + HYBRID_INSERTS:
+        for frag in CARRY_ROUTE_INSERTS + HYBRID_INSERTS + HYBRID_SMOKE_INSERTS:
             line = line.replace(frag, '')
         stripped.append('-' + line[1:])
     others = [l for l in removed if l != '-    if a.record_training:']
-    assert len(others) == 3 + 1, others          # 3 carry_route lines + the student tick guard
+    assert len(others) == 3 + 1 + 6, others      # 3 carry_route lines + the student tick guard + 6 smoke clauses
     for line in others:
         assert line in stripped, f'gate-path line changed beyond carry_route keyword insert: {line[:120]}'
     text = (ROOT / 'scripts/run_grasp_act_teacher.py').read_text()

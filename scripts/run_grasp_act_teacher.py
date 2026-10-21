@@ -107,7 +107,7 @@ def validate_recording_inputs(record_training,teacher_profile,self_pose_source):
         raise ValueError('recording requires visible_only and issued pose; GT labels forbidden')
 
 
-def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teacher_profile="legacy",self_pose_source="issued",recording_proof=None,recording_probe=False,execution_host=None,teacher_stability="off",teacher_search="off",approach_goal_set="off",nominal_blocked_handoff="off",approach_progress="off",approach_recovery="off",approach_coordination="off",handoff_observation="off",pregrasp_sampling="off",obstacle_reobserve="off",peer_reobserve="off",search17_candidates="off",search17_escape="off",search17_odometry="off",search18_footprint="off",search18_start_plan="off",search18_free_space="off",search19_motion="off",search19_footprint="off",search20="off",search21="off",search22="off",search23="off",search24_irm="off",search24_budget="off",search25_inflation="off",search25_memory="off",search25_view="off",search25_budget="off",search23_rects="off",search26_circles="off",search26_circles_farfirst="off",search26_static_peer="off",search26_peer_memory="off",search26_reobserve="off",search26_reobserve_refresh="off",search26_reobserve_refresh_open="off",search26_commit_plan="off",search26_wide_rescue="off",search26_align_diag="off",search26_align_pulse="off",search26_wide_stance="off",pair_carry="off",carry_cap_s=110.,carry_lower="grasp_height",carry_route="straight_v1",student_eval=None,hybrid_carry=None):
+def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teacher_profile="legacy",self_pose_source="issued",recording_proof=None,recording_probe=False,execution_host=None,teacher_stability="off",teacher_search="off",approach_goal_set="off",nominal_blocked_handoff="off",approach_progress="off",approach_recovery="off",approach_coordination="off",handoff_observation="off",pregrasp_sampling="off",obstacle_reobserve="off",peer_reobserve="off",search17_candidates="off",search17_escape="off",search17_odometry="off",search18_footprint="off",search18_start_plan="off",search18_free_space="off",search19_motion="off",search19_footprint="off",search20="off",search21="off",search22="off",search23="off",search24_irm="off",search24_budget="off",search25_inflation="off",search25_memory="off",search25_view="off",search25_budget="off",search23_rects="off",search26_circles="off",search26_circles_farfirst="off",search26_static_peer="off",search26_peer_memory="off",search26_reobserve="off",search26_reobserve_refresh="off",search26_reobserve_refresh_open="off",search26_commit_plan="off",search26_wide_rescue="off",search26_align_diag="off",search26_align_pulse="off",search26_wide_stance="off",pair_carry="off",carry_cap_s=110.,carry_lower="grasp_height",carry_route="straight_v1",student_eval=None,hybrid_carry=None,hybrid_smoke=None):
     validate_recording_inputs(record_training,teacher_profile,self_pose_source)
     from harness.pair_carry_teacher_warp import MODES as CARRY_MODES
     if pair_carry not in CARRY_MODES:raise ValueError('unknown pair carry mode')
@@ -137,6 +137,13 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
         from harness.hybrid_carry import validate_config as validate_hybrid
         validate_hybrid(hybrid_carry)
         if student_eval is None:raise ValueError('hybrid carry runs on top of the student eval episode')
+    if hybrid_smoke is not None:
+        # hybrid code-carry smoke (default off): teacher near field + code carry + teacher place; not learned
+        from harness.hybrid_carry import validate_config as validate_hybrid
+        validate_hybrid(hybrid_smoke,purpose='teacher_smoke')
+        if student_eval is not None or hybrid_carry is not None:raise ValueError('hybrid smoke has no student')
+        if pair_carry=='off' or teacher_profile!='visible_only':raise ValueError('hybrid smoke continues the visible_only pair joint hold')
+        if record_training or noise or probe:raise ValueError('hybrid smoke never records, perturbs or probes')
     from sim.grasp_act_search15_modes import validate
     search15={'peer_reobserve':peer_reobserve,'search17_candidates':search17_candidates,'search17_escape':search17_escape,'search17_odometry':search17_odometry,'search18_footprint':search18_footprint,'search18_start_plan':search18_start_plan,'search18_free_space':search18_free_space,'search19_motion':search19_motion,'search19_footprint':search19_footprint,'search20':search20,'search21':search21,'search22':search22,'search23':search23,'search24_irm':search24_irm,'search24_budget':search24_budget,'search25_inflation':search25_inflation,'search25_memory':search25_memory,'search25_view':search25_view,'search25_budget':search25_budget,'search23_rects':search23_rects,'search26_circles':search26_circles,'search26_static_peer':search26_static_peer,'search26_peer_memory':search26_peer_memory,'search26_circles_farfirst':search26_circles_farfirst,'search26_reobserve':search26_reobserve,'search26_reobserve_refresh':search26_reobserve_refresh,'search26_reobserve_refresh_open':search26_reobserve_refresh_open,'search26_commit_plan':search26_commit_plan,'search26_wide_rescue':search26_wide_rescue,'search26_align_diag':search26_align_diag,'search26_align_pulse':search26_align_pulse,'search26_wide_stance':search26_wide_stance,'obstacle_reobserve':obstacle_reobserve,'pregrasp_sampling':pregrasp_sampling}
     validate(search15,recovery=approach_recovery,profile=teacher_profile,pose_source=self_pose_source,coordination=approach_coordination)
@@ -295,7 +302,17 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
                 static_map=hybrid_static_map(scene.config) if hybrid_carry['carry_mode']=='map' else None,
                 start_poses=plan.get('start_poses') if hybrid_carry['carry_mode']=='map' else None)
             report['hybrid']={'mode':hybrid_carry['mode'],'carry_mode':hybrid_carry['carry_mode']}
-        while float(world.data.time)-origin < (cap_s if carry is None and student_ep is None else cap_s+carry_cap_s)-1e-8:
+        smoke=None;smoke_on=False;smoke_t0=smoke_handback_t=smoke_done_since=None
+        if hybrid_smoke is not None:
+            from harness.hybrid_carry import HybridRun,NavZoneSensor
+            from harness.hybrid_smoke_eval import tick_row as smoke_row
+            from harness.pair_carry_teacher_warp import static_map_for as smoke_static_map,zone_of as smoke_zone_of
+            smoke=HybridRun(hybrid_smoke,plan['roles'],sensor=NavZoneSensor.from_config(hybrid_smoke['nav']),purpose='teacher_smoke')
+            smoke_zone=smoke_zone_of(smoke_static_map(scene.config))
+            smoke_log=(out/'hybrid-drive.jsonl').open('w');streams.append(smoke_log)
+            report['hybrid_smoke']={'mode':hybrid_smoke['mode'],'carry_mode':hybrid_smoke['carry_mode'],
+                'label':'teacher 근거리 + 코드 운반, 학습 아님','near_field':'teacher','carry':'code','place':'teacher'}
+        while float(world.data.time)-origin < (cap_s if carry is None and student_ep is None and not smoke_on else cap_s+carry_cap_s)-1e-8:
             now=float(world.data.time);at=time.monotonic()
             if search23!='off' and now-origin>=30.-1e-8 and 'first30_speed' not in report:
                 report['first30_speed']={'sim_s':now-origin,'wall_s':time.monotonic()-start,
@@ -305,7 +322,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
             truth=snapshot(world,inst,plan['roles'],scene)
             truth['visibility']={rid:visibility.measure(world.data,rid,end) for rid,end in plan['roles'].items()}
             perceived={}
-            if carry is not None or student_ep is not None:
+            if carry is not None or student_ep is not None or smoke_on:
                 # GT carry / student eval: no teacher measurements; GT rows are eval-only.
                 from harness.pair_carry_eval import eval_row
                 carry_rows.append(eval_row(truth))
@@ -376,6 +393,26 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
                     'shadow_stage':{r:v['stage'] for r,v in shadow.items()},
                     'eval_passed':student_funnel.add(now,truth,plan['roles'],student_ep.ready,student_hold_t is not None)},allow_nan=False)+'\n')
                 timings['teacher']+=time.monotonic()-at
+            if smoke_on and carry is None and not smoke.student_controls() and smoke.segment()!='ABORT':
+                # hybrid smoke code segment: own frames -> code commands (no student, no teacher step)
+                at=time.monotonic()
+                frames={rid:base64.b64decode(ports[rid].capture()['image']) for rid in plan['roles']}
+                code=smoke.code_tick(now,frames)
+                applied_code={rid:command(json.loads(json.dumps(row))) for rid,row in code.items()}
+                for rid,applied in applied_code.items():
+                    apply(ports[rid],applied,now,previous[rid]);previous[rid]=applied;history[rid].append(applied)
+                    models[rid].issue(applied)
+                timings['teacher']+=time.monotonic()-at;at=time.monotonic()
+                try:
+                    cid=visibility.cameras[smoke.leader]
+                    cam=(world.data.cam_xpos[cid].tolist(),world.data.cam_xmat[cid].reshape(-1).tolist())
+                except (AttributeError,IndexError,KeyError,TypeError):cam=None
+                row=smoke_row(now,smoke,applied_code,truth,camera=cam,zone=smoke_zone,
+                    ground_point_robot=getattr(smoke.sensor,'project',None),gate=getattr(smoke.sensor,'gate_projection',None),
+                    hfov_deg=hybrid_smoke['nav']['hfov_deg'])
+                if cam is None:row['eval_only']['camera_unavailable']=True
+                smoke_log.write(json.dumps(row,allow_nan=False)+'\n')
+                timings['evaluation']+=time.monotonic()-at
             if student_ep is not None and not hybrid_code:
                 at=time.monotonic()
                 jpegs={rid:base64.b64decode(ports[rid].capture()['image']) for rid in plan['roles']}
@@ -389,7 +426,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
                     'eval_passed':student_funnel.add(now,truth,plan['roles'],student_ep.ready,student_hold_t is not None)},allow_nan=False)+'\n')
                 if hybrid is not None:hybrid.after_student_tick(now,issued,{rid:previous[rid] for rid in issued})
                 timings['teacher']+=time.monotonic()-at
-            for rid,t in (teachers.items() if carry is None and student_ep is None else ()):
+            for rid,t in (teachers.items() if carry is None and student_ep is None and not smoke_on else ()):
                 at=time.monotonic()
                 sample_id=f"{plan['episode_id']}:{i}:{rid}"
                 # Demonstration supervisor supplies the discrete wait command;
@@ -468,6 +505,19 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
             if hybrid is not None and hybrid.segment()=='ABORT':break
             if student_ep is not None:
                 if student_ep.finished:break
+            elif smoke_on and carry is None:
+                if smoke.segment()=='STUDENT_PLACE':
+                    # hand-back at the set-down start: the GT teacher lowers/opens/retreats from the code's stop pose
+                    from harness.pair_carry_teacher_warp import start_place_from_runner
+                    from harness.pair_carry_recorder import CarryRecorder
+                    carry=start_place_from_runner(plan,truth,now,scene,teachers,previous,carry_cap_s,lower_mode=carry_lower)
+                    recorders={rid:CarryRecorder(rid,plan['roles'][rid],history=history[rid],
+                        images=images.setdefault(rid,deque(maxlen=max(HISTORY+1,math.ceil(contract.MEMORY_S/.1)+2))),
+                        episode_id=plan['episode_id'],clock=clocks[rid]) for rid in plan['roles']}
+                    smoke_handback_t=now;report['hybrid_smoke']['handback_sim_s']=now-origin
+                elif smoke.segment()=='ABORT':
+                    smoke_done_since=now if smoke_done_since is None else smoke_done_since
+                    if now-smoke_done_since>=1.5-1e-8:break
             elif carry is not None:
                 if carry.done:
                     # keep 1.5 SIM s of passive rows so the evaluator sees the rest state
@@ -475,7 +525,10 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
                     if now-carry_done_since>=1.5-1e-8:break
             elif strict and all(t.command_complete for t in teachers.values()):
                 all_done_since=now if all_done_since is None else all_done_since
-                if not probe and pair_carry!='off' and report['joint_held']:
+                if smoke is not None and not smoke_on and not probe and report['joint_held']:
+                    smoke.teacher_handover(now,previous);smoke_on=True;smoke_t0=now
+                    report['carry_handover_sim_s']=now-origin
+                if not probe and pair_carry!='off' and report['joint_held'] and smoke is None:
                     from harness.pair_carry_teacher_warp import start_from_runner
                     from harness.pair_carry_recorder import CarryRecorder
                     plan_started=time.monotonic()
@@ -495,7 +548,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
                         images=images.setdefault(rid,deque(maxlen=max(HISTORY+1,math.ceil(contract.MEMORY_S/.1)+2))),
                         episode_id=plan['episode_id'],clock=clocks[rid]) for rid in plan['roles']}
                     report['carry_handover_sim_s']=now-origin
-                elif not probe and (report['joint_held'] or now-all_done_since>=6.):break
+                elif not probe and (report['joint_held'] or now-all_done_since>=6.) and not smoke_on:break
             if not strict and not probe and all(t.outcome is not None for t in teachers.values()):
                 all_done_since=now if all_done_since is None else all_done_since
                 if len(teachers)==1 or report['joint_held'] is True or now-all_done_since>=3.:break
@@ -527,6 +580,22 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
             write(out/'carry-eval.json',report['carry_eval'])
         elif pair_carry!='off' and student_ep is None:
             report['carry']={'started':False,'reason':'no_joint_hold_3s'}
+        if smoke is not None:
+            # hybrid smoke: one evaluator over the carried episode (teacher handover -> code carry -> teacher place)
+            report['hybrid_smoke'].update(smoke.summary())
+            if smoke_on:
+                from harness.pair_carry_eval import evaluate,drive_response
+                from harness.pair_carry_teacher_warp import static_map_for
+                rows=[r for r in carry_rows if r['t']>=smoke_t0-1e-9]
+                place=carry.diagnostic() if carry is not None else None
+                report['carry_eval']=evaluate(rows,static_map_for(scene.config),list(plan['roles']),lower_start_t=smoke_handback_t,handover_t=smoke_t0)
+                report['carry_eval']['setdown_boundary']='hybrid_smoke_handback_v1'
+                # eval-only: code-segment command vs GT body speed (same diagnostic as the GT teacher's)
+                report['carry_eval']['code_drive_response']=drive_response(rows,smoke.log,list(plan['roles']))
+                if carry is not None:report['carry_eval']['place_drive_response']=drive_response(rows,carry.log,list(plan['roles']))
+                report['carry']={'started':True,'mode':'hybrid_smoke','outcome':(place or {}).get('outcome') if place else smoke.outcome,
+                    'code_outcome':smoke.outcome or ('handed_back' if smoke_handback_t is not None else None),'place_teacher':place}
+                write(out/'carry-eval.json',report['carry_eval'])
         if pair_carry!='off':
             from harness.pair_carry_recorder import recording_summary
             report['carry_recording']=recording_summary(recorders,clocks)
@@ -555,7 +624,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
         report['approach_handoff']=any(t.outcome=='approach_blocked_handoff' for t in teachers.values())
         report['data_admitted']=bool(record_training and not recording_probe and report['physical_success'] and not report['search_handoff'] and not report['approach_handoff'])
         report['wall_per_sim']=report['wall_s']/max(.001,report['sim_s'])
-        report['cap_end']=bool(report['sim_s']>=(cap_s if carry is None and student_ep is None else cap_s+carry_cap_s)-1e-8)
+        report['cap_end']=bool(report['sim_s']>=(cap_s if carry is None and student_ep is None and not smoke_on else cap_s+carry_cap_s)-1e-8)
         report['end_reason']='cap_end' if report['cap_end'] else 'teacher_terminal'
         # Pair whole-beam clearance is deliberately a separate, not-yet-evaluated metric.
         write(out/'result.json',report)

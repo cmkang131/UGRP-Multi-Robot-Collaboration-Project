@@ -709,7 +709,8 @@ def test_student_config_and_runner_combinations_fail_closed(tmp_path):
 
 def test_runner_student_branch_never_steps_teachers():
     text = (ROOT/'scripts/run_grasp_act_teacher.py').read_text()
-    assert "for rid,t in (teachers.items() if carry is None and student_ep is None else ()):" in text
+    # -c5-hybrid2: the hybrid smoke code segment (smoke_on) also never steps the grasp teachers
+    assert "for rid,t in (teachers.items() if carry is None and student_ep is None and not smoke_on else ()):" in text
     assert "if strict and carry is None and student_ep is None:" in text
     fn = _runner_function()
     kw = {a.arg: d for a, d in zip(fn.args.kwonlyargs, fn.args.kw_defaults)}

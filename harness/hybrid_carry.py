@@ -292,7 +292,9 @@ class NavZoneSensor:
         m = load_nav_module(nav['source'], nav['sha'])
         detector = m.GpuCalibZoneDetector(profile=nav['profile'], hfov_deg=nav['hfov_deg'],
                                           bearing_convention=nav['bearing_convention'])
-        return cls(detector, m.ground_point_robot)
+        sensor = cls(detector, m.ground_point_robot)
+        sensor.gate_projection = dict(getattr(m, 'GATE_GROUND_PROJECTION', {}) or {}) or None   # eval-only log reference
+        return sensor
 
     def __call__(self, jpeg):
         found = [d for d in self.detector(jpeg) if d.get('kind') == 'zone_B']
@@ -465,11 +467,13 @@ class FormationTracker:
 
     def command(self, now, V, vel, pwm, *, hold=False):
         if hold:
+            self.last_drive = (0., 0., 0.)
             return make_command(now, pwm, (0., 0., 0.), params=self.params, wheel_fn=self.wheel_fn)
         target = compose(V, self.offset)
         rx, ry = target[0] - V[0], target[1] - V[1]
         ff = (vel[0] - vel[2]*ry, vel[1] + vel[2]*rx, vel[2])
         drive = body_command(self.pose_b0(), target, ff, params=self.params)
+        self.last_drive = tuple(drive)
         return make_command(now, pwm, drive, params=self.params, wheel_fn=self.wheel_fn)
 
 
@@ -537,6 +541,11 @@ class HybridRun:
         self.outcome = None
         self.events = []
         self.gt_inputs_to_code = 0
+        self.near_field = 'student' if purpose == 'hybrid_n' else 'teacher'
+        self.last_zone = None
+        # teacher-format drive log (t, phase, issue_phase, drive, wheels, duration_s) for the eval-only
+        # pair_carry_eval.drive_response of the code segment; never read back by the code
+        self.log = []
 
     # -- helpers
     def segment(self):
@@ -571,6 +580,19 @@ class HybridRun:
             for a in self.arbiters.values():
                 a.to('CARRY_SYNC', now, 'own_release_instruction (both own done flags 3 s)')
             self.events.append(dict(t=now, event='hold_complete_own'))
+
+    def teacher_handover(self, now, previous):
+        """teacher_smoke only: the GT grasp teacher's verified joint hold (3 s) replaces the student
+        near field; from here the code carries. ``previous``: the last applied command per robot."""
+        if self.purpose != 'teacher_smoke':
+            raise ValueError('teacher handover exists only in the teacher near-field smoke')
+        if self.segment() != 'STUDENT_GRASP':
+            raise ValueError('teacher handover happens once, before the code segment')
+        for r in self.roles:
+            self.pwm[r] = {int(k): int(v) for k, v in previous[r]['pwm'].items()}
+        for a in self.arbiters.values():
+            a.to('CARRY_SYNC', now, 'teacher joint hold 3 s (teacher near field, smoke; not learned)')
+        self.events.append(dict(t=now, event='teacher_handover'))
 
     # -- code segments
     def _start_code(self, now):
@@ -622,6 +644,11 @@ class HybridRun:
                 cmd = tr.command(now, None, None, self.pwm[r], hold=True)
             out[r] = cmd
             self.odometry[r].step(cmd)
+        phase = 'code:' + (self.planner.phase if self.planner is not None and seg == 'CODE_CARRY' else seg)
+        self.log.append({'t': now, 'phase': phase, 'issue_phase': phase,
+                         'drive': {r: list(getattr(self.trackers[r], 'last_drive', (0., 0., 0.))) for r in self.roles},
+                         'wheels': {r: list(out[r]['wheels']) for r in self.roles},
+                         'duration_s': {r: list(out[r]['duration_s']) for r in self.roles}})
         self.ticks['code'] += 1
         return out
 
@@ -633,6 +660,7 @@ class HybridRun:
                 return self._abort(now, why)
         if self.cfg['carry_mode'] == 'nav':
             seen = self.sensor(jpegs[lead])
+            self.last_zone = seen
             self.planner.observe(now, seen, self.trackers[lead].pose_b0())
         outcome = self.planner.step(now, DT)
         if outcome is not None and outcome.startswith('abort:'):
@@ -675,6 +703,8 @@ class HybridRun:
         code_s = None if self.code_t0 is None else ((self.code_t1 if self.code_t1 is not None else
                                                      self.code_t0 + .1*self.ticks['code']) - self.code_t0)
         return dict(mode=MODE, carry_mode=self.cfg['carry_mode'], navigator=self.cfg['navigator'],
+                    purpose=self.purpose, near_field=self.near_field,
+                    calibration_values_sha256=self.cfg['calibration_provenance']['values_sha256'],
                     segment=self.segment(), outcome=self.outcome or ('handed_back' if self.code_t1 else None),
                     code_segment_s=code_s, ticks=dict(self.ticks),
                     student_commands_executed_ratio=(self.ticks['student']/total) if total else None,

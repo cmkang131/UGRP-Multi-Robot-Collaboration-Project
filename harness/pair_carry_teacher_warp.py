@@ -565,7 +565,8 @@ class PairCarryTeacherWarp:
     """
 
     def __init__(self, roles, truth, now, static_map, arm_targets, pwm, *, params=Params(),
-                 wheel_fn=None, door_id='door_wide', zone='zone_B', obstacles=None, route_mode='straight_v1'):
+                 wheel_fn=None, door_id='door_wide', zone='zone_B', obstacles=None, route_mode='straight_v1',
+                 place_only=False):
         if sorted(roles.values()) != sorted(ROLES):
             raise ValueError('one robot per beam end required')
         if params.lower_mode not in LOWER_MODES:
@@ -602,6 +603,13 @@ class PairCarryTeacherWarp:
         self.route_plans = self.detour_searches = 0
         if missing:
             self._fail('arm_targets_missing', now, detail=missing)
+            return
+        if place_only:
+            # hybrid smoke (default off): the code carried the beam; the teacher only sets it down from
+            # where the code stopped (lower -> open -> raise -> retreat). No route, no GT zone correction.
+            self.route_info = {'place_only': True}
+            self.events.append({'t': now, 'event': 'place_only_handback', 'beam': beam})
+            self._set('lower', now)
             return
         self.route_plans += 1
         try:
@@ -941,6 +949,22 @@ def carry_obstacles(truth, roles):
     out += [{'id': rid, 'xy': list(v['pose'][:2]), 'radius': ROBOT_RADIUS_M}
             for rid, v in truth['robots'].items() if rid not in roles]
     return out
+
+
+def start_place_from_runner(plan, truth, now, scene, teachers, previous, carry_cap_s, lower_mode='grasp_height'):
+    """Hybrid smoke hand-back (default off): GT teacher set-down from the code's arrival pose."""
+    if lower_mode not in LOWER_MODES:
+        raise ValueError(f'unknown lower mode {lower_mode!r}')
+    params = Params(carry_cap_s=float(carry_cap_s), lower_mode=lower_mode)
+    if lower_mode == 'floor_contact_v1':
+        params = Params(carry_cap_s=float(carry_cap_s), lower_mode=lower_mode,
+                        phase_caps_s={**params.phase_caps_s, 'lower': params.lower_max_s + 1.})
+    deep = params.place_deep_m if lower_mode == 'floor_contact_v1' else None
+    targets = {rid: arm_targets_from_teacher(t, place_deep_m=deep) for rid, t in teachers.items()}
+    targets = {rid: v for rid, v in targets.items() if v is not None}
+    pwm = {rid: {int(k): int(v) for k, v in previous[rid]['pwm'].items()} for rid in teachers}
+    return PairCarryTeacherWarp(plan['roles'], truth, now, static_map_for(scene.config), targets, pwm, params=params,
+                                place_only=True)
 
 
 def start_from_runner(plan, truth, now, scene, teachers, previous, carry_cap_s, lower_mode='grasp_height',
