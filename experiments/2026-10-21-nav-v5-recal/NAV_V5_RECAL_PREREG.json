@@ -1,0 +1,201 @@
+{
+ "schema": "ugrp.e2ewarp.nav_v5_recal_prereg.v1",
+ "status": "FROZEN",
+ "status_note": "Freeze = copy this file to NAV_V5_RECAL_PREREG.json with status FROZEN + frozen_utc, commit and push BEFORE any render. render_sweep_v5.py refuses a non-FROZEN prereg. Nothing in criteria/bands/selection may change after the first render.",
+ "branch": "dsh/nav-v5-recal",
+ "base": "dsh/nav-v230-r5 e11efbeb9 (r5 code 219d08779 + post-run analysis/results)",
+ "trigger": {
+  "experiment": "experiments/2026-10-21-act18-scene-fit (branch dsh/act18-scene-v6-fit)",
+  "prereg_sha256": "9c2b5ba220e314a34f80d369dadbb2e01d1f793c987772f2d25a32fff30b5bab",
+  "commits": [
+   "7aa8c3d87",
+   "1bb49dcda"
+  ],
+  "result": "ACT C2c on v6: G 1/4 (Pre 2 / done 3 / lift 1 / release 0 / cap_end 2), HO4 N=1",
+  "verdict": "BRANCH_NAV_V5: keep ACT on its training scene, re-calibrate nav on v5"
+ },
+ "scene": {
+  "profile": "walls_floor_contrast_v5_indigo110_s80",
+  "selected_by": "E2EWARP_NAV_SCENE_PROFILE=v5 (default off; harness/e2ewarp_nav_scene.py)",
+  "control": "walls_floor_contrast_v6_indigo110_s80_neutral_start (same-session render control only; never selects the band, never pooled)",
+  "diff_v5_vs_v6_from_code": [
+   {
+    "item": "wall paint",
+    "v5": "rgb 90,75,110 (nominal HSV 133,81,110), v1_common_mode texture",
+    "v6": "identical (assets alias = v5)",
+    "source": "sim/scene_contrast_v5.py PROFILES"
+   },
+   {
+    "item": "wall texture assets",
+    "v5": "scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/*",
+    "v6": "same files ('assets': v5 name)",
+    "source": "sim/scene_contrast_v5.py apply_xml asset_profile"
+   },
+   {
+    "item": "base render profile",
+    "v5": "noshadow_bright_v1 (castshadow off, reflectance 0, cutoff 180, light_color_scale 0.3)",
+    "v6": "same",
+    "source": "sim/render_profile.py PROFILES['noshadow_bright_v1']"
+   },
+   {
+    "item": "extra light scaling",
+    "v5": "none (no light_scale key)",
+    "v6": "light_scale 0.30 / base 0.30 = factor 1.0 (no change)",
+    "source": "sim/scene_contrast_v5.py _scale_lights, profile_record light_scale_factor_vs_base"
+   },
+   {
+    "item": "main floor texture",
+    "v5": "natural floor v1 (floor_light_textured_v1)",
+    "v6": "same",
+    "source": "scene_contrast_v5.apply_xml v1.apply"
+   },
+   {
+    "item": "pickup floor overlay",
+    "v5": "authored geom zone_pickup rgba .12 .36 .70 .14, drawn opaque by MJWarp: OpenCV H 107-108, S median 212, V median 90, 57.0 % of the first nav-gate frame",
+    "v6": "zone_pickup removed, 6x10 neutral grey tiles (S = 0), alpha 1",
+    "source": "sim/neutral_pickup_floor.py docstring + experiments/2026-10-18-nav-gate-1/raw/r1-tick5.jpg"
+   },
+   {
+    "item": "ngeom",
+    "v5": "base",
+    "v6": "+59 (60 tiles - 1 overlay); scene-fit refs 1446 vs 1387",
+    "source": "experiments/2026-10-21-act18-scene-fit/README.md §3"
+   },
+   {
+    "item": "zone B paint / geometry / doors / spawns / physics",
+    "v5": "rgba .20 .40 .95 .30 at (4.6,-2.1) half (0.3,0.7)",
+    "v6": "identical; changes_physics False",
+    "source": "sim/zone_arena.py, profile_record"
+   }
+  ],
+  "risk": "zone B band H 110-114 sits 2-3 OpenCV hue units above the v5 pickup floor (H 107-108, S~212 >= 100, V~90 inside 30-230). JPEG/antialias hue spread can put floor pixels into the band and either (a) make a non-zone detection or (b) merge with the zone component and move its bbox bottom row (which drives the r5 stage-2 latch and the 0.52 m claim)."
+ },
+ "unchanged": {
+  "gate_mode": "v230_r5 (two-stage slot 1.5 m, +-15 deg clamp, 0.52 m projection claim, 1.0 m path fail-safe, 2.4 m forward cap, 3-tick confirm, height 0.02)",
+  "camera": "r*__robot_cam 640x480 gamma 1.0 JPEG q82 10 Hz + measured fisheye remap",
+  "odometry_calibration": "runs/e2ewarp-nav1-calib-h/nav-calibration.json (the scene change is visual-only, changes_physics False)",
+  "scenario": "s7_pair_with_solo_v7 / zone_wide_two_doors_final_v3, spawn y -2.375 / -2.875, seed 601, budget 60 s"
+ },
+ "sweep": {
+  "script": "experiments/2026-10-21-nav-v5-recal/render_sweep_v5.py",
+  "method": "same as the 2026-10-19 Step A sweep: setup-only qpos poses, render-only, ticks 0/5",
+  "step_a_x": [
+   1.5,
+   2.0,
+   2.5,
+   2.8,
+   3.0,
+   3.5
+  ],
+  "path_x": [
+   -0.8982,
+   -0.3,
+   0.3,
+   0.9
+  ],
+  "ticks": [
+   0,
+   5
+  ],
+  "lane_pose": "r1 on y -2.375 and r2 on y -2.875 at the same x, both yaw 0",
+  "zone_free_poses": "wall_south (1.8,-90), wall_north (1.8,90), pickup_west (-1.4,180), pickup_rear (spawn,180), lane_west (1.5,180); r2 at spawn",
+  "zone_attribution": "each lane pose is also rendered with geom zone_zone_B repainted 0.5 0.5 0.5 1 (eval-only reference frame). band pixels surviving the repaint = non-zone; vanishing = zone",
+  "frames": "per scene: normal 15 poses x 2 robots x 2 ticks = 60, ablated 10 x 2 x 2 = 40; v5 + v6 = 200 JPEGs",
+  "recorded_per_band_per_frame": [
+   "detected",
+   "detection bbox / px / bottom_row / bottom_norm / height_norm / bearing / bottom-row ground distance",
+   "zone-only largest component px + bbox",
+   "non-zone total px, largest component, detector on the ablated frame",
+   "non-zone px inside the detection bbox"
+  ]
+ },
+ "band_candidates": [
+  {
+   "id": "B0",
+   "profile": "gpu_calib_v230",
+   "gate_mode": "v230_r5",
+   "hue_cv": [
+    110.0,
+    114.0
+   ],
+   "sat_min": 100.0,
+   "val": [
+    30.0,
+    230.0
+   ],
+   "min_pixels": 600,
+   "note": "unchanged r5 band"
+  },
+  {
+   "id": "B1",
+   "profile": "gpu_calib_v5_h111",
+   "gate_mode": "v230_r5_v5h111",
+   "hue_cv": [
+    111.0,
+    114.0
+   ],
+   "sat_min": 100.0,
+   "val": [
+    30.0,
+    230.0
+   ],
+   "min_pixels": 600,
+   "note": "hue floor +1"
+  },
+  {
+   "id": "B2",
+   "profile": "gpu_calib_v5_h112",
+   "gate_mode": "v230_r5_v5h112",
+   "hue_cv": [
+    112.0,
+    114.0
+   ],
+   "sat_min": 100.0,
+   "val": [
+    30.0,
+    230.0
+   ],
+   "min_pixels": 600,
+   "note": "hue floor +2"
+  }
+ ],
+ "criteria": {
+  "C1_zone_free": "all r1 zone-free frames (5 poses x 2 ticks = 10): no detection and largest band component < 600 px",
+  "C2_nonzone_fp0": "all ablated lane frames, both robots (10 poses x 2 robots x 2 ticks = 40): detector returns nothing and largest band component < 600 px",
+  "C3_step_a_r1_detect": "all r1 Step A frames (6 x x 2 ticks = 12): detection present",
+  "C4_no_floor_merge": "every lane frame with a detection (both robots): left/right/bottom bbox edges within edge_tol_px of the zone-only largest component"
+ },
+ "criteria_constants": {
+  "edge_tol_px": 3,
+  "min_component_px": 600
+ },
+ "report_only": [
+  "r2 Step A detection",
+  "v6 control verdicts (method sanity; expected B0 pass as r5 Step B passed on v6)",
+  "v6 control vs 2026-10-19 Step A table (PREREG_V230_R2 §2.1: x1.5 t000 bbox 81,66,379,82 1811 px ...)",
+  "v5 vs v6 zone-only bbox / bottom_norm per pose",
+  "path-frame detections and their bottom-row ground distance"
+ ],
+ "selection_rule": "B0 if C1-C4 all pass on v5; else the first of B1, B2 (in that order) with C1-C4 all pass; else NO_BAND_PASSED -> stop, report, do not run Step B, do not add a new band after seeing results",
+ "step_b": {
+  "when": "only if selection.step_b_allowed; one run, same frozen prereg",
+  "env": "E2EWARP_NAV_SCENE_PROFILE=v5, E2EWARP_NAV_GATE_MODE=<selection.gate_mode>, E2EWARP_NAV_ARRIVAL=odom_projection, same calibration",
+  "order": "① solo r1 diagnostic (not a gate; stop ② if r1 does not pass the door) -> ② 2-robot Step B",
+  "acceptance": "GT 2/2 AND claim 2/2 AND mismatch 0 AND FP 0 AND boundary 0 (identical to PREREG_V230_R5)",
+  "eval_only": "robot-robot min distance/contact, robot-scene contact, command/GT ratio",
+  "no_pooling": "v5 results are a separate condition from the v6 r5 PASS (2026-10-20)"
+ },
+ "stop_rules": [
+  "sweep HOST_ERROR -> no verdict, fix, new out root, rerun once",
+  "NO_BAND_PASSED -> stop (no Step B)",
+  "① r1 fails the door -> stop ②",
+  "any wall/jamb contact in ① -> stop ②"
+ ],
+ "unconfirmed": [
+  "[확인 필요] direct user approval quote for BRANCH_NAV_V5 (the deviation uses authority=coordinator)",
+  "[확인 필요] the 2026-10-19 Step A r2 pose (the PREREG_V230_R2 table lists r1 only); this sweep puts r2 at the same x on its lane",
+  "[확인 필요] whether gcp6 still holds the nav stack/clone (.venv-warp) — see RUN.md"
+ ],
+ "frozen_utc": "2026-10-21T05:07:32Z",
+ "frozen_by": "Claude(오너, 2026-10-21). 근거: D4 결과 G 1/4로 사전 계획(e2e-by-1105-plan.md 분기 규칙)대로 BRANCH_NAV_V5 진입. 소형 render-only 사전 등록이라 Codex 검토는 동결과 병렬(라우팅: Codex는 큰 사전 등록만). 장면 편차 승인 = 창민 확정 계획(10/20 \"ㅇㅇ 그렇게 가봐\")의 분기 규칙"
+}
