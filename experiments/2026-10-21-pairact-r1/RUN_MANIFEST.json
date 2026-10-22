@@ -1,11 +1,11 @@
 {
   "schema": "ugrp.pairact_r1.run_manifest.v2",
-  "status": "DRAFT_VM_FILL",
+  "status": "FROZEN_CORE",
   "freeze_rule": "Two commits and two stages (v3, Codex v2 B1/B2). Commit X fixes the collector code (COLLECTOR_FILES + generator). Commit Y (FROZEN_CORE) writes X into collector.source_sha, every VM-fill field except the three recording_check hashes, prereg.core_sha256 and status FROZEN_CORE here and in the prereg (scripts/pairact_r1_freeze.py core). core_sha256 = sha256 of canonical JSON {prereg without status, this manifest without status and the three recording_check hashes} (harness.pairact_collect.core_sha256); the freeze script prints it and ledger headers record it, it is never stored in these files. The probe source measurement run, probe-cases, the recording probe and check-rows run at FROZEN_CORE and are bound to core_sha256. Commit Z (FROZEN) fills the three recording_check hashes from the probe source run root and sets status FROZEN (scripts/pairact_r1_freeze.py final); core_sha256 must stay the same. Training collection and convert-input need FROZEN. The runner checks that collector.source_sha is an ancestor of HEAD and that no COLLECTOR_FILES / generator file changed between X and HEAD (HEAD == X is not required).",
   "prereg": {
     "path": "experiments/2026-10-21-pairact-r1/COLLECT_PREREG_DRAFT.json",
     "schema": "ugrp.pairact_r1.collect_prereg.v2",
-    "core_sha256": "[VM 기입] prereg_core_sha256 of the prereg (status excluded), written by scripts/pairact_r1_freeze.py core"
+    "core_sha256": "eb6d791be9687cae87a2f177654100a15bdce035fb3a2749b20332ff2b4b28c7"
   },
   "stack": {
     "teacher": {
@@ -27,7 +27,7 @@
   },
   "collector": {
     "branch": "dsh/pairact-carry-r1-v9",
-    "source_sha": "[VM 기입] commit X, the collector code commit; HEAD may be a descendant",
+    "source_sha": "99c877e005ef6826b07cbd273c9cb0031598e364",
     "files_rule": "harness.pairact_collect.COLLECTOR_FILES (runner code, direct setup-geometry imports and inputs) and the generator: identical at X and HEAD, clean in the checkout",
     "file_sha256": {
       "harness/pairact_collect.py": "81cb0e94196ae43895db5d29e762c1f4e3820eaddbb305c6b4adf5bd1fad966e",
@@ -57,8 +57,8 @@
     "batch_size": 20,
     "max_batches_per_night": "pilot 2 batches (40 pilot seeds); probe source 1 batch; training until --deadline-utc (UTC 00:30 offpeak end minus one batch wall)",
     "episode_template_draft": "$PY /home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py --flow beampair --adapter-source $SRC/adapter --teacher-source $SRC/teacher --cases {cases} --indices {indices} --cap-s 60 --out {out} --vm-hourly-usd 1.096 --gcp6-isolated-v1 --placement-graspable-filter-v1 --world-model-parameters-v1 --native-sleep-policy-compat-v1 --full-active-dof-workspace-v1 --warp-native-contact-v1 --canonical-xml /home/ugrp/ugrp-sim/runs/beamact5/wide-export-old-8420000e/canonical-scene.xml --per-world-model-references-v1 /home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/per-world-references.json --rejection-table /home/ugrp/ugrp-sim/runs/beamact5/gate-40-r13/rejection_table.json --batch-per-world-speed-v1",
-    "episode_template": "[VM 기입] the exact expanded --episode-cmd string (SRC replaced by the absolute -c5 checkout path)",
-    "episode_template_sha256": "[VM 기입] sha256 of episode_template (= ledger header episode.template_sha256)"
+    "episode_template": "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python /home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py --flow beampair --adapter-source /home/ugrp/ugrp-sim/src/pairact-p3c5/adapter --teacher-source /home/ugrp/ugrp-sim/src/pairact-p3c5/teacher --cases {cases} --indices {indices} --cap-s 60 --out {out} --vm-hourly-usd 1.096 --gcp6-isolated-v1 --placement-graspable-filter-v1 --world-model-parameters-v1 --native-sleep-policy-compat-v1 --full-active-dof-workspace-v1 --warp-native-contact-v1 --canonical-xml /home/ugrp/ugrp-sim/runs/beamact5/wide-export-old-8420000e/canonical-scene.xml --per-world-model-references-v1 /home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/per-world-references.json --rejection-table /home/ugrp/ugrp-sim/runs/beamact5/gate-40-r13/rejection_table.json --batch-per-world-speed-v1",
+    "episode_template_sha256": "bb98474c63119dc48b57c6e7e097ae3cc27aabc8468e7c76d82769e21087716a"
   },
   "limits": {
     "grasp_cap_sim_s": 60,
@@ -73,26 +73,69 @@
     "host_error_requeue": 1
   },
   "assets": {
-    "canonical_xml_sha256": "[VM 기입] /home/ugrp/ugrp-sim/runs/beamact5/wide-export-old-8420000e/canonical-scene.xml",
-    "per_world_model_references_sha256": "[VM 기입] /home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/per-world-references.json",
-    "per_world_reference_files_sha256": "[VM 기입] output of `python scripts/pairact_r1_freeze.py per-world-refs --refs /home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/per-world-references.json` (v7): sha256 of the sorted [relative path, sha256] of every actuator / geometry / geometry .json sidecar the references JSON names (absolute, under its directory, no symlink). verify_assets re-hashes them at core and final",
-    "rejection_table_input_sha256": "[VM 기입] /home/ugrp/ugrp-sim/runs/beamact5/gate-40-r13/rejection_table.json",
-    "mesh_assets_sha256": "[VM 기입] output of `python scripts/pairact_r1_freeze.py xml-assets --canonical-xml XML` (v5): absolute path -> sha256 of every file the canonical XML references, recursively (include, mesh, skin, hfield, texture incl. cube faces; compiler meshdir/texturedir/assetdir/strippath). verify_assets refuses an omitted or an unreferenced entry (smoke-1 failed on mesh[fuji_roller_v2])",
-    "wrapper_sha256": "[VM 기입] the wrapper .py named by the episode template (run_warp_flow_teacher_gcp6.py)"
+    "canonical_xml_sha256": "5e77178e40412a5e5b199eae38cc04d220a5c2f03acd2ece345607cfbb373b60",
+    "per_world_model_references_sha256": "89d826353b9917338b3317491b4ad4dd215df93b841d5c8f74bca3940c44660e",
+    "per_world_reference_files_sha256": "8cc1af20aab562308a2ebd3797aa37f9ff35ad40112f3d2c693b39522f3779ef",
+    "rejection_table_input_sha256": "16fe662ac3f054106217a116697b9f396f2fcfc0d34215924970e8159f6c7d3f",
+    "mesh_assets_sha256": {
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/floor_light_textured_v1/floor.png": "f4d3d65a2d3fc730299e5959197cffbda3abed9c8c85726b0d8cd92930791c05",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_divider_1_250_9625_2000_fileback.png": "9a548a764437d82e22a59c873e87e0194b3652201d52734cf2ae1f959d06a880",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_divider_1_250_9625_2000_filedown.png": "0ed2572621ba0fd155fe4a5519190d479ef6a86f95cfcd6b82815a7fc7eb09c4",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_divider_1_250_9625_2000_filefront.png": "b304d0a1157afd90cdda6291cc6e25679d4ae118ade77ffba053df4ec1833518",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_divider_1_250_9625_2000_fileleft.png": "66934bbac1af94b7a994fd7f6d7893f180f81cff01546fdc7a01fed4d2be54e8",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_divider_1_250_9625_2000_fileright.png": "2c14bd46c283466bccb3027758ef0a71c703e4bb6ed4d0912d80fedc9f09391b",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_divider_1_250_9625_2000_fileup.png": "b1738ade99d7f8fe05677f24cdd28fb74ef8f52dbea67c9a5d1e07607435ae10",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_divider_2_250_5750_2000_fileback.png": "47036dc5b9e5bc8dbfe74347f8297240a29be3114792dcc4de5f4dfe0ea4be5c",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_divider_2_250_5750_2000_filedown.png": "1158843ba030ce1f8e27584929fcecca8a9890ff9b5b38e9a69a7027db6681f0",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_divider_2_250_5750_2000_filefront.png": "1c92826b9c2516257bfeb26b17d307890f784504dd24086fd26759a5d6bfdd0a",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_divider_2_250_5750_2000_fileleft.png": "4dad852eee614fd6249333c261cad98878c540d13d5404bc2610a2cd1b6d7efe",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_divider_2_250_5750_2000_fileright.png": "b8a2efcf47a9e31733d6522f1f297a221d71e8bba45b204cd87f0afee5690421",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_divider_2_250_5750_2000_fileup.png": "60c16cf05bb686dbad73271bff3003277cec7b6dd4fbf5cc71030912487e6c9f",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_east_250_23000_2000_fileback.png": "cf7162425de3a1f86b46094a438af25341753eb751a037cb27d032fada78dc9b",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_east_250_23000_2000_filedown.png": "8b0f75b74ebe7e9edb15570884a03ff9531fd2c860fc84eacffbef03cc511ce7",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_east_250_23000_2000_filefront.png": "eee9510e47c23d82312f8fff1ce7a7f6844edd424c0e27e5c03a0b15806c4836",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_east_250_23000_2000_fileleft.png": "b4233844a10fa4b0fb25bc239ee564585553ac750fdb856bdf363fe6e27b5a8f",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_east_250_23000_2000_fileright.png": "0af7f8be8484acda1f8bace03f7a835259239a6c7559b5d44485da19253d3be0",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_east_250_23000_2000_fileup.png": "599a99c79cf51620d50649fc4c2f99f2deb0a793bb63b6ad6c1aa07f3ac1d07a",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_north_32500_250_2000_fileback.png": "dfffa45dc80e8e6e9338cf62e8e4f39d4bf07a98ee84cf352bdf3a5de89fbcdd",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_north_32500_250_2000_filedown.png": "71ebb8f374b76d3436779b3e1f07ad4018362b3d9df0f7993031f874a637aa67",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_north_32500_250_2000_filefront.png": "37c950f39ac44b14876fd2ef7f548f97096c6d6c5536d0d716f7436884fbf925",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_north_32500_250_2000_fileleft.png": "ab62aa49190a2d9030eecb757fb32da72b859d5ad575a7d004cb5b8422de5abc",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_north_32500_250_2000_fileright.png": "6c41c5a256076271b7357ef92cfbe6d17bbefdf780791ae6566f81f83d484091",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_north_32500_250_2000_fileup.png": "c288ab945010f0ab34e39f7e36b8743521ab75e5f5719d950906742c84936b2c",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_south_32500_250_2000_fileback.png": "741002b3fbe94554a60ebf907f7377e916c1fbd2b1a32c73c401f4a6472b6510",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_south_32500_250_2000_filedown.png": "476b53491ee40105276cd342bdb6367f6b799264a9b216a87a155004d91a3444",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_south_32500_250_2000_filefront.png": "d1d18339ebeb2f6a6febc8f832d8dd2d4bd4e8567c84c21c19e28ba99e286fdb",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_south_32500_250_2000_fileleft.png": "8950fb7d3dfc47041fddd102ec47602d3c55ab0e838754ae17b97ba77c20f004",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_south_32500_250_2000_fileright.png": "429b1f16e2a5d046c9c57fa93266caba99ac4e91d6ed12ff6f1e28d2b2c9afd8",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_south_32500_250_2000_fileup.png": "3caa11fa95436c60df20d1a0d011b7c484648cb75c7931535d408586ca477d25",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_west_250_23000_2000_fileback.png": "129fc817b3ecaf60cb7db355e126755be1e745cca250f755f05a39713c51a1e0",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_west_250_23000_2000_filedown.png": "7120010048c1c7e50b8b181f0e28c67ed0a845216c6fc675b23fee33701abf74",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_west_250_23000_2000_filefront.png": "408b42b4dfef59bf30771eca44f6649be8e904cd2ab8bc44f962ccbc4bc88d85",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_west_250_23000_2000_fileleft.png": "c705e7d4948ca217a77b44c2f8db8fefc6cd95bc9360f0bb34c093625ab793e4",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_west_250_23000_2000_fileright.png": "a291b1be2720bb6fbf3ccd5ff26a0b5ad6fa68c40333ceeda76a82c20e734c39",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/root/sim/assets/scene_contrast_v5/walls_floor_contrast_v5_indigo110_s80/zone_wall_west_250_23000_2000_fileup.png": "3e17e9042d2ebd35c532b75dca325e38bca46eb8b4216d5af32d8fba86dede90",
+      "/home/ugrp/ugrp-sim/src/pairact-p3c5/teacher/sim/assets/masterpi_drive_friction_v2/fuji_roller.stl": "2bea3228aa5766e2ce42f4f4a46cdf4bc3e63802958fa7f0ffb9688d9393a424"
+    },
+    "wrapper_sha256": "b5f12c9898a18871aec1a3f20ff87d10a45083abb3dc10600cd40d29cf015194"
   },
   "host": {
-    "machine": "[VM 기입] instance name (e.g. ugrp-act-l4-gcp6), zone, machine type",
-    "gpu": "[VM 기입] nvidia-smi --query-gpu=name,driver_version,memory.total",
-    "cuda_warp_mujoco": "[VM 기입] CUDA runtime, warp, mujoco, mujoco_warp versions (python -c import ...)",
-    "python": "[VM 기입] python --version and venv path",
-    "warp_kernel_cache": "[VM 기입] kernel cache directory writable by the run user (smoke-1b failed on PermissionError /root/.cache)"
+    "machine": "ugrp-act-l4-gcp6, asia-northeast3-a, g2-standard-8",
+    "gpu": "NVIDIA L4, driver 580.178.04, 23034 MiB",
+    "cuda_warp_mujoco": "CUDA 13.0, warp 1.15.0, mujoco 3.16.0, mujoco_warp 3.16.0",
+    "python": "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python, Python 3.12.3",
+    "warp_kernel_cache": "/home/ugrp/.cache/warp (writable by ugrp)"
   },
   "smoke": {
     "run": "gcp6 /home/ugrp/ugrp-sim/runs/pairact-p2/smoke-1c",
-    "summary_sha256": "[VM 기입] sha256 of smoke-1c/summary.json",
-    "carry_eval_sha256": "[VM 기입] object world-000/world-001/world-002 -> sha256 of smoke-1c/world-00N/raw/carry-eval.json",
-    "artifact_manifest_sha256": "[VM 기입] smoke-1c/artifact-sha256.json",
-    "world1_raw_result_sha256": "[VM 기입] smoke-1c/world-000/raw/result.json(.zst) (carry.outcome/events/route_info/offsets; 02-world1-failure.md decisive artifact)",
+    "summary_sha256": "558410b241d763fb4b0825d58121688b7af77b8320cc9b351df882c5591aff19",
+    "carry_eval_sha256": {
+      "world-000": "b51d4e8ca0b41a8272944fab4bc0c8c838a4ff75e38cae0a22f929d0f41f692c",
+      "world-001": "36433ccc7a22373bfb82880c0743a10f3b5528d23a541870e9ef13d06006ce82",
+      "world-002": "713c92de571ad9938812934a5dec03c02dbc00afbdc429d6bf5489b349f5b40a"
+    },
+    "artifact_manifest_sha256": "43aae87796c9da7e48346a223a6cbc14fcd8d77e8cdced0d089dacdd6302bdeb",
+    "world1_raw_result_sha256": "9dab88264d628095d74f7a041503e952d73eca7bab9c6797c6799e67ac22c749",
     "report_file_sha256": "1197dc28e64711aa88b8031cb0406f9456687b56a54a6a05d23ee79c8fba75e4",
     "video_sha256": {
       "world11": "5c5a4836e13557005550f86d6376b4f5517c328158ebe7c1518cf293cffdc43d",
@@ -110,7 +153,7 @@
   },
   "seed_check": {
     "local_2026_10_21": "scripts/check_pairact_r1_seeds.py --scan-refs (15 refs incl. -c, -a-c, -r-c, p5-student): passed true, problems 0, scan_hits 0 (pilot 8343000-039 included)",
-    "vm_seed_check_sha256": "[VM 기입] pilot run root seed-check.json"
+    "vm_seed_check_sha256": "4bf768ab4fa95fc84c14e72aaf3e2dd3e9630dc4e8b4aa8b22472ef60979baaa"
   },
   "sharding": {
     "rule": "COLLECT_PREREG sharding (batch_owner_lag_v1): batch k -> shard k % count, planned on the view that lags lag_batches = count batches. count, lag_batches, assignment and primary_vm are core content (fixed at FROZEN_CORE). Training collection checks --shard i/count and --vm against assignment (a serial training run needs count 1). vm_recording_check: for every assignment VM except primary_vm, the sha256 of that VM's own probe-cases / check-rows / recording-check files (the teacher recording check is machine-bound), filled at FROZEN like recording_check and excluded from core_sha256. Draft: one VM, 3 shards (owner decision D-v4-1: count <= 3); the two-VM variant (RUNBOOK 1-6b) is count 3, assignment gcp6 [0,1] / gcp2 [2], decided before FROZEN_CORE. v4: count is set from the measurement-mode contention run on pilot seeds BEFORE FROZEN_CORE (RUNBOOK 1-6a); a training run root is never reopened with another count",
