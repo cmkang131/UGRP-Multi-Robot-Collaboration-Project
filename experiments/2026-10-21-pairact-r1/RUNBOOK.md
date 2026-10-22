@@ -249,6 +249,115 @@ python $COL/scripts/run_pairact_collect.py convert-input --prereg $P --run-root 
 ```
 FROZEN 학습 원장이 아니거나(pilot·probe source 포함) core_sha256이 다르거나 판정이 학습 불가면 runner가 거부합니다. v4: merged root만 받고, `merge.json`의 `finished`가 true이고 `running`이 비어 있으며 merged 원장 sha256이 `merge.json`과 같아야 합니다. 채택 world raw 디렉터리가 이 VM에 하나라도 없으면(두 VM에서 raw 복사 누락) 거부합니다. 결과 표기(`result_labels`)에 `거리 관문 축소(...)`가 붙을 수 있습니다. [확인 필요] world result.json의 `source_sha`가 teacher -c3 SHA인지 첫 배치에서 확인합니다.
 
+### 1-9. gcp6 준비·동결 실행 순서 (2026-10-22 DeepSeek 추가, 미커밋 문서)
+
+> 이 절은 동결 후보 `99c877e00`을 바꾸지 않는 **문서 추가**입니다. 커밋 Y는 prereg·manifest 두 JSON만 `git add` 하고 이 RUNBOOK은 함께 add하지 않습니다.
+> `gcp6`는 팀장 SSH 답 전까지 시작·접속하지 않습니다. 아래는 답 후 바로 실행할 순서입니다.
+> 근거: `outputs/reports/pairact-r1-frozen-candidate-20261022/FROZEN_CANDIDATE_CHECKLIST.md`.
+
+0) 접속·신원
+```bash
+gcloud compute ssh ugrp-act-l4-gcp6 --account=kcm5781kcm5781@gmail.com --project=ugrp-sim-f-1016 --zone=asia-northeast3-a
+hostname; nvidia-smi -L; id -un        # 실행 사용자 확인 (gcp2는 ubuntu → sudo -u ugrp)
+```
+
+1) 체크아웃 (gcp6)
+```bash
+REPO=/home/ugrp/ugrp-sim/ugrp          # [확인 필요]
+SRC=/home/ugrp/ugrp-sim/src/pairact-p3c5
+COL=/home/ugrp/ugrp-sim/src/pairact-r1v9
+for t in teacher:75929e7719ad98a089e3dda5251f4249d8bae511 \
+         adapter:3779d9615ef6dc8e38f57ab968a14a9e45189ecc \
+         root:a93082c343ef5f3687851bf4b0c9fb0f2484ada1; do
+  git -C $REPO worktree add --detach $SRC/${t%%:*} ${t#*:}
+done
+git -C $REPO worktree add --detach $COL 99c877e005ef6826b07cbd273c9cb0031598e364
+for r in teacher adapter root; do
+  echo "$r $(git -C $SRC/$r rev-parse HEAD) dirty=$(git -C $SRC/$r status --porcelain --untracked-files=no | wc -l)"
+done
+git -C $COL rev-parse HEAD                          # 99c877e00…
+git -C $COL status --porcelain --untracked-files=no # 비어 있어야 함(이 RUNBOOK 편집은 커밋하지 않음)
+```
+기대: teacher `75929e77…`, adapter `3779d961…`, root `a93082c3…`, dirty 0.
+
+2) python 고정 (1-1의 `PY=$(command -v python)`를 대체)
+```bash
+PY=/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python   # gcp6 2026-10-21 실제 사용 경로
+test -x $PY && $PY -c "import warp,mujoco; print(warp.__version__, mujoco.__version__)"
+# 기대 1.15.0 3.16.0 (gcp2는 /home/ugrp/ugrp-sim/clone-20261021-oracle/.venv-warp, 3.12.3/1.15.0/3.16.0)
+```
+`PY`가 달라지면 `command.episode_template_sha256`이 달라져 header가 갈라집니다(`/usr/bin/python3`이면 `1e0adaa0…`). 절대경로로 고정하고 `host.python`에 기록합니다.
+
+3) wrapper·호스트 모듈 설치 (1회)
+```bash
+mkdir -p /home/ugrp/ugrp-sim/src/beamact5-tools
+cp $COL/experiments/2026-10-17-beamact5/teacher/run_warp_flow_teacher_gcp6.py \
+   $COL/experiments/2026-10-17-beamact5/teacher/gcp6_host.py \
+   /home/ugrp/ugrp-sim/src/beamact5-tools/
+sha256sum /home/ugrp/ugrp-sim/src/beamact5-tools/*.py
+readlink -f /home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py
+```
+기대: wrapper `b5f12c9898a18871aec1a3f20ff87d10a45083abb3dc10600cd40d29cf015194`, host `b009e3f32df2b69d2b56f0e081356d0823b3427a0a1680507aa3ba37d6283ff3`, readlink = 같은 절대경로.
+gcp2에는 `beamact5-tools/`가 **없습니다**(2026-10-22 확인). 두 VM이면 gcp2에도 같은 복사·해시가 필요합니다.
+
+4) 셸 환경
+```bash
+unset PYTHONPATH PYTHONHOME
+env | grep -E '^(PYTHONPATH|PYTHONHOME)=' || true    # 출력 없음
+```
+
+5) canonical 디렉터리 = episode cwd (핵심)
+```bash
+SRC=/home/ugrp/ugrp-sim/src/pairact-p3c5
+XML=/home/ugrp/ugrp-sim/runs/beamact5/wide-export-old-8420000e/canonical-scene.xml
+grep -o '<compiler[^>]*>' "$XML"
+ls -ld "$(dirname "$XML")/sim/assets" 2>&1
+# 없으면 1회만 (XML 파일은 바꾸지 않음):
+test -e "$(dirname "$XML")/sim" || ln -s "$SRC/root/sim" "$(dirname "$XML")/sim"
+```
+teacher는 `mujoco.MjModel.from_xml_string`으로 컴파일하므로 `texturedir`가 상대경로면 **에피소드 cwd** 기준으로 자산을 읽습니다. `xml-assets`/`core --verify-assets`도 XML 디렉터리 기준이므로, 수집·동결 명령은 모두 `cd "$(dirname "$XML")"`에서 실행합니다(에피소드 cwd = XML 디렉터리).
+
+6) 자산 해시 (VM 기입)
+```bash
+cd "$(dirname "$XML")"
+PREP=/home/ugrp/ugrp-sim/runs/pairact-r1-prep; mkdir -p $PREP
+$PY $COL/scripts/pairact_r1_freeze.py xml-assets --canonical-xml "$XML" > $PREP/xml-assets.json
+$PY $COL/scripts/pairact_r1_freeze.py per-world-refs \
+  --refs /home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/per-world-references.json > $PREP/per-world-refs.json
+sha256sum "$XML" \
+  /home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/per-world-references.json \
+  /home/ugrp/ugrp-sim/runs/beamact5/gate-40-r13/rejection_table.json
+```
+`xml-assets.json`이 38개(텍스처 37 + mesh 1)인지 확인합니다. gcp2 복사본 기준 38/38, 내용 해시는 `outputs/reports/pairact-r1-frozen-candidate-20261022/ASSETS_PREFILL.json`.
+
+7) smoke·seed-check (기존 증거 해시)
+```bash
+S=/home/ugrp/ugrp-sim/runs/pairact-p2/smoke-1c
+sha256sum $S/summary.json $S/artifact-sha256.json $S/world-000/raw/result.json* \
+  $S/world-00{0,1,2}/raw/carry-eval.json
+sha256sum <pilot run root>/seed-check.json
+```
+
+8) manifest 채우기·FROZEN_CORE
+- 채울 칸: prereg.core(계산) 포함 23칸, 그중 VM 기입 22칸(collector 1 + command 2 + assets 6 + host 5 + smoke 4 + recording_check 3 + seed_check 1).
+- DeepSeek 사전 채움(로컬, 커밋 금지): `collector.source_sha=99c877e00…`, `command.episode_template`/`sha256=bb98474c63119dc48b57c6e7e097ae3cc27aabc8468e7c76d82769e21087716a`, `assets.wrapper_sha256=b5f12c98…`. 나머지는 VM 출력. `$PREP/xml-assets.json`의 키/값을 `assets.mesh_assets_sha256`에 그대로 넣습니다(키는 cwd 기준 절대경로).
+- K(샤드 수)는 1-2b 측정 전에는 FROZEN_CORE로 가지 않습니다. 초안 `count=3`, `assignment={"gcp6":[0,1,2]}`, `primary_vm=gcp6`.
+```bash
+cd "$(dirname "$XML")"          # 5)의 cwd 유지
+$PY $COL/scripts/pairact_r1_freeze.py core \
+  --collector-sha 99c877e005ef6826b07cbd273c9cb0031598e364 --verify-assets
+# -> core_sha256 기록
+git -C $COL add experiments/2026-10-21-pairact-r1/COLLECT_PREREG_DRAFT.json \
+  experiments/2026-10-21-pairact-r1/RUN_MANIFEST.json      # 이 RUNBOOK 제외
+git -C $COL commit -m "pairact-r1 FROZEN_CORE <core_sha256>"
+```
+그 다음 1-4: probe source → `probe-cases` → `probe-episode` → `check-rows` → recording-check. **v9 이전 probe raw는 재사용하지 않습니다**(재실행).
+
+9) 정지·비용
+- 수집 중 wrapper·`gcp6_host.py`·세 체크아웃·venv(pip install)·canonical XML·mesh·rejection table·기록 디렉터리 수정 금지.
+- `--no-verify-assets` 금지(probe-episode·convert-input·FROZEN 수집).
+- 끝나면 lease 삭제 → 프로세스 0·GPU 0 → `gcloud compute instances stop` → `describe`로 TERMINATED 확인.
+
 ## 2. 변환 + stage sidecar (CPU)
 ```
 # protocol: train_seeds=성공 train seed, validation_seeds=성공 validation seed (heldout 금지)
