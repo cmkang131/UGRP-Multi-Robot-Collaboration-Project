@@ -1,7 +1,7 @@
 {
  "schema": "ugrp.pairact_r1.eval-prereg.draft.v1",
- "status": "DRAFT_NOT_REGISTERED",
- "revision": "v2 (2026-10-21, task b73e43dd): episode cap rule fixed to the -c5 stack, n/N_eff with rule A, same-seed teacher n/N_eff beside the student, funnel definitions bound to code, student correction audit, hybrid switch rule (HYBRID_SWITCH_RULE.md). v2.1 (2026-10-21, task fbbf1e4e, before any result): arm N (near-field only training) added as P5 arm 'hybrid_n', evaluated only with the code carry segment; arm rules and labels fixed. v1: rule A, N_eff, heldout access.",
+ "status": "REGISTERED",
+ "revision": "v2.2 (2026-10-22, C1 registration): episode_cap_sim_s fixed to 170 SIM s, place-path hierarchy fixed, heldout kept at 20 with the reason recorded, registered on the P5 branch (this file) and supersedes the stale v9-branch copy. v2.1 (2026-10-21, task fbbf1e4e): arm N (near-field only) added as P5 arm hybrid_n. v2 (2026-10-21, task b73e43dd): episode cap rule, n/N_eff with rule A, hybrid switch rule. v1: rule A, N_eff, heldout access.",
  "stage": "P5 same-seed closed-loop evaluation",
  "commit_before_run": "this file + selected checkpoint SHA256 + OFFLINE_GATE selection.json must be committed before any P5 rollout",
  "seeds": {
@@ -41,13 +41,16 @@
  ],
  "start_distribution": "same generator as P3: each robot 0.3-1.2 m from its assigned beam end",
  "episode_cap_sim_s": {
-  "value": "computed by harness.pairact_r1_plan.episode_cap_s from the P2 teacher smoke on the -c5 stack and committed with this file before P5 [VM 기입 전 미정]",
+  "value": 170,
   "rule": "cap = 60 (grasp cap, P1 gate) + carry_budget; carry_budget = min(120, ceil10(1.5 x max_k carry_s[k]) + 3.0 (release instruction) + 1.5 (finish)); carry_s[k] = SIM s from handover to the teacher done phase in P2 smoke world k (only worlds whose teacher command sequence completed)",
   "if_no_complete_carry": "no cap, P5 does not start (report)",
   "if_timeout": "any smoke world with carry_total_timeout -> carry_budget = 120, recorded",
   "implementation": "runner runs cap_s + carry_cap_s from the start; if the computed budget differs from the -a-c5 candidate carry_cap_s, a new adapter candidate carries the value (existing candidates unchanged)",
   "same_for_both_arms": true,
-  "cap_end": "an episode reaching the cap is a failure with termination cap_end; it stays in N_eff"
+  "cap_end": "an episode reaching the cap is a failure with termination cap_end; it stays in N_eff",
+  "value_basis": "RUN_MANIFEST.json limits of the FROZEN collection core 5b5fda0647c5a0251da5439db5e65239171349c29227a3d5fcaf269c75de47a6: grasp_cap_sim_s 60 + carry_cap_sim_s 110 = episode_cap_sim_s 170. The same 60/110/170 numbers are the P2 teacher phase caps on the -c5 stack, so P5 runs under the same operating envelope as the demonstrations.",
+  "measured_teacher_carry": "n=109 successful P3 teacher episodes (batches b000-b009, core 5b5fda06…): carry = end_t - handover_t from carry-eval.json, min 66.9 / p50 87.1 / p90 99.9 / max 105.8 SIM s. The registered carry cap 110 leaves 4.2 s over the slowest observed teacher episode; a cap_end episode is a reported termination reason, never a success, and stays in N_eff.",
+  "alternative_not_registered": "the v2 computed rule (cap = 60 + min(120, ceil10(1.5 x max_k carry_s[k]) + 3.0 + 1.5)) evaluates to 180.0 on the same 109 episodes (max carry 105.8 -> 1.5x = 158.7 -> capped budget 120). It is not registered: 120 != the -a-c5 candidate carry cap 110, so it needs a new adapter candidate and a re-freeze before P5, for a 10 s difference. If a later pre-registered amendment moves to 180, this field is superseded before any P5 rollout, never after."
  },
  "success": {
   "definition": "placed_in_zone_B AND drop_events == 0 AND robot_robot_contacts == 0 (harness/pair_carry_eval.py, GT evaluator only)",
@@ -101,12 +104,12 @@
  "heldout_access": "no heldout rollout, result, video or log is produced or read before the selected checkpoint SHA256 and OFFLINE_GATE selection.json are committed (commit_before_run); heldout seeds are never collected (COLLECT_PREREG v2 seeds.heldout) and never used for checkpoint selection",
  "runs_per_arm": 1,
  "minimum_success_claim": ">= 1/N_eff success meets the r1 minimum for that arm's label only: arm F success is a pure learned pair carry; arm N success is a learned near-field + code carry (hybrid) result and never counts as a pure learned carry; 0/N_eff is reported with the funnel as the result",
- "compute_estimate_gpu_h": "2-3 for student + teacher (pair-act-carry-plan.md P5), +1-1.5 for hybrid_n [확인 필요: P2 smoke wall per SIM s, hybrid runner wall]",
+ "compute_estimate_gpu_h": "2-3 for student + teacher (pair-act-carry-plan.md P5), +1-1.5 for hybrid_n; not yet measured on the P5 runner (P5 dry run wall per SIM s is unverified)",
  "stack": {
   "root": "dsh/pairact-p2-carrypath-r-c5 a93082c34 (scripts/run_warp_flow_teacher.py --student-eval, scripts/pairact_p5_rows.py)",
   "adapter": "dsh/pairact-p2-carrypath-a-c5 3779d961 (pinned by the root)",
   "teacher_runner": "dsh/pairact-p2-carrypath-c5 75929e77 (pinned by the root; harness/pairact_student_eval.py StudentFunnel, harness/pair_carry_eval.py)",
-  "student_worker": "dsh/pairact-p5-student (run_warp_flow_teacher.STUDENT_SHA must match, else the run refuses) [확인 필요: STUDENT_SHA pin on -r-c5 still points at the current worker commit]",
+  "student_worker": "dsh/pairact-p5-student (run_warp_flow_teacher.STUDENT_SHA must match, else the run refuses); the -r-c5 pin is unverified until the P5 dry run checks it",
   "same_for_both_arms": "the teacher arm is the same command on the same cases without --student-eval",
   "hybrid_root": "dsh/pairact-p2-carrypath-r-c5-hybrid 013e0d91a (scripts/run_warp_flow_teacher.py --student-eval --hybrid-carry <config>; default off keeps the -r-c5 pins). Hybrid stack pins: adapter -a-c5-hybrid 6e957a42, teacher -c5-hybrid 60ef0b14 (harness/hybrid_carry.py), worker dsh/pairact-p5-student-hybrid bdc41a3f (shadow op), nav dsh/nav-v5-recal ceacd474b. Run doc: experiments/2026-10-21-pairact-p2/HYBRID_RUN.md"
  },
@@ -150,5 +153,40 @@
   "funnel_attribution": "hybrid_n funnel stages carry_1m and door are reached by code, approach..hold_3s and place by the student; the funnel row says so",
   "hybrid_audit": "hybrid_n rows additionally need gt_inputs_to_code == 0 (null = unverified = not a success) and carry the I10 fields code_segment_s, student_commands_executed_ratio, switch events",
   "hybrid_switch_relation": "pairact_r1_hybrid_switch_v1 reads only the arm F student counts. arm N is hybrid by construction and is not an input of the rule; the rule decides whether arm F's checkpoint is also run with the code carry segment (a later prereg, arm id 'hybrid_f', same seeds) and what the next build is"
+ },
+ "c1_decisions": {
+  "decided_by": "DeepSeek Harness (DSH) under the 2026-10-22 delegation from the owner (창민); values fixed before any P5 rollout",
+  "d1_heldout_n": {
+   "value": 20,
+   "rejected": "40 (8342000-8342039)",
+   "why": "the heldout range is content of COLLECT_PREREG (core): last 8342019 -> 8342039 changes core_sha256 5b5fda0647c5a0251da5439db5e65239171349c29227a3d5fcaf269c75de47a6 -> 1576728284281ad081f78cf8db95da9c9644e012000cf0a3df56a4696b0bfd9e and prereg_core eb6d791be9687cae87a2f177654100a15bdce035fb3a2749b20332ff2b4b28c7 -> b611392fce07ad684e5cff7ffe0fd238177c74cfabd7a9f0849a88023f6968e8, and the per-shard ledger header check (prereg_core_sha256/prereg_sha256) then rejects the in-flight run root; tests/test_pairact_collect.py::test_eval_prereg_heldout_rule_matches_collection also requires eval.seeds == COLLECT_PREREG.seeds.heldout. So 40 is not a P5-only cost.",
+   "confirmation_set": "8342040-8342059 is left unused. If the 20-seed result is ambiguous, a confirmation set may be registered in its own amendment (new core, after collection stops, before its own rollout); it is never pooled with this N_eff and never substituted for it."
+  },
+  "d2_episode_cap": "170 SIM s (see episode_cap_sim_s.value); computed alternative 180.0 rejected for the pre-P5 re-freeze it needs",
+  "d3_place_path": {
+   "value": "A - both arms use the same rule: set-down (lower/open/raise/retreat) is a student segment",
+   "code": "arm segments already say it: student approach -> alignment -> READY -> grasp -> 3 s hold; code carry; student place -> done, and funnel_attribution says approach..hold_3s and place are the student's",
+   "rejected": "B - report two boundaries (hybrid stops at the code carry end, place by code/legacy). It would make a hybrid success not attributable to the student place segment and would need a separate arm id hybrid_n_codeplace (own n/N_eff, never pooled); not registered, not run."
+  },
+  "d4_registration_target": {
+   "value": "this file (P5 branch, armN v2.1 lineage) is the single eval prereg",
+   "why": "dsh/pairact-carry-r1-v9 carries a stale v1 draft of this file (sha256 d4ba645dadc0d781270c1310…): no hybrid_n arm, episode_cap_sim_s = \"[확인 필요]\", and the P5 code it references (harness/pairact_r1_plan.py, scripts/pairact_p5_rows.py, scripts/pairact_r1_p5_decide.py) does not exist on that branch. Registering it first would freeze a document that cannot run and would compete with this one. The eval prereg is not part of core_sha256, so this registration does not touch the running collection; the v9 copy should be marked superseded the next time that branch is opened."
+  },
+  "d5_collection": "collection stops on the $20 guard or the 02:00Z deadline, whichever comes first: no $22 guard and no 03:00Z deadline. Ground truth at 200 attempts (b000-b009): 109 admitted (54.5%), $11.728 batch cost, per-bin B0 16/30 B1 17/49 B2 20/36 B3 19/29 B4 19/29 B5 18/27 (excluding B1: 92/151 = 60.9%). The 200-pair target is not reachable inside either bound; the run reports a deadline stop with S/N and A/N, which is not a prereg violation (200 is a stop condition, never a denominator)."
+ },
+ "registration": {
+  "date_utc": "2026-10-22",
+  "basis": "owner delegation 2026-10-22: decide and execute without asking again",
+  "supersedes": {
+   "path": "experiments/2026-10-21-pairact-r1/PAIRACT_R1_EVAL_PREREG_DRAFT.json",
+   "branch": "dsh/pairact-carry-r1-v9",
+   "sha256": "d4ba645dadc0d781270c1310"
+  },
+  "open_before_p5": [
+   "heldout refs: the 660-key native-refs-pairact-r1-c5e set is pilot 40 + train 200 + extension 400 + validation 20 (heldout not included); verify with a 1-seed KeyError test and export 8342000-8342019 refs before P5",
+   "Codex independent review of this registered file (evidence skill: independent recount before the final claim)",
+   "STUDENT_SHA pin check on -r-c5 (the student_worker field is still marked unverified)"
+  ],
+  "not_changed": "COLLECT_PREREG_DRAFT.json / RUN_MANIFEST.json / core_sha256 5b5fda06… (collection untouched)"
  }
 }
