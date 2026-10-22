@@ -89,6 +89,9 @@ cp $COL/experiments/2026-10-17-beamact5/teacher/run_warp_flow_teacher_gcp6.py \
 readlink -f /home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py   # v8: 출력이 위 경로와 같아야 함(경로 성분 symlink 금지)
 P=$COL/experiments/2026-10-21-pairact-r1/COLLECT_PREREG_DRAFT.json
 M=$COL/experiments/2026-10-21-pairact-r1/RUN_MANIFEST.json
+# 주의: manifest `command.episode_template_draft`(L59)는 *옛 8420000e 경로*이고 실행에 쓰이지 않습니다.
+#       실행 기준은 `command.episode_template`(sha de2bc7b1…) 하나뿐입니다. draft도 core 내용이라
+#       지금 고치면 core 5b5fda06…이 깨지므로 그대로 두고 다음 core에서 정리합니다.
 PY=$(command -v python)    # v8: core/final은 절대경로 python만 허용(bare python은 실행 PATH로 해석되므로 거부)
 EP="$PY /home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py --flow beampair \
  --adapter-source $SRC/adapter --teacher-source /home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247 --cases {cases} --indices {indices} --cap-s 60 --out {out} \
