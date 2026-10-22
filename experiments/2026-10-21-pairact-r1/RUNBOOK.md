@@ -77,9 +77,11 @@ cd $COL && python -m pytest -q tests/test_pairact_collect.py tests/test_pairact_
   tests/test_pairact_prereg_xreview.py tests/test_pairact_collect_v4.py tests/test_pairact_collect_v5.py   # 기대 수: CODEX_RESPONSE_V5.md 맨 끝
 export WARP_SOURCE_ROOT=$SRC/root     # v5: gcp6 wrapper의 root 소스. stack 검사가 --frozen-root와 같은 경로인지 확인
 cp $COL/experiments/2026-10-17-beamact5/teacher/run_warp_flow_teacher_gcp6.py /home/ugrp/ugrp-sim/src/beamact5-tools/   # v5 carry_success (VM 경로 [확인 필요])
+readlink -f /home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py   # v8: 출력이 위 경로와 같아야 함(경로 성분 symlink 금지)
 P=$COL/experiments/2026-10-21-pairact-r1/COLLECT_PREREG_DRAFT.json
 M=$COL/experiments/2026-10-21-pairact-r1/RUN_MANIFEST.json
-EP="python /home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py --flow beampair \
+PY=$(command -v python)    # v8: core/final은 절대경로 python만 허용(bare python은 실행 PATH로 해석되므로 거부)
+EP="$PY /home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py --flow beampair \
  --adapter-source $SRC/adapter --teacher-source $SRC/teacher --cases {cases} --indices {indices} --cap-s 60 --out {out} \
  --vm-hourly-usd 1.096 --gcp6-isolated-v1 --placement-graspable-filter-v1 --world-model-parameters-v1 \
  --native-sleep-policy-compat-v1 --full-active-dof-workspace-v1 --warp-native-contact-v1 \

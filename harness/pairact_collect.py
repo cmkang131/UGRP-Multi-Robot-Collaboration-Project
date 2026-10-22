@@ -20,6 +20,8 @@ from pathlib import Path
 import random
 import re
 import shlex
+import shutil
+import stat
 import subprocess
 import xml.etree.ElementTree as ET
 
@@ -1563,6 +1565,15 @@ def check_run_manifest(manifest, *, stage, prereg, batch_size=None, episode=None
                 problems.append(f'file sha256 differs from the manifest: {rel}')
     if verify_assets and isinstance(template, str) and not episode_option_problems(template):
         for key, path in episode_assets(template).items():
+            if key == 'wrapper_sha256':         # v8: the absolute symlink-free file the runner pins and runs
+                try:
+                    got = resolve_episode_wrapper(template)[0]['sha256']
+                except ValueError as error:
+                    problems.append(f'asset for assets.wrapper_sha256 refused: {error}')
+                else:
+                    if got != m('assets', key):
+                        problems.append(f'assets.wrapper_sha256 differs from {path}')
+                continue
             if path is None or not os.path.isfile(path):
                 problems.append(f'asset for assets.{key} missing: {path}')
             elif file_sha256(path) != m('assets', key):
@@ -1927,8 +1938,13 @@ def check_stack_heads(manifest, roots, *, rev_parse=None, env=None):
     template = _dig(manifest, ('command', 'episode_template'))
     if not isinstance(template, str):
         raise ValueError('stack check: RUN_MANIFEST command.episode_template required')
-    src = episode_sources(template, os.environ if env is None else env)
-    wrapper = next((x for x in shlex.split(template) if x.endswith('.py')), None)
+    env = os.environ if env is None else env
+    src = episode_sources(template, env)
+    src['root'] = resolve_episode_root(template, env)     # v8: token vs env disagreement refused, realpath
+    try:                                                    # v8: the pinned wrapper path, never cwd-relative
+        wrapper = resolve_episode_wrapper(template)[0]['path']
+    except ValueError:
+        wrapper = None
     out = {}
     for role in STACK_ROLES:
         path = roots.get(role)
@@ -1936,7 +1952,7 @@ def check_stack_heads(manifest, roots, *, rev_parse=None, env=None):
             raise ValueError(f'stack check: {role} checkout path required')
         ep, name = src[role], EPISODE_SOURCE_FLAGS.get(role, 'WARP_SOURCE_ROOT')
         if ep is None:
-            inside = wrapper is not None and os.path.realpath(wrapper).startswith(os.path.realpath(path) + os.sep)
+            inside = wrapper is not None and wrapper.startswith(os.path.realpath(path) + os.sep)
             if role != 'root' or not inside:
                 raise ValueError(f'stack check: the episode command does not name its {role} source ({name})')
         elif not os.path.isdir(ep):
@@ -2001,9 +2017,10 @@ class EpisodeParseError(ValueError):
     pass
 
 
-def wrapper_parser(path):
+def wrapper_parser(path, source=None):
     """v7: the wrapper's own ``parser()`` (taken from its source without importing the module, which needs
-    WARP_SOURCE_ROOT and the simulator); argparse errors raise EpisodeParseError instead of exiting."""
+    WARP_SOURCE_ROOT and the simulator); argparse errors raise EpisodeParseError instead of exiting.
+    v8: ``source`` = the bytes already hashed for the pin (read the file only when not given)."""
     import argparse as _argparse
     import ast
 
@@ -2013,7 +2030,7 @@ def wrapper_parser(path):
 
         def exit(self, status=0, message=None):
             raise EpisodeParseError(message or f'exit {status}')
-    src = Path(path).read_text()
+    src = Path(path).read_text() if source is None else source.decode()
     tree = ast.parse(src)
     node = next((n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == 'parser'), None)
     if node is None:
@@ -2070,9 +2087,21 @@ def episode_command_problems(template, *, wrapper=None, strict=False):
     ``strict`` (core / final manifest gates, v7 b): a wrapper whose parser() cannot be read is refused instead of
     falling back to the form check only."""
     try:
-        _, _, named, _ = episode_command_form(template)
+        _, python, named, _ = episode_command_form(template)
     except ValueError as error:
         return [str(error)]
+    if strict and wrapper is None:
+        # v8: core / final read the parser of the named file itself -- absolute, symlink-free, the bytes hashed
+        # (no REPO_WRAPPER stand-in: that copy is not what runs) -- and python by absolute path (no PATH lookup)
+        out = [] if os.path.isabs(python) else [
+            f'episode python {python!r} must be an absolute path at core / final (bare names resolve via PATH)']
+        try:
+            pin, source = resolve_episode_wrapper(template)
+            parser = wrapper_parser(pin['path'], source)
+        except (OSError, SyntaxError, UnicodeDecodeError, ValueError) as error:
+            msg = str(error)
+            return out + [msg if isinstance(error, EpisodePinError) else f'episode wrapper parser unreadable: {msg}']
+        return out + episode_parse_problems(template, parser)
     if wrapper is None:
         if os.path.isfile(named):
             wrapper = named
@@ -2175,7 +2204,9 @@ def launch_binding_path(out):
     return out.parent / (out.name + LAUNCH_BINDING_SUFFIX)
 
 
-def launch_binding(*, stage, core, manifest_sha256, template, argv, cwd, out):
+def launch_binding(*, stage, core, manifest_sha256, template, argv, cwd, out, pin=None):
+    """v8: ``pin`` = the episode pin checked immediately before the launch; the runner adds ``pin_post`` (the
+    pin re-resolved after the process exited) and consumers refuse the output unless both are present and equal."""
     if stage not in ('core', 'final'):
         raise ValueError(f'launch binding stage {stage!r}')
     if not (isinstance(core, str) and len(core) == 64):
@@ -2183,7 +2214,7 @@ def launch_binding(*, stage, core, manifest_sha256, template, argv, cwd, out):
     return dict(schema=LAUNCH_BINDING_SCHEMA, stage=stage, core_sha256=core, run_manifest_sha256=manifest_sha256,
                 episode_template_sha256=hashlib.sha256(template.encode()).hexdigest(),
                 argv_sha256=hashlib.sha256(json.dumps(argv).encode()).hexdigest(), cwd=str(cwd),
-                out=os.path.realpath(out))
+                out=os.path.realpath(out), pin=pin, pin_post=None)
 
 
 def launch_binding_problems(raw, core, stages):
@@ -2202,5 +2233,123 @@ def launch_binding_problems(raw, core, stages):
                 return [f'launch binding {b} stage {rec.get("stage")!r} not in {stages}']
             if rec.get('core_sha256') != core:
                 return [f'launch binding {b} core {rec.get("core_sha256")} != {core}']
+            pin, post = rec.get('pin'), rec.get('pin_post')     # v8: the wrapper / python / root that ran
+            if not isinstance(pin, dict) or not pin.get('strict') or not pin.get('wrapper_sha256'):
+                return [f'launch binding {b} has no strict episode pin (launched before v8 or outside the runner)']
+            if not isinstance(post, dict):
+                return [f'launch binding {b} has no post-run pin (the episode did not finish under the runner)']
+            diff = [k for k in PIN_KEYS if pin.get(k) != post.get(k)]
+            if diff:
+                return [f'launch binding {b}: episode {",".join(diff)} changed while the teacher ran']
             return []
     return [f'{raw} has no launch binding (teacher output not launched behind the manifest gate)']
+
+
+# ------------------------------------------------------------- v8 (Codex v7 4th review: checked != executed)
+
+# The gates read the wrapper .py token relative to their own cwd (or a repository copy when the named file was
+# missing), python came from PATH at exec time and WARP_SOURCE_ROOT from token-or-env -- so a file other than the
+# one parsed / hashed could run.  v8 resolves each of them once into a *pin* (absolute path + sha256) that the
+# gate checks and the runner re-checks immediately before and after subprocess.call.
+class EpisodePinError(ValueError):
+    pass
+
+
+def _own_realpath(path, what):
+    """``path`` is absolute, placeholder-free and its own realpath (no symlink, ``..`` or ``//`` in any component)."""
+    if not isinstance(path, str) or not os.path.isabs(path):
+        raise EpisodePinError(f'{what} must be an absolute path, got {path!r}')
+    if '{' in path or '}' in path:
+        raise EpisodePinError(f'{what} {path} carries a runner placeholder; the checked path must be the run path')
+    real = os.path.realpath(path)
+    if real != path:
+        raise EpisodePinError(f'{what} {path} is not its own realpath ({real}): no symlink / .. in any component')
+    return path
+
+
+def resolve_episode_wrapper(template):
+    """v8: (dict(path, sha256), source bytes) of the wrapper the episode command runs.  The token must be an
+    absolute, symlink-free path to a regular file; the bytes hashed are the bytes the parser reads."""
+    _, _, named, _ = episode_command_form(template)
+    _own_realpath(named, 'episode wrapper')
+    try:
+        fd = os.open(named, os.O_RDONLY | getattr(os, 'O_NOFOLLOW', 0))
+    except FileNotFoundError:
+        raise EpisodePinError(f'episode wrapper {named} not found; its parser() must read the command') from None
+    except OSError as error:
+        raise EpisodePinError(f'episode wrapper {named} unreadable: {error}') from None
+    with os.fdopen(fd, 'rb') as f:
+        if not stat.S_ISREG(os.fstat(f.fileno()).st_mode):
+            raise EpisodePinError(f'episode wrapper {named} is not a regular file')
+        data = f.read()
+    _own_realpath(named, 'episode wrapper')                 # a component swapped to a symlink while opening
+    return dict(path=named, sha256=hashlib.sha256(data).hexdigest()), data
+
+
+def resolve_episode_python(template, env=None, *, strict=True):
+    """v8: the interpreter.  Core / final (``strict``): the template names it by absolute path, so the core binds
+    the path and PATH plays no part.  Pilot: a bare name is resolved once with the exec env's PATH and the runner
+    executes that absolute path.  The realpath + sha256 of the binary are pinned (a venv python is a symlink to
+    the base interpreter; argv[0] keeps the venv path so the venv still applies)."""
+    _, python, _, _ = episode_command_form(template)
+    if os.path.isabs(python):
+        path = python
+    elif strict:
+        raise EpisodePinError(f'episode python {python!r} must be an absolute path at core / final '
+                              '(a bare name resolves through the exec PATH, not the checked interpreter)')
+    else:
+        path = shutil.which(python, path=(os.environ if env is None else env).get('PATH', os.defpath))
+        if path is None:
+            raise EpisodePinError(f'episode python {python!r} not found on the exec PATH')
+        path = os.path.abspath(path)
+    real = os.path.realpath(path)
+    if not os.path.isfile(real):
+        raise EpisodePinError(f'episode python {path} is not a file')
+    return dict(python=path, python_realpath=real, python_sha256=file_sha256(real))
+
+
+def resolve_episode_root(template, env=None):
+    """v8: the WARP_SOURCE_ROOT the episode runs with: the template token, else the env value; both present and
+    different (realpath) is refused.  None when neither names one (the runner then removes it from the env)."""
+    assign, _, _, _ = episode_command_form(template)
+    tok = assign.get('WARP_SOURCE_ROOT')
+    ev = (os.environ if env is None else env).get('WARP_SOURCE_ROOT')
+    if tok is not None and ev is not None and os.path.realpath(tok) != os.path.realpath(ev):
+        raise EpisodePinError(f'WARP_SOURCE_ROOT token {tok} != env WARP_SOURCE_ROOT {ev}; give one root')
+    root = tok if tok is not None else ev
+    return None if root is None else os.path.realpath(root)
+
+
+PIN_KEYS = ('wrapper', 'wrapper_sha256', 'python', 'python_realpath', 'python_sha256', 'root', 'cwd', 'strict')
+
+
+def episode_pin(template, *, cwd, env=None, strict=True):
+    """v8: the one value the gate checks and the runner executes: wrapper (path, sha256), python (path,
+    realpath, sha256), WARP_SOURCE_ROOT realpath and cwd.  ``strict`` = core / final rules."""
+    if strict:
+        w, _ = resolve_episode_wrapper(template)
+    else:                       # pilot: relative wrapper allowed, resolved at the pinned cwd and hashed
+        _, _, named, _ = episode_command_form(template)
+        path = os.path.realpath(os.path.join(cwd, named))
+        w = dict(path=path, sha256=file_sha256(path) if os.path.isfile(path) else None)
+    py = resolve_episode_python(template, env, strict=strict)
+    return dict(wrapper=w['path'], wrapper_sha256=w['sha256'], **py, root=resolve_episode_root(template, env),
+                cwd=os.path.realpath(cwd), strict=strict)
+
+
+def episode_pin_problems(pin, template, *, cwd, env=None):
+    """v8: re-resolve the episode command now and list every difference from ``pin``."""
+    try:
+        now = episode_pin(template, cwd=cwd, env=env, strict=pin.get('strict', True))
+    except (OSError, ValueError) as error:
+        return [f'episode pin no longer resolves: {error}']
+    return [f'episode pin {k}: pinned {pin.get(k)!r}, now {now.get(k)!r}' for k in PIN_KEYS if pin.get(k) != now.get(k)]
+
+
+def pinned_exec(pin, argv, env, assign):
+    """v8: (argv, env) actually executed: argv[0] the pinned python, WARP_SOURCE_ROOT the pinned root or absent."""
+    env = dict(env, **assign)
+    env.pop('WARP_SOURCE_ROOT', None)
+    if pin['root'] is not None:
+        env['WARP_SOURCE_ROOT'] = pin['root']
+    return [pin['python']] + list(argv[1:]), env

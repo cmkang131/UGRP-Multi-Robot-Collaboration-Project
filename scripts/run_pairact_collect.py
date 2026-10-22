@@ -524,6 +524,18 @@ def frozen_gate(a, prereg, sha, *, stage, episode=None, recording_dir=None, need
     return core, hashlib.sha256(raw).hexdigest()
 
 
+def gate_pin(a, env):
+    """v8: pin the episode command (wrapper path + sha256, python, root, cwd) right after the manifest gate, in the
+    exec env, and bind it to the manifest: the pinned wrapper bytes are assets.wrapper_sha256.  The runner then
+    launches only while this exact pin still resolves."""
+    pin = pc.episode_pin(a.episode_cmd, cwd=os.getcwd(), env=env, strict=True)
+    want = (json.loads(a.run_manifest.read_bytes()).get('assets') or {}).get('wrapper_sha256')
+    if pin['wrapper_sha256'] != want:
+        raise SystemExit(f'episode wrapper {pin["wrapper"]} sha256 {pin["wrapper_sha256"]} != RUN_MANIFEST '
+                         f'assets.wrapper_sha256 {want}')
+    return pin
+
+
 def collect_env(mode, prereg_path, prereg_sha, recording_check=None, probe=False, prereg_core=None):
     """Env read by the teacher candidate pairact_p3_collect; measurement mode clears it.
 
@@ -544,19 +556,44 @@ def collect_env(mode, prereg_path, prereg_sha, recording_check=None, probe=False
     return env
 
 
-def shell_episode(template, env=None, binding=None):
+def shell_episode(template, env=None, binding=None, pin=None):
     """v7 (Codex v6 risk 2): the checked argv of the episode command runs directly (no shell, explicit cwd).
 
     ``binding`` (frozen stages): dict(stage, core, manifest_sha256) of the manifest gate that passed; the
-    launch binding beside ``out`` is written before the teacher starts (1b: consumers require it)."""
+    launch binding beside ``out`` is written before the teacher starts (1b: consumers require it).
+
+    v8 (Codex v7 4th review): ``pin`` = pc.episode_pin the gate checked (wrapper path + sha256, python, root,
+    cwd).  Immediately before subprocess.call the pin is re-resolved; any difference refuses the launch
+    (EpisodePinError, nothing runs).  argv[0] is the pinned python and WARP_SOURCE_ROOT the pinned root.  After
+    the process exits the pin is re-resolved again and stored as ``pin_post``; consumers refuse a mismatch."""
+    base = dict(os.environ if env is None else env)
+
     def go(cases, indices, out):
         assign, argv = pc.episode_argv(template, cases, indices, out)
         cwd = os.getcwd()
+        want = pin
+        if want is None:            # no gate pin given: strict at frozen stages, pilot rules otherwise
+            want = pc.episode_pin(template, cwd=cwd, env=base, strict=binding is not None)
+        if binding is not None and not want.get('strict'):
+            raise pc.EpisodePinError('frozen launch needs a strict (core / final) episode pin')
+        problems = pc.episode_pin_problems(want, template, cwd=cwd, env=base)
+        if problems:
+            raise pc.EpisodePinError('episode not launched: ' + '; '.join(problems))
+        run_argv, run_env = pc.pinned_exec(want, argv, base, assign)
+        rec = None
         if binding is not None:
-            write(pc.launch_binding_path(out), pc.launch_binding(
-                stage=binding['stage'], core=binding['core'], manifest_sha256=binding['manifest_sha256'],
-                template=template, argv=argv, cwd=cwd, out=out))
-        return subprocess.call(argv, env=dict(os.environ if env is None else env, **assign), cwd=cwd)
+            rec = pc.launch_binding(stage=binding['stage'], core=binding['core'],
+                                    manifest_sha256=binding['manifest_sha256'], template=template, argv=run_argv,
+                                    cwd=cwd, out=out, pin=want)
+            write(pc.launch_binding_path(out), rec)
+        code = subprocess.call(run_argv, env=run_env, cwd=cwd)
+        if rec is not None:
+            try:
+                post = pc.episode_pin(template, cwd=cwd, env=base, strict=True)
+            except (OSError, ValueError) as error:
+                post = dict(error=str(error))
+            write(pc.launch_binding_path(out), dict(rec, pin_post=post))
+        return code
     return go
 
 
@@ -673,13 +710,14 @@ def main():
             p.error(str(error))
         core, manifest_sha = frozen_gate(a, prereg, sha, stage='core', episode=episode)
         # v5 (Codex v4 re-review 3): the recording probe runs the pinned checkouts its command names
+        env = collect_env('training', a.prereg, sha, probe=True, prereg_core=prereg_core)
         pc.check_stack_heads(json.loads(a.run_manifest.read_bytes()),
-                             dict(teacher=a.dependency_root, adapter=a.adapter_root, root=a.frozen_root))
+                             dict(teacher=a.dependency_root, adapter=a.adapter_root, root=a.frozen_root), env=env)
+        pin = gate_pin(a, env)                      # v8: the wrapper / python / root that will run
         cases_path = a.run_root / 'probe-cases.json'
         n = len(json.loads(cases_path.read_text()))
-        env = collect_env('training', a.prereg, sha, probe=True, prereg_core=prereg_core)
         bind = dict(stage='core', core=core, manifest_sha256=manifest_sha)
-        code = shell_episode(a.episode_cmd, env, bind)(cases_path, list(range(n)), a.out)
+        code = shell_episode(a.episode_cmd, env, bind, pin)(cases_path, list(range(n)), a.out)
         print(json.dumps(dict(out=str(a.out), exit=code, core_sha256=core)))
         sys.exit(code)
     if a.command == 'check-rows':
@@ -739,12 +777,15 @@ def main():
                 p.error(f'run manifest schema {pc.MANIFEST_SCHEMA} required')
             manifest_sha = hashlib.sha256(raw).hexdigest()
         freeze = dict(stage=stage, purpose=pc.PURPOSE_PILOT, prereg_core_sha256=prereg_core, core_sha256=None)
+    env = collect_env(a.mode, a.prereg, sha, a.recording_check, prereg_core=prereg_core)
+    pin = None
     if stage in pc.FREEZE_STAGES:
         # v4 (Codex H4): generator and episodes use the RUN_MANIFEST -c pins, not just any consistent stack;
         # v5: and these checkouts are the episode command's --teacher-source / --adapter-source / WARP_SOURCE_ROOT
+        # v8: in the exec env, and the episode command pinned (wrapper path + sha256 = assets, python, root, cwd)
         pc.check_stack_heads(json.loads(a.run_manifest.read_bytes()),
-                             dict(teacher=a.dependency_root, adapter=a.adapter_root, root=a.frozen_root))
-    env = collect_env(a.mode, a.prereg, sha, a.recording_check, prereg_core=prereg_core)
+                             dict(teacher=a.dependency_root, adapter=a.adapter_root, root=a.frozen_root), env=env)
+        pin = gate_pin(a, env)
     sys.path.insert(0, str(ROOT / 'experiments/2026-10-21-pairact-r1'))
     import collect_cases
     geo = collect_cases.Geometry(a.dependency_root, a.frozen_root, setup_validity=True, adapter_root=a.adapter_root)
@@ -753,7 +794,8 @@ def main():
                   episode=episode, run_manifest_sha256=manifest_sha, validation_after_host_fix=a.validation_after_host_fix,
                   freeze=freeze, run_episode=shell_episode(a.episode_cmd, env, None if freeze['core_sha256'] is None else
                                                             dict(stage='final' if a.mode == 'training' else 'core',
-                                                                 core=freeze['core_sha256'], manifest_sha256=manifest_sha)),
+                                                                 core=freeze['core_sha256'], manifest_sha256=manifest_sha),
+                                                            pin),
                   make_cases=lambda slots: collect_cases.make_cases(geo, prereg, slots, candidate=candidate,
                                                                     prereg_path=a.prereg))
     if shard is not None:

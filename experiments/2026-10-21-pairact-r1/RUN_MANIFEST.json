@@ -26,13 +26,13 @@
     "pin_rule": "the three -c5 SHAs are pushed (2026-10-21); before FROZEN_CORE check git ls-remote origin and git -C $SRC/teacher (adapter, root) rev-parse HEAD against stack.*.sha (RUNBOOK 1-0); any change of the stack is a new FROZEN_CORE"
   },
   "collector": {
-    "branch": "dsh/pairact-carry-r1-v7",
+    "branch": "dsh/pairact-carry-r1-v8",
     "source_sha": "[VM 기입] commit X, the collector code commit; HEAD may be a descendant",
     "files_rule": "harness.pairact_collect.COLLECTOR_FILES (runner code, direct setup-geometry imports and inputs) and the generator: identical at X and HEAD, clean in the checkout",
     "file_sha256": {
-      "harness/pairact_collect.py": "74a9c514551e82ba340a05aa5af0bd90a664bfc1e634bcef2542bc049c4f06d8",
+      "harness/pairact_collect.py": "8d76d83cfb68c4d7d495b50c945f161f27b17b24560d577708722e0da5c8eb51",
       "harness/pairact_r1.py": "8a9869248740bf5ad2da7194cdd9a582347ac09e88783cd6ea127ef3f208a210",
-      "scripts/run_pairact_collect.py": "17e29f499e7ccfc644a116cca6aacba4cbb628781b90bca614771d40c30c0f23",
+      "scripts/run_pairact_collect.py": "e97a4a2ac1a800605f9cee8a6088ea2159a0ee103e93556f696afb9f46947053",
       "scripts/pairact_r1_freeze.py": "4bd020890bd35377ae3973ec7abab69fb0298d4e5a2cf33d99f373ba5a7d06ef",
       "scripts/check_pairact_r1_seeds.py": "463054427877efd34dfd6e5ce291b4e06f2ad95c4e81e2d75e385af38c3b73de",
       "experiments/2026-10-21-pairact-r1/seeds.json": "eeb5cf615666e15d03c1d4cb54de8c83b0618cb6321d92e641dd237de8cd4735",
@@ -56,7 +56,7 @@
   "command": {
     "batch_size": 20,
     "max_batches_per_night": "pilot 2 batches (40 pilot seeds); probe source 1 batch; training until --deadline-utc (UTC 00:30 offpeak end minus one batch wall)",
-    "episode_template_draft": "python /home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py --flow beampair --adapter-source $SRC/adapter --teacher-source $SRC/teacher --cases {cases} --indices {indices} --cap-s 60 --out {out} --vm-hourly-usd 1.096 --gcp6-isolated-v1 --placement-graspable-filter-v1 --world-model-parameters-v1 --native-sleep-policy-compat-v1 --full-active-dof-workspace-v1 --warp-native-contact-v1 --canonical-xml /home/ugrp/ugrp-sim/runs/beamact5/wide-export-old-8420000e/canonical-scene.xml --per-world-model-references-v1 /home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/per-world-references.json --rejection-table /home/ugrp/ugrp-sim/runs/beamact5/gate-40-r13/rejection_table.json --batch-per-world-speed-v1",
+    "episode_template_draft": "$PY /home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py --flow beampair --adapter-source $SRC/adapter --teacher-source $SRC/teacher --cases {cases} --indices {indices} --cap-s 60 --out {out} --vm-hourly-usd 1.096 --gcp6-isolated-v1 --placement-graspable-filter-v1 --world-model-parameters-v1 --native-sleep-policy-compat-v1 --full-active-dof-workspace-v1 --warp-native-contact-v1 --canonical-xml /home/ugrp/ugrp-sim/runs/beamact5/wide-export-old-8420000e/canonical-scene.xml --per-world-model-references-v1 /home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/per-world-references.json --rejection-table /home/ugrp/ugrp-sim/runs/beamact5/gate-40-r13/rejection_table.json --batch-per-world-speed-v1",
     "episode_template": "[VM 기입] the exact expanded --episode-cmd string (SRC replaced by the absolute -c5 checkout path)",
     "episode_template_sha256": "[VM 기입] sha256 of episode_template (= ledger header episode.template_sha256)"
   },
