@@ -64,8 +64,8 @@ A·B 일관성(병합 시 확인): 2b의 per-world 참조 파일은 *정규화�
 
 ### VM 필요 잔여 (v7 기준)
 
-1. 실제 canonical scene(`/home/ugrp/ugrp-sim/runs/beamact5/wide-export-old-8420000e/canonical-scene.xml`)의 실행 cwd 기준 의존집합과 `assets.mesh_assets_sha256` 대조, VM mesh 파일 sha 대조. `/tmp/v7-mj-check/check.py`는 VM에서 그대로 쓸 수 있고 로드만 합니다.
+1. 실제 canonical scene(`/home/ugrp/ugrp-sim/runs/beamact5/wide-export-old-8420000e/canonical-scene.xml`)의 실행 cwd 기준 의존집합과 `assets.mesh_assets_sha256` 대조, VM mesh 파일 sha 대조. `scripts/pairact_r1_xml_load_check.py REPO_ROOT SCENE_XML`(구 `/tmp/v7-mj-check/check.py`)는 VM에서 그대로 쓸 수 있고 로드만 합니다.
 2. VM teacher checkout(-c5 pin)이 canonical XML을 `from_xml_string`으로 컴파일하는지, teacher 내부에서 `chdir`하지 않는지 확인.
 3. `zone_wall_divider_1_*` 큐브 텍스처 6개가 이 checkout에 없는 원인 확인(VM 소스 버전 차이로 추정).
 4. v7 이전에 수집한 FROZEN_CORE probe source에는 launch 결속 파일이 없어 check-rows가 거부합니다. probe source·probe를 v7 runner로 다시 실행해야 합니다.
-5. 오너 결정: 수동 teacher 직접 실행 자체를 막으려면 frozen teacher가 결속 파일을 읽어야 하고, 이는 frozen pin 변경입니다. 현재는 산출물 사용 거부까지만 처리합니다.
+5. (결정 완료, 2026-10-22 강창민) 수동 teacher 직접 실행 차단은 하지 않습니다(frozen pin 변경 필요). *1안: 산출물 사용 거부만* — 결속 파일 없는 run root는 check-rows·convert-input에서 거부. 잔여 차단 아님.

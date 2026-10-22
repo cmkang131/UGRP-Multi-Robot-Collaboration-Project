@@ -26,14 +26,14 @@
 1. *VM 필요*: 실제 `canonical-scene.xml`(`/home/ugrp/ugrp-sim/runs/beamact5/wide-export-old-8420000e/`)의 의존집합을 실행 cwd 기준으로 추출해 `assets.mesh_assets_sha256`와 대조해야 합니다. 로컬 venv에 mujoco가 없어 CPU 모델 로드 대조는 하지 못했습니다. 레포에서 내보낸 scene에도 절대 VM 경로 mesh(`/home/ugrp/ugrp-sim/src/41584d3a1-warp10-pool/...stl`)가 있습니다. 해당 scene의 `zone_wall_divider_1_*` 큐브 텍스처 6개는 이 checkout에 없습니다(소스 버전 차이로 보이며 확인이 필요합니다).
 2. *VM 필요*: frozen teacher/adapter(-c5 pin)가 canonical XML을 정말 `from_xml_string`으로 컴파일하는지, 그리고 실행 cwd가 collector cwd 그대로인지(teacher 내부에서 `chdir`하지 않는지)는 고정 checkout에서 확인해야 합니다. 이 레포의 wrapper 사본은 `chdir`하지 않습니다.
 3. 운영 영향: v7 이전에 수집한 FROZEN_CORE probe source에는 결속 파일이 없어 check-rows가 거부합니다. probe source·probe를 v7 runner로 다시 실행해야 합니다.
-4. 범위 밖: 수동 실행 자체를 막으려면 frozen teacher가 결속을 읽어야 합니다. 이는 teacher pin 변경이 필요하므로 오너가 결정할 사항입니다. 현재는 "산출물 사용 거부"까지입니다.
+4. 범위 밖: 수동 실행 자체를 막으려면 frozen teacher가 결속을 읽어야 합니다. 이는 teacher pin 변경이 필요합니다. *오너 결정(2026-10-22, 강창민): 1안 "산출물 사용 거부"만 적용, frozen teacher pin은 바꾸지 않음.*
 5. ~~템플릿의 wrapper가 gcp6 wrapper가 아니고 `parser()`도 없으면 형태 검사만 합니다.~~ → *병합 단계(보강 b)에서 해소*: core/final 게이트(`check_run_manifest`)는 `episode_command_problems(strict=True)`로 parser()가 없거나 wrapper 파일이 없으면 거부합니다. 테스트의 가짜 `wrap.py`는 parser()를 갖도록 고쳤습니다(`tests/test_pairact_collect.py` `FAKE_WRAPPER_SOURCE`). 형태 검사만 하는 경로는 manifest 없는 pilot 감사(`episode_cmd_audit`)에만 남습니다.
 6. RUNBOOK의 episode 명령 예시는 이미 이 형태(`python <wrapper> --opt ...`)입니다. `export WARP_SOURCE_ROOT`는 부모 환경으로 전달되고, 템플릿 앞 대입도 허용합니다.
 
 ## 병합 단계 추가: MuJoCo CPU 로드 대조 (2026-10-21, 작업 C)
 
 - 환경: `/tmp/v7-mj-venv`(레포 밖 별도 venv), `pip install mujoco` → *mujoco 3.16.0 CPU wheel 설치 성공*. 테스트 스위트는 이 venv를 쓰지 않습니다.
-- 스크립트: `/tmp/v7-mj-check/check.py`(레포 밖), 결과 `/tmp/v7-mj-check/egonav.json`. `MjModel.from_xml_string`으로 *로드만* 했고 `mj_step`은 호출하지 않았습니다. 소요 3.1초.
+- 스크립트: `scripts/pairact_r1_xml_load_check.py`(작성 당시 `/tmp/v7-mj-check/check.py`, 2026-10-22 레포로 이동, 내용은 docstring만 변경 — 레포 사본 재실행 결과가 원 결과와 `seconds` 외 동일), 결과 `/tmp/v7-mj-check/egonav.json`. `MjModel.from_xml_string`으로 *로드만* 했고 `mj_step`은 호출하지 않았습니다. 소요 3.1초.
 - 대상: 실제 pairact canonical scene(`/home/ugrp/ugrp-sim/runs/beamact5/wide-export-old-8420000e/canonical-scene.xml`)은 VM에만 있어 로컬에 없습니다. 대신 레포에 있는 같은 exporter 산출물 `experiments/2026-10-17-egonav/raw/far-diag-range-01/scene.xml`(`texturedir="sim/assets/floor_light_textured_v1"` 상대, mesh 1개 VM 절대경로)을 썼습니다.
 - 결과
   - 원본 그대로 로드(cwd=레포 루트, cwd=XML 디렉터리): 둘 다 실패. 첫 오류는 VM 절대경로 mesh `/home/ugrp/ugrp-sim/src/41584d3a1-warp10-pool/sim/assets/masterpi_drive_friction_v2/fuji_roller.stl` 열기 실패.
