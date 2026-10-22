@@ -57,8 +57,8 @@
     "batch_size": 20,
     "max_batches_per_night": "pilot 2 batches (40 pilot seeds); probe source 1 batch; training until --deadline-utc (UTC 00:30 offpeak end minus one batch wall)",
     "episode_template_draft": "$PY /home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py --flow beampair --adapter-source $SRC/adapter --teacher-source $SRC/teacher --cases {cases} --indices {indices} --cap-s 60 --out {out} --vm-hourly-usd 1.096 --gcp6-isolated-v1 --placement-graspable-filter-v1 --world-model-parameters-v1 --native-sleep-policy-compat-v1 --full-active-dof-workspace-v1 --warp-native-contact-v1 --canonical-xml /home/ugrp/ugrp-sim/runs/beamact5/wide-export-old-8420000e/canonical-scene.xml --per-world-model-references-v1 /home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/per-world-references.json --rejection-table /home/ugrp/ugrp-sim/runs/beamact5/gate-40-r13/rejection_table.json --batch-per-world-speed-v1",
-    "episode_template": "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python /home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py --flow beampair --adapter-source /home/ugrp/ugrp-sim/src/pairact-p3c5/adapter --teacher-source /home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247 --cases {cases} --indices {indices} --cap-s 60 --out {out} --vm-hourly-usd 1.096 --gcp6-isolated-v1 --placement-graspable-filter-v1 --world-model-parameters-v1 --native-sleep-policy-compat-v1 --full-active-dof-workspace-v1 --warp-native-contact-v1 --canonical-xml /home/ugrp/ugrp-sim/runs/beamact5/wide-export-old-8420000e/canonical-scene.xml --per-world-model-references-v1 /home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/per-world-references.json --rejection-table /home/ugrp/ugrp-sim/runs/beamact5/gate-40-r13/rejection_table.json --batch-per-world-speed-v1",
-    "episode_template_sha256": "8d439f44fb7d8ceb8b4700ff9c0cf666379f9787789e6e23606a56bd391e0161"
+    "episode_template": "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python /home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py --flow beampair --adapter-source /home/ugrp/ugrp-sim/src/pairact-p3c5/adapter --teacher-source /home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247 --cases {cases} --indices {indices} --cap-s 60 --out {out} --vm-hourly-usd 1.096 --gcp6-isolated-v1 --placement-graspable-filter-v1 --world-model-parameters-v1 --native-sleep-policy-compat-v1 --full-active-dof-workspace-v1 --warp-native-contact-v1 --canonical-xml /home/ugrp/ugrp-sim/runs/beamact5/wide-export-old-8420000e/canonical-scene.xml --per-world-model-references-v1 /home/ugrp/ugrp-sim/runs/beamact5/native-refs-pairact-r1-c5e/per-world-references.json --rejection-table /home/ugrp/ugrp-sim/runs/beamact5/gate-40-r13/rejection_table.json --batch-per-world-speed-v1",
+    "episode_template_sha256": "de2bc7b1aa176d8830ddc808f7b5511f5ce17fb78971328b4e0da5fb063d52bb"
   },
   "limits": {
     "grasp_cap_sim_s": 60,
@@ -74,8 +74,8 @@
   },
   "assets": {
     "canonical_xml_sha256": "5e77178e40412a5e5b199eae38cc04d220a5c2f03acd2ece345607cfbb373b60",
-    "per_world_model_references_sha256": "89d826353b9917338b3317491b4ad4dd215df93b841d5c8f74bca3940c44660e",
-    "per_world_reference_files_sha256": "8cc1af20aab562308a2ebd3797aa37f9ff35ad40112f3d2c693b39522f3779ef",
+    "per_world_model_references_sha256": "b405933a60d2356a3024712db689e8f4753e2cbe10e0e6b37d83643a87d0073b",
+    "per_world_reference_files_sha256": "ecdc83b5c0f2325adcd3b3979524ca7539ff2ce6e32b59e5a56aad8d19246669",
     "rejection_table_input_sha256": "16fe662ac3f054106217a116697b9f396f2fcfc0d34215924970e8159f6c7d3f",
     "mesh_assets_sha256": {
       "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247/sim/assets/masterpi_drive_friction_v2/fuji_roller.stl": "2bea3228aa5766e2ce42f4f4a46cdf4bc3e63802958fa7f0ffb9688d9393a424",
