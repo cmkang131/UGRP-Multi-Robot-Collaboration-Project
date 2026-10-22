@@ -263,11 +263,13 @@ def test_f_normal_command_passes_the_gate_and_runs_the_pinned_values(tmp_path, c
     assert pin['wrapper'] == FAKE_WRAPPER and pin['wrapper_sha256'] == pc.file_sha256(FAKE_WRAPPER)
     assert pin['python'] == EP_PYTHON and pin['python_realpath'] == os.path.realpath(EP_PYTHON)
     out = tmp_path / 'out'
-    assert runner.shell_episode(EP_CMD, env, BIND, pin)(tmp_path / 'c.json', [0, 1], out) == 0
+    # v9: a frozen launch also binds the observed stack (tests/test_pairact_collect_v9.py drives real checkouts)
+    stack = {r: dict(path=f'/s/{r}', head='a' * 40, dirty=False) for r in ('teacher', 'adapter', 'root')}
+    assert runner.shell_episode(EP_CMD, env, dict(BIND, stack=stack), pin, lambda: stack)(tmp_path / 'c.json', [0, 1], out) == 0
     (call,) = calls.seen
     assert call['argv'][:2] == [EP_PYTHON, FAKE_WRAPPER] and call['cwd'] == str(tmp_path)
     rec = json.loads(pc.launch_binding_path(out).read_text())
-    assert rec['pin'] == rec['pin_post'] == pin
+    assert rec['pin'] == rec['pin_post'] == pin and rec['stack'] == rec['stack_post'] == stack
     raw = out / 'world-000' / 'raw'
     raw.mkdir(parents=True)
     assert pc.launch_binding_problems(raw, CORE, ('core',)) == []

@@ -1,4 +1,10 @@
-# pairact-r1 실행 순서 (DeepSeek용 — 수집 사전 등록 v5, 샤딩 + 정지 barrier)
+# pairact-r1 실행 순서 (DeepSeek용 — 수집 사전 등록 v9, 샤딩 + 정지 barrier)
+
+v9 변경(2026-10-22, 대응표 `CODEX_RESPONSE_V9.md`, 팀장 결정): **위협 모델은 악의적 공격자가 아니라 *실수로 인한 불일치***입니다(prereg `threat_model`). v9가 마지막 강화 라운드이고, 이후 남는 적대적 환경 항목은 아래 운영 규칙으로 처리하고 동결합니다.
+- *셸 환경 고정*: 수집 셸에서 `PYTHONPATH`·`PYTHONHOME`을 **설정하지 않습니다**(`unset PYTHONPATH PYTHONHOME`, 확인 `env | grep -E '^(PYTHONPATH|PYTHONHOME)='` → 출력 없음). core·final 관문이 이 둘이 설정된 채로는 `episode pin refused: …`로 즉시 거부합니다(wrapper가 stack 경로를 스스로 넣으므로 필요 없음).
+- *수집 중 수정 금지*: wrapper 사본과 그 옆 `gcp6_host.py`(호스트 신원 모듈), teacher/adapter/root 체크아웃, venv(pip install 포함), canonical XML·mesh, rejection table, 기록 디렉터리를 수집 중에 바꾸지 않습니다. runner가 episode마다 wrapper·python·WARP_SOURCE_ROOT pin과 세 체크아웃의 HEAD·clean을 실행 전후에 다시 보고(launch binding `pin`/`pin_post`, `stack`/`stack_post`), check-rows·convert-input이 불일치 산출물을 거부합니다. 검사 직후~execve 사이 교체·실행 중 교체 후 원복은 적대적 행위로 보고 방어를 주장하지 않습니다(운영 규칙).
+- *설치 시점 확인(운영)*: `beamact5-tools/`의 wrapper 사본과 `gcp6_host.py`는 최신 커밋에서 한 번만 복사하고, 수집 시작 전에 `sha256sum /home/ugrp/ugrp-sim/src/beamact5-tools/*.py`를 실행해 값을 보고서에 남깁니다(이 디렉터리는 git 검사 밖). `--no-verify-assets`는 probe-episode·convert-input·FROZEN 수집에서 쓰지 않습니다(자산·stack 재검사를 끔).
+- *v8 승계*: episode wrapper는 **절대경로·자기 realpath**(symlink·`..` 금지)이고, `readlink -f`가 그 경로와 같아야 합니다. episode python은 **절대경로**입니다(`PY=$(command -v python)`). v9 binding은 pin/stack을 모두 요구하므로 **v8 이전에 만든 probe raw·training raw는 거부**됩니다 — probe-episode·수집을 v9 코드로 다시 실행해야 합니다.
 
 v5 변경(2026-10-21, 대응표 `CODEX_RESPONSE_V5.md`, Codex v4 재검토 1–5 + collector carry_success):
 - *녹화 증거 core 결속*: check-rows가 probe source 원장(purpose·core)·`probe-cases.json` sha256·seed 순서를 기록하고, FROZEN gate·freeze final(각 `--vm-recording-dir` 포함)이 check-rows/probe source core == 현재 core, probe-cases ↔ check rows ↔ recording-check seed 일치를 확인합니다. 다른 core에서 만든 check는 거부됩니다(1-4 ④, 1-5).
@@ -22,7 +28,7 @@ v3s 변경(2026-10-21): 수집을 *샤드 병렬*로 돌립니다(prereg `shardi
 
 v3 변경(Codex v2 재검토 HOLD 대응, 대응표 `CODEX_RESPONSE_V3.md`): 동결이 *2-커밋(X·Y) + 2단계(FROZEN_CORE → FROZEN)*로 바뀌었습니다. pre-freeze pilot은 수율 전용(`pilot_yield_only`)이라 녹화 probe·학습 입력으로 쓸 수 없습니다. probe 대상은 FROZEN_CORE에서 새로 돌리는 *probe source* 측정 run에서 고릅니다.
 전제: P1 관문(≥38/40)은 수집을 막지 않는 병행 작업입니다. 수집 시작 조건은 *P2 smoke 전 구간 성공 ≥1* 하나이고 smoke-1c(seed 8420001·8420011·8420017) 운반 성공 2/3으로 충족했습니다(증거 해시는 `RUN_MANIFEST.json` `smoke`의 VM 기입 칸).
-규칙: 새 run root만 씁니다. 원본·체크포인트는 덮어쓰지 않습니다. 오프피크(UTC 16:30–00:30)에만 실행하고 끝나면 VM을 정지합니다. 브랜치는 `dsh/pairact-carry-r1-v5`입니다(v4 `0a6c227fd` 위).
+규칙: 새 run root만 씁니다. 원본·체크포인트는 덮어쓰지 않습니다. 오프피크(UTC 16:30–00:30)에만 실행하고 끝나면 VM을 정지합니다. 브랜치는 `dsh/pairact-carry-r1-v9`입니다(v9 실행 지침, 1-1의 `COL`).
 
 ## 0. 사전 확인 (CPU, 수 분)
 ```
@@ -71,12 +77,14 @@ mkdir -p $SRC
 for t in teacher:$TEACHER_C5 adapter:$ADAPTER_C5 root:$ROOT_C5; do
   git -C /home/ugrp/ugrp-sim/ugrp worktree add --detach $SRC/${t%%:*} ${t#*:}      # VM 레포 경로는 [확인 필요]
 done
-COL=/home/ugrp/ugrp-sim/src/pairact-r1v5      # 이 브랜치 worktree (단계마다 X → Y → Z로 갱신)
-git -C /home/ugrp/ugrp-sim/ugrp worktree add --detach $COL origin/dsh/pairact-carry-r1-v5
-cd $COL && python -m pytest -q tests/test_pairact_collect.py tests/test_pairact_r1.py tests/test_pairact_collect_shard.py \
-  tests/test_pairact_prereg_xreview.py tests/test_pairact_collect_v4.py tests/test_pairact_collect_v5.py   # 기대 수: CODEX_RESPONSE_V5.md 맨 끝
+COL=/home/ugrp/ugrp-sim/src/pairact-r1v9      # 이 브랜치 worktree (단계마다 X → Y → Z로 갱신)
+git -C /home/ugrp/ugrp-sim/ugrp worktree add --detach $COL origin/dsh/pairact-carry-r1-v9
+cd $COL && python -m pytest -q tests/test_pairact_*.py   # 기대 수: CODEX_RESPONSE_V9.md 맨 끝 (v9: 297)
+unset PYTHONPATH PYTHONHOME          # v9: core·final 관문이 이 둘이 설정된 셸을 거부 (wrapper가 stack 경로를 스스로 넣음)
+env | grep -E '^(PYTHONPATH|PYTHONHOME)=' || true   # v9: 기대 출력 없음
 export WARP_SOURCE_ROOT=$SRC/root     # v5: gcp6 wrapper의 root 소스. stack 검사가 --frozen-root와 같은 경로인지 확인
-cp $COL/experiments/2026-10-17-beamact5/teacher/run_warp_flow_teacher_gcp6.py /home/ugrp/ugrp-sim/src/beamact5-tools/   # v5 carry_success (VM 경로 [확인 필요])
+cp $COL/experiments/2026-10-17-beamact5/teacher/run_warp_flow_teacher_gcp6.py \
+   $COL/experiments/2026-10-17-beamact5/teacher/gcp6_host.py /home/ugrp/ugrp-sim/src/beamact5-tools/   # v9: wrapper + 호스트 신원 모듈을 커밋에서 함께 갱신 (VM 경로 [확인 필요])
 readlink -f /home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py   # v8: 출력이 위 경로와 같아야 함(경로 성분 symlink 금지)
 P=$COL/experiments/2026-10-21-pairact-r1/COLLECT_PREREG_DRAFT.json
 M=$COL/experiments/2026-10-21-pairact-r1/RUN_MANIFEST.json
@@ -88,7 +96,7 @@ EP="$PY /home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py --f
  --canonical-xml /home/ugrp/ugrp-sim/runs/beamact5/wide-export-old-8420000e/canonical-scene.xml \
  --per-world-model-references-v1 /home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/per-world-references.json \
  --rejection-table /home/ugrp/ugrp-sim/runs/beamact5/gate-40-r13/rejection_table.json --batch-per-world-speed-v1"
-printf %s "$EP" | sha256sum      # -> RUN_MANIFEST.json command.episode_template_sha256 ($SRC가 펼쳐진 문자열을 episode_template에)
+printf %s "$EP" | sha256sum      # -> RUN_MANIFEST.json command.episode_template_sha256 ($SRC·$PY가 모두 펼쳐진 문자열을 episode_template에)
 ```
 
 ### 1-2. (선택) pilot 측정 run — READY_FOR_REVIEW, 녹화 off, seed 8343000–039

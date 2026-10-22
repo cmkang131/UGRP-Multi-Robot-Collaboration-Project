@@ -2204,9 +2204,12 @@ def launch_binding_path(out):
     return out.parent / (out.name + LAUNCH_BINDING_SUFFIX)
 
 
-def launch_binding(*, stage, core, manifest_sha256, template, argv, cwd, out, pin=None):
+def launch_binding(*, stage, core, manifest_sha256, template, argv, cwd, out, pin=None, stack=None):
     """v8: ``pin`` = the episode pin checked immediately before the launch; the runner adds ``pin_post`` (the
-    pin re-resolved after the process exited) and consumers refuse the output unless both are present and equal."""
+    pin re-resolved after the process exited) and consumers refuse the output unless both are present and equal.
+
+    v9: ``stack`` = the teacher / adapter / root state observed at the launch (``observe_stack``); the runner adds
+    ``stack_post`` after the process exited and consumers refuse a difference (a checkout edited mid-run)."""
     if stage not in ('core', 'final'):
         raise ValueError(f'launch binding stage {stage!r}')
     if not (isinstance(core, str) and len(core) == 64):
@@ -2214,7 +2217,7 @@ def launch_binding(*, stage, core, manifest_sha256, template, argv, cwd, out, pi
     return dict(schema=LAUNCH_BINDING_SCHEMA, stage=stage, core_sha256=core, run_manifest_sha256=manifest_sha256,
                 episode_template_sha256=hashlib.sha256(template.encode()).hexdigest(),
                 argv_sha256=hashlib.sha256(json.dumps(argv).encode()).hexdigest(), cwd=str(cwd),
-                out=os.path.realpath(out), pin=pin, pin_post=None)
+                out=os.path.realpath(out), pin=pin, pin_post=None, stack=stack, stack_post=None)
 
 
 def launch_binding_problems(raw, core, stages):
@@ -2241,6 +2244,16 @@ def launch_binding_problems(raw, core, stages):
             diff = [k for k in PIN_KEYS if pin.get(k) != post.get(k)]
             if diff:
                 return [f'launch binding {b}: episode {",".join(diff)} changed while the teacher ran']
+            stack, post_stack = rec.get('stack'), rec.get('stack_post')   # v9: a checkout edited mid-run
+            if not isinstance(stack, dict):
+                return [f'launch binding {b} has no stack pin (launched before v9 or outside the runner)']
+            if not isinstance(post_stack, dict):
+                return [f'launch binding {b} has no post-run stack (the episode did not finish under the runner)']
+            if post_stack.get('error'):
+                return [f'launch binding {b}: post-run stack unreadable: {post_stack["error"]}']
+            changed = stack_changed(stack, post_stack)
+            if changed:
+                return [f'launch binding {b}: episode stack {",".join(changed)} changed while the teacher ran']
             return []
     return [f'{raw} has no launch binding (teacher output not launched behind the manifest gate)']
 
@@ -2325,8 +2338,14 @@ PIN_KEYS = ('wrapper', 'wrapper_sha256', 'python', 'python_realpath', 'python_sh
 
 def episode_pin(template, *, cwd, env=None, strict=True):
     """v8: the one value the gate checks and the runner executes: wrapper (path, sha256), python (path,
-    realpath, sha256), WARP_SOURCE_ROOT realpath and cwd.  ``strict`` = core / final rules."""
+    realpath, sha256), WARP_SOURCE_ROOT realpath and cwd.  ``strict`` = core / final rules.
+
+    v9: a strict pin also needs an interpreter environment without PYTHONPATH / PYTHONHOME (the wrapper inserts
+    its stack paths itself); the pilot keeps whatever the shell had (its output is never evidence)."""
     if strict:
+        problems = episode_env_problems(env)
+        if problems:
+            raise EpisodePinError(problems[0])
         w, _ = resolve_episode_wrapper(template)
     else:                       # pilot: relative wrapper allowed, resolved at the pinned cwd and hashed
         _, _, named, _ = episode_command_form(template)
@@ -2347,9 +2366,70 @@ def episode_pin_problems(pin, template, *, cwd, env=None):
 
 
 def pinned_exec(pin, argv, env, assign):
-    """v8: (argv, env) actually executed: argv[0] the pinned python, WARP_SOURCE_ROOT the pinned root or absent."""
+    """v8: (argv, env) actually executed: argv[0] the pinned python, WARP_SOURCE_ROOT the pinned root or absent.
+
+    v9: a strict pin runs without PYTHONPATH / PYTHONHOME (refused by episode_pin); removed here as well so a
+    hand-built pin cannot leak a stale shell value into the episode."""
+    got = argv[1] if len(argv) > 1 else None
+    same = got == pin['wrapper'] if pin.get('strict') else \
+        (got is not None and os.path.realpath(os.path.join(os.getcwd(), got)) == pin['wrapper'])
+    if not same:                                    # v9: the pinned wrapper is the one argv[1] names
+        raise EpisodePinError(f'episode argv wrapper {got!r} is not the pinned {pin["wrapper"]!r}')
     env = dict(env, **assign)
     env.pop('WARP_SOURCE_ROOT', None)
+    if pin.get('strict'):
+        for key in EPISODE_ENV_UNBOUND:
+            env.pop(key, None)
     if pin['root'] is not None:
         env['WARP_SOURCE_ROOT'] = pin['root']
     return [pin['python']] + list(argv[1:]), env
+
+
+# ------------------------------------------------------------- v9 (threat model: accidental inconsistency)
+
+# The collection runs on the owner's VM, so the threat model is an accidental mismatch, not an attacker
+# (COLLECT_PREREG threat_model).  Two accidental classes the v8 pin did not cover: a stale PYTHONPATH /
+# PYTHONHOME left in the shell that starts the collector (the wrapper inserts its stack paths itself), and a
+# teacher / adapter / root checkout edited while a multi-hour run is in progress -- the v8 gate checked it only
+# before the first launch, so every later episode in the run inherited an unchecked checkout.
+EPISODE_ENV_UNBOUND = ('PYTHONPATH', 'PYTHONHOME')
+
+
+def episode_env_problems(env=None):
+    """v9: the episode interpreter environment carries no PYTHONPATH / PYTHONHOME."""
+    env = os.environ if env is None else env
+    return [f'{k} is set in the episode environment ({env[k]!r}); core / final run the wrapper with the stack '
+            f'paths it inserts itself -- unset {k} and rerun (RUNBOOK 1-1)' for k in EPISODE_ENV_UNBOUND if env.get(k)]
+
+
+def observe_stack(roots, *, rev_parse=None):
+    """v9: observed state (realpath, HEAD, tracked-change flag) of the three episode source checkouts."""
+    out = {}
+    for role in STACK_ROLES:
+        path = roots.get(role)
+        if path is None:
+            raise ValueError(f'stack observe: {role} checkout path required')
+        real = os.path.realpath(path)
+        try:
+            head, dirty = (rev_parse or _git_head)(real)
+        except (OSError, subprocess.CalledProcessError) as error:
+            raise ValueError(f'stack {role} checkout {real} is not a git checkout: {error}') from None
+        out[role] = dict(path=real, head=head, dirty=bool(dirty))
+    return out
+
+
+def stack_manifest_problems(observed, manifest):
+    """v9: the observed stack is the RUN_MANIFEST stack (same HEAD, no tracked change)."""
+    out = []
+    for role in STACK_ROLES:
+        got, want = observed.get(role) or {}, _dig(manifest, ('stack', role, 'sha'))
+        if got.get('head') != want:
+            out.append(f'stack {role} checkout {got.get("path")} is at {got.get("head")}, RUN_MANIFEST pins {want}')
+        elif got.get('dirty'):
+            out.append(f'stack {role} checkout {got.get("path")} has tracked changes')
+    return out
+
+
+def stack_changed(before, after):
+    """v9: roles whose observed path / HEAD / tracked-change flag differ between two observations."""
+    return [r for r in STACK_ROLES if (before.get(r) or {}) != (after.get(r) or {})]

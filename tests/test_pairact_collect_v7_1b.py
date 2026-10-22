@@ -155,8 +155,9 @@ def test_launch_binding_is_written_before_the_teacher_starts(tmp_path, monkeypat
     tpl = f'{sys.executable} {child} --cases {{cases}} --indices {{indices}} --out {{out}}'
     monkeypatch.chdir(tmp_path)
     out = tmp_path / 'probe'
-    bind = dict(stage='core', core=CORE, manifest_sha256='m' * 64)
-    assert runner.shell_episode(tpl, dict(os.environ), bind)(tmp_path / 'c.json', [0], out) == 0
+    stack = {r: dict(path=f'/s/{r}', head='a' * 40, dirty=False) for r in ('teacher', 'adapter', 'root')}
+    bind = dict(stage='core', core=CORE, manifest_sha256='m' * 64, stack=stack)   # v9: stack bound to the launch
+    assert runner.shell_episode(tpl, dict(os.environ), bind, None, lambda: stack)(tmp_path / 'c.json', [0], out) == 0
     assert json.loads((out / 'seen.json').read_text())['binding_at_start'] is True
     raw = out / 'world-000' / 'raw'
     raw.mkdir(parents=True)
