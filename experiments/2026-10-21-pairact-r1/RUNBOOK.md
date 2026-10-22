@@ -22,6 +22,7 @@ v4 변경(2026-10-21, 대응표 `CODEX_RESPONSE_V4.md`, 교차 검토 B1–B3·R
 - STOP_HOST: 연속 2 batch unclean(순서 기준, 나중 clean batch가 지우지 못함) *또는* 한 샤드의 자기 batch가 연속 3개 unclean이거나 6개 이상 중 30% 이상 unclean.
 - *오너 결정 D-v4-1*: STOP_DISTANCE는 원거리 구간(B4·B5)이 모두 A_b≥20이거나 제한된 뒤에만 평가합니다(그 전에는 정지 사유 아님). K 상한은 *3*입니다(X7 가짜에서 K=4만 직렬과 판정 클래스가 달랐음, prereg `sharding.K_max`·`K`에 사례 공개). manifest gate와 CLI가 K>3을 거부합니다.
 - K(샤드 수, 1–3)는 *FROZEN_CORE 전* measurement 모드 측정(1-2b)으로 정합니다. pilot 26/40은 -c4 결과라 -c5 수율 근거로 쓰지 않습니다.
+- *K=3 확정(오너 결정, 창민)*: `RUN_MANIFEST.json` `sharding`에 `count 3 · lag_batches 3 · assignment {"gcp6":[0,1,2]} · primary_vm gcp6`으로 들어 있고, 이 값은 core content라 core `5b5fda06…`(`cf501ca4a`)에 바인딩됩니다. 수집은 gcp6 단일 VM 3샤드로 돌리고, 실행 시 `--shard i/3 --vm gcp6`을 넘깁니다. 별도 기입은 없습니다.
 - convert-input은 merged root만, `merge.json` finished·running 없음·원장 sha 일치·admitted raw 존재를 확인합니다. merge는 샤드 원장이 이전 merge의 append-only 연장인지, seed가 두 번 새로 쓰이지 않았는지 검사합니다. 학습 수집은 `--dependency-root/--adapter-root/--frozen-root`의 git HEAD가 RUN_MANIFEST stack pin과 같고 clean해야 시작합니다.
 
 v3s 변경(2026-10-21): 수집을 *샤드 병렬*로 돌립니다(prereg `sharding`, 실행 방식만 바뀌고 판정·집계·정지·배정 공식·seed 규칙은 그대로). 같은 VM 3–4 프로세스와 두 VM 동시 실행은 1-6a·1-6b, 예상 시간 계산식은 1-6c에 있습니다. 스택은 *-c5*(teacher -c4 + c3 admission)로 고정했습니다(1-0).
@@ -90,13 +91,14 @@ P=$COL/experiments/2026-10-21-pairact-r1/COLLECT_PREREG_DRAFT.json
 M=$COL/experiments/2026-10-21-pairact-r1/RUN_MANIFEST.json
 PY=$(command -v python)    # v8: core/final은 절대경로 python만 허용(bare python은 실행 PATH로 해석되므로 거부)
 EP="$PY /home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py --flow beampair \
- --adapter-source $SRC/adapter --teacher-source $SRC/teacher --cases {cases} --indices {indices} --cap-s 60 --out {out} \
+ --adapter-source $SRC/adapter --teacher-source /home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247 --cases {cases} --indices {indices} --cap-s 60 --out {out} \
  --vm-hourly-usd 1.096 --gcp6-isolated-v1 --placement-graspable-filter-v1 --world-model-parameters-v1 \
  --native-sleep-policy-compat-v1 --full-active-dof-workspace-v1 --warp-native-contact-v1 \
  --canonical-xml /home/ugrp/ugrp-sim/runs/beamact5/wide-export-old-8420000e/canonical-scene.xml \
- --per-world-model-references-v1 /home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/per-world-references.json \
+ --per-world-model-references-v1 /home/ugrp/ugrp-sim/runs/beamact5/native-refs-pairact-r1-c5e/per-world-references.json \
  --rejection-table /home/ugrp/ugrp-sim/runs/beamact5/gate-40-r13/rejection_table.json --batch-per-world-speed-v1"
-printf %s "$EP" | sha256sum      # -> RUN_MANIFEST.json command.episode_template_sha256 ($SRC·$PY가 모두 펼쳐진 문자열을 episode_template에)
+EP=$(printf %s "$EP" | tr -s ' ')   # 줄 연결로 생기는 이중 공백을 1칸으로. 정규화한 문자열이 manifest episode_template과 바이트까지 같아야 합니다(게이트가 sha256 비교, fail-closed).
+printf %s "$EP" | sha256sum      # -> de2bc7b1aa176d8830ddc808f7b5511f5ce17fb78971328b4e0da5fb063d52bb (RUN_MANIFEST.json command.episode_template_sha256; $PY=/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python)
 ```
 
 ### 1-2. (선택) pilot 측정 run — READY_FOR_REVIEW, 녹화 off, seed 8343000–039
@@ -309,7 +311,7 @@ env | grep -E '^(PYTHONPATH|PYTHONHOME)=' || true    # 출력 없음
 5) canonical 디렉터리 = episode cwd (핵심)
 ```bash
 SRC=/home/ugrp/ugrp-sim/src/pairact-p3c5
-XML=/home/ugrp/ugrp-sim/runs/beamact5/wide-export-old-8420000e/canonical-scene.xml
+XML=/home/ugrp/ugrp-sim/runs/beamact5/wide-export-old-8420000e/canonical-scene.xml   # canonical은 8420000e 그대로(자산 sha 5e77178e…). refs만 c5e로 바뀜
 grep -o '<compiler[^>]*>' "$XML"
 ls -ld "$(dirname "$XML")/sim/assets" 2>&1
 # 없으면 1회만 (XML 파일은 바꾸지 않음):
@@ -323,9 +325,9 @@ cd "$(dirname "$XML")"
 PREP=/home/ugrp/ugrp-sim/runs/pairact-r1-prep; mkdir -p $PREP
 $PY $COL/scripts/pairact_r1_freeze.py xml-assets --canonical-xml "$XML" > $PREP/xml-assets.json
 $PY $COL/scripts/pairact_r1_freeze.py per-world-refs \
-  --refs /home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/per-world-references.json > $PREP/per-world-refs.json
+  --refs /home/ugrp/ugrp-sim/runs/beamact5/native-refs-pairact-r1-c5e/per-world-references.json > $PREP/per-world-refs.json
 sha256sum "$XML" \
-  /home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/per-world-references.json \
+  /home/ugrp/ugrp-sim/runs/beamact5/native-refs-pairact-r1-c5e/per-world-references.json \
   /home/ugrp/ugrp-sim/runs/beamact5/gate-40-r13/rejection_table.json
 ```
 `xml-assets.json`이 38개(텍스처 37 + mesh 1)인지 확인합니다. gcp2 복사본 기준 38/38, 내용 해시는 `outputs/reports/pairact-r1-frozen-candidate-20261022/ASSETS_PREFILL.json`.
