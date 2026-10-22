@@ -8,6 +8,7 @@ import hashlib
 import importlib.util
 import json
 import math
+import os
 import re
 from pathlib import Path
 
@@ -28,7 +29,7 @@ spec.loader.exec_module(runner)
 
 # teacher phases covering every validation_gate stage (approach .. complete)
 PHASES = ['approach', 'align', 'ready', 'pick', 'carry:carry_hold', 'carry:door_pass', 'carry:lower', 'carry:done']
-_TABLE_DIR = Path(tempfile.mkdtemp(prefix='pairact-r1-test-table-'))
+_TABLE_DIR = Path(os.path.realpath(tempfile.mkdtemp(prefix='pairact-r1-test-table-')))  # v8: symlink-free wrapper
 TABLE = str(_TABLE_DIR / 'rejection_table.json')          # v3 N2: a clean batch needs the file to exist
 Path(TABLE).write_text('{}\n')
 # v7 b: the core / final gates read the episode command with the wrapper's own parser() and refuse a wrapper
@@ -47,7 +48,9 @@ FAKE_WRAPPER_SOURCE = (
     + '    return p\n')
 FAKE_WRAPPER = str(_TABLE_DIR / 'wrap.py')
 Path(FAKE_WRAPPER).write_text(FAKE_WRAPPER_SOURCE)
-EP_CMD = (f'python {FAKE_WRAPPER} --flow beampair --cases {{cases}} --indices {{indices}} --cap-s 60 '
+# v8: core / final need an absolute interpreter (a bare python resolves through the exec PATH)
+EP_PYTHON = '/usr/bin/python3'
+EP_CMD = (f'{EP_PYTHON} {FAKE_WRAPPER} --flow beampair --cases {{cases}} --indices {{indices}} --cap-s 60 '
           '--rejection-table /home/ugrp/ugrp-sim/runs/beamact5/gate-40-r13/rejection_table.json --out {out}')
 
 
@@ -1171,7 +1174,7 @@ def test_verify_assets_rehashes_episode_files(tmp_path, prereg):
     (tmp_path / 'scene.xml').write_text('<mujoco><asset><mesh file="mesh.obj"/></asset></mujoco>')   # v5: parsed
     from test_pairact_collect_v5 import _repo
     pins = {role: _repo(tmp_path / role) for role in ('teacher', 'adapter')}       # v5: existing pinned sources
-    tpl = (f"python {files['wrap.py']} --flow beampair --cases {{cases}} --indices {{indices}} --cap-s 60 "
+    tpl = (f"{EP_PYTHON} {files['wrap.py']} --flow beampair --cases {{cases}} --indices {{indices}} --cap-s 60 "
            f"--adapter-source {tmp_path / 'adapter'} --teacher-source {tmp_path / 'teacher'} "
            f"--canonical-xml {files['scene.xml']} --per-world-model-references-v1 {files['refs.json']} "
            f"--rejection-table {files['table.json']} --out {{out}}")

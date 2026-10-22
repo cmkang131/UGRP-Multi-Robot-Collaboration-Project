@@ -75,7 +75,7 @@ def test_real_wrapper_options_outside_the_allowlist_are_named():
 def test_manifest_draft_command_uses_only_allowlisted_options():
     import json
     tpl = json.loads((EXP / 'RUN_MANIFEST.json').read_text())['command']['episode_template_draft']
-    assert pc.episode_allowlist_problems(tpl.replace('$SRC', '/home/ugrp/ugrp-sim/src/pairact-c5')) == []
+    assert pc.episode_allowlist_problems(tpl.replace('$SRC', '/home/ugrp/ugrp-sim/src/pairact-c5').replace('$PY', '/venv/bin/python')) == []
 
 
 @pytest.mark.parametrize('flag,bad', [('--out', '/x/out'), ('--cases', '/x/cases.json'), ('--indices', '0,1')])

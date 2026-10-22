@@ -250,4 +250,4 @@ def test_digest_field_is_a_vm_field_in_the_core():
     m = json.loads((ROOT / 'experiments/2026-10-21-pairact-r1/RUN_MANIFEST.json').read_text())
     assert 'assets.per_world_reference_files_sha256' in pc.VM_FIELDS
     assert 'per_world_reference_files_sha256' in pc.manifest_core(m)['assets']
-    assert m['collector']['branch'] == 'dsh/pairact-carry-r1-v7'
+    assert m['collector']['branch'] == 'dsh/pairact-carry-r1-v8'

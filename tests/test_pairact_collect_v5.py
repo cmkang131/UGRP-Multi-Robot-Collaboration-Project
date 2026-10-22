@@ -10,7 +10,7 @@ from pathlib import Path
 import pytest
 
 from harness import pairact_collect as pc
-from test_pairact_collect import FAKE_WRAPPER_SOURCE, PREREG, TABLE, FakeEpisode, result, runner
+from test_pairact_collect import EP_PYTHON, FAKE_WRAPPER_SOURCE, PREREG, TABLE, FakeEpisode, result, runner
 
 FIX = Path(__file__).resolve().parent / 'fixtures' / 'pairact_c5_shardsmoke_20261021'
 
@@ -331,7 +331,7 @@ def _asset_case(tmp_path, scene, files):
         (a / name).parent.mkdir(parents=True, exist_ok=True)
         (a / name).write_text(data)
     pins = {role: _repo(tmp_path / role) for role in ('teacher', 'adapter')}       # v5 #3: real pinned sources
-    tpl = (f'python {a}/wrap.py --flow beampair --cases {{cases}} --indices {{indices}} --cap-s 60 '
+    tpl = (f'{EP_PYTHON} {a}/wrap.py --flow beampair --cases {{cases}} --indices {{indices}} --cap-s 60 '
            f'--adapter-source {tmp_path}/adapter --teacher-source {tmp_path}/teacher '
            f'--canonical-xml {a}/scene.xml --per-world-model-references-v1 {a}/refs.json '
            f'--rejection-table {a}/table.json --out {{out}}')

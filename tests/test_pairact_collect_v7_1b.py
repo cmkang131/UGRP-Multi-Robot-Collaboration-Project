@@ -27,7 +27,7 @@ BASE = ('python /w/wrap.py --flow beampair --adapter-source /s/adapter --teacher
 def _draft_template():
     """RUN_MANIFEST episode_template_draft with $SRC expanded (the real gcp6 wrapper command)."""
     m = json.loads((EXP / 'RUN_MANIFEST.json').read_text())
-    return m['command']['episode_template_draft'].replace('$SRC', '/home/ugrp/ugrp-sim/src/pairact-c5')
+    return m['command']['episode_template_draft'].replace('$SRC', '/home/ugrp/ugrp-sim/src/pairact-c5').replace('$PY', '/venv/bin/python')
 
 
 def _with(m, tpl):
