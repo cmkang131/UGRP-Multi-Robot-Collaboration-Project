@@ -1,6 +1,6 @@
 {
   "schema": "ugrp.pairact_r1.run_manifest.v2",
-  "status": "FROZEN",
+  "status": "FROZEN_CORE",
   "freeze_rule": "Two commits and two stages (v3, Codex v2 B1/B2). Commit X fixes the collector code (COLLECTOR_FILES + generator). Commit Y (FROZEN_CORE) writes X into collector.source_sha, every VM-fill field except the three recording_check hashes, prereg.core_sha256 and status FROZEN_CORE here and in the prereg (scripts/pairact_r1_freeze.py core). core_sha256 = sha256 of canonical JSON {prereg without status, this manifest without status and the three recording_check hashes} (harness.pairact_collect.core_sha256); the freeze script prints it and ledger headers record it, it is never stored in these files. The probe source measurement run, probe-cases, the recording probe and check-rows run at FROZEN_CORE and are bound to core_sha256. Commit Z (FROZEN) fills the three recording_check hashes from the probe source run root and sets status FROZEN (scripts/pairact_r1_freeze.py final); core_sha256 must stay the same. Training collection and convert-input need FROZEN. The runner checks that collector.source_sha is an ancestor of HEAD and that no COLLECTOR_FILES / generator file changed between X and HEAD (HEAD == X is not required).",
   "prereg": {
     "path": "experiments/2026-10-21-pairact-r1/COLLECT_PREREG_DRAFT.json",
@@ -157,13 +157,11 @@
   },
   "sharding": {
     "rule": "COLLECT_PREREG sharding (batch_owner_lag_v1): batch k -> shard k % count, planned on the view that lags lag_batches = count batches. count, lag_batches, assignment and primary_vm are core content (fixed at FROZEN_CORE). Training collection checks --shard i/count and --vm against assignment (a serial training run needs count 1). vm_recording_check: for every assignment VM except primary_vm, the sha256 of that VM's own probe-cases / check-rows / recording-check files (the teacher recording check is machine-bound), filled at FROZEN like recording_check and excluded from core_sha256. Draft: one VM, 3 shards (owner decision D-v4-1: count <= 3); the two-VM variant (RUNBOOK 1-6b) is count 3, assignment gcp6 [0,1] / gcp2 [2], decided before FROZEN_CORE. v4: count is set from the measurement-mode contention run on pilot seeds BEFORE FROZEN_CORE (RUNBOOK 1-6a); a training run root is never reopened with another count",
-    "count": 3,
-    "lag_batches": 3,
+    "count": 1,
+    "lag_batches": 1,
     "assignment": {
       "gcp6": [
-        0,
-        1,
-        2
+        0
       ]
     },
     "primary_vm": "gcp6",
