@@ -128,13 +128,38 @@ def test_final_pose_outside_the_slot_fails():
     rows = good_rows()
     for r in rows:
         if r['t'] >= LOWER_T:
-            r['beam']['pose'][0] = 4.6 + .09           # centre 9 mm inside the edge but the disc (r=19 mm) pokes out
+            r['beam']['pose'][0] = 4.6 + .09           # centre 10 mm inside the edge; the box half x (17 mm) pokes out
     report = run(rows)
     assert report['failure'] == 'slot' and report['gates']['slot']['reason'] == 'outside_slot'
     for r in rows:
         if r['t'] >= LOWER_T:
-            r['beam']['pose'][0] = 4.6 + .08           # disc fully inside
+            r['beam']['pose'][0] = 4.6 + .08           # box footprint fully inside
     assert run(rows)['gates']['slot']['pass']
+
+
+def test_slot_gate_uses_the_box_footprint_and_its_own_yaw():
+    def final(x_offset, yaw):
+        rows = good_rows()
+        for r in rows:
+            if r['t'] >= LOWER_T:
+                r['beam']['pose'][0], r['beam']['pose'][2] = 4.6 + x_offset, yaw
+        return run(rows)['gates']['slot']
+    assert ev.Criteria.cargo_half_extents_m == (.017, .020)            # sim/zone_arena.py:46 BOX_HALF x/y
+    assert final(.082, 0.)['pass']                                       # 82 + 17 = 99 mm <= 100 mm
+    assert not final(.082, math.pi/2)['pass']                            # turned 90 deg: 82 + 20 = 102 mm
+    assert final(.082, math.pi)['pass']                                  # 180 deg: same footprint
+    assert final(.07, math.pi/4)['pass']                                 # 70 + 26.2 (diagonal reach) = 96 mm
+    assert not final(.08, math.pi/4)['pass']                             # 80 + 26.2 = 106 mm
+    assert final(.082, 0.)['final_pose'] == [4.6 + .082, -2.1, 0.]
+
+
+def test_slot_gate_fails_closed_on_an_unobserved_box_yaw():
+    rows = good_rows()
+    rows[-1]['beam']['pose'] = rows[-1]['beam']['pose'][:2]
+    assert run(rows)['gates']['slot'] == {'pass': False, 'reason': 'cargo_unobserved'}
+    rows = good_rows()
+    rows[-1]['beam']['pose'][2] = float('nan')
+    assert run(rows)['gates']['slot']['reason'] == 'cargo_unobserved'
 
 
 def test_slot_rectangle_yaw_is_honoured():
@@ -168,7 +193,7 @@ def test_cargo_still_moving_or_not_on_floor_fails_rest():
 
 def test_too_few_rows_for_the_rest_window_fails_closed():
     rows = [r for r in good_rows() if r['t'] <= RELEASE_T + .5]
-    report = run(rows, cap_s=CAP)                    # only 0.5 s on the floor: the 1 s window still sees the held can
+    report = run(rows, cap_s=CAP)                    # only 0.5 s on the floor: the 1 s window still sees the held box
     assert report['failure'] == 'rest' and report['gates']['rest']['reason'] == 'not_at_rest'
     tail = [r for r in good_rows() if r['t'] >= LAST_T - .5]
     assert ev.rest_gate(tail, 'r1')['reason'] == 'insufficient_rows_for_rest'

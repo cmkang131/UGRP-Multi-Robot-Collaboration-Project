@@ -84,7 +84,7 @@ def test_recorded_tuple_equals_deployed_tuple_for_the_same_phase_sequence():
     for i, (recorded, deployed) in enumerate(rows):
         assert sc.row_tuple(recorded) == sc.row_tuple(deployed) == expected[i], i
     assert {sc.row_tuple(r) for r, _ in rows} == {
-        ('wait', 'can', 'solo', 'none'), ('grasp', 'can', 'solo', 'none'), ('release', 'can', 'solo', 'B')}
+        ('wait', 'cyan', 'west', 'none'), ('grasp', 'cyan', 'west', 'none'), ('release', 'cyan', 'west', 'B')}
 
 
 def test_recorded_rows_equal_deployed_rows_field_for_field_including_own_clocks():
@@ -110,7 +110,7 @@ def test_teacher_private_state_never_reaches_a_recorded_row():
         for private in ('long_beam', 'teal', 'blue', '123.0', '456.0'):
             assert private not in text
         assert set(recorded) == c.FIELDS
-        assert recorded['role'] == 'solo' and recorded['object_kind'] == 'can'
+        assert recorded['role'] == 'west' and recorded['object_kind'] == 'cyan'
 
 
 def test_runner_row_clock_is_discarded_not_trusted():
@@ -143,19 +143,37 @@ def test_instruction_builder_rejects_inconsistent_tuples():
         sc.instruction('regrasp', 'none')
 
 
-def test_v5_contract_has_no_solo_role_so_rows_validate_only_through_the_shim():
-    """Pins the open contract question: if grasp_act_contract ever learns 'solo' this test flags it."""
+def test_every_recorded_and_deployed_row_is_a_plain_v5_observation_the_loader_can_encode():
+    """The box role is the v5 one ('west'): rows go through the UNCHANGED v5 validator and the
+    loader's context() encoder (harness/grasp_act.py:56 calls grasp_act_contract.context)."""
+    assert c.KIND_ROLES[sc.OBJECT_KIND] == ('west',) and sc.ROLE == 'west' and 'solo' not in c.ROLES
+    kind_at, role_at = c.HISTORY*14 + len(c.SKILLS), c.HISTORY*14 + len(c.SKILLS) + len(c.KINDS)
+    rows = episode()
+    seen = set()
+    for recorded, deployed in rows:
+        for row in (recorded, deployed):
+            assert c.validate_observation(row) is row
+            vec = c.context(row)
+            assert len(vec) == c.CONTEXT_DIM
+            assert vec[kind_at:kind_at + len(c.KINDS)] == [float(k == 'cyan') for k in c.KINDS]
+            assert vec[role_at:role_at + len(c.ROLES)] == [float(r == 'west') for r in c.ROLES]
+            seen.add(row['skill'])
+    assert seen == {'wait', 'grasp', 'release'}
+
+
+def test_solo_validator_adds_only_the_task_kind_and_role_on_top_of_v5():
     row = episode(3)[0][0]
-    with pytest.raises(ValueError):
-        c.validate_observation(row)              # v5 vocabulary: can -> ('any',) only
     assert sc.validate_solo_observation(row) is row
-    assert 'solo' not in c.ROLES and c.KIND_ROLES['can'] == ('any',)
     with pytest.raises(ValueError):
-        c.context(row)                           # the v5 one-hot encoder cannot encode it
+        sc.validate_solo_observation({**row, 'role': 'solo'})                 # not a v5 token
     with pytest.raises(ValueError):
-        sc.validate_solo_observation({**row, 'role': 'any'})
+        sc.validate_solo_observation({**row, 'role': 'any', 'object_kind': 'can'})   # cargo v6: no can
     with pytest.raises(ValueError):
         sc.validate_solo_observation({**row, 'role': 'teal', 'object_kind': 'long_beam'})
+    with pytest.raises(ValueError):
+        sc.validate_solo_observation({**row, 'object_kind': 'red'})           # another box is another task
+    with pytest.raises(ValueError):
+        c.validate_observation({**row, 'role': 'east'})                       # v5 itself: boxes are 'west' only
 
 
 def test_writer_wrappers_leave_carry_rows_untouched_and_rewrite_grasp_rows():
@@ -174,11 +192,11 @@ def test_writer_wrappers_leave_carry_rows_untouched_and_rewrite_grasp_rows():
     sink = Sink()
     writer = rec.SoloStudentWriter(sink, recorder)
     writer.write(json.dumps(runner_grasp_row(0, 0., images, history, 'grasp')) + '\n')
-    assert sc.row_tuple(json.loads(sink.lines[0])) == ('grasp', 'can', 'solo', 'none')
+    assert sc.row_tuple(json.loads(sink.lines[0])) == ('grasp', 'cyan', 'west', 'none')
     label_sink = Sink()
     label_sink.lines = []
     rec.SoloLabelWriter(label_sink).write(json.dumps({'object_kind': 'long_beam', 'skill': 'grasp'}) + '\n')
-    assert json.loads(label_sink.lines[0])['object_kind'] == 'can'
+    assert json.loads(label_sink.lines[0])['object_kind'] == 'cyan'
 
 
 def test_label_row_shape_and_stage_vocabulary():

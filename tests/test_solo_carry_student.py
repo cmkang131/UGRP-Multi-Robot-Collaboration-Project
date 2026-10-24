@@ -70,8 +70,8 @@ def test_instruction_sequence_wait_grasp_release_and_finish():
         tuples.append(sc.row_tuple(obs))
         if controller.finished:
             break
-    assert tuples[0] == ('wait', 'can', 'solo', 'none') and tuples[5] == ('grasp', 'can', 'solo', 'none')
-    assert tuples[-1] == ('release', 'can', 'solo', 'B')
+    assert tuples[0] == ('wait', 'cyan', 'west', 'none') and tuples[5] == ('grasp', 'cyan', 'west', 'none')
+    assert tuples[-1] == ('release', 'cyan', 'west', 'B')
     # release instruction after the own done flag has been continuously true for 3 s
     assert controller.switch_t == pytest.approx(2. + student.RELEASE_AFTER_S, abs=.11)
     assert controller.finished and controller.summary()['truth_inputs'] == 0 and controller.summary()['teacher_actions'] == 0
@@ -129,7 +129,7 @@ def test_worker_round_trip():
         {'op': 'issue', 't': 0., 'permits': {'r1': True}},
         {'op': 'summary'}])
     assert out[0] == {'ok': True}
-    assert sc.row_tuple(out[1]['robots']['r1']['observation']) == ('grasp', 'can', 'solo', 'none')
+    assert sc.row_tuple(out[1]['robots']['r1']['observation']) == ('grasp', 'cyan', 'west', 'none')
     assert out[2]['finished'] is False and out[2]['robots']['r1']['segment'] == 'grasp'
     assert out[3]['mode'] == student.MODE
 
