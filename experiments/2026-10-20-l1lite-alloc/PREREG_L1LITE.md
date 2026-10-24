@@ -1,6 +1,7 @@
 # PREREG_L1LITE: L1-lite 본실험 사전 등록 (이동 + 슬롯 배정, 4통신 조건)
 
 - 상태: **READY_FOR_REVIEW** (Codex 독립 검토 후 FROZEN. 동결 전에는 GPU 본실험을 시작하지 않습니다)
+- 개정 2026-10-24: §9 중단 조건 절차 적용 — smoke(동결 전 기술 smoke, dev 701·702)에서 leader_en 2건이 자유 메시지 본문 형식 미준수로 end-to-end 실패 → 공통 부품(robot_brief)만 수정하고 이 문서를 개정해 재검토를 받습니다. 본실험은 이 개정의 재검토·동결 전까지 시작하지 않습니다.
 - 작성: Claude (2026-10-21), 브랜치 `dsh/l1lite-alloc`
 - 상위 계획: `outputs/reports/claude-arch-parallel-20261019/l1-by-1105-plan.md` §1(설계)·§4(루프), `role-split-20261020.md`
 - 구현 기록: 같은 디렉터리 `README.md`. 코드가 원본이며, 이 문서와 코드가 다르면 코드를 기준으로 하고 문서를 고칩니다(결과를 본 뒤에는 고치지 않습니다)
@@ -14,6 +15,7 @@
 | `20cdd50ba` | leader_en을 *follower 보고 → leader 배정 → follower ACK* 3라운드로 변경 | Codex 10/20 검토 §2(이전 구조에서는 leader가 follower 제약을 받기 전에 배정) |
 | `548b65f15` | queue에 `nav_l1lite_seed_split`(test/dev) 기록·검증 | role-split §3 항목 2 |
 | 이 문서 커밋 | `PREREG_L1LITE.md`, `scripts/analyze_l1lite.py`, `tests/test_analyze_l1lite.py` | — |
+| 2026-10-24 개정 커밋 | `harness/e2ewarp_l1lite.py`의 `robot_brief`에 조건별 응답 형식 안내(`reply_format`) 추가 — 자유 본문은 정확히 `{"text": "..."}` 객체여야 한다는 문구가 brief에 없어 leader_en follower 보고가 bare 문자열로 와 채널 검증에서 탈락(L1LITE_LEADER_REPORT_MISSING)한 것이 원인. 네 조건 공통 부품만 변경, 채널 검증·판정 규칙 무변경. 고정 테스트 1건 추가 | §9 중단 조건 |
 
 Codex 검토 요청 범위: 이 문서 + diff `2f62e62eb^..<이 문서 커밋>`(L1-lite 전체).
 

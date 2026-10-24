@@ -234,6 +234,38 @@ def order_sheet():
     return copy.deepcopy(ORDER_SHEET)
 
 
+def reply_format(condition):
+    """Response-format guidance carried in every brief (all four conditions).
+
+    The runtime SYSTEM line only says the reply is ``act`` plus ``message``
+    with "permitted condition content" as the body; it never spells out the
+    body shape this channel validates.  Without the shape stated here, the
+    leader_en smoke (2026-10-24) failed twice: the follower sent its report
+    body as a bare string instead of ``{"text": "..."}``, the channel
+    rejected it, and the run recorded L1LITE_LEADER_REPORT_MISSING.  The
+    text below names the exact envelope and body per condition; it carries
+    no private information (identical for both robots of a condition).
+    """
+    base = ('Reply with a single JSON object with exactly two fields: '
+            '"act" (the id of one candidate offered this round) and '
+            '"message" (null, or an object of the form '
+            '{"recipients": ["<the other robot id>"], "body": {...}}). '
+            'No other fields.')
+    if condition == 'no_comm':
+        return base + (' This condition has no communication: "message" '
+                       'must be null.')
+    if condition == 'structured':
+        return base + (' In this condition the message body must be exactly '
+                       '{"act": "<one of: my_constraint, claim_slot, ack>", '
+                       '"slot": "<one of: left, right>"} with no other '
+                       'fields and no free text.')
+    return base + (' In this condition the message body must be exactly '
+                   '{"text": "<your message in English>"}: a JSON object '
+                   'whose only field is "text". Never send the message as a '
+                   'bare string, and do not add fields such as "act" or '
+                   '"slot" to a free-text body.')
+
+
 def robot_brief(seed, robot, condition):
     """Per-robot LLM brief: order sheet, own constraint, own lane, no peer rows.
 
@@ -260,6 +292,7 @@ def robot_brief(seed, robot, condition):
         own_constraint=private_constraint(seed, robot),
         default_slot_rule=('choose your private constraint slot if you have one; '
                            'otherwise choose your own spawn-lane slot'),
+        reply_format=reply_format(condition),
     )
 
 

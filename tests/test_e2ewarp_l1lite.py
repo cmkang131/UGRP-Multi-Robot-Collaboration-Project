@@ -148,6 +148,29 @@ def test_private_constraint_appears_only_in_its_owner_brief():
             nav_static(own_brief)
 
 
+def test_brief_carries_reply_format_guidance_for_every_condition():
+    # Smoke 2026-10-24: leader_en failed twice with
+    # L1LITE_LEADER_REPORT_MISSING because the brief never stated the free
+    # message body shape ({"text": "..."}).  The guidance is a common
+    # component: same text for both robots of a condition, no private rows.
+    for seed in L.TABLE_SEEDS:
+        for condition in L.CONDITIONS:
+            briefs = [L.robot_brief(seed, r, condition) for r in L.ROBOTS]
+            texts = [b["reply_format"] for b in briefs]
+            assert all(isinstance(t, str) and t for t in texts)
+            assert texts[0] == texts[1]
+            text = texts[0]
+            assert '"act"' in text and '"message"' in text
+            if condition == "no_comm":
+                assert '"message" must be null' in text
+            elif condition == "structured":
+                assert '"slot"' in text and "no free text" in text
+            else:
+                assert '{"text": "<your message in English>"}' in text
+                assert "bare string" in text
+            assert "Loading constraint for" not in text
+
+
 # ---------------------------------------------------------------------------
 # Four-channel schemas (transport validation only)
 
