@@ -211,5 +211,5 @@ StartInterval/StartCalendarInterval을 그대로 사용한다. 삭제 조건·7�
 **2026-10-24 첫 정리**(조정자 실행, 독립 재검증 아님): 여유가 39 GiB에서 69 GiB로 늘었다.
 - worktree 20개: `UGRP-wt/pairact-r1-v2`–`v8`과 그 검증용, p2 hybrid2 2개, armN·docs·eval-v3·k1, v5-baseline-tmp. 약 28 GiB.
 - `/tmp` 19개 약 4 GiB, `~/.cache/e94ed16f-*` 2.5 GiB, journal 331 MiB, chromium 이전 리비전.
-- 보존: dirty이거나 원격에 없는 worktree 8개(act-chunk, e2ewarp-eval/integ, nav-v230-r6-n1, oracle-coordinator, p2c5-hybrid2, pairact-p0, pr611, run-manifest, pairact-r1-v7-dshverify)와 pairact-r1-v9.
+- 보존: dirty이거나 원격에 없는 worktree 10개(act-chunk, e2ewarp-eval/integ, nav-v230-r6-n1, oracle-coordinator, p2c5-hybrid2, pairact-p0, pr611, run-manifest, pairact-r1-v7-dshverify)와 pairact-r1-v9.
 - 기록: `outputs/cleanup-records/oracle-arm-20261024/`.
