@@ -134,3 +134,12 @@ def test_detour_collect_records_like_collect_and_detour_does_not():
                   collect_proof=lambda host, sel: 'proof', collect_probe=lambda: False)
         exec(textwrap.dedent(block), ns)
         assert ns['run_kwargs'] == expect
+
+
+# ------------------------------------------- P5 eval carry budget candidate
+
+def test_p5_eval_candidate_only_raises_carry_cap():
+    profiles = _profiles()
+    p5, det = profiles('pairact_p5_eval'), profiles('pairact_p2_r13_detour')
+    assert {k: v for k, v in p5.items() if k != 'carry_cap_s'} == {k: v for k, v in det.items() if k != 'carry_cap_s'}
+    assert det['carry_cap_s'] == 110. and p5['carry_cap_s'] == 120.

@@ -144,6 +144,11 @@ def profiles(candidate):
         return {**profiles('pairact_p2_r13'),'carry_route':'detour_v1'}
     if candidate=='pairact_p3_collect_detour':
         return dict(profiles('pairact_p2_r13_detour'))
+    # pairact P5 eval (PAIRACT_R1_EVAL_PREREG v2): detour profile with the registered
+    # carry budget 120 s (episode cap rule, P2 teacher smoke). Separate candidate;
+    # recording stays off (not a COLLECT_CANDIDATES member).
+    if candidate=='pairact_p5_eval':
+        return {**profiles('pairact_p2_r13_detour'),'carry_cap_s':120.}
     values=dict(teacher_profile='visible_only',self_pose_source='issued',
         teacher_stability='align_relook_v1',teacher_search='search_body_scan_v2',
         approach_goal_set='approach_goal_set_v1',nominal_blocked_handoff='nominal_blocked_handoff_v1',
