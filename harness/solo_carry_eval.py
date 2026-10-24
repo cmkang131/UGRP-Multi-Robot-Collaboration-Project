@@ -17,7 +17,8 @@ floor.
 Gates (all must pass; ``failure`` names the first one that does not, in this order):
 
   lift         grasp + stable lift: min_z >= 0.012 m, tilt <= 10 deg, each finger
-               >= 0.5 N, continuously for 3 s (``LiftScore`` criteria)
+               >= 0.5 N, continuously for 3 s (``LiftScore`` criteria); any row with an
+               unobserved contact reading fails the gate (fail closed)
   no_drop      from the start of that stable lift until the commanded set-down
                begins (``lower_start_t``), min_z never falls below 0.012 m
   slot         the final cargo disc lies fully inside the designated zone-B slot rectangle
@@ -123,8 +124,10 @@ def lift_gate(rows, rid, crit=Criteria):
         if first_start is None and stable >= crit.lift_hold_s - 1e-8:
             first_start = stable_start      # start of the FIRST run that reached the hold time
         prev_t, prev_good = t, good
-    ok = best >= crit.lift_hold_s - 1e-8
-    reason = None if ok else ('contact_unobserved' if observed_contact == 0 else 'lift_not_stable')
+    # Fail closed: a contact reading is produced every tick in a healthy run, so ANY unobserved contact
+    # row (not only those inside the hold window) means the evidence is not trustworthy.
+    ok = best >= crit.lift_hold_s - 1e-8 and unobserved_contact == 0
+    reason = None if ok else ('contact_unobserved' if unobserved_contact else 'lift_not_stable')
     return {'pass': ok, 'reason': reason, 'max_stable_lift_s': best, 'stable_start_t': first_start if ok else None,
             'unobserved_contact_rows': unobserved_contact, 'unobserved_cargo_rows': unobserved_cargo,
             'row_gaps': gaps}
