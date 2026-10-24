@@ -1,0 +1,21 @@
+{
+  "split": "validation",
+  "gate": {
+    "stage_macro_acc_min": 0.8,
+    "premature_ready_max": 0.02,
+    "premature_post_go_max": 0.02,
+    "done_false_positive_max": 0.01,
+    "done_recall_min": 0.8,
+    "transition_recall_min": 0.8,
+    "transition_window_rows": 10,
+    "dither_stage_acc_drop_max": 0.05,
+    "dither_done_false_positive_max": 0.02
+  },
+  "selected_step": 7000,
+  "verdict": "SELECTED",
+  "dataset_manifest_sha256": "81e68b4fd90da10d2012e57c0036767af72d0e4279708a05a2ba1d0f242a10da",
+  "stage_targets_sha256": "89df5f4c3a9fe43a6503788b43e7db1df55deef437d0496142f5eaebc6a445e5",
+  "checkpoints": 7,
+  "source_sha256": "7eb0b6f3cd411233501fa885a461aa41cf9453c41a428bd77384893741a9451a",
+  "pairact_source_sha256": "8a9869248740bf5ad2da7194cdd9a582347ac09e88783cd6ea127ef3f208a210"
+}
