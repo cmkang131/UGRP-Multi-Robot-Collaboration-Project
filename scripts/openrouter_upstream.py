@@ -1,6 +1,7 @@
-"""openrouter_v1: opt-in paid Gemma 4 31B upstream for the Mac E2E relay (default off).
+"""openrouter_v1: opt-in paid Gemma 4 31B upstream for the E2E relay (default off).
 
-Key only from the macOS Keychain (service ugrp-openrouter, account openrouter);
+Key from the macOS Keychain (service ugrp-openrouter, account openrouter) on
+macOS, or from the Oracle key file ~/.config/ugrp/openrouter.key on Linux;
 it is held in-process and sent only as an Authorization header. Requests are
 the OpenAI-format bodies the driver already produces. Provider is pinned
 (recorded config value) with no fallbacks. Error responses are never journaled
@@ -11,6 +12,7 @@ from __future__ import annotations
 import hashlib
 import json
 from pathlib import Path
+import platform
 import subprocess
 import time
 from urllib.error import HTTPError
@@ -36,7 +38,16 @@ RETRY_STATUSES = (429, 500, 502, 503, 504)
 MAX_ATTEMPTS, RETRY_DELAY_S = 3, 1.0
 
 
+KEY_FILE = Path.home() / '.config' / 'ugrp' / 'openrouter.key'
+
+
 def keychain_key():
+    if platform.system() != 'Darwin':
+        # Oracle variant (recorded in the 2026-10-20 r5 relay identity):
+        # the key stays on this host in a 0600 file and never reaches the VM.
+        if not KEY_FILE.is_file() or not KEY_FILE.read_text().strip():
+            raise ValueError('key_needed: OpenRouter key file ' + str(KEY_FILE))
+        return KEY_FILE.read_text().strip()
     result = subprocess.run(['security', 'find-generic-password', '-s', SERVICE, '-a', ACCOUNT, '-w'],
                             capture_output=True, timeout=15)
     if result.returncode or not result.stdout.strip():
@@ -53,7 +64,8 @@ def config(provider_order=PROVIDER_ORDER):
                 profile=profile, provider=provider_order[0], quantization='fp4', quantizations=['fp4'], tag=tag,
                 allow_fallbacks=False, dropped_fields=list(DROPPED_FIELDS), usage_include=True,
                 max_attempts=MAX_ATTEMPTS, retry_statuses=list(RETRY_STATUSES), retry_delay_s=RETRY_DELAY_S,
-                key_location='macOS Keychain: ' + SERVICE)
+                key_location=('macOS Keychain: ' + SERVICE) if platform.system() == 'Darwin'
+                else 'file: ' + str(KEY_FILE))
 
 
 def upstream_body(request, provider_order=PROVIDER_ORDER):

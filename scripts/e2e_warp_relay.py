@@ -1,4 +1,4 @@
-"""Task-owned Mac loopback relay, reusing the existing pinned upstream/journal.
+"""Task-owned loopback relay (Mac or Oracle host), reusing the pinned upstream/journal.
 
 No runtime deadline: shut down the owned process after the batch. No key or
 credentials are put in identity.json, console output or the VM.
@@ -18,8 +18,11 @@ from harness.zone_study_llm_transport import no_redirect_opener
 
 
 def preflight():
-    if platform.system() != 'Darwin':
-        raise ValueError('Mac-only credentials boundary')
+    if platform.system() != 'Darwin' and not (Path.home() / '.config' / 'ugrp'
+                                              / 'openrouter.key').is_file():
+        # Credentials boundary: macOS Keychain, or the Oracle key file.
+        # The key never leaves this host; VMs only see the loopback tunnel.
+        raise ValueError('host credentials boundary: no key source on this host')
     from scripts.model_endpoint_watch import check
     root = Path(__file__).resolve().parents[1]
     alerts = check(json.loads((root/'configs/model_endpoints.json').read_text()))
