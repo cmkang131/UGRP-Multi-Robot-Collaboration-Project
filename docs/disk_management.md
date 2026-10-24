@@ -176,3 +176,40 @@ StartInterval/StartCalendarInterval을 그대로 사용한다. 삭제 조건·7�
 대량 prune 진행 기록은 후보 목록을 파일마다 통째로 다시 쓰지 않고 `*.progress.jsonl`에 append·flush·fsync한다. 계획 JSON과 전체 hash 목록은 삭제 전에 저장하고, 마지막 완료 JSON에 전체 completed를 기록한다. 중단 시 계획+진행 journal을 함께 읽어 부분 완료를 확인한다. [Python fsync 문서](https://docs.python.org/3.12/library/os.html#os.fsync)의 flush 후 fsync 순서를 따른다.
 
 자동 정리 자체의 상세 JSON 보고서도 완료/실패 EXIT를 가진 개별 receipt 디렉터리에서 검증 압축한다. keep에 report.json을 기록해 보고서와 원본/압축 해시를 영구 보존한다.
+
+## 9. ARM(oracle) 작업 공간 정리 (2026-10-24 사용자)
+
+사용자 원문: "디스크 정리좀 해 / 너가 확인해서 지울 건 지우고 지워도 되는 규칙이 뭔지 남겨주라 / 오라클 비우라는 거임". 규칙 작성은 사용자가 맡겼고, 아래 세부 기준은 조정자 설계(사용자 미확인)다. 이 절은 **작업 공간**만 다룬다. 원본 증거의 정리는 계속 8절 자동 정리(Mac 주도, 인증된 PR 조회)만 쓴다.
+
+**손으로 지우지 않는 것 (보존)**
+- 원본 증거와 보관본: `~/ugrp-archive`, `~/UGRP/outputs`(`cleanup-records` 포함), `~/backups`, `~/private-retained`. ARM에는 GitHub 토큰이 없어 `evidence_prune.py`가 PR 상태를 읽지 못하고 거부한다. 이것이 정상이다.
+- `~/stock-bot`, crontab, 기존 systemd timer.
+- 진행 중 작업의 실행 문서(RUNBOOK·보고서 등)에 경로가 적힌 venv·참조 자료. 예: `~/ugrp-e1-venv`(pairact-r1 RUNBOOK의 테스트 실행), `~/act-refs`(MANIFEST가 있는 참조 소스).
+- 지금 작업 중인 브랜치의 worktree, 수정된 파일이 있는(dirty) worktree, HEAD가 원격에 없는 worktree.
+
+**지워도 되는 것과 조건**
+1. **worktree**: `python3 scripts/agent_worktree.py retire <경로> --archive-ref <원격 브랜치> --execute`만 쓴다. 조건은 모두 만족해야 한다.
+   - `git status --porcelain`이 비어 있다.
+   - HEAD가 원격 브랜치 끝(`git ls-remote`)과 정확히 같다. 원격 브랜치가 앞서 나간 경우는 해당하지 않는다.
+   - 24시간 넘게 파일 변경이 없다.
+   - 쓰는 프로세스가 없다. 이 조건은 도구가 검사한다.
+   - 그 브랜치의 열린 PR이 없다. ARM에는 `gh`가 없으므로 공개 GitHub API(`/repos/<owner>/<repo>/pulls?state=open`)로 직접 확인한 뒤 `--no-pr-check`를 붙인다.
+2. **`/tmp`의 사용자 소유 항목**
+   - 지워도 되는 조건: 24시간 넘게 변경이 없고, cwd나 열린 파일로 쓰는 프로세스가 없고, `~/ugrp-audit`·`~/UGRP/outputs/e2e18-admin`·`~/.dsh/im` 문서가 그 경로를 참조하지 않는다.
+   - root 소유 항목과 `snap-private-tmp`, 실행 중 세션의 `claude-<uid>`는 건드리지 않는다.
+3. **`~/.cache`의 작업 사본·임시 폴더**: 2번과 같은 조건을 적용한다. 패키지 관리자 캐시도 지워도 된다.
+4. **시스템**
+   - `sudo journalctl --vacuum-size=200M`
+   - `sudo apt-get clean`
+   - `snap list --all`에서 `disabled`로 표시된 이전 리비전 제거
+5. **기록**
+   - 삭제 전에 `outputs/cleanup-records/oracle-arm-<날짜>/`에 삭제 파일 목록을 남긴다. 형식은 이름·크기·시각·경로이고, zstd로 압축한 뒤 해제한 SHA-256을 대조한다.
+   - retire 로그와 전후 `df`도 같은 곳에 남긴다.
+
+**언제 하나**: 사용자 요청 때, 또는 여유가 8절 압박 기준(ARM <35 GiB) 아래로 내려갔을 때. 이 정리로도 바닥(25 GiB)+10 GiB를 못 넘기면 원본을 지우지 말고 8절 자동 정리(Mac에서 `--remote-arm`)를 돌리도록 사용자에게 알린다.
+
+**2026-10-24 첫 정리**(조정자 실행, 독립 재검증 아님): 여유가 39 GiB에서 69 GiB로 늘었다.
+- worktree 20개: `UGRP-wt/pairact-r1-v2`–`v8`과 그 검증용, p2 hybrid2 2개, armN·docs·eval-v3·k1, v5-baseline-tmp. 약 28 GiB.
+- `/tmp` 19개 약 4 GiB, `~/.cache/e94ed16f-*` 2.5 GiB, journal 331 MiB, chromium 이전 리비전.
+- 보존: dirty이거나 원격에 없는 worktree 8개(act-chunk, e2ewarp-eval/integ, nav-v230-r6-n1, oracle-coordinator, p2c5-hybrid2, pairact-p0, pr611, run-manifest, pairact-r1-v7-dshverify)와 pairact-r1-v9.
+- 기록: `outputs/cleanup-records/oracle-arm-20261024/`.
