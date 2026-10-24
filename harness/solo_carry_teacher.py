@@ -16,14 +16,15 @@ virtual-pose tracker (``_track``), the arm phases (lower / open / raise), the
 retreat, the route builder ``carry_route`` (door_wide staging, door passage,
 zone B), ``check_route`` (rotate-first alternative) and the command builders
 are the pair teacher's, run with a one-robot "formation": the robot plus the
-can it holds, rigid in a frame whose yaw is the robot's own heading at the
-handover (a can has no heading). Deviations from pair carry:
+box it holds, rigid in a frame whose yaw is the robot's own heading at the
+handover (the box is rigid in the grip, so its own yaw is a constant offset
+in that frame; the box's TRUE pose enters the slot check). Deviations from pair carry:
 
 * last waypoint = the plan-provided zone-B SLOT centre instead of the zone
   centre; the slot rectangle must lie inside zone B and the robot's standing
   pose at the slot must clear the walls;
-* ``zone_settle`` checks the true can against the slot rectangle (a disc of
-  the can's radius fully inside) instead of the beam footprint;
+* ``zone_settle`` checks the true box against the slot rectangle (its
+  34 x 40 mm footprint, own yaw included, fully inside) instead of the beam footprint;
 * no stretch / second robot; obstacles = every other cargo disc (the parked
   pair beam INCLUDED) and the idle robots;
 * lower mode is ``grasp_height`` only (floor_contact_v1 is not wired for solo);
@@ -45,7 +46,7 @@ from harness.pair_carry_teacher_warp import (
     rect_distance, static_map_for, wall_rects, zone_of)
 
 SCHEMA = 'ugrp.solo.carry_teacher.v1'
-CARGO_RADIUS_M = .019                 # sim/zone_cargo.py CATALOGUE['can'] landing_half_extents_m
+CARGO_HALF_EXTENTS_M = sc.CARGO_HALF_EXTENTS_M   # sim/zone_arena.py:46 BOX_HALF (production box replica)
 
 
 def hold_ok(truth, rid):
@@ -53,7 +54,7 @@ def hold_ok(truth, rid):
 
 
 def obstacles_for(truth, rid, cargo_id=sc.CARGO_ITEM_ID):
-    """GT discs: every other cargo (the parked beam too) and the idle robots."""
+    """GT discs: every other cargo (the parked beam and the other scenario boxes too) and the idle robots."""
     out = [{'id': k, 'xy': list(v['xy']), 'radius': float(v['radius'])}
            for k, v in truth.get('objects', {}).items() if k != cargo_id]
     out += [{'id': r, 'xy': list(v['pose'][:2]), 'radius': ROBOT_RADIUS_M}
@@ -75,9 +76,9 @@ class SoloCarryTeacher(PairCarryTeacherWarp):
         self.lift_pwm = {rid: dict(self.pwm[rid])}
         self.touch_pwm, self.touch_since = None, None
         self.arm_targets = arm_targets
-        cargo = tuple(truth['beam']['pose'])         # key name from the pair snapshot; holds the can
+        cargo = tuple(truth['beam']['pose'])         # key name from the pair snapshot; holds the box
         robot = tuple(truth['robots'][rid]['pose'])
-        frame = (cargo[0], cargo[1], robot[2])       # a can has no heading: use the robot's own
+        frame = (cargo[0], cargo[1], robot[2])       # robot heading; the box yaw is a rigid offset in it
         self.offsets = {rid: relative(frame, robot)}
         self.d12_0 = 0.
         self.virtual = frame
@@ -104,7 +105,7 @@ class SoloCarryTeacher(PairCarryTeacherWarp):
         zone_rect = {'pose': (z['cx'], z['cy'], 0.), 'half_extents_m': (z['hx'], z['hy'])}
         corners = [compose(slot_pose, (sx*slot['half_extents_m'][0], sy*slot['half_extents_m'][1], 0.))[:2]
                    for sx in (-1, 1) for sy in (-1, 1)]
-        if not all(sc.slot_contains(zone_rect, c, 0., margin=params.zone_inner_margin_m) for c in corners):
+        if not all(sc.rect_contains_point(zone_rect, c, margin=params.zone_inner_margin_m) for c in corners):
             self._fail('zone_unreachable', now, detail='slot rectangle not inside zone B')
             return
         zone_yaw = route[-1][1][2]
@@ -153,11 +154,11 @@ class SoloCarryTeacher(PairCarryTeacherWarp):
         return out
 
     def _zone_settle(self, truth, robots, now, stretch):
-        """Final GT check of the TRUE can against the slot rectangle (not the virtual pose)."""
+        """Final GT check of the TRUE box footprint against the slot rectangle (not the virtual pose)."""
         target = self.route[-1][1]
         cargo = tuple(truth['beam']['pose'])
         if (math.dist(cargo[:2], target[:2]) <= self.p.zone_tol_xy
-                and sc.slot_contains(self.slot, cargo[:2], CARGO_RADIUS_M, margin=self.p.zone_inner_margin_m)):
+                and sc.slot_contains(self.slot, cargo, CARGO_HALF_EXTENTS_M, margin=self.p.zone_inner_margin_m)):
             self.events.append({'t': now, 'event': 'zone_aligned', 'cargo': cargo})
             self._set('lower', now)
             return {}

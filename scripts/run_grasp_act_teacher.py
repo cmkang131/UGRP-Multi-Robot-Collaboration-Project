@@ -197,8 +197,8 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
     scene=make_scene(plan);world=None;streams=[];teachers={};start=time.monotonic()
     solo_inst=None;solo_recorders={};solo_rows=[];solo_ctl=None
     if solo_carry!='off':
-        from harness.solo_carry_visible import add_solo_cargo
-        solo_inst=add_solo_cargo(scene,plan['solo_cargo'])
+        from harness.solo_carry_visible import select_solo_cargo
+        solo_inst=select_solo_cargo(scene,plan['solo_cargo'])
     timings={k:0. for k in ('physics','rgb','evaluation','teacher','io')}
     from harness.grasp_act_input_audit import AuditedTeacherInput,new_input_audit
     report={'status':'running','source_sha':sha,'teacher_success_n':0,'teacher_N':len(plan['roles']),'execution_host':execution_host,
@@ -232,6 +232,9 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
         # initial placement changes, before the trial clock and any teacher step.
         from sim.zone_cargo import place, CargoInstance
         place(world,[CargoInstance('beam_1','long_beam',tuple(plan['beam_pose']))])
+        if solo_carry!='off':
+            from harness.solo_carry_visible import place_solo_cargo
+            place_solo_cargo(world,solo_inst)
         (out/'scene.xml').write_text(world.scene_xml);write(out/'scene.json',scene.manifest)
         report['observation_sampling']={'rgb_size':[640,480] if record_training else None,'rgb_hz':10 if record_training else 0,
             'review_tile_size':[320,240],'review_cameras':('own cameras only; top disabled' if search23!='off' else 'four authored static top views'),'review_hz':1,'control_hz':10,
@@ -293,8 +296,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
             report['observation_sampling']['own_review_size']=[320,240]
         inst=next(x for x in scene.cargo if x.item_id=='beam_1');i=0;written=0;both_since=None;all_done_since=None;max_hold=0.
         if solo_carry!='off':
-            from harness.solo_carry_visible import SnapshotCargo
-            inst=SnapshotCargo(solo_inst)
+            inst=solo_inst
         carry=None;carry_rows=[];carry_done_since=None;recorders={}
         student_ep=None;student_log=None;student_funnel=None;student_hold_t=None
         if student_eval is not None:
@@ -609,7 +611,7 @@ def main():
     p.add_argument('--carry-cap-s',type=float,default=110.)
     p.add_argument('--carry-lower',choices=('grasp_height','floor_contact_v1'),default='grasp_height')
     p.add_argument('--carry-route',choices=('straight_v1','detour_v1'),default='straight_v1')
-    p.add_argument('--solo-carry',choices=('off','solo_box_v1'),default='off',help='single-robot pick-transport-place of one can (default off)')
+    p.add_argument('--solo-carry',choices=('off','solo_box_v1'),default='off',help='single-robot pick-transport-place of the scenario cyan box (default off)')
     p.add_argument('--student-eval',type=Path,help='P5 student eval config JSON (default off)')
     # pairact P3 (default off): replace ONLY the >=38/40 gate requirement by a FROZEN collect prereg sha256
     p.add_argument('--recording-admission',choices=('teacher_gate_v1','pairact_p3_collect'),default='teacher_gate_v1')

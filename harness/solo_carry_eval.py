@@ -11,7 +11,7 @@ Row shape = the rows ``scripts/run_grasp_act_teacher.snapshot`` writes to
      'robots': {rid: {'pose': [...]}}, 'contacts': {rid: [left_N, right_N]}}
 
 The key ``'beam'`` is the pair runner's name for the carried object; in a solo
-episode it holds the CAN. ``min_z`` is the lowest point of the cargo above the
+episode it holds the BOX (the scenario's cyan replica). ``min_z`` is the lowest point of the cargo above the
 floor.
 
 Gates (all must pass; ``failure`` names the first one that does not, in this order):
@@ -21,7 +21,8 @@ Gates (all must pass; ``failure`` names the first one that does not, in this ord
                unobserved contact reading fails the gate (fail closed)
   no_drop      from the start of that stable lift until the commanded set-down
                begins (``lower_start_t``), min_z never falls below 0.012 m
-  slot         the final cargo disc lies fully inside the designated zone-B slot rectangle
+  slot         the final box footprint (34 x 40 mm, its own yaw) lies fully inside the
+               designated zone-B slot rectangle (slot yaw honoured)
   rest         over the last ``rest_still_s``: on the floor (min_z <= 6 mm), tilt <= 5 deg,
                moved <= 5 mm, finger load < 0.1 N
   release      gentle: first row after ``lower_start_t`` with both fingers < 0.1 N has the
@@ -70,7 +71,8 @@ class Criteria:
     rest_still_s = 1.
     rest_still_m = .005
     # slot
-    cargo_radius_m = .019            # sim/zone_cargo.py CATALOGUE['can'] landing_half_extents_m
+    # production box footprint half extents x/y: sim/zone_arena.py:46 BOX_HALF (= harness.solo_carry_contract)
+    cargo_half_extents_m = (.017, .020)
     slot_margin_m = 0.
 
 
@@ -161,10 +163,12 @@ def drop_gate(rows, lift, lower_start_t, crit=Criteria):
 def slot_gate(rows, slot, crit=Criteria):
     from harness.solo_carry_contract import slot_contains
     c = cargo(rows[-1]) if rows else None
-    if c is None:
+    pose = rows[-1]['beam']['pose'] if c is not None else None
+    yaw = _num(pose[2]) if isinstance(pose, (list, tuple)) and len(pose) >= 3 else None
+    if c is None or yaw is None:
         return {'pass': False, 'reason': 'cargo_unobserved'}
-    inside = slot_contains(slot, c[:2], crit.cargo_radius_m, crit.slot_margin_m)
-    return {'pass': inside, 'reason': None if inside else 'outside_slot', 'final_xy': [c[0], c[1]]}
+    inside = slot_contains(slot, (c[0], c[1], yaw), crit.cargo_half_extents_m, crit.slot_margin_m)
+    return {'pass': inside, 'reason': None if inside else 'outside_slot', 'final_pose': [c[0], c[1], yaw]}
 
 
 def rest_gate(rows, rid, crit=Criteria):

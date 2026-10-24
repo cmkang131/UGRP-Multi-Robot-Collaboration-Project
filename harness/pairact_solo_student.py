@@ -10,9 +10,9 @@ tuple and the own v7 clock. No GT, teacher, stage target or geometry is accepted
 The task tuple is built by ``harness.solo_carry_contract.instruction`` -- the
 same function the teacher recorder uses -- so the deployed tuple is the
 recorded tuple:
-  grasp segment    (grasp | wait, can, solo, none)   'wait' while the own READY is
+  grasp segment    (grasp | wait, cyan, west, none)   'wait' while the own READY is
                    pending without GO (the token the teacher demos used)
-  release segment  (release, can, solo, B)
+  release segment  (release, cyan, west, B)
 The switch happens when the robot's OWN command-completion flag has been
 continuously true for ``RELEASE_AFTER_S`` SIM s (the pair student's rule applied
 to one robot); no truth, teacher phase or hold measurement decides it.

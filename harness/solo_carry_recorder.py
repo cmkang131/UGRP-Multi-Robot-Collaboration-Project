@@ -7,8 +7,8 @@ split, same v7 deadband-2 own clock, same ``(skill, object_kind, role,
 destination_zone)`` instruction tuple one-hot-style token). Differences:
 
 * the tuple is built by ``harness.solo_carry_contract.instruction`` for BOTH
-  the grasp and the carry segment: ``(grasp|wait, can, solo, none)`` then
-  ``(release, can, solo, B)``. The teacher-internal end token (``teal``) and
+  the grasp and the carry segment: ``(grasp|wait, cyan, west, none)`` then
+  ``(release, cyan, west, B)`` -- plain v5 rows (``west`` is the v5 box role). The teacher-internal end token (``teal``) and
   the teacher's private handoff flag never reach a recorded student row;
 * one clock object per robot serves both segments and is keyed on the public
   tuple only, so ``skill_elapsed_s`` resets exactly when a deployed student's
@@ -49,7 +49,7 @@ class SoloRecorder:
     # ---- grasp segment (rows computed by the unchanged runner, tuple replaced)
     def rewrite_grasp_row(self, row):
         """Public tuple + recomputed clocks for a row the runner wrote in the grasp segment."""
-        if row.get('role') == sc.ROLE:                 # already a solo row (carry rows pass through)
+        if row.get('object_kind') == sc.OBJECT_KIND and row.get('role') == sc.ROLE:   # already a solo row
             return sc.validate_solo_observation(row)
         if row['destination_zone'] != sc.GRASP_DESTINATION or row['skill'] not in sc.GRASP_SKILLS:
             raise ValueError('only grasp/wait rows are rewritten')
@@ -110,7 +110,7 @@ class SoloStudentWriter:
 
 
 class SoloLabelWriter:
-    """Teacher-label stream: the object kind of grasp-segment labels becomes the solo cargo kind."""
+    """Teacher-label stream: the object kind of grasp-segment labels becomes the solo box kind."""
 
     def __init__(self, stream):
         self.stream = stream
