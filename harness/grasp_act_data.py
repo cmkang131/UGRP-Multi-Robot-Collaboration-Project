@@ -216,6 +216,37 @@ def assert_tensor_keys(batch, *, training=False):
         raise ValueError('model input whitelist mismatch')
 
 
+def _training_rgb_ok(result, raw):
+    """Admission evidence that a recording carries training RGB frames.
+
+    Legacy recordings (beampair writer) stamp ``training_rgb: true`` on the
+    episode result and are accepted on that stamp alone. The pairact warp
+    teacher writer does not stamp the field; for those recordings require
+    positive in-recording evidence instead: training recording mode, a
+    recorded RGB sampling block, and per-robot frame directories holding at
+    least one frame each. An explicit ``training_rgb: false`` always
+    rejects, and any missing evidence rejects (fail closed).
+    """
+    stamped = result.get('training_rgb')
+    if stamped is True:
+        return True
+    if stamped is False:
+        return False
+    if result.get('recording_mode') != 'training':
+        return False
+    sampling = result.get('observation_sampling') or {}
+    if not sampling.get('rgb_size') or not sampling.get('rgb_hz'):
+        return False
+    rgb_dir = Path(raw) / 'rgb'
+    if not rgb_dir.is_dir():
+        return False
+    for robot in ('r1', 'r2'):
+        frames = rgb_dir / robot
+        if not frames.is_dir() or not any(frames.iterdir()):
+            return False
+    return True
+
+
 def convert(runs_root, protocol, output, *, seeds=None):
     output = Path(output)
     done_label = protocol.get('done_label', 'teacher_v1')
@@ -250,7 +281,7 @@ def convert(runs_root, protocol, output, *, seeds=None):
             result = read_json(result_path)
             if ((run / 'EXIT').read_text().strip() != '0' or result.get('status') != 'complete'
                     or result.get('source_sha') != protocol['teacher_sha']
-                    or result.get('physical_success') is not True or result.get('training_rgb') is not True
+                    or result.get('physical_success') is not True or not _training_rgb_ok(result, raw)
                     or result.get('student_execution') is not False or result.get('recording_mode') != 'training'):
                 raise ValueError('completed successful teacher recording required')
             if protocol.get('recovery_mode'):
