@@ -26,11 +26,44 @@ from harness.grasp_act_data import sha256, write_json
 DITHER_SEED = 20261021
 
 
+def transition_recall_registered(pred, target, segments, window_rows, episodes):
+    """G4 transition recall under the registered definition (OFFLINE_GATE.md):
+    a true transition is an adjacent GT stage change inside one episode, and
+    a hit is the 'to' stage predicted within window_rows rows after the
+    change (same segment as the arrival row).
+
+    This lives in the runner, not the harness: every checkpoint's
+    adapter.json binds the sha256 of harness/pairact_r1.py, so the frozen
+    harness file must stay byte-identical for checkpoints to load at all.
+    The harness's own transition_recall tests adjacency by segment, which
+    silently drops every ready->execute transition (the GO wait splits the
+    segment at that boundary), recording total=0 -> G4 fail under the
+    missing-measurement rule. Hit-window semantics are unchanged, so every
+    transition the segment rule did count keeps identical hits/total.
+    OFFLINE_GATE_AMENDMENT_2026-10-25.md records this correction; the gate
+    thresholds and the missing-measurement rule are unchanged.
+    """
+    out = {}
+    for a, b in p.TRANSITIONS:
+        ia, ib = p.stage_index(a), p.stage_index(b)
+        hits = total = 0
+        for i in range(1, len(target)):
+            if (target[i - 1], target[i]) != (ia, ib):
+                continue
+            if episodes[i] != episodes[i - 1]:
+                continue
+            total += 1
+            hits += any(pred[j] == ib for j in range(i, min(len(target), i + window_rows + 1))
+                        if segments[j] == segments[i])
+        out[f'{a}->{b}'] = dict(hits=hits, total=total, recall=hits / total if total else None)
+    return out
+
+
 def evaluate(actor, data, *, dither, batch_size=64):
     import torch
     rng = np.random.default_rng(DITHER_SEED)
     mean, std = (np.asarray(data.stats[k], np.float32) for k in ('state_mean', 'state_std'))
-    pred, target, segments, done_score, done_target = [], [], [], [], []
+    pred, target, segments, done_score, done_target, episodes = [], [], [], [], [], []
     rows = list(range(len(data)))
     offset = 0
     seg_global = []
@@ -47,6 +80,7 @@ def evaluate(actor, data, *, dither, batch_size=64):
                 item['observation.state'] = (raw - mean) / std
             items.append(item)
             j, r = data.index[i]
+            episodes.append(j)
             target.append(int(data.targets[j][r, 0]))
             done_target.append(float(data.shards[j]['action'][r, 0, -1]))
         inputs = {k: torch.from_numpy(np.stack([x[k] for x in items])).to(actor.device)
@@ -58,7 +92,13 @@ def evaluate(actor, data, *, dither, batch_size=64):
         pred.extend(logits[:, 0].argmax(-1).tolist())
         done_score.extend(actor.beam3.decode_predictions(values)[:, 0, -1].tolist())
     segments = seg_global
-    return p.offline_metrics(pred, target, segments, done_score, done_target)
+    metrics = p.offline_metrics(pred, target, segments, done_score, done_target)
+    # G4 measurement amendment (2026-10-25): replace the transitions entry
+    # with the registered-definition count above. Every other metric, the
+    # gate thresholds and the selection rule stay in the frozen harness.
+    metrics['transitions'] = transition_recall_registered(
+        pred, target, segments, p.GATE['transition_window_rows'], episodes)
+    return metrics
 
 
 def main(argv=None):
