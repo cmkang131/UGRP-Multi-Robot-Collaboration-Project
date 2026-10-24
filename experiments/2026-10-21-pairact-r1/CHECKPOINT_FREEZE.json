@@ -1,0 +1,33 @@
+{
+ "schema": "ugrp.pairact_r1.checkpoint_freeze.v1",
+ "selected_step": 7000,
+ "actor_dir": "/home/ugrp/clockfix-build-20261024/train-r1-20261024/main/step-007000/actor",
+ "actor_sha256": {
+  "model.safetensors": "0243511f41493f99001b9e84a606e9da261cb46bf3c45695f725f35a96f32c6a",
+  "config.json": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f",
+  "adapter.json": "2beaff012ad14fb69595e8da6db47c56c1d26c5845194e6bbeb121b252a78950"
+ },
+ "actor_sha256_file_sha256": "8dcb0c01ceb0b05358616aa7062525560ff8fceb2963b4eb4fead5aac18341eb",
+ "selection_sha256": "b1a0f01bf2ff62f19197ccd90cf0bd46900cddbd9196fddfa0b754a4f570e6fb",
+ "checkpoints_jsonl_sha256": "4ae743c4c33b70c5a154d1cb97cc13f04c07ee8e5a3a2f24ff3cc70aecca33de",
+ "dataset_manifest_sha256": "81e68b4fd90da10d2012e57c0036767af72d0e4279708a05a2ba1d0f242a10da",
+ "stage_targets_sha256": "89df5f4c3a9fe43a6503788b43e7db1df55deef437d0496142f5eaebc6a445e5",
+ "train_config_sha256": "37835e1ff9bd7b9686b4d7258b7597e6cd8e40b84a121c4f4156704c04b49326",
+ "gate": {
+  "stage_macro_acc_min": 0.8,
+  "premature_ready_max": 0.02,
+  "premature_post_go_max": 0.02,
+  "done_false_positive_max": 0.01,
+  "done_recall_min": 0.8,
+  "transition_recall_min": 0.8,
+  "transition_window_rows": 10,
+  "dither_stage_acc_drop_max": 0.05,
+  "dither_done_false_positive_max": 0.02
+ },
+ "checkpoints": 7,
+ "heldout_access_before_freeze": "none (asserted by the operator; P5 starts after this commit)",
+ "collect_report_sha256": "99a32669f44f72cb4be6f7bf4e090ebccb1985b41cfafb73807dbe6800281999",
+ "collect_decision": "TRAIN",
+ "result_labels": [],
+ "limited_bins": []
+}
