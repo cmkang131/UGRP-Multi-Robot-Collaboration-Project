@@ -38,6 +38,9 @@ def serve(predict, lines, write, *, config, executor_factory=None, barrier_facto
                                                deadband=config['issued_clock_deadband'])
             result = {'ok': True}
         elif op == 'propose':
+            from harness.pairact_solo_student import REQUEST_KEYS
+            if any(set(v) != REQUEST_KEYS for v in request['robots'].values()):
+                raise ValueError('own camera + own issued command only')     # checked BEFORE the dict is rebuilt
             robots = {rid: {'jpeg': base64.b64decode(v['jpeg'], validate=True), 'issued': v['issued']}
                       for rid, v in request['robots'].items()}
             result = {'robots': controller.propose(float(request['t']), robots)}
