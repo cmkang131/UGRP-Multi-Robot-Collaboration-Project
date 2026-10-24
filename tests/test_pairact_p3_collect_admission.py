@@ -92,7 +92,10 @@ def _diff(path, added=False):
 # -c5 (c4 teacher + c3 admission): the -c3/-c4 opt-in carry_route keyword is threaded through three
 # existing lines (run signature, start_from_runner call, CLI run call). Those lines may change ONLY by
 # inserting exactly these keyword fragments; every other line of the gate path stays byte identical.
-CARRY_ROUTE_INSERTS = ('carry_route="straight_v1",', ',route_mode=carry_route', 'carry_route=a.carry_route,')
+# solo-e2e/20261024 (derived, unverified): the opt-in solo_carry keyword is threaded through the same two
+# lines (run signature, CLI run call); every other pre-existing line stays byte identical.
+CARRY_ROUTE_INSERTS = ('carry_route="straight_v1",', ',route_mode=carry_route', 'carry_route=a.carry_route,',
+                       'solo_carry="off",', 'solo_carry=a.solo_carry,')
 
 
 def test_existing_gate_path_is_byte_identical():
