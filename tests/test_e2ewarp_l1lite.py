@@ -390,6 +390,24 @@ def test_follower_report_message_is_required():
     assert info.value.record['fatal'] is True
 
 
+def test_follower_report_as_bare_string_body_is_rejected():
+    """Regression (smoke 2026-10-24, Codex re-review recommendation): the
+    follower's report body sent as a bare string instead of {"text": ...}
+    must fail channel validation, drop the message, and surface as
+    L1LITE_LEADER_REPORT_MISSING -- the exact leader_en failure mode the
+    brief reply_format guidance now warns against."""
+    ask = scripted({'r1': [reply('report_status', 'I can only use B-right.',
+                                  to='r2')],
+                    'r2': []})
+    with pytest.raises(L.L1LiteError) as info:
+        L.allocate_slots('leader_en', 601, ask=ask)
+    assert info.value.code == 'L1LITE_LEADER_REPORT_MISSING'
+    record = info.value.record
+    assert record['fatal'] is True
+    assert 'L1LITE_MESSAGE_INVALID' in record['errors']
+    assert record['message_drops'][0]['robot'] == 'r1'
+
+
 def test_leader_assignment_message_is_required():
     ask = scripted({'r1': [_report()], 'r2': [reply('take_left')]})
     with pytest.raises(L.L1LiteError) as info:
