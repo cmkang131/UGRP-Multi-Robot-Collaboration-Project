@@ -41,7 +41,10 @@ def freeze(offline, run, dataset, stage_targets, config, collect_report=None):
     chosen = [r for r in rows if int(r['step']) == step]
     if len(chosen) != 1 or chosen[0].get('passed') is not True:
         raise ValueError(f'step {step}: exactly one passing gate row required')
-    actor = run / f'step-{step}' / 'actor'
+    step_dir = run / f'step-{step:06d}'
+    if not step_dir.is_dir():
+        step_dir = run / f'step-{step}'
+    actor = step_dir / 'actor'
     actor_sha = json.loads((actor / 'SHA256.json').read_text())
     if actor_sha != chosen[0]['actor_sha256']:
         raise ValueError(f'step {step}: actor SHA256.json differs from the gated checkpoint')
