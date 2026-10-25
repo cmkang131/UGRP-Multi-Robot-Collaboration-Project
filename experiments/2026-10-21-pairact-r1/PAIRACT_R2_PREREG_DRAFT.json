@@ -240,5 +240,49 @@
   "definition": "phase(stage)가 30 sim-s 이상 진전 없고(approach 진입 후 기준) 최근 5 sim-s 발행 wheel 명령이 모두 0인 상태가 지속되면 stall로 판정",
   "rollout_early_stop": "stall 지속 60 sim-s 도달 시 에피소드 조기 종료 (DAgger 롤아웃 전용; 평가에서는 적용하지 않음)",
   "source": "P0-3 확정 (2026-10-25)"
- }
+ },
+ "amendments": [
+  {
+   "date": "2026-10-25",
+   "kind": "phase0_outcome_and_dagger_scale_contract",
+   "phase0_outcome": {
+    "p0_5_student_train8": {
+     "seeds": "8340000-8340007",
+     "success": 0,
+     "cap_end": 8,
+     "blocked_robot_tick_share": 0.998,
+     "zero_wheel_share": 1.0,
+     "ready_rows": 0,
+     "end_phases": "approach/approach in 8/8",
+     "wall_s": 3447,
+     "run": "gcp6 ~/ugrp-sim/runs/pairact-r2-20261025/p0-student"
+    },
+    "p0_4_teacher_train8": {
+     "seeds": "8340000-8340007",
+     "success": 8,
+     "cap_end": 0,
+     "carry_reached": 8,
+     "wall_s": 2445,
+     "run": "gcp6 ~/ugrp-sim/runs/pairact-r2-20261025/p0-teacher"
+    },
+    "hypothesis_verdicts": {
+     "H1_coverage": "supported_as_intervention_basis — identical spawns: teacher 8/8 (approach with gripper open until station criteria), student blocked from the opening ticks; the student-visited close-range approach states are the missing coverage",
+     "H3_premature_close_deadlock": "strongly supported as mechanism — barrier blocked 99.8% of robot-ticks; code mechanism close_before_learned_ready zeroes wheels in approach/alignment/recover and the static observation repeats the same proposal; caveat: batch outputs do not persist the rejection-reason string, so 99.8% is the blocked share and the reason is identified by code plus the diagnostic case",
+     "H2_chunk_grid": "rejected as primary cause — the policy never leaves the approach stage in closed loop, and the stage head reproduces ready transitions on teacher-distribution chunks offline; grid alignment remains a label-construction rule only"
+    },
+    "aborted_attempt": "first student measurement used --cap-s 180 (P5 used 60; verified from the P5 summary reproduce argv) and was stopped at 2184 ticks, ~1.2 GPU-h, preserved as p0-student-cap180-aborted; quantitative results come only from the corrected cap-60 run"
+   },
+   "dagger_scale_contract": {
+    "episode_seeds": "train 8340008-8340039 (32 episodes; the 8 phase-0 seeds are excluded to keep measurement and collection disjoint)",
+    "rows_target_total": "20,000-60,000 (registered range); raw expectation ~41,600 rows (32 episodes x ~650 stall-terminated ticks x 2 robots) before frozen-tail dedup at chunk boundaries",
+    "stall_early_stop_s": 60,
+    "gpu_budget_h": "<=5 (rollout batches of 8 with stall termination ~0.8 GPU-h expected; teacher replay labeling the rest)",
+    "holdback_for_ready_recall": "20% of episodes by seed, excluded from training"
+   },
+   "gpu_used_so_far_h": {
+    "phase0_measurement": 1.64,
+    "aborted_cap180_attempt": 1.2
+   }
+  }
+ ]
 }
