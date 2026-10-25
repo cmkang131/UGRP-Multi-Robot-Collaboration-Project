@@ -105,9 +105,15 @@ def arm_rows(arm, run_dir, *, attempt, seeds, only=None):
         success = w.get('success') is True and w.get('carry_success') is True
         if arm == 'student':
             reached = (w.get('student_funnel') or {}).get('reached') or {}
+            if not reached:
+                # This runner's summary carries no student_funnel; the same
+                # StudentFunnel record is in the per-world raw student_eval.
+                reached = (((raw or {}).get('student_eval') or {}).get('funnel') or {}).get('reached') or {}
             funnel = {s: reached.get(s) for s in FUNNEL}
             gt = ((raw or {}).get('student_eval') or {}).get('gt_inputs_to_student')
             teacher_steps = w.get('teacher_steps')
+            if teacher_steps is None:
+                teacher_steps = ((raw or {}).get('student_eval') or {}).get('teacher_steps')
         else:
             funnel = teacher_funnel(w, raw)
             funnel['place'] = success

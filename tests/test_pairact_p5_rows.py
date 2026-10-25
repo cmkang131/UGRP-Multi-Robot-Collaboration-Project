@@ -113,3 +113,25 @@ def test_missing_gt_record_is_null_not_zero(tmp_path):
                                           teacher_rerun=None, static_check=None))
     r = next(x for x in rows if x.get('arm') == 'student')
     assert r['student_gt_corrections'] is None and r['teacher_commands_issued_to_student'] is None
+
+
+def test_student_funnel_and_steps_fall_back_to_raw(tmp_path):
+    # Runner summaries without student_funnel/teacher_steps (the batch runner
+    # behind the 2026-10-25 P5 run): the same records live in the per-world
+    # raw student_eval and must be picked up from there.
+    pre, cases = setup(tmp_path)
+    st = run_dir(tmp_path / 'student', 'student', [0])
+    s = json.loads((st / 'summary.json').read_text())
+    s['worlds'][0].pop('student_funnel')
+    s['worlds'][0].pop('teacher_steps')
+    (st / 'summary.json').write_text(json.dumps(s))
+    raw = st / 'world-000' / 'raw' / 'result.json'
+    raw.write_text(json.dumps(dict(status='complete',
+                                   student_eval=dict(gt_inputs_to_student=0, teacher_steps=0,
+                                                     funnel=dict(reached=dict(STUDENT_REACHED))))))
+    te = run_dir(tmp_path / 'teacher', 'teacher', [0])
+    rows = pr.build(pr.argparse.Namespace(prereg=pre, cases=cases, student=st, teacher=te, student_rerun=None,
+                                          teacher_rerun=None, static_check=None))
+    r = next(x for x in rows if x.get('arm') == 'student')
+    assert r['funnel']['approach'] is True and r['funnel']['READY'] is True and r['funnel']['hold_3s'] is False
+    assert r['student_gt_corrections'] == 0 and r['teacher_commands_issued_to_student'] == 0
