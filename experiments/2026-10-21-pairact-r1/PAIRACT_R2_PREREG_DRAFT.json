@@ -1,0 +1,244 @@
+{
+ "budget_estimate": {
+  "approval_status": "2026-10-25 사용자 전체 승인으로 해제됨. 승인 범위: Phase 0 측정 + DAgger 약 5 + 재학습 약 4.6 + 게이트 약 3 + 재평가 약 2.7 GPU-h. 폐루프 선택 대안(약 5 GPU-h)은 범위 외.",
+  "items": [
+   {
+    "estimate": "GPU 비용 없음",
+    "step": "Phase 0 0-GPU 분석"
+   },
+   {
+    "estimate": "소규모 — 학생 301.6초/ep 실측 근거, 측정 후 확정",
+    "step": "Phase 0 측정 (P0-4·P0-5)"
+   },
+   {
+    "estimate": "naive 60 ep 약 5.0 GPU-h, 조기 종료 시 감소 — scale_contract 확정 후 재산정",
+    "step": "DAgger 롤아웃+라벨링"
+   },
+   {
+    "estimate": "약 4.6 GPU-h (1회차 예산)",
+    "step": "재학습 20,000 steps"
+   },
+   {
+    "estimate": "약 3 GPU-h (개정 재평가 규모)",
+    "step": "오프라인 게이트 20 ckpt"
+   },
+   {
+    "estimate": "약 5 GPU-h",
+    "step": "폐루프 선택 (D1 대안 채택 시)"
+   },
+   {
+    "estimate": "약 2.7 GPU-h (학생 1.68 + 교사 1.05, 1회차 실측)",
+    "step": "재평가"
+   },
+   {
+    "estimate": "20-30% (P5에서 전 월드 HOST_ERROR 재실행 전례)",
+    "step": "재시도 여유"
+   }
+  ],
+  "stop_point": "GPU가 드는 첫 단계(P0-4/P0-5 측정)부터 새 승인이 필요하다"
+ },
+ "competing_hypotheses": {
+  "H1": "학생 방문 상태 커버리지 부족(분포 이동) — DAgger가 처방",
+  "H2": "stage head의 1틱 ready가 8틱 chunk horizon 그리드와 어긋나 방출되지 않음 — 정렬·표현 문제",
+  "H3": "조기 close 억제 학습 부족 — 장벽 대기 구간 라벨 문제",
+  "note": "원인 확정은 Phase 0에서 한다. 본 사전등록은 어느 가설도 전제로 확정하지 않는다"
+ },
+ "decision_items": [
+  {
+   "alternative": "게이트 통과 상위 체크포인트를 validation 폐루프로 선택. 비용 약 5 GPU-h (3 arm x 1.68 GPU-h, MiniMax 재산정). 채택 시 선택 지표·최소 차이·타이브레이크·검증 슬라이스 분리·R1 selection.json 규칙 대조를 등록한다",
+   "default": "기존 선택 규칙 유지 (오프라인 게이트 + 규칙 기반 선택)",
+   "id": "D1",
+   "raised_by": "DeepSeek 상-6, MiniMax 부분동의(비용 2배 재산정)",
+   "title": "체크포인트 선택 절차"
+  },
+  {
+   "alternative": "새 테스트 seed 20-40개를 주 평가로 등록하고 교사 baseline을 그 seed에서 재실행, 기존 20개는 paired 보조로만 보고 (2중 보고)",
+   "default": "같은 보류 seed 20개로 paired 비교 (사용자 지시). 단, 이 seed들은 P5에서 이미 사용됐으므로 결과를 일반화 추정으로 해석하지 않고, DAgger 범주 설계가 퍼널 집계 수준에서 이 평가 결과를 참조했다는 한계를 명시한다",
+   "id": "D2",
+   "raised_by": "DeepSeek 상-1, MiniMax 부분동의(2중 보고안)",
+   "title": "평가 seed 설계"
+  },
+  {
+   "alternative": "2개로 늘려 별도 보고 (합산 금지). 재학습 비용 2배",
+   "default": "1개 (1회차와 동일)",
+   "id": "D3",
+   "raised_by": "DeepSeek 중-10",
+   "title": "학습 seed 수"
+  }
+ ],
+ "decision_tree": [
+  "Phase 0에서 라벨링 경로가 없거나 라벨이 학생 관측으로 예측 불가능하면 DAgger 중단, 복구 시연 또는 stage head 개입으로 재설계 후 재검토",
+  "H2(그리드 정렬)가 확인되면 데이터 보강보다 정렬 규칙·표현 수정이 선행",
+  "재평가에서 READY 도달률 < 20%면 teacher-forced READY 확률 trace·임계 sweep·stage-head 진단을 먼저 수행",
+  "READY 도달률 20-50%면 DAgger 2라운드, > 50%면 carry 구간이 다음 과제"
+ ],
+ "evaluation": {
+  "cap_s": 180,
+  "hybrid_rule": "pairact_r1_hybrid_switch_v1 그대로 적용. hybrid arm은 열지 않는다",
+  "primary_metrics": [
+   "성공 수와 95% CI",
+   "접근 도달 대비 READY 도달률",
+   "정렬 도달 수",
+   "cap_end 중 carry 진입 후 종료 분리 보고 (cap 민감도)"
+  ],
+  "success_definition": "P5 사전등록과 동일 (placed_in_zone_B AND drop_events == 0 AND robot_robot_contacts == 0, 학생 보정 감사 0)",
+  "survival_line": "r1 최소 성공 >= 1/20은 생존선일 뿐 2회차 성공 기준으로 쓰지 않는다"
+ },
+ "evidence_required": [
+  "funnel 파일",
+  "rejection_table",
+  "입력 감사 (held_world_reads=0, 학생 GT 입력 0)",
+  "원본 경로·SHA",
+  "실패·HOST_ERROR 포함 summary JSON"
+ ],
+ "goal": "교사의 정답 움직임을 학생이 재현하게 한다. 1회차 실패 지점인 접근·정렬·READY 동기화 구간의 모방 전이를 보강한다. hybrid arm은 열지 않는다.",
+ "interventions": {
+  "bundle_note": "DAgger와 샘플링 변경을 함께 걸면 단일 bundle treatment로 명시하고 귀인 한계를 기록한다",
+  "dagger_round_1": {
+   "aggregation": "dataset-v3 불변 + DAgger 별도 매니페스트 병합 (manifest overlay). 물리 복사 금지 (gcp6 여유 42G < dataset-v3 110G)",
+   "condition": "Phase 0에서 H1이 살아남고 라벨링 경로가 확인될 경우에만 실행",
+   "early_stop": "P0-3에서 정의한 stall detector 기준",
+   "label_contract": {
+    "grid_alignment": "라벨 행을 학생 chunk 그리드에 정렬하는 규칙(정지 상태가 chunk 시작이 되게)을 등록 시 명시",
+    "targets": [
+     "READY 방출",
+     "장벽 대기 중 premature close 억제",
+     "정렬 완료 행동",
+     "접근 회복 행동"
+    ],
+    "unit": "per-row (학생 관측, 교사 명령, 교사 phase->stage). 교사 전방 롤아웃으로 chunk를 채우지 않는다 (act15 전례·경계 감사)"
+   },
+   "rollout_policy": "동결 step-007000 (위 frozen_checkpoint)",
+   "rollout_seeds": "train split만. heldout 8342000-8342019 사용 금지, validation은 게이트·선택 전용 유지",
+   "rule_a": "rule A 정적 검사를 DAgger seed 목록과 dataset-v4에 적용하고 제외표·SHA를 남긴다",
+   "scale_contract": "[확인 필요] Phase 0 정지율과 행 산술로 에피소드 수와 범주별 라벨 행 수·dataset-v4 총 행·160k draw 대비 유효 비중을 표로 확정한다. 목표 없는 60 ep 고정은 하지 않는다",
+   "validation_slice": "DAgger 에피소드의 20%를 seed 단위로 떼어 student-state READY recall 검증에 사용"
+  },
+  "segment_oversampling": {
+   "basis": "가중은 chunk 첫 행 기준 전후 10행, 등록 전이 4종. ready를 담은 chunk는 이미 x3을 받고 stage loss는 무가중 CE라, 가중 상향은 ready 질량을 거의 못 올리고 premature ready(상한 0.02)만 키울 수 있다 (MiniMax 코드 근거)",
+   "decision": "전이 가중 현행 3.0 유지. 상향은 근거 부족으로 채택하지 않는다",
+   "monitors": [
+    "premature ready",
+    "stage별 비열등 기준 (carry 포함)"
+   ],
+   "stage_weighted_loss": "비교안으로만 둔다. 채택 여부는 빈도 진단 근거로 등록 시 결정"
+  }
+ },
+ "observed_failure": {
+  "approach_fail_seeds": [
+   8342002,
+   8342003,
+   8342004,
+   8342005,
+   8342009,
+   8342010,
+   8342011,
+   8342015,
+   8342016,
+   8342017
+  ],
+  "correction_audit": "학생 전 에피소드 GT 입력 0 · 교사 명령 0 · 정답 상태 입력 0",
+  "event_semantics_code_verified": "close_before_learned_ready는 harness/beamact_pair_student.py의 proposal_rejected 사유 — stage head가 approach/alignment/recover를 내는 동안 PWM close가 감소할 때 발화. 대표 사례의 사건은 READY 미제안만이 아니라 조기 close 시도가 차단된 것이고, 차단 중 wheels=0이라 정적 관측에서 같은 제안·차단이 반복되는 교착 구조가 있다 (MiniMax 교차 검토에서 코드로 확인)",
+  "offline_vs_closed_loop": "개정 게이트에서 step-007000은 alignment->ready 25/25 · ready->execute 24/24 · macro 0.963으로 통과했으나 폐루프 READY 도달 0/20. 오프라인 전이 재현이 폐루프 동기화를 보장하지 않는다",
+  "student_funnel_p5": {
+   "READY": "0/20",
+   "alignment": "0/20",
+   "all_cap_end": true,
+   "approach": "10/20",
+   "grasp": "0/20"
+  },
+  "teacher_p5": "19/20 (실패 seed 8342012 not_through_door). 교사 퍼널은 접근~파지 구간을 기록하지 않아 미기록"
+ },
+ "parent": {
+  "decision": "GRASP_FIRST (pairact_r1_hybrid_switch_v1): student hold_3s reach H=0 < k=3, teacher door reach 19/20",
+  "eval_prereg_sha256": "01f36758c4e60278ca8c866fae1cb191a4f3c8203f50fa32d4fb6d24b43df27d",
+  "frozen_checkpoint": "step-007000, actor sha256 0243511f41493f99001b9e84a606e9da261cb46bf3c45695f725f35a96f32c6a",
+  "result_report": "outputs/reports/2026-10-25-p5-eval-result.md"
+ },
+ "phase0": {
+  "prereg_freeze_required_before_measurement": true,
+  "rule": "Phase 0 통과 전에는 DAgger 롤아웃(측정 제외)·재학습을 시작하지 않는다",
+  "small_measurement": [
+   {
+    "gpu": true,
+    "id": "P0-4",
+    "what": "교사 구간 계측 1회: P2 교사의 접근·정렬·READY 구간 라벨 존재·품질 확인"
+   },
+   {
+    "gpu": true,
+    "id": "P0-5",
+    "what": "train seed 5-10 ep 학생 롤아웃: 정지율·제안 차단 비율 측정. 기준 미달이면 DAgger 설계를 멈추고 재설계"
+   }
+  ],
+  "zero_gpu": [
+   {
+    "decides": "H2/H3 판정 재료",
+    "id": "P0-1",
+    "what": "P5 학생 로그 분석: stall 구간 stage plan에 ready 등장 여부·horizon index, proposal_rejected 반복 횟수, stall 중 wheel 명령"
+   },
+   {
+    "boundary_audit_precedent": "scripts/aggregate_grasp_act_act15.py — teacher_actions_executed=0 · invisible_measurements=0 · held_world_reads=0 강제",
+    "decides": "H1(DAgger) 실행 가능성",
+    "id": "P0-2",
+    "what": "교사 라벨링 경로 감사: 학생 방문 상태에서 교사 재개 진입점 존재 여부, 라벨의 학생 관측 예측 가능성(인과성), 경계 감사 규칙 확정, 교사 phase->학생 stage 매핑표 작성"
+   },
+   {
+    "decides": "조기 종료 기준",
+    "id": "P0-3",
+    "what": "train ready 통계 확정(본 문서 train_stats를 등록 수치로 고정), stall detector 정의"
+   }
+  ]
+ },
+ "pipeline": [
+  "Phase 0 (0-GPU 분석: P0-1·P0-2·P0-3)",
+  "[승인 필요] Phase 0 측정 (P0-4 교사 구간 계측, P0-5 train seed 정지율)",
+  "[승인 필요] DAgger 롤아웃+라벨링 (규모는 scale_contract 확정 후)",
+  "dataset-v4 병합 (manifest overlay) + stage sidecar 재구축 + postverify (개수·라벨 유효성·split 감사)",
+  "smoke 300 steps",
+  "[승인 필요] 재학습 20,000 steps (fresh init, 1회차 규모, epoch fraction 병기)",
+  "오프라인 게이트 (개정 계측, 기준 불변: 전이 재현율 하한 0.80, 측정값 없으면 실패) — 필터로만 사용",
+  "[결정 필요] 체크포인트 선택 절차 (아래 decision_items)",
+  "[승인 필요] 재평가 (아래 evaluation)"
+ ],
+ "plan_doc": "outputs/reports/2026-10-25-round2-plan.md",
+ "reviews": {
+  "claude_final": "사용 불가 (구독 종료)",
+  "deepseek_first": "outputs/reports/2026-10-25-round2-review-deepseek.md",
+  "minimax_cross": "outputs/reports/2026-10-25-round2-review-minimax.md"
+ },
+ "revision": "v2 (2026-10-25): DeepSeek 1차 검토(상 8·중 11·하 2)와 MiniMax 교차 검토(상 3건 부분동의·추가 지적 5건)를 반영해 전면 개정. 계획 본문은 outputs/reports/2026-10-25-round2-plan.md (v1).",
+ "schema": "ugrp.pairact_r2.prereg.draft.v1",
+ "stack_pins": {
+  "dataset_v3_manifest_sha256": "81e68b4fd90da10d2012e57c0036767af72d0e4279708a05a2ba1d0f242a10da",
+  "host": "gcp6",
+  "p5_stack": "root e5620e839 · adapter afd7a6e17 · 교사 75929e771 · 학생 3c9337d5f"
+ },
+ "status": "REGISTERED_FROZEN",
+ "train_stats_recount_2026_10_25": {
+  "caution": "게이트 분석 보고서의 train ready 481행은 집계 기준이 다른 수치다. 혼용하지 않는다",
+  "episode_files": 452,
+  "ready_position_mod8": "에피소드 기준 균일 (인덱스당 206-255) — 에피소드 고정 그리드 집중은 확인되지 않음",
+  "ready_rows": 1839,
+  "ready_rows_per_file": "min 3 · median 4 · max 6",
+  "ready_segment_lengths": "전수 1행",
+  "ready_segments": 1839,
+  "source": "gcp6 ~/clockfix-build-20261024/dataset-v3-stage train split 직접 계수",
+  "total_rows": 437935
+ },
+ "written": "2026-10-25",
+ "registered": {
+  "date": "2026-10-25",
+  "approval": "사용자 전체 승인 (2026-10-25 12:10 KST, \"전부 승인, 끝까지 진행해\") — Phase 0 측정 + DAgger 약 5 GPU-h + 재학습 약 4.6 GPU-h + 게이트 약 3 GPU-h + 재평가 약 2.7 GPU-h",
+  "decisions_resolved": {
+   "D1": "기본안 — 기존 선택 규칙 유지 (오프라인 게이트 + 규칙 기반 선택). 폐루프 선택 대안(+약 5 GPU-h)은 승인 제시 범위를 넘어 채택하지 않음",
+   "D2": "기본안 — 같은 보류 seed 20개 paired 비교, 일반화 해석 금지 한계 명시",
+   "D3": "기본안 — 학습 seed 1개"
+  },
+  "closed_loop_selection_alternative": "NOT_ADOPTED (승인 범위 초과)"
+ },
+ "stall_detector": {
+  "definition": "phase(stage)가 30 sim-s 이상 진전 없고(approach 진입 후 기준) 최근 5 sim-s 발행 wheel 명령이 모두 0인 상태가 지속되면 stall로 판정",
+  "rollout_early_stop": "stall 지속 60 sim-s 도달 시 에피소드 조기 종료 (DAgger 롤아웃 전용; 평가에서는 적용하지 않음)",
+  "source": "P0-3 확정 (2026-10-25)"
+ }
+}
