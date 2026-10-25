@@ -1,0 +1,34 @@
+{
+ "schema": "ugrp.pairact_r2.checkpoint_freeze.v1",
+ "round": 2,
+ "selected_step": 11000,
+ "actor_dir": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/main/step-011000/actor",
+ "actor_sha256": {
+  "model.safetensors": "8263ad3f135048fea46d5cb85fee1d70910bdc399babbd1f2f20d92c2fbea271",
+  "config.json": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f",
+  "adapter.json": "84811d26bb0a8bdcc9431bb3c8d5947c70dc8ccd0ba8cf6471566f15f0f1e018"
+ },
+ "actor_sha256_file_sha256": "b5c3156fd03477e0663c59d09dfa71db4fe321e4782248cddbb256d2b7169a08",
+ "selection_sha256": "df36fa86587fd943ac4add245f658bf0454dd99585cd911743fa837563b68208",
+ "checkpoints_jsonl_sha256": "f59aa8bc8ba0ff2aba53918db308b49fd82a4fd365978e7dec94b18592fe06ac",
+ "dataset_manifest_sha256": "7e544aff426b9ef10a8195c56831d0171224b1feb8ea5728e94956197d990d20",
+ "stage_targets_sha256": "65cbd8fbc919730352bb32594a27a6997fe82e65cd1c6c1e719d78e707ec5787",
+ "train_config_sha256": "37835e1ff9bd7b9686b4d7258b7597e6cd8e40b84a121c4f4156704c04b49326",
+ "train_source_sha": "dbc503851de306ed6871e3c671a4c4affc8489ac",
+ "gate": {
+  "stage_macro_acc_min": 0.8,
+  "premature_ready_max": 0.02,
+  "premature_post_go_max": 0.02,
+  "done_false_positive_max": 0.01,
+  "done_recall_min": 0.8,
+  "transition_recall_min": 0.8,
+  "transition_window_rows": 10,
+  "dither_stage_acc_drop_max": 0.05,
+  "dither_done_false_positive_max": 0.02
+ },
+ "checkpoints": 20,
+ "gate_passed_steps": [7000, 9000, 10000, 11000, 12000, 13000, 14000, 16000, 20000],
+ "selection_verdict": "SELECTED",
+ "heldout_access_before_freeze": "none for round2 checkpoint selection (gate used validation split only); heldout seeds 8342000-8342019 rollouts for round2 start after this freeze record",
+ "parent_freeze": "experiments/2026-10-21-pairact-r1/CHECKPOINT_FREEZE.json (round1 step-007000)"
+}
