@@ -21,6 +21,42 @@ STAGES = ('approach', 'alignment', 'READY', 'grasp', 'hold_3s', 'carry_1m', 'doo
 PACKAGE = Path('/home/ugrp/ugrp-sim/baseline-treatment')
 TEACHER = Path('/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247')
 STUDENT = Path('/home/ugrp/ugrp-sim/src/pairact-p5/student')
+# Literal inventories from frozen S PairActBarrier/StudentBarrier and the
+# registered treatment controller. Unknown records cannot prove zero rejects.
+BARRIER_EVENTS = {'READY', 'proposal_rejected', 'stage_proposal_released_after_GO_ACK',
+                  'treatment_close_gate_bypassed', 'PLACE_READY', 'place_proposal_released_after_GO_ACK'}
+REJECTION_REASONS = {'close_before_learned_ready', 'execution_without_GO_ACK'}
+PROTOCOL_EVENTS = {'GO', 'ACK', 'START', 'READY_withdrawn_rearm'}
+OBSERVATION_SOURCES = {'approach': 'eval_only_GT_geometry', 'alignment': 'eval_only_GT_geometry',
+    'READY': 'simultaneous_own_policy_stage_ready', 'grasp': 'eval_only_GT_contact',
+    'hold_3s': 'original_physics_held_flag', 'carry_1m': 'original_eval_only_carry_evaluator',
+    'door': 'original_eval_only_carry_evaluator', 'place': 'original_eval_only_carry_evaluator'}
+
+
+def barrier_inventory(student, roles, arm):
+    events, rejects, issues = Counter(), Counter(), []
+    collections = student.get('barrier_events')
+    if not isinstance(collections, dict) or set(collections) != set(roles):
+        return events, rejects, ['missing_or_wrong_barrier_event_robot_inventory']
+    for rid, collection in collections.items():
+        if not isinstance(collection, list):
+            issues.append('invalid_barrier_event_collection:' + rid)
+            continue
+        for event in collection:
+            name = event.get('event') if isinstance(event, dict) else None
+            events[name or 'UNKNOWN_NOT_RECORDED'] += 1
+            if name not in BARRIER_EVENTS:
+                issues.append('unknown_or_missing_barrier_event:' + str(name))
+            if name == 'proposal_rejected':
+                reason = event.get('reason_category') or 'INVALID_EMPTY_REASON'
+                rejects[reason] += 1
+                if reason not in REJECTION_REASONS:
+                    issues.append('unknown_or_empty_rejection_reason:' + str(reason))
+                if arm == 'arm_c': issues.append('unexpected_ArmC_proposal_rejection')
+                if reason == 'close_before_learned_ready': issues.append('removed_G1_gate_rejection')
+            if name == 'treatment_close_gate_bypassed' and event.get('reason_category') != 'close_before_learned_ready_suppressed':
+                issues.append('unknown_or_missing_bypass_reason')
+    return events, rejects, issues
 
 
 def binomial_tail(n, k, p, upper):
@@ -114,8 +150,9 @@ def main():
             row.update(raw_status=raw.get('status'), acknowledged_completed=world in acknowledged)
             if raw.get('status') != 'complete' or world not in acknowledged:
                 row.update(normal_complete=False, success=None,
-                    reason_category=('administrative_interruption' if summary.get('status') == 'treatment_administrative_stop'
-                                     else raw.get('error_type') or raw.get('end_reason') or 'HOST_ERROR_or_uncompleted'),
+                    completion_class=('administrative_interruption' if summary.get('status') == 'treatment_administrative_stop'
+                                      else 'HOST_ERROR' if raw.get('status') == 'HOST_ERROR' or raw.get('HOST_ERROR') else 'uncompleted'),
+                    reason_category=raw.get('error_type') or raw.get('end_reason') or 'completion_not_acknowledged',
                     raw_sim_s=raw.get('sim_s'), raw_cap_end=raw.get('cap_end'),
                     blocked_object='UNKNOWN:not_observed', min_gap_m=None,
                     gap_scope='not measured in available completed records')
@@ -154,30 +191,40 @@ def main():
             corrections = {k: student.get(k) for k in ('gt_inputs_to_student','teacher_steps','truth_inputs','teacher_actions')}
             if any(type(v) is not int or v != 0 for v in corrections.values()):
                 world_errors.append('nonzero_or_unmeasured_input_correction_counter')
-            for rid, collection in (student.get('barrier_events') or {}).items():
-                for event in collection:
-                    events[event.get('event') or 'UNKNOWN_NOT_RECORDED'] += 1
-                    if event.get('event') == 'proposal_rejected':
-                        reason = event.get('reason_category') or 'INVALID_EMPTY_REASON'
-                        rejects[reason] += 1
-                        if reason == 'INVALID_EMPTY_REASON': world_errors.append('empty_rejection_reason')
-                        if args.arm == 'arm_c': world_errors.append('unexpected_ArmC_proposal_rejection')
-                        if reason == 'close_before_learned_ready': world_errors.append('removed_G1_gate_rejection')
-            protocol = Counter(e.get('event') or 'UNKNOWN_NOT_RECORDED' for e in student.get('protocol_events', []))
+            observed_events, observed_rejects, event_issues = barrier_inventory(student, roles, args.arm)
+            events.update(observed_events); rejects.update(observed_rejects); world_errors.extend(event_issues)
+            protocol_records = student.get('protocol_events')
+            protocol = Counter()
+            if not isinstance(protocol_records, list):
+                world_errors.append('missing_or_invalid_protocol_event_inventory')
+            else:
+                for event in protocol_records:
+                    name = event.get('event') if isinstance(event, dict) else None
+                    protocol[name or 'UNKNOWN_NOT_RECORDED'] += 1
+                    if name not in PROTOCOL_EVENTS: world_errors.append('unknown_or_missing_protocol_event:' + str(name))
             funnel = StudentFunnel()
             previous_command, previous_state, previous_rgb, changes = {}, {}, {}, {}
             done_intervals, active_done, close_issued = {rid:[] for rid in roles}, {}, Counter()
             policy_ready_ticks = protocol_ready_ticks = permit_robot_ticks = 0
+            first_policy_ready_t = expected_funnel_ready_t = None
             for entry in log:
                 now = entry['t']; truth_row = by_t[now]
                 if set(entry['inputs']) != set(roles): world_errors.append('input_robot_set_mismatch')
                 policy_ready = {rid: entry['issued'][rid]['stage'] == 'ready' for rid in roles}
                 policy_ready_ticks += int(all(policy_ready.values()))
+                if all(policy_ready.values()) and first_policy_ready_t is None: first_policy_ready_t = now
                 protocol_ready_ticks += int(all(entry.get('ready', {}).get(rid, False) for rid in roles))
                 permit_robot_ticks += sum(bool(entry['issued'][rid].get('permit')) for rid in roles)
                 # Keep original geometry, contact and physics-held flag. Only
                 # READY's registered observation source is policy stage.
                 passed = funnel.add(now, truth_row, roles, policy_ready, entry['eval_passed']['hold_3s'])
+                if passed['READY'] != all(policy_ready.values()): world_errors.append('READY_policy_source_mismatch')
+                # A8 retains the sequential approach/alignment prefix. A raw
+                # simultaneous READY before alignment is not a funnel pass.
+                if 'alignment' in funnel.first and all(policy_ready.values()) and expected_funnel_ready_t is None:
+                    expected_funnel_ready_t = now
+                if funnel.first.get('READY') != expected_funnel_ready_t:
+                    world_errors.append('READY_first_eligible_policy_tick_mismatch')
                 for index, name in enumerate(STAGES[:5]):
                     eligible = index == 0 or STAGES[index-1] in funnel.first
                     frame_counts[name]['eligible'] += int(eligible)
@@ -226,6 +273,7 @@ def main():
             carry = raw.get('carry_eval')
             carry_equal = None
             if carry is not None:
+                if type(carry.get('success')) is not bool: world_errors.append('carry_success_not_boolean')
                 recomputed = evaluate(truth, static, roles, lower_start_t=carry['lower_start_t'], handover_t=carry['handover_t'])
                 # Match the earlier independent recount: compare every field
                 # emitted by the frozen evaluator; retain optional extra record
@@ -234,19 +282,27 @@ def main():
                 if not carry_equal: world_errors.append('original_carry_evaluator_recount_mismatch')
             record = funnel.record(carry)
             motion = read_physical_motion(base/'raw', raw)
-            if motion.get('status') != 'MEASURED': world_errors.append('physical_motion_unmeasured')
+            # The registered translation gate is only the first four completed
+            # C lanes. Other lanes' motion is reported without adding a gate.
             motion_by_world[world], raw_by_world[world] = motion, raw
             (args.out/f'physical-motion-world-{world:03d}.json').write_text(json.dumps(motion, indent=2))
             term = termination(raw, acknowledged[world].get('cap_end'))
             if term['audit_issues']: world_errors.extend(term['audit_issues'])
             physical = raw.get('physical_success')
             if type(physical) is not bool: world_errors.append('physical_success_not_boolean')
+            if physical is True and carry is None: world_errors.append('physical_success_without_carry_evaluation')
             success = bool(physical and carry and carry.get('success'))
-            row.update(normal_complete=True, success=success, raw_physical_success=physical,
+            row.update(normal_complete=True, completion_class='normal_complete', success=success, raw_physical_success=physical,
                 carry_success=(carry or {}).get('success'), carry_recount_equal=carry_equal,
                 termination=term, sim_s=raw.get('sim_s'), funnel=record['reached'], first_pass_t=record['first_pass_t'],
                 correction_counters=corrections, treatment_metrics=metrics, protocol_events=dict(protocol),
                 simultaneous_policy_READY_ticks=policy_ready_ticks, simultaneous_protocol_READY_ticks=protocol_ready_ticks,
+                READY_source_crosscheck={'first_simultaneous_policy_t':first_policy_ready_t,
+                    'first_simultaneous_policy_t_after_alignment':expected_funnel_ready_t,
+                    'funnel_first_READY_t':funnel.first.get('READY'),
+                    'matches':funnel.first.get('READY') == expected_funnel_ready_t},
+                protocol_GO_count=protocol['GO'], protocol_ACK_count=protocol['ACK'], protocol_START_count=protocol['START'],
+                protocol_observation_source='original_READY_GO_ACK_boolean_protocol_log',
                 permit_robot_ticks=permit_robot_ticks, state_changes={rid:dict(value) for rid,value in changes.items()},
                 release_t=treatment.get('release_t'), robot_finish_t=treatment.get('robot_finish_t'),
                 final_segments=treatment.get('segments'), close_issued_ticks=dict(close_issued),
@@ -259,7 +315,8 @@ def main():
                 audit_issues=sorted(set(world_errors)))
             errors.extend({'world':world,'issue':issue} for issue in sorted(set(world_errors)))
         except (OSError, ValueError, KeyError, TypeError, subprocess.SubprocessError) as error:
-            row.update(normal_complete=False, success=None, reason_category='UNMEASURED_RECORD_OR_AUDIT_ERROR', error=str(error))
+            row.update(normal_complete=False, completion_class='unmeasured_record_or_audit_error', success=None,
+                       reason_category='UNMEASURED_RECORD_OR_AUDIT_ERROR', error=str(error))
             errors.append({'world':world,'issue':str(error)})
         row.setdefault('blocked_object','UNKNOWN:not_observed');row.setdefault('min_gap_m',None)
         row.setdefault('gap_scope','not measured in available completed records')
@@ -271,7 +328,8 @@ def main():
     previous = n
     for stage in STAGES:
         passed = sum(row['funnel'][stage] for row in complete)
-        candidate.append({'stage':stage,'passed_cumulative_N':passed,'rejected_N':previous-passed,'denominator_normal_N':n})
+        candidate.append({'stage':stage,'passed_cumulative_N':passed,'rejected_N':previous-passed,'denominator_normal_N':n,
+                          'observation_source':OBSERVATION_SOURCES[stage]})
         previous = passed
     speed = reader.json(args.input/'treatment-first30-audit.json')
     pilot = reader.json(args.input/'pilot-gate.json') if args.arm == 'arm_c' else None
@@ -296,6 +354,7 @@ def main():
                              'scope':'no completed frame cumulatively passed hold_3s, so no downstream eligibility'}
                             if no_eligible_carry else {'eligible':None,'passed_cumulative':None,'rejected':None,
                              'scope':'per-frame carry/door/place flags not reconstructed; episode counts are measured'})
+    for stage, counts in frame_all.items(): counts['observation_source'] = OBSERVATION_SOURCES[stage]
     result = {'schema':'ugrp.baseline.closed-arm-audit.v1','utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),
         'arm':args.arm,'raw_root':str(args.input),'planned_N':20,'batch_status':summary.get('status'),
         'started_N':summary.get('started_N'),'batch_completed_N':summary.get('completed_N'),'N_eff':n,
@@ -303,6 +362,7 @@ def main():
         'validity':'VALID_NORMAL_COMPLETE' if integrity else 'UNVERIFIED_OR_INCOMPLETE',
         'success_definition':'raw physical_success AND original carry_eval.success',
         'success_95pct_clopper_pearson':clopper_pearson(successes,n) if integrity else None,
+        'statistics_scope':'registered Arm C confirmatory comparison' if args.arm=='arm_c' else 'Arm S diagnostic/descriptive only',
         'C_vs_frozen_r2_exact_McNemar_p':min(1.,2.**(1-successes)) if args.arm=='arm_c' and integrity else None,
         'confirmatory_complete':args.arm=='arm_c' and integrity,
         'normal_complete':normal_complete,'integrity_pass':integrity,'followup_S_admissible_subject_to_budget_disk':followup,
@@ -318,6 +378,15 @@ def main():
         'audit_issues':errors,'episodes':episodes,'gpu_analysis_calls':0,'policy_forward_calls':0,
         'scope':'CPU post-run on original execution VM. Raw/decision/rows untouched. Sampled hold is diagnostic; full image bytes are not independently reverified.'}
     (args.out/'audit.json').write_text(json.dumps(result,indent=2))
+    (args.out/'termination-crosscheck.json').write_text(json.dumps({'raw_root':str(args.input),
+        'episodes':[{'world':row['world'],'completion_class':row.get('completion_class'),
+            'normal_complete':row.get('normal_complete'),'raw_status':row.get('raw_status'),
+            'raw_sim_s':row.get('sim_s',row.get('raw_sim_s')),
+            'raw_cap_end':(row.get('termination') or {}).get('raw_cap_end',row.get('raw_cap_end')),
+            'raw_result_path':str(args.input/f"world-{row['world']:03d}"/'raw/result.json'),
+            'raw_physical_success':row.get('raw_physical_success'),'termination':row.get('termination'),
+            'reason_category':row['reason_category']} for row in episodes],
+        'source_sha256_manifest':str(args.out/'source-sha256.json')},indent=2))
     (args.out/'funnel.json').write_text(json.dumps({'schema':'ugrp.baseline.derived-funnel.v1','raw_root':str(args.input),
         'prior_funnel':str(PACKAGE/'prior-funnel.json'),'planned_N':20,'N_eff':n,'candidate':candidate,
         'frame':frame_all,'frame_scope':result['frame_scope'],'later_frame_scope':result['later_frame_funnel'],
