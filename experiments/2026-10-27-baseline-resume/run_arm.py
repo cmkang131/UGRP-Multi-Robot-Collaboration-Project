@@ -43,9 +43,7 @@ def main():
     env = os.environ.copy()
     env['PYTHONDONTWRITEBYTECODE'] = '1'
     env['UGRP_SESSION_DIR'] = str(root / 'owned-sessions')
-    # Keep the original run's CPU thread settings; no policy or physics tuning.
-    for name in ('OMP_NUM_THREADS', 'OPENBLAS_NUM_THREADS', 'MKL_NUM_THREADS'):
-        env[name] = '1'
+    # Inherit the restored environment's thread settings without tuning them.
     started_utc, started = stamp(), time.monotonic()
     with (root / (a.arm + '.stdout.log')).open('xb') as stdout, \
          (root / (a.arm + '.stderr.log')).open('xb') as stderr:
