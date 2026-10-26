@@ -162,6 +162,7 @@ def main():
             protocol = Counter(e.get('event') or 'UNKNOWN_NOT_RECORDED' for e in student.get('protocol_events', []))
             funnel = StudentFunnel()
             previous_command, previous_state, previous_rgb, changes = {}, {}, {}, {}
+            done_intervals, active_done, close_issued = {rid:[] for rid in roles}, {}, Counter()
             policy_ready_ticks = protocol_ready_ticks = permit_robot_ticks = 0
             for entry in log:
                 now = entry['t']; truth_row = by_t[now]
@@ -190,6 +191,15 @@ def main():
                     if obs['skill'] != 'grasp' or vector[225] != 0: world_errors.append('grasp_HOLD_violation')
                     if rid in previous_command and obs['issued'][-1] != previous_command[rid]:
                         world_errors.append('own_issued_history_mismatch')
+                    issued = entry['issued'][rid]
+                    close_issued[rid] += int(issued['command']['pwm']['1'] < obs['issued'][-1]['pwm']['1'])
+                    segment = issued.get('segment')
+                    prior_done = active_done.get(rid)
+                    if prior_done and (not issued.get('done') or prior_done['segment'] != segment):
+                        done_intervals[rid].append(prior_done);active_done.pop(rid,None)
+                    if issued.get('done'):
+                        interval = active_done.setdefault(rid,{'segment':segment,'first_t':now,'last_t':now,'ticks':0})
+                        interval['last_t'] = now;interval['ticks'] += 1
                     for ref in obs['rgb']:
                         input_audit['own_rgb_refs'] += 1
                         if ref['robot_id'] != rid or not ref['path'].startswith('rgb/'+rid+'/'):
@@ -208,6 +218,7 @@ def main():
                     previous_state[rid], previous_rgb[rid] = vector, rgb
             for rid, value in metrics.items():
                 if value.get('ticks') != len(log): world_errors.append('trace_vs_metric_ticks:' + rid)
+            for rid, interval in active_done.items(): done_intervals[rid].append(interval)
             carry = raw.get('carry_eval')
             carry_equal = None
             if carry is not None:
@@ -230,6 +241,9 @@ def main():
                 correction_counters=corrections, treatment_metrics=metrics, protocol_events=dict(protocol),
                 simultaneous_policy_READY_ticks=policy_ready_ticks, simultaneous_protocol_READY_ticks=protocol_ready_ticks,
                 permit_robot_ticks=permit_robot_ticks, state_changes={rid:dict(value) for rid,value in changes.items()},
+                release_t=treatment.get('release_t'), robot_finish_t=treatment.get('robot_finish_t'),
+                final_segments=treatment.get('segments'), close_issued_ticks=dict(close_issued),
+                own_done_true_intervals=done_intervals,
                 max_stable_hold_s_raw=raw.get('max_stable_hold_s'), max_sampled_stable_hold_s=sampled_hold(truth, roles),
                 robot_robot_contacts=None, robot_robot_contacts_scope='not measured in original stored fields',
                 drop_events=(carry or {}).get('drop_events'), drop_scope='original carry evaluator' if carry else 'carry phase unobserved',
