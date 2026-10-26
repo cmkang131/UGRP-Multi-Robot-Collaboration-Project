@@ -204,16 +204,21 @@ def main():
                     if name not in PROTOCOL_EVENTS: world_errors.append('unknown_or_missing_protocol_event:' + str(name))
             funnel = StudentFunnel()
             previous_command, previous_state, previous_rgb, changes = {}, {}, {}, {}
+            trace_stages = {rid:Counter() for rid in roles}
+            trace_software_hold, trace_nonzero_wheels = Counter(), Counter()
             done_intervals, active_done, close_issued = {rid:[] for rid in roles}, {}, Counter()
             policy_ready_ticks = protocol_ready_ticks = permit_robot_ticks = 0
+            policy_ready_robot_ticks = protocol_ready_robot_ticks = 0
             first_policy_ready_t = expected_funnel_ready_t = None
-            for entry in log:
+            for tick_index, entry in enumerate(log, 1):
                 now = entry['t']; truth_row = by_t[now]
                 if set(entry['inputs']) != set(roles): world_errors.append('input_robot_set_mismatch')
                 policy_ready = {rid: entry['issued'][rid]['stage'] == 'ready' for rid in roles}
                 policy_ready_ticks += int(all(policy_ready.values()))
+                policy_ready_robot_ticks += sum(policy_ready.values())
                 if all(policy_ready.values()) and first_policy_ready_t is None: first_policy_ready_t = now
                 protocol_ready_ticks += int(all(entry.get('ready', {}).get(rid, False) for rid in roles))
+                protocol_ready_robot_ticks += sum(bool(entry.get('ready', {}).get(rid, False)) for rid in roles)
                 permit_robot_ticks += sum(bool(entry['issued'][rid].get('permit')) for rid in roles)
                 # Keep original geometry, contact and physics-held flag. Only
                 # READY's registered observation source is policy stage.
@@ -243,6 +248,11 @@ def main():
                     if rid in previous_command and obs['issued'][-1] != previous_command[rid]:
                         world_errors.append('own_issued_history_mismatch')
                     issued = entry['issued'][rid]
+                    trace_stages[rid][issued['stage']] += 1
+                    trace_software_hold[rid] += int(issued['software_hold'])
+                    trace_nonzero_wheels[rid] += int(any(w != 0 for w in issued['command']['wheels']))
+                    if issued['inference_calls'] != tick_index or issued['discard_calls'] != tick_index:
+                        world_errors.append('trace_cadence_mismatch:' + rid)
                     close_issued[rid] += int(issued['command']['pwm']['1'] < obs['issued'][-1]['pwm']['1'])
                     segment = issued.get('segment')
                     prior_done = active_done.get(rid)
@@ -269,6 +279,9 @@ def main():
                     previous_state[rid], previous_rgb[rid] = vector, rgb
             for rid, value in metrics.items():
                 if value.get('ticks') != len(log): world_errors.append('trace_vs_metric_ticks:' + rid)
+                if value.get('stage_counts') != dict(trace_stages[rid]): world_errors.append('trace_vs_stage_counts:' + rid)
+                if value.get('software_hold_ticks') != trace_software_hold[rid]: world_errors.append('trace_vs_software_hold:' + rid)
+                if value.get('nonzero_wheel_ticks') != trace_nonzero_wheels[rid]: world_errors.append('trace_vs_nonzero_wheel:' + rid)
             for rid, interval in active_done.items(): done_intervals[rid].append(interval)
             carry = raw.get('carry_eval')
             carry_equal = None
@@ -296,7 +309,9 @@ def main():
                 carry_success=(carry or {}).get('success'), carry_recount_equal=carry_equal,
                 termination=term, sim_s=raw.get('sim_s'), funnel=record['reached'], first_pass_t=record['first_pass_t'],
                 correction_counters=corrections, treatment_metrics=metrics, protocol_events=dict(protocol),
+                barrier_event_counts=dict(observed_events), actual_rejection_reasons=dict(observed_rejects),
                 simultaneous_policy_READY_ticks=policy_ready_ticks, simultaneous_protocol_READY_ticks=protocol_ready_ticks,
+                policy_READY_robot_ticks=policy_ready_robot_ticks, protocol_READY_robot_ticks=protocol_ready_robot_ticks,
                 READY_source_crosscheck={'first_simultaneous_policy_t':first_policy_ready_t,
                     'first_simultaneous_policy_t_after_alignment':expected_funnel_ready_t,
                     'funnel_first_READY_t':funnel.first.get('READY'),
@@ -306,6 +321,9 @@ def main():
                 permit_robot_ticks=permit_robot_ticks, state_changes={rid:dict(value) for rid,value in changes.items()},
                 release_t=treatment.get('release_t'), robot_finish_t=treatment.get('robot_finish_t'),
                 final_segments=treatment.get('segments'), close_issued_ticks=dict(close_issued),
+                close_proposal_ticks=dict(close_issued) if args.arm=='arm_c' else None,
+                close_proposal_scope=('C current proposal passes through unchanged; count equals issued close deltas'
+                    if args.arm=='arm_c' else 'proposal PWM is absent in frozen trace; G1 bypass events measure withdrawal-stage close proposals only, not all stages'),
                 own_done_true_intervals=done_intervals,
                 max_stable_hold_s_raw=raw.get('max_stable_hold_s'), max_sampled_stable_hold_s=sampled_hold(truth, roles),
                 robot_robot_contacts=None, robot_robot_contacts_scope='not measured in original stored fields',
@@ -355,6 +373,16 @@ def main():
                             if no_eligible_carry else {'eligible':None,'passed_cumulative':None,'rejected':None,
                              'scope':'per-frame carry/door/place flags not reconstructed; episode counts are measured'})
     for stage, counts in frame_all.items(): counts['observation_source'] = OBSERVATION_SOURCES[stage]
+    event_gate_counts = [
+        {'gate':'propose_robot_ticks','eligible':metric_totals['ticks'],'passed_cumulative':metric_totals['ticks'],'rejected':0},
+        {'gate':'one_discard','eligible':metric_totals['ticks'],'passed_cumulative':metric_totals['discard_calls'],
+         'rejected':metric_totals['ticks']-metric_totals['discard_calls']},
+        {'gate':'fresh_inference','eligible':metric_totals['discard_calls'],'passed_cumulative':metric_totals['inference_calls'],
+         'rejected':metric_totals['discard_calls']-metric_totals['inference_calls']},
+        {'gate':'stage_sample','eligible':metric_totals['inference_calls'],'passed_cumulative':sum(stages.values()),
+         'rejected':metric_totals['inference_calls']-sum(stages.values())},
+        {'gate':'actual_proposal_acceptance','eligible':sum(stages.values()),
+         'passed_cumulative':sum(stages.values())-sum(rejects.values()),'rejected':sum(rejects.values())}]
     result = {'schema':'ugrp.baseline.closed-arm-audit.v1','utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),
         'arm':args.arm,'raw_root':str(args.input),'planned_N':20,'batch_status':summary.get('status'),
         'started_N':summary.get('started_N'),'batch_completed_N':summary.get('completed_N'),'N_eff':n,
@@ -373,6 +401,8 @@ def main():
         'frame_definition':'at each stored tick: previous gate ever reached and current gate cumulatively reached, matching original StudentFunnel chronology',
         'later_frame_funnel':'carry/door/place per-frame flags absent in original recorder; episode-level counts measured above; never fill unmeasured with0',
         'event_funnel':dict(metric_totals),'stage_counts':dict(stages),'skill_counts':dict(skills),
+        'event_gate_funnel':event_gate_counts,
+        'event_gate_scope':'counter reconciliation along proposal path; rejected proposals can still issue a software hold command, so issued_ticks/nonzero_wheel_ticks are separate accounting, not downstream cumulative proposal passes',
         'actual_rejection_reasons':dict(rejects),'barrier_event_counts':dict(events),'input_trace_audit':dict(input_audit),
         'missing_or_uncompleted_worlds':[row['world'] for row in episodes if not row.get('normal_complete')],
         'audit_issues':errors,'episodes':episodes,'gpu_analysis_calls':0,'policy_forward_calls':0,
@@ -390,7 +420,8 @@ def main():
     (args.out/'funnel.json').write_text(json.dumps({'schema':'ugrp.baseline.derived-funnel.v1','raw_root':str(args.input),
         'prior_funnel':str(PACKAGE/'prior-funnel.json'),'planned_N':20,'N_eff':n,'candidate':candidate,
         'frame':frame_all,'frame_scope':result['frame_scope'],'later_frame_scope':result['later_frame_funnel'],
-        'event':dict(metric_totals),'rejections':[{'reason_category':key,'count':value,'blocked_object':'UNKNOWN:not_observed',
+        'event':dict(metric_totals),'event_gate_funnel':event_gate_counts,'event_gate_scope':result['event_gate_scope'],
+        'rejections':[{'reason_category':key,'count':value,'blocked_object':'UNKNOWN:not_observed',
             'min_gap_m':None,'gap_scope':'not measured: software gate'} for key,value in rejects.items()],
         'failures':[{'world':row['world'],'reason_category':row['reason_category'],'blocked_object':row['blocked_object'],
             'min_gap_m':row['min_gap_m'],'gap_scope':row['gap_scope']} for row in episodes if row.get('success') is not True],
