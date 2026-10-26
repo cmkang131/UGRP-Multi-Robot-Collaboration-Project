@@ -142,6 +142,8 @@ def main():
                         and sum(value.get('stage_counts', {}).values()) == ticks
                         and value.get('skill_counts') == {'grasp': ticks} and value.get('state225_nonzero') == 0):
                     world_errors.append('cadence_HOLD_or_stage_sample_mismatch:' + rid)
+                if args.arm == 'arm_c' and value.get('software_hold_ticks') != 0:
+                    world_errors.append('unexpected_ArmC_software_hold:' + rid)
                 stages.update(value.get('stage_counts', {})); skills.update(value.get('skill_counts', {}))
                 for key in ('ticks','inference_calls','discard_calls','issued_ticks','software_hold_ticks',
                             'nonzero_wheel_ticks','state225_nonzero'):
@@ -159,6 +161,8 @@ def main():
                         reason = event.get('reason_category') or 'INVALID_EMPTY_REASON'
                         rejects[reason] += 1
                         if reason == 'INVALID_EMPTY_REASON': world_errors.append('empty_rejection_reason')
+                        if args.arm == 'arm_c': world_errors.append('unexpected_ArmC_proposal_rejection')
+                        if reason == 'close_before_learned_ready': world_errors.append('removed_G1_gate_rejection')
             protocol = Counter(e.get('event') or 'UNKNOWN_NOT_RECORDED' for e in student.get('protocol_events', []))
             funnel = StudentFunnel()
             previous_command, previous_state, previous_rgb, changes = {}, {}, {}, {}
@@ -223,7 +227,10 @@ def main():
             carry_equal = None
             if carry is not None:
                 recomputed = evaluate(truth, static, roles, lower_start_t=carry['lower_start_t'], handover_t=carry['handover_t'])
-                carry_equal = recomputed == carry
+                # Match the earlier independent recount: compare every field
+                # emitted by the frozen evaluator; retain optional extra record
+                # metadata without treating it as a numerical outcome mismatch.
+                carry_equal = all(carry.get(key) == value for key,value in recomputed.items())
                 if not carry_equal: world_errors.append('original_carry_evaluator_recount_mismatch')
             record = funnel.record(carry)
             motion = read_physical_motion(base/'raw', raw)
@@ -292,8 +299,10 @@ def main():
     result = {'schema':'ugrp.baseline.closed-arm-audit.v1','utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),
         'arm':args.arm,'raw_root':str(args.input),'planned_N':20,'batch_status':summary.get('status'),
         'started_N':summary.get('started_N'),'batch_completed_N':summary.get('completed_N'),'N_eff':n,
-        'successes':successes,'success_rate':successes/n if n else None,'success_definition':'raw physical_success AND original carry_eval.success',
-        'success_95pct_clopper_pearson':clopper_pearson(successes,n),
+        'successes':successes,'success_rate':successes/n if n and integrity else None,
+        'validity':'VALID_NORMAL_COMPLETE' if integrity else 'UNVERIFIED_OR_INCOMPLETE',
+        'success_definition':'raw physical_success AND original carry_eval.success',
+        'success_95pct_clopper_pearson':clopper_pearson(successes,n) if integrity else None,
         'C_vs_frozen_r2_exact_McNemar_p':min(1.,2.**(1-successes)) if args.arm=='arm_c' and integrity else None,
         'confirmatory_complete':args.arm=='arm_c' and integrity,
         'normal_complete':normal_complete,'integrity_pass':integrity,'followup_S_admissible_subject_to_budget_disk':followup,
