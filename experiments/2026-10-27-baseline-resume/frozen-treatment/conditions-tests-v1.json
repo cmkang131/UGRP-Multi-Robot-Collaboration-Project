@@ -1,0 +1,214 @@
+{
+  "tests": [
+    {
+      "test": "__main__.ConditionsTests.test_arm_s_does_not_fabricate_arm_c_pilot",
+      "status": "PASS",
+      "wall_s": 0.0002734620065893978
+    },
+    {
+      "test": "__main__.ConditionsTests.test_baseline_envelope_is_strict",
+      "status": "PASS",
+      "wall_s": 0.000827715004561469
+    },
+    {
+      "test": "__main__.ConditionsTests.test_command_only_without_eval_motion_fails",
+      "status": "PASS",
+      "wall_s": 0.0001332829997409135
+    },
+    {
+      "test": "__main__.ConditionsTests.test_episode_coverage_required",
+      "status": "PASS",
+      "wall_s": 0.0008392730087507516
+    },
+    {
+      "test": "__main__.ConditionsTests.test_exception_then_finalize_records_incomplete",
+      "status": "PASS",
+      "wall_s": 0.0011053149937652051
+    },
+    {
+      "test": "__main__.ConditionsTests.test_f07_diagnostic_ready_ticks_recorded",
+      "status": "PASS",
+      "wall_s": 0.005894732021261007
+    },
+    {
+      "test": "__main__.ConditionsTests.test_f07_s_cases_are_computed_from_original_stage_sets",
+      "status": "PASS",
+      "wall_s": 0.013342434976948425
+    },
+    {
+      "test": "__main__.ConditionsTests.test_finalize_short_without_speed_writes_both_failures",
+      "status": "PASS",
+      "wall_s": 0.0005713040009140968
+    },
+    {
+      "test": "__main__.ConditionsTests.test_finalize_zero_through_three_completed_fails_even_with_speed_measurement",
+      "status": "PASS",
+      "wall_s": 0.005757487000664696
+    },
+    {
+      "test": "__main__.ConditionsTests.test_four_completed_without_translation_stops",
+      "status": "PASS",
+      "wall_s": 0.0033088950149249285
+    },
+    {
+      "test": "__main__.ConditionsTests.test_fourth_completion_persists_gate_and_order_without_changing_raw",
+      "status": "PASS",
+      "wall_s": 0.003682092996314168
+    },
+    {
+      "test": "__main__.ConditionsTests.test_invalid_excursion_fails",
+      "status": "PASS",
+      "wall_s": 0.0011564010055735707
+    },
+    {
+      "test": "__main__.ConditionsTests.test_invalid_pose_time_gap_and_one_sample_fail",
+      "status": "PASS",
+      "wall_s": 0.00011108297621831298
+    },
+    {
+      "test": "__main__.ConditionsTests.test_missing_or_ambiguous_or_corrupt_log_is_unmeasured",
+      "status": "PASS",
+      "wall_s": 0.0006167319952510297
+    },
+    {
+      "test": "__main__.ConditionsTests.test_missing_robot_or_world_fails",
+      "status": "PASS",
+      "wall_s": 0.00043195398757234216
+    },
+    {
+      "test": "__main__.ConditionsTests.test_path_and_net_are_separate_from_excursion",
+      "status": "PASS",
+      "wall_s": 5.98820042796433e-05
+    },
+    {
+      "test": "__main__.ConditionsTests.test_plain_and_zstd_logs_have_same_derived_motion_and_raw_preserved",
+      "status": "PASS",
+      "wall_s": 0.005905077996430919
+    },
+    {
+      "test": "__main__.ConditionsTests.test_rotation_in_place_is_not_translation",
+      "status": "PASS",
+      "wall_s": 0.00026451298617757857
+    },
+    {
+      "test": "__main__.ConditionsTests.test_translation_passes_even_all_approach",
+      "status": "PASS",
+      "wall_s": 0.0002503030118532479
+    }
+  ],
+  "tests_run": 19,
+  "failures": 0,
+  "errors": 0,
+  "metrics": {
+    "c_close_robot_cases": 6,
+    "c_no_permit_robot_cases": 8,
+    "c_independent": {
+      "release_t": {
+        "r1": 3.0,
+        "r2": null
+      },
+      "robot_finish_t": {
+        "r1": 4.6,
+        "r2": null
+      },
+      "ticks": 48
+    },
+    "c_permit_counterfactual_robot_ticks": 160,
+    "arm_c_cadence": {
+      "r1": {
+        "ticks": 60,
+        "inference_calls": 60,
+        "discard_calls": 60,
+        "issued_ticks": 60,
+        "skill_counts": {
+          "grasp": 60
+        },
+        "stage_counts": {
+          "ready": 1,
+          "execute": 59
+        },
+        "state225_nonzero": 0,
+        "software_hold_ticks": 0,
+        "nonzero_wheel_ticks": 1
+      },
+      "r2": {
+        "ticks": 60,
+        "inference_calls": 60,
+        "discard_calls": 60,
+        "issued_ticks": 60,
+        "skill_counts": {
+          "grasp": 60
+        },
+        "stage_counts": {
+          "ready": 1,
+          "execute": 59
+        },
+        "state225_nonzero": 0,
+        "software_hold_ticks": 0,
+        "nonzero_wheel_ticks": 1
+      }
+    },
+    "arm_s_cadence": {
+      "r1": {
+        "ticks": 60,
+        "inference_calls": 60,
+        "discard_calls": 60,
+        "issued_ticks": 60,
+        "skill_counts": {
+          "grasp": 60
+        },
+        "stage_counts": {
+          "ready": 1,
+          "execute": 59
+        },
+        "state225_nonzero": 0,
+        "software_hold_ticks": 0,
+        "nonzero_wheel_ticks": 1
+      },
+      "r2": {
+        "ticks": 60,
+        "inference_calls": 60,
+        "discard_calls": 60,
+        "issued_ticks": 60,
+        "skill_counts": {
+          "grasp": 60
+        },
+        "stage_counts": {
+          "ready": 1,
+          "execute": 59
+        },
+        "state225_nonzero": 0,
+        "software_hold_ticks": 0,
+        "nonzero_wheel_ticks": 1
+      }
+    },
+    "eval_non_python_equal_keys": 10,
+    "none_barrier_equal_transitions": 1024,
+    "none_controller_equal_robot_ticks": 200,
+    "worker_serve_modes": 3,
+    "s_close_robot_cases": 6,
+    "s_held_robot_cases": 8,
+    "wrapper_subprocess_modes": 3,
+    "c_ready_diagnostic": {
+      "ticks": 3,
+      "robot_N": 2,
+      "ready_robot_ticks": 6,
+      "formula": "len(frames)*len(ROLES)",
+      "skill_counts": {
+        "r1": {
+          "grasp": 3
+        },
+        "r2": {
+          "grasp": 3
+        }
+      }
+    }
+  },
+  "gpu_runs": 0,
+  "episodes_started": 0,
+  "model_forward_calls": 0,
+  "launcher_executed": false,
+  "simulator_modules": [],
+  "model_modules": [],
+  "legacy_pilot_fixture": "unchanged assertions; in-memory optional physical_motion_records added"
+}

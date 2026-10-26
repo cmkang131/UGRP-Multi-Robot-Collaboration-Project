@@ -1,0 +1,148 @@
+{
+  "schema": "ugrp.baseline-treatment.conditions-package.v2",
+  "utc": "2026-10-26T04:04:11.824862+00:00",
+  "status": "DRAFT_REVISED_NOT_FROZEN",
+  "current_package_files": {
+    "eval-python": {
+      "path": "/home/ugrp/ugrp-sim/baseline-treatment/eval-python",
+      "bytes": 159,
+      "sha256": "19d33c89cbfb865cd67d71f9f1d205d2032579ebd37d35c3d28caf1762c09948"
+    },
+    "eval-python-arm-c": {
+      "path": "/home/ugrp/ugrp-sim/baseline-treatment/eval-python-arm-c",
+      "bytes": 102,
+      "sha256": "82f590f79f0f12c7a5279dbdcdabf0e1bceaa804fc5cd212f18d737222132891"
+    },
+    "eval-python-arm-s": {
+      "path": "/home/ugrp/ugrp-sim/baseline-treatment/eval-python-arm-s",
+      "bytes": 102,
+      "sha256": "a5cbb98d35d4acb160913851558edff27c109db525f7ec04d9c72776676dae1a"
+    },
+    "bootstrap.py": {
+      "path": "/home/ugrp/ugrp-sim/baseline-treatment/bootstrap.py",
+      "bytes": 2534,
+      "sha256": "875c48da7d8909d1fec0bf54e5b07e12a0d971d780abd25cc2bfddae2fe15a2d"
+    },
+    "controller.py": {
+      "path": "/home/ugrp/ugrp-sim/baseline-treatment/controller.py",
+      "bytes": 12847,
+      "sha256": "407b385584fb29edfe32a8f5ca674566cfe787659ae2f7b4a5bf9e5b78d61bcf"
+    },
+    "audit_cpu.py": {
+      "path": "/home/ugrp/ugrp-sim/baseline-treatment/audit_cpu.py",
+      "bytes": 10344,
+      "sha256": "c87b5d3b736162ca5bc0cd771b4e72e05f17913b9d2ef9b073984a7a86137a5b"
+    },
+    "future_driver.py": {
+      "path": "/home/ugrp/ugrp-sim/baseline-treatment/future_driver.py",
+      "bytes": 8985,
+      "sha256": "91d9704966f96c07241ae0eb6a38febcbc030ca11114ed7e14bfa2ec3b8b9aa0"
+    },
+    "student-eval-arm-c.json": {
+      "path": "/home/ugrp/ugrp-sim/baseline-treatment/student-eval-arm-c.json",
+      "bytes": 410,
+      "sha256": "6d813017fac778487f5f6d85793135c60531f113bbf5a5c685a8cccd033e06bb"
+    },
+    "student-eval-arm-s.json": {
+      "path": "/home/ugrp/ugrp-sim/baseline-treatment/student-eval-arm-s.json",
+      "bytes": 410,
+      "sha256": "913660773e392df48471b66cd707a186098b365acef2baf367ea34f0418e28f3"
+    },
+    "treatment-metadata.json": {
+      "path": "/home/ugrp/ugrp-sim/baseline-treatment/treatment-metadata.json",
+      "bytes": 20503,
+      "sha256": "f8ab83862165442a9f5080fbf01edc42c3fdd00faf816dc4d945eb3a2b8923f7"
+    }
+  },
+  "changed_existing_files": [
+    "future_driver.py",
+    "audit_cpu.py"
+  ],
+  "new_test": {
+    "path": "/home/ugrp/ugrp-sim/baseline-treatment/test_conditions_cpu.py",
+    "bytes": 13698,
+    "sha256": "54a2ca3828a9926afbef31e45fee5e59a791dfb714cf5d47196e84a6be4766ad"
+  },
+  "inherited_metadata": {
+    "path": "/home/ugrp/ugrp-sim/baseline-treatment/treatment-metadata.json",
+    "role": "immutable historical implementation v1; its two superseded package_files entries are not current",
+    "sha256": "f8ab83862165442a9f5080fbf01edc42c3fdd00faf816dc4d945eb3a2b8923f7"
+  },
+  "supersedes": {
+    "future_driver.py": {
+      "old_sha256": "e994f1def17fbe5273ce4019aac58eb4d2ee8fe6a885a426d07c7588f57658a8",
+      "new_sha256": "91d9704966f96c07241ae0eb6a38febcbc030ca11114ed7e14bfa2ec3b8b9aa0"
+    },
+    "audit_cpu.py": {
+      "old_sha256": "1850b9861358b1a9f5865000e54b6ad93d63e4a8cd4a92456ff5a328f3da8dcb",
+      "new_sha256": "c87b5d3b736162ca5bc0cd771b4e72e05f17913b9d2ef9b073984a7a86137a5b"
+    }
+  },
+  "resolution_rule": "current_package_files in this external manifest override the two historical package_files hashes; all other original package files unchanged",
+  "tests": [
+    {
+      "name": "cpu-tests-conditions-v3.json",
+      "tests_run": 16,
+      "failures": 0,
+      "errors": 0,
+      "path": "/home/ugrp/ugrp-sim/baseline-treatment/conditions-fix-20261026/cpu-tests-conditions-v3.json",
+      "bytes": 5004,
+      "sha256": "56b9fa2cd6c6d0665fbc873df54e1056a70fdbbceecc8e93c729abb526d71ce3"
+    },
+    {
+      "name": "audit-tests-regression-v3.json",
+      "tests_run": 9,
+      "failures": 0,
+      "errors": 0,
+      "path": "/home/ugrp/ugrp-sim/baseline-treatment/conditions-fix-20261026/audit-tests-regression-v3.json",
+      "bytes": 3869,
+      "sha256": "f13e10d50737af2aae40ec352c37623d1c994fd9e55bc42d2ba1c558c3c76fdd"
+    },
+    {
+      "name": "conditions-tests-v1.json",
+      "tests_run": 19,
+      "failures": 0,
+      "errors": 0,
+      "path": "/home/ugrp/ugrp-sim/baseline-treatment/conditions-fix-20261026/conditions-tests-v1.json",
+      "bytes": 5833,
+      "sha256": "628fa435b801a31d46e59f1bb14aab098de9c14a39139f4ab63649adbc19402a"
+    },
+    {
+      "name": "original-tests-conditions-v2.json",
+      "tests_run": 8,
+      "failures": 0,
+      "errors": 0,
+      "path": "/home/ugrp/ugrp-sim/baseline-treatment/conditions-fix-20261026/original-tests-conditions-v2.json",
+      "bytes": 1343,
+      "sha256": "6c906e3769cb91a0e38507cbfed55ed4e13e69b47b17d7f3f489fec7d0bcda39"
+    }
+  ],
+  "tests_passed": 52,
+  "failures": 0,
+  "errors": 0,
+  "motion_reference": {
+    "path": "/home/ugrp/ugrp-sim/baseline-treatment/conditions-fix-20261026/motion-reference.json",
+    "bytes": 19595,
+    "sha256": "fc40c2e79df8a173801644ac4de4572980696b55c32535e558c65963b7392515"
+  },
+  "measurement_script": {
+    "path": "/home/ugrp/ugrp-sim/baseline-treatment/conditions-fix-20261026/measure_motion_cpu.py",
+    "bytes": 2192,
+    "sha256": "b8bf613460bc819dfbb87351ee577a170bcd6118323dabea3d94f3d33aabc6cb"
+  },
+  "baseline_before": {
+    "path": "/home/ugrp/ugrp-sim/baseline-treatment/conditions-fix-20261026/baseline-before.json",
+    "bytes": 14417,
+    "sha256": "8a65581816f96b3c07a021488e46bfb9ebdd9f0d599a1629aac34a522af42ca8"
+  },
+  "baseline_after": {
+    "path": "/home/ugrp/ugrp-sim/baseline-treatment/conditions-fix-20261026/baseline-after.json",
+    "bytes": 14417,
+    "sha256": "e97be7da6b11b65dd00739c9b4f9839597a3bab671f04ce4110d042a2c3b3577"
+  },
+  "gpu_runs": 0,
+  "episodes_started": 0,
+  "model_forward_calls": 0,
+  "actor_readback_rerun": false,
+  "launcher_executed": false
+}

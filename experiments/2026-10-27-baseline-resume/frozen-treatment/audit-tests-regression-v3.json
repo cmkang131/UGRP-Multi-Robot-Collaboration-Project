@@ -1,0 +1,150 @@
+{
+  "tests": [
+    {
+      "test": "test_audit_cpu.AuditTests.test_all_approach_default_continue_after_four",
+      "status": "PASS",
+      "wall_s": 0.00041184198926202953
+    },
+    {
+      "test": "test_audit_cpu.AuditTests.test_conflicting_raw_cap_is_unclassified",
+      "status": "PASS",
+      "wall_s": 6.553600542247295e-05
+    },
+    {
+      "test": "test_audit_cpu.AuditTests.test_early_all_finished_missing_first30_stops_followup",
+      "status": "PASS",
+      "wall_s": 0.0008407570130657405
+    },
+    {
+      "test": "test_audit_cpu.AuditTests.test_early_failure_not_batch_cap_end",
+      "status": "PASS",
+      "wall_s": 6.469999789260328e-05
+    },
+    {
+      "test": "test_audit_cpu.AuditTests.test_host_error_not_episode_failure",
+      "status": "PASS",
+      "wall_s": 4.61309973616153e-05
+    },
+    {
+      "test": "test_audit_cpu.AuditTests.test_pilot_four_separate_failure_checks",
+      "status": "PASS",
+      "wall_s": 0.0009249910071957856
+    },
+    {
+      "test": "test_audit_cpu.AuditTests.test_pilot_requires_exactly_four",
+      "status": "PASS",
+      "wall_s": 9.776701335795224e-05
+    },
+    {
+      "test": "test_audit_cpu.AuditTests.test_pinned_runner_ast_compiles_without_import",
+      "status": "PASS",
+      "wall_s": 0.02740630100015551
+    },
+    {
+      "test": "test_audit_cpu.AuditTests.test_real_cap_remains_in_denominator",
+      "status": "PASS",
+      "wall_s": 7.303099846467376e-05
+    }
+  ],
+  "tests_run": 9,
+  "failures": 0,
+  "errors": 0,
+  "metrics": {
+    "c_close_robot_cases": 6,
+    "c_no_permit_robot_cases": 8,
+    "c_independent": {
+      "release_t": {
+        "r1": 3.0,
+        "r2": null
+      },
+      "robot_finish_t": {
+        "r1": 4.6,
+        "r2": null
+      },
+      "ticks": 48
+    },
+    "c_permit_counterfactual_robot_ticks": 160,
+    "arm_c_cadence": {
+      "r1": {
+        "ticks": 60,
+        "inference_calls": 60,
+        "discard_calls": 60,
+        "issued_ticks": 60,
+        "skill_counts": {
+          "grasp": 60
+        },
+        "stage_counts": {
+          "ready": 1,
+          "execute": 59
+        },
+        "state225_nonzero": 0,
+        "software_hold_ticks": 0,
+        "nonzero_wheel_ticks": 1
+      },
+      "r2": {
+        "ticks": 60,
+        "inference_calls": 60,
+        "discard_calls": 60,
+        "issued_ticks": 60,
+        "skill_counts": {
+          "grasp": 60
+        },
+        "stage_counts": {
+          "ready": 1,
+          "execute": 59
+        },
+        "state225_nonzero": 0,
+        "software_hold_ticks": 0,
+        "nonzero_wheel_ticks": 1
+      }
+    },
+    "arm_s_cadence": {
+      "r1": {
+        "ticks": 60,
+        "inference_calls": 60,
+        "discard_calls": 60,
+        "issued_ticks": 60,
+        "skill_counts": {
+          "grasp": 60
+        },
+        "stage_counts": {
+          "ready": 1,
+          "execute": 59
+        },
+        "state225_nonzero": 0,
+        "software_hold_ticks": 0,
+        "nonzero_wheel_ticks": 1
+      },
+      "r2": {
+        "ticks": 60,
+        "inference_calls": 60,
+        "discard_calls": 60,
+        "issued_ticks": 60,
+        "skill_counts": {
+          "grasp": 60
+        },
+        "stage_counts": {
+          "ready": 1,
+          "execute": 59
+        },
+        "state225_nonzero": 0,
+        "software_hold_ticks": 0,
+        "nonzero_wheel_ticks": 1
+      }
+    },
+    "eval_non_python_equal_keys": 10,
+    "none_barrier_equal_transitions": 1024,
+    "none_controller_equal_robot_ticks": 200,
+    "worker_serve_modes": 3,
+    "s_close_robot_cases": 6,
+    "s_held_robot_cases": 8,
+    "wrapper_subprocess_modes": 3
+  },
+  "gpu_runs": 0,
+  "episodes_started": 0,
+  "model_forward_calls": 0,
+  "launcher_executed": false,
+  "simulator_modules": [],
+  "model_modules": [],
+  "legacy_pilot_fixture": "unchanged assertions; in-memory optional physical_motion_records added"
+}
