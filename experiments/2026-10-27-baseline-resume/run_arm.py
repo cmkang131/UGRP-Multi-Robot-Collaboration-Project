@@ -18,6 +18,8 @@ def main():
     p.add_argument('--arm', choices=('arm_c', 'arm_s'), required=True)
     p.add_argument('--root', type=Path, required=True)
     p.add_argument('--vm-start-utc', required=True)
+    p.add_argument('--restore-host-zone-v1', action='store_true',
+                   help='opt-in exact restored-VM identity adapter; no frozen file edits')
     a = p.parse_args()
     root = a.root
     meta_bytes = (root / 'RUN_META.json').read_bytes()
@@ -38,7 +40,8 @@ def main():
     command = ['python3', source + '/scripts/ugrp_session.py', 'run', '--min-free-gib', '8',
         'baseline-20261027-' + a.arm.replace('_', '-'), '--',
         '/home/ugrp/pairact-p3c2-20261021/venv/bin/python', '-B',
-        '/home/ugrp/ugrp-sim/baseline-treatment/future_driver.py',
+        ('/home/ugrp/ugrp-sim/baseline-resume-ops-20261027/infrastructure_driver.py'
+         if a.restore_host_zone_v1 else '/home/ugrp/ugrp-sim/baseline-treatment/future_driver.py'),
         '--arm', a.arm, '--out', str(out), '--execute']
     env = os.environ.copy()
     env['PYTHONDONTWRITEBYTECODE'] = '1'
