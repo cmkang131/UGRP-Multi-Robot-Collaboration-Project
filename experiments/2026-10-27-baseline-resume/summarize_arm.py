@@ -116,7 +116,9 @@ def main():
                 row.update(normal_complete=False, success=None,
                     reason_category=('administrative_interruption' if summary.get('status') == 'treatment_administrative_stop'
                                      else raw.get('error_type') or raw.get('end_reason') or 'HOST_ERROR_or_uncompleted'),
-                    raw_sim_s=raw.get('sim_s'), raw_cap_end=raw.get('cap_end'))
+                    raw_sim_s=raw.get('sim_s'), raw_cap_end=raw.get('cap_end'),
+                    blocked_object='UNKNOWN:not_observed', min_gap_m=None,
+                    gap_scope='not measured in available completed records')
                 episodes.append(row)
                 continue
             plan = reader.json(base/'raw/plan.json')
@@ -266,6 +268,13 @@ def main():
     integrity = normal_complete and not errors
     followup = (args.arm == 'arm_c' and integrity and pilot is not None and pilot.get('pass_gate') is True
                 and speed.get('SPEED_GATE_FAIL') is False)
+    frame_all = {name:dict(value) for name,value in frame_counts.items()}
+    no_eligible_carry = frame_counts['hold_3s']['passed_cumulative'] == 0
+    for stage in STAGES[5:]:
+        frame_all[stage] = ({'eligible':0,'passed_cumulative':0,'rejected':0,
+                             'scope':'no completed frame cumulatively passed hold_3s, so no downstream eligibility'}
+                            if no_eligible_carry else {'eligible':None,'passed_cumulative':None,'rejected':None,
+                             'scope':'per-frame carry/door/place flags not reconstructed; episode counts are measured'})
     result = {'schema':'ugrp.baseline.closed-arm-audit.v1','utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),
         'arm':args.arm,'raw_root':str(args.input),'planned_N':20,'batch_status':summary.get('status'),
         'started_N':summary.get('started_N'),'batch_completed_N':summary.get('completed_N'),'N_eff':n,
@@ -275,7 +284,9 @@ def main():
         'confirmatory_complete':args.arm=='arm_c' and integrity,
         'normal_complete':normal_complete,'integrity_pass':integrity,'followup_S_admissible_subject_to_budget_disk':followup,
         'pilot':pilot,'pilot_recount_checks':pilot_recount['checks'] if pilot_recount else None,'speed':speed,
-        'candidate_funnel':candidate,'frame_funnel_first5':{name:dict(value) for name,value in frame_counts.items()},
+        'candidate_funnel':candidate,'frame_funnel':frame_all,
+        'frame_scope':'acknowledged normally completed worlds only; other worlds listed as uncompleted/unmeasured',
+        'frame_funnel_first5':{name:dict(value) for name,value in frame_counts.items()},
         'frame_definition':'at each stored tick: previous gate ever reached and current gate cumulatively reached, matching original StudentFunnel chronology',
         'later_frame_funnel':'carry/door/place per-frame flags absent in original recorder; episode-level counts measured above; never fill unmeasured with0',
         'event_funnel':dict(metric_totals),'stage_counts':dict(stages),'skill_counts':dict(skills),
@@ -286,7 +297,7 @@ def main():
     (args.out/'audit.json').write_text(json.dumps(result,indent=2))
     (args.out/'funnel.json').write_text(json.dumps({'schema':'ugrp.baseline.derived-funnel.v1','raw_root':str(args.input),
         'prior_funnel':str(PACKAGE/'prior-funnel.json'),'planned_N':20,'N_eff':n,'candidate':candidate,
-        'frame_first5':result['frame_funnel_first5'],'later_frame_scope':result['later_frame_funnel'],
+        'frame':frame_all,'frame_scope':result['frame_scope'],'later_frame_scope':result['later_frame_funnel'],
         'event':dict(metric_totals),'rejections':[{'reason_category':key,'count':value,'blocked_object':'UNKNOWN:not_observed',
             'min_gap_m':None,'gap_scope':'not measured: software gate'} for key,value in rejects.items()],
         'failures':[{'world':row['world'],'reason_category':row['reason_category'],'blocked_object':row['blocked_object'],
