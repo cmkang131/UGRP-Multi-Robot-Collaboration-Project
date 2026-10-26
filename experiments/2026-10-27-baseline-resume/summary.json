@@ -1,23 +1,92 @@
 {
   "schema": "ugrp.baseline-resume.v1",
-  "status": "INFRASTRUCTURE_RETRY",
+  "status": "ARM_S_RUNNING",
   "frozen_sha256": "043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb",
   "protocol_changed": false,
   "arms": {
     "C": {
       "planned_n": 20,
-      "started_n": 0,
-      "completed_n": 0
+      "started_n": 20,
+      "completed_n": 20,
+      "successes": 0,
+      "status": "NORMAL_COMPLETE_VERIFIED",
+      "normal_n": 20,
+      "integrity_pass": true,
+      "pilot_pass": true,
+      "audit_path": "outputs/reports/2026-10-27-baseline-resume-evidence/C-audit-v1.json"
     },
     "S": {
       "planned_n": 20,
       "started_n": 0,
-      "completed_n": 0
+      "completed_n": 0,
+      "successes": null,
+      "status": "SUBMITTED",
+      "submitted_utc": "2026-10-26T22:00:19.659344+00:00",
+      "supervisor_pid": 12706
     }
   },
   "prior_gpu_h_approx": 13.1,
-  "new_workload_gpu_h": 0,
+  "new_workload_gpu_h": "running; final receipt pending",
   "gpu_h_cap_total": 20,
   "current_evidence_root": "/home/ubuntu/UGRP/outputs/reports/2026-10-27-baseline-resume-evidence",
-  "treatment_source_git_commit": "99fd922afbd5a03cf4231fd166fc56920b67d0aa"
+  "treatment_source_git_commit": "99fd922afbd5a03cf4231fd166fc56920b67d0aa",
+  "latest_monitor": {
+    "utc": "2026-10-26T21:19:58.475300+00:00",
+    "arm-c/progress.json": {
+      "ticks": 1300,
+      "active_N": 19,
+      "completed_N": 1,
+      "sim_s": 130.0,
+      "loop_wall_s": 4873.923722979,
+      "timing": {
+        "render": 297.4630064540024,
+        "readback_remap_jpeg_kinematics": 129.71938280999984,
+        "command_decode_upload": 6.491050911994762,
+        "physics": 2061.394830745002
+      },
+      "world_sim_s": [
+        130.0,
+        130.0,
+        130.0,
+        130.0,
+        130.0,
+        130.0,
+        130.0,
+        130.0,
+        130.0,
+        130.0,
+        130.0,
+        130.0,
+        130.0,
+        93.7,
+        130.0,
+        130.0,
+        130.0,
+        130.0,
+        130.0,
+        130.0
+      ],
+      "aggregate_world_sim_s": 2563.7,
+      "batch_sim_s": 130.0,
+      "per_world_wall_SIM": 1.8745860472996152,
+      "task_wall_per_SIM": 1.90112872917229,
+      "batch_wall_SIM": 37.491720945992306
+    }
+  },
+  "raw_host": {
+    "project": "ugrp-sim-f-1016",
+    "zone": "asia-northeast1-c",
+    "instance": "ugrp-act-l4-gcp6",
+    "id": "2102818194467198298"
+  },
+  "raw_root": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z",
+  "runtime_source_sha": "22fc786b5813e9139bb58d790a98e984e33d03e8",
+  "RUN_META_sha256": "519723dcdaff812373da9628e8d13a23a119b742217fba5856e1d20d073e9507",
+  "pr": 621,
+  "postrun_audit_source_sha": "de6b79fe5",
+  "procedural_deviations": [
+    "C current-stack tool report created postlaunch; disclosed16 current/9 frozen approved deviations, current_compliant=false",
+    "S/T/R/A Git preserved before C; external L exact byte Git copy added at21:16UTC while C running"
+  ],
+  "model_preservation_status": "COLLECTED_FROZEN10_MATCH_RELEASE_PENDING"
 }

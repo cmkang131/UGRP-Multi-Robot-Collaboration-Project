@@ -1,0 +1,68 @@
+{
+  "CI-targeted-before-fixture-fix.json": {
+    "started_utc": "2026-10-26T22:21:37.257222+00:00",
+    "finished_utc": "2026-10-26T22:22:52.417943+00:00",
+    "command": [
+      ".venv-test/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/test_model_artifacts.py",
+      "tests/test_azure_archive_native.py",
+      "tests/test_pair_llm_live.py"
+    ],
+    "exit_code": 0
+  },
+  "CI-targeted-after-fixture-fix.json": {
+    "started_utc": "2026-10-26T22:26:42.117366+00:00",
+    "finished_utc": "2026-10-26T22:28:00.952110+00:00",
+    "command": [
+      ".venv-test/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/test_model_artifacts.py",
+      "tests/test_azure_archive_native.py",
+      "tests/test_pair_llm_live.py"
+    ],
+    "exit_code": 0
+  },
+  "CI-lowdisk-LLM-before.json": {
+    "utc": "2026-10-26T22:24:47.356912+00:00",
+    "scope": "test-only simulated low disk, no model/network/simulator",
+    "pytest_exit": 1,
+    "expected_before_fix_exit": 1,
+    "disk_probe_calls": [
+      {
+        "path": "/tmp/pytest-of-ubuntu/pytest-135/live-clean0/live/peer_nl/llm/wire",
+        "min_free_gib": 10
+      },
+      {
+        "path": "/tmp/pytest-of-ubuntu/pytest-135/live-clean0/live/peer_nl-attempt2/llm/wire",
+        "min_free_gib": 10
+      }
+    ],
+    "reproduced": true
+  },
+  "CI-lowdisk-LLM-after.json": {
+    "utc": "2026-10-26T22:27:05.350720+00:00",
+    "scope": "test-only simulated low disk, no model/network/simulator",
+    "pytest_exit": 0,
+    "expected_after_fix_exit": 0,
+    "disk_probe_calls": [],
+    "fixture_isolated": true
+  },
+  "CI-lowdisk-native-before.json": {
+    "utc": "2026-10-26T22:26:00.291960+00:00",
+    "scope": "test-only child process with synthetic free0, no real filesystem filling",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr_tail": " line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/home/ubuntu/ugrp-wt/codex-baseline-resume-20261027/scripts/azure_archive_native.py\", line 250, in <module>\n    main()\n  File \"/home/ubuntu/ugrp-wt/codex-baseline-resume-20261027/scripts/azure_archive_native.py\", line 246, in main\n    receive(args.archive_root)\n  File \"/home/ubuntu/ugrp-wt/codex-baseline-resume-20261027/scripts/azure_archive_native.py\", line 125, in receive\n    return receive_locked(archive_root, header, hashes)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-wt/codex-baseline-resume-20261027/scripts/azure_archive_native.py\", line 137, in receive_locked\n    raise RuntimeError('ARM projected free below 25 GiB')\nRuntimeError: ARM projected free below 25 GiB\n",
+    "reproduced": true
+  },
+  "targeted_after_summary": "55 passed,1 expected duplicate-ZIP-entry warning,78.35s",
+  "test_source_sha256": {
+    "tests/test_pair_llm_live.py": "1964582c45b99180e29a686e73fa0849b548ccfe8009c9fed7dc715409a6ab91",
+    "tests/test_azure_archive_native.py": "26ab0fee7475279cda7aabdf99a0c195b1ee3f13dca7eab0734ce6d90a0ce9dc"
+  }
+}
