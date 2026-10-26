@@ -206,12 +206,18 @@ def main():
             previous_command, previous_state, previous_rgb, changes = {}, {}, {}, {}
             trace_stages = {rid:Counter() for rid in roles}
             trace_software_hold, trace_nonzero_wheels = Counter(), Counter()
+            first_contact_t, contact_ticks = {}, Counter()
             done_intervals, active_done, close_issued = {rid:[] for rid in roles}, {}, Counter()
             policy_ready_ticks = protocol_ready_ticks = permit_robot_ticks = 0
             policy_ready_robot_ticks = protocol_ready_robot_ticks = 0
             first_policy_ready_t = expected_funnel_ready_t = None
             for tick_index, entry in enumerate(log, 1):
                 now = entry['t']; truth_row = by_t[now]
+                for rid in roles:
+                    # Same .5 force threshold as frozen StudentFunnel.add;
+                    # sampled contact timing is distinct from physics-held t.
+                    if min(truth_row['contacts'][rid]) >= .5:
+                        first_contact_t.setdefault(rid,now);contact_ticks[rid] += 1
                 if set(entry['inputs']) != set(roles): world_errors.append('input_robot_set_mismatch')
                 policy_ready = {rid: entry['issued'][rid]['stage'] == 'ready' for rid in roles}
                 policy_ready_ticks += int(all(policy_ready.values()))
@@ -308,6 +314,11 @@ def main():
             row.update(normal_complete=True, completion_class='normal_complete', success=success, raw_physical_success=physical,
                 carry_success=(carry or {}).get('success'), carry_recount_equal=carry_equal,
                 termination=term, sim_s=raw.get('sim_s'), funnel=record['reached'], first_pass_t=record['first_pass_t'],
+                physical_motion=motion,
+                first_sampled_bilateral_jaw_contact_t={rid:first_contact_t.get(rid) for rid in roles},
+                sampled_bilateral_jaw_contact_robot_ticks={rid:contact_ticks[rid] for rid in roles},
+                contact_scope='10Hz eval-only contacts, same .5 per-jaw threshold as original funnel; not native robot-robot contact or physics hold onset',
+                original_joint_hold_t=student.get('joint_hold_t'),
                 correction_counters=corrections, treatment_metrics=metrics, protocol_events=dict(protocol),
                 barrier_event_counts=dict(observed_events), actual_rejection_reasons=dict(observed_rejects),
                 simultaneous_policy_READY_ticks=policy_ready_ticks, simultaneous_protocol_READY_ticks=protocol_ready_ticks,
