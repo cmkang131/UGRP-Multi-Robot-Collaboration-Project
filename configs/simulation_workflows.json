@@ -788,6 +788,25 @@
         "--static-map"
       ],
       "output_kind": "directory"
+    },
+    {
+      "id": "e2e18-static-pose-replay-v1",
+      "purpose": "자기 RGB 특징·발행 명령의 고정 지도 위치 추정 재생",
+      "entry": "scripts/replay_e2e_static_pose.py",
+      "docs": "experiments/2026-10-14-e2e18-pose/README.md",
+      "requires": "saved own RGB features and static geometry; evaluation separate; no physics/model",
+      "version": "1.0.0",
+      "runner": "scripts.replay_e2e_static_pose",
+      "output_flag": "--output",
+      "side_effect": "offline",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [
+        "--features",
+        "--static-map",
+        "--option",
+        "--motion"
+      ],
+      "output_kind": "directory"
     }
   ]
 }

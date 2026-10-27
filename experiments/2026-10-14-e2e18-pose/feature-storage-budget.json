@@ -1,0 +1,30 @@
+{
+  "checks": [
+    {
+      "host": "x86",
+      "free_bytes": 62316941312,
+      "expected_bytes": 939524096,
+      "projected_free_bytes": 61377417216,
+      "floor_bytes": 8589934592,
+      "ok": true
+    },
+    {
+      "host": "arm",
+      "free_bytes": 50333863936,
+      "expected_bytes": 939524096,
+      "projected_free_bytes": 49394339840,
+      "floor_bytes": 26843545600,
+      "ok": true
+    },
+    {
+      "host": "mac",
+      "free_bytes": 107995308032,
+      "expected_bytes": 671088640,
+      "projected_free_bytes": 107324219392,
+      "floor_bytes": 21474836480,
+      "ok": true
+    }
+  ],
+  "ok": true,
+  "scope": "6 saved-RGB feature jobs x64MiB plus512MiB reserve; no images retrieved, no simulation"
+}
