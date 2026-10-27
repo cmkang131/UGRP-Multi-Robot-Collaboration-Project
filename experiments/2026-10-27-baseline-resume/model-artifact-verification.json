@@ -1,0 +1,100 @@
+{
+  "schema": "ugrp.model-artifact.verification.v1",
+  "utc": "2026-10-27T00:04:02.509467+00:00",
+  "model_id": "pairact-r2-step11000-baseline-20261027",
+  "status": "PASS",
+  "oracle_public_download": {
+    "schema": "ugrp.model-public-download-verification.v1",
+    "started_utc": "2026-10-26T22:11:01.951738+00:00",
+    "finished_utc": "2026-10-26T22:11:25.767086+00:00",
+    "method": "Unauthenticated public HTTPS download by scripts.model_artifacts.fetch; no local archive argument",
+    "archive_sha256": "8a64f127dbc727d7f625bc8b7b8520f10fa1d586090795198ff089b8e0d87e01",
+    "archive_bytes": 192222979,
+    "download_and_all_file_hashes": "PASS",
+    "verification": {
+      "id": "pairact-r2-step11000-baseline-20261027",
+      "path": "/home/ubuntu/UGRP/outputs/model-artifacts/pairact-r2-step11000-baseline-20261027/public-redownload-oracle-v1",
+      "verified_files": 13,
+      "verified_bytes": 208826488,
+      "installed": true
+    },
+    "fresh_clone_CPU_loading": "pending after GPU VM shutdown",
+    "policy_forward_calls": 0
+  },
+  "mac_fresh_source_cpu_load": {
+    "schema": "ugrp.baseline.fresh-source-model-load.v1",
+    "utc": "2026-10-27T00:02:41.855179+00:00",
+    "status": "PASS",
+    "source_sha": "3c9337d5f5c9deefd49139b26ae7117022e3d5cc",
+    "source_tracked_clean": true,
+    "public_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261027-pairact-r2-step11000-v1/pairact-r2-step11000-baseline-20261027.zip",
+    "archive": {
+      "sha256": "8a64f127dbc727d7f625bc8b7b8520f10fa1d586090795198ff089b8e0d87e01",
+      "bytes": 192222979
+    },
+    "download": {
+      "id": "pairact-r2-step11000-baseline-20261027",
+      "path": "/Users/changmin/projects/ugrp/outputs/model-release-20261027-baseline-step11000-v1/public-model-v1",
+      "verified_files": 13,
+      "verified_bytes": 208826488,
+      "installed": true
+    },
+    "full_inventory_before": {
+      "id": "pairact-r2-step11000-baseline-20261027",
+      "path": "/Users/changmin/projects/ugrp/outputs/model-release-20261027-baseline-step11000-v1/public-model-v1",
+      "verified_files": 13,
+      "verified_bytes": 208826488
+    },
+    "full_inventory_after": {
+      "id": "pairact-r2-step11000-baseline-20261027",
+      "path": "/Users/changmin/projects/ugrp/outputs/model-release-20261027-baseline-step11000-v1/public-model-v1",
+      "verified_files": 13,
+      "verified_bytes": 208826488
+    },
+    "weights_sha256": "8263ad3f135048fea46d5cb85fee1d70910bdc399babbd1f2f20d92c2fbea271",
+    "state_entries": 239,
+    "parameter_count": 51818398,
+    "state_devices": [
+      "cpu"
+    ],
+    "cuda_initialized": false,
+    "policy_forward_calls": 0,
+    "sim_imports": [],
+    "training_steps": 0,
+    "checkpoint_reselected": false,
+    "scope": "Public artifact integrity and strict pinned-source CPU loading only; no physical task or speed claim"
+  },
+  "mac_original_proof_sha256": "c841a8179d042fb9766a9ec94a3018c7009ec8922789a45bb907efed91c528ed",
+  "frozen_source10_match": true,
+  "selected_step": 11000,
+  "training_steps": 0,
+  "checkpoint_reselected": false,
+  "C": {
+    "normal_n": 20,
+    "successes": 0
+  },
+  "S": {
+    "normal_n": 20,
+    "successes": 0,
+    "scope": "descriptive only"
+  },
+  "limitations": [
+    "Integrity and strict CPU loading do not establish physical task success, full training reproducibility or speed.",
+    "No raw training images, optimizer state, or full physics evidence are included in the model asset."
+  ],
+  "VM_stopped_before_Mac_loading": {
+    "status": "TERMINATED",
+    "id": "2102818194467198298",
+    "zone": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-f-1016/zones/asia-northeast1-c",
+    "lastStartTimestamp": "2026-10-26T12:36:29.566-07:00",
+    "lastStopTimestamp": "2026-10-26T17:01:51.767-07:00",
+    "new_actual_allocated_GPU_h": 4.422833611111111,
+    "prior_estimated_GPU_h": 13.1,
+    "estimated_cumulative_GPU_h": 17.52283361111111,
+    "new_cap_GPU_h": 5.3,
+    "global_cap_GPU_h": 20,
+    "new_within_cap": true,
+    "estimated_cumulative_within_cap": true,
+    "archive_verification": "2026-10-27T00:00:34.978897+00:00"
+  }
+}
