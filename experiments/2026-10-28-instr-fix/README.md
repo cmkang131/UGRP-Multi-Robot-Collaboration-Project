@@ -42,6 +42,7 @@
 | 계측 레코드 12파일 (worker 4·protocol 4·eval-geometry 4) | 위 경로 `raw/trace/*.jsonl` — 파일별 sha256은 [summary.json](summary.json) `measurement.record_file_manifest` |
 | 월드 원장·검증 JSON | 위 경로 `raw/s4/summary.json`·`verify-before.json`·`verify-after.json`·`cpu-init.json`·`raw/world-00*/raw/manifest.json` |
 | VM 영속 디스크 원본 | `/home/ugrp/ugrp-sim/runs/han32-instrumentation-20261028-r2` — 삭제·수정 없이 보존 |
+| Git 보존 | PR [#637](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/637) (기록 커밋 `4f7b8b23e`, merge `6c4b19a7c`, 2026-10-27T21:02:39Z) — 코드·물리·정책 변경 없이 기록만 포함 |
 
 **미회수(정직하게 기록)**: 월드별 `raw/result.json`·`raw/eval-only.jsonl`·`raw/student-eval.jsonl`은 VM에서 zstd 압축·심볼릭 링크로 저장되어 fetch-lite 목록에서 제외됐다. 해당 해시는 회수된 `raw/manifest.json`에 남아 있고 VM 디스크에 보존되어 있다. VM 재기동 없이 회수할 수 없어 **비용을 늘리지 않기 위해 재기동하지 않았다**. 무결성 판정값은 회수된 `s4/summary.json`의 `worlds[].input_audit`로 로컬 재확인했다.
 
