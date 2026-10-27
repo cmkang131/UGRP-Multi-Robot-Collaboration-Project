@@ -1,0 +1,830 @@
+{
+  "/home/ubuntu/UGRP/outputs/reports/2026-10-26-round2-recount-evidence/recount.py": {
+    "bytes": 13774,
+    "sha256": "e25c0e9220f91b4d5f5190b55fc4fdf583759afce891c73baf84ee1ad0b590c9"
+  },
+  "/home/ubuntu/UGRP/outputs/reports/2026-10-26-round2-recount-evidence/result-v2/recount.json": {
+    "bytes": 50054,
+    "sha256": "c0a85b9e5e5f41d396c5ccc8c05adabeafb523801796ecfc3fdcf2e07e8f41de"
+  },
+  "/home/ubuntu/UGRP/outputs/reports/2026-10-27-baseline-resume-evidence/C-source-sha256-v1.json": {
+    "bytes": 28897,
+    "sha256": "3eb33a427ac9a4d2d89c4bd918f1326125a02a358162a97b532e435810dd065e"
+  },
+  "/home/ubuntu/UGRP/outputs/reports/2026-10-27-baseline-resume-evidence/S-source-sha256-v1.json": {
+    "bytes": 28596,
+    "sha256": "5d4bc20c12458d69674882b4706253500707571a868e67c093233caaa6f9a5b6"
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-000/raw/plan.json": {
+    "bytes": 4945,
+    "sha256": "a482ebccc53745bc86eb4df198babe4762d55712623d5107d3885fca4df34069",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-000/raw/result.json.zst": {
+    "bytes": 10102,
+    "sha256": "b4ceb36cdfcad8ff1bb0510d22f2e2d1f6f2461070d2dfd976145b3532f0d423",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-000/raw/eval-only.jsonl.zst": {
+    "bytes": 1894457,
+    "sha256": "761facec355fba4f09e7a000187bd28e33d118d809deb64f41cd727bb2a4e718",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-000/raw/student-eval.jsonl.zst": {
+    "bytes": 511784,
+    "sha256": "141bb67b17ecd387f476f42ce86c8f027c2fdbfbde75b7b30284a7248a7ecfb1",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-001/raw/plan.json": {
+    "bytes": 5024,
+    "sha256": "77bc93aec8e7b8da29d2e9ed486b8e19c23403fbc1d294bfd9211e07b332727d",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-001/raw/result.json.zst": {
+    "bytes": 10711,
+    "sha256": "ad04e6f2bda02f65500ec1faa55bf814fa85555f5dca34664fecaef77ffd7391",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-001/raw/eval-only.jsonl.zst": {
+    "bytes": 1793855,
+    "sha256": "ad5cba67efb4fe5cf32ddffe441faf6d4259bf8a219f19ca2e1f0979dae9733f",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-001/raw/student-eval.jsonl.zst": {
+    "bytes": 586622,
+    "sha256": "25d7a34a5d9108d3bded88ebeed76b712734b060357f03d8b336b6fd6c573a14",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-002/raw/plan.json": {
+    "bytes": 4951,
+    "sha256": "61479d6d8fdadd968f0e71b6389eca44eed2cf2cedc7f842dcb22dc255b1d283",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-002/raw/result.json.zst": {
+    "bytes": 8695,
+    "sha256": "2bd1ed767c8662f08c9a2d58d1fea152a18772e4fca8d103867a5c9260fdbe1d",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-002/raw/eval-only.jsonl.zst": {
+    "bytes": 2119982,
+    "sha256": "db2b7d005608b4a47d34a9ff81cc4eed5e1bbebee9158be6a209730c32c9055d",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-002/raw/student-eval.jsonl.zst": {
+    "bytes": 541400,
+    "sha256": "a88b2f41f2f770e0a6f0d1543b71b7f2fdf83a853b11dd41277c8d627917bb4b",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-003/raw/plan.json": {
+    "bytes": 4948,
+    "sha256": "756549218b9b3e61546d9fead93cc6503b3f2037012c7534cecd2154179916ce",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-003/raw/result.json.zst": {
+    "bytes": 8164,
+    "sha256": "940c15a68e7e42bff79a37ddfb734fd3ae9f9e1f9e444e22b79a70d2480c18c0",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-003/raw/eval-only.jsonl.zst": {
+    "bytes": 1802090,
+    "sha256": "941ff2e77ea0dd3b3b6dfc187f76ee59e9d91ffac6cd80080da13b6a3412b510",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-003/raw/student-eval.jsonl.zst": {
+    "bytes": 524333,
+    "sha256": "08e238df0f41e3f8720b0bed1636db58efe45601daf5ca7c4e536b458544a33d",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-004/raw/plan.json": {
+    "bytes": 5081,
+    "sha256": "3bd5ddc388ba2c13ce182548de8d10d578b3ea4e6613a6bcd9d2fb8f6383eb14",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-004/raw/result.json.zst": {
+    "bytes": 10199,
+    "sha256": "3d11739084138953a3eef34b9559ec5834fdef4f1588753e5fc080a16fd3f01f",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-004/raw/eval-only.jsonl.zst": {
+    "bytes": 1742227,
+    "sha256": "a12ac5a9208df8a44d9fa1ef7c3d5be52b0428df078e350497bcb0af6f1dcfe6",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-004/raw/student-eval.jsonl.zst": {
+    "bytes": 555865,
+    "sha256": "368bf3c1ba075f2135a13f3cd969b5eb305ed358025ed4723c588d76255f7cfc",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-005/raw/plan.json": {
+    "bytes": 5035,
+    "sha256": "46d882439d29f2ce3bee15f0d4aac5623e563949e8c51ca54a382d1b843e1ed4",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-005/raw/result.json.zst": {
+    "bytes": 8749,
+    "sha256": "3ae3fa10abb5cad615518302200ba7c6732f24bba189379b5e241e5af905432f",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-005/raw/eval-only.jsonl.zst": {
+    "bytes": 1800374,
+    "sha256": "532fbc4189c18e345ab7841b73266516424b9d4b8f6e6e0bbb3006d69c0bb319",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-005/raw/student-eval.jsonl.zst": {
+    "bytes": 550248,
+    "sha256": "b687401e25b84b20ee1ec43fb2001abad24d8011b810aec9c794f59cfe24aae5",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-006/raw/plan.json": {
+    "bytes": 4949,
+    "sha256": "4cb94191376b64c924835da11c3cba40508b7d18bb0ac072790c21ce7931e281",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-006/raw/result.json.zst": {
+    "bytes": 9631,
+    "sha256": "c83d9738d78087cbcb9b0d00575fdc665005ace8bd58f1eba05b421d541d0843",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-006/raw/eval-only.jsonl.zst": {
+    "bytes": 1859712,
+    "sha256": "b8da61db1c2fd893fc1a5c97e6d1074f0b0c293b294dca52de3a7da9b5bbf6a4",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-006/raw/student-eval.jsonl.zst": {
+    "bytes": 525660,
+    "sha256": "4f9abfa0254b36a22a226d07b81db623fb47a3d3a2c02cea8ef6d46b1e754a7a",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-007/raw/plan.json": {
+    "bytes": 4954,
+    "sha256": "3a9658119c2ab03d0a937d630c29a3634723fa684250a97acd00939234018504",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-007/raw/result.json.zst": {
+    "bytes": 9038,
+    "sha256": "0392a546d8028b4e0eb16c9d6d3aa86c8daf782dd1478e357c91d4b99499533e",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-007/raw/eval-only.jsonl.zst": {
+    "bytes": 1786558,
+    "sha256": "4d647b716700199a222e4d4c3bec0ab31e221ef37c55f6a8a3d52228e12d3c61",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-007/raw/student-eval.jsonl.zst": {
+    "bytes": 512453,
+    "sha256": "1ec20b3ef40a55110e3c96a12ce9cff61c339e0a886eae3672e8142401e51a2b",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-008/raw/plan.json": {
+    "bytes": 4945,
+    "sha256": "4c35957e9ee4bbad5c6bb3a9207fd932fa6597cd293013316324836f9d206da4",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-008/raw/result.json.zst": {
+    "bytes": 9845,
+    "sha256": "a5feb86d47fd429c7255b9bffaf2fdcbeda0bab25c757ba38f03f6a34bda2f2b",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-008/raw/eval-only.jsonl.zst": {
+    "bytes": 1841491,
+    "sha256": "93be475399e170bf7a3536ccba1c76707b85f54766eb0c42b1877ba057654d8a",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-008/raw/student-eval.jsonl.zst": {
+    "bytes": 523427,
+    "sha256": "82a1309137db436e69420cbe8ecaa0b966e358de3836d44442757bd2cef8fcc7",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-009/raw/plan.json": {
+    "bytes": 4946,
+    "sha256": "937ad0ebd13ea2252be0b544389dfb484e305a07240b887798b8e913c4bb201b",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-009/raw/result.json.zst": {
+    "bytes": 9811,
+    "sha256": "9951a233b65c6d68cc71027ed69c07f60c80c0625ec39ab8df0848762a9d121b",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-009/raw/eval-only.jsonl.zst": {
+    "bytes": 1835347,
+    "sha256": "2da633387d218eba7e208d184bd2ccc9fbe38dbb8819acd743a8b62679687d9a",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-009/raw/student-eval.jsonl.zst": {
+    "bytes": 565609,
+    "sha256": "a6e5191996214e79f38ca077f5ef05573ccbf5d2f905a24482f1545537ec6caf",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-010/raw/plan.json": {
+    "bytes": 5034,
+    "sha256": "ed946fb8c1068510c0fa21e258431e6f77dd77ee16e82ada240fc7265d29e881",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-010/raw/result.json.zst": {
+    "bytes": 9067,
+    "sha256": "cbb5a081b2d21afc438c7c2f93194e87bf0f52d7256a9478da4593afaf7a9e63",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-010/raw/eval-only.jsonl.zst": {
+    "bytes": 1733533,
+    "sha256": "10ed0d83af8cdbc7cb9afa77ff24421f469f9eaecb6b5b4419a61965abf11f46",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-010/raw/student-eval.jsonl.zst": {
+    "bytes": 543149,
+    "sha256": "2471491e4c3496c7a46ab7e93c9d9a41264efd24692ec006963a9620a6842c9e",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-011/raw/plan.json": {
+    "bytes": 5099,
+    "sha256": "81e1d089531e27515f8601da6210812a56bd347d704d7683b0fa6062af017432",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-011/raw/result.json.zst": {
+    "bytes": 10172,
+    "sha256": "36543fdcd880ff35257dbfc30487f71287b06f6c60e337109fb206321a1880be",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-011/raw/eval-only.jsonl.zst": {
+    "bytes": 1841829,
+    "sha256": "67c2045102089279cb549b8596a7f7c3ef2f186b56ac8ca745c70282a86ba535",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-011/raw/student-eval.jsonl.zst": {
+    "bytes": 606423,
+    "sha256": "a61d0bd7f2440ecf60b842b1b547ffcbe32ac7d8c69d81d0b36ca7dd6e11818e",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-012/raw/plan.json": {
+    "bytes": 4950,
+    "sha256": "e65fba6ba1ffabf98e8b55180cda8c11cb8b6f2ebf840d25fa8d83ffd33d941a",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-012/raw/result.json.zst": {
+    "bytes": 10138,
+    "sha256": "267d196add1270fe9860eca0b65eb1ac12df076b3e379bd021154b13f9d36a07",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-012/raw/eval-only.jsonl.zst": {
+    "bytes": 1882355,
+    "sha256": "c9e652da0fca94c6ae7076e5550d60251dd924cc56f562fdc0db01e86090af79",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-012/raw/student-eval.jsonl.zst": {
+    "bytes": 520450,
+    "sha256": "cb380415d0baee7d2e7c55caadaee9f86f045c4e11880e0edc15aafafe945e17",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-013/raw/plan.json": {
+    "bytes": 4953,
+    "sha256": "04a8c07db9b48298b2b980ba603e870a90ec79e85c51d37f696f8751af21a7cf",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-013/raw/result.json.zst": {
+    "bytes": 7266,
+    "sha256": "c0118854f5f348726be370e17a936c768752571082fd9a70cfe9bb78ed08d153",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-013/raw/eval-only.jsonl.zst": {
+    "bytes": 1000177,
+    "sha256": "949e85cf561e966517f25ded8b18c842adb85ab45480afc5ce5a4ad89b1b2788",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-013/raw/student-eval.jsonl.zst": {
+    "bytes": 294032,
+    "sha256": "2db477849de534d5850a0873508bc51f959b27cff251f8df05e6cc2654cba414",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-014/raw/plan.json": {
+    "bytes": 4948,
+    "sha256": "ebbd8ed9e4634f6aabe9c026d474d17c1d3539c82a08fe3a36128f96fa5075ba",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-014/raw/result.json.zst": {
+    "bytes": 8270,
+    "sha256": "65bff57549107fea9ae8092f5a80727581cd4dc18f081df52dfc30a19ef64237",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-014/raw/eval-only.jsonl.zst": {
+    "bytes": 1972374,
+    "sha256": "e3322b8210459c5f141e65ddad275fa96435c23851ab6355bc6ac399634b3825",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-014/raw/student-eval.jsonl.zst": {
+    "bytes": 529424,
+    "sha256": "41991035b405602953e8b10c95ed33f07f7958966000c59e99756ca13b32ee90",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-015/raw/plan.json": {
+    "bytes": 5032,
+    "sha256": "ae58062571e234ff1b6f3d371c7a237ac366751f1e6d33afb98fc1dedd9e673a",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-015/raw/result.json.zst": {
+    "bytes": 8827,
+    "sha256": "4e0bd8fcf04b148c6df8c246bd88a7341993e9d0776d3bd88865312190bf184f",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-015/raw/eval-only.jsonl.zst": {
+    "bytes": 1849883,
+    "sha256": "c94f3e18560a19bec95545f171d631c0069eec09fbd38b882557d969461b1f03",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-015/raw/student-eval.jsonl.zst": {
+    "bytes": 552056,
+    "sha256": "6ea79c73241f7a3db5da4ec0ddeeb6647d7cc7fa0dc81fb375a626ebb543ea48",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-016/raw/plan.json": {
+    "bytes": 4947,
+    "sha256": "4bffda16943caaf9bec4fffabbdea1a06487a52f39a174cf9ddf5bbf2f3b07c6",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-016/raw/result.json.zst": {
+    "bytes": 10383,
+    "sha256": "973af6891bd38c285df15289bab92e35eb49dc787607f9feeab5e7cd1c6710de",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-016/raw/eval-only.jsonl.zst": {
+    "bytes": 1769173,
+    "sha256": "38bab44a67b63f169642104b287d468c64b4bd65bd1f61ded3ba56f95189ba35",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-016/raw/student-eval.jsonl.zst": {
+    "bytes": 571567,
+    "sha256": "8a3d4caf47c32c9c5389b6e5b56f92694b0ab5e3f1a17f3bda624c5befd7d4ce",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-017/raw/plan.json": {
+    "bytes": 5095,
+    "sha256": "4c5a531fcfea76b0c183d2f5974e87a0afe78d9514061e7774c34655351a384b",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-017/raw/result.json.zst": {
+    "bytes": 9821,
+    "sha256": "9d5d86602ec0a649d1f6fb245341002da363d92a9ea3cf090f43f31f0ed704a2",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-017/raw/eval-only.jsonl.zst": {
+    "bytes": 1726985,
+    "sha256": "9654fa3d1dfdd0c7205e696ad8d501899cca528bade2d1774a8ccba31ca7082d",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-017/raw/student-eval.jsonl.zst": {
+    "bytes": 588106,
+    "sha256": "ffaf3bb579778b9d547b5c58a3cff8385ff3065bb426a4dd4ed537ad7dd388be",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-018/raw/plan.json": {
+    "bytes": 4948,
+    "sha256": "761fdbd46f49ca7400e7e502137b959ed2f49e5e4afbabcfe56323fad10f063e",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-018/raw/result.json.zst": {
+    "bytes": 7326,
+    "sha256": "8354a65f811a3bbae48acbca6489dcc50f7a4c8bd0c6762797c4bd29c5315281",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-018/raw/eval-only.jsonl.zst": {
+    "bytes": 1644020,
+    "sha256": "b064e6f61fd64746dc63d8894adffecfbcc3aff45c257d0a68542edacc7e6076",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-018/raw/student-eval.jsonl.zst": {
+    "bytes": 490409,
+    "sha256": "ec82ad01ca850198742ece42e0bdd44244d7418ca9dbb71c8fe9d76c2d7e398f",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-019/raw/plan.json": {
+    "bytes": 4957,
+    "sha256": "22792936eb233d12f515cd1aee643357a8e328ecdc16557926c3a625a94553dd",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-019/raw/result.json.zst": {
+    "bytes": 9627,
+    "sha256": "b980cd9a397705bf74a082232926490b4bea64295a1e769c6388768688e3a9a7",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-019/raw/eval-only.jsonl.zst": {
+    "bytes": 1784161,
+    "sha256": "c88c23758de522bda762e89a454e2a469d75db2feb78ff70951978e9d0d63eb5",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-019/raw/student-eval.jsonl.zst": {
+    "bytes": 515969,
+    "sha256": "37e11eaf5d1d8d47b072401bee9d494f3e732d71cf517446239c44a47dedf217",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/UGRP/outputs/reports/2026-10-27-baseline-resume-evidence/C-funnel-v1.json": {
+    "bytes": 9221,
+    "sha256": "6fb70b5cdc9d7421d6aca9497cf4a70a75984fffa2c9e14067cf1ef0b74575e2"
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-000/raw/plan.json": {
+    "bytes": 4945,
+    "sha256": "a482ebccc53745bc86eb4df198babe4762d55712623d5107d3885fca4df34069",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-000/raw/result.json.zst": {
+    "bytes": 7221,
+    "sha256": "85e86126ff233a2577dda86de3c2656003479c62481339c67d0b8386721e5c11",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-000/raw/eval-only.jsonl.zst": {
+    "bytes": 1067304,
+    "sha256": "0fe81efb6ec71aaf2153f9f8d5269e11b7784e154104043e13ae84eb1489cea0",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-000/raw/student-eval.jsonl.zst": {
+    "bytes": 281739,
+    "sha256": "4fb75a2ff4dd9ee9b066380ee8d927ebce82f8a5fed8a3decfd3f137cd01beb0",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-001/raw/plan.json": {
+    "bytes": 5024,
+    "sha256": "77bc93aec8e7b8da29d2e9ed486b8e19c23403fbc1d294bfd9211e07b332727d",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-001/raw/result.json.zst": {
+    "bytes": 10768,
+    "sha256": "2a59e59b52e4dbac04eb899adc77972c223e153e394493b9ca009ca3c79b6d21",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-001/raw/eval-only.jsonl.zst": {
+    "bytes": 1807776,
+    "sha256": "95056b69fc02cd9de034b7ad307453e55ef127f27a91147cbeab841dd5f19e6e",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-001/raw/student-eval.jsonl.zst": {
+    "bytes": 586582,
+    "sha256": "b94928a56712ccf975eee5a54176693db93bc8b78505a2eba5c878992365c496",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-002/raw/plan.json": {
+    "bytes": 4951,
+    "sha256": "61479d6d8fdadd968f0e71b6389eca44eed2cf2cedc7f842dcb22dc255b1d283",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-002/raw/result.json.zst": {
+    "bytes": 10038,
+    "sha256": "89288e64204c4ae92bf938f072597c8727887d059618f5abebcdd78b923e4542",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-002/raw/eval-only.jsonl.zst": {
+    "bytes": 1849381,
+    "sha256": "8dcd8a5967fb81f304f1b65a0fa9fca848e37532e0f5a14b4f881c9d9af016ab",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-002/raw/student-eval.jsonl.zst": {
+    "bytes": 499674,
+    "sha256": "04033a8a1db0179fadf36145246714d9e5a75d7d8bcf8c87ec5742051ce29a0a",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-003/raw/plan.json": {
+    "bytes": 4948,
+    "sha256": "756549218b9b3e61546d9fead93cc6503b3f2037012c7534cecd2154179916ce",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-003/raw/result.json.zst": {
+    "bytes": 10479,
+    "sha256": "eefe576304f85aa4244031ca9bf1709ccc0a268d96619e584cdde71415f7bb12",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-003/raw/eval-only.jsonl.zst": {
+    "bytes": 1819683,
+    "sha256": "e43afd26f2bee50ea022e4a053663fbb1cb142f7a4058056608561c33b54591d",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-003/raw/student-eval.jsonl.zst": {
+    "bytes": 570020,
+    "sha256": "fe2784808b98940c13c7b0d8d230402bfb6ac61776eaaa55b859aa06374f237e",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-004/raw/plan.json": {
+    "bytes": 5081,
+    "sha256": "3bd5ddc388ba2c13ce182548de8d10d578b3ea4e6613a6bcd9d2fb8f6383eb14",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-004/raw/result.json.zst": {
+    "bytes": 10718,
+    "sha256": "03183a583acb55fcb7da50f2749c2bd5462a92880a88ead7b280c7db9f8f1795",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-004/raw/eval-only.jsonl.zst": {
+    "bytes": 1739011,
+    "sha256": "a7277727b55b204301b45318e2d838ce2521881376124d9c151b46ce7c653b94",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-004/raw/student-eval.jsonl.zst": {
+    "bytes": 571676,
+    "sha256": "33261397aaac475da87aa5cbd554327e84856a09b3031a931d37f21d6c9a8f59",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-005/raw/plan.json": {
+    "bytes": 5035,
+    "sha256": "46d882439d29f2ce3bee15f0d4aac5623e563949e8c51ca54a382d1b843e1ed4",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-005/raw/result.json.zst": {
+    "bytes": 8958,
+    "sha256": "5d7fc37e84b14b63af7c13f305b665a8a1713bfe973a743d423763b619b264ab",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-005/raw/eval-only.jsonl.zst": {
+    "bytes": 1769201,
+    "sha256": "a99e601a27e42235074bacde264db70dad5ec5978283ad55ba4d97d0151b975a",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-005/raw/student-eval.jsonl.zst": {
+    "bytes": 545477,
+    "sha256": "93470586f67bbed5e50051c979ea7c165f3cd9fd4ce16a393312b8767c95b900",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-006/raw/plan.json": {
+    "bytes": 4949,
+    "sha256": "4cb94191376b64c924835da11c3cba40508b7d18bb0ac072790c21ce7931e281",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-006/raw/result.json.zst": {
+    "bytes": 11389,
+    "sha256": "7a029b5add7652f545e181bd0a1e9679e80dffaf2f1dd71e3373457a87a6628f",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-006/raw/eval-only.jsonl.zst": {
+    "bytes": 1752949,
+    "sha256": "5a1314944c44713c1254d690f268095cb4e96ced8853736e2b1d64a2eb0ae3e2",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-006/raw/student-eval.jsonl.zst": {
+    "bytes": 496389,
+    "sha256": "116d24107d470e284ca1fb145029601f1f25514fe4add2acb3c523fb339984f6",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-007/raw/plan.json": {
+    "bytes": 4954,
+    "sha256": "3a9658119c2ab03d0a937d630c29a3634723fa684250a97acd00939234018504",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-007/raw/result.json.zst": {
+    "bytes": 11218,
+    "sha256": "eb821f5b22ed12c5d39a042771035e5e919589c5799d0b23a47bb6c7292a04d4",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-007/raw/eval-only.jsonl.zst": {
+    "bytes": 1691046,
+    "sha256": "664ad883b4dc8c403543bace821d1d68b10f82c2ef8c12791838b0a0492c9ef3",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-007/raw/student-eval.jsonl.zst": {
+    "bytes": 495027,
+    "sha256": "3ee0ebcb234a50b657328c32addc6c2c5c166593bd1d13795ca30448ebbf27d9",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-008/raw/plan.json": {
+    "bytes": 4945,
+    "sha256": "4c35957e9ee4bbad5c6bb3a9207fd932fa6597cd293013316324836f9d206da4",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-008/raw/result.json.zst": {
+    "bytes": 10490,
+    "sha256": "876fecb666653c5ba6089a858baa9b38c7a0bd0c3dd875a93a061703c5183b80",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-008/raw/eval-only.jsonl.zst": {
+    "bytes": 1905906,
+    "sha256": "f59aca5a377546a0a7bc04255061c801544241f545def3f73b9c9ad28ffcc016",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-008/raw/student-eval.jsonl.zst": {
+    "bytes": 553649,
+    "sha256": "6e2b741af4708709d41abe297aa8fce6bfcd6fe068b2d0b1a69595ee9a206fbd",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-009/raw/plan.json": {
+    "bytes": 4946,
+    "sha256": "937ad0ebd13ea2252be0b544389dfb484e305a07240b887798b8e913c4bb201b",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-009/raw/result.json.zst": {
+    "bytes": 10771,
+    "sha256": "2ba3af57822d3d50282dd851700c56accc342b36d77e83e95d85294fa3e11ba0",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-009/raw/eval-only.jsonl.zst": {
+    "bytes": 1552053,
+    "sha256": "9e0fcbe374c35bbedd1e3b9d54fac7f4288614b8ec331db88a8a4f4979394099",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-009/raw/student-eval.jsonl.zst": {
+    "bytes": 525542,
+    "sha256": "2772e01b29ad0898cbb4076a08cc337af756d9fff11e5b9719a1da97c6b432ee",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-010/raw/plan.json": {
+    "bytes": 5034,
+    "sha256": "ed946fb8c1068510c0fa21e258431e6f77dd77ee16e82ada240fc7265d29e881",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-010/raw/result.json.zst": {
+    "bytes": 11031,
+    "sha256": "841c6b5bdb32b6105ae68141d5858d808c01b426466e76c915fcd1e982abb8d2",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-010/raw/eval-only.jsonl.zst": {
+    "bytes": 1692629,
+    "sha256": "05dc69dd80a664358020522258bcec50f6cdcaaea9dd84a53ad3076973610c98",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-010/raw/student-eval.jsonl.zst": {
+    "bytes": 568199,
+    "sha256": "e16ee2b6ce0d5271819d0f3b82b32c638ba83d6338e19563d699d7dabe6fb23b",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-011/raw/plan.json": {
+    "bytes": 5099,
+    "sha256": "81e1d089531e27515f8601da6210812a56bd347d704d7683b0fa6062af017432",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-011/raw/result.json.zst": {
+    "bytes": 10627,
+    "sha256": "d6c48b853a745cff6777393cd1fe0602788b152d89202c3d28d0607c022bc68b",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-011/raw/eval-only.jsonl.zst": {
+    "bytes": 1849051,
+    "sha256": "84d4cb435cc565fdf1397405f65ec89d7733e60109dfc04028847c9dfb1e05e6",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-011/raw/student-eval.jsonl.zst": {
+    "bytes": 582238,
+    "sha256": "8388676eb567eed5ff55cce4efcae20bc355a3f527162f0d2fce6977fb42fa03",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-012/raw/plan.json": {
+    "bytes": 4950,
+    "sha256": "e65fba6ba1ffabf98e8b55180cda8c11cb8b6f2ebf840d25fa8d83ffd33d941a",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-012/raw/result.json.zst": {
+    "bytes": 9581,
+    "sha256": "39b6d25f7147cf1d1f2b1dce79d38c71fa15b53d856dd05aa60992e5ba4ef21a",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-012/raw/eval-only.jsonl.zst": {
+    "bytes": 1521326,
+    "sha256": "2d79a54161ac9c116297f1d7281d43de80051e474c24073f082f9b2454f81882",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-012/raw/student-eval.jsonl.zst": {
+    "bytes": 428958,
+    "sha256": "55e7895483b073b4864133507fe024df9ec9463e9fb75952d36f00bc4310d700",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-013/raw/plan.json": {
+    "bytes": 4953,
+    "sha256": "04a8c07db9b48298b2b980ba603e870a90ec79e85c51d37f696f8751af21a7cf",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-013/raw/result.json.zst": {
+    "bytes": 10056,
+    "sha256": "1aca0fdcbfc2de91757235b5c0da06a4e2582bbd88d97b4fc0e067964595f4c7",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-013/raw/eval-only.jsonl.zst": {
+    "bytes": 1714363,
+    "sha256": "948dc3eff451a77e05c4da4cd54dd9e7fe2bbbfdb76e509998d7509560b887a0",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-013/raw/student-eval.jsonl.zst": {
+    "bytes": 507210,
+    "sha256": "c4a5e8e0dc41b6e1db1bb213bb511ab5639cfef5ecf6c5908b53cace23393226",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-014/raw/plan.json": {
+    "bytes": 4948,
+    "sha256": "ebbd8ed9e4634f6aabe9c026d474d17c1d3539c82a08fe3a36128f96fa5075ba",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-014/raw/result.json.zst": {
+    "bytes": 7611,
+    "sha256": "bea7eb8511afcfa871ef7ec831216150f0cff11d90c19715203c91fdad1ecab1",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-014/raw/eval-only.jsonl.zst": {
+    "bytes": 1792763,
+    "sha256": "664e74c189cf77224f725da150c92be1996443083fec97f27778915fe5c17b5f",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-014/raw/student-eval.jsonl.zst": {
+    "bytes": 471038,
+    "sha256": "1ce78819a0efe6a2a93e0c771a1285a2cfed95d90eec3ca4fdea934c03b8e7ef",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-015/raw/plan.json": {
+    "bytes": 5032,
+    "sha256": "ae58062571e234ff1b6f3d371c7a237ac366751f1e6d33afb98fc1dedd9e673a",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-015/raw/result.json.zst": {
+    "bytes": 9897,
+    "sha256": "a0a075af95a09006bb38ea9a7d2e85c7eae4c9eae993edf658942687a2e06ad4",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-015/raw/eval-only.jsonl.zst": {
+    "bytes": 1744892,
+    "sha256": "3fbd34e065bdf8e726a28f08b732680294800fcac0aebedd9fe729174e454393",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-015/raw/student-eval.jsonl.zst": {
+    "bytes": 533377,
+    "sha256": "25bff1716261eb32dd43bfabeff7138411de2b3e55016719e78229ee980a7799",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-016/raw/plan.json": {
+    "bytes": 4947,
+    "sha256": "4bffda16943caaf9bec4fffabbdea1a06487a52f39a174cf9ddf5bbf2f3b07c6",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-016/raw/result.json.zst": {
+    "bytes": 10928,
+    "sha256": "137a87175c5045fd8f0b936ba5b111a7e13126c850075461227c7bce14423810",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-016/raw/eval-only.jsonl.zst": {
+    "bytes": 1636401,
+    "sha256": "7dbc916850dc5f222a6ee0f596bc9967090f28889607665df4fcd941710a1ac5",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-016/raw/student-eval.jsonl.zst": {
+    "bytes": 552434,
+    "sha256": "4373c9fe526a3770625f370aea26baa5b4cf1f9f1cf6919696869f2103a6ad81",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-017/raw/plan.json": {
+    "bytes": 5095,
+    "sha256": "4c5a531fcfea76b0c183d2f5974e87a0afe78d9514061e7774c34655351a384b",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-017/raw/result.json.zst": {
+    "bytes": 10677,
+    "sha256": "870c75bbcc76c55662bac450e7cab8dd78f0da934e772dc88909675d7ecf906d",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-017/raw/eval-only.jsonl.zst": {
+    "bytes": 1577904,
+    "sha256": "c306121d4ef5243076dc598de652f1aafd2ebf3091199ca241f5fcce08f1585d",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-017/raw/student-eval.jsonl.zst": {
+    "bytes": 542418,
+    "sha256": "3787f484dd7a01acc3a878583b84a91ea073cf04785337782fcf503d301f1826",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-018/raw/plan.json": {
+    "bytes": 4948,
+    "sha256": "761fdbd46f49ca7400e7e502137b959ed2f49e5e4afbabcfe56323fad10f063e",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-018/raw/result.json.zst": {
+    "bytes": 8467,
+    "sha256": "da02a061cb1dc57e33c1e2153f0556fb268da2baf1c78af00e910897499285a3",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-018/raw/eval-only.jsonl.zst": {
+    "bytes": 1311876,
+    "sha256": "01c8b7f6bf7a524d507805cd999b5fd17fa0369811a4351e1ec775fad6fac96c",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-018/raw/student-eval.jsonl.zst": {
+    "bytes": 363214,
+    "sha256": "f18c0a7da0ddc6679b887aaf8715a5337e0db0285dd0146e33a0ea37be70f81e",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-019/raw/plan.json": {
+    "bytes": 4957,
+    "sha256": "22792936eb233d12f515cd1aee643357a8e328ecdc16557926c3a625a94553dd",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-019/raw/result.json.zst": {
+    "bytes": 9243,
+    "sha256": "9c40fd2fc65a0ed76b6facf81499f035ca303e13c891e99364b74867bf13fdb4",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-019/raw/eval-only.jsonl.zst": {
+    "bytes": 1777926,
+    "sha256": "bc762400aa5e816e849d6c475c5b394cdf058f450f09f8745b91cd67564c5151",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-019/raw/student-eval.jsonl.zst": {
+    "bytes": 513096,
+    "sha256": "9c3817f5d4f3a520d014292d16c088ac777ff64a2095f25b1b5d3e57cb32c9b6",
+    "matches_frozen_source_manifest": true
+  },
+  "/home/ubuntu/UGRP/outputs/reports/2026-10-27-baseline-resume-evidence/S-funnel-v1.json": {
+    "bytes": 9454,
+    "sha256": "009c90110f71e8dea95384f02a64f4a15703cde464b8ce311d14a9a0bdf45ff4"
+  },
+  "/home/ubuntu/UGRP/outputs/reports/2026-10-27-d0d1d2-diagnostic-evidence/analyze.py": {
+    "bytes": 28181,
+    "sha256": "72af747754bd95603982c2ddbdc20449d68c7e431341797a776407a0d56bea54"
+  }
+}

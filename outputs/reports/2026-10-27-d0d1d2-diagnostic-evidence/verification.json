@@ -1,0 +1,149 @@
+{
+  "status": "PASS",
+  "utc": "2026-10-27T02:10:48.105242+00:00",
+  "independent_frame_formula_checks": 69444,
+  "independent_episode_minimum_checks": 40,
+  "all_used_input_hashes_rechecked": 167,
+  "aggregate_count_checks": 24,
+  "extras": {
+    "C": {
+      "both_robots_ready_at_some_time_worlds": [
+        0,
+        2,
+        13,
+        14,
+        18
+      ],
+      "each_ever_ready_but_not_joint_worlds": [
+        0,
+        2,
+        13,
+        14,
+        18
+      ],
+      "ready_runs": {
+        "n": 302,
+        "min": 1,
+        "max": 128
+      },
+      "issued_command_conditionals": {
+        "wheel_nonzero=False": {
+          "N": 54547,
+          "READY": 877,
+          "rate": 0.01607787779346252
+        },
+        "software_hold=False": {
+          "N": 69926,
+          "READY": 877,
+          "rate": 0.012541829934502188
+        },
+        "permit=False": {
+          "N": 69926,
+          "READY": 877,
+          "rate": 0.012541829934502188
+        },
+        "wheel_nonzero=True": {
+          "N": 15379,
+          "READY": 0,
+          "rate": 0.0
+        }
+      },
+      "joint_ready_margin_frames": [],
+      "nearest_failed_episode_world": 7
+    },
+    "S": {
+      "both_robots_ready_at_some_time_worlds": [
+        0,
+        5,
+        12,
+        17
+      ],
+      "each_ever_ready_but_not_joint_worlds": [
+        5,
+        12,
+        17
+      ],
+      "ready_runs": {
+        "n": 55,
+        "min": 1,
+        "max": 289
+      },
+      "issued_command_conditionals": {
+        "wheel_nonzero=False": {
+          "N": 53209,
+          "READY": 1674,
+          "rate": 0.031460843090454625
+        },
+        "software_hold=False": {
+          "N": 60639,
+          "READY": 3,
+          "rate": 4.947311136397368e-05
+        },
+        "permit=False": {
+          "N": 68161,
+          "READY": 1671,
+          "rate": 0.0245154853948739
+        },
+        "wheel_nonzero=True": {
+          "N": 15753,
+          "READY": 0,
+          "rate": 0.0
+        },
+        "software_hold=True": {
+          "N": 8323,
+          "READY": 1671,
+          "rate": 0.20076895350234292
+        },
+        "permit=True": {
+          "N": 801,
+          "READY": 3,
+          "rate": 0.003745318352059925
+        }
+      },
+      "joint_ready_margin_frames": [
+        {
+          "world": 0,
+          "t": 92.10000000000015,
+          "m": 1.9843108176952868
+        },
+        {
+          "world": 0,
+          "t": 94.10000000000015,
+          "m": 1.983893816012384
+        },
+        {
+          "world": 0,
+          "t": 96.60000000000015,
+          "m": 1.9835994388544305
+        },
+        {
+          "world": 0,
+          "t": 99.30000000000015,
+          "m": 1.980850495846684
+        },
+        {
+          "world": 0,
+          "t": 99.50000000000016,
+          "m": 1.9806625318356912
+        },
+        {
+          "world": 0,
+          "t": 99.90000000000015,
+          "m": 1.9798778428921762
+        },
+        {
+          "world": 0,
+          "t": 100.00000000000016,
+          "m": 1.9796560115046984
+        },
+        {
+          "world": 0,
+          "t": 100.10000000000015,
+          "m": 1.980330355633661
+        }
+      ],
+      "nearest_failed_episode_world": 15
+    }
+  },
+  "scope": "CPU arithmetic only; exported rows independently recomputed; raw geometry was checked against original geometry() and stored flags by analyze.py"
+}
