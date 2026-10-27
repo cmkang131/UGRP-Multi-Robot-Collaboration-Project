@@ -1,0 +1,192 @@
+{
+  "exclusions": [
+    {
+      "batch_success": false,
+      "blocked_object": "UNKNOWN:not_observed",
+      "cap_end": true,
+      "carried_max_m": null,
+      "carry_eval_success": null,
+      "funnel": null,
+      "min_gap_m": null,
+      "raw": "/home/ubuntu/UGRP/outputs/transfer/gcp6-20261021-shardsmoke/pairact-p2-c4-20261021T0555Z/pilot-8343000-b/world-001/raw",
+      "reason": "cap_end",
+      "seed": 8343021,
+      "world": 1
+    },
+    {
+      "batch_success": true,
+      "blocked_object": "UNKNOWN:not_observed",
+      "cap_end": false,
+      "carried_max_m": 0.000328983451096721,
+      "carry_eval_success": false,
+      "funnel": {
+        "carried_1m": false,
+        "door_passed": false,
+        "handover": true,
+        "lowered_resting": false,
+        "released": false,
+        "still_1s": true,
+        "zone_inside_final": false
+      },
+      "min_gap_m": null,
+      "raw": "/home/ubuntu/UGRP/outputs/transfer/gcp6-20261021-shardsmoke/pairact-p2-c4-20261021T0555Z/pilot-8343000-b/world-010/raw",
+      "reason": "not_through_door",
+      "seed": 8343030,
+      "world": 10
+    },
+    {
+      "batch_success": true,
+      "blocked_object": "UNKNOWN:not_observed",
+      "cap_end": false,
+      "carried_max_m": 0.00047950476774747487,
+      "carry_eval_success": false,
+      "funnel": {
+        "carried_1m": false,
+        "door_passed": false,
+        "handover": true,
+        "lowered_resting": false,
+        "released": false,
+        "still_1s": true,
+        "zone_inside_final": false
+      },
+      "min_gap_m": null,
+      "raw": "/home/ubuntu/UGRP/outputs/transfer/gcp6-20261021-shardsmoke/pairact-p2-c4-20261021T0555Z/pilot-8343000-b/world-016/raw",
+      "reason": "not_through_door",
+      "seed": 8343036,
+      "world": 16
+    },
+    {
+      "batch_success": true,
+      "blocked_object": "UNKNOWN:not_observed",
+      "cap_end": false,
+      "carried_max_m": 0.00021076766235535922,
+      "carry_eval_success": false,
+      "funnel": {
+        "carried_1m": false,
+        "door_passed": false,
+        "handover": true,
+        "lowered_resting": false,
+        "released": false,
+        "still_1s": true,
+        "zone_inside_final": false
+      },
+      "min_gap_m": null,
+      "raw": "/home/ubuntu/UGRP/outputs/transfer/gcp6-20261021-shardsmoke/pairact-p2-c4-20261021T0555Z/pilot-8343000-b/world-018/raw",
+      "reason": "not_through_door",
+      "seed": 8343038,
+      "world": 18
+    },
+    {
+      "batch_success": false,
+      "blocked_object": "UNKNOWN:not_observed",
+      "cap_end": false,
+      "carried_max_m": null,
+      "carry_eval_success": null,
+      "funnel": null,
+      "min_gap_m": null,
+      "raw": "/home/ubuntu/UGRP/outputs/transfer/gcp6-20261021-shardsmoke/pairact-p2-c4-20261021T0555Z/pilot-8343000-b/world-019/raw",
+      "reason": "carry_eval_missing",
+      "seed": 8343039,
+      "world": 19
+    }
+  ],
+  "funnel": [
+    {
+      "passed_cumulative_N": 20,
+      "rejected_N": 0,
+      "stage": "requested"
+    },
+    {
+      "passed_cumulative_N": 18,
+      "rejected_N": 2,
+      "stage": "carry_eval_present"
+    },
+    {
+      "passed_cumulative_N": 15,
+      "rejected_N": 3,
+      "stage": "legacy_carry_success"
+    },
+    {
+      "passed_cumulative_N": 15,
+      "rejected_N": 0,
+      "stage": "carried_1m"
+    },
+    {
+      "passed_cumulative_N": 15,
+      "rejected_N": 0,
+      "stage": "door_passed"
+    },
+    {
+      "passed_cumulative_N": 15,
+      "rejected_N": 0,
+      "stage": "distance_at_least_1m"
+    },
+    {
+      "passed_cumulative_N": 15,
+      "rejected_N": 0,
+      "stage": "final_placement_release_still"
+    },
+    {
+      "passed_cumulative_N": 15,
+      "rejected_N": 0,
+      "stage": "no_drops"
+    },
+    {
+      "passed_cumulative_N": 15,
+      "rejected_N": 0,
+      "stage": "robot_robot_proxy_zero"
+    },
+    {
+      "passed_cumulative_N": 15,
+      "rejected_N": 0,
+      "stage": "weld_off_visible_only_clean_audit"
+    }
+  ],
+  "funnel_valid_n": 15,
+  "legacy_batch_success_n": 18,
+  "original_reproduce": [
+    "/home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py",
+    "--flow",
+    "beampair",
+    "--adapter-source",
+    "/home/ugrp/ugrp-sim/src/pairact-p2-c4/adapter",
+    "--teacher-source",
+    "/home/ugrp/ugrp-sim/src/pairact-p2-c4/teacher",
+    "--cases",
+    "/home/ugrp/ugrp-sim/runs/pairact-p2-c4-20261021T0555Z/p2-seed8343000-cases.json",
+    "--indices",
+    "20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39",
+    "--cap-s",
+    "60",
+    "--out",
+    "/home/ugrp/ugrp-sim/runs/pairact-p2-c4-20261021T0555Z/pilot-8343000-b",
+    "--vm-hourly-usd",
+    "1.096",
+    "--gcp6-isolated-v1",
+    "--placement-graspable-filter-v1",
+    "--world-model-parameters-v1",
+    "--native-sleep-policy-compat-v1",
+    "--full-active-dof-workspace-v1",
+    "--warp-native-contact-v1",
+    "--canonical-xml",
+    "/home/ugrp/ugrp-sim/runs/beamact5/wide-export-old-8343000e-c4b/canonical-scene.xml",
+    "--per-world-model-references-v1",
+    "/home/ugrp/ugrp-sim/runs/beamact5/native-refs-8343000e-c4b/per-world-references.json",
+    "--rejection-table",
+    "/home/ugrp/ugrp-sim/runs/beamact5/wide-start-8343000/wide-setup-funnel.json",
+    "--batch-per-world-speed-v1"
+  ],
+  "prior_rejection_table": "/home/ugrp/ugrp-sim/runs/beamact5/wide-start-8343000/wide-setup-funnel.json",
+  "raw": "/home/ubuntu/UGRP/outputs/transfer/gcp6-20261021-shardsmoke/pairact-p2-c4-20261021T0555Z/pilot-8343000-b",
+  "reproduce": [
+    "/usr/bin/python3",
+    "/home/ubuntu/ugrp-wt/codex-han32-success-strict-20261028/experiments/2026-10-28-pair-teacher-carry-mjwarp-level-a/seal_level_a.py"
+  ],
+  "scope": "offline teacher-level / HOLD_SCENE / not a gate / new cohort / do not pool",
+  "source_rejection_table": "/home/ubuntu/UGRP/outputs/transfer/gcp6-20261021-shardsmoke/pairact-p2-c4-20261021T0555Z/pilot-8343000-b/rejection_table.json",
+  "summary_overcount_worlds": [
+    10,
+    16,
+    18
+  ]
+}
