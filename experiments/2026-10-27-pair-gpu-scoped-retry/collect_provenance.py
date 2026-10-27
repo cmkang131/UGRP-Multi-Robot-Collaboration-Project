@@ -39,6 +39,8 @@ def main():
         summary_path = root/name/'summary.json'
         batch = read(summary_path) if summary_path.exists() else {}
         disposition = meta['arms'][arm]['status']
+        resource_path = root/(name+'.host-resource-stop.json')
+        resource = read(resource_path) if resource_path.exists() else None
         for i in range(20):
             row = dict(by_world.get(i, {}), arm=arm, world=i, seed=8342000+i)
             row.setdefault('normal_complete', False)
@@ -51,6 +53,10 @@ def main():
             row['cpu_init_mj_step_count'] = cpu[i]['cpu_init_mj_step_count'] if i in cpu else (
                 0 if disposition.startswith('NOT_EXECUTED') else None)
             row['cpu_guard_phase'] = cpu[i]['phase'] if i in cpu else 'NOT_EXECUTED_OR_UNOBSERVED'
+            if resource and not row['normal_complete']:
+                row['original_audit_reason_category'] = row['reason_category']
+                row['reason_category'] = resource['reason']
+                row['resource_stop_source'] = str(resource_path)
             row['raw_dir'] = str(root/name/f'world-{i:03d}'/'raw')
             # For incomplete lanes retain the actual last stored flags/stages.
             # These are deliberately separate from the completed sequential funnel.
@@ -73,8 +79,9 @@ def main():
             observed_normal_complete_N=audit.get('N_eff', 0),
             observed_successes=audit.get('successes'),
             original_audit_integrity_pass=audit.get('integrity_pass'),
-            cpu_init_mj_step_count=guard['cpu_init_mj_step_count'] if guard else None,
-            template_cpu_init_mj_step_count=guard['template']['cpu_init_mj_step_count'] if guard else None,
+            cpu_init_mj_step_count=guard['cpu_init_mj_step_count'] if guard else (0 if disposition.startswith('NOT_EXECUTED') else None),
+            template_cpu_init_mj_step_count=guard['template']['cpu_init_mj_step_count'] if guard else (0 if disposition.startswith('NOT_EXECUTED') else None),
+            host_resource_stop=resource,
             rollout_cpu_denial_events=guard['rollout_cpu_denial_events'] if guard else None,
             candidate_funnel=audit.get('candidate_funnel'), frame_funnel=audit.get('frame_funnel'),
             event_gate_funnel=audit.get('event_gate_funnel'),
