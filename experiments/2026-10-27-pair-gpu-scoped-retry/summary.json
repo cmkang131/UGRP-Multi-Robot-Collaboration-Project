@@ -1,0 +1,1422 @@
+{
+  "schema": "ugrp.pair-gpu-scoped-retry.short-summary.v1",
+  "SIM": true,
+  "REAL": false,
+  "research_result": false,
+  "classification": "separate_diagnostic",
+  "branch": "codex/pair-gpu-retry-gcp6-20261027",
+  "execution_wrapper_commit": "cecfe2516155540923bf3d2be039bda55f535141",
+  "execution_ops_commit": "8880e81e8",
+  "physics_backend": "mjwarp_batch_v1",
+  "actor": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/main/step-011000/actor",
+  "actor_sha256": {
+    "ACTOR/model.safetensors": "8263ad3f135048fea46d5cb85fee1d70910bdc399babbd1f2f20d92c2fbea271",
+    "ACTOR/config.json": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f",
+    "ACTOR/adapter.json": "84811d26bb0a8bdcc9431bb3c8d5947c70dc8ccd0ba8cf6471566f15f0f1e018",
+    "ACTOR/SHA256.json": "b5c3156fd03477e0663c59d09dfa71db4fe321e4782248cddbb256d2b7169a08"
+  },
+  "source_heads": {
+    "R": "e5620e839907dc69d3b014becae2cbda4bbe27da",
+    "A": "afd7a6e17c6501d308b6a1d9015b15f5d5da9ed4",
+    "T": "75929e7719ad98a089e3dda5251f4249d8bae511",
+    "S": "3c9337d5f5c9deefd49139b26ae7117022e3d5cc"
+  },
+  "vm": {
+    "project": "ugrp-sim-f-1016",
+    "zone": "asia-northeast1-c",
+    "instance": "ugrp-act-l4-gcp6",
+    "id": "2102818194467198298",
+    "boot_disk": "ugrp-gcp6-baseline-20261027",
+    "status": "TERMINATED",
+    "start_kst": "2026-10-27T20:09:50.392000+09:00",
+    "stop_kst": "2026-10-28T00:10:58.049000+09:00",
+    "timestamp_source": "GCE lastStartTimestamp/lastStopTimestamp",
+    "allocated_GPU_h": 4.018793611111111
+  },
+  "estimated_prior_GPU_h": 17.803326944444443,
+  "estimated_cumulative_GPU_h": 21.822120555555554,
+  "approved_global_cap_GPU_h": 25.3,
+  "original_host_cap_GPU_h": 5.3,
+  "pooled_with_existing_study": false,
+  "arms": {
+    "arm_s": {
+      "disposition": "COMPLETE",
+      "batch_status": "complete",
+      "planned_N": 20,
+      "started_N": 20,
+      "completed_N": 20,
+      "observed_normal_complete_N": 20,
+      "observed_successes": 0,
+      "original_audit_integrity_pass": true,
+      "cpu_init_mj_step_count": 146960,
+      "template_cpu_init_mj_step_count": 0,
+      "host_resource_stop": null,
+      "rollout_cpu_denial_events": [],
+      "candidate_funnel": [
+        {
+          "stage": "approach",
+          "passed_cumulative_N": 20,
+          "rejected_N": 0,
+          "denominator_normal_N": 20,
+          "observation_source": "eval_only_GT_geometry"
+        },
+        {
+          "stage": "alignment",
+          "passed_cumulative_N": 1,
+          "rejected_N": 19,
+          "denominator_normal_N": 20,
+          "observation_source": "eval_only_GT_geometry"
+        },
+        {
+          "stage": "READY",
+          "passed_cumulative_N": 0,
+          "rejected_N": 1,
+          "denominator_normal_N": 20,
+          "observation_source": "simultaneous_own_policy_stage_ready"
+        },
+        {
+          "stage": "grasp",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0,
+          "denominator_normal_N": 20,
+          "observation_source": "eval_only_GT_contact"
+        },
+        {
+          "stage": "hold_3s",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0,
+          "denominator_normal_N": 20,
+          "observation_source": "original_physics_held_flag"
+        },
+        {
+          "stage": "carry_1m",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0,
+          "denominator_normal_N": 20,
+          "observation_source": "original_eval_only_carry_evaluator"
+        },
+        {
+          "stage": "door",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0,
+          "denominator_normal_N": 20,
+          "observation_source": "original_eval_only_carry_evaluator"
+        },
+        {
+          "stage": "place",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0,
+          "denominator_normal_N": 20,
+          "observation_source": "original_eval_only_carry_evaluator"
+        }
+      ],
+      "speed": {
+        "median_wall_per_world_SIM": 1.992081391965,
+        "per_world_ratios": [
+          1.992081391965,
+          1.992081391965,
+          1.992081391965,
+          1.992081391965,
+          1.992081391965,
+          1.992081391965,
+          1.992081391965,
+          1.992081391965,
+          1.992081391965,
+          1.992081391965,
+          1.992081391965,
+          1.992081391965,
+          1.992081391965,
+          1.992081391965,
+          1.992081391965,
+          1.992081391965,
+          1.992081391965,
+          1.992081391965,
+          1.992081391965,
+          1.992081391965
+        ],
+        "original_batch_metric": 1.992081391965,
+        "denominator": "loop wall allocated equally across N lanes, divided by each completed/active task SIM",
+        "threshold_basis": "MiniMax P-23 / existing project >6.0, warning >3.5",
+        "SPEED_GATE_FAIL": false,
+        "warning": false
+      },
+      "pilot": null
+    },
+    "arm_c": {
+      "disposition": "COMPLETE",
+      "batch_status": "complete",
+      "planned_N": 20,
+      "started_N": 20,
+      "completed_N": 20,
+      "observed_normal_complete_N": 20,
+      "observed_successes": 0,
+      "original_audit_integrity_pass": true,
+      "cpu_init_mj_step_count": 146960,
+      "template_cpu_init_mj_step_count": 0,
+      "host_resource_stop": null,
+      "rollout_cpu_denial_events": [],
+      "candidate_funnel": [
+        {
+          "stage": "approach",
+          "passed_cumulative_N": 20,
+          "rejected_N": 0,
+          "denominator_normal_N": 20,
+          "observation_source": "eval_only_GT_geometry"
+        },
+        {
+          "stage": "alignment",
+          "passed_cumulative_N": 0,
+          "rejected_N": 20,
+          "denominator_normal_N": 20,
+          "observation_source": "eval_only_GT_geometry"
+        },
+        {
+          "stage": "READY",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0,
+          "denominator_normal_N": 20,
+          "observation_source": "simultaneous_own_policy_stage_ready"
+        },
+        {
+          "stage": "grasp",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0,
+          "denominator_normal_N": 20,
+          "observation_source": "eval_only_GT_contact"
+        },
+        {
+          "stage": "hold_3s",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0,
+          "denominator_normal_N": 20,
+          "observation_source": "original_physics_held_flag"
+        },
+        {
+          "stage": "carry_1m",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0,
+          "denominator_normal_N": 20,
+          "observation_source": "original_eval_only_carry_evaluator"
+        },
+        {
+          "stage": "door",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0,
+          "denominator_normal_N": 20,
+          "observation_source": "original_eval_only_carry_evaluator"
+        },
+        {
+          "stage": "place",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0,
+          "denominator_normal_N": 20,
+          "observation_source": "original_eval_only_carry_evaluator"
+        }
+      ],
+      "speed": {
+        "median_wall_per_world_SIM": 1.977615831258334,
+        "per_world_ratios": [
+          1.977615831258334,
+          1.977615831258334,
+          1.977615831258334,
+          1.977615831258334,
+          1.977615831258334,
+          1.977615831258334,
+          1.977615831258334,
+          1.977615831258334,
+          1.977615831258334,
+          1.977615831258334,
+          1.977615831258334,
+          1.977615831258334,
+          1.977615831258334,
+          1.977615831258334,
+          1.977615831258334,
+          1.977615831258334,
+          1.977615831258334,
+          1.977615831258334,
+          1.977615831258334,
+          1.977615831258334
+        ],
+        "original_batch_metric": 1.977615831258334,
+        "denominator": "loop wall allocated equally across N lanes, divided by each completed/active task SIM",
+        "threshold_basis": "MiniMax P-23 / existing project >6.0, warning >3.5",
+        "SPEED_GATE_FAIL": false,
+        "warning": false
+      },
+      "pilot": {
+        "schema": "ugrp.baseline-treatment.pilot-gate.v2",
+        "completed_worlds": [
+          0,
+          18,
+          9,
+          7
+        ],
+        "checks": {
+          "close_gate_count_zero": true,
+          "zero_rejections_nonzero_wheels_and_translation": true,
+          "stage_record_and_HOLD_valid": true,
+          "HOST_ERROR_zero": true
+        },
+        "pass_gate": true,
+        "rejections": {},
+        "nonzero_wheel_robot_ticks": 1367,
+        "stages": {
+          "approach": 5062,
+          "alignment": 1722,
+          "ready": 130,
+          "execute": 1092,
+          "place": 4
+        },
+        "all_approach": false,
+        "all_approach_rule": "CONTINUE if all four integrity checks pass; never outcome-tune",
+        "hold_issues": [],
+        "terminations": [
+          {
+            "world": 0,
+            "termination": "learned_finished_early",
+            "raw_cap_end": false,
+            "sim_s": 51.1,
+            "finished_t": 53.30000000000015,
+            "episode_origin_t": 2.200000000000151,
+            "finished_elapsed_s": 51.1,
+            "batch_cap_end": null,
+            "batch_raw_cap_end_disagreement": false,
+            "audit_issues": [],
+            "denominator_included": true
+          },
+          {
+            "world": 18,
+            "termination": "learned_finished_early",
+            "raw_cap_end": false,
+            "sim_s": 102.30000000000001,
+            "finished_t": 104.50000000000016,
+            "episode_origin_t": 2.200000000000151,
+            "finished_elapsed_s": 102.30000000000001,
+            "batch_cap_end": null,
+            "batch_raw_cap_end_disagreement": false,
+            "audit_issues": [],
+            "denominator_included": true
+          },
+          {
+            "world": 9,
+            "termination": "learned_finished_early",
+            "raw_cap_end": false,
+            "sim_s": 113.9,
+            "finished_t": 116.10000000000015,
+            "episode_origin_t": 2.200000000000151,
+            "finished_elapsed_s": 113.9,
+            "batch_cap_end": null,
+            "batch_raw_cap_end_disagreement": false,
+            "audit_issues": [],
+            "denominator_included": true
+          },
+          {
+            "world": 7,
+            "termination": "learned_finished_early",
+            "raw_cap_end": false,
+            "sim_s": 132.8,
+            "finished_t": 135.00000000000017,
+            "episode_origin_t": 2.200000000000151,
+            "finished_elapsed_s": 132.8,
+            "batch_cap_end": null,
+            "batch_raw_cap_end_disagreement": false,
+            "audit_issues": [],
+            "denominator_included": true
+          }
+        ],
+        "physical_motion": [
+          {
+            "world": 0,
+            "schema": "ugrp.baseline-treatment.eval-motion.v1",
+            "status": "MEASURED",
+            "robots": {
+              "r1": {
+                "max_xy_excursion_m": 0.33240617337926653,
+                "net_xy_displacement_m": 0.33240617337926653,
+                "xy_path_m": 0.4009493446981355,
+                "yaw_path_rad": 0.8499488280986645
+              },
+              "r2": {
+                "max_xy_excursion_m": 0.2033915384798026,
+                "net_xy_displacement_m": 0.2032251240875176,
+                "xy_path_m": 0.31648600704665064,
+                "yaw_path_rad": 1.6236362068879553
+              }
+            },
+            "raw_path": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-c/world-000/raw/eval-only.jsonl.zst",
+            "bytes": 560772,
+            "sha256": "d1e9f650d573d22d96c50bc5515d4c33d8c76b582769840c782e46e91033a5a4",
+            "decoded_sha256": "f7ec001343cdf94578aa3e3bb6d5aef7ec4634c5c2b00fd319a467aaa8d14807",
+            "samples": 512,
+            "first_t": 2.200000000000151,
+            "last_t": 53.30000000000015
+          },
+          {
+            "world": 18,
+            "schema": "ugrp.baseline-treatment.eval-motion.v1",
+            "status": "MEASURED",
+            "robots": {
+              "r1": {
+                "max_xy_excursion_m": 0.3401529750314753,
+                "net_xy_displacement_m": 0.3396066876962711,
+                "xy_path_m": 0.6550790042748887,
+                "yaw_path_rad": 6.626619913902801
+              },
+              "r2": {
+                "max_xy_excursion_m": 0.17843227851678203,
+                "net_xy_displacement_m": 0.17622607628641374,
+                "xy_path_m": 0.45942011913794767,
+                "yaw_path_rad": 1.33077049833207
+              }
+            },
+            "raw_path": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-c/world-018/raw/eval-only.jsonl.zst",
+            "bytes": 1081327,
+            "sha256": "b36e4ebbb839719f68cb7883e085f4e9142ff108ad66e768e40fed4776d44845",
+            "decoded_sha256": "cad197bdbc21ab68ec79ffa5e1c787ae008d550f9c54e5b787657d93e8549335",
+            "samples": 1024,
+            "first_t": 2.200000000000151,
+            "last_t": 104.50000000000016
+          },
+          {
+            "world": 9,
+            "schema": "ugrp.baseline-treatment.eval-motion.v1",
+            "status": "MEASURED",
+            "robots": {
+              "r1": {
+                "max_xy_excursion_m": 0.5947836433286514,
+                "net_xy_displacement_m": 0.5631540817989847,
+                "xy_path_m": 0.9560903413355417,
+                "yaw_path_rad": 5.215332026197589
+              },
+              "r2": {
+                "max_xy_excursion_m": 0.6910273152397179,
+                "net_xy_displacement_m": 0.6887112448193604,
+                "xy_path_m": 1.3040006014474135,
+                "yaw_path_rad": 11.160515965543784
+              }
+            },
+            "raw_path": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-c/world-009/raw/eval-only.jsonl.zst",
+            "bytes": 1180894,
+            "sha256": "cd861db6d5e48dcfbaffaae27a849e56e5f47d3c0fc3443debee09d25b813295",
+            "decoded_sha256": "a7fc0f790bde8c791592372aa7f013ba76869b3bf64311cb5ab756a04ef9420e",
+            "samples": 1140,
+            "first_t": 2.200000000000151,
+            "last_t": 116.10000000000015
+          },
+          {
+            "world": 7,
+            "schema": "ugrp.baseline-treatment.eval-motion.v1",
+            "status": "MEASURED",
+            "robots": {
+              "r1": {
+                "max_xy_excursion_m": 0.1915984540257873,
+                "net_xy_displacement_m": 0.1895486301509374,
+                "xy_path_m": 0.4213833938637608,
+                "yaw_path_rad": 3.2581439613403975
+              },
+              "r2": {
+                "max_xy_excursion_m": 0.157303127889156,
+                "net_xy_displacement_m": 0.13833657880789454,
+                "xy_path_m": 0.6566748052606681,
+                "yaw_path_rad": 5.498349677165541
+              }
+            },
+            "raw_path": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-c/world-007/raw/eval-only.jsonl.zst",
+            "bytes": 1352818,
+            "sha256": "aad46d027f3060117bad973afb56f60510c59d3c4d4fd97e942c4d7baa650271",
+            "decoded_sha256": "f3d48052e55fa9a39aa45bea1fa3e6ed0f40767ffa61bd9ee72b5a937d262386",
+            "samples": 1329,
+            "first_t": 2.200000000000151,
+            "last_t": 135.00000000000017
+          }
+        ],
+        "motion_issues": [],
+        "translated_robot_worlds": [
+          {
+            "world": 0,
+            "robot_id": "r1",
+            "max_xy_excursion_m": 0.33240617337926653
+          },
+          {
+            "world": 0,
+            "robot_id": "r2",
+            "max_xy_excursion_m": 0.2033915384798026
+          },
+          {
+            "world": 18,
+            "robot_id": "r1",
+            "max_xy_excursion_m": 0.3401529750314753
+          },
+          {
+            "world": 18,
+            "robot_id": "r2",
+            "max_xy_excursion_m": 0.17843227851678203
+          },
+          {
+            "world": 9,
+            "robot_id": "r1",
+            "max_xy_excursion_m": 0.5947836433286514
+          },
+          {
+            "world": 9,
+            "robot_id": "r2",
+            "max_xy_excursion_m": 0.6910273152397179
+          },
+          {
+            "world": 7,
+            "robot_id": "r1",
+            "max_xy_excursion_m": 0.1915984540257873
+          },
+          {
+            "world": 7,
+            "robot_id": "r2",
+            "max_xy_excursion_m": 0.157303127889156
+          }
+        ],
+        "physical_motion_column": "max_xy_excursion_m",
+        "translation_threshold_m": 0.03082987502070276,
+        "translation_rule": "all four worlds measured for both robots; at least one robot-world strictly exceeds r2 P100 XY excursion",
+        "cost_note": "20 concurrent lanes already run; no 0.34 GPU-h stopping-cost guarantee"
+      }
+    }
+  },
+  "episodes": [
+    {
+      "arm": "arm_s",
+      "world": 0,
+      "seed": 8342000,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "teacher_terminal",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-s/world-000/raw"
+    },
+    {
+      "arm": "arm_s",
+      "world": 1,
+      "seed": 8342001,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "cap_end",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-s/world-001/raw"
+    },
+    {
+      "arm": "arm_s",
+      "world": 2,
+      "seed": 8342002,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "cap_end",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-s/world-002/raw"
+    },
+    {
+      "arm": "arm_s",
+      "world": 3,
+      "seed": 8342003,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "cap_end",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-s/world-003/raw"
+    },
+    {
+      "arm": "arm_s",
+      "world": 4,
+      "seed": 8342004,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "cap_end",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-s/world-004/raw"
+    },
+    {
+      "arm": "arm_s",
+      "world": 5,
+      "seed": 8342005,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": true,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "cap_end",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-s/world-005/raw"
+    },
+    {
+      "arm": "arm_s",
+      "world": 6,
+      "seed": 8342006,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "cap_end",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-s/world-006/raw"
+    },
+    {
+      "arm": "arm_s",
+      "world": 7,
+      "seed": 8342007,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "teacher_terminal",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-s/world-007/raw"
+    },
+    {
+      "arm": "arm_s",
+      "world": 8,
+      "seed": 8342008,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "cap_end",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-s/world-008/raw"
+    },
+    {
+      "arm": "arm_s",
+      "world": 9,
+      "seed": 8342009,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "cap_end",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-s/world-009/raw"
+    },
+    {
+      "arm": "arm_s",
+      "world": 10,
+      "seed": 8342010,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "cap_end",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-s/world-010/raw"
+    },
+    {
+      "arm": "arm_s",
+      "world": 11,
+      "seed": 8342011,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "teacher_terminal",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-s/world-011/raw"
+    },
+    {
+      "arm": "arm_s",
+      "world": 12,
+      "seed": 8342012,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "teacher_terminal",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-s/world-012/raw"
+    },
+    {
+      "arm": "arm_s",
+      "world": 13,
+      "seed": 8342013,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "cap_end",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-s/world-013/raw"
+    },
+    {
+      "arm": "arm_s",
+      "world": 14,
+      "seed": 8342014,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "cap_end",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-s/world-014/raw"
+    },
+    {
+      "arm": "arm_s",
+      "world": 15,
+      "seed": 8342015,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "cap_end",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-s/world-015/raw"
+    },
+    {
+      "arm": "arm_s",
+      "world": 16,
+      "seed": 8342016,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "cap_end",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-s/world-016/raw"
+    },
+    {
+      "arm": "arm_s",
+      "world": 17,
+      "seed": 8342017,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "cap_end",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-s/world-017/raw"
+    },
+    {
+      "arm": "arm_s",
+      "world": 18,
+      "seed": 8342018,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "teacher_terminal",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-s/world-018/raw"
+    },
+    {
+      "arm": "arm_s",
+      "world": 19,
+      "seed": 8342019,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "cap_end",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-s/world-019/raw"
+    },
+    {
+      "arm": "arm_c",
+      "world": 0,
+      "seed": 8342000,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "teacher_terminal",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-c/world-000/raw"
+    },
+    {
+      "arm": "arm_c",
+      "world": 1,
+      "seed": 8342001,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "cap_end",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-c/world-001/raw"
+    },
+    {
+      "arm": "arm_c",
+      "world": 2,
+      "seed": 8342002,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "cap_end",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-c/world-002/raw"
+    },
+    {
+      "arm": "arm_c",
+      "world": 3,
+      "seed": 8342003,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "cap_end",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-c/world-003/raw"
+    },
+    {
+      "arm": "arm_c",
+      "world": 4,
+      "seed": 8342004,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "cap_end",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-c/world-004/raw"
+    },
+    {
+      "arm": "arm_c",
+      "world": 5,
+      "seed": 8342005,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "cap_end",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-c/world-005/raw"
+    },
+    {
+      "arm": "arm_c",
+      "world": 6,
+      "seed": 8342006,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "cap_end",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-c/world-006/raw"
+    },
+    {
+      "arm": "arm_c",
+      "world": 7,
+      "seed": 8342007,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "teacher_terminal",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-c/world-007/raw"
+    },
+    {
+      "arm": "arm_c",
+      "world": 8,
+      "seed": 8342008,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "teacher_terminal",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-c/world-008/raw"
+    },
+    {
+      "arm": "arm_c",
+      "world": 9,
+      "seed": 8342009,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "teacher_terminal",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-c/world-009/raw"
+    },
+    {
+      "arm": "arm_c",
+      "world": 10,
+      "seed": 8342010,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "cap_end",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-c/world-010/raw"
+    },
+    {
+      "arm": "arm_c",
+      "world": 11,
+      "seed": 8342011,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "cap_end",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-c/world-011/raw"
+    },
+    {
+      "arm": "arm_c",
+      "world": 12,
+      "seed": 8342012,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "cap_end",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-c/world-012/raw"
+    },
+    {
+      "arm": "arm_c",
+      "world": 13,
+      "seed": 8342013,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "cap_end",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-c/world-013/raw"
+    },
+    {
+      "arm": "arm_c",
+      "world": 14,
+      "seed": 8342014,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "cap_end",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-c/world-014/raw"
+    },
+    {
+      "arm": "arm_c",
+      "world": 15,
+      "seed": 8342015,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "cap_end",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-c/world-015/raw"
+    },
+    {
+      "arm": "arm_c",
+      "world": 16,
+      "seed": 8342016,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "cap_end",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-c/world-016/raw"
+    },
+    {
+      "arm": "arm_c",
+      "world": 17,
+      "seed": 8342017,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "cap_end",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-c/world-017/raw"
+    },
+    {
+      "arm": "arm_c",
+      "world": 18,
+      "seed": 8342018,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "teacher_terminal",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-c/world-018/raw"
+    },
+    {
+      "arm": "arm_c",
+      "world": 19,
+      "seed": 8342019,
+      "normal_complete": true,
+      "success": false,
+      "funnel": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false,
+        "carry_1m": false,
+        "door": false,
+        "place": false
+      },
+      "reason_category": "teacher_terminal",
+      "cpu_init_mj_step_count": 7348,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/pair-gpu-scoped-20261027/arm-c/world-019/raw"
+    }
+  ],
+  "retrieval": {
+    "archive_sha256": "c6dd9c6038ca314ede122cb0eb029b2a3a7ed1a9a4d6f254ba5bffa583928425",
+    "archive_bytes": 687748009,
+    "checked_files": 65007,
+    "verified": true,
+    "raw_root": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027",
+    "report": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/REPORT.md"
+  },
+  "rejection_table": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/funnel.json",
+  "limitations": [
+    "SIM only; REAL and manual full video review not performed",
+    "not pooled with previous study/hosts/attempts",
+    "S current-stack checker artifact generated postlaunch; C checker prelaunch; historical replay, not latest-stack compliance",
+    "batch cap_end uses CLI60 and can disagree with original raw180 termination; report original audited termination",
+    "original auditor confirmatory labels not adopted for this diagnostic",
+    "credits remaining and final actual bill unknown"
+  ]
+}
