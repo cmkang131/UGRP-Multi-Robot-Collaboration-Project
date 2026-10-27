@@ -1,0 +1,100 @@
+{
+  "schema": "ugrp.pair-gpu-retry-gcp6.v1",
+  "classification": "diagnostic_interrupted_protocol_violation",
+  "research_result": false,
+  "SIM": true,
+  "REAL": false,
+  "valid_gpu_only_episodes": 0,
+  "completed_episodes": 0,
+  "attempted_episodes": 2,
+  "branch": "codex/pair-gpu-retry-gcp6-20261027",
+  "execution_wrapper_sha": "224420e87eef8d531e41e4cd2b9058a315fec835",
+  "final_wrapper_sha": "c204a0a3872cc7c7c143f67126821d5c6c26967d",
+  "source_heads": {
+    "R": "e5620e839907dc69d3b014becae2cbda4bbe27da",
+    "A": "afd7a6e17c6501d308b6a1d9015b15f5d5da9ed4",
+    "T": "75929e7719ad98a089e3dda5251f4249d8bae511",
+    "S": "3c9337d5f5c9deefd49139b26ae7117022e3d5cc"
+  },
+  "vm": {
+    "project": "ugrp-sim-f-1016",
+    "zone": "asia-northeast1-c",
+    "instance": "ugrp-act-l4-gcp6",
+    "boot_disk": "ugrp-gcp6-baseline-20261027",
+    "start_kst": "2026-10-27T19:35:25.231+09:00",
+    "start_source": "GCE lastStartTimestamp",
+    "stop_status": "TERMINATED",
+    "stop_kst": "2026-10-27T19:50:50.400000+09:00",
+    "stop_source": "GCE lastStopTimestamp; TERMINATED confirmed"
+  },
+  "raw_vm": "/home/ugrp/ugrp-sim/runs/pair-gpu-retry-20261027",
+  "retrieved_raw": "/home/ubuntu/ugrp-pair-gpu-retry-gcp6-20261027/results/pair-gpu-retry-20261027",
+  "source_unchanged": true,
+  "gpu_only_condition_met": false,
+  "interruption_reason": "sealed bridge runs CPU mj_step during initialization before command recorder installation; violates explicit GPU-only restriction",
+  "episodes": [
+    {
+      "arm": "S",
+      "seed": 8342000,
+      "status": "INTERRUPTED_PROTOCOL_VIOLATION",
+      "task_success": null,
+      "completed": false,
+      "last_logged_policy_stage": {
+        "r1": "approach",
+        "r2": "approach"
+      },
+      "last_eval_passed": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false
+      },
+      "student_log_rows": 31,
+      "last_logged_t": 5.200000000000151,
+      "source_sha": "e5620e839907dc69d3b014becae2cbda4bbe27da"
+    },
+    {
+      "arm": "S",
+      "seed": 8342001,
+      "status": "INTERRUPTED_PROTOCOL_VIOLATION",
+      "task_success": null,
+      "completed": false,
+      "last_logged_policy_stage": {
+        "r1": "approach",
+        "r2": "approach"
+      },
+      "last_eval_passed": {
+        "approach": true,
+        "alignment": false,
+        "READY": false,
+        "grasp": false,
+        "hold_3s": false
+      },
+      "student_log_rows": 32,
+      "last_logged_t": 5.300000000000152,
+      "source_sha": "e5620e839907dc69d3b014becae2cbda4bbe27da"
+    },
+    {
+      "arm": "C",
+      "seed": 8342000,
+      "status": "NOT_EXECUTED",
+      "task_success": null,
+      "reason": "same forbidden CPU initialization; no further launch",
+      "source_sha": "e5620e839907dc69d3b014becae2cbda4bbe27da"
+    }
+  ],
+  "rejection_table": "/home/ubuntu/ugrp-pair-gpu-retry-gcp6-20261027/results/funnel.json",
+  "retrieval_verification": {
+    "checked_files": 247,
+    "mismatches": [],
+    "verified": true
+  },
+  "limitations": [
+    "CPU initialization happened before detection; not compliant with GPU-only request",
+    "summary.json remains running because SIGTERM interrupted finalization; it is not completion evidence",
+    "no first30 speed measurement, cap_end or physical outcome available",
+    "no video review or REAL validation",
+    "credits remaining and final actual bill unknown; latest budget net-cost event was 0 KRW"
+  ]
+}
