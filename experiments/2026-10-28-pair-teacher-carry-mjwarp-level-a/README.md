@@ -2,7 +2,7 @@
 
 **teacher-level / HOLD_SCENE / not a gate / new cohort / do not pool**
 
-이 기록은 저장된 MJWarp 교사 장면의 Level A 검증이다. **학생 연구 마일스톤 Level B는 달성하지 않았다.** 새 물리·GPU·렌더·모델 호출과 VM 조작 없이 Oracle의 회수 원본을 읽었다. 폴더의 `2026-10-28`은 요청된 기록 ID이며 실제 작성 환경 날짜는 2026-10-27 UTC다.
+이 기록은 저장된 MJWarp 교사 장면의 Level A 검증이다. **학생 연구 마일스톤 Level B는 달성하지 않았다.** 로컬 분석은 새 물리·GPU·렌더·모델 호출과 VM 조작 없이 Oracle의 회수 원본을 읽었다. PR 자동 CI 예외는 아래에 별도로 기록한다. 폴더의 `2026-10-28`은 요청된 기록 ID이며 실제 작성 환경 날짜는 2026-10-27 UTC다.
 
 ## 판정과 적용 범위
 
@@ -60,3 +60,7 @@ sha256sum --quiet -c experiments/2026-10-28-pair-teacher-carry-mjwarp-level-a/ar
 ```
 
 검증 결과는 `VALIDATION.md`, 원장·학생 재채점은 `strict-rescore-20261028.{json,md}`, 실행하지 않은 다음 단계는 `ALIGNMENT-FIX-PLAN.md`에 있다.
+
+## 자동 CI 제약 위반과 취소
+
+PR 생성으로 자동 시작된 [CI run 40531267967](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/40531267967)에서 취소 요청이 적용되기 전에 `ubuntu-simulation-scenarios`의 `Render and move without a model or GPU` CPU demo 단계가 실행·완료됐고 다음 단계는 취소됐다. **새 물리 실행 없음이라는 사용자 제약을 CI까지 지키지 못했다.** 로컬 physics 0과 전체 physics 0을 구분해야 한다. GPU·GCP VM 조작은 없었다. 이 run은 `completed/cancelled`로 확인했고 전체 CI 통과를 주장하지 않는다. 후속 문서 정정 커밋은 `[skip ci]`로 만들어 재실행을 막았다. 기존 sealed results/prereg는 그대로다. 상세는 `CI-CANCELLATION.md`.

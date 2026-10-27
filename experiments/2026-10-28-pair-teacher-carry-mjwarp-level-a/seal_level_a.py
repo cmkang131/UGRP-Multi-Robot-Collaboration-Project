@@ -259,6 +259,7 @@ def main():
     teacher['ambiguous_rows_file'] = 'teacher-ambiguous.jsonl'
     rescore = {'schema': 'ugrp.han32.strict_rescore.v1', 'report_only': True,
                'sealed_inputs_modified': False, 'new_physics_runs': 0, 'gpu_hours': 0,
+               'execution_scope': 'local offline analysis only; automatic CI exception in CI-CANCELLATION.md',
                'teacher': teacher, 'C': student_rescore('C', index), 'S': student_rescore('S', index)}
     write(out/'strict-rescore-20261028.json', rescore)
     stages, previous = [], summary['planned_N']

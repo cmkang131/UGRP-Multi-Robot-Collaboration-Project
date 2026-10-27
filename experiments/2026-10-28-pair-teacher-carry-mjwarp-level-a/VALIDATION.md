@@ -9,4 +9,6 @@
 - 읽기 전용 보조 검증: golden 분리·원본 181해시·현재 scoped C/S의 경로·ledger `funnel_last`의 비결합 의미·GPU 산식 대조 PASS. 코드·산출물은 주 Codex가 작성했다.
 - `git diff --check`: exit 0. 변경은 evaluator, 해당 시험 파일과 새 실험 폴더뿐이다.
 
-이번 검증은 학생 물리 임무 성공, 새 GPU 관문, native 충돌 쌍, 영상 검토 또는 ledger 전체 strict 확정이 아니다. native-contact toggle은 추가하지 않았고 기존 contact proxy를 표시한다. GPU·VM 조작·새 physics step은 모두 0이며, 모델 가중치를 새로 만들거나 선택하지 않았다. 원본·prereg v3·기존 결과 파일은 수정하지 않았다.
+이번 검증은 학생 물리 임무 성공, 새 GPU 관문, native 충돌 쌍, 영상 검토 또는 ledger 전체 strict 확정이 아니다. native-contact toggle은 추가하지 않았고 기존 contact proxy를 표시한다. 로컬 분석의 GPU·VM 조작·새 physics step은 모두 0이며, 모델 가중치를 새로 만들거나 선택하지 않았다. 원본·prereg v3·기존 결과 파일은 수정하지 않았다.
+
+PR 자동 CI는 로컬 분석과 별도다. 취소 전 CPU demo 단계가 실행되어 “새 물리 실행 없음” 제약을 위반했다. 해당 run은 completed/cancelled이며 상세는 `CI-CANCELLATION.md`에 기록했다. 전체 CI 통과 주장은 없다.
