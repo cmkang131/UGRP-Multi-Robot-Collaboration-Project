@@ -14,8 +14,8 @@ Data: expanded50 balanced. Source SHA `361695c31569fb2004304fbcafe6cf0b5738fc7a`
 
 | file | bytes | sha256 |
 |------|------:|--------|
-| act-expanded50-balanced-10000-seed16.tar.gz | 84934656 approx | 9fa18fcf34c66ade0648c4bd2b8d52e38fbefd622f1d7af70af5e7dbb017ad7c |
-| act-expanded50-balanced-10000-seed17.tar.gz | 84934656 approx | 6188550f4aace255a572f05722bc2399d93154be765c73ef132de8121b889bea |
+| act-expanded50-balanced-10000-seed16.tar.gz | see exact sizes below | 9fa18fcf34c66ade0648c4bd2b8d52e38fbefd622f1d7af70af5e7dbb017ad7c |
+| act-expanded50-balanced-10000-seed17.tar.gz | see exact sizes below | 6188550f4aace255a572f05722bc2399d93154be765c73ef132de8121b889bea |
 
 Drive folder: https://drive.google.com/drive/folders/1WmUAVSu7kkpcWjodc7tCNSeV1s5FkB04
 
@@ -36,5 +36,5 @@ Note: on-disk `model.safetensors` is the selected checkpoint (selection_score), 
 
 ## Exact tar sizes (local staging)
 
-- : 85165714 bytes
-- : 85166252 bytes
+- `act-expanded50-balanced-10000-seed16.tar.gz`: 85165714 bytes
+- `act-expanded50-balanced-10000-seed17.tar.gz`: 85166252 bytes
