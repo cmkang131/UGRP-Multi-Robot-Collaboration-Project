@@ -38,3 +38,18 @@ Note: on-disk `model.safetensors` is the selected checkpoint (selection_score), 
 
 - `act-expanded50-balanced-10000-seed16.tar.gz`: 85165714 bytes
 - `act-expanded50-balanced-10000-seed17.tar.gz`: 85166252 bytes
+
+
+## Companion tarballs (same Drive folder; sha256 re-download verified 2026-10-27 KST)
+
+| file | bytes | sha256 |
+|------|------:|--------|
+| act-old20-uniform-3000-v2.tar.gz | 85045760 | 021c329faf5cf7b6dd9ffc8400ef66bdcaf9b69c939e2e59c33d86c772096b23 |
+| act-old20-balanced-3000.tar.gz | 85045198 | ac199f7a0bdc6b148dc8b667e59e9899eb518831c01fbb611d613f581494f8a0 |
+| final-physics-seed16.tar.gz | 3930162 | 4fbb8e18341e7c42561860f4e7804a3eeba9fcf89e4c5a162b6568a971c7bfbd |
+| final-physics-seed17.tar.gz | 1886149 | 4ed91a6830d95674ccd77abf28453fd28c62ea54e77c267dee2471b9bec61dee |
+| teacher-expand30-v1.tar.gz | 1770559 | 26b22c1107e06227ec89be6d669a7d020ec04d286555e120812f803f4381bec8 |
+| final-analysis.tar.gz | 924729 | c5c600c70f8147dc1ce83db2c0280f2080630178eee404a859bb9d9c7961ba71 |
+| development-physics-old20-balanced.tar.gz | 285138 | 8ce7c692f4c121e7b6c37c4733379eac7bfc316b3540af7618ec788931c8b9f5 |
+
+Mac copies of the above (and seed16/17) were deleted after verification. Log: `~/ugrp-upload-delete-log-20261027.txt`.
