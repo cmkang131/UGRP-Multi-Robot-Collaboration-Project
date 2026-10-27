@@ -51,6 +51,9 @@ def main():
         # pidfd pins the process identity across a concurrent exit/PID reuse.
         fd = os.pidfd_open(pid)
         try:
+            proc = Path('/proc')/str(pid)
+            if proc.joinpath('cmdline').read_bytes().decode().rstrip('\0').split('\0') != argv or proc.stat().st_uid != os.getuid():
+                raise RuntimeError('owned runner changed before pidfd acquisition')
             with (ROOT/(name+'.host-resource-stop.json')).open('x') as stream:
                 json.dump(event, stream, indent=2)
             signal.pidfd_send_signal(fd, signal.SIGINT)
