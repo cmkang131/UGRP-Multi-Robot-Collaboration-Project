@@ -4,6 +4,12 @@ Success (pre-registered in experiments/2026-10-21-pairact-p2/DESIGN.md §5):
 
     placed_in_zone_B  AND  drop_events == 0  AND  robot_robot_contacts == 0
 
+``success`` retains that historical meaning. ``success_strict`` is an additive,
+evaluation-only diagnostic: success AND carried_1m AND door_passed AND
+carried_max_m >= criteria.carried_min_m. Gate/prereg consumers still use
+``success``; selecting the strict diagnostic for a new gate requires explicit
+opt-in in a separately registered cohort. No existing gate is switched here.
+
 Wall contacts are RECORDED (count, first time, which body) but are not a
 failure term. The evaluator reads only eval-only truth rows (the same
 ``snapshot()`` rows the frozen runner writes to eval-only.jsonl) plus the
@@ -45,8 +51,29 @@ class Criteria:
     robot_contact_gap_m = 0.         # discs overlapping
     wall_contact_gap_m = 0.
     # funnel
+    # HAN-32 Level-A operational transport requirement (user, 2026-10-27):
+    # reuse the existing 1 m funnel threshold; not a fitted hardware tolerance.
     carried_min_m = 1.
     door_clear_m = .2                # bases and beam centre this far past the door plane
+
+
+def success_strict_from_result(result):
+    """Read-only strict diagnostic for current or stored carry-eval reports.
+
+    Placement/release/stillness, no drops and no robot overlap are inherited
+    from legacy success. Missing transport evidence fails closed. This does
+    not certify teacher inputs, weld state or native contacts; those belong
+    to the artifact/Level-A audit, not to this GT trajectory evaluator.
+    """
+    funnel = result.get('funnel') or {}
+    carried = result.get('carried_max_m')
+    minimum = (result.get('criteria') or {}).get('carried_min_m')
+    return bool(result.get('success') is True
+                and funnel.get('carried_1m') is True
+                and funnel.get('door_passed') is True
+                and isinstance(carried, (int, float)) and math.isfinite(carried)
+                and isinstance(minimum, (int, float)) and math.isfinite(minimum)
+                and carried >= minimum)
 
 
 def native_contacts(world):  # pragma: no cover - needs the simulator
@@ -108,7 +135,7 @@ def evaluate(rows, static_map, roles, *, lower_start_t=None, handover_t=None, co
     roles = list(roles)
     z, door, rects = zone_of(static_map, zone), door_of(static_map, door_id), wall_rects(static_map)
     if not rows:
-        return {'schema': SCHEMA, 'success': False, 'failure': 'no_rows'}
+        return {'schema': SCHEMA, 'success': False, 'success_strict': False, 'failure': 'no_rows'}
     t0 = handover_t if handover_t is not None else rows[0]['t']
     rows = [r for r in rows if r['t'] >= t0 - 1e-9]
     drops, rr, walls = [], [], []
@@ -168,7 +195,7 @@ def evaluate(rows, static_map, roles, *, lower_start_t=None, handover_t=None, co
         failure = ('drop' if drops else 'robot_robot_contact' if rr else
                    'not_through_door' if door_t is None else 'not_in_zone' if not inside else
                    'not_resting' if not resting else 'not_released' if not released else 'not_still')
-    return {'schema': SCHEMA, 'success': success, 'failure': failure, 'placed_in_zone': placed,
+    result = {'schema': SCHEMA, 'success': success, 'failure': failure, 'placed_in_zone': placed,
             'drop_events': drops, 'robot_robot_contact_ticks': len(rr),
             'robot_robot_first_t': rr[0] if rr else None,
             'wall_contact_ticks': len(walls), 'wall_contact_first': walls[0] if walls else None,
@@ -179,6 +206,8 @@ def evaluate(rows, static_map, roles, *, lower_start_t=None, handover_t=None, co
             'final_tilt_deg': last['beam']['tilt_deg'], 'handover_t': t0, 'lower_start_t': lower_start_t,
             'end_t': last['t'], 'zone': z['id'], 'door': door['id'],
             'criteria': {k: getattr(crit, k) for k in dir(crit) if not k.startswith('_')}}
+    result['success_strict'] = success_strict_from_result(result)
+    return result
 
 
 def eval_row(truth):

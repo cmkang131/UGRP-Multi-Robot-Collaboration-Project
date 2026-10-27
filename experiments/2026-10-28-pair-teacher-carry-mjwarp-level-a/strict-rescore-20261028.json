@@ -1,0 +1,950 @@
+{
+  "C": {
+    "N": 20,
+    "ambiguous_N": 0,
+    "audit_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/C-audit.json",
+    "candidate_funnel": [
+      {
+        "denominator_normal_N": 20,
+        "observation_source": "eval_only_GT_geometry",
+        "passed_cumulative_N": 20,
+        "rejected_N": 0,
+        "stage": "approach"
+      },
+      {
+        "denominator_normal_N": 20,
+        "observation_source": "eval_only_GT_geometry",
+        "passed_cumulative_N": 0,
+        "rejected_N": 20,
+        "stage": "alignment"
+      },
+      {
+        "denominator_normal_N": 20,
+        "observation_source": "simultaneous_own_policy_stage_ready",
+        "passed_cumulative_N": 0,
+        "rejected_N": 0,
+        "stage": "READY"
+      },
+      {
+        "denominator_normal_N": 20,
+        "observation_source": "eval_only_GT_contact",
+        "passed_cumulative_N": 0,
+        "rejected_N": 0,
+        "stage": "grasp"
+      },
+      {
+        "denominator_normal_N": 20,
+        "observation_source": "original_physics_held_flag",
+        "passed_cumulative_N": 0,
+        "rejected_N": 0,
+        "stage": "hold_3s"
+      },
+      {
+        "denominator_normal_N": 20,
+        "observation_source": "original_eval_only_carry_evaluator",
+        "passed_cumulative_N": 0,
+        "rejected_N": 0,
+        "stage": "carry_1m"
+      },
+      {
+        "denominator_normal_N": 20,
+        "observation_source": "original_eval_only_carry_evaluator",
+        "passed_cumulative_N": 0,
+        "rejected_N": 0,
+        "stage": "door"
+      },
+      {
+        "denominator_normal_N": 20,
+        "observation_source": "original_eval_only_carry_evaluator",
+        "passed_cumulative_N": 0,
+        "rejected_N": 0,
+        "stage": "place"
+      }
+    ],
+    "inferred_failure_N": 20,
+    "legacy_success": 0,
+    "raw_carry_eval_recomputed_N": 0,
+    "raw_root": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-c",
+    "rows": [
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-c/world-000/raw/result.json.zst",
+        "seed": 8342000,
+        "success_strict": false,
+        "termination": "learned_finished_early",
+        "world": 0
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-c/world-001/raw/result.json.zst",
+        "seed": 8342001,
+        "success_strict": false,
+        "termination": "cap_end",
+        "world": 1
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-c/world-002/raw/result.json.zst",
+        "seed": 8342002,
+        "success_strict": false,
+        "termination": "cap_end",
+        "world": 2
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-c/world-003/raw/result.json.zst",
+        "seed": 8342003,
+        "success_strict": false,
+        "termination": "cap_end",
+        "world": 3
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-c/world-004/raw/result.json.zst",
+        "seed": 8342004,
+        "success_strict": false,
+        "termination": "cap_end",
+        "world": 4
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-c/world-005/raw/result.json.zst",
+        "seed": 8342005,
+        "success_strict": false,
+        "termination": "cap_end",
+        "world": 5
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-c/world-006/raw/result.json.zst",
+        "seed": 8342006,
+        "success_strict": false,
+        "termination": "cap_end",
+        "world": 6
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-c/world-007/raw/result.json.zst",
+        "seed": 8342007,
+        "success_strict": false,
+        "termination": "learned_finished_early",
+        "world": 7
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-c/world-008/raw/result.json.zst",
+        "seed": 8342008,
+        "success_strict": false,
+        "termination": "learned_finished_early",
+        "world": 8
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-c/world-009/raw/result.json.zst",
+        "seed": 8342009,
+        "success_strict": false,
+        "termination": "learned_finished_early",
+        "world": 9
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-c/world-010/raw/result.json.zst",
+        "seed": 8342010,
+        "success_strict": false,
+        "termination": "cap_end",
+        "world": 10
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-c/world-011/raw/result.json.zst",
+        "seed": 8342011,
+        "success_strict": false,
+        "termination": "cap_end",
+        "world": 11
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-c/world-012/raw/result.json.zst",
+        "seed": 8342012,
+        "success_strict": false,
+        "termination": "cap_end",
+        "world": 12
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-c/world-013/raw/result.json.zst",
+        "seed": 8342013,
+        "success_strict": false,
+        "termination": "cap_end",
+        "world": 13
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-c/world-014/raw/result.json.zst",
+        "seed": 8342014,
+        "success_strict": false,
+        "termination": "cap_end",
+        "world": 14
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-c/world-015/raw/result.json.zst",
+        "seed": 8342015,
+        "success_strict": false,
+        "termination": "cap_end",
+        "world": 15
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-c/world-016/raw/result.json.zst",
+        "seed": 8342016,
+        "success_strict": false,
+        "termination": "cap_end",
+        "world": 16
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-c/world-017/raw/result.json.zst",
+        "seed": 8342017,
+        "success_strict": false,
+        "termination": "cap_end",
+        "world": 17
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-c/world-018/raw/result.json.zst",
+        "seed": 8342018,
+        "success_strict": false,
+        "termination": "learned_finished_early",
+        "world": 18
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-c/world-019/raw/result.json.zst",
+        "seed": 8342019,
+        "success_strict": false,
+        "termination": "learned_finished_early",
+        "world": 19
+      }
+    ],
+    "stage_counts": {
+      "alignment": 9356,
+      "approach": 41505,
+      "carry": 1666,
+      "execute": 11327,
+      "place": 414,
+      "ready": 394
+    },
+    "strict_success": 0,
+    "termination_counts": {
+      "cap_end": 14,
+      "learned_finished_early": 6
+    }
+  },
+  "S": {
+    "N": 20,
+    "ambiguous_N": 0,
+    "audit_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/S-audit.json",
+    "candidate_funnel": [
+      {
+        "denominator_normal_N": 20,
+        "observation_source": "eval_only_GT_geometry",
+        "passed_cumulative_N": 20,
+        "rejected_N": 0,
+        "stage": "approach"
+      },
+      {
+        "denominator_normal_N": 20,
+        "observation_source": "eval_only_GT_geometry",
+        "passed_cumulative_N": 1,
+        "rejected_N": 19,
+        "stage": "alignment"
+      },
+      {
+        "denominator_normal_N": 20,
+        "observation_source": "simultaneous_own_policy_stage_ready",
+        "passed_cumulative_N": 0,
+        "rejected_N": 1,
+        "stage": "READY"
+      },
+      {
+        "denominator_normal_N": 20,
+        "observation_source": "eval_only_GT_contact",
+        "passed_cumulative_N": 0,
+        "rejected_N": 0,
+        "stage": "grasp"
+      },
+      {
+        "denominator_normal_N": 20,
+        "observation_source": "original_physics_held_flag",
+        "passed_cumulative_N": 0,
+        "rejected_N": 0,
+        "stage": "hold_3s"
+      },
+      {
+        "denominator_normal_N": 20,
+        "observation_source": "original_eval_only_carry_evaluator",
+        "passed_cumulative_N": 0,
+        "rejected_N": 0,
+        "stage": "carry_1m"
+      },
+      {
+        "denominator_normal_N": 20,
+        "observation_source": "original_eval_only_carry_evaluator",
+        "passed_cumulative_N": 0,
+        "rejected_N": 0,
+        "stage": "door"
+      },
+      {
+        "denominator_normal_N": 20,
+        "observation_source": "original_eval_only_carry_evaluator",
+        "passed_cumulative_N": 0,
+        "rejected_N": 0,
+        "stage": "place"
+      }
+    ],
+    "inferred_failure_N": 20,
+    "legacy_success": 0,
+    "raw_carry_eval_recomputed_N": 0,
+    "raw_root": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-s",
+    "rows": [
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-s/world-000/raw/result.json.zst",
+        "seed": 8342000,
+        "success_strict": false,
+        "termination": "learned_finished_early",
+        "world": 0
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-s/world-001/raw/result.json.zst",
+        "seed": 8342001,
+        "success_strict": false,
+        "termination": "cap_end",
+        "world": 1
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-s/world-002/raw/result.json.zst",
+        "seed": 8342002,
+        "success_strict": false,
+        "termination": "cap_end",
+        "world": 2
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-s/world-003/raw/result.json.zst",
+        "seed": 8342003,
+        "success_strict": false,
+        "termination": "cap_end",
+        "world": 3
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-s/world-004/raw/result.json.zst",
+        "seed": 8342004,
+        "success_strict": false,
+        "termination": "cap_end",
+        "world": 4
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": true,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-s/world-005/raw/result.json.zst",
+        "seed": 8342005,
+        "success_strict": false,
+        "termination": "cap_end",
+        "world": 5
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-s/world-006/raw/result.json.zst",
+        "seed": 8342006,
+        "success_strict": false,
+        "termination": "cap_end",
+        "world": 6
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-s/world-007/raw/result.json.zst",
+        "seed": 8342007,
+        "success_strict": false,
+        "termination": "learned_finished_early",
+        "world": 7
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-s/world-008/raw/result.json.zst",
+        "seed": 8342008,
+        "success_strict": false,
+        "termination": "cap_end",
+        "world": 8
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-s/world-009/raw/result.json.zst",
+        "seed": 8342009,
+        "success_strict": false,
+        "termination": "cap_end",
+        "world": 9
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-s/world-010/raw/result.json.zst",
+        "seed": 8342010,
+        "success_strict": false,
+        "termination": "cap_end",
+        "world": 10
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-s/world-011/raw/result.json.zst",
+        "seed": 8342011,
+        "success_strict": false,
+        "termination": "learned_finished_early",
+        "world": 11
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-s/world-012/raw/result.json.zst",
+        "seed": 8342012,
+        "success_strict": false,
+        "termination": "learned_finished_early",
+        "world": 12
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-s/world-013/raw/result.json.zst",
+        "seed": 8342013,
+        "success_strict": false,
+        "termination": "cap_end",
+        "world": 13
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-s/world-014/raw/result.json.zst",
+        "seed": 8342014,
+        "success_strict": false,
+        "termination": "cap_end",
+        "world": 14
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-s/world-015/raw/result.json.zst",
+        "seed": 8342015,
+        "success_strict": false,
+        "termination": "cap_end",
+        "world": 15
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-s/world-016/raw/result.json.zst",
+        "seed": 8342016,
+        "success_strict": false,
+        "termination": "cap_end",
+        "world": 16
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-s/world-017/raw/result.json.zst",
+        "seed": 8342017,
+        "success_strict": false,
+        "termination": "cap_end",
+        "world": 17
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-s/world-018/raw/result.json.zst",
+        "seed": 8342018,
+        "success_strict": false,
+        "termination": "learned_finished_early",
+        "world": 18
+      },
+      {
+        "funnel": {
+          "READY": false,
+          "alignment": false,
+          "approach": true,
+          "carry_1m": false,
+          "door": false,
+          "grasp": false,
+          "hold_3s": false,
+          "place": false
+        },
+        "legacy_success": false,
+        "method": "inferred_false: raw/audit legacy failure implies strict failure; carry-eval absent",
+        "result_path": "/home/ubuntu/ugrp-pair-gpu-scoped-retry-gcp6-20261027/results/pair-gpu-scoped-20261027/arm-s/world-019/raw/result.json.zst",
+        "seed": 8342019,
+        "success_strict": false,
+        "termination": "cap_end",
+        "world": 19
+      }
+    ],
+    "stage_counts": {
+      "alignment": 23037,
+      "approach": 39292,
+      "execute": 3346,
+      "ready": 1589
+    },
+    "strict_success": 0,
+    "termination_counts": {
+      "cap_end": 15,
+      "learned_finished_early": 5
+    }
+  },
+  "gpu_hours": 0,
+  "new_physics_runs": 0,
+  "report_only": true,
+  "schema": "ugrp.han32.strict_rescore.v1",
+  "sealed_inputs_modified": false,
+  "teacher": {
+    "N": 420,
+    "ambiguous_N": 238,
+    "ambiguous_rows_file": "teacher-ambiguous.jsonl",
+    "legacy_success": 238,
+    "limitation": "All legacy successes lack independent door/carried booleans; do not certify proxy as strict success.",
+    "method": "ledger-only proxy, NOT raw carry-eval recomputation",
+    "proxy_definition": "success AND carried_max_m>=1 AND funnel_last=still_1s AND eval_failure=null AND drop_kinds=[]",
+    "rejection_reasons": {
+      "cap_end": 17,
+      "drop": 4,
+      "not_through_door": 141,
+      "success:no_rejection": 238,
+      "teacher_terminal": 20
+    },
+    "strict_proxy": 238,
+    "strict_success": null,
+    "strict_success_lower_bound": 0,
+    "strict_success_upper_bound": 238,
+    "total_jsonl_records": 470
+  }
+}

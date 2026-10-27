@@ -172,6 +172,7 @@ def test_kinematic_rollout_reaches_zone_b_and_evaluates_success():
     lower = next(e['t'] for e in teacher.events if e.get('to') == 'lower')
     res = ce.evaluate(rows, MAP, list(ROLES), lower_start_t=lower, handover_t=0.)
     assert res['success'], res['failure']
+    assert res['success_strict']
     assert res['funnel'] == {'handover': True, 'carried_1m': True, 'door_passed': True, 'zone_inside_final': True,
                              'lowered_resting': True, 'released': True, 'still_1s': True}
     assert res['robot_robot_contact_ticks'] == 0 and res['drop_events'] == []
@@ -219,6 +220,63 @@ def test_beam_pierced_by_wall_end_is_beam_contact():
     row = ce.eval_row(truth((2.2, -2.13, 0.), {'r1': (1.7, -2.6, 0.), 'r2': (2.7, -2.6, math.pi)}, held=True))
     c = ce.contact_proxy(row, ct.wall_rects(MAP), list(ROLES))
     assert c['beam_wall']
+
+
+def test_preplaced_zero_m_beam_keeps_legacy_success_but_fails_strict():
+    robots = {'r1': (4.6, -2.7, math.pi/2), 'r2': (4.6, -1.5, -math.pi/2)}
+    rows = _rows((4.6, -2.1, math.pi/2), robots, held=False, min_z=0.)
+    res = ce.evaluate(rows, MAP, list(ROLES), lower_start_t=0.)
+    assert res['success'] and res['failure'] is None
+    assert res['carried_max_m'] == 0. and not res['funnel']['carried_1m']
+    assert not res['success_strict']
+
+
+def test_never_grasped_placement_fails_strict_without_lower_start():
+    robots = {'r1': (4.6, -2.7, math.pi/2), 'r2': (4.6, -1.5, -math.pi/2)}
+    rows = _rows((4.6, -2.1, math.pi/2), robots, held=False, min_z=0.)
+    assert all(max(force) == 0. for row in rows for force in row['contacts'].values())
+    res = ce.evaluate(rows, MAP, list(ROLES))
+    assert res['failure'] == 'drop' and not res['success_strict']
+
+
+def test_early_release_missing_door_fails_strict_despite_transport():
+    robots = {'r1': (.5, -2.7, 0.), 'r2': (.5, -1.5, 0.)}
+    rows = _rows((.5, -2.1, math.pi/2), robots, held=False, min_z=0.)
+    # Synthetic placement after early release; bases never cross the door.
+    # No physics is run. Isolate the missing-door clause from the distance one.
+    for row in rows[1:]:
+        row['beam']['pose'][0] = 4.6
+        row['beam']['xyz'][0] = 4.6
+    res = ce.evaluate(rows, MAP, list(ROLES), lower_start_t=0.)
+    assert res['success'] and res['funnel']['carried_1m']
+    assert not res['funnel']['door_passed'] and not res['success_strict']
+
+
+@pytest.mark.parametrize('distance,expected', [(1.0, True), (.999, False), (float('nan'), False)])
+def test_stored_strict_distance_boundary_and_missing_evidence(distance, expected):
+    report = {'success': True, 'carried_max_m': distance,
+              'criteria': {'carried_min_m': ce.Criteria.carried_min_m},
+              'funnel': {'carried_1m': True, 'door_passed': True}}
+    assert ce.success_strict_from_result(report) is expected
+    del report['funnel']['door_passed']
+    assert not ce.success_strict_from_result(report)
+
+
+def test_empty_evaluation_exposes_strict_false():
+    res = ce.evaluate([], MAP, list(ROLES))
+    assert not res['success'] and not res['success_strict']
+
+
+def test_strict_uses_reported_criteria_and_inherits_legacy_failure():
+    report = {'success': True, 'carried_max_m': 1.5,
+              'criteria': {'carried_min_m': 2.0},
+              'funnel': {'carried_1m': True, 'door_passed': True}}
+    assert not ce.success_strict_from_result(report)
+    report['carried_max_m'] = 2.0
+    assert ce.success_strict_from_result(report)
+    report['success'] = False
+    assert not ce.success_strict_from_result(report)
+    assert not ce.success_strict_from_result({'funnel': None, 'criteria': None})
 
 
 def test_not_released_and_not_in_zone():
