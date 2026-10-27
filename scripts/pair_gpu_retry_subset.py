@@ -1,13 +1,8 @@
-"""Plan a sealed pair subset; execution blocked by native CPU initialization.
+"""Run the sealed pair diagnostic with CPU init allowed and GPU-only rollout.
 
-Never edits the original stack. The original infrastructure check and future
-driver main (including all Guard callbacks/finalization) run unchanged. A small
-batch can fail the original speed gate; C with one completion cannot pass its
-four-completion pilot. Neither condition is waived by this diagnostic.
-
-The first attempted run exposed CPU physics in sealed scene initialization.
---execute now refuses before importing the stack. A GPU-only initialization
-port needs a separately validated implementation; backend selection is not proof.
+Original infrastructure/future drivers and all guard callbacks stay unchanged.
+CPU-init authorization: user decision 2026-10-27 20:02 KST. N=20 per arm is
+separate from the existing cohort; speed/pilot gates are never waived.
 """
 import argparse
 import contextlib
@@ -26,10 +21,13 @@ PINS = {
 }
 
 
+SEALED_INDICES = ','.join(map(str, range(20)))
+
+
 def subset_plan(plan, indices):
     """Only change sealed case selection and explicitly assert the GPU backend."""
-    if indices not in ('0', '0,1'):
-        raise ValueError('only first one or two sealed cases authorized')
+    if indices not in ('0', '0,1', SEALED_INDICES):
+        raise ValueError('only first one/two or full sealed N=20 authorized')
     argv = list(plan['argv'])
     pos = argv.index('--indices') + 1
     if argv[pos] != ','.join(map(str, range(20))):
@@ -53,20 +51,12 @@ def load(path, name):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--arm', choices=('arm_s', 'arm_c'), required=True)
-    parser.add_argument('--indices', choices=('0', '0,1'), required=True)
+    parser.add_argument('--indices', choices=('0', '0,1', SEALED_INDICES), default=SEALED_INDICES)
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--execute', action='store_true')
     args = parser.parse_args()
-    if args.arm == 'arm_c' and args.indices != '0':
-        parser.error('C authorized for one episode only')
     if args.out.exists():
         raise ValueError('new output path required')
-    if args.execute:
-        raise RuntimeError(
-            'GPU-only retry refused: sealed warp_flow_episode.py:175 calls '
-            '_physics_step_for during quiet_setup; masterpi_drive_friction_v7.py:231 '
-            'calls CPU mujoco.mj_step before GPU command recording is installed. '
-            'No episode launched; no guard bypass or replacement stack permitted.')
     infra = load(INFRA, 'retry_original_infra')
     # Original --check validates exact VM id, original guard bytes and host,
     # then installs its approved restoration module for the original runner.
@@ -82,11 +72,13 @@ def main():
     cases_path = Path('/home/ugrp/ugrp-sim/runs/pairact-p5-eval-20261025/p5-heldout-cases.json')
     cases = json.loads(cases_path.read_text())
     selected = [cases[int(i)]['plan']['seed'] for i in args.indices.split(',')]
-    if selected != [8342000, 8342001][:len(selected)]:
+    if selected != list(range(8342000, 8342000 + len(selected))):
         raise ValueError('unexpected sealed seeds')
     record = dict(arm=args.arm, seeds=selected, host_zone_restore=identity,
                   administrative_source_sha256={str(p): h for p, h in PINS.items()},
-                  changed=['indices', 'explicit existing mjwarp_batch_v1 default'],
+                  changed=['authorized sealed indices', 'explicit existing mjwarp_batch_v1 default',
+                           'administrative scoped CPU-init guard'],
+                  cpu_init_authorization='user 2026-10-27 20:02 KST',
                   guards_unchanged=True, separate_diagnostic_cohort=True,
                   rejection_table=str(FUTURE.parent / 'prior-funnel.json'))
     if args.execute:
@@ -97,7 +89,25 @@ def main():
     sys.argv = [str(FUTURE), '--arm', args.arm, '--out', str(args.out)]
     if args.execute:
         sys.argv.append('--execute')
-    driver.main()
+    if not args.execute:
+        driver.main()
+        return
+    # Verify original files BEFORE preloading the unchanged modules for wrapping.
+    # The original driver repeats verification and all original execution gates.
+    from verify_baseline import verify
+    reference = json.loads((FUTURE.parent / 'baseline-reference.json').read_text())
+    checked = verify(reference)
+    if not checked['all_match']:
+        raise ValueError('frozen artifact/hash mismatch before guard installation')
+    root = original_plan(args.arm, str(args.out))['cwd']
+    sys.path[:0] = [str(Path(root) / 'scripts'), root]
+    import mujoco
+    import warp_flow_episode
+    import warp_act_backend
+    from pair_gpu_cpu_guard import CPUInitGuard
+    guard = CPUInitGuard(args.out.with_suffix('.cpu-init.json'), args.arm, selected)
+    with guard.installed(mujoco, warp_flow_episode, warp_act_backend):
+        driver.main()
 
 
 if __name__ == '__main__':
