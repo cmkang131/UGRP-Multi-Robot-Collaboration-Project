@@ -1,0 +1,236 @@
+{
+  "schema": "ugrp.baseline-treatment.pilot-gate.v2",
+  "completed_worlds": [
+    13,
+    18,
+    0,
+    1
+  ],
+  "checks": {
+    "close_gate_count_zero": true,
+    "zero_rejections_nonzero_wheels_and_translation": true,
+    "stage_record_and_HOLD_valid": true,
+    "HOST_ERROR_zero": true
+  },
+  "pass_gate": true,
+  "rejections": {},
+  "nonzero_wheel_robot_ticks": 2965,
+  "stages": {
+    "approach": 7369,
+    "alignment": 1964,
+    "ready": 226,
+    "execute": 2687,
+    "carry": 77,
+    "place": 3
+  },
+  "all_approach": false,
+  "all_approach_rule": "CONTINUE if all four integrity checks pass; never outcome-tune",
+  "hold_issues": [],
+  "terminations": [
+    {
+      "world": 13,
+      "termination": "learned_finished_early",
+      "raw_cap_end": false,
+      "sim_s": 93.7,
+      "finished_t": 95.90000000000015,
+      "episode_origin_t": 2.200000000000151,
+      "finished_elapsed_s": 93.7,
+      "batch_cap_end": null,
+      "batch_raw_cap_end_disagreement": false,
+      "audit_issues": [],
+      "denominator_included": true
+    },
+    {
+      "world": 18,
+      "termination": "learned_finished_early",
+      "raw_cap_end": false,
+      "sim_s": 162.4,
+      "finished_t": 164.60000000000016,
+      "episode_origin_t": 2.200000000000151,
+      "finished_elapsed_s": 162.4,
+      "batch_cap_end": null,
+      "batch_raw_cap_end_disagreement": false,
+      "audit_issues": [],
+      "denominator_included": true
+    },
+    {
+      "world": 0,
+      "termination": "cap_end",
+      "raw_cap_end": true,
+      "sim_s": 180.0,
+      "finished_t": null,
+      "episode_origin_t": 2.200000000000151,
+      "finished_elapsed_s": null,
+      "batch_cap_end": null,
+      "batch_raw_cap_end_disagreement": false,
+      "audit_issues": [],
+      "denominator_included": true
+    },
+    {
+      "world": 1,
+      "termination": "cap_end",
+      "raw_cap_end": true,
+      "sim_s": 180.0,
+      "finished_t": null,
+      "episode_origin_t": 2.200000000000151,
+      "finished_elapsed_s": null,
+      "batch_cap_end": null,
+      "batch_raw_cap_end_disagreement": false,
+      "audit_issues": [],
+      "denominator_included": true
+    }
+  ],
+  "physical_motion": [
+    {
+      "world": 13,
+      "schema": "ugrp.baseline-treatment.eval-motion.v1",
+      "status": "MEASURED",
+      "robots": {
+        "r1": {
+          "max_xy_excursion_m": 0.36462585610147336,
+          "net_xy_displacement_m": 0.3103330361058551,
+          "xy_path_m": 0.7240460429630048,
+          "yaw_path_rad": 4.635011279277709
+        },
+        "r2": {
+          "max_xy_excursion_m": 0.32723703204916504,
+          "net_xy_displacement_m": 0.18031996988121377,
+          "xy_path_m": 1.042632948086697,
+          "yaw_path_rad": 9.636202152929933
+        }
+      },
+      "raw_path": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-013/raw/eval-only.jsonl.zst",
+      "bytes": 1000177,
+      "sha256": "949e85cf561e966517f25ded8b18c842adb85ab45480afc5ce5a4ad89b1b2788",
+      "decoded_sha256": "ad2031d1b603556accfd6c720d203b48801f31a7ffe3c1c097a4429446ed21f9",
+      "samples": 938,
+      "first_t": 2.200000000000151,
+      "last_t": 95.90000000000015
+    },
+    {
+      "world": 18,
+      "schema": "ugrp.baseline-treatment.eval-motion.v1",
+      "status": "MEASURED",
+      "robots": {
+        "r1": {
+          "max_xy_excursion_m": 0.34711698791971046,
+          "net_xy_displacement_m": 0.3464317483132886,
+          "xy_path_m": 0.8372206649223567,
+          "yaw_path_rad": 12.688980715298188
+        },
+        "r2": {
+          "max_xy_excursion_m": 0.17646597892255814,
+          "net_xy_displacement_m": 0.1611255550491428,
+          "xy_path_m": 0.3560953806679973,
+          "yaw_path_rad": 1.7459383174300096
+        }
+      },
+      "raw_path": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-018/raw/eval-only.jsonl.zst",
+      "bytes": 1644020,
+      "sha256": "b064e6f61fd64746dc63d8894adffecfbcc3aff45c257d0a68542edacc7e6076",
+      "decoded_sha256": "eb5a34de5e70d3a4560771551526bb2ecd1e9839f0a964d52cf28fabd38174e2",
+      "samples": 1625,
+      "first_t": 2.200000000000151,
+      "last_t": 164.60000000000016
+    },
+    {
+      "world": 0,
+      "schema": "ugrp.baseline-treatment.eval-motion.v1",
+      "status": "MEASURED",
+      "robots": {
+        "r1": {
+          "max_xy_excursion_m": 0.3110954126793656,
+          "net_xy_displacement_m": 0.31084327373533316,
+          "xy_path_m": 0.47653193296090046,
+          "yaw_path_rad": 1.056843103167149
+        },
+        "r2": {
+          "max_xy_excursion_m": 0.21388880050981735,
+          "net_xy_displacement_m": 0.2047231426055458,
+          "xy_path_m": 0.3644590455327041,
+          "yaw_path_rad": 1.9931511398599795
+        }
+      },
+      "raw_path": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-000/raw/eval-only.jsonl.zst",
+      "bytes": 1894457,
+      "sha256": "761facec355fba4f09e7a000187bd28e33d118d809deb64f41cd727bb2a4e718",
+      "decoded_sha256": "0107c2f8f94ba2a7b9c9c38aaa95833d8d022430101bc5afa93a191fefc1d540",
+      "samples": 1800,
+      "first_t": 2.200000000000151,
+      "last_t": 182.10000000000016
+    },
+    {
+      "world": 1,
+      "schema": "ugrp.baseline-treatment.eval-motion.v1",
+      "status": "MEASURED",
+      "robots": {
+        "r1": {
+          "max_xy_excursion_m": 1.205527896564845,
+          "net_xy_displacement_m": 1.1830784389621487,
+          "xy_path_m": 2.3301661792153947,
+          "yaw_path_rad": 21.333805232743195
+        },
+        "r2": {
+          "max_xy_excursion_m": 0.6924890461678823,
+          "net_xy_displacement_m": 0.6623846163840633,
+          "xy_path_m": 1.5562766304854194,
+          "yaw_path_rad": 16.63628130380601
+        }
+      },
+      "raw_path": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-001/raw/eval-only.jsonl.zst",
+      "bytes": 1793855,
+      "sha256": "ad5cba67efb4fe5cf32ddffe441faf6d4259bf8a219f19ca2e1f0979dae9733f",
+      "decoded_sha256": "93c6796d1a156cce74fd8f289c27e5157eec9bd78ac561d81606afdddf5ff91b",
+      "samples": 1800,
+      "first_t": 2.200000000000151,
+      "last_t": 182.10000000000016
+    }
+  ],
+  "motion_issues": [],
+  "translated_robot_worlds": [
+    {
+      "world": 13,
+      "robot_id": "r1",
+      "max_xy_excursion_m": 0.36462585610147336
+    },
+    {
+      "world": 13,
+      "robot_id": "r2",
+      "max_xy_excursion_m": 0.32723703204916504
+    },
+    {
+      "world": 18,
+      "robot_id": "r1",
+      "max_xy_excursion_m": 0.34711698791971046
+    },
+    {
+      "world": 18,
+      "robot_id": "r2",
+      "max_xy_excursion_m": 0.17646597892255814
+    },
+    {
+      "world": 0,
+      "robot_id": "r1",
+      "max_xy_excursion_m": 0.3110954126793656
+    },
+    {
+      "world": 0,
+      "robot_id": "r2",
+      "max_xy_excursion_m": 0.21388880050981735
+    },
+    {
+      "world": 1,
+      "robot_id": "r1",
+      "max_xy_excursion_m": 1.205527896564845
+    },
+    {
+      "world": 1,
+      "robot_id": "r2",
+      "max_xy_excursion_m": 0.6924890461678823
+    }
+  ],
+  "physical_motion_column": "max_xy_excursion_m",
+  "translation_threshold_m": 0.03082987502070276,
+  "translation_rule": "all four worlds measured for both robots; at least one robot-world strictly exceeds r2 P100 XY excursion",
+  "cost_note": "20 concurrent lanes already run; no 0.34 GPU-h stopping-cost guarantee"
+}

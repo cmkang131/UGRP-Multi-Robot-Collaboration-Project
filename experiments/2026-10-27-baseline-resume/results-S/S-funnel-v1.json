@@ -1,0 +1,324 @@
+{
+  "schema": "ugrp.baseline.derived-funnel.v1",
+  "raw_root": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s",
+  "prior_funnel": "/home/ugrp/ugrp-sim/baseline-treatment/prior-funnel.json",
+  "planned_N": 20,
+  "N_eff": 20,
+  "candidate": [
+    {
+      "stage": "approach",
+      "passed_cumulative_N": 20,
+      "rejected_N": 0,
+      "denominator_normal_N": 20,
+      "observation_source": "eval_only_GT_geometry"
+    },
+    {
+      "stage": "alignment",
+      "passed_cumulative_N": 1,
+      "rejected_N": 19,
+      "denominator_normal_N": 20,
+      "observation_source": "eval_only_GT_geometry"
+    },
+    {
+      "stage": "READY",
+      "passed_cumulative_N": 0,
+      "rejected_N": 1,
+      "denominator_normal_N": 20,
+      "observation_source": "simultaneous_own_policy_stage_ready"
+    },
+    {
+      "stage": "grasp",
+      "passed_cumulative_N": 0,
+      "rejected_N": 0,
+      "denominator_normal_N": 20,
+      "observation_source": "eval_only_GT_contact"
+    },
+    {
+      "stage": "hold_3s",
+      "passed_cumulative_N": 0,
+      "rejected_N": 0,
+      "denominator_normal_N": 20,
+      "observation_source": "original_physics_held_flag"
+    },
+    {
+      "stage": "carry_1m",
+      "passed_cumulative_N": 0,
+      "rejected_N": 0,
+      "denominator_normal_N": 20,
+      "observation_source": "original_eval_only_carry_evaluator"
+    },
+    {
+      "stage": "door",
+      "passed_cumulative_N": 0,
+      "rejected_N": 0,
+      "denominator_normal_N": 20,
+      "observation_source": "original_eval_only_carry_evaluator"
+    },
+    {
+      "stage": "place",
+      "passed_cumulative_N": 0,
+      "rejected_N": 0,
+      "denominator_normal_N": 20,
+      "observation_source": "original_eval_only_carry_evaluator"
+    }
+  ],
+  "frame": {
+    "approach": {
+      "eligible": 34481,
+      "passed_cumulative": 23928,
+      "rejected": 10553,
+      "observation_source": "eval_only_GT_geometry"
+    },
+    "alignment": {
+      "eligible": 23928,
+      "passed_cumulative": 665,
+      "rejected": 23263,
+      "observation_source": "eval_only_GT_geometry"
+    },
+    "READY": {
+      "eligible": 665,
+      "passed_cumulative": 0,
+      "rejected": 665,
+      "observation_source": "simultaneous_own_policy_stage_ready"
+    },
+    "grasp": {
+      "eligible": 0,
+      "passed_cumulative": 0,
+      "rejected": 0,
+      "observation_source": "eval_only_GT_contact"
+    },
+    "hold_3s": {
+      "eligible": 0,
+      "passed_cumulative": 0,
+      "rejected": 0,
+      "observation_source": "original_physics_held_flag"
+    },
+    "carry_1m": {
+      "eligible": 0,
+      "passed_cumulative": 0,
+      "rejected": 0,
+      "scope": "no completed frame cumulatively passed hold_3s, so no downstream eligibility",
+      "observation_source": "original_eval_only_carry_evaluator"
+    },
+    "door": {
+      "eligible": 0,
+      "passed_cumulative": 0,
+      "rejected": 0,
+      "scope": "no completed frame cumulatively passed hold_3s, so no downstream eligibility",
+      "observation_source": "original_eval_only_carry_evaluator"
+    },
+    "place": {
+      "eligible": 0,
+      "passed_cumulative": 0,
+      "rejected": 0,
+      "scope": "no completed frame cumulatively passed hold_3s, so no downstream eligibility",
+      "observation_source": "original_eval_only_carry_evaluator"
+    }
+  },
+  "frame_scope": "acknowledged normally completed worlds only; other worlds listed as uncompleted/unmeasured",
+  "later_frame_scope": "carry/door/place per-frame flags absent in original recorder; episode-level counts measured above; never fill unmeasured with0",
+  "event": {
+    "ticks": 68962,
+    "inference_calls": 68962,
+    "discard_calls": 68962,
+    "issued_ticks": 68962,
+    "software_hold_ticks": 8323,
+    "nonzero_wheel_ticks": 15753,
+    "state225_nonzero": 0
+  },
+  "event_gate_funnel": [
+    {
+      "gate": "propose_robot_ticks",
+      "eligible": 68962,
+      "passed_cumulative": 68962,
+      "rejected": 0
+    },
+    {
+      "gate": "one_discard",
+      "eligible": 68962,
+      "passed_cumulative": 68962,
+      "rejected": 0
+    },
+    {
+      "gate": "fresh_inference",
+      "eligible": 68962,
+      "passed_cumulative": 68962,
+      "rejected": 0
+    },
+    {
+      "gate": "stage_sample",
+      "eligible": 68962,
+      "passed_cumulative": 68962,
+      "rejected": 0
+    },
+    {
+      "gate": "actual_proposal_acceptance",
+      "eligible": 68962,
+      "passed_cumulative": 64280,
+      "rejected": 4682
+    }
+  ],
+  "event_gate_scope": "counter reconciliation along proposal path; rejected proposals can still issue a software hold command, so issued_ticks/nonzero_wheel_ticks are separate accounting, not downstream cumulative proposal passes",
+  "rejections": [
+    {
+      "reason_category": "execution_without_GO_ACK",
+      "count": 4682,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured: software gate"
+    }
+  ],
+  "failures": [
+    {
+      "world": 0,
+      "reason_category": "teacher_terminal",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred"
+    },
+    {
+      "world": 1,
+      "reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred"
+    },
+    {
+      "world": 2,
+      "reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred"
+    },
+    {
+      "world": 3,
+      "reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred"
+    },
+    {
+      "world": 4,
+      "reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred"
+    },
+    {
+      "world": 5,
+      "reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred"
+    },
+    {
+      "world": 6,
+      "reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred"
+    },
+    {
+      "world": 7,
+      "reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred"
+    },
+    {
+      "world": 8,
+      "reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred"
+    },
+    {
+      "world": 9,
+      "reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred"
+    },
+    {
+      "world": 10,
+      "reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred"
+    },
+    {
+      "world": 11,
+      "reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred"
+    },
+    {
+      "world": 12,
+      "reason_category": "teacher_terminal",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred"
+    },
+    {
+      "world": 13,
+      "reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred"
+    },
+    {
+      "world": 14,
+      "reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred"
+    },
+    {
+      "world": 15,
+      "reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred"
+    },
+    {
+      "world": 16,
+      "reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred"
+    },
+    {
+      "world": 17,
+      "reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred"
+    },
+    {
+      "world": 18,
+      "reason_category": "teacher_terminal",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred"
+    },
+    {
+      "world": 19,
+      "reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred"
+    }
+  ],
+  "source_manifest": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/derived-S-v1/source-sha256.json",
+  "reproduce": [
+    "python3",
+    "/home/ugrp/ugrp-sim/baseline-resume-ops-20261027/summarize_arm.py",
+    "--arm",
+    "arm_s",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s",
+    "--out",
+    "NEW_DERIVED_OUTPUT"
+  ]
+}

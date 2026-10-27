@@ -1,0 +1,82 @@
+{
+  "status": "PLANNED_NOT_COLLECTED",
+  "id": "pairact-r2-step11000-baseline-20261027",
+  "release_tag": "models-20261027-pairact-r2-step11000-v1",
+  "asset": "pairact-r2-step11000-baseline-20261027.zip",
+  "source_sha": "3c9337d5f5c9deefd49139b26ae7117022e3d5cc",
+  "selected_step": 11000,
+  "checkpoint_reselected": false,
+  "trained_in_this_task": false,
+  "files_to_collect_after_gpu_cohort": [
+    {
+      "source_path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/main/step-011000/actor/model.safetensors",
+      "path": "actor/model.safetensors",
+      "bytes": 207396736,
+      "sha256": "8263ad3f135048fea46d5cb85fee1d70910bdc399babbd1f2f20d92c2fbea271"
+    },
+    {
+      "source_path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/main/step-011000/actor/config.json",
+      "path": "actor/config.json",
+      "bytes": 1278,
+      "sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+    },
+    {
+      "source_path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/main/step-011000/actor/adapter.json",
+      "path": "actor/adapter.json",
+      "bytes": 19848,
+      "sha256": "84811d26bb0a8bdcc9431bb3c8d5947c70dc8ccd0ba8cf6471566f15f0f1e018"
+    },
+    {
+      "source_path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/main/step-011000/actor/SHA256.json",
+      "path": "actor/SHA256.json",
+      "bytes": 265,
+      "sha256": "b5c3156fd03477e0663c59d09dfa71db4fe321e4782248cddbb256d2b7169a08"
+    },
+    {
+      "source_path": "/home/ugrp/clockfix-build-20261024/dataset-v4/manifest.json",
+      "path": "provenance/dataset-manifest.json",
+      "bytes": 1146701,
+      "sha256": "7e544aff426b9ef10a8195c56831d0171224b1feb8ea5728e94956197d990d20"
+    },
+    {
+      "source_path": "/home/ugrp/clockfix-build-20261024/dataset-v4-stage/stage-targets.json",
+      "path": "provenance/stage-targets.json",
+      "bytes": 199327,
+      "sha256": "65cbd8fbc919730352bb32594a27a6997fe82e65cd1c6c1e719d78e707ec5787"
+    },
+    {
+      "source_path": "/home/ugrp/clockfix-build-20261024/dataset-v4/normalization.json",
+      "path": "provenance/normalization.json",
+      "bytes": 15532,
+      "sha256": "4f465a341fb5436b14f4429372e39da862535a5e8231a5cac0fbe67387305639"
+    },
+    {
+      "source_path": "/home/ugrp/ugrp-sim/src/pairact-p5/student/experiments/2026-10-21-pairact-r1/PAIRACT_R1_TRAIN_CONFIG_DRAFT.json",
+      "path": "pairact-runtime-config.json",
+      "bytes": 1515,
+      "sha256": "37835e1ff9bd7b9686b4d7258b7597e6cd8e40b84a121c4f4156704c04b49326"
+    },
+    {
+      "source_path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/offline-gate/checkpoints.jsonl",
+      "path": "provenance/offline-checkpoints.jsonl",
+      "bytes": 39297,
+      "sha256": "f59aa8bc8ba0ff2aba53918db308b49fd82a4fd365978e7dec94b18592fe06ac"
+    },
+    {
+      "source_path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/offline-gate/selection.json",
+      "path": "provenance/selection.json",
+      "bytes": 805,
+      "sha256": "df36fa86587fd943ac4add245f658bf0454dd99585cd911743fa837563b68208"
+    }
+  ],
+  "additional_generated_assets": [
+    "README.md",
+    "provenance.json",
+    "requirements-reference-act.txt"
+  ],
+  "collection_timing": "Only after a GPU cohort is closed, no VM CPU analysis/readback during GPU execution",
+  "basis": "AGENTS.md selected/used checkpoint release preservation; existing frozen step011000 absent from registry/releases",
+  "validation": "public redownload + archive/full inventory SHA + fresh source CPU load, policy forward0",
+  "mac_fresh_source": "/Users/changmin/projects/ugrp/outputs/model-release-20261027-baseline-step11000-v1/source-clone",
+  "mac_cpu_python": "/Users/changmin/Project-Runtimes/ugrp/.venv-reference-act/bin/python"
+}

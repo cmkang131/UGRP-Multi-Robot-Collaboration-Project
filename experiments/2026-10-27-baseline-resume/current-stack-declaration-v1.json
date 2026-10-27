@@ -1,0 +1,114 @@
+{
+  "schema": "ugrp.baseline.stack-declaration.v1",
+  "utc": "2026-10-26T20:57:22.858959+00:00",
+  "flow": "act_eval",
+  "status": "C_POST_LAUNCH_DECLARATION_S_PRE_ADMISSION",
+  "original_sealed_queue_path": "outputs/reports/2026-10-27-baseline-resume-evidence/queue-arm-c-sealed.json",
+  "original_sealed_queue_sha256": "add6ffc2f07f530210d059b544bdc5bef7599da45dc65a1d187a27bc2ff1e895",
+  "frozen_prereg_sha256": "043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb",
+  "stack_values": {
+    "physics_backend": "mjwarp_batch_v1",
+    "contact_profile": "warp_native_contact_v1",
+    "noslip_iterations": 0,
+    "heavy_crate": false,
+    "nearfield_executor": "ACT",
+    "weld": false,
+    "top_camera_control": false,
+    "ultrasonic_front": "off",
+    "wall_cap": 19080,
+    "speed_gate": "record_only",
+    "speed_metric": "wall_s/(sim_s*nworld)",
+    "gcp_host": "ugrp-act-l4-gcp6",
+    "gcp_project": "ugrp-sim-f-1016",
+    "gcp_account": "kcm5781kcm5781@gmail.com",
+    "gcp_guards": {
+      "idle_minutes": 20,
+      "budget_stop": true,
+      "credentials_on_vm": false
+    },
+    "no_pooling": true,
+    "cap_end_label": "cap_end",
+    "rejection_ledger": [
+      "reason_category",
+      "blocked_object",
+      "min_gap_m"
+    ]
+  },
+  "stack_deviations": [
+    {
+      "id": "scene_profile",
+      "reason": "Frozen canonical-scene.xml and per-world references retained; current scene profile name not independently established by hash-only preflight. No scene substitution permitted.",
+      "approval": {
+        "authority": "user",
+        "evidence": "User direct 2026-10-27 03:45 KST instruction: preserve REGISTERED_FROZEN baseline and step-011000/code, execute C then gated S; zone change is infrastructure only. Frozen sha256 043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb."
+      }
+    },
+    {
+      "id": "end_color_scene",
+      "reason": "Frozen camera/material/model bytes verified; scene label not independently declared. No recolouring or FOV change permitted.",
+      "approval": {
+        "authority": "user",
+        "evidence": "User direct 2026-10-27 03:45 KST instruction: preserve REGISTERED_FROZEN baseline and step-011000/code, execute C then gated S; zone change is infrastructure only. Frozen sha256 043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb."
+      }
+    },
+    {
+      "id": "cargo_version",
+      "reason": "Frozen canonical cargo and cases retained; latest cargo version label not independently established. Replacing cargo would violate registration.",
+      "approval": {
+        "authority": "user",
+        "evidence": "User direct 2026-10-27 03:45 KST instruction: preserve REGISTERED_FROZEN baseline and step-011000/code, execute C then gated S; zone change is infrastructure only. Frozen sha256 043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb."
+      }
+    },
+    {
+      "id": "scenario_version",
+      "reason": "Frozen heldout20 cases retained; latest scenario version label not independently established. No new cases or reselection permitted.",
+      "approval": {
+        "authority": "user",
+        "evidence": "User direct 2026-10-27 03:45 KST instruction: preserve REGISTERED_FROZEN baseline and step-011000/code, execute C then gated S; zone change is infrastructure only. Frozen sha256 043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb."
+      }
+    },
+    {
+      "id": "held_object_hidden_v1",
+      "reason": "Student receives only own RGB and own-issued command history; this latest teacher toggle is not declared for the frozen student path. No teacher rollout is authorized.",
+      "approval": {
+        "authority": "user",
+        "evidence": "User direct 2026-10-27 03:45 KST instruction: preserve REGISTERED_FROZEN baseline and step-011000/code, execute C then gated S; zone change is infrastructure only. Frozen sha256 043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb."
+      }
+    },
+    {
+      "id": "held_world_reads",
+      "reason": "Frozen source and CPU tests audited input path; runtime per-episode truth_inputs/teacher_actions/teacher_steps/gt_inputs must be checked after closed logs, not represented as a premeasured zero.",
+      "approval": {
+        "authority": "user",
+        "evidence": "User direct 2026-10-27 03:45 KST instruction: preserve REGISTERED_FROZEN baseline and step-011000/code, execute C then gated S; zone change is infrastructure only. Frozen sha256 043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb."
+      }
+    },
+    {
+      "id": "heading_mode",
+      "reason": "Frozen ACT commands retained; generic navigation heading toggle not declared. No extra heading correction may be introduced.",
+      "approval": {
+        "authority": "user",
+        "evidence": "User direct 2026-10-27 03:45 KST instruction: preserve REGISTERED_FROZEN baseline and step-011000/code, execute C then gated S; zone change is infrastructure only. Frozen sha256 043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb."
+      }
+    },
+    {
+      "id": "wall_cap",
+      "reason": "User GPU budget 20 total and 5.3 per arm; frozen whole-new-study5.3 GPU-h is enforced as host resource budget from VM allocation. This is not an action-selection or planning wall cap.",
+      "approval": {
+        "authority": "user",
+        "evidence": "User direct 2026-10-27 03:45 KST instruction: preserve REGISTERED_FROZEN baseline and step-011000/code, execute C then gated S; zone change is infrastructure only. Frozen sha256 043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb."
+      }
+    },
+    {
+      "id": "rejection_ledger",
+      "reason": "Frozen original records name the gap field min_gap_m; retain bytes and explicitly report null/unmeasured and blocked_object UNKNOWN. Do not rename original fields to generic minimum_gap_m.",
+      "approval": {
+        "authority": "user",
+        "evidence": "User direct 2026-10-27 03:45 KST instruction: preserve REGISTERED_FROZEN baseline and step-011000/code, execute C then gated S; zone change is infrastructure only. Frozen sha256 043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb."
+      }
+    }
+  ],
+  "basis": "frozen verified33/package10, launch-template original argv, RUN_META actual VM and watchdog, code/input CPU tests. Declarations are not independent runtime measurements.",
+  "procedural_deviation": "check_current_stack tool artifact was omitted before C submission. This is an explicitly timestamped late declaration; never backdate or label C preflight complete for this check. C policy/physics/cases remain frozen. S will require checked declaration before its admission.",
+  "input_audit_scope": "Actual input counters checked only after cohort closes on original VM CPU; not inferred from current-stack declarations."
+}

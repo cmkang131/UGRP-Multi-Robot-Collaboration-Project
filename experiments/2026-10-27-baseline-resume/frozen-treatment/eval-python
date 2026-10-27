@@ -1,0 +1,4 @@
+#!/bin/sh
+set -eu
+export PYTHONDONTWRITEBYTECODE=1
+exec /home/ugrp/e2emin-20261021/venv/bin/python -B /home/ugrp/ugrp-sim/baseline-treatment/bootstrap.py "$@"
