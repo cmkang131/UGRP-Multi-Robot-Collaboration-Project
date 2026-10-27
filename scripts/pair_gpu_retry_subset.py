@@ -1,9 +1,13 @@
-"""Separate GPU diagnostic: select only the first sealed pair cases; retain guards.
+"""Plan a sealed pair subset; execution blocked by native CPU initialization.
 
 Never edits the original stack. The original infrastructure check and future
 driver main (including all Guard callbacks/finalization) run unchanged. A small
 batch can fail the original speed gate; C with one completion cannot pass its
 four-completion pilot. Neither condition is waived by this diagnostic.
+
+The first attempted run exposed CPU physics in sealed scene initialization.
+--execute now refuses before importing the stack. A GPU-only initialization
+port needs a separately validated implementation; backend selection is not proof.
 """
 import argparse
 import contextlib
@@ -57,6 +61,12 @@ def main():
         parser.error('C authorized for one episode only')
     if args.out.exists():
         raise ValueError('new output path required')
+    if args.execute:
+        raise RuntimeError(
+            'GPU-only retry refused: sealed warp_flow_episode.py:175 calls '
+            '_physics_step_for during quiet_setup; masterpi_drive_friction_v7.py:231 '
+            'calls CPU mujoco.mj_step before GPU command recording is installed. '
+            'No episode launched; no guard bypass or replacement stack permitted.')
     infra = load(INFRA, 'retry_original_infra')
     # Original --check validates exact VM id, original guard bytes and host,
     # then installs its approved restoration module for the original runner.
