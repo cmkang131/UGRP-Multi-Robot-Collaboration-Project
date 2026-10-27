@@ -1,0 +1,159 @@
+{
+  "schema": "ugrp.han32.instrumentation_queue.v1",
+  "flow": "beam_pair",
+  "task": "han32-instrumentation-s4-20261028-r2",
+  "purpose": "HAN-32 계측 전용 재개 배치. 2026-10-28 00:04 KST 실패 배치(han32-instrumentation-20261028)의 환경 원인 확정(드라이버 venv에 draccus 없음)을 수리해 동일 실행 계약으로 N=4 계측 기록을 수집한다. 정책·물리·카메라·평가기·indices는 고치지 않는다.",
+  "approval": {
+    "authority": "user",
+    "evidence": "작업 지시 2026-10-28 02:15 KST: 계측 전용 총 상한 2.4 GPU-h(기사용 0.088 포함, 잔여 2.312), N=4 진단 배치 상한 1.2, 조건부 후속 N=4 상한 1.2. 수리안(헤드 분리·위치 추정 헤드·DAgger·재학습)은 미승인이라 시작하지 않는다."
+  },
+  "no_pooling": true,
+  "rejection_table": "/home/ugrp/ugrp-sim/baseline-treatment/prior-funnel.json",
+  "rejection_table_output": "/home/ugrp/ugrp-sim/runs/han32-instrumentation-20261028-r2/s4/rejection_table.json",
+  "host": {
+    "instance": "ugrp-act-l4-gcp6",
+    "zone": "asia-northeast1-c",
+    "instance_id": "2102818194467198298",
+    "project_id": "ugrp-sim-f-1016",
+    "account": "kcm5781kcm5781@gmail.com",
+    "machine_type": "g2-standard-8"
+  },
+  "stack_values": {
+    "physics_backend": "mjwarp_batch_v1",
+    "contact_profile": "warp_native_contact_v1",
+    "noslip_iterations": 0,
+    "scene_profile": "walls_floor_contrast_v5_indigo110_s80",
+    "end_color_scene": "grasp_act_teal_blue_v1",
+    "cargo_version": "v6",
+    "scenario_version": "v7",
+    "heavy_crate": false,
+    "setdown_lookaround_v1": true,
+    "held_object_hidden_v1": true,
+    "held_world_reads": 0,
+    "teacher_visibility": "visible_only",
+    "invisible_measurements": 0,
+    "weld": false,
+    "top_camera_control": false,
+    "heading_mode": "on",
+    "ultrasonic_front": "off",
+    "wall_cap": null,
+    "speed_gate": "record_only",
+    "speed_metric": "wall_s/(sim_s*nworld)",
+    "gcp_host": "ugrp-act-l4-gcp6",
+    "gcp_guards": {
+      "idle_minutes": 20,
+      "budget_stop": true,
+      "credentials_on_vm": false
+    },
+    "no_pooling": true,
+    "planning_cap_basis": "compute_or_sim",
+    "rejection_ledger": [
+      "reason_category",
+      "blocked_object",
+      "minimum_gap_m"
+    ],
+    "cap_end_label": "cap_end",
+    "gcp_project": "ugrp-sim-f-1016",
+    "gcp_account": "kcm5781kcm5781@gmail.com",
+    "static_map_use": "none"
+  },
+  "evidence_sources": {
+    "physics_backend": "/home/ugrp/ugrp-sim/runs/han32-instrumentation-20261028/s4/summary.json:physics_backend=mjwarp_batch_v1",
+    "contact_profile": "/home/ugrp/ugrp-sim/runs/han32-instrumentation-20261028/s4/native-contact-options.json:profile.profile=warp_native_contact_v1 (noslip_iterations=0, cone=elliptic, integrator=implicitfast, impratio=5)",
+    "noslip_iterations": "/home/ugrp/ugrp-sim/runs/han32-instrumentation-20261028/s4/canonical-scene.xml:option@noslip_iterations=0",
+    "scene_profile": "/home/ugrp/ugrp-sim/runs/pairact-p5-eval-20261025/p5-heldout-cases.json:plan.scene_profile=walls_floor_contrast_v5_indigo110_s80 (인덱스 0,5,9,18 전부 동일)",
+    "end_color_scene": "/home/ugrp/ugrp-sim/runs/pairact-p5-eval-20261025/p5-heldout-cases.json:plan.end_color_scene=grasp_act_teal_blue_v1",
+    "cargo_version": "선택 v6 계약(AGENTS.md 화물 v6: tile·can을 작은 상자로 대체). 실행 계획 cargo_scene=cargo_v7은 장면 식별자이며 화물 내용 버전이 아니다. 실제 화물 목록은 teacher 소스 cargo_v6에서 결정된다.",
+    "scenario_version": "/home/ugrp/ugrp-sim/runs/pairact-p5-eval-20261025/p5-heldout-cases.json:plan.scenario_id=s7_pair_with_solo_v7",
+    "heavy_crate": "/home/ugrp/ugrp-sim/runs/pairact-p5-eval-20261025/p5-heldout-cases.json:plan.object_kind=long_beam (heavy_crate 아님)",
+    "setdown_lookaround_v1": "교사/스택 계약 기본 on. 토글 true는 실제 RGB 둘러보기 성공을 증명하지 않으며 이벤트·rgb hash·전후 평가는 별도 계측 항목이다.",
+    "held_object_hidden_v1": "/home/ugrp/ugrp-sim/runs/pairact-p5-eval-20261025/p5-heldout-cases.json:profile.held_object=hidden_v1",
+    "held_world_reads": "/home/ugrp/ugrp-sim/runs/han32-instrumentation-20261028/s4/world-000/raw/result.json:input_audit.held_world_reads=0 (4세계 동일)",
+    "teacher_visibility": "/home/ugrp/ugrp-sim/runs/pairact-p5-eval-20261025/p5-heldout-cases.json:profile.teacher_visibility=visible_only",
+    "invisible_measurements": "/home/ugrp/ugrp-sim/runs/han32-instrumentation-20261028/s4/world-000/raw/result.json:input_audit.invisible_measurements=0 (4세계 동일)",
+    "weld": "/home/ugrp/ugrp-sim/runs/han32-instrumentation-20261028/s4/summary.json:weld=off 및 canonical-scene.xml의 모든 weld active=false",
+    "top_camera_control": "/home/ugrp/ugrp-sim/runs/pairact-p5-eval-20261025/p5-heldout-cases.json:profile.top_camera_control=false",
+    "heading_mode": "정규화 계약값 on(=heading 활성). 런타임 기본 모드는 harness/path_heading_policy.py DEFAULT=path_tangent_v1이며 'off'가 비활성값이다.",
+    "ultrasonic_front": "off(번들 기본). 사용자가 명시적으로 켠 번들에서만 쓰며 본 실행은 off다.",
+    "wall_cap": "gcp6는 L4 학습·MJWarp VM이라 실행 시간 상한 없음(max_run_duration=null). 유휴 20분·budget-stop만 유지.",
+    "speed_gate": "record_only",
+    "speed_metric": "wall_s/(sim_s*nworld) (배치 per-world 속도 플래그 --batch-per-world-speed-v1)",
+    "gcp_host": "ugrp-act-l4-gcp6 (도쿄 asia-northeast1-c, id 2102818194467198298). configs/gcp_hosts.json의 gcp6 zone은 서울(asia-northeast3-a)로 낡아 있어 exact-ID·존을 명시해 기동한다.",
+    "gcp_guards": "유휴 20분 종료, 프로젝트 budget-stop ACTIVE, VM에 모델 키·에이전트 자격 증명 없음",
+    "no_pooling": "true — 새 cohort이며 이전/다른 실행과 합산하지 않는다",
+    "planning_cap_basis": "compute_or_sim",
+    "rejection_ledger": "reason_category·blocked_object·minimum_gap_m 필수. 관측 안 된 물체는 blocked_object=UNKNOWN:not_observed, min_gap_m=null, min_gap_status=not_measured로 명시한다(빈 사유 금지).",
+    "cap_end_label": "cap_end (실행 시간 상한 종료는 결함 실패와 섞지 않는다)",
+    "gcp_project": "ugrp-sim-f-1016",
+    "gcp_account": "kcm5781kcm5781@gmail.com",
+    "static_map_use": "none — 정적 지도 미사용·자기 중심 기억(2026-10-17 사용자 결정). 학생 입력은 자기 RGB·자기 발행 명령 이력뿐이다."
+  },
+  "cases_path": "/home/ugrp/ugrp-sim/runs/pairact-p5-eval-20261025/p5-heldout-cases.json",
+  "cases_sha256": "3e4bf69caa48f4638eb365aec649e8202948de56390dff37cbd540e542e504dc",
+  "planned_N": 4,
+  "cap_s": 60,
+  "gpu_h_cap_this_batch": 1.2,
+  "gpu_h_cap_total_task": 2.4,
+  "gpu_h_already_spent": 0.088,
+  "student_eval": {
+    "mode": "pairact_r1_student_eval_v1",
+    "python": "/home/ugrp/ugrp-sim/runs/han32-instrumentation-20261028-r2/ops/eval-python",
+    "source": "/home/ugrp/ugrp-sim/src/pairact-p5/student",
+    "model": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/main/step-011000/actor",
+    "config": "/home/ugrp/ugrp-sim/src/pairact-p5/student/experiments/2026-10-21-pairact-r1/PAIRACT_R1_TRAIN_CONFIG_DRAFT.json",
+    "device": "cuda"
+  },
+  "repair": {
+    "failure_run": "/home/ugrp/ugrp-sim/runs/han32-instrumentation-20261028",
+    "cause": "계측 래퍼 ops/eval-python이 원래(C/S 성공 실행) 인터프리터 /home/ugrp/e2emin-20261021/venv/bin/python 대신 드라이버 venv /home/ugrp/pairact-p3c2-20261021/venv/bin/python을 사용했다. 후자에는 draccus가 없어 harness/pairact_r1.py:597의 import draccus에서 ModuleNotFoundError가 즉시 발생했다.",
+    "change": "ops/eval-python 한 줄: exec 대상 인터프리터를 e2emin venv로 교체(드라이버 venv·MJWarp 물리 스택은 그대로). PYTHONDONTWRITEBYTECODE=1 export도 원본과 동일하게 복원.",
+    "unchanged_sha256": {
+      "launch.py": "8bde805d56e7ee9de024cdbaf79f534ff4abd7a58493dab6cfd80aa35ea9c45c",
+      "worker_trace.py": "a38d2b4a2ee6224f44e144d81f5bd872e454aab2abf695ee957c0d9c81eb5c34",
+      "runner_trace.py": "f488ac2bc32e72085aa4723eb1db567764b50f4ee4c93c0400ea0670df0a0f4e",
+      "pair_gpu_cpu_guard.py": "e3f7c41298c112a7c5a33646cd988875baac015e2a843ae9f3b783945f7e2a2c",
+      "test_equivalence.py": "824332d568421598f756c59c32ffb978eff204bd80b46e2732a0ca42b8e98a64"
+    },
+    "changed_sha256": {
+      "eval-python": "2a77a7837f196e17a3311c189ac7406695f11b1bfac4280e6f42933fe4bf638a"
+    }
+  },
+  "runs": [
+    {
+      "name": "han32-instrumentation-s4-20261028-r2-w0",
+      "world_index": 0,
+      "seed": 8342000,
+      "scenario_id": "s7_pair_with_solo_v7",
+      "object_kind": "long_beam",
+      "world_slot": 0,
+      "raw": "/home/ugrp/ugrp-sim/runs/han32-instrumentation-20261028-r2/s4/world-000"
+    },
+    {
+      "name": "han32-instrumentation-s4-20261028-r2-w5",
+      "world_index": 5,
+      "seed": 8342005,
+      "scenario_id": "s7_pair_with_solo_v7",
+      "object_kind": "long_beam",
+      "world_slot": 1,
+      "raw": "/home/ugrp/ugrp-sim/runs/han32-instrumentation-20261028-r2/s4/world-001"
+    },
+    {
+      "name": "han32-instrumentation-s4-20261028-r2-w9",
+      "world_index": 9,
+      "seed": 8342009,
+      "scenario_id": "s7_pair_with_solo_v7",
+      "object_kind": "long_beam",
+      "world_slot": 2,
+      "raw": "/home/ugrp/ugrp-sim/runs/han32-instrumentation-20261028-r2/s4/world-002"
+    },
+    {
+      "name": "han32-instrumentation-s4-20261028-r2-w18",
+      "world_index": 18,
+      "seed": 8342018,
+      "scenario_id": "s7_pair_with_solo_v7",
+      "object_kind": "long_beam",
+      "world_slot": 3,
+      "raw": "/home/ugrp/ugrp-sim/runs/han32-instrumentation-20261028-r2/s4/world-003"
+    }
+  ]
+}
