@@ -1,5 +1,17 @@
 # 현재 상태와 실행 경로
 
+## 2026-10-20 현재 상태 — 학습 정책·nav·운반 진단 (18:00 UTC)
+
+> 표기: `learned`=학습된 ACT 학생, `teacher`=학습된 교사 정책, `rule`=학습 없는 검출기/규칙. 수치마다 `sim`·`CPU/GPU`를 붙인다. `outputs/`는 git 제외 경로다.
+
+- **C2c v7 시계 HO4 진단 — PASS(진단 전용)** `learned·sim·GPU(gcp2 L4)·평가 전용`: R8 step-100000으로 HO4 4 seed×3회=12 world-run에서 **과제 성공 6/12, 3초 들기 12/12, 내려놓기 6/12, 집기 완료 11/12**(같은 12회 B0 v6 시계는 과제 0/12). "과제 성공"은 집은 자리(pickup site)에 3초 안정 setdown까지이며 **운반 거리 0 m**다. HO4는 `gate_eligible=false` 진단 holdout이라 승격 관문이 아니고 VAL8·FINAL40·TRAIN4와 합산하지 않는다. PR #615 merge `eaacefd3`. 출처: `experiments/2026-10-20-act18-c2c-v7clock/README.md`·`report-summary.md`.
+- **nav v230-r5 — 단일 실행 PASS** `rule·sim·GPU(gcp6 L4)`: 2-robot Step B에서 GT 도착 2/2·claim 2/2·mismatch 0·FP 0·접촉 0, 실행 source `219d0877`. **1회·seed 601·nworld 1**이고 r2/r3/r4는 제외했으므로 반복성 근거가 아니다. 리스크: 문 앞 4.6 cm, r2 yaw 15.6°, stage2 GT 2–6 cm. 출처: `outputs/reports/2026-10-20-nav-stepB-v230-r5-dsh-20261020T0210Z.md`(로컬).
+- **nav N1 — 3/3 PASS, 반복성 전용** `rule·sim·GPU(gcp6 L4)`: s601/602/603 모두 PASS(GT/claim 2/2, mismatch·FP·경계·접촉 0, base-box 최소 0.1214/0.1433/0.2358 m, wall 266–279 s). 세 seed의 spawn이 동일해 **repeatability only**이며 독립 seed 강건성 근거가 아니다. 출처: `outputs/e2e18-admin/nav-gate/v230-n1/stepB-20261020T1045Z/nav-v230-n1-evidence/nav-v230-n1-seed-table.json`(로컬).
+- **P2 smoke — 교사 운반 2/3** `teacher·sim·GPU(gcp6 L4)`: 3/3 world 실행 — world 1 FAIL `not_through_door`(carried 0.0006 m), world 11 SUCCESS 3.882 m, world 17 SUCCESS 4.423 m → carry 2/3, gate ≥1/6 PASS, wall 1501 s(smoke-1c). 바닥 하강 변형 미실행으로 6-run 계획은 미완이다. `summary.json`의 world1 `success=true`는 파지 gate 필드이지 운반 성공이 아니다. 출처: `outputs/reports/pairact-p2-teacher-clips-20261020.md`(로컬).
+- **C4b v3 — Codex hold로 GPU 미실행** `GPU 0`: 사전 등록 부록 v3 `895040936`은 인과 판정·사전성 표기·fresh-out/cohort 보호 지적으로 무조건 OK가 보류됐다. gcp2 실행 0회, 원본·FROZEN 변경 0. 출처: `~/.ductor/codex/workspace/output_to_user/reports/c4b-v3-review-20261020/REVIEW.md`(로컬)·`outputs/reports/2026-10-20-act18-c4-counterfactual.md`.
+- **CPU 관문 40/40·13/13 — GPU 운반 계약과 합산 금지**: 40/40은 고정 교사 의존성 기반 파지·ready gate40(pick/ready/command_complete 각 40/40)이고 **CPU MuJoCo(gcp2)**, PR #533 merge다. 13/13은 b-v6e 내려놓기 목적지 13셀(3 nominal seed+10셀)이며 **CPU(Mac)·top RGB+정적 지도·stage probe**이고 13/13 전부 `retreat_bounded` 스윕 거부로 멈춘 통과다. 둘 다 문 통과 운반 계약이 아니므로 GPU 운반 수치와 pooling하지 않는다. 출처: `experiments/2026-10-16-beampair7/README.md`·`experiments/2026-09-29-pair-v6e-carry/README.md:278`.
+- **CI 참고** `CPU(GitHub runner)`: 2026-10-20 main run `39420494048`이 workflow "Offline regression tests" shard 2/8에서 실패했다. 실패 테스트는 `tests/test_azure_archive_native.py` 1건·`tests/test_pair_llm_live.py` 3건이며 issue #6의 `test_wrapper_signal_cleans_up_child_process_group`과 무관하다(§`docs/plan.md` 갱신 절).
+
 ## 2026-10-18 DSH 조정자 인계 — 진행 중 (결과 미확정)
 
 Claude Code 조정자 세션을 사용자 승인으로 정지하고 DSH 팀(Lead+작업자 4)으로 이어받았다. 원격 실행은 중단 없이 유지했고, 같은 날 **검증 관문**(PR 병합·사용자 보고 전 독립 verifier 재계수·조건 감사)을 사용자 결정으로 도입했다. 기록은 로컬 `outputs/e2e18-admin/ops-alert.md`(gitignore)·`outputs/e2e18-admin/dsh-coord/HANDOVER.md`에 있다.

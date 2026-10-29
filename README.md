@@ -11,7 +11,8 @@
 - **[Colab CLI 시뮬레이션·평가](docs/colab_simulation.md)** — 선택 가능한 원격 배치 경로; 실제 런타임 검증 상태는 안내 참조
 - **[Azure CPU 실행 서버](docs/azure_simulation.md)** — 비용·만료·유휴 가드, 작업 후 할당 해제와 Oracle ARM 원본 보관
 
-- **[현재 상태와 실행 경로](docs/current_status.md)** — 2026-09-30 저녁 요약: 단계 인수 재생·조건부 예측·열린 검토와 E2E의 남은 관문
+- **[현재 상태와 실행 경로](docs/current_status.md)** — 2026-10-20 요약: C2c HO4 task 6/12(learned·sim·GPU 진단), nav r5 단일 PASS·N1 3/3(반복성 전용), P2 교사 운반 2/3, C4b hold
+- **[작업 계획](docs/plan.md)** — 2026-10-20 갱신: 스레드 상태·다음 순서(C4b→P1→P2 collection→L1-lite)
 - **[Ubuntu 설치·무료 데모](docs/ubuntu_quickstart.md)** — 새 팀원은 여기서 시작
 - [개발·테스트·실험·PR 절차](CONTRIBUTING.md) · [로봇 입력과 작업 규칙](AGENTS.md)
 - [TensorBoard로 학습·실험 기록 보기](docs/tensorboard.md)
