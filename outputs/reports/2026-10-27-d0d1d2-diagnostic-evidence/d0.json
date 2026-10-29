@@ -1,0 +1,48 @@
+{
+  "status": "UNAVAILABLE_ORIGINAL_TRAJECTORY",
+  "recomputed_alignment_pass_worlds": null,
+  "recomputed_alignment_margin_distribution": null,
+  "original_alignment_metric": "UNRECORDED",
+  "checked_paths": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/pairact-p5-eval-20261025/p5-teacher",
+      "exists": false
+    },
+    {
+      "path": "/home/ubuntu/ugrp-sim/runs/pairact-p5-eval-20261025/p5-teacher",
+      "exists": false
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/pairact-p5-eval-20261025/p5-teacher",
+      "exists": false
+    }
+  ],
+  "accessible_student_archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c",
+  "search_scope": "local archive/runs, ugrp-sim, ugrp-audit, UGRP/outputs, ugrp-recovery with rg --files --hidden --no-ignore; no P5 eval-only trajectory found",
+  "search_limitations": "unrelated old incoming archives had permission-denied paths; no stopped cloud disk mount/start/copy attempted",
+  "stop_point": "Before applying geometry(): no accessible original P5 eval-only + plan pair; VM start forbidden",
+  "historical_teacher_recount_reference_only": {
+    "N": 20,
+    "success": 19,
+    "funnel": {
+      "approach": null,
+      "alignment": null,
+      "READY": null,
+      "grasp": null,
+      "hold_3s": 20,
+      "carry_1m": 19,
+      "door": 19,
+      "place": 19
+    },
+    "physical_hold_3s": 19,
+    "termination": {
+      "success": 19,
+      "not_through_door": 1
+    },
+    "raw_end_reason": {
+      "teacher_terminal": 20
+    }
+  },
+  "historical_reference_scope": "Prior recount JSON read for provenance only; no new teacher metric computed; success != alignment",
+  "no_zero_imputation": true
+}

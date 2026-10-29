@@ -1,0 +1,104 @@
+{
+  "schema": "ugrp.d0d1d2.diagnostic-funnel.v1",
+  "scope": "same-frame descriptive conjunction; no new simulation or candidate",
+  "d0_status": "UNAVAILABLE_ORIGINAL_TRAJECTORY",
+  "teacher_alignment_N": null,
+  "arms": {
+    "C": {
+      "prior_funnel": "/home/ubuntu/UGRP/outputs/reports/2026-10-27-baseline-resume-evidence/C-funnel-v1.json",
+      "local_raw_root": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c",
+      "episodes": [
+        {
+          "gate": "recorded_complete",
+          "passed": 20,
+          "rejected": 0
+        },
+        {
+          "gate": "any_joint_geometry",
+          "passed": 0,
+          "rejected": 20
+        },
+        {
+          "gate": "joint_geometry_and_policy_READY_same_frame",
+          "passed": 0,
+          "rejected": 0
+        }
+      ],
+      "frames": [
+        {
+          "gate": "exact_time_pair",
+          "passed": 34963,
+          "rejected": 0
+        },
+        {
+          "gate": "joint_geometry_same_frame",
+          "passed": 0,
+          "rejected": 34963
+        },
+        {
+          "gate": "joint_policy_READY_same_frame",
+          "passed": 0,
+          "rejected": 0
+        }
+      ],
+      "rejection_reasons": {
+        "neither_robot_ever_aligned": 14,
+        "only_one_robot_ever_aligned": 6,
+        "both_ever_but_not_joint": 0,
+        "joint_aligned_without_joint_ready": 0
+      },
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured: offline geometry/label diagnostic",
+      "reproduce": "/home/ubuntu/UGRP/outputs/reports/2026-10-27-d0d1d2-diagnostic-evidence/analyze.py"
+    },
+    "S": {
+      "prior_funnel": "/home/ubuntu/UGRP/outputs/reports/2026-10-27-baseline-resume-evidence/S-funnel-v1.json",
+      "local_raw_root": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s",
+      "episodes": [
+        {
+          "gate": "recorded_complete",
+          "passed": 20,
+          "rejected": 0
+        },
+        {
+          "gate": "any_joint_geometry",
+          "passed": 1,
+          "rejected": 19
+        },
+        {
+          "gate": "joint_geometry_and_policy_READY_same_frame",
+          "passed": 0,
+          "rejected": 1
+        }
+      ],
+      "frames": [
+        {
+          "gate": "exact_time_pair",
+          "passed": 34481,
+          "rejected": 0
+        },
+        {
+          "gate": "joint_geometry_same_frame",
+          "passed": 665,
+          "rejected": 33816
+        },
+        {
+          "gate": "joint_policy_READY_same_frame",
+          "passed": 0,
+          "rejected": 665
+        }
+      ],
+      "rejection_reasons": {
+        "neither_robot_ever_aligned": 16,
+        "only_one_robot_ever_aligned": 3,
+        "both_ever_but_not_joint": 0,
+        "joint_aligned_without_joint_ready": 1
+      },
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured: offline geometry/label diagnostic",
+      "reproduce": "/home/ubuntu/UGRP/outputs/reports/2026-10-27-d0d1d2-diagnostic-evidence/analyze.py"
+    }
+  }
+}

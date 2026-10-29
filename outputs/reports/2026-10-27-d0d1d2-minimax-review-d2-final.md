@@ -1,0 +1,175 @@
+# HAN-21 MiniMax D2 최종 교차 검증
+
+## 수신 결과·범위
+
+- MiniMax 비대화 검토 **exit 0**, 최종 **VERIFICATION 블록 수신 완료**. 최종 판정은 **partial**(`pass_with_pending_wording_fixes`), 기존 산출물 대조에서 **수치 불일치 0건**이다. 이번 결과를 전체 진단의 무조건 PASS로 승격하지 않는다.
+- 호출: `CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS=0 CUDA_VISIBLE_DEVICES= ~/.local/bin/claude-minimax -p --setting-sources '' --strict-mcp-config --tools Read,Grep,Glob --allowedTools Read,Grep,Glob --permission-mode dontAsk --disable-slash-commands --no-session-persistence --output-format text`에 [요청문](2026-10-27-d0d1d2-minimax-d2-final-prompt.md)을 stdin으로 전달했다. Read/Grep로 기존 산출물·소스 정의를 대조했으며 스크립트 실행·프레임 재계수·수치 재산출·새 실행은 없다.
+- [stdout 원문](2026-10-27-d0d1d2-minimax-d2-final-raw.txt), [stderr](2026-10-27-d0d1d2-minimax-d2-final-stderr.txt), [exit 기록](2026-10-27-d0d1d2-minimax-d2-final-exit.txt)을 별도 보존했다. stderr는 모델명 인식/문맥창 안내이며, 이전 D2 하위 작업의 대기 상한 종료 메시지는 이번에 없다.
+- **검토 시점 구분:** 응답은 문구 수정 전 [최초 보고서](2026-10-27-d0d1d2-diagnostic-report-original.md)를 읽고 작성됐다. 아래 원문 중 “미반영/미기재”는 그 판본에 대한 판단이다. 수정 후 문구의 MiniMax 재승인으로 해석하지 않는다. 원문은 수정 없이 뒤에 보존한다.
+
+## 응답 수신 후 문구 반영 확인 (Codex)
+
+[수정 보고서](2026-10-27-d0d1d2-diagnostic-report.md)에 직전/현재 발행 wheel 조건·독립 집계 검사 범위, 프록시의 C 음·S 양 연관과 성급 READY/arm 우열 비교 금지, 로봇별 READY run의 시간 군집·독립성 미검증 및 에피소드 우선 해석을 명기했다. READY 지연은 공동 정렬 시작 대비 52.1 s와 본인 정렬 시작 대비 63.9 s를 구분했다. 이는 **문구 반영 확인**이며 새로운 수치 검증이나 MiniMax 판정 변경이 아니다. 모든 기존 표는 최초 보고서와 동일하다.
+
+run은 각 arm 내 로봇별 READY 연속 구간을 뜻한다. 원문의 “전 40 에피소드·양 로봇 합산” 표현을 arm별 에피소드 수의 근거로 사용하지 않는다. 기존 보고서의 C/S 각 20 에피소드 범위를 유지한다.
+
+## 남은 미검증 범위
+
+- S world 5 t=142.0 s 예시의 프레임 단위 protocol 플래그 `true/true`는 이번 검토에서 직접 확인하지 않았다. 기존 집계 일치와 개별 예시 확인을 구분한다.
+- READY run 간 독립성은 미검증이다. run 수를 독립 시행 N으로 쓰지 않는다.
+- D0 교사 P5 궤적 적합도와 기록 없는 D2 true stage/logits/READY 확률은 여전히 미완료·산출 불가다. 원래 premature_ready·전이 recall의 null을 유지한다.
+- 선행 검토 D3/D4/D5 및 Arm C 절차 편차의 별도 검증은 이번 D2 최종 대조 범위 밖이다. 보고서에 범위·절차 편차를 공시한 것을 추가 실험/감사 완료로 해석하지 않는다.
+- 최종 MiniMax 결과는 partial로 기록한다. Codex 대체 검토 조건(호출 실패)은 발생하지 않았다. 다음 단계는 HAN-17 중간보고서 반영 대기다.
+
+## MiniMax 최종 응답 원문 (변경 없이 보존)
+
+# HAN-21 D2 최종 교차 검증 — 기존 산출물 대조 결과 (2026-10-27)
+
+**검토 방식:** 읽기 전용(Read/Grep). `analyze.py`·`verify.py`는 **정의 확인 목적의 소스 열람만**, 실행 없음. `frame-metrics.csv.gz` 재계산 없음, 새 시뮬레이션·추론·학습0, GPU 0, VM 기동 0, 파일·임계값·Git 변경 0. 본문 수치는 **모두 기존 산출물에 이미 기재된 값의 인용**이며, 차이를 말할 때만 이미 공표된 두 값의 차(6 robot-tick/arm)를 적었다.
+
+---
+
+## 1. 판정
+
+**partial — D2 수치는 전 항목 일치(수치 불일치 0건), 단 문구·정의 정정 3건이 보고서에 미반영.**
+
+- D2 표(READY 정책/프로토콜 수·불일치, robot-tick 분모, 조건부표 18행, stage 전이표, 기하×stage 교차표, 2×2 분할, 대리지표, S world 9 구조)를 `summary.json`·`verification.json`·`episodes.json`·`analyze.py`·`verify.py`와 1:1로 대조했고 **수치 오류를 발견하지 못했다.**
+- 부분(pass→partial) 판정 이유는 오류가 아니라 **문구·범위 정정 3건이 아직 반영되지 않았기 때문**이다(§3). 특히 (가) 직전/현재 발행 wheel 정의 혼재, (다) READY run의 단위·독립성 미표기, (라) S world 9 READY 지연 기준 2종(52.1 s / 63.9 s) 구분 문구가 없다.
+- D0·D1은 이번 범위 외(재검토 금지)이나, D2가 인용한 D1 인접 수치(프레임 34,963/34,481, 공동정렬 C 0·S 665/665)는 접합점만 확인했고 불일치는 없었다.
+
+---
+
+## 2. 일치표
+
+### 2.1 READY 정책 vs 프로토콜·분모·연속성
+
+| # | 보고서 항목(행) | 기존 산출물 필드 · 파일 | 결과 |
+|---|---|---|---|
+| 1 | READY 라벨 robot-tick C 877/69,926(1.254%) · S 1,674/68,962(2.427%) | `summary.json` `arms.C.counts.ready_robot_ticks`(78행)=877, `robot_ticks`(77행)=69,926 / `arms.S` 674행=1,674, 673행=68,962 | **일치** |
+| 2 | 한 로봇 이상 READY 에피소드 C 16/20 · S 7/20 | `summary.json` `either_robot_ready_episodes` C 102행=16 / S 697행=7 | **일치** |
+| 3 | 양쪽이 각각 한번 이상 READY C 5/20 · S 4/20 | `verification.json` `extras.C.both_robots_ready_at_some_time_worlds`=[0,2,13,14,18] / `extras.S`=[0,5,12,17] | **일치** |
+| 4 | 그중 동시 READY 전무 C 5/5(world 0·2·13·14·18) · S 3/4(world 5·12·17) | `verification.json` `each_ever_ready_but_not_joint_worlds` C 17–23행 / S 61–65행 | **일치** |
+| 5 | 동시 정책 READY C 0/34,963(0.000%) · S 8/34,481(0.023%) | `summary.json` `joint_ready_frames` C 63행=0 / S 659행=8, `frames` C 60행=34,963 / S 656행=34,481 · `episodes.json` S world 0 `joint_ready_spans`(13573행 이후 8구간) | **일치** |
+| 6 | 동시 프로토콜 READY C 0/34,963 · S 410/34,481(1.189%) | `summary.json` `joint_protocol_ready_frames` C 64행=0 / S 660행=410 | **일치** |
+| 7 | 정책/프로토콜 **동시** READY 불일치 0프레임 · 402프레임(S world 5) | `summary.json` `joint_policy_vs_protocol_ready_mismatch_frames` S 661행=402 · `episodes.json` S world 5 `counts`(16373행)=402, `joint_protocol_ready_frames`(16372행)=402, `joint_ready_frames`=0 | **일치** (402 전부 world 5 귀속 확인) |
+| 8 | 정책/프로토콜 **개별** READY 불일치 0 robot-tick · 2,768 robot-tick | `summary.json` `policy_vs_protocol_ready_robot_mismatches` C 59행=0 / S 655행=2,768 | **일치** |
+| 9 | READY 연속 구간 C 302/최대128 · S 55/최대289 | `verification.json` `extras.C.ready_runs`(24–28행) n=302,min=1,max=128 / `extras.S.ready_runs`(66–70행) n=55,min=1,max=289 | **값 일치 / 정의 라벨 결여**(§3-③: robot 단위 run) |
+| 10 | "현재 READY 라벨인데 wheel 비영 0/877 · 0/1,674" | `verification.json` `issued_command_conditionals.wheel_nonzero=True` C 45–49행(N 15,379, READY 0) / S 87–91행(N 15,753, READY 0) | **일치** |
+
+### 2.2 조건부표 18행 (분모·빈도)
+
+| # | 대상 | 기존 필드 | 결과 |
+|---|---|---|---|
+| 11 | 로봇 r1/r2, 역할 blue/teal, 목적지 none/B, RGB sha 반복/비반복, 끝 visible true/false | `summary.json` `arms.*.ready_conditions.*` (C 245–534행 / S 840–1102행)의 `N`·`READY`·`ready_rate` | **18행 전부 일치** (예: C `last_issued_wheels_nonzero=False` 296–306행 N=54,553 READY=877 rate0.01608 → 보고서 1.608%; S `joint_geometry=True` 1095–1102행 N=1,330 READY=109 → 8.195%) |
+| 12 | 표기 "겹치는 분류; 서로 합산 금지" | S world 5에서 r2 역할이 blue(16662행) → 로봇/역할 분류는 비배타임을 원본이 확인 | **일치** (표기 유지 타당) |
+
+### 2.3 stage 전이·기하 교차표·분할
+
+| # | 보고서 항목 | 기존 필드 | 결과 |
+|---|---|---|---|
+| 13 | stage 전이표 C 6행 / S 5행 | `summary.json` `stage_changed_transition_counts` C 575–607행 / S 1133–1156행 | **일치** (C alignment→ready 297, ready→alignment 282, execute→carry 48 등 전 항목) |
+| 14 | "대각은 생략하여 0", "recover/complete 0회" | `stage_transition_counts`에 recover/complete 행 자체가 없음; C `stage_counts` 89–96행 / S 685–691행에 recover·complete 키 없음 (S에 carry 키도 없음 → 보고서 S carry 0행과 일치) | **일치** |
+| 15 | 기하 × 정책 stage 교차표 8행 | `summary.json` `geometry_by_policy_stage` C 608–638행 / S 1157–1180행 | **일치** (예: S `xy_and_yaw_pass` alignment 2,227·execute 1,220·ready 316) |
+| 16 | 2×2 분할 C 34,963/0/0/0 · S 33,808/8/665/0 | `summary.json` `geometry_no_ready_no` C 70행/S 666행, `geometry_no_ready_yes` C 69행/S 667행, `geometry_yes_ready_no` C 68행/S 664행, `aligned_and_ready_frames` C 67행/S 663행 | **일치** |
+| 17 | 에피소드 기하 분담 C 14/6/0/0 · S 16/3/0/1 | `summary.json` `episode_geometric_failure_partition` C 643–648행 / S 1190–1195행 | **일치** |
+| 18 | 대리지표 4행(P(ready|¬정렬), P(ready|정렬), P(¬정렬|ready), P(ready|공동정렬 O)) | `summary.json` `local_geometry_premature_ready_proxy`·`ready_false_discovery_local_geometry`·`ready_conditions.local_geometry=True/False`·`joint_geometry=True` | **일치** (C 868/66,450·9/3,476·868/877·적격0 / S 1,358/65,199·316/3,763·1,358/1,674·109/1,330) |
+| 19 | 원 지표 null 유지 | `summary.json` `registered_premature_ready`/`registered_transition_recall` = null (C 115–116행, S 710–711행), `episodes.json` `unavailable`(true_stage_targets·stage_logits·ready_probabilities = not recorded) | **일치** (null 유지 타당) |
+| 20 | D0 중단·null 유지 | `summary.json` `D0.status=UNAVAILABLE_ORIGINAL_TRAJECTORY`, 두 recomputed 필드 null, `no_zero_imputation=true` | **일치** (0 대입 없음) |
+
+### 2.4 S world 9 (52.1 s / 63.9 s 기준 분리 대상)
+
+| # | 보고서 항목 | 기존 필드 | 결과 |
+|---|---|---|---|
+| 21 | 공동 정렬 t=115.7–182.1 s, 665프레임, 관측폭 66.4 s, 점유 66.5 s | `episodes.json` S world 9 `joint_geometry_spans`(18861–18868행) samples=665, observed_span_s=66.40, sampled_occupancy_s=66.5 · r1 `geometry_spans` 78.2 s/783프레임(18882–18889행) | **일치** |
+| 22 | r1 READY 109 / r2 READY 0 | `episodes.json` 18878행 r1 `ready_frames`=109, `ready_local_geometry_frames`=109, 18955–18956행 r2 `ready_frames`=0, `first_ready_t`=null, `ready_spans`=[] | **일치** |
+| 23 | 창 내 r1 alignment 100·execute 456·ready 109 / r2 alignment 67·execute 598 | `episodes.json` 18942–18945행 / 18969–18971행 `geometry_window_stage_counts` | **일치** |
+| 24 | 동시 정책 READY 0 / 동시 프로토콜 READY 0 | `episodes.json` S world 9 `counts`(18597–18598행) `joint_ready_frames`=0, `joint_protocol_ready_frames`=0, `joint_ready_spans`(18870행)=[] | **일치** |
+| 25 | t*=128.7 s, r1 (0.012032004 m, 0.041045586 rad), r2 (0.003310158 m, 0.019328668 rad), 둘 다 execute | `episodes.json` 18629–18672행 `min_joint_margin_frame` (t=128.7, margin=−0.31590689) | **일치** |
+| 26 | "r1 첫 ready는 t=167.8 s(공동 정렬 시작 52.1 s 뒤)" | `episodes.json` 18875행 r1 `first_ready_t`=167.8, 공동 정렬 시작 18863행 115.7 | **일치** |
+| 27 | (보고서 미기재) 본인 정렬 대비 63.9 s | `episodes.json` 18876행 r1 `ready_minus_geometry_s`=63.9 (본인 `first_geometry_t`=103.9, 18874행) | **원본에 존재하나 보고서에 부재** → §3-③의 문구 보완 대상 |
+
+---
+
+## 3. 문구 정정 3건의 타당성
+
+###3-① (가) 직전 발행 wheel vs 현재 발행 wheel — 정의 혼재: **타당. 기존 수치 유지 가능, 라벨·범위 문구만으로 분리 가능.**
+
+- 근거 정의: `analyze.py:285–286` `last = obs['issued'][-1]` → `previous_wheels = any(v != 0 for v in last['wheels'])` (정책 **입력 이력의 마지막 명령**, 조건키 `last_issued_wheels_nonzero`, 294행) vs `analyze.py:307` `wheel_nonzero = any(v != 0 for v in issued['command']['wheels'])` (**현재 발행 명령**). `verify.py:57–59`가 CSV에서 읽는 `wheel_nonzero`는 후자다. `frame-metrics.csv.gz` 헤더(`analyze.py:458–459`, 행310–312)에는 이전 발행 열이 **없다**.
+- 이미 확인된 두 분모: `summary.json` `last_issued_wheels_nonzero=False` C **54,553** / S **53,215**, `=True` C **15,373** / S **15,747** ↔ `verification.json` `issued_command_conditionals.wheel_nonzero=False` C **54,547** / S **53,209**, `=True` C **15,379** / S **15,753**. → arm마다 **6 robot-tick** 어긋남(양쪽 방향 모두 동일).
+- 결론 불변: 두 정의 모두 "READY 라벨 tick에서 비영 wheel 0"(C 0/877, S 0/1,674)이며, 이미지의 표 수치를 **바꾸지 않고** 라벨만 정리하면 된다. 권고 표기: ①표의 "직전 발행 wheel 전부 0/하나 이상 비영"은 **"직전(입력 이력) 발행 명령 기준"**, ②204행이 인용하는 `verification.json` `issued_command_conditionals`는 **"현재 발행 명령 기준"**으로 각 행에 라벨 부기. **행의 값은 삭제·대체하지 말 것.**
+- 부수 확인(동일 정의 문제): "이력16 wheel"(307·441행 /897·1025행)과 "직전 집게 PWM delta"(335·420·452행)도 이전 명령 기반이라 CSV에 열이 없다 → 세 조건은 `verification.json`의 독립 재계수 대상이 아니다.
+- `aggregate_count_checks=24` 미포함 확인: `verify.py:85` `aggregate_count_checks=sum(len(c) for c in counts.values())`, `counts` 키는 arm당 12개(frames·alignment_frames·joint_ready_frames·joint_protocol_ready_frames·aligned_and_ready_frames·aligned_and_protocol_ready_frames·joint_policy_vs_protocol_ready_mismatch_frames·local_aligned_robot_ticks·ready_robot_ticks·local_geo_and_ready_robot_ticks·premature_ready_local_geometry_n·pre_local_geometry_robot_ticks) × 2 arm = **24**이며, `summary.counts`와 대조되는(`verify.py:62`) 대상도 이 12개뿐이다. → **직전 발행 wheel 행은 24개 집계 검사에 불포함**이며, 현재 발행 wheel 정의만 `summary.counts.nonzero_wheel_robot_ticks`(C 15,379·S 15,753)와 원본 저장 지표(`analyze.py:319–320`)로 교차 확인된다. 이 사실을 보고서에 한 줄 명시할 것.
+
+### 3-② (나) 기하 프록시 연관 방향이 C 음 / S 양: **타당. premature READY 해석·arm 간 비교 금지, 원 지표 null 유지.**
+
+- 확인값: P(ready|자기 정렬 X) C 868/66,450(1.306%) vs P(ready|자기 정렬 O) C 9/3,476(0.259%) → C는 **정렬 안 된 쪽에서 READY가 더 자주**(음의 연관). S는 P(ready|¬정렬) 1,358/65,199(2.083%) vs P(ready|정렬) 316/3,763(8.398%) → **정렬된 쪽에서 더 자주**(양의 연관). 동일 방향성은 `ready_false_discovery_local_geometry`(C 98.974% / S 81.123%)에서도 확인된다.
+- 따라서 (i) 이 대리지표를 "성급 READY" 지표로 읽을 수 없고, (ii) "C 1.306% vs S 2.083%" 식 arm 비교도 성립하지 않으며(분모 정의·연관 방향이 반대), (iii) 원래 `premature_ready`는 정답 stage가 학생 방문 상태에 없어 `null` 유지가 맞다(`summary.json` 115–116·710–711행 = null, `method.premature_ready_proxy` 1225행 명시).
+- 문구 보완 권고: 178행 "정답 정확도·원래 premature_ready로 명명하지 않는다"만으로는 부족 → **"두 arm의 연관 방향이 반대이므로 arm 간 비교·'성급 READY' 해석 금지"** 1문장 추가. **수치 표는 유지, 원 지표 null 유지.**
+
+### 3-③ (다) READY 군집(C 302 run/최대128 tick, S 55 run/최대289 tick) + S world 9 지연 기준 2종 분리: **타당. 표 수치 유지, 단위·독립성·기준 문구 추가 필요.**
+
+- run의 정의(확인): `verify.py:71` `ready_runs = [span for e in ee for v in e['robots'].values() for span in v['ready_spans']]` → **로봇별 정책 READY 연속 구간**을 40 에피소드·양 로봇에 대해 센 것(공동 READY run이 아님). C 302·S 55 값은 `verification.json` 24–28·66–70행과 일치.
+- 독립성 미검증(근거): run은 에피소드·로봇 안에 중첩되고 연속 run 사이에도 짧은 공백이 있어 서로 독립이 아니다. 예: S world 0 r1은 READY 821 tick이 여러 run으로 분절되고 최대 run은 **289 tick**(13640행, 36.6–65.4 s)이며, 그 에피소드는 r1 `aligned_frames`=0·`first_geometry_t`=null로 **개별 정렬 자체가 없음**(13620–13627행). C의 최대 128 tick run은 C world 4 r1(4015행, 169.4–182.1 s)이고 그 에피소드는 `each_robot_aligned_at_some_time`=false(4024행). → 최대 군집이 기하 부재 에피소드에 놓인다.
+- 결론: tick 단위 조건부표의 유효 N은 tick(69,926/68,962)이 아니라 **run(302/55)에 가까우며, 그마저 run 간 독립도 미검증**이다. 따라서 **에피소드 기술통계(16/20, 7/20, 5/20, 4/20, 공동 READY 0/20·1/20)를 1차 진술로, 조건부표를 보조 서술로** 배치하는 것이 타당하다.
+- 문구 보완 2건: (α) 표 행 "READY 연속 구간 수 / 최대 표본 수"에 **"로봇별 정책 READY 연속 구간(전 40 에피소드·양 로봇 합산, 공동 READY 아님); tick 독립 N 아님"** 라벨 추가. (β) S world 9 READY 지연 기준 2종을 분리 기재: **"공동 정렬 시작(115.7 s) 대비 52.1 s"**(현재 기재된 값)과 **"r1 본인 정렬 시작(103.9 s) 대비 63.9 s"**(`episodes.json` 18876행 `ready_minus_geometry_s`)를 **각각 기준 명시와 함께** 병기. 두 값 모두 원본에 존재하며 **차분을 새로 계산하지 않는다**.
+
+---
+
+## 4. 수치 불일치
+
+**0건.** D2 절(보고서 131–246행)의 모든 표 수치·비율·분모를 `summary.json`·`verification.json`·`episodes.json`·`analyze.py`·`verify.py`와 대조했고, 다음을 포함해 모두 일치했다: D2 표 10행 전체, 조건부표 18행 전체, stage 전이표 11행 전체, 기하×stage 교차표 8행 전체, 2×2 분할, 에피소드 기하 분담, 대리지표 4행, S world 9 전 항목, S world 0 동시 READY 8틱과 m 범위(1.979656–1.984311), 검증 메타(`status=PASS`, 69,444/40/167/24).
+
+**정의/문구 결함(위 §3)은 수치 불일치가 아니라 라벨·범위 문제이며, 기존 값을 그대로 두고 문구만 고칠 수 있다.**
+
+---
+
+## 5. 미완료·미검증 범위 (이번 검토에서 해소되지 않은 것)
+
+1. **D0 미완료**: 교사 P5 원본 부재로 정렬 기준의 교사 적합도는 여전히 미검증(`summary.json` `D0.*` null, `no_zero_imputation=true`). D2의 기하 수치 자체는 현행 기준의 기술진단이며 교사 적합성 근거가 아니다.
+2. **원 premature_ready·정답 stage 전이 혼동·전이 recall·READY 확률은 여전히 산출 불가**(true stage/logits 미기록). 원 지표는 `null` 유지가 유일하게 허용된 처리다.
+3. **S world 5 t=142.0 s 예시 프레임**의 "stage execute/ready, protocol READY true/true": `episodes.json`에서 t=142.00000000000017의 r2 첫 ready span 시작(16664·16674행), GO 이벤트(16912–16914행), r2 READY barrier 이벤트(16977–16980행), r1 READY 이벤트 136.7 s(16968–16970행)까지는 일치하나, **프레임 단위 protocol 플래그(true/true)는 CSV 재계산 금지로 미검증**이다(미해결 항목으로 유지).
+4. **run 간 독립성 미검증**(§3-③). run 단위 N을 인용할 경우에도 "독립 시행 N 아님"을 명시해야 한다.
+5. **본 검토가 만들지 않은 것**: 새 수치 0, arm 간 인과 우열 판단 0, 원인 확정 0, REAL/C·S 합산 0. 선행 검토가 등록한 미충족 항목(D3 영상/프레임 원인, D4 상수 출처 감사, D5 C 허가 개방 후 미시험, C의 절차 편차 기재)은 **이번 D2 대조 범위 밖**이며 미평가 상태로 둔다.
+6. **보고서 표기상 잔여 위험**: D2 조건표는 로봇/역할/이전 명령 계열이 **중첩·상호배타 아님**을 각 행에 이미 표기하나, 분모가 정의별로 달라 "합산 금지"가 각 arm 표 하단에 명시되어 있지 않다.
+
+---
+
+## 6. VERIFICATION
+
+```
+VERIFICATION
+status: pass_with_pending_wording_fixes
+verdict: partial
+scope: read_only_cross_check_of_existing_artifacts
+  - read:2026-10-27-d0d1d2-diagnostic-report.md, .../summary.json, .../verification.json,
+ .../episodes.json (S world 9 및 READY 관련 필드 선별), .../analyze.py, .../verify.py,
+          minimax-d0d1d2-raw-2026-10-27.txt, 2026-10-27-arm-cs-interpretation-minimax-review.md,
+          2026-10-27-arm-cs-interpretation-codex-review.md
+  - tools: Read, Grep only (no script execution, no frame CSV recount, no VM/GPU/sim/inference/training)
+  - files_modified: 0
+  - git_changes: 0
+  - thresholds_changed: 0
+  - numeric_recomputation: none (all figures quoted from existing artifacts; only the 6 robot-tick/arm gap between two published denominators was stated)
+numbers_recomputed: false
+new_runs: 0
+gpu_usage: 0
+vm_starts: 0
+checks_performed:
+  d2_headline_tables_vs_summary_and_verification: all_match (0 numeric mismatches)
+  d2_conditional_table_18_rows: all_match
+  stage_transition_tables: all_match
+  geometry_by_policy_stage_cross_tables: all_match
+  ready_runs_definition_and_values: match (robot-level policy-READY spans; label missing in report)
+  s_world9_structure_and_both_delay_bases: match (52.1 s joint-alignment basis in report; 63.9 s own-alignment basis present in episodes.json, absent from report)
+  null_preservation_d0_and_registered_metrics: match
+unresolved:
+  - S world 5 t=142.0 s frame-level protocol flags true/true (CSV recount prohibited)
+  - independence of READY runs not tested
+  - D0 teacher P5 original trajectory still unavailable (alignment-criterion fitness unverified)
+  - true stage / stage logits / READY probabilities not recorded -> original premature_ready, transition recall remain null
+  - prior-review items outside D2 scope (D3 video/frame cause, D4 constant-provenance audit, D5 Arm C permit-not-opened, Arm C procedural deviation note) remain unassessed
+report_wording_fixes_required: 3
+  1) separate "previous issued command" vs "current issued command" wheel denominators by label (values unchanged); state that the previous-issued rows are outside aggregate_count_checks=24
+  2) state that the geometry-proxy association is opposite in direction (C negative, S positive): no "premature READY" reading, no arm comparison, original metric stays null
+  3) label READY runs (C 302 runs/max 128 tick, S 55 runs/max 289 tick) as robot-level, non-independent; prioritize episode-level statistics; separate the 52.1 s (joint-alignment) and 63.9 s (own-alignment) READY-delay bases
+```
