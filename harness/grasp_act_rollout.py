@@ -36,11 +36,16 @@ class InputAudit:
 
 
 class OwnHistory:
-    def __init__(self, robot_id, episode_id, initial_command):
+    def __init__(self, robot_id, episode_id, initial_command, *, recorder=None):
         self.robot_id, self.episode_id = robot_id, episode_id
         self.issued = deque([c.command(initial_command)] * c.HISTORY, maxlen=c.HISTORY)
         self.frames = deque()
         self.clock, self.index = c.IssuedClock(), 0
+        # Opt-in audit recorder; without one nothing below records or changes.
+        self.recorder = recorder
+        if recorder is not None:
+            recorder.bind_identity(robot_id, episode_id)
+            recorder.record_initial_padding(self.issued[0], count=c.HISTORY)
 
     def observe(self, now, jpeg, *, skill, object_kind, role, destination_zone='none'):
         path = f'rgb/{self.robot_id}/{self.index:06d}.jpg'
@@ -58,10 +63,19 @@ class OwnHistory:
                **self.clock.observe(instruction, now, self.issued[-1]['pwm'])}
         self.index += 1
         c.validate_observation(obs)
+        if self.recorder is not None:
+            # Bind only after the observation validated; a failed observe must
+            # not leave a sample association behind.
+            self.recorder.note_sample(obs['sample_id'], window=obs['issued'])
         return obs, [pixels[r['path']] for r in refs], path
 
-    def issue(self, value):
-        self.issued.append(c.command(value))
+    def issue(self, value, *, origin='unknown'):
+        command = c.command(value)
+        if self.recorder is not None:
+            # Record only after all validation, before the non-refusing deque
+            # append. Single-threaded producer API; no environment ack implied.
+            self.recorder.record_issue(command, origin=origin)
+        self.issued.append(command)
 
 
 class LiftScore:
