@@ -104,3 +104,92 @@ Ugrp가 기존 24개와 감사 회귀 12개, 총 **36 tests / OK / exit 0**을 �
 36개 검사 수정본은 Verify가 독립 실행·45항목 프로브로 조건부 수용했다. 이어 권고 F2a를 반영했다. v2는 유효 padding 주장에 중립 바퀴·펄스폭을 요구하고, padding 라벨만 있고 유효성 미주장인 슬롯은 issued=None으로 남긴다. 값으로 출처를 새로 추론하지 않으며 PWM 중립값은 정하지 않는다. 삼상태 의미가 바뀌므로 sidecar schema를 v2로 올렸다. 모델 관측 schema·값에는 변화가 없다.
 
 기존 36 + 패딩 회귀3 = 39 tests. 이전 독립 수용은 43d0d8c84의 36개 검사 버전에만 적용하며, 이 v2 보완본의 별도 독립 재검토는 아직 미수행이다. 생산자 연결 시 실행/관측 ID 및 이벤트 순번·창 오프셋 검증을 추가해야 한다.
+
+## 9. 생산 지점 기록자 (ugrp.history_provenance_recorder.v1, 2026-11-05 · 수정 라운드 1 반영)
+
+`harness/history_provenance_recorder.py`는 **기본 OFF**인 opt-in 감사 기록자다. `OwnHistory`에 `recorder=` 로 넘기지 않으면 아무 것도 기록하지 않고 관측 dict·반환 튜플·원시 issued 값이 이전과 완전히 동일하다.
+
+### 9.0 수정 라운드 1에서 고친 4건 (조정자 차단 반례)
+
+| 차단 반례 | 이전 동작 | 수정 후 |
+|---|---|---|
+| 실패한 issue가 raw history를 바꿈 | deque append 후 recorder가 거부 → deque 이미 변경 | **형식·origin·시간 검증과 기록을 완료한 뒤 정상 deque에 추가**: `record_issue`(검증·기록) → 정상 deque append. 거부 시 deque·recorder 모두 불변 |
+| 슬롯 origin+issued 동시 위조가 live verify 통과 | verify가 원본 사건과 비교하지 않음 | `recorder.verify`가 **저장된 사건과 슬롯별로 전 항목 비교**(kind·slot·seq·origin·issued·padding_valid·t·issue_offset·row_hash) + raw window hash + identity + field schema |
+| live verify가 sample을 묶지 않음 | 기본 sample 미고정 | 관측이 **sample id + 관측창 hash로 동결**되고, 다음 issue가 그 결합을 **무효화**. verify는 재정의할 수 없고 호출자 override 불가 |
+| r1 history에 r2 recorder 부착 | 생성 자체가 통과 | `bind_identity`가 robot·episode 일치를 요구하고 불일치·재사용을 거부 |
+
+이외: `TIME_EPS` 완전 제거(정확 비교, 1e-10 역행도 거부), `record_initial_padding`은 소유자 바인딩 후 1회만·issue 뒤 주입 불가, 실패한 observe는 sample을 바인딩하지 않음.
+
+### 9.1 기록하는 사실 (그 이상은 아니다)
+
+| 이벤트 | 시점 | 기록 내용 |
+|---|---|---|
+| `padding` | `OwnHistory.__init__` | 초기 명령이 HISTORY 슬롯으로 복제되었다는 **생성 사실**. 발행 명령이 아니며 `issued=False`(중립 복제일 때), 중립이 아니면 유효성 미주장(`issued=None`) |
+| `issue` | `OwnHistory.issue` 호출마다 1건 | 그 시점에 명령이 발행되었다는 사실. `origin` 기본값은 `unknown`이고, 호출자가 명시한 `policy`/`protocol_hold`만 기록된다 |
+
+기록된 issue 이벤트는 **환경 적용·ack·이동 성공의 증거가 아니다.** 그 사실은 `note` 필드에 명시되어 있고, 성공·적용·ack 필드는 존재하지 않는다.
+
+### 9.2 API
+
+```python
+from harness.history_provenance_recorder import HistoryProvenanceRecorder, verify_snapshot
+
+audit = HistoryProvenanceRecorder(run_id='run-a', episode_id='ep-1', robot_id='r1')
+history = OwnHistory('r1', 'ep-1', initial_command, recorder=audit)   # opt-in, identity 확인
+history.issue(command, origin='policy')      # origin 기본 'unknown'
+snapshot = audit.audit_snapshot()             # 현재 관측에 동결된 sample·창
+audit.verify(snapshot)                        # authoritative: 저장된 사건과 전 항목 비교
+verify_snapshot(snapshot, window=list(history.issued))   # 구조·외부 ID·제공 창만
+```
+
+- `run_id`·`episode_id`·`robot_id`는 필수 비어 있지 않은 문자열이며, `OwnHistory`에 부착할 때 robot·episode가 일치해야 한다.
+- `audit_snapshot`은 `run_id`/`episode_id`/`robot_id`/`sample_id`, 슬롯별 이벤트 순번·전체 issue offset·슬롯별 row hash, `raw_window_hash`를 함께 묶는다.
+- **관측 결합 방식(명시적 선택 하나)**: 관측은 recorder를 그 관측의 sample id와 창 hash에 동결하고, **다음 issue가 이 결합을 무효화**한다. 따라서 스냅샷은 그것을 만든 관측에 대해서만 검증된다.
+- **거부**: 다른 run/episode/robot/sample 스냅샷, 값이 같아도 다른 run의 스냅샷, shift·편집 창, 순번 누락/중복, issued 플래그↔출처 불일치, slot index·kind·offset·row hash 형식 위반, stale offset/창, 과거 타임스탬프(정확 비교), 빈 run_id, sample_id 없는 스냅샷.
+- 저장된 이벤트와 스냅샷은 모두 **독립 사본**이고, 사후 라벨 덮어쓰기 API는 없다.
+
+### 9.3 검증 두 층의 구분
+
+| 함수 | 검증하는 것 | 검증하지 않는 것 |
+|---|---|---|
+| `recorder.verify(snapshot)` | 저장된 사건과 슬롯별 전 항목, raw 창 hash, identity, field schema, 현재 관측 결합 | — (authoritative) |
+| `verify_snapshot(snapshot, ...)` | field schema·타입·slot index 범위·seq/offset 범위·kind/출처 정합·row hash 형식, 외부 기대 ID, **제공된** raw 창 | **저장된 사실의 진실성**. `window` 없이 내용 진실을 주장하지 않는다 |
+
+### 9.4 실제 연결 여부와 미연결 경계 (2026-11-05 기준)
+
+- **연결됨**: `harness/grasp_act_rollout.py` 의 `OwnHistory.__init__`/`observe`/`issue` 에 opt-in hook. `recorder` 미지정 시 동작 변화 없음.
+- **미연결**: 실제 러너·워커(pair barrier 등)는 `origin`을 명시하지 않으므로 **현행 실행에서 기록되는 issue origin은 전부 `unknown`**이다. `policy`/`protocol_hold`를 명시하려면 호출 지점 수정이 필요한데, 이번 브랜치 범위(최대 4개 파일) 밖이므로 **하지 않았다**. 이 문서의 계약은 코퍼스가 아니라 설계다.
+- **미변경**: pinned worker(`harness/pairact_r1.py`), `beamact*`, 관측 스키마(`grasp_act_contract.py`), rollout 기본 경로.
+
+### 9.5 최소 비물리 검사 (2026-11-05 토큰 보완본)
+
+```
+PYTHONPATH=. PYTHONDONTWRITEBYTECODE=1 \
+  python3 -m unittest tests.test_history_provenance_recorder -v
+```
+
+기록자63개와 sidecar39개, 총102개 unittest가 종료 코드0으로 통과했다. Verify도 독립 unittest102개와 정상 pytest102 passed/13 subtests를 확인했다. 커버: audit OFF 동일 관측·동일 issued 값·동일 반환값, audit ON 모델 관측 schema 불변·sidecar 비주입, reset padding·policy stop·protocol hold·unknown 혼합 기록, 거부된 issue의 atomicity(형식·origin·시간역행), 1e-10 역행 거부, 동일 시각 허용, robot/episode identity 불일치·재기록 금지, sample 동결·무효화·교체 거부, 실패 observe 비바인딩, 16슬롯 초과 roll 정합, 필드 공동위조 거부, 저장 사본 독립성.
+
+조정자 반례 probe 재현(`/tmp` 사본, 저장소 파일 무수정): 4건 모두 해소 —
+`rejected_issue_mutates_raw_history=false`, `consistent_event_relabel_accepted_by_live_verify=refused`, `wrong_sample_accepted_by_default_live_verify=refused`, `wrong_robot_recorder_attached=refused(RecorderError)`.
+
+기존 영향 파일 2개(`tests/test_grasp_act_policy.py`, `tests/test_grasp_act_act4.py`)의 정상 pytest 실행은 조정자 환경에서 수행한다(이 환경에는 pytest가 없고 설치 금지). 본 라운드에서 저장소 pytest 대역(stub)은 **만들지 않았고 재사용도 하지 않았다**.
+
+
+### 9.6 Ugrp 토큰·의미 검증 보완
+
+prepare_issue는 편집 가능한 dict 대신 소유 기록자에서만 사용할 수 있는 불투명 object 참조를 반환한다. 실제 command/origin은 내부 사본으로 남긴다. 새 prepare가 이전 준비를 대체하고 commit은 준비 소유·최신 issue offset·1회성을 확인한 뒤 행 계약·출처·정확 비감소 시각을 재검사한다. 외부·변조·재사용·오래된 토큰은 기록 전에 거부한다. 비바인딩/미초기화 기록자도 issue를 받지 않는다. 이것은 동일 프로세스의 호출 실수 방지이며 비밀값·암호학적 서명이나 동시성 트랜잭션이 아니다.
+
+OwnHistory는 단일 record_issue의 검증·기록이 성공한 뒤 정상 deque.append를 수행한다. 거부된 호출은 원시 이력을 바꾸지 않는다. 프로세스 종료·MemoryError·동시 호출의 원자성은 보장하지 않는다. 기록은 환경 적용·ack의 증거가 아니다.
+
+live verify는 저장 window를 함께 전달해 원시 행 계약을 확인한다. standalone 검증도 유한·비감소 시각, kind/origin/validity, 이벤트 총수에 맞는 마지막 창 순번, 발행 offset, NOTE 문구 일치를 검사한다. 창이 16슬롯을 넘으면 시작 seq는 0이 아니라 event_count - 창길이이며 과거 창을 0으로 재번호하지 않는다. 독립 출처 인증은 하지 않는다.
+
+opt-in 감사에서 창/사건 불일치가 있으면 RecorderError로 거부하는 fail-closed 방식을 유지한다. 조용히 계속하여 잘못된 감사 근거를 남기는 방식을 채택하지 않았다. audit OFF의 실행 경로는 그대로다. 실제 러너에 연결하기 전에 이 오류 처리 정책을 실행 번들에 명시해야 한다. 현재 러너/pinned worker origin 연결은 미구현이다.
+
+보완 후 Ugrp 직접 검사: recorder63 + sidecar39 = **102 unittest OK(exit0)**. 기존 영향2파일의 정상pytest는 **25 passed,4 skipped(torch없음),exit0**. 사용pytest9.2.0은 repo9.1.1 pin과 달라 정식 pin CI와 구분한다. 이 추가보완본의 독립 확인은 후속 검토에서 수행한다.
+
+### 9.7 독립 수용과 호출 책임
+
+Verify가 1f8df4f7c2c4996900aa86d63677200c6621ac4d의 코드·102개 검사를 독립 확인해 잔여 차단 없이 수용했다. 이후 변경은 이 절 및 검사수 등 문서 정정뿐이다. record_issue/prepare_issue/commit_issue는 OwnHistory 등 생산자 내부 호출용이며, 직접 호출이 실제 외부 발행을 증명하지 않는다. note_sample의 sample_id와 window는 생산자가 제공하는 결합 주장으로, 관측 영상이나 관측 존재의 독립 증거가 아니다. 허위 issue를 직접 기록하면 다음 OwnHistory 관측의 창 검증은 fail-closed로 거부한다.
+
+거부 목록에는 외부·소비·오래된 토큰, 잘못된 note, 비유한·역행 시각, kind/origin/offset/seq 불일치가 포함된다. 실제 러너의 파일 저장·origin 명시 연결은 다음 후보이며, 실행 번들에서 감사 불일치를 제어·모델오류와 구분해 기록하는 정책이 필요하다. 이 수용은 실제 물리·환경 적용·ack·운반 성공을 뜻하지 않는다.
