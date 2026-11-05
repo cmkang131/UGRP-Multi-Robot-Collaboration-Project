@@ -617,7 +617,15 @@ def test_plan_on_points_at_the_producer_audit_file(runner, tmp_path):
     assert plan['plan']['ledger_created'] is False
 
 
-def test_the_real_cli_prepare_only_plans_but_does_not_create_the_ledger(tmp_path):
+def test_the_real_cli_prepare_only_plans_but_does_not_create_the_ledger(tmp_path, runner):
+    # This integration case uses the exact local research assets. Pure ledger
+    # tests above remain runnable on CI without those external files.
+    required = [Path(runner.CKPT) / 'model.safetensors', Path(runner.CONFIG),
+                Path(runner.WORKER), Path(runner.HEADWORKER), Path(runner.HEAD_POLICY),
+                Path(runner.ASTRA), Path(runner.TREE) / 'harness/pairact_r1_student.py']
+    missing = [str(path) for path in required if not path.is_file()]
+    if missing:
+        pytest.skip('local pinned research assets unavailable: ' + ', '.join(missing))
     run_dir = tmp_path / 'run'
     argv = [sys.executable, str(OWNED_RUNNER), '--run-dir', str(run_dir),
             '--audit-worker', 'on', '--audit-run-id', 'cli-prepare-01',
