@@ -66,6 +66,12 @@ attempted / captured / failed ticks, expected / captured robot candidates, the
 controller source hash, the last capture error and the finished / complete
 flags.  A best-effort summary also goes to the shared audit sink.
 
+The summary is written **once**, at loop exit.  `run_id` is a reserved sink
+field: the observer drops it from the body before the write, because the
+existing sink envelope already supplies it.  The wiring test asserts both:
+exactly one `proposal_capture_summary` row, and the row's `run_id` coming
+from the envelope rather than from a duplicated body field.
+
 ## 5. Current pins (independent of any manifest)
 
 | File | sha256 |
@@ -78,9 +84,12 @@ flags.  A best-effort summary also goes to the shared audit sink.
 | consumer runner | `108efd11960bac295b2df2676400e239bdd567b926e7030e8c95c3d15b804c78` |
 
 The core hashes are the coordinator's `core-wired-manifest.json` /
-`wiring-manifest.json` values.  The order was **helper → entry → runner**:
-the helper pins the observer, the entry pins the helper and the core, and
-the runners pin all four candidates.
+`wiring-manifest.json` values: `19d2af7f…` for the observer and
+`cfe4cbfa…bef099d` for the audit module.
+The `run_id` correction in the summary body is already inside `19d2af7f…`,
+so the pins were correct as they stand.  The order was
+**helper → entry → runner**: the helper pins the observer, the entry pins the
+helper and the core, and the runners pin all four candidates.
 
 ## 6. What was NOT done
 
