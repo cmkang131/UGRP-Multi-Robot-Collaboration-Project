@@ -45,11 +45,18 @@ read-only and unmodified).  ONLY the worker selection is parameterized:
     byte.
   * ``--audit-worker on`` -> an audited selection: a bundle tree is created
     exclusively, the pinned worker ``harness``/``scripts`` are copied into it
-    byte for byte, the audit module and its launch entry are placed in the
-    SAME harness package as the pinned controller. A strict manifest binds
-    the 15-entry protected scope; the rest of the copied closure is byte-
-    compared at creation only. The manifest and real-import same-tree check
-    are verified BEFORE the worker is started.
+    byte for byte, the audit module, its launch entry, the bundle helper and
+    the raw ProposalObserver are placed in the SAME harness package as the
+    pinned controller. A strict manifest binds the 16-entry protected scope;
+    the rest of the copied closure is byte-compared at creation only. The
+    manifest and real-import same-tree check are verified BEFORE the worker
+    is started.
+
+  * ``--observe-raw-proposals`` -> OPT-IN (default OFF): the raw
+    ProposalObserver records the controller proposal snapshots and an
+    independent ``proposal-status-<runid>.json`` completeness file. It
+    requires ``--audit-worker on``; the combination with ``--audit-worker
+    off`` is refused at start-up. The observer NEVER changes control.
 
 ``--prepare-only`` stops after that preparation and writes the bundle, the
 final launch argv, the real source hashes and the not-executed state as an
@@ -144,6 +151,7 @@ REPO = Path(__file__).resolve().parents[2]
 BUNDLE_HELPER = REPO / "harness" / "pair_worker_bundle.py"
 CANDIDATE_AUDIT = REPO / "harness" / "pair_worker_audit.py"
 CANDIDATE_ENTRY = REPO / "harness" / "pair_worker_audit_entry.py"
+CANDIDATE_OBSERVER = REPO / "harness" / "pair_proposal_observer.py"
 HEAD_POLICY = ("/home/ubuntu/ugrp-retrain-geom-20261029/implementation"
                "/geometry_policy.py")
 
@@ -172,11 +180,13 @@ EXPECTED_EXTERNAL_SHAS = {
 
 # The candidate files that travel into the bundle.  Their bytes are pinned
 # HERE, independently of the manifest, so a replaced candidate is refused
-# before the bundle is built.
+# before the bundle is built.  Four candidates: the audit module, its launch
+# entry, the bundle helper and the raw ProposalObserver.
 EXPECTED_CANDIDATE_SHAS = {
-    str(CANDIDATE_AUDIT): "77c862a02bff3e848706a2e0735c9ce16fed085907219784116bc4a12b9a5e52",
-    str(CANDIDATE_ENTRY): "9373c58590a138c70b91584b8ca63f64465e9650a5d9118803eebdad8d328efe",
-    str(BUNDLE_HELPER): "caed034bca1006b0244bfc5ac951085b75cbf98b772ab8935af365794bec9fa4",
+    str(CANDIDATE_AUDIT): "cfe4cbfa2565003063aa69980abd759b5364877e0aa45cc709ebb6a32bef099d",
+    str(CANDIDATE_ENTRY): "a902afa0a8a50494507998b19e500af736f5a241439f7f2bbf9a0ec283c48ba9",
+    str(BUNDLE_HELPER): "a7828ba1bcc95082feeb3076a88488dcfb6f2de0f84b43db0293c5daf9b8459b",
+    str(CANDIDATE_OBSERVER): "19d2af7f1d972b25b0e3069424046539d995ade4eef0e62fd2b66013a39ea35d",
 }
 
 # ---- owned consumer audit wiring --------------------------------------
@@ -279,14 +289,17 @@ def original_worker_argv(trace_dir):
             "--head-source-root", TREE, "--geometry-trace-dir", str(trace_dir)]
 
 
-def audited_worker_argv(trace_dir, *, bundle_root, manifest_path, run_id, audit_root):
+def audited_worker_argv(trace_dir, *, bundle_root, manifest_path, run_id, audit_root,
+                        observe_raw_proposals=False):
     """The audited selection: the bundle entry, in ONE tree with the controller.
 
     The model, config, head worker, head source root and trace directory are
     the original ones; only the entry, the student root and the audit
-    options are added.
+    options are added.  ``--observe-raw-proposals`` is OPT-IN and is only
+    added when it was explicitly requested; the raw input, the four-operation
+    protocol and the gates are unchanged.
     """
-    return ["/usr/bin/python3", "-B",
+    argv = ["/usr/bin/python3", "-B",
             str(bundle_root / "harness" / "pair_worker_audit_entry.py"),
             "--model", CKPT, "--config", CONFIG, "--device", "cpu", "--threads", "1",
             "--student-root", str(bundle_root), "--headworker", HEADWORKER,
@@ -294,6 +307,9 @@ def audited_worker_argv(trace_dir, *, bundle_root, manifest_path, run_id, audit_
             "--geometry-worker", WORKER,
             "--audit-run-id", run_id, "--audit-output-root", str(audit_root),
             "--audit-sources", str(manifest_path)]
+    if observe_raw_proposals:
+        argv.append("--observe-raw-proposals")
+    return argv
 
 
 def plan_worker(*, out, trace_dir, args):
@@ -302,13 +318,22 @@ def plan_worker(*, out, trace_dir, args):
     OFF -> the original selection.  ON -> the bundle entry; the bundle is
     created exclusively, the manifest is verified and the same-tree claim is
     checked with a real import BEFORE any worker is started.
+
+    The raw proposal observer is OPT-IN: it can only be selected together
+    with the audited worker (``--audit-worker on``), because the observer
+    lives in the bundle and writes into the audit output root.  The
+    combination ``--audit-worker off`` + ``--observe-raw-proposals`` is
+    refused at start-up: no bundle, no worker, no file.
     """
+    observe = bool(getattr(args, "observe_raw_proposals", False))
     if args.audit_worker == "off":
+        if observe:
+            raise SystemExit("--observe-raw-proposals requires --audit-worker on")
         return {"mode": "off", "argv": original_worker_argv(trace_dir),
                 "student_root": TREE, "bundle_root": None, "manifest_path": None,
                 "manifest_verified": False, "same_tree_verified": False,
                 "manifest_entries": 0, "bundle": None, "audit_run_id": None,
-                "audit_output_root": None}
+                "audit_output_root": None, "observe_raw_proposals": False}
     if not args.audit_run_id:
         raise SystemExit("--audit-run-id is required with --audit-worker on")
     bundle_root = (Path(args.bundle_root).resolve() if args.bundle_root
@@ -327,7 +352,7 @@ def plan_worker(*, out, trace_dir, args):
             raise SystemExit("candidate source hash drift: " + candidate)
     created = bundle.create_bundle(dest=bundle_root, pinned_tree=TREE,
                                    candidates=[CANDIDATE_AUDIT, CANDIDATE_ENTRY,
-                                               BUNDLE_HELPER],
+                                               BUNDLE_HELPER, CANDIDATE_OBSERVER],
                                    externals=[WORKER, HEADWORKER, HEAD_POLICY, CONFIG, ASTRA])
     expected = {}
     for relative, want in bundle.EXPECTED_TREE_SHAS.items():
@@ -336,20 +361,23 @@ def plan_worker(*, out, trace_dir, args):
         expected[path] = want
     required = set(expected) | {str(bundle_root / "harness" / "pair_worker_audit.py"),
                                 str(bundle_root / "harness" / "pair_worker_audit_entry.py"),
-                                str(bundle_root / "harness" / "pair_worker_bundle.py")}
+                                str(bundle_root / "harness" / "pair_worker_bundle.py"),
+                                str(bundle_root / "harness" / "pair_proposal_observer.py")}
     verified = bundle.verify_manifest(created["manifest_path"], expected=expected,
                                       required=required)
     modules = bundle.verify_import_same_tree(bundle_root)
     argv = audited_worker_argv(trace_dir, bundle_root=bundle_root,
                                manifest_path=created["manifest_path"],
-                               run_id=args.audit_run_id, audit_root=audit_root)
+                               run_id=args.audit_run_id, audit_root=audit_root,
+                               observe_raw_proposals=observe)
     return {"mode": "on", "argv": argv, "student_root": str(bundle_root),
             "bundle_root": str(bundle_root), "manifest_path": created["manifest_path"],
             "manifest_verified": True, "same_tree_verified": True,
             "manifest_entries": len(verified),
             "bundle": {"info": created["info"], "imports": modules,
                        "expected_pins": expected},
-            "audit_run_id": args.audit_run_id, "audit_output_root": str(audit_root)}
+            "audit_run_id": args.audit_run_id, "audit_output_root": str(audit_root),
+            "observe_raw_proposals": observe}
 
 
 def plan_consumer_ledger(*, args, out, worker_selection):
@@ -498,6 +526,7 @@ def write_prepare_artifacts(*, out, res, plan, pins):
         "worker_started": False,
         "audit_run_id": plan["audit_run_id"],
         "audit_output_root": plan["audit_output_root"],
+        "observe_raw_proposals": bool(plan.get("observe_raw_proposals", False)),
         "pins": pins,
         "scope": ("preparation only: the bundle, the manifest and the launch argv are "
                   "real and verified; nothing was simulated, no head worker was started "
@@ -540,6 +569,7 @@ def main() -> int:
     ap.add_argument("--consumer-audit", choices=("off", "on"), default="off")
     ap.add_argument("--consumer-output-root", default=None)
     ap.add_argument("--consumer-episode-id", default=None)
+    ap.add_argument("--observe-raw-proposals", action="store_true")
     ap.add_argument("--prepare-only", action="store_true")
     args = ap.parse_args()
 
