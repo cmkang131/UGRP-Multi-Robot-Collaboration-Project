@@ -92,12 +92,9 @@ except ImportError:                      # pragma: no cover - fail closed later
 #
 # The audit module and the raw ProposalObserver are the COORDINATOR's frozen
 # core: their bytes are pinned here so a swapped core is refused at start-up.
-EXPECTED_HELPER_SHA = ('a7828ba1bcc95082feeb3076a88488dcfb6f2de0f84b43db029'
-                       '3c5daf9b8459b')
-EXPECTED_AUDIT_MODULE_SHA = ('cfe4cbfa2565003063aa69980abd759b5364877e0aa45c'
-                             'c709ebb6a32bef099d')
-EXPECTED_OBSERVER_MODULE_SHA = ('19d2af7f1d972b25b0e3069424046539d995ade4ee'
-                                 'f0e62fd2b66013a39ea35d')
+EXPECTED_HELPER_SHA = 'b3497b3cefaefae1e38feaa6aaf88644194c5e7580c52bdf2237cf3240626a2e'
+EXPECTED_AUDIT_MODULE_SHA = '8aeb8692ed0defe9e35fdd388d6009bd005ebf398e94ee2409eb4b67bccd7349'
+EXPECTED_OBSERVER_MODULE_SHA = 'b8d5d885ce5d6a93520fd7e7e3da71ad193d5abda0a0ff5e6bc88eae321fe201'
 
 AUDIT_OPTIONS = ('--audit-run-id', '--audit-output-root', '--audit-sources')
 
