@@ -495,7 +495,7 @@ def owned_worker_main(argv=None, *, predict=None, stdin=None, stdout=None):
     observer_class = None
     controller_pin = '3e12d2f5408f82821187401e8a6d4298cb70fb27b48c229d689a54efdef77e81'
     if args.observe_raw_proposals:
-        from harness.pair_proposal_observer import ProposalObserver
+        from harness.pair_proposal_observer import ProposalObserver, AtomicStatus
         observer_class = ProposalObserver
         source = Path(sys.modules[PairStudentController.__module__].__file__).resolve()
         observer_source = Path(sys.modules[ProposalObserver.__module__].__file__).resolve()
@@ -503,6 +503,13 @@ def owned_worker_main(argv=None, *, predict=None, stdin=None, stdout=None):
             raise AuditError('raw proposal controller source pin mismatch')
         if startup_sources.get(str(source)) != controller_pin or startup_sources.get(str(observer_source)) != file_digest(observer_source):
             raise AuditError('proposal observer/controller must be bound in source manifest')
+    capture_status = None
+    if args.observe_raw_proposals:
+        if set(args.audit_run_id) - SAFE_CHARS:
+            raise AuditError('unsafe proposal status run id')
+        Path(args.audit_output_root).mkdir(parents=True, exist_ok=True)
+        path = Path(args.audit_output_root) / ('proposal-status-' + args.audit_run_id + '.json')
+        capture_status = AtomicStatus(path)
     head = None
     if predict is None:
         if args.headworker is None or args.geometry_trace_dir is None:
@@ -528,12 +535,6 @@ def owned_worker_main(argv=None, *, predict=None, stdin=None, stdout=None):
     stream_out = stdout if stdout is not None else sys.stdout
     controller = None
     observer = None
-    capture_status = None
-    if args.observe_raw_proposals:
-        path = Path(args.audit_output_root) / ('proposal-status-' + args.audit_run_id + '.json')
-        capture_status = path.open('x', encoding='utf-8')
-        capture_status.write(json.dumps({'finished': False, 'complete': False, 'reason': 'no controller yet'}) + '\n')
-        capture_status.flush()
     try:
         print(json.dumps({'ready': True, 'mode': pinned.MODE}), flush=True, file=stream_out)
         for line in stream_in:
@@ -579,16 +580,23 @@ def owned_worker_main(argv=None, *, predict=None, stdin=None, stdout=None):
                 result = controller.summary()
             print(json.dumps(result, allow_nan=False), flush=True, file=stream_out)
     finally:
-        try:
-            if observer is not None:
-                observer.finish()
-        finally:
-            if capture_status is not None:
-                capture_status.close()
-            try:
-                if audit is not None:
-                    audit.close()
-            finally:
-                if head is not None:
-                    head.close()
+        # Attempt every owned cleanup. Preserve the original control exception;
+        # cleanup failures are attached as notes, not substituted for its cause.
+        original = sys.exc_info()[1]
+        cleanup_errors = []
+        for name, action in [('observer.finish', observer.finish if observer is not None else None),
+                             ('status.close', capture_status.close if capture_status is not None else None),
+                             ('audit.close', audit.close if audit is not None else None),
+                             ('head.close', head.close if head is not None else None)]:
+            if action is not None:
+                try:
+                    action()
+                except Exception as exc:
+                    cleanup_errors.append((name, exc))
+        if cleanup_errors:
+            failure = original or cleanup_errors[0][1]
+            for name, exc in cleanup_errors:
+                failure.add_note(name + ': ' + type(exc).__name__)
+            if original is None:
+                raise failure
     return 0
