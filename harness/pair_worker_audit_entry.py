@@ -27,18 +27,33 @@ before the audit file is created, this entry:
   hashes below) -- a manifest that only agrees with itself is refused;
 * checks the ORIGINAL pinned tree files themselves, so a copy of a wrong
   source is refused;
-* checks that this entry, the audit module and the bundle helper are the
-  expected candidate bytes.
+* checks that this entry, the audit module, the bundle helper and the raw
+  ProposalObserver are the expected candidate bytes.
 
 Any failure prints one line on stderr and exits non-zero: **no ``ready`` line,
 no head worker, no audit file**.
 
+Raw proposal observation (opt-in)
+---------------------------------
+``--observe-raw-proposals`` turns the raw ProposalObserver on.  It is **off by
+default** and can only be given together with the whole audited option set
+(``--audit-run-id``, ``--audit-output-root`` and ``--audit-sources``): the
+observer writes the raw proposal snapshots and the independent
+``proposal-status-<runid>.json`` completeness file into the audit output root,
+so it needs a run id and a bound manifest.
+
+The observer NEVER changes control: it snapshots the controller proposal
+*after* ``propose`` and *before* ``issue`` clears it, and it can only fail
+into a counted capture failure.  The four-operation protocol, the raw input
+(own JPEG + own issued history only), the 8-stage barrier and the
+READY->GO->ACK gates are unchanged.
+
 Placement
 ---------
 The entry is copied into the **same** harness package as the pinned
-controller, so the audit module and the audited controller share one harness
-tree (``harness.pair_worker_audit.check_same_tree``).  The bundle root is the
-parent of this file's directory.
+controller, so the audit module, the raw ProposalObserver and the audited
+controller share one harness tree (``harness.pair_worker_audit.check_same_tree``).
+The bundle root is the parent of this file's directory.
 
 Verification-only modes
 -----------------------
@@ -74,12 +89,22 @@ except ImportError:                      # pragma: no cover - fail closed later
 # Independent expected hashes of the candidate files that travel with the
 # bundle.  They are NOT read from the manifest: a manifest that only agrees
 # with itself must not be able to declare a wrong source good.
-EXPECTED_HELPER_SHA = ('caed034bca1006b0244bfc5ac951085b75cbf98b772ab8935af3657'
-                       '94bec9fa4')
-EXPECTED_AUDIT_MODULE_SHA = ('77c862a02bff3e848706a2e0735c9ce16fed085907219784'
-                             '116bc4a12b9a5e52')
+#
+# The audit module and the raw ProposalObserver are the COORDINATOR's frozen
+# core: their bytes are pinned here so a swapped core is refused at start-up.
+EXPECTED_HELPER_SHA = ('a7828ba1bcc95082feeb3076a88488dcfb6f2de0f84b43db029'
+                       '3c5daf9b8459b')
+EXPECTED_AUDIT_MODULE_SHA = ('cfe4cbfa2565003063aa69980abd759b5364877e0aa45c'
+                             'c709ebb6a32bef099d')
+EXPECTED_OBSERVER_MODULE_SHA = ('19d2af7f1d972b25b0e3069424046539d995ade4ee'
+                                 'f0e62fd2b66013a39ea35d')
 
 AUDIT_OPTIONS = ('--audit-run-id', '--audit-output-root', '--audit-sources')
+
+# The raw proposal observation is OPT-IN: it is off unless the option is
+# given, and it can only be given together with the whole audited option set
+# (the observer writes into the audit output root and needs a run id).
+OBSERVER_OPTION = '--observe-raw-proposals'
 
 STAGE_INDEX = ('approach', 'alignment', 'ready', 'execute',
                'carry', 'place', 'recover', 'complete')
@@ -100,7 +125,12 @@ def _same_path(value, expected):
 
 
 def expected_startup_hashes(root):
-    """{path: sha256} every audited start-up must find, independently."""
+    """{path: sha256} every audited start-up must find, independently.
+
+    This covers the whole protected scope: the 7 pinned tree files, the 4
+    candidate files (audit module, entry, bundle helper and the raw
+    ProposalObserver) and the 5 read-only originals -- 16 paths in total.
+    """
     if bundle is None:
         raise StartupRefused('the bundle helper is not available in this tree')
     expected = dict(bundle.expected_bundle_paths(root))
@@ -108,6 +138,8 @@ def expected_startup_hashes(root):
         EXPECTED_AUDIT_MODULE_SHA
     expected[str(Path(root) / 'harness' / 'pair_worker_bundle.py')] = \
         EXPECTED_HELPER_SHA
+    expected[str(Path(root) / 'harness' / 'pair_proposal_observer.py')] = \
+        EXPECTED_OBSERVER_MODULE_SHA
     expected.update(bundle.EXPECTED_EXTERNAL_SHAS)
     return expected
 
@@ -188,9 +220,14 @@ def main(argv=None):
     # Use the worker's parser: duplicate options use the same last value, and
     # --name=value / accepted abbreviations cannot evade startup verification.
     parsed = _owned_parser().parse_args(argv)
+    observe = bool(getattr(parsed, 'observe_raw_proposals', False))
     present = [name for name in AUDIT_OPTIONS
                if getattr(parsed, name[2:].replace('-', '_')) is not None]
-    if present:
+    if present or observe:
+        # The raw proposal observer is OPT-IN and can only run inside an
+        # audited start: it needs the run id, the output root and the bound
+        # manifest.  A partial option set is refused before anything is
+        # created.
         missing = [name for name in AUDIT_OPTIONS if name not in present]
         if missing:
             print('audited start refused: missing %s' % ', '.join(missing),
