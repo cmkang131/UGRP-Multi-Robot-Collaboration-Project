@@ -1,0 +1,24 @@
+name: Solo geometry candidate syntax
+on:
+  pull_request:
+    paths:
+      - experiments/2026-11-06-solo-geometry-client-v1/candidate/**
+      - .github/workflows/solo-geometry-candidate.yml
+  push:
+    branches: [main]
+    paths:
+      - experiments/2026-11-06-solo-geometry-client-v1/candidate/**
+      - .github/workflows/solo-geometry-candidate.yml
+permissions:
+  contents: read
+jobs:
+  syntax-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile without importing archived research dependencies
+        run: python -m py_compile experiments/2026-11-06-solo-geometry-client-v1/candidate/prepare_only.py experiments/2026-11-06-solo-geometry-client-v1/candidate/solo_geometry_client.py experiments/2026-11-06-solo-geometry-client-v1/candidate/solo_geometry_worker.py experiments/2026-11-06-solo-geometry-client-v1/candidate/run_client_check.py
