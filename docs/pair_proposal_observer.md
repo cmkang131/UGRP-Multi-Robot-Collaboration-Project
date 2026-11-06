@@ -83,3 +83,33 @@ a fixed synthetic predictor, both arms audit ON and observer OFF/ON. Six ticks,
 two robots, matching observation_digest across adjacent propose_op/snapshot,
 12 captured robot candidates, complete final status and equal stdout responses.
 Together with the existing worker suite:51 passed. Model/head/SIM/GPU0.
+
+
+## I/O completion and cleanup rules
+
+The owned loop uses AtomicStatus: write an exclusive sibling temporary file,
+flush, fsync and successfully close it, then atomically replace the visible
+status. If any pre-replace stage fails, the prior (normally unfinished) status
+remains visible. The temporary file is owned by this writer and removed on
+failure. After status persistence, the sink summary is constructed from updated
+failure counters. The summary is a kind-tagged row, not necessarily the last
+row: audit.close may append pending_observation rows afterward.
+
+A status file alone is insufficient for diagnosing a legacy caller-provided
+stream: it can contain stale complete=true bytes after a flush exception.
+Require agreement with the sink summary and a successfully completed worker;
+any reported I/O error, missing/unfinished/truncated evidence or disagreement
+means unknown completeness. Atomic replacement concerns visibility, not a
+blanket guarantee against filesystem/power-loss failure; no latency equivalence
+or full directory-fsync durability is claimed.
+
+Cleanup attempts observer finish, status close, audit close and head close
+independently. An original worker exception remains primary; cleanup errors
+are attached as notes. Without an original error, cleanup failure is propagated.
+The status path is reserved before launching a learned head, so reservation
+failure cannot leave a newly started head behind.
+
+blocked=false does not imply that the raw candidate was issued: pending READY
+without a GO/ACK permit can also produce a hold. Interpret candidate, ready,
+permit and issued records together. Historical candidate values stay unknown.
+The synthetic READY-hold case is not evidence about the historical actor.
