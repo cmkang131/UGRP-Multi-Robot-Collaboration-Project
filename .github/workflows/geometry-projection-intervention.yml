@@ -1,0 +1,37 @@
+name: Geometry projection intervention
+
+on:
+  pull_request:
+    paths:
+      - harness/geometry_projection_intervention.py
+      - tests/test_geometry_projection_intervention.py
+      - tests/conftest.py
+      - docs/geometry_projection_intervention.md
+      - .github/workflows/geometry-projection-intervention.yml
+  push:
+    branches: [main]
+    paths:
+      - harness/geometry_projection_intervention.py
+      - tests/test_geometry_projection_intervention.py
+      - tests/conftest.py
+      - .github/workflows/geometry-projection-intervention.yml
+
+permissions:
+  contents: read
+
+jobs:
+  fake-hook-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pytest==9.1.1
+      - name: Verify fake hooks and temporary-source contracts
+        run: python -m pytest tests/test_geometry_projection_intervention.py -q -rs -p no:cacheprovider
