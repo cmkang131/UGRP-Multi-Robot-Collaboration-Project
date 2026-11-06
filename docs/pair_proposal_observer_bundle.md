@@ -76,12 +76,12 @@ from the envelope rather than from a duplicated body field.
 
 | File | sha256 |
 |---|---|
-| `harness/pair_worker_audit.py` (core, frozen) | `cfe4cbfa2565003063aa69980abd759b5364877e0aa45cc709ebb6a32bef099d` |
-| `harness/pair_proposal_observer.py` (core, frozen) | `19d2af7f1d972b25b0e3069424046539d995ade4eef0e62fd2b66013a39ea35d` |
-| `harness/pair_worker_bundle.py` | `a7828ba1bcc95082feeb3076a88488dcfb6f2de0f84b43db0293c5daf9b8459b` |
-| `harness/pair_worker_audit_entry.py` | `a902afa0a8a50494507998b19e500af736f5a241439f7f2bbf9a0ec283c48ba9` |
-| PR642 runner | `60179d3eca706c6071f0b790940543d66d8cf9d4cec27186ab9c9df070e1ea40` |
-| consumer runner | `108efd11960bac295b2df2676400e239bdd567b926e7030e8c95c3d15b804c78` |
+| `harness/pair_worker_audit.py` (core, frozen) | `8aeb8692ed0defe9e35fdd388d6009bd005ebf398e94ee2409eb4b67bccd7349` |
+| `harness/pair_proposal_observer.py` (core, frozen) | `b8d5d885ce5d6a93520fd7e7e3da71ad193d5abda0a0ff5e6bc88eae321fe201` |
+| `harness/pair_worker_bundle.py` | `b3497b3cefaefae1e38feaa6aaf88644194c5e7580c52bdf2237cf3240626a2e` |
+| `harness/pair_worker_audit_entry.py` | `5c85b0dda46ba1da6d43f9b8029f6280ffff6753b35a8b8c78b542fde3e4d792` |
+| PR642 runner | `91d527490c736206d708056eb303825db3e8ffbbed503e5272c883223bd3e404` |
+| consumer runner | `61a019664123c3d6fac3da1abfe48acde16d994ac462a214967b1e67ea9cbde2` |
 
 The core hashes are the coordinator's `core-wired-manifest.json` /
 `wiring-manifest.json` values: `19d2af7f…` for the observer and
@@ -99,3 +99,5 @@ helper and the core, and the runners pin all four candidates.
 * No original file was modified; the pinned trees and the original runner
   stay read-only.
 * No commit, no push, no delegation, no admin tool call.
+
+The completeness writer now uses flush/fsync/close-before-atomic-replace. Read proposal_capture_summary by kind, not as the final file row. Worker cleanup preserves the original exception and attempts every owned close. These changes required refreshing independent core/entry/helper/runner pins; none was weakened.
