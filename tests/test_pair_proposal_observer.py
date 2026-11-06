@@ -202,6 +202,21 @@ for r in snaps:
 status=json.loads((root/'proposal-status-True.json').read_text());assert status['complete'] and status['captured_robot_candidates']==12
 assert not (root/'proposal-status-False.json').exists()
 assert outputs[0]==outputs[1]
+# A status close failure must not replace the original worker error.
+from harness import pair_proposal_observer as om
+original_close=om.AtomicStatus.close
+om.AtomicStatus.close=lambda self: (_ for _ in ()).throw(OSError('status close failed'))
+try:
+ badargs=[x.replace('True','fault') if x=='True' else x for x in args]
+ # Replace only the explicit run-id argument, preserving paths and manifest.
+ badargs=list(args);badargs[badargs.index('--audit-run-id')+1]='fault'
+ try:
+  a.owned_worker_main(badargs,predict=s.synthetic_predict_factory(),stdin=['{\"op\":\"invalid\"}'],stdout=s.Capture())
+ except ValueError as exc:
+  assert 'worker allowlist mismatch' in str(exc)
+  assert any('status.close' in n for n in exc.__notes__)
+ else:raise AssertionError('original exception was masked')
+finally:om.AtomicStatus.close=original_close
 print(json.dumps({'ticks':6,'captured_candidates':12,'stdout_equal':True,'complete':True}))
 '''
     p=subprocess.run([sys.executable,'-B','-c',code,str(repo),str(tmp_path),str(tree)],env={**os.environ,'PYTHONPATH':str(tree),'PYTHONDONTWRITEBYTECODE':'1'},cwd=tmp_path,capture_output=True,text=True,timeout=30)
@@ -213,3 +228,50 @@ def test_no_attempts_not_a_complete_diagnostic():
     c=Controller();w=observer(c,Sink());w.finish()
     state=w.capture_status();assert state['finished'] and not state['complete']
     assert state['attempted_ticks']==state['captured_ticks']==0
+
+
+def test_atomic_status_flush_failure_retains_previous_and_summary_refuses(tmp_path,monkeypatch):
+    import json
+    import harness.pair_proposal_observer as mod
+    c=Controller();sink=Sink();path=tmp_path/'status.json';writer=mod.AtomicStatus(path)
+    w=ProposalObserver(c,enabled=True,source_controller=c,sink=sink,expected_source_sha256=PIN,status_stream=writer)
+    w.propose(1.,{})
+    def fail(*a):raise OSError('fsync after bytes')
+    monkeypatch.setattr(mod.os,'fsync',fail)
+    w.finish()
+    assert not json.loads(path.read_text())['finished']
+    assert sink.rows[-1]['status_write_failures']==1 and not sink.rows[-1]['complete']
+    assert not list(tmp_path.glob('*.tmp'))
+
+
+def test_atomic_status_replace_failure_keeps_old_file(tmp_path,monkeypatch):
+    import json
+    import harness.pair_proposal_observer as mod
+    writer=mod.AtomicStatus(tmp_path/'status.json')
+    def fail(*a):raise OSError('replace failure')
+    monkeypatch.setattr(mod.os,'replace',fail)
+    with pytest.raises(OSError):writer.publish({'complete':True})
+    assert json.loads(writer.path.read_text())['complete'] is False
+
+
+def test_atomic_status_close_failure_never_publishes(tmp_path,monkeypatch):
+    import json
+    import harness.pair_proposal_observer as mod
+    writer=mod.AtomicStatus(tmp_path/'status.json');real=mod.os.fdopen
+    class CloseFault:
+        def __init__(self,*a,**kw):self.stream=real(*a,**kw)
+        def __enter__(self):return self.stream
+        def __exit__(self,*a):self.stream.close();raise OSError('close after bytes')
+    monkeypatch.setattr(mod.os,'fdopen',CloseFault)
+    with pytest.raises(OSError):writer.publish({'complete':True})
+    assert json.loads(writer.path.read_text())['complete'] is False
+
+
+def test_legacy_stream_flush_failure_visible_in_sink_summary():
+    import io,json
+    c=Controller();sink=Sink()
+    class FlushFault(io.StringIO):
+        def flush(self):raise OSError('flush after bytes')
+    stream=FlushFault();w=ProposalObserver(c,enabled=True,source_controller=c,sink=sink,expected_source_sha256=PIN,status_stream=stream)
+    w.propose(1.,{});w.finish()
+    assert not sink.rows[-1]['complete'] and sink.rows[-1]['status_write_failures']>0
