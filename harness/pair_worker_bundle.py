@@ -107,8 +107,7 @@ REQUIRED_CANDIDATE_NAMES = (
 # The independent pin of the raw ProposalObserver bytes.  It is NOT read from
 # the manifest: a manifest that only agrees with itself must not be able to
 # declare a swapped observer good.
-EXPECTED_OBSERVER_SHA = ('19d2af7f1d972b25b0e3069424046539d995ade4eef0e62fd2b6'
-                          '6013a39ea35d')
+EXPECTED_OBSERVER_SHA = 'b8d5d885ce5d6a93520fd7e7e3da71ad193d5abda0a0ff5e6bc88eae321fe201'
 
 # ---------------------------------------------------------------- pin tables
 # Independent expected hashes.  They are NOT read from the manifest: a
