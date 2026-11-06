@@ -8,6 +8,14 @@ the same harness tree as the pinned controller, so that
 ``harness/pairact_r1_student.py`` and the audit module must live in one
 ``harness`` package directory.
 
+The raw ProposalObserver (``harness/pair_proposal_observer.py``) travels with
+them as a FOURTH candidate file: the audited worker imports it as
+``harness.pair_proposal_observer`` from THIS tree, so it must sit next to the
+pinned controller.  Its bytes are pinned here as an **independent** constant
+(``EXPECTED_OBSERVER_SHA``), so a swapped observer is refused before the
+bundle is created.  The manifest therefore binds **16** protected entries:
+7 pinned tree files + 4 candidate files + 5 read-only originals.
+
 Rules enforced here:
 
 * The bundle root is created **exclusively**.  An existing destination is
@@ -76,12 +84,30 @@ REQUIRED_TREE_FILES = (
 
 # The candidate files that are placed next to the pinned controller.  The
 # bundle helper itself must travel with them: the entry verifies the startup
-# with it, so the helper has to be in the same tree.
+# with it, so the helper has to be in the same tree.  The raw ProposalObserver
+# travels as well: the audited worker imports it as
+# ``harness.pair_proposal_observer`` from THIS tree.
 CANDIDATE_TREE_FILES = (
     'harness/pair_worker_audit.py',
     'harness/pair_worker_audit_entry.py',
     'harness/pair_worker_bundle.py',
+    'harness/pair_proposal_observer.py',
 )
+
+# The file names every candidate set must carry.  A bundle that misses one of
+# them is refused: the manifest must bind the full protected scope (16
+# entries), never a partial one.
+REQUIRED_CANDIDATE_NAMES = (
+    'pair_worker_audit.py',
+    'pair_worker_audit_entry.py',
+    'pair_worker_bundle.py',
+    'pair_proposal_observer.py',
+)
+
+# The independent pin of the raw ProposalObserver bytes.  It is NOT read from
+# the manifest: a manifest that only agrees with itself must not be able to
+# declare a swapped observer good.
+EXPECTED_OBSERVER_SHA = 'b8d5d885ce5d6a93520fd7e7e3da71ad193d5abda0a0ff5e6bc88eae321fe201'
 
 # ---------------------------------------------------------------- pin tables
 # Independent expected hashes.  They are NOT read from the manifest: a
@@ -176,10 +202,14 @@ def create_bundle(*, dest, pinned_tree, candidates, externals=()):
 
     ``candidates``  -- absolute paths of the candidate files to place in the
                       bundle's ``harness`` directory (the audit module, the
-                      launch entry and this helper).
+                      launch entry, this helper and the raw ProposalObserver).
+                      The set must be COMPLETE; a partial set is refused.
     ``externals``   -- absolute paths of read-only originals (the geometry
                       worker, the head sources, the config, the ASTRA outer
                       loop) that the manifest must also bind.
+
+    The manifest binds 16 entries: 7 pinned tree files + 4 candidate files +
+    5 read-only originals.
 
     Returns a dict with the bundle root, the manifest path, the manifest and
     the bundle info.
@@ -218,12 +248,22 @@ def create_bundle(*, dest, pinned_tree, candidates, externals=()):
             raise BundleError('pinned source is missing: %s' % source)
         record(target, 'pinned_tree_copy', source)
 
-    # The candidate module, the launch entry and this helper, placed into the
-    # SAME harness package.
+    # The candidate module, the launch entry, this helper and the raw
+    # ProposalObserver, placed into the SAME harness package.  The candidate
+    # set must be COMPLETE: a bundle without the observer would bind only 15
+    # manifest entries and could never be an audited start.
+    names = [Path(candidate).name for candidate in candidates]
+    missing = [name for name in REQUIRED_CANDIDATE_NAMES if name not in names]
+    if missing:
+        raise BundleError('candidate set is incomplete, missing: %s'
+                          % ', '.join(missing))
     for candidate in candidates:
         source = Path(candidate).resolve()
         if not source.is_file():
             raise BundleError('candidate file is missing: %s' % source)
+        if source.name == 'pair_proposal_observer.py':
+            if sha256_file(source) != EXPECTED_OBSERVER_SHA:
+                raise BundleError('raw proposal observer hash drift: %s' % source)
         target = root / 'harness' / source.name
         if target.exists():
             raise BundleError('candidate file would overwrite a copied file: %s' % target)
@@ -347,7 +387,7 @@ def verify_startup(manifest_path, *, expected, required, expected_sources=None):
 _IMPORT_PROBE = (
     'import json, importlib\n'
     'names = ["harness.pair_worker_audit", "harness.pairact_r1_student",'
-    ' "harness.grasp_act_contract"]\n'
+    ' "harness.grasp_act_contract", "harness.pair_proposal_observer"]\n'
     'out = {}\n'
     'for name in names:\n'
     '    out[name] = importlib.import_module(name).__file__\n'

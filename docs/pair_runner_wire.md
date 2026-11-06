@@ -113,27 +113,35 @@ pinned (`candidate source hash drift: …`).
   **every copied file is re-hashed against its source** at creation time
   (`files_byte_compared` in `bundle-info.json`, 1683 files for the current
   pinned tree).
-* The manifest (15 entries) binds the **protected scope**:
+* The manifest (16 entries) binds the **protected scope**:
   the copied controller / contract / pairact / beamact / policy / `__init__` /
-  `robot_actions`, the candidate module, entry and helper, and the read-only
-  originals (geometry worker, head worker, head policy, config, ASTRA outer
-  loop).  Each tree entry also records its `source_path`, so the original
-  pinned file is checked as well.
+  `robot_actions` (7), the candidate module, entry, helper **and the raw
+  ProposalObserver** (4), and the read-only originals (geometry worker, head
+  worker, head policy, config, ASTRA outer loop) (5).  Each tree entry also
+  records its `source_path`, so the original pinned file is checked as well.
+
+  **Why 16 and not 15 (2026-11-06, UGRP-Pair):** the raw ProposalObserver is
+  imported by the audited worker as `harness.pair_proposal_observer`, so it
+  must live in the **same** harness tree as the pinned controller.  A bundle
+  without it would bind only 15 entries and could never be an audited start,
+  so `create_bundle` now **refuses an incomplete candidate set** and pins the
+  observer bytes independently (`EXPECTED_OBSERVER_SHA`).
 * The manifest is verified **before the worker starts** and **again by the
   entry at start-up**.  An **empty or incomplete manifest is an error**,
   never a "verified pin"; a forged hash, a missing file and a self-consistent
   manifest over a wrong source are refused.
 * The same-tree claim is checked with a **real import** of the bundle's
-  `harness.pair_worker_audit`, `harness.pairact_r1_student` and
-  `harness.grasp_act_contract` in an isolated subprocess (neutral working
-  directory, bundle-only `PYTHONPATH`), comparing the `__file__` paths **and**
-  requiring them to be inside the **requested** bundle root.  A candidate
-  from another tree is refused.
+  `harness.pair_worker_audit`, `harness.pairact_r1_student`,
+  `harness.grasp_act_contract` and `harness.pair_proposal_observer` in an
+  isolated subprocess (neutral working directory, bundle-only `PYTHONPATH`),
+  comparing the `__file__` paths **and** requiring them to be inside the
+  **requested** bundle root.  A candidate from another tree is refused.
 
 ### Protected vs unprotected scope (stated precisely)
 
 * **Protected (pinned by the manifest and re-verified at start-up):** the 7
-  required tree files, the 3 candidate files and the 5 read-only originals.
+  required tree files, the 4 candidate files (audit module, launch entry,
+  bundle helper, raw ProposalObserver) and the 5 read-only originals.
 * **Unprotected:** the rest of the copied tree (about 1676 further files).
   They are byte-compared against their source **at bundle creation**, but
   they are not in the manifest, so a later change to one of them is **not**
