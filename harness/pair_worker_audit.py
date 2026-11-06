@@ -460,6 +460,7 @@ def _owned_parser():
     parser.add_argument('--audit-run-id', default=None)
     parser.add_argument('--audit-output-root', type=Path, default=None)
     parser.add_argument('--audit-sources', type=Path, default=None)
+    parser.add_argument('--observe-raw-proposals', action='store_true')
     return parser
 
 
@@ -474,6 +475,8 @@ def owned_worker_main(argv=None, *, predict=None, stdin=None, stdout=None):
     args = _owned_parser().parse_args(argv)
     if bool(args.audit_run_id) != bool(args.audit_output_root):
         raise AuditError('audit run id and audit output root must be given together')
+    if args.observe_raw_proposals and not args.audit_run_id:
+        raise AuditError('raw proposal observation requires audit options')
     startup_sources = (load_source_manifest(args.audit_sources)
                        if args.audit_sources is not None else {})
     verify_sources(startup_sources)  # fail before importing or starting a head
@@ -489,6 +492,17 @@ def owned_worker_main(argv=None, *, predict=None, stdin=None, stdout=None):
         from harness.pairact_r1 import load_config
         settings.update(load_config(args.config))
 
+    observer_class = None
+    controller_pin = '3e12d2f5408f82821187401e8a6d4298cb70fb27b48c229d689a54efdef77e81'
+    if args.observe_raw_proposals:
+        from harness.pair_proposal_observer import ProposalObserver
+        observer_class = ProposalObserver
+        source = Path(sys.modules[PairStudentController.__module__].__file__).resolve()
+        observer_source = Path(sys.modules[ProposalObserver.__module__].__file__).resolve()
+        if file_digest(source) != controller_pin:
+            raise AuditError('raw proposal controller source pin mismatch')
+        if startup_sources.get(str(source)) != controller_pin or startup_sources.get(str(observer_source)) != file_digest(observer_source):
+            raise AuditError('proposal observer/controller must be bound in source manifest')
     head = None
     if predict is None:
         if args.headworker is None or args.geometry_trace_dir is None:
@@ -513,6 +527,13 @@ def owned_worker_main(argv=None, *, predict=None, stdin=None, stdout=None):
     stream_in = stdin if stdin is not None else sys.stdin
     stream_out = stdout if stdout is not None else sys.stdout
     controller = None
+    observer = None
+    capture_status = None
+    if args.observe_raw_proposals:
+        path = Path(args.audit_output_root) / ('proposal-status-' + args.audit_run_id + '.json')
+        capture_status = path.open('x', encoding='utf-8')
+        capture_status.write(json.dumps({'finished': False, 'complete': False, 'reason': 'no controller yet'}) + '\n')
+        capture_status.flush()
     try:
         print(json.dumps({'ready': True, 'mode': pinned.MODE}), flush=True, file=stream_out)
         for line in stream_in:
@@ -528,7 +549,13 @@ def owned_worker_main(argv=None, *, predict=None, stdin=None, stdout=None):
                     deadband=settings['issued_clock_deadband'],
                 )
                 if audit is not None:
+                    raw_controller = controller
                     controller = audit.attach(controller)
+                    if observer_class is not None:
+                        observer = observer_class(controller, enabled=True, source_controller=raw_controller,
+                            sink=audit.sink, expected_source_sha256=controller_pin, status_stream=capture_status)
+                        observer._persist_status()
+                        controller = observer
                 result = {'ok': True}
             elif op == 'propose':
                 if controller is None:
@@ -552,8 +579,16 @@ def owned_worker_main(argv=None, *, predict=None, stdin=None, stdout=None):
                 result = controller.summary()
             print(json.dumps(result, allow_nan=False), flush=True, file=stream_out)
     finally:
-        if audit is not None:
-            audit.close()
-        if head is not None:
-            head.close()
+        try:
+            if observer is not None:
+                observer.finish()
+        finally:
+            if capture_status is not None:
+                capture_status.close()
+            try:
+                if audit is not None:
+                    audit.close()
+            finally:
+                if head is not None:
+                    head.close()
     return 0
