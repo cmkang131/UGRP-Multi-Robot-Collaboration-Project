@@ -50,6 +50,9 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 BUNDLE_HELPER = REPO_ROOT / 'harness' / 'pair_worker_bundle.py'
 CANDIDATE_AUDIT = REPO_ROOT / 'harness' / 'pair_worker_audit.py'
 CANDIDATE_ENTRY = REPO_ROOT / 'harness' / 'pair_worker_audit_entry.py'
+# The raw ProposalObserver is the FOURTH candidate file: it travels in the
+# same harness tree, so the manifest binds 16 entries instead of 15.
+CANDIDATE_OBSERVER = REPO_ROOT / 'harness' / 'pair_proposal_observer.py'
 OWNED_RUNNER = REPO_ROOT / 'experiments' / '2026-11-05-pair-runner-wire' / \
     'run_cpu_joint_e2e_audit_wire.py'
 
@@ -120,7 +123,7 @@ def bundle_root(tmp_path_factory, bundle_helper):
     dest = tmp_path_factory.mktemp('bundle') / 'tree'
     bundle_helper.create_bundle(dest=dest, pinned_tree=PINNED_TREE,
                                 candidates=[CANDIDATE_AUDIT, CANDIDATE_ENTRY,
-                                            BUNDLE_HELPER],
+                                            BUNDLE_HELPER, CANDIDATE_OBSERVER],
                                 externals=[GEOMETRY_WORKER, HEAD_WORKER, HEAD_POLICY,
                                            CONFIG, ASTRA])
     return dest
@@ -291,12 +294,14 @@ def test_bundle_is_created_exclusively(bundle_helper, tmp_path):
     dest = tmp_path / 'bundle'
     created = bundle_helper.create_bundle(dest=dest, pinned_tree=PINNED_TREE,
                                           candidates=[CANDIDATE_AUDIT, CANDIDATE_ENTRY,
-                                                      BUNDLE_HELPER])
+                                                      BUNDLE_HELPER,
+                                                      CANDIDATE_OBSERVER])
     assert Path(created['root']).is_dir()
     with pytest.raises(bundle_helper.BundleError):
         bundle_helper.create_bundle(dest=dest, pinned_tree=PINNED_TREE,
                                     candidates=[CANDIDATE_AUDIT, CANDIDATE_ENTRY,
-                                                BUNDLE_HELPER])
+                                                BUNDLE_HELPER,
+                                                CANDIDATE_OBSERVER])
     assert (dest / 'harness' / 'pair_worker_audit.py').is_file()
     assert (dest / 'bundle-manifest.json').is_file()
 
@@ -404,7 +409,7 @@ def test_the_import_probe_refuses_a_foreign_tree(bundle_root, bundle_helper, tmp
     other = tmp_path / 'other'
     bundle_helper.create_bundle(dest=other, pinned_tree=PINNED_TREE,
                                 candidates=[CANDIDATE_AUDIT, CANDIDATE_ENTRY,
-                                            BUNDLE_HELPER])
+                                            BUNDLE_HELPER, CANDIDATE_OBSERVER])
     with pytest.raises(bundle_helper.BundleError):
         bundle_helper.verify_import_same_tree(bundle_root, import_root=other)
 
