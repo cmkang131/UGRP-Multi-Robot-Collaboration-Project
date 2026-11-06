@@ -83,13 +83,14 @@ from the envelope rather than from a duplicated body field.
 | PR642 runner | `91d527490c736206d708056eb303825db3e8ffbbed503e5272c883223bd3e404` |
 | consumer runner | `61a019664123c3d6fac3da1abfe48acde16d994ac462a214967b1e67ea9cbde2` |
 
-The core hashes are the coordinator's `core-wired-manifest.json` /
-`wiring-manifest.json` values: `19d2af7f…` for the observer and
-`cfe4cbfa…bef099d` for the audit module.
-The `run_id` correction in the summary body is already inside `19d2af7f…`,
-so the pins were correct as they stand.  The order was
-**helper → entry → runner**: the helper pins the observer, the entry pins the
-helper and the core, and the runners pin all four candidates.
+The current core includes atomic status publication and independent cleanup:
+`b8d5d885…321fe201` for the observer and `8aeb8692…ccd7349` for the
+audit module, as recorded in the table above. The earlier wiring hashes
+describe superseded bytes and must not be used to validate this revision.
+Pin updates follow **core → helper → entry → runner**: the helper pins the
+observer, the entry pins the helper and the core, and the runners pin all
+four candidates. The summary body omits the reserved `run_id`; the sink
+envelope supplies it.
 
 ## 6. What was NOT done
 
