@@ -183,10 +183,10 @@ EXPECTED_EXTERNAL_SHAS = {
 # before the bundle is built.  Four candidates: the audit module, its launch
 # entry, the bundle helper and the raw ProposalObserver.
 EXPECTED_CANDIDATE_SHAS = {
-    str(CANDIDATE_AUDIT): "cfe4cbfa2565003063aa69980abd759b5364877e0aa45cc709ebb6a32bef099d",
-    str(CANDIDATE_ENTRY): "a902afa0a8a50494507998b19e500af736f5a241439f7f2bbf9a0ec283c48ba9",
-    str(BUNDLE_HELPER): "a7828ba1bcc95082feeb3076a88488dcfb6f2de0f84b43db0293c5daf9b8459b",
-    str(CANDIDATE_OBSERVER): "19d2af7f1d972b25b0e3069424046539d995ade4eef0e62fd2b66013a39ea35d",
+    str(CANDIDATE_AUDIT): "8aeb8692ed0defe9e35fdd388d6009bd005ebf398e94ee2409eb4b67bccd7349",
+    str(CANDIDATE_ENTRY): "5c85b0dda46ba1da6d43f9b8029f6280ffff6753b35a8b8c78b542fde3e4d792",
+    str(BUNDLE_HELPER): "b3497b3cefaefae1e38feaa6aaf88644194c5e7580c52bdf2237cf3240626a2e",
+    str(CANDIDATE_OBSERVER): "b8d5d885ce5d6a93520fd7e7e3da71ad193d5abda0a0ff5e6bc88eae321fe201",
 }
 
 # ---- owned consumer audit wiring --------------------------------------
