@@ -5,6 +5,8 @@ captures a command candidate, not an entire ACT chunk or environment effect.
 """
 import hashlib
 import json
+import os
+import tempfile
 from pathlib import Path
 import sys
 
@@ -16,6 +18,33 @@ def _copy(value):
 def _digest(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(',', ':'),
                                      allow_nan=False).encode()).hexdigest()
+
+
+class AtomicStatus:
+    """Publish only after a complete flush/fsync/close; never expose a torn update."""
+    def __init__(self, path):
+        self.path = Path(path)
+        with self.path.open('x', encoding='utf-8') as stream:
+            json.dump({'finished': False, 'complete': False, 'reason': 'not finalized'}, stream)
+            stream.flush()
+            os.fsync(stream.fileno())
+
+    def publish(self, value):
+        fd, name = tempfile.mkstemp(prefix=self.path.name + '.', suffix='.tmp', dir=self.path.parent)
+        try:
+            with os.fdopen(fd, 'w', encoding='utf-8') as stream:
+                json.dump(value, stream, sort_keys=True, allow_nan=False)
+                stream.write('\n')
+                stream.flush()
+                os.fsync(stream.fileno())
+            # A flush OR close failure skips replacement and retains prior state.
+            os.replace(name, self.path)
+        finally:
+            if os.path.exists(name):
+                os.unlink(name)  # our exclusive temporary file only
+
+    def close(self):
+        pass  # no persistent file descriptor
 
 
 class ProposalObserver:
@@ -108,6 +137,9 @@ class ProposalObserver:
         if self._status_stream is not None:
             try:
                 stream = self._status_stream
+                if hasattr(stream, 'publish'):
+                    stream.publish(self.capture_status())
+                    return
                 text = json.dumps(self.capture_status(), sort_keys=True, allow_nan=False) + '\n'
                 stream.seek(0)
                 stream.write(text)
@@ -120,6 +152,7 @@ class ProposalObserver:
         if not self.enabled or self._finished:
             return
         self._finished = True
+        self._persist_status()
         try:
             summary = self.capture_status()
             summary.pop('run_id', None)  # supplied by the existing sink envelope
@@ -128,4 +161,3 @@ class ProposalObserver:
             # The independent status artifact remains the authority on missing
             # snapshot rows when the shared sink cannot accept a summary.
             pass
-        self._persist_status()
