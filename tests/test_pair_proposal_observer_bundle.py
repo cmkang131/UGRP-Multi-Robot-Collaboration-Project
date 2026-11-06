@@ -70,9 +70,8 @@ ASTRA = Path('/home/ubuntu/UGRP/experiments/2026-11-04-astra-strict-eval-v1/'
 
 # The coordinator's FROZEN core: these bytes must not change under this
 # wiring.  They are the independent pins the entry and the runners carry.
-CORE_AUDIT_SHA = 'cfe4cbfa2565003063aa69980abd759b5364877e0aa45cc709ebb6a32bef099d'
-CORE_OBSERVER_SHA = ('19d2af7f1d972b25b0e3069424046539d995ade4eef0e62fd2b66013a3'
-                      '9ea35d')
+CORE_AUDIT_SHA = '8aeb8692ed0defe9e35fdd388d6009bd005ebf398e94ee2409eb4b67bccd7349'
+CORE_OBSERVER_SHA = 'b8d5d885ce5d6a93520fd7e7e3da71ad193d5abda0a0ff5e6bc88eae321fe201'
 
 # 7 pinned tree files + 4 candidate files + 5 read-only originals.
 MANIFEST_ENTRY_COUNT = 16
