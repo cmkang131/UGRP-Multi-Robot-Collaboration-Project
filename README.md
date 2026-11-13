@@ -1,11 +1,12 @@
 # UGRP: 로봇 협력 이송과 Sim2Real
 
 <p align="center">
-  <img src="docs/assets/architecture.svg" alt="Solo 제어 구조: 자기 카메라와 지정 상자의 기억이 색 구분과 상자 위치 추정을 거쳐 접근 제어기, ACT, 집기 끝 판정, 내려놓기 단계로 들어가고, 내보낸 명령의 기록이 되돌아간다" width="900">
+  <img src="docs/assets/architecture.svg" alt="Solo 제어 구조: 자기 카메라 화면이 색 구분을 거쳐 상자 관측과 ACT 로 들어가고, 단계는 둘러보기, 접근 제어기, 정면 맞추기, ACT, 집기 끝 판정, 내려놓기 순서로 진행한다. 내보낸 명령의 기록이 되돌아간다" width="900">
 </p>
 
 MasterPi 로봇이 자기 카메라만 보고 상자를 집어 옮기는 연구다. MuJoCo 시뮬레이션에서 만들고, 같은 입출력 규격으로 실물 로봇에 옮긴다.
 지도, 벽 표식, 천장 카메라는 쓰지 않는다. 벽은 짙은 초록, 상자는 빨강과 파랑이다.
+그림은 로봇 한 대의 구조다. 상자를 찾아 다가가 정면에 서는 것은 코드가, 집어 드는 것은 학습 모델(ACT)이 맡는다. 자세한 설명은 **[Solo 구조와 모델](docs/solo_architecture.md)**에 있다.
 
 ## 연구 질문
 
@@ -22,7 +23,7 @@ MasterPi 로봇이 자기 카메라만 보고 상자를 집어 옮기는 연구�
 | 갈래 | 상태 |
 |---|---|
 | 팀 구조 비교 실험 | 계획 전용 환경을 만드는 중 |
-| 로봇 한 대의 집어 옮기기 (시뮬레이션) | 개발 중. 새 구조의 코드는 아직 `main` 에 없다 |
+| 로봇 한 대가 상자를 집고 놓기 (시뮬레이션) | 자기 카메라만으로 찾아서 집고 놓는 데까지 됨. 든 채 옮기는 것은 아직. 코드는 아직 `main` 에 없다 |
 | 실물로 옮기기 | 과제 카드 준비 완료, 실물 시험은 아직 없다 |
 
 자세한 것은 [지금 하는 일](docs/current_status.md)과 [로드맵](ROADMAP.md)에 있다. 실험 수치와 날마다의 진행은 팀 Linear(UGRP 팀)에 적는다.
@@ -33,7 +34,7 @@ MasterPi 로봇이 자기 카메라만 보고 상자를 집어 옮기는 연구�
 |---|---|
 | 시뮬레이션 돌려 보기 | [설치와 첫 실행](docs/ubuntu_quickstart.md), [로컬 실행](docs/local_simulation.md) |
 | 실물로 옮기기 | [Sim2Real 안내](docs/sim2real/README.md), [과제 목록](docs/sim2real/04_tasks.md) |
-| 구조와 규격 알기 | [단계별 구성](docs/sim2real/03_pipeline.md), [로봇 입출력 규격](docs/sim2real/02_robot_interface.md), [경기장과 색](docs/sim2real/01_environment.md) |
+| 구조와 규격 알기 | [Solo 구조와 모델](docs/solo_architecture.md), [단계별 구성](docs/sim2real/03_pipeline.md), [로봇 입출력 규격](docs/sim2real/02_robot_interface.md), [경기장과 색](docs/sim2real/01_environment.md) |
 | 옛 기록 찾기 | [문서 찾아보기](docs/README.md), [실험 목록](experiments/README.md) |
 
 Sim2Real 은 순서가 정해진 단계가 아니라 여러 사람이 동시에 맡는 과제 묶음이다. 과제마다 준비물, 절차, 통과 기준, 결과를 올릴 위치가 적혀 있다.
