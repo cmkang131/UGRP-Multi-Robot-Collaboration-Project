@@ -1,0 +1,1373 @@
+{
+  "schema": "ugrp.baseline-resume.v2",
+  "utc": "2026-10-27T00:06:58.834416+00:00",
+  "status": "COMPLETE_VM_TERMINATED",
+  "frozen_sha256": "043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb",
+  "protocol_changed": false,
+  "infrastructure_change": "snapshot restore Seoul a -> Tokyo c, same g2-standard-8/L4; infrastructure only",
+  "arms": {
+    "C": {
+      "planned_n": 20,
+      "started_n": 20,
+      "completed_n": 20,
+      "normal_n": 20,
+      "N_eff": 20,
+      "HOST_ERROR_n": 0,
+      "successes": 0,
+      "status": "NORMAL_COMPLETE_VERIFIED",
+      "integrity_pass": true,
+      "audit_issues": [],
+      "statistics_scope": "registered Arm C confirmatory comparison",
+      "success_95pct_clopper_pearson": [
+        0.0,
+        0.1684334709830853
+      ],
+      "exact_McNemar_p": 1.0,
+      "receipt": {
+        "schema": "ugrp.baseline-arm-receipt.v1",
+        "arm": "arm_c",
+        "started_utc": "2026-10-26T19:56:25.553885+00:00",
+        "ended_utc": "2026-10-26T21:51:10.975342+00:00",
+        "wall_s": 6885.421491085999,
+        "exit_code": 0,
+        "resource_stop_reason": null,
+        "administrative_scope": "Host resource cap only; frozen SIM cap and action selection unchanged"
+      },
+      "receipt_GPU_h": 1.912617080857222,
+      "batch_wall_s": 6873.517023454,
+      "summary": {
+        "N_eff": 20,
+        "successes": 0,
+        "normal_complete": true,
+        "integrity_pass": true,
+        "stage_counts": {
+          "approach": 40567,
+          "alignment": 14405,
+          "ready": 877,
+          "execute": 13752,
+          "carry": 252,
+          "place": 73
+        },
+        "event_funnel": {
+          "ticks": 69926,
+          "inference_calls": 69926,
+          "discard_calls": 69926,
+          "issued_ticks": 69926,
+          "software_hold_ticks": 0,
+          "nonzero_wheel_ticks": 15379,
+          "state225_nonzero": 0
+        },
+        "candidate_funnel": [
+          {
+            "stage": "approach",
+            "passed_cumulative_N": 20,
+            "rejected_N": 0,
+            "denominator_normal_N": 20,
+            "observation_source": "eval_only_GT_geometry"
+          },
+          {
+            "stage": "alignment",
+            "passed_cumulative_N": 0,
+            "rejected_N": 20,
+            "denominator_normal_N": 20,
+            "observation_source": "eval_only_GT_geometry"
+          },
+          {
+            "stage": "READY",
+            "passed_cumulative_N": 0,
+            "rejected_N": 0,
+            "denominator_normal_N": 20,
+            "observation_source": "simultaneous_own_policy_stage_ready"
+          },
+          {
+            "stage": "grasp",
+            "passed_cumulative_N": 0,
+            "rejected_N": 0,
+            "denominator_normal_N": 20,
+            "observation_source": "eval_only_GT_contact"
+          },
+          {
+            "stage": "hold_3s",
+            "passed_cumulative_N": 0,
+            "rejected_N": 0,
+            "denominator_normal_N": 20,
+            "observation_source": "original_physics_held_flag"
+          },
+          {
+            "stage": "carry_1m",
+            "passed_cumulative_N": 0,
+            "rejected_N": 0,
+            "denominator_normal_N": 20,
+            "observation_source": "original_eval_only_carry_evaluator"
+          },
+          {
+            "stage": "door",
+            "passed_cumulative_N": 0,
+            "rejected_N": 0,
+            "denominator_normal_N": 20,
+            "observation_source": "original_eval_only_carry_evaluator"
+          },
+          {
+            "stage": "place",
+            "passed_cumulative_N": 0,
+            "rejected_N": 0,
+            "denominator_normal_N": 20,
+            "observation_source": "original_eval_only_carry_evaluator"
+          }
+        ],
+        "frame_funnel_first5": {
+          "approach": {
+            "eligible": 34963,
+            "passed_cumulative": 25047,
+            "rejected": 9916
+          },
+          "alignment": {
+            "eligible": 25047,
+            "passed_cumulative": 0,
+            "rejected": 25047
+          },
+          "READY": {
+            "eligible": 0,
+            "passed_cumulative": 0,
+            "rejected": 0
+          },
+          "grasp": {
+            "eligible": 0,
+            "passed_cumulative": 0,
+            "rejected": 0
+          },
+          "hold_3s": {
+            "eligible": 0,
+            "passed_cumulative": 0,
+            "rejected": 0
+          }
+        },
+        "actual_rejection_reasons": {},
+        "barrier_event_counts": {
+          "treatment_close_gate_bypassed": 24653
+        },
+        "terminations": {
+          "cap_end": 18,
+          "learned_finished_early": 2
+        },
+        "simultaneous_policy_READY_ticks": 0,
+        "simultaneous_policy_READY_ticks_worlds": 0,
+        "simultaneous_protocol_READY_ticks": 0,
+        "simultaneous_protocol_READY_ticks_worlds": 0,
+        "policy_READY_robot_ticks": 877,
+        "policy_READY_robot_ticks_worlds": 16,
+        "protocol_READY_robot_ticks": 877,
+        "protocol_READY_robot_ticks_worlds": 16,
+        "protocol_GO_count": 0,
+        "protocol_GO_count_worlds": 0,
+        "protocol_ACK_count": 0,
+        "protocol_ACK_count_worlds": 0,
+        "protocol_START_count": 0,
+        "protocol_START_count_worlds": 0,
+        "permit_robot_ticks": 0,
+        "permit_robot_ticks_worlds": 0,
+        "motion": {
+          "max_xy_excursion_m": {
+            "min": 0.17171313525417425,
+            "median": 0.6165717508561681,
+            "max": 1.5542841081021435
+          },
+          "net_xy_displacement_m": {
+            "min": 0.1611255550491428,
+            "median": 0.5705449387527224,
+            "max": 1.4532269340358643
+          },
+          "xy_path_m": {
+            "min": 0.31191102825012723,
+            "median": 1.150099822099194,
+            "max": 2.6851290114793795
+          },
+          "yaw_path_rad": {
+            "min": 0.6972975766292966,
+            "median": 8.126799064168775,
+            "max": 25.51250284706959
+          }
+        },
+        "joint_hold_worlds": 0,
+        "sampled_contact_robot_ticks": 223,
+        "finish_worlds": [
+          13,
+          18
+        ]
+      },
+      "audit": {
+        "path": "results-C/C-audit-v1.json",
+        "sha256": "b082c1cf1219d2cb414f80d38289b74aaf9e5db059d9cb81ac8f635bd6d62201"
+      },
+      "rejection_table": {
+        "execution_absolute": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/derived-C-v1/funnel.json",
+        "retention_note": "logical uncompressed path; final COMPRESSED.jsonl binds .zst bytes",
+        "local": "results-C/C-funnel-v1.json",
+        "decoded_sha256": "6fb70b5cdc9d7421d6aca9497cf4a70a75984fffa2c9e14067cf1ef0b74575e2"
+      }
+    },
+    "S": {
+      "planned_n": 20,
+      "started_n": 20,
+      "completed_n": 20,
+      "normal_n": 20,
+      "N_eff": 20,
+      "HOST_ERROR_n": 0,
+      "successes": 0,
+      "status": "NORMAL_COMPLETE_VERIFIED",
+      "integrity_pass": true,
+      "audit_issues": [],
+      "statistics_scope": "Arm S diagnostic/descriptive only",
+      "success_95pct_clopper_pearson": [
+        0.0,
+        0.1684334709830853
+      ],
+      "exact_McNemar_p": null,
+      "receipt": {
+        "schema": "ugrp.baseline-arm-receipt.v1",
+        "arm": "arm_s",
+        "started_utc": "2026-10-26T22:00:19.701861+00:00",
+        "ended_utc": "2026-10-26T23:49:20.073968+00:00",
+        "wall_s": 6540.372171041001,
+        "exit_code": 0,
+        "resource_stop_reason": null,
+        "administrative_scope": "Host resource cap only; frozen SIM cap and action selection unchanged"
+      },
+      "receipt_GPU_h": 1.816770047511389,
+      "batch_wall_s": 6523.393227086999,
+      "summary": {
+        "N_eff": 20,
+        "successes": 0,
+        "normal_complete": true,
+        "integrity_pass": true,
+        "stage_counts": {
+          "approach": 40843,
+          "alignment": 18995,
+          "ready": 1674,
+          "execute": 6868,
+          "place": 582
+        },
+        "event_funnel": {
+          "ticks": 68962,
+          "inference_calls": 68962,
+          "discard_calls": 68962,
+          "issued_ticks": 68962,
+          "software_hold_ticks": 8323,
+          "nonzero_wheel_ticks": 15753,
+          "state225_nonzero": 0
+        },
+        "candidate_funnel": [
+          {
+            "stage": "approach",
+            "passed_cumulative_N": 20,
+            "rejected_N": 0,
+            "denominator_normal_N": 20,
+            "observation_source": "eval_only_GT_geometry"
+          },
+          {
+            "stage": "alignment",
+            "passed_cumulative_N": 1,
+            "rejected_N": 19,
+            "denominator_normal_N": 20,
+            "observation_source": "eval_only_GT_geometry"
+          },
+          {
+            "stage": "READY",
+            "passed_cumulative_N": 0,
+            "rejected_N": 1,
+            "denominator_normal_N": 20,
+            "observation_source": "simultaneous_own_policy_stage_ready"
+          },
+          {
+            "stage": "grasp",
+            "passed_cumulative_N": 0,
+            "rejected_N": 0,
+            "denominator_normal_N": 20,
+            "observation_source": "eval_only_GT_contact"
+          },
+          {
+            "stage": "hold_3s",
+            "passed_cumulative_N": 0,
+            "rejected_N": 0,
+            "denominator_normal_N": 20,
+            "observation_source": "original_physics_held_flag"
+          },
+          {
+            "stage": "carry_1m",
+            "passed_cumulative_N": 0,
+            "rejected_N": 0,
+            "denominator_normal_N": 20,
+            "observation_source": "original_eval_only_carry_evaluator"
+          },
+          {
+            "stage": "door",
+            "passed_cumulative_N": 0,
+            "rejected_N": 0,
+            "denominator_normal_N": 20,
+            "observation_source": "original_eval_only_carry_evaluator"
+          },
+          {
+            "stage": "place",
+            "passed_cumulative_N": 0,
+            "rejected_N": 0,
+            "denominator_normal_N": 20,
+            "observation_source": "original_eval_only_carry_evaluator"
+          }
+        ],
+        "frame_funnel_first5": {
+          "approach": {
+            "eligible": 34481,
+            "passed_cumulative": 23928,
+            "rejected": 10553
+          },
+          "alignment": {
+            "eligible": 23928,
+            "passed_cumulative": 665,
+            "rejected": 23263
+          },
+          "READY": {
+            "eligible": 665,
+            "passed_cumulative": 0,
+            "rejected": 665
+          },
+          "grasp": {
+            "eligible": 0,
+            "passed_cumulative": 0,
+            "rejected": 0
+          },
+          "hold_3s": {
+            "eligible": 0,
+            "passed_cumulative": 0,
+            "rejected": 0
+          }
+        },
+        "actual_rejection_reasons": {
+          "execution_without_GO_ACK": 4682
+        },
+        "barrier_event_counts": {
+          "treatment_close_gate_bypassed": 26109,
+          "READY": 51,
+          "stage_proposal_released_after_GO_ACK": 4,
+          "proposal_rejected": 4682
+        },
+        "terminations": {
+          "learned_finished_early": 3,
+          "cap_end": 17
+        },
+        "simultaneous_policy_READY_ticks": 8,
+        "simultaneous_policy_READY_ticks_worlds": 1,
+        "simultaneous_protocol_READY_ticks": 410,
+        "simultaneous_protocol_READY_ticks_worlds": 2,
+        "policy_READY_robot_ticks": 1674,
+        "policy_READY_robot_ticks_worlds": 7,
+        "protocol_READY_robot_ticks": 4442,
+        "protocol_READY_robot_ticks_worlds": 7,
+        "protocol_GO_count": 7,
+        "protocol_GO_count_worlds": 2,
+        "protocol_ACK_count": 4,
+        "protocol_ACK_count_worlds": 2,
+        "protocol_START_count": 3,
+        "protocol_START_count_worlds": 2,
+        "permit_robot_ticks": 801,
+        "permit_robot_ticks_worlds": 2,
+        "motion": {
+          "max_xy_excursion_m": {
+            "min": 0.1523589168020416,
+            "median": 0.6187214678100991,
+            "max": 1.023511200239424
+          },
+          "net_xy_displacement_m": {
+            "min": 0.15235529750206642,
+            "median": 0.6153860521307521,
+            "max": 1.023511200239424
+          },
+          "xy_path_m": {
+            "min": 0.28764451297040544,
+            "median": 1.0018088563664262,
+            "max": 1.9990120048037752
+          },
+          "yaw_path_rad": {
+            "min": 0.3705061858918004,
+            "median": 8.351676430485213,
+            "max": 34.03787903208362
+          }
+        },
+        "joint_hold_worlds": 0,
+        "sampled_contact_robot_ticks": 0,
+        "finish_worlds": [
+          0,
+          12,
+          18
+        ]
+      },
+      "audit": {
+        "path": "results-S/S-audit-v1.json",
+        "sha256": "61621c0d62acc121a630247e15325523af9f7db4378fc73b4bc9ddedf3c5129e"
+      },
+      "rejection_table": {
+        "execution_absolute": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/derived-S-v1/funnel.json",
+        "retention_note": "logical uncompressed path; final COMPRESSED.jsonl binds .zst bytes",
+        "local": "results-S/S-funnel-v1.json",
+        "decoded_sha256": "009c90110f71e8dea95384f02a64f4a15703cde464b8ce311d14a9a0bdf45ff4"
+      }
+    }
+  },
+  "all_runs": [
+    {
+      "arm": "C",
+      "world": 0,
+      "seed": 8342000,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-000/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-000/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-000/raw/result.json.zst",
+        "bytes": 10102,
+        "sha256": "b4ceb36cdfcad8ff1bb0510d22f2e2d1f6f2461070d2dfd976145b3532f0d423",
+        "decoded_sha256": "ba1d6506503009f93376d99963e96275529993381bc8647e8138cd168b5c7d8a"
+      },
+      "source_manifest": "results-C/C-source-sha256-v1.json"
+    },
+    {
+      "arm": "C",
+      "world": 1,
+      "seed": 8342001,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-001/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-001/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-001/raw/result.json.zst",
+        "bytes": 10711,
+        "sha256": "ad04e6f2bda02f65500ec1faa55bf814fa85555f5dca34664fecaef77ffd7391",
+        "decoded_sha256": "e1fa1320916785fe5abe62313a28eab1105f76f9022bd1265c1478b5fe184d20"
+      },
+      "source_manifest": "results-C/C-source-sha256-v1.json"
+    },
+    {
+      "arm": "C",
+      "world": 2,
+      "seed": 8342002,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-002/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-002/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-002/raw/result.json.zst",
+        "bytes": 8695,
+        "sha256": "2bd1ed767c8662f08c9a2d58d1fea152a18772e4fca8d103867a5c9260fdbe1d",
+        "decoded_sha256": "d57f28fb9755ebc38ba7894ad22cc2d83acbf40f2fb0fbbc85244eb75132a2c2"
+      },
+      "source_manifest": "results-C/C-source-sha256-v1.json"
+    },
+    {
+      "arm": "C",
+      "world": 3,
+      "seed": 8342003,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-003/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-003/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-003/raw/result.json.zst",
+        "bytes": 8164,
+        "sha256": "940c15a68e7e42bff79a37ddfb734fd3ae9f9e1f9e444e22b79a70d2480c18c0",
+        "decoded_sha256": "fe46d4fc19a5918edb8dd676dea5dfeb2dd250d5f09447acd0c52553ec4e5872"
+      },
+      "source_manifest": "results-C/C-source-sha256-v1.json"
+    },
+    {
+      "arm": "C",
+      "world": 4,
+      "seed": 8342004,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-004/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-004/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-004/raw/result.json.zst",
+        "bytes": 10199,
+        "sha256": "3d11739084138953a3eef34b9559ec5834fdef4f1588753e5fc080a16fd3f01f",
+        "decoded_sha256": "12943c54c7d906034b8ac510d92ac2030294fa2844aff4a655b363de43d9d3fb"
+      },
+      "source_manifest": "results-C/C-source-sha256-v1.json"
+    },
+    {
+      "arm": "C",
+      "world": 5,
+      "seed": 8342005,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-005/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-005/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-005/raw/result.json.zst",
+        "bytes": 8749,
+        "sha256": "3ae3fa10abb5cad615518302200ba7c6732f24bba189379b5e241e5af905432f",
+        "decoded_sha256": "6ba8649e226e496faab0ee5bac55ace28f82e36319b6a7e9a74d6bf2084e0bc3"
+      },
+      "source_manifest": "results-C/C-source-sha256-v1.json"
+    },
+    {
+      "arm": "C",
+      "world": 6,
+      "seed": 8342006,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-006/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-006/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-006/raw/result.json.zst",
+        "bytes": 9631,
+        "sha256": "c83d9738d78087cbcb9b0d00575fdc665005ace8bd58f1eba05b421d541d0843",
+        "decoded_sha256": "a27aec6f0cd5105f5c9da5389216e97781d1216b5d3f1df05365697d79991fa1"
+      },
+      "source_manifest": "results-C/C-source-sha256-v1.json"
+    },
+    {
+      "arm": "C",
+      "world": 7,
+      "seed": 8342007,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-007/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-007/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-007/raw/result.json.zst",
+        "bytes": 9038,
+        "sha256": "0392a546d8028b4e0eb16c9d6d3aa86c8daf782dd1478e357c91d4b99499533e",
+        "decoded_sha256": "0fb3e68827e2adcd9b5e781b9d29ae6bff9cb0db42da09d68a12c345f9a376d8"
+      },
+      "source_manifest": "results-C/C-source-sha256-v1.json"
+    },
+    {
+      "arm": "C",
+      "world": 8,
+      "seed": 8342008,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-008/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-008/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-008/raw/result.json.zst",
+        "bytes": 9845,
+        "sha256": "a5feb86d47fd429c7255b9bffaf2fdcbeda0bab25c757ba38f03f6a34bda2f2b",
+        "decoded_sha256": "5e25f2dd6328b6703a97189a387aa44bfd972d9dc4eed382609579178e2a22ce"
+      },
+      "source_manifest": "results-C/C-source-sha256-v1.json"
+    },
+    {
+      "arm": "C",
+      "world": 9,
+      "seed": 8342009,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-009/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-009/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-009/raw/result.json.zst",
+        "bytes": 9811,
+        "sha256": "9951a233b65c6d68cc71027ed69c07f60c80c0625ec39ab8df0848762a9d121b",
+        "decoded_sha256": "c190e507786e624820013fdc601e524639e77d6976af6deccc848b250eb70b89"
+      },
+      "source_manifest": "results-C/C-source-sha256-v1.json"
+    },
+    {
+      "arm": "C",
+      "world": 10,
+      "seed": 8342010,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-010/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-010/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-010/raw/result.json.zst",
+        "bytes": 9067,
+        "sha256": "cbb5a081b2d21afc438c7c2f93194e87bf0f52d7256a9478da4593afaf7a9e63",
+        "decoded_sha256": "d949b0f9d4333e6f772ef055a589c1ce8d22c736d0532a01032eee3a5c6db7c2"
+      },
+      "source_manifest": "results-C/C-source-sha256-v1.json"
+    },
+    {
+      "arm": "C",
+      "world": 11,
+      "seed": 8342011,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-011/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-011/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-011/raw/result.json.zst",
+        "bytes": 10172,
+        "sha256": "36543fdcd880ff35257dbfc30487f71287b06f6c60e337109fb206321a1880be",
+        "decoded_sha256": "728af3dab8f6c3e25371f65cbb0a939db326797d3e89043842f482400582f942"
+      },
+      "source_manifest": "results-C/C-source-sha256-v1.json"
+    },
+    {
+      "arm": "C",
+      "world": 12,
+      "seed": 8342012,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-012/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-012/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-012/raw/result.json.zst",
+        "bytes": 10138,
+        "sha256": "267d196add1270fe9860eca0b65eb1ac12df076b3e379bd021154b13f9d36a07",
+        "decoded_sha256": "11d48fe7eb00a7ddacf68062566d3fad7014add514a560a938e740a720d13b6d"
+      },
+      "source_manifest": "results-C/C-source-sha256-v1.json"
+    },
+    {
+      "arm": "C",
+      "world": 13,
+      "seed": 8342013,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "learned_finished_early",
+      "raw_reason_category": "teacher_terminal",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-013/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-013/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-013/raw/result.json.zst",
+        "bytes": 7266,
+        "sha256": "c0118854f5f348726be370e17a936c768752571082fd9a70cfe9bb78ed08d153",
+        "decoded_sha256": "883dc501d7e47a318e77f4e01f8a3fa3e0fb35921e491d58332bc413843f7224"
+      },
+      "source_manifest": "results-C/C-source-sha256-v1.json"
+    },
+    {
+      "arm": "C",
+      "world": 14,
+      "seed": 8342014,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-014/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-014/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-014/raw/result.json.zst",
+        "bytes": 8270,
+        "sha256": "65bff57549107fea9ae8092f5a80727581cd4dc18f081df52dfc30a19ef64237",
+        "decoded_sha256": "ee08141a60f08ca22da8ab6599c360ee28466393ad76ca17eaa65831b36a0437"
+      },
+      "source_manifest": "results-C/C-source-sha256-v1.json"
+    },
+    {
+      "arm": "C",
+      "world": 15,
+      "seed": 8342015,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-015/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-015/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-015/raw/result.json.zst",
+        "bytes": 8827,
+        "sha256": "4e0bd8fcf04b148c6df8c246bd88a7341993e9d0776d3bd88865312190bf184f",
+        "decoded_sha256": "b2c244796613f583340ff3895659d86f7eef28cc5734926e5ae0992a95be1e0d"
+      },
+      "source_manifest": "results-C/C-source-sha256-v1.json"
+    },
+    {
+      "arm": "C",
+      "world": 16,
+      "seed": 8342016,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-016/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-016/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-016/raw/result.json.zst",
+        "bytes": 10383,
+        "sha256": "973af6891bd38c285df15289bab92e35eb49dc787607f9feeab5e7cd1c6710de",
+        "decoded_sha256": "f29bdc0ed186e1fba76acb3dcd7d92c67921613dedf3adeb09e7c944734d1b1f"
+      },
+      "source_manifest": "results-C/C-source-sha256-v1.json"
+    },
+    {
+      "arm": "C",
+      "world": 17,
+      "seed": 8342017,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-017/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-017/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-017/raw/result.json.zst",
+        "bytes": 9821,
+        "sha256": "9d5d86602ec0a649d1f6fb245341002da363d92a9ea3cf090f43f31f0ed704a2",
+        "decoded_sha256": "2f54930d2ea93f9d335e334d3ce6d570329a3a3a7bbba89525e8cb4fed19650e"
+      },
+      "source_manifest": "results-C/C-source-sha256-v1.json"
+    },
+    {
+      "arm": "C",
+      "world": 18,
+      "seed": 8342018,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "learned_finished_early",
+      "raw_reason_category": "teacher_terminal",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-018/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-018/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-018/raw/result.json.zst",
+        "bytes": 7326,
+        "sha256": "8354a65f811a3bbae48acbca6489dcc50f7a4c8bd0c6762797c4bd29c5315281",
+        "decoded_sha256": "aea1a1d78c0ef35e35881e466949aa14a9d6e7526e6ab34184c0b1ffc8cf4160"
+      },
+      "source_manifest": "results-C/C-source-sha256-v1.json"
+    },
+    {
+      "arm": "C",
+      "world": 19,
+      "seed": 8342019,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-019/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-c/world-019/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-c/world-019/raw/result.json.zst",
+        "bytes": 9627,
+        "sha256": "b980cd9a397705bf74a082232926490b4bea64295a1e769c6388768688e3a9a7",
+        "decoded_sha256": "d7e1580a545571fbe8b38b87baac50099f96dd8cab45004becaa536db25b0fa3"
+      },
+      "source_manifest": "results-C/C-source-sha256-v1.json"
+    },
+    {
+      "arm": "S",
+      "world": 0,
+      "seed": 8342000,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "learned_finished_early",
+      "raw_reason_category": "teacher_terminal",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-000/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-000/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-000/raw/result.json.zst",
+        "bytes": 7221,
+        "sha256": "85e86126ff233a2577dda86de3c2656003479c62481339c67d0b8386721e5c11",
+        "decoded_sha256": "170adf37b8f234191fbd5b3f4cf718f1c01f30e720e8f57543ceaaf39f9b8ca2"
+      },
+      "source_manifest": "results-S/S-source-sha256-v1.json"
+    },
+    {
+      "arm": "S",
+      "world": 1,
+      "seed": 8342001,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-001/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-001/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-001/raw/result.json.zst",
+        "bytes": 10768,
+        "sha256": "2a59e59b52e4dbac04eb899adc77972c223e153e394493b9ca009ca3c79b6d21",
+        "decoded_sha256": "3485a526ab18c108073f124e9c06d120b5cf36d12543557a82ea4023e914f0ed"
+      },
+      "source_manifest": "results-S/S-source-sha256-v1.json"
+    },
+    {
+      "arm": "S",
+      "world": 2,
+      "seed": 8342002,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-002/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-002/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-002/raw/result.json.zst",
+        "bytes": 10038,
+        "sha256": "89288e64204c4ae92bf938f072597c8727887d059618f5abebcdd78b923e4542",
+        "decoded_sha256": "4d00a22c5a2d553105495f5c590561283334df18c79dbee7ad8b735509c3b5a4"
+      },
+      "source_manifest": "results-S/S-source-sha256-v1.json"
+    },
+    {
+      "arm": "S",
+      "world": 3,
+      "seed": 8342003,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-003/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-003/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-003/raw/result.json.zst",
+        "bytes": 10479,
+        "sha256": "eefe576304f85aa4244031ca9bf1709ccc0a268d96619e584cdde71415f7bb12",
+        "decoded_sha256": "a59152a04f7f80afd509c8dfe6563ec15ba275d122b7bb0a24874b6b9023c060"
+      },
+      "source_manifest": "results-S/S-source-sha256-v1.json"
+    },
+    {
+      "arm": "S",
+      "world": 4,
+      "seed": 8342004,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-004/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-004/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-004/raw/result.json.zst",
+        "bytes": 10718,
+        "sha256": "03183a583acb55fcb7da50f2749c2bd5462a92880a88ead7b280c7db9f8f1795",
+        "decoded_sha256": "c84e219051704ef05d6a34c34d5a6a31ebe7232cb15dd96111a2ac44e73ab2bb"
+      },
+      "source_manifest": "results-S/S-source-sha256-v1.json"
+    },
+    {
+      "arm": "S",
+      "world": 5,
+      "seed": 8342005,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-005/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-005/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-005/raw/result.json.zst",
+        "bytes": 8958,
+        "sha256": "5d7fc37e84b14b63af7c13f305b665a8a1713bfe973a743d423763b619b264ab",
+        "decoded_sha256": "24b8d11da17d29d7399b422d47839a78f3220a1c4aa56711e4cda21366efdbbd"
+      },
+      "source_manifest": "results-S/S-source-sha256-v1.json"
+    },
+    {
+      "arm": "S",
+      "world": 6,
+      "seed": 8342006,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-006/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-006/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-006/raw/result.json.zst",
+        "bytes": 11389,
+        "sha256": "7a029b5add7652f545e181bd0a1e9679e80dffaf2f1dd71e3373457a87a6628f",
+        "decoded_sha256": "62a4d7ad8e0dc8889cf80f3c2ed347643cd584f443137268568b7a30393b09ec"
+      },
+      "source_manifest": "results-S/S-source-sha256-v1.json"
+    },
+    {
+      "arm": "S",
+      "world": 7,
+      "seed": 8342007,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-007/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-007/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-007/raw/result.json.zst",
+        "bytes": 11218,
+        "sha256": "eb821f5b22ed12c5d39a042771035e5e919589c5799d0b23a47bb6c7292a04d4",
+        "decoded_sha256": "63d7e66c02ef798b643380cfddf97aadd2e227e7015ba2da22a58a7d045fab88"
+      },
+      "source_manifest": "results-S/S-source-sha256-v1.json"
+    },
+    {
+      "arm": "S",
+      "world": 8,
+      "seed": 8342008,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-008/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-008/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-008/raw/result.json.zst",
+        "bytes": 10490,
+        "sha256": "876fecb666653c5ba6089a858baa9b38c7a0bd0c3dd875a93a061703c5183b80",
+        "decoded_sha256": "3f270c6800fb7fc6aadc28d4043bec88b5354abc74efa017d753cbab0d3bc485"
+      },
+      "source_manifest": "results-S/S-source-sha256-v1.json"
+    },
+    {
+      "arm": "S",
+      "world": 9,
+      "seed": 8342009,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-009/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-009/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-009/raw/result.json.zst",
+        "bytes": 10771,
+        "sha256": "2ba3af57822d3d50282dd851700c56accc342b36d77e83e95d85294fa3e11ba0",
+        "decoded_sha256": "a714cf67066657ffdffde79afffbb80fbb68570b522e108056b6729f48ed060a"
+      },
+      "source_manifest": "results-S/S-source-sha256-v1.json"
+    },
+    {
+      "arm": "S",
+      "world": 10,
+      "seed": 8342010,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-010/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-010/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-010/raw/result.json.zst",
+        "bytes": 11031,
+        "sha256": "841c6b5bdb32b6105ae68141d5858d808c01b426466e76c915fcd1e982abb8d2",
+        "decoded_sha256": "626a69607eb651893dc7a1f2a8b2b1f2560960e4d143b78cbfaae7283f57a491"
+      },
+      "source_manifest": "results-S/S-source-sha256-v1.json"
+    },
+    {
+      "arm": "S",
+      "world": 11,
+      "seed": 8342011,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-011/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-011/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-011/raw/result.json.zst",
+        "bytes": 10627,
+        "sha256": "d6c48b853a745cff6777393cd1fe0602788b152d89202c3d28d0607c022bc68b",
+        "decoded_sha256": "09e446226d1f3f95bf356fc2621003cc819c2ba9d650d610de1f5584771a99a1"
+      },
+      "source_manifest": "results-S/S-source-sha256-v1.json"
+    },
+    {
+      "arm": "S",
+      "world": 12,
+      "seed": 8342012,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "learned_finished_early",
+      "raw_reason_category": "teacher_terminal",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-012/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-012/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-012/raw/result.json.zst",
+        "bytes": 9581,
+        "sha256": "39b6d25f7147cf1d1f2b1dce79d38c71fa15b53d856dd05aa60992e5ba4ef21a",
+        "decoded_sha256": "56491c467674882fc5ba2fd67c527440273a614293155581f3e4828dec70a6dd"
+      },
+      "source_manifest": "results-S/S-source-sha256-v1.json"
+    },
+    {
+      "arm": "S",
+      "world": 13,
+      "seed": 8342013,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-013/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-013/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-013/raw/result.json.zst",
+        "bytes": 10056,
+        "sha256": "1aca0fdcbfc2de91757235b5c0da06a4e2582bbd88d97b4fc0e067964595f4c7",
+        "decoded_sha256": "18019f3fc2f2128e05751fefc03154a5414fbbdf0bb1522df81e906ecbab6a7c"
+      },
+      "source_manifest": "results-S/S-source-sha256-v1.json"
+    },
+    {
+      "arm": "S",
+      "world": 14,
+      "seed": 8342014,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-014/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-014/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-014/raw/result.json.zst",
+        "bytes": 7611,
+        "sha256": "bea7eb8511afcfa871ef7ec831216150f0cff11d90c19715203c91fdad1ecab1",
+        "decoded_sha256": "deb9209cfeb35c7aedeee44b16eac902fdc737f98cd588e13679ebc7bf5932e7"
+      },
+      "source_manifest": "results-S/S-source-sha256-v1.json"
+    },
+    {
+      "arm": "S",
+      "world": 15,
+      "seed": 8342015,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-015/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-015/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-015/raw/result.json.zst",
+        "bytes": 9897,
+        "sha256": "a0a075af95a09006bb38ea9a7d2e85c7eae4c9eae993edf658942687a2e06ad4",
+        "decoded_sha256": "16f5421b4b6879a35e0380b85bbbdad3b9445a8e9aa26d003fa860c38d23a9d6"
+      },
+      "source_manifest": "results-S/S-source-sha256-v1.json"
+    },
+    {
+      "arm": "S",
+      "world": 16,
+      "seed": 8342016,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-016/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-016/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-016/raw/result.json.zst",
+        "bytes": 10928,
+        "sha256": "137a87175c5045fd8f0b936ba5b111a7e13126c850075461227c7bce14423810",
+        "decoded_sha256": "7df37b0967da804d71b67f20cf37fae3e3268d8ef3ab9fbcc43b0189cd6695aa"
+      },
+      "source_manifest": "results-S/S-source-sha256-v1.json"
+    },
+    {
+      "arm": "S",
+      "world": 17,
+      "seed": 8342017,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-017/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-017/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-017/raw/result.json.zst",
+        "bytes": 10677,
+        "sha256": "870c75bbcc76c55662bac450e7cab8dd78f0da934e772dc88909675d7ecf906d",
+        "decoded_sha256": "2841f2de4fc212daf746add2ffe75be15a803208ba14c347fccb685944bd5c21"
+      },
+      "source_manifest": "results-S/S-source-sha256-v1.json"
+    },
+    {
+      "arm": "S",
+      "world": 18,
+      "seed": 8342018,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "learned_finished_early",
+      "raw_reason_category": "teacher_terminal",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-018/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-018/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-018/raw/result.json.zst",
+        "bytes": 8467,
+        "sha256": "da02a061cb1dc57e33c1e2153f0556fb268da2baf1c78af00e910897499285a3",
+        "decoded_sha256": "641bbd19fa8855e85f08e37021ec692470343d109557496e4e5d854ed7376aca"
+      },
+      "source_manifest": "results-S/S-source-sha256-v1.json"
+    },
+    {
+      "arm": "S",
+      "world": 19,
+      "seed": 8342019,
+      "status": "NORMAL_COMPLETE",
+      "success": false,
+      "termination": "cap_end",
+      "raw_reason_category": "cap_end",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured; no obstacle identity inferred",
+      "raw_dir": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-019/raw",
+      "result_compressed": {
+        "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/arm-s/world-019/raw/result.json.zst",
+        "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c/arm-s/world-019/raw/result.json.zst",
+        "bytes": 9243,
+        "sha256": "9c40fd2fc65a0ed76b6facf81499f035ca303e13c891e99364b74867bf13fdb4",
+        "decoded_sha256": "3189929f9c195bcce9e81982bfd6a5cb988e1d6315272426f6fa0b69e80303e7"
+      },
+      "source_manifest": "results-S/S-source-sha256-v1.json"
+    }
+  ],
+  "infrastructure_attempts": [
+    {
+      "zone": "asia-northeast3-a",
+      "start_utc": "2026-10-26T18:45:45.290Z",
+      "status": "CAPACITY_UNAVAILABLE",
+      "record": "start-operations.json",
+      "record_sha256": "43f79a046a9b78fb4f72be553b9ef5ba2e7f7370b7a6f405a5403ccc04a4420f"
+    },
+    {
+      "zone": "asia-northeast3-a",
+      "start_utc_not_before": "2026-10-26T18:55:45Z",
+      "status": "CAPACITY_UNAVAILABLE",
+      "record": "start-original-zone-02.stderr",
+      "time_scope": "retry scheduler boundary; exact start seconds not in stderr",
+      "record_sha256": "c12aa32d57a48d1ded83599893667115f26109a0ad22029c916d7546f3e7a7f7"
+    },
+    {
+      "zone": "asia-northeast3-b",
+      "start_utc": "2026-10-26T19:06:00.002528+00:00",
+      "end_utc": "2026-10-26T19:06:06.285201+00:00",
+      "status": "CAPACITY_UNAVAILABLE",
+      "record": "create-vm-b-01.command.json",
+      "record_sha256": "3433ca909865f9446f3b2fbb07d32fe4a7207e7326b3686335248ebfea8adaca"
+    },
+    {
+      "zone": "asia-northeast1-a",
+      "start_utc": "2026-10-26T19:16:10.000403+00:00",
+      "end_utc": "2026-10-26T19:16:16.715297+00:00",
+      "status": "CAPACITY_UNAVAILABLE",
+      "record": "create-vm-tokyo-a-01.command.json",
+      "record_sha256": "5032ae4ded39d449b749504246b9c8e37d9676787e07a37c7c4bdd99a84a6977"
+    },
+    {
+      "zone": "asia-northeast1-b",
+      "start_utc": "2026-10-26T19:26:20.000199+00:00",
+      "end_utc": "2026-10-26T19:26:26.732274+00:00",
+      "status": "CAPACITY_UNAVAILABLE",
+      "record": "zone-retry-000-asia-northeast1-b-allocate.command.json",
+      "record_sha256": "1d1a262952e2b62278b56921532531d36f31e482a9a64e0227467fea79af7d72"
+    },
+    {
+      "zone": "asia-northeast1-c",
+      "start_utc": "2026-10-26T19:36:20.000302+00:00",
+      "end_utc": "2026-10-26T19:36:30.537023+00:00",
+      "status": "RUNNING",
+      "record": "zone-retry-001-asia-northeast1-c-allocate.command.json",
+      "record_sha256": "84f3c8c9ea42833de915f0ec6967de3a3c39e35b1ba4123d1faa52be818a62b9"
+    }
+  ],
+  "administrative_stop_n": 0,
+  "HOST_ERROR_n": 0,
+  "retry_n": 0,
+  "budget": {
+    "status": "TERMINATED",
+    "id": "2102818194467198298",
+    "zone": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-f-1016/zones/asia-northeast1-c",
+    "lastStartTimestamp": "2026-10-26T12:36:29.566-07:00",
+    "lastStopTimestamp": "2026-10-26T17:01:51.767-07:00",
+    "new_actual_allocated_GPU_h": 4.422833611111111,
+    "prior_estimated_GPU_h": 13.1,
+    "estimated_cumulative_GPU_h": 17.52283361111111,
+    "new_cap_GPU_h": 5.3,
+    "global_cap_GPU_h": 20,
+    "new_within_cap": true,
+    "estimated_cumulative_within_cap": true,
+    "archive_verification": "2026-10-27T00:00:34.978897+00:00"
+  },
+  "raw_archive": {
+    "schema": "ugrp.baseline.verified-archive.v1",
+    "utc": "2026-10-27T00:00:34.978897+00:00",
+    "source": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z",
+    "source_host": "ugrp-act-l4-gcp6/asia-northeast1-c/id2102818194467198298",
+    "archive": "/home/ubuntu/ugrp-archive/runs/baseline-resume-20261027T1936Z-tokyo-c",
+    "source_originals_retained": true,
+    "verified_files": 67165,
+    "verified_symlinks": 0,
+    "verified_bytes": 984266253,
+    "sha256_every_regular_file": "PASS",
+    "rsync_checksum_diff": "empty",
+    "source_inventory": "/home/ubuntu/UGRP/outputs/reports/2026-10-27-baseline-resume-evidence/study-final-source-inventory.json",
+    "source_inventory_sha256": "29ddc8787bf6dab5c22cafb6699c5e864b3c9e1130beaaa5ee38463352447574",
+    "ARM_free_before": 47823384576,
+    "ARM_projected_free_after": 46839118323,
+    "ARM_floor": 26843545600,
+    "sealed_RUN_META_sha256": "519723dcdaff812373da9628e8d13a23a119b742217fba5856e1d20d073e9507"
+  },
+  "raw_root": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z",
+  "runtime_source_sha": "22fc786b5813e9139bb58d790a98e984e33d03e8",
+  "RUN_META_sha256": "519723dcdaff812373da9628e8d13a23a119b742217fba5856e1d20d073e9507",
+  "postrun_audit_source_sha256": "29792450dd3fc8e0a54f46eb80bc134c3e2d3368a5165dee4ea66f597f819222",
+  "pr": 621,
+  "source_preservation": "source-preservation.json",
+  "procedural_deviations": [
+    "C current-stack tool record omitted before launch; postlaunch declaration disclosed without backdating; S checked before launch",
+    "16 current and9 approved frozen deviations; current_compliant=false is preserved",
+    "S/T/R/A Git bundle preserved before C; external L literal Git copy added21:16UTC after pre-C frozen hash verification",
+    "Raw child RUN_META legacy dev/pr484 retained unchanged; sealed parent study/pr621 is actual identity; truthfully closed EXIT/provenance sidecars added after completion"
+  ],
+  "model_artifact": "pairact-r2-step11000-baseline-20261027",
+  "model_verification": "model-artifact-verification.json",
+  "model_preservation_status": "PUBLIC_DOWNLOAD_ALL13_AND_FRESH_PINNED_SOURCE_CPU_LOAD_PASS",
+  "independent_reviews": {
+    "mandatory_pre_C_document": "DeepSeek PASS",
+    "mandatory_code_fallback": "MiniMax written conditional pass, structural blockers0; stated preflight/runtime conditions fulfilled",
+    "CPU_audit": "MiniMax D1-D3 fixed before cohort closure; schema/source checks pass for both arms",
+    "optional_periodic": "MiniMax wrapper auth-file missing; fallback DeepSeek output0 after47m44s, owned CLI stopped, NO_VERDICT"
+  },
+  "limitations": [
+    "Same heldout20 third use; n=20; no generalization claim",
+    "C/S closed-loop inputs differ; release/grasp B-token confound; no isolated barrier causal identification",
+    "Teacher P5 old19/20 and held flag20 versus strict19 use different barrier/criteria; not pooled",
+    "Scene render byte equivalence after host restore not measured; older-host results not pooled",
+    "Sampled contacts are10Hz diagnostic only; robot-robot contact and obstacle gap unmeasured",
+    "Raw-byte archive verification is complete; independent image semantic/cadence reanalysis not performed",
+    "No extra training, policy forward diagnosis, stage-head modification or new seed"
+  ]
+}

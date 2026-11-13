@@ -1,0 +1,1665 @@
+{
+  "schema": "ugrp.han32.instr-fix.summary.v1",
+  "task": "HAN-32 계측 재개 (draccus 인터프리터 정렬)",
+  "date_kst": "2026-10-28",
+  "result_kind": "SIM",
+  "result_kind_note": "모든 결과는 시뮬레이션(SIM) 결과다. 실물 성능·성공 주장이 아니다.",
+  "cause": {
+    "confirmed": true,
+    "hypothesis": "H1b",
+    "statement": "계측 래퍼 ops/eval-python이 draccus가 없는 treatment 드라이버 venv (/home/ugrp/pairact-p3c2-20261021/venv)를 exec했다. 계측 드라이버 future_driver.py가 런처를 자기 프로세스 안에서 exec하기 때문에 래퍼의 인터프리터가 곧 actor 로드 인터프리터가 된다. harness/pairact_r1.py:597의 import draccus에서 ModuleNotFoundError가 즉시 발생했다.",
+    "not_an_installation_problem": "VM 실측: e2emin-20261021/venv(드래커스 0.11.6·lerobot 0.6.2·torch 2.11.0+cu128)와 ugrp-rl1b-act-env는 import 성공, pairact-p3c2-20261021/venv·.venv-warp·.venv-sim은 ModuleNotFoundError. 설치 0건 — 인터프리터 정렬로 해결.",
+    "excluded": [
+      "H2 (새 venv에 draccus 없음)",
+      "H3 (ACT venv에서 draccus 소실)"
+    ],
+    "precedent": "2026-10-25 선례(reports/2026-10-25-gate-amendment-reevaluation.md:59-60,94-95) — 동일 실패류, 동일 정렬 해결"
+  },
+  "repair": {
+    "files_changed": 1,
+    "changed": {
+      "ops/eval-python": "2a77a7837f196e17a3311c189ac7406695f11b1bfac4280e6f42933fe4bf638a"
+    },
+    "unchanged_sha256": {},
+    "installations": 0,
+    "policy_physics_camera_evaluator_changes": 0,
+    "failed_run_preserved": "/home/ugrp/ugrp-sim/runs/han32-instrumentation-20261028 (무수정)"
+  },
+  "preflight": {
+    "stack_check": "experiments/2026-10-28-instr-fix/stack-check.json",
+    "frozen_assets_before": {
+      "schema": "ugrp.baseline-treatment.hash-check.v1",
+      "utc": "2026-10-27T19:20:52.136223+00:00",
+      "files": [
+        {
+          "label": "RUN/summary.json",
+          "path": "/home/ugrp/ugrp-sim/runs/pairact-r2-reeval-20261026/r2-student-a1/summary.json",
+          "expected_sha256": "185b710347c0d025218998f472ac3f4aaa98939213016df7c76fb87d81e24437",
+          "kind": "measured_20",
+          "sha256": "185b710347c0d025218998f472ac3f4aaa98939213016df7c76fb87d81e24437",
+          "bytes": 425347,
+          "match": true
+        },
+        {
+          "label": "RUN/artifact-sha256.json",
+          "path": "/home/ugrp/ugrp-sim/runs/pairact-r2-reeval-20261026/r2-student-a1/artifact-sha256.json",
+          "expected_sha256": "9bb2321a52949034c65e7cca638cfc365cc6e0b44a7541e200fcdc7496f0215c",
+          "kind": "measured_20",
+          "sha256": "9bb2321a52949034c65e7cca638cfc365cc6e0b44a7541e200fcdc7496f0215c",
+          "bytes": 5093802,
+          "match": true
+        },
+        {
+          "label": "RUN/rejection_table.json",
+          "path": "/home/ugrp/ugrp-sim/runs/pairact-r2-reeval-20261026/r2-student-a1/rejection_table.json",
+          "expected_sha256": "00b0595c4ee71d76a1519c1b9b7faaa8ea508aeee451549f171af62362960310",
+          "kind": "measured_20",
+          "sha256": "00b0595c4ee71d76a1519c1b9b7faaa8ea508aeee451549f171af62362960310",
+          "bytes": 1938,
+          "match": true
+        },
+        {
+          "label": "EVAL",
+          "path": "/home/ugrp/ugrp-sim/runs/pairact-r2-reeval-20261026/student-eval-r2.json",
+          "expected_sha256": "dcc9cc826c1e882297f8b2b9ca6d70ed4ccad6f5ac2e6846af7af1d1c91bfc8d",
+          "kind": "measured_20",
+          "sha256": "dcc9cc826c1e882297f8b2b9ca6d70ed4ccad6f5ac2e6846af7af1d1c91bfc8d",
+          "bytes": 389,
+          "match": true
+        },
+        {
+          "label": "P5/p5-heldout-cases.json",
+          "path": "/home/ugrp/ugrp-sim/runs/pairact-p5-eval-20261025/p5-heldout-cases.json",
+          "expected_sha256": "3e4bf69caa48f4638eb365aec649e8202948de56390dff37cbd540e542e504dc",
+          "kind": "measured_20",
+          "sha256": "3e4bf69caa48f4638eb365aec649e8202948de56390dff37cbd540e542e504dc",
+          "bytes": 102201,
+          "match": true
+        },
+        {
+          "label": "P5/refs-export/canonical-scene.xml",
+          "path": "/home/ugrp/ugrp-sim/runs/pairact-p5-eval-20261025/refs-export/canonical-scene.xml",
+          "expected_sha256": "e3dea4e3995c14d5375c84a7e8dd0a9654bf2c5eb6beaa1ca8801bd791897c60",
+          "kind": "measured_20",
+          "sha256": "e3dea4e3995c14d5375c84a7e8dd0a9654bf2c5eb6beaa1ca8801bd791897c60",
+          "bytes": 506777,
+          "match": true
+        },
+        {
+          "label": "P5/refs-export/per-world-references.json",
+          "path": "/home/ugrp/ugrp-sim/runs/pairact-p5-eval-20261025/refs-export/per-world-references.json",
+          "expected_sha256": "467ea8bd02f30481cbb5b4533ed8da02a120ad3338b1f625bbc5c5f5e579d117",
+          "kind": "measured_20",
+          "sha256": "467ea8bd02f30481cbb5b4533ed8da02a120ad3338b1f625bbc5c5f5e579d117",
+          "bytes": 8663,
+          "match": true
+        },
+        {
+          "label": "/home/ugrp/ugrp-sim/run-r2-reeval.sh",
+          "path": "/home/ugrp/ugrp-sim/run-r2-reeval.sh",
+          "expected_sha256": "73ed1e590963d4f26bdff1fc7326eed713bd22e07b69f41f3ab8827931469aa7",
+          "kind": "measured_20",
+          "sha256": "73ed1e590963d4f26bdff1fc7326eed713bd22e07b69f41f3ab8827931469aa7",
+          "bytes": 1618,
+          "match": true
+        },
+        {
+          "label": "/home/ugrp/ugrp-sim/runs/pairact-r2-reeval-20261026-driver4.log",
+          "path": "/home/ugrp/ugrp-sim/runs/pairact-r2-reeval-20261026-driver4.log",
+          "expected_sha256": "00a6597587dfbd5d928ab77670b1bc83e68b4ee9d9358c1b34cc3ef7dee21bac",
+          "kind": "measured_20",
+          "sha256": "00a6597587dfbd5d928ab77670b1bc83e68b4ee9d9358c1b34cc3ef7dee21bac",
+          "bytes": 6934,
+          "match": true
+        },
+        {
+          "label": "L",
+          "path": "/home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py",
+          "expected_sha256": "4390801e4c2057ddb80cdec08b6fcfcbd80fe4cfbe0bcc717b3118ca8c237d71",
+          "kind": "measured_20",
+          "sha256": "4390801e4c2057ddb80cdec08b6fcfcbd80fe4cfbe0bcc717b3118ca8c237d71",
+          "bytes": 26420,
+          "match": true
+        },
+        {
+          "label": "R/scripts/run_warp_flow_teacher.py",
+          "path": "/home/ugrp/ugrp-sim/src/pairact-p5/root/scripts/run_warp_flow_teacher.py",
+          "expected_sha256": "e7459aedd9af7674c2c6ebe1b3d793ab52d564e7ad9ebd5588138066e8f1555c",
+          "kind": "measured_20",
+          "sha256": "e7459aedd9af7674c2c6ebe1b3d793ab52d564e7ad9ebd5588138066e8f1555c",
+          "bytes": 27078,
+          "match": true
+        },
+        {
+          "label": "R/scripts/warp_flow_episode.py",
+          "path": "/home/ugrp/ugrp-sim/src/pairact-p5/root/scripts/warp_flow_episode.py",
+          "expected_sha256": "73e283092fdb302b4f8d53ee3e5a9dd29031225607a7b8f427b643d1fefede6f",
+          "kind": "measured_20",
+          "sha256": "73e283092fdb302b4f8d53ee3e5a9dd29031225607a7b8f427b643d1fefede6f",
+          "bytes": 17748,
+          "match": true
+        },
+        {
+          "label": "A/scripts/run_beampair1.py",
+          "path": "/home/ugrp/ugrp-sim/src/pairact-p5/adapter/scripts/run_beampair1.py",
+          "expected_sha256": "b190ca61a670df19d1f297e4f68aabedbaf3f9e1fc679cde17bd30c804edce2a",
+          "kind": "measured_20",
+          "sha256": "b190ca61a670df19d1f297e4f68aabedbaf3f9e1fc679cde17bd30c804edce2a",
+          "bytes": 32984,
+          "match": true
+        },
+        {
+          "label": "T/scripts/run_grasp_act_teacher.py",
+          "path": "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247/scripts/run_grasp_act_teacher.py",
+          "expected_sha256": "ac812e25d0d3f43c647ddb6e19ce3bb7ba5d46aa363ec6e192f0e77f8ba4e744",
+          "kind": "measured_20",
+          "sha256": "ac812e25d0d3f43c647ddb6e19ce3bb7ba5d46aa363ec6e192f0e77f8ba4e744",
+          "bytes": 55588,
+          "match": true
+        },
+        {
+          "label": "T/harness/pairact_student_eval.py",
+          "path": "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247/harness/pairact_student_eval.py",
+          "expected_sha256": "03f6a2311c0d4f4a97495fdce5efe7d345a35fa2815c9c5ab3660223818efbec",
+          "kind": "measured_20",
+          "sha256": "03f6a2311c0d4f4a97495fdce5efe7d345a35fa2815c9c5ab3660223818efbec",
+          "bytes": 7921,
+          "match": true
+        },
+        {
+          "label": "T/harness/grasp_act_start_sync.py",
+          "path": "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247/harness/grasp_act_start_sync.py",
+          "expected_sha256": "6333ab411b433a19f8d2cefa22951d3afd0eec5052c475e6782728ad37e6091c",
+          "kind": "measured_20",
+          "sha256": "6333ab411b433a19f8d2cefa22951d3afd0eec5052c475e6782728ad37e6091c",
+          "bytes": 4738,
+          "match": true
+        },
+        {
+          "label": "T/harness/pair_carry_sync.py",
+          "path": "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247/harness/pair_carry_sync.py",
+          "expected_sha256": "93a87245359a131551c128e4f6bf197dbf4141301c2564d3afaea924e78351e0",
+          "kind": "measured_20",
+          "sha256": "93a87245359a131551c128e4f6bf197dbf4141301c2564d3afaea924e78351e0",
+          "bytes": 16079,
+          "match": true
+        },
+        {
+          "label": "S/harness/beamact_pair_student.py",
+          "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student/harness/beamact_pair_student.py",
+          "expected_sha256": "9650e08573adf61e622a2e832a7ca12f476d4e5988f9bbc299bb125a766ee1c6",
+          "kind": "measured_20",
+          "sha256": "9650e08573adf61e622a2e832a7ca12f476d4e5988f9bbc299bb125a766ee1c6",
+          "bytes": 8032,
+          "match": true
+        },
+        {
+          "label": "S/harness/pairact_r1_student.py",
+          "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student/harness/pairact_r1_student.py",
+          "expected_sha256": "3e12d2f5408f82821187401e8a6d4298cb70fb27b48c229d689a54efdef77e81",
+          "kind": "measured_20",
+          "sha256": "3e12d2f5408f82821187401e8a6d4298cb70fb27b48c229d689a54efdef77e81",
+          "bytes": 8603,
+          "match": true
+        },
+        {
+          "label": "S/scripts/pairact_r1_student_worker.py",
+          "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student/scripts/pairact_r1_student_worker.py",
+          "expected_sha256": "7ac86ded4acd1d9055ce6950a69034882bee08906d4e1cd9f47e9839009c8031",
+          "kind": "measured_20",
+          "sha256": "7ac86ded4acd1d9055ce6950a69034882bee08906d4e1cd9f47e9839009c8031",
+          "bytes": 2826,
+          "match": true
+        },
+        {
+          "label": "ACTOR/model.safetensors",
+          "path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/main/step-011000/actor/model.safetensors",
+          "expected_sha256": "8263ad3f135048fea46d5cb85fee1d70910bdc399babbd1f2f20d92c2fbea271",
+          "kind": "actor",
+          "sha256": "8263ad3f135048fea46d5cb85fee1d70910bdc399babbd1f2f20d92c2fbea271",
+          "bytes": 207396736,
+          "match": true
+        },
+        {
+          "label": "ACTOR/config.json",
+          "path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/main/step-011000/actor/config.json",
+          "expected_sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f",
+          "kind": "actor",
+          "sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f",
+          "bytes": 1278,
+          "match": true
+        },
+        {
+          "label": "ACTOR/adapter.json",
+          "path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/main/step-011000/actor/adapter.json",
+          "expected_sha256": "84811d26bb0a8bdcc9431bb3c8d5947c70dc8ccd0ba8cf6471566f15f0f1e018",
+          "kind": "actor",
+          "sha256": "84811d26bb0a8bdcc9431bb3c8d5947c70dc8ccd0ba8cf6471566f15f0f1e018",
+          "bytes": 19848,
+          "match": true
+        },
+        {
+          "label": "ACTOR/SHA256.json",
+          "path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/main/step-011000/actor/SHA256.json",
+          "expected_sha256": "b5c3156fd03477e0663c59d09dfa71db4fe321e4782248cddbb256d2b7169a08",
+          "kind": "actor",
+          "sha256": "b5c3156fd03477e0663c59d09dfa71db4fe321e4782248cddbb256d2b7169a08",
+          "bytes": 265,
+          "match": true
+        },
+        {
+          "label": "S/harness/pairact_r1.py",
+          "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student/harness/pairact_r1.py",
+          "expected_sha256": "8a9869248740bf5ad2da7194cdd9a582347ac09e88783cd6ea127ef3f208a210",
+          "kind": "loader_bound",
+          "sha256": "8a9869248740bf5ad2da7194cdd9a582347ac09e88783cd6ea127ef3f208a210",
+          "bytes": 36651,
+          "match": true
+        },
+        {
+          "label": "S/harness/beamact3.py",
+          "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student/harness/beamact3.py",
+          "expected_sha256": "0bfa3986301e2997d8305106a78101c8ad7a6ed446b633dd1a1ca246b2b8b1d9",
+          "kind": "loader_bound",
+          "sha256": "0bfa3986301e2997d8305106a78101c8ad7a6ed446b633dd1a1ca246b2b8b1d9",
+          "bytes": 9581,
+          "match": true
+        },
+        {
+          "label": "S/harness/grasp_act_contract.py",
+          "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student/harness/grasp_act_contract.py",
+          "expected_sha256": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056",
+          "kind": "loader_bound",
+          "sha256": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056",
+          "bytes": 9352,
+          "match": true
+        },
+        {
+          "label": "dataset manifest",
+          "path": "/home/ugrp/clockfix-build-20261024/dataset-v4/manifest.json",
+          "expected_sha256": "7e544aff426b9ef10a8195c56831d0171224b1feb8ea5728e94956197d990d20",
+          "kind": "provenance",
+          "sha256": "7e544aff426b9ef10a8195c56831d0171224b1feb8ea5728e94956197d990d20",
+          "bytes": 1146701,
+          "match": true
+        },
+        {
+          "label": "stage sidecar",
+          "path": "/home/ugrp/clockfix-build-20261024/dataset-v4-stage/stage-targets.json",
+          "expected_sha256": "65cbd8fbc919730352bb32594a27a6997fe82e65cd1c6c1e719d78e707ec5787",
+          "kind": "provenance",
+          "sha256": "65cbd8fbc919730352bb32594a27a6997fe82e65cd1c6c1e719d78e707ec5787",
+          "bytes": 199327,
+          "match": true
+        },
+        {
+          "label": "normalization",
+          "path": "/home/ugrp/clockfix-build-20261024/dataset-v4/normalization.json",
+          "expected_sha256": "4f465a341fb5436b14f4429372e39da862535a5e8231a5cac0fbe67387305639",
+          "kind": "provenance",
+          "sha256": "4f465a341fb5436b14f4429372e39da862535a5e8231a5cac0fbe67387305639",
+          "bytes": 15532,
+          "match": true
+        },
+        {
+          "label": "train config",
+          "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student/experiments/2026-10-21-pairact-r1/PAIRACT_R1_TRAIN_CONFIG_DRAFT.json",
+          "expected_sha256": "37835e1ff9bd7b9686b4d7258b7597e6cd8e40b84a121c4f4156704c04b49326",
+          "kind": "provenance",
+          "sha256": "37835e1ff9bd7b9686b4d7258b7597e6cd8e40b84a121c4f4156704c04b49326",
+          "bytes": 1515,
+          "match": true
+        },
+        {
+          "label": "checkpoints",
+          "path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/offline-gate/checkpoints.jsonl",
+          "expected_sha256": "f59aa8bc8ba0ff2aba53918db308b49fd82a4fd365978e7dec94b18592fe06ac",
+          "kind": "provenance",
+          "sha256": "f59aa8bc8ba0ff2aba53918db308b49fd82a4fd365978e7dec94b18592fe06ac",
+          "bytes": 39297,
+          "match": true
+        },
+        {
+          "label": "selection",
+          "path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/offline-gate/selection.json",
+          "expected_sha256": "df36fa86587fd943ac4add245f658bf0454dd99585cd911743fa837563b68208",
+          "kind": "provenance",
+          "sha256": "df36fa86587fd943ac4add245f658bf0454dd99585cd911743fa837563b68208",
+          "bytes": 805,
+          "match": true
+        }
+      ],
+      "trees": {
+        "R": {
+          "path": "/home/ugrp/ugrp-sim/src/pairact-p5/root",
+          "head": "e5620e839907dc69d3b014becae2cbda4bbe27da",
+          "expected_head": "e5620e839907dc69d3b014becae2cbda4bbe27da",
+          "match": true,
+          "tracked_status": ""
+        },
+        "A": {
+          "path": "/home/ugrp/ugrp-sim/src/pairact-p5/adapter",
+          "head": "afd7a6e17c6501d308b6a1d9015b15f5d5da9ed4",
+          "expected_head": "afd7a6e17c6501d308b6a1d9015b15f5d5da9ed4",
+          "match": true,
+          "tracked_status": ""
+        },
+        "T": {
+          "path": "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+          "head": "75929e7719ad98a089e3dda5251f4249d8bae511",
+          "expected_head": "75929e7719ad98a089e3dda5251f4249d8bae511",
+          "match": true,
+          "tracked_status": ""
+        },
+        "S": {
+          "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student",
+          "head": "3c9337d5f5c9deefd49139b26ae7117022e3d5cc",
+          "expected_head": "3c9337d5f5c9deefd49139b26ae7117022e3d5cc",
+          "match": true,
+          "tracked_status": ""
+        }
+      },
+      "all_match": true,
+      "disk": {
+        "total": 269307592704,
+        "free": 11573026816
+      }
+    },
+    "frozen_assets_after": {
+      "schema": "ugrp.baseline-treatment.hash-check.v1",
+      "utc": "2026-10-27T20:10:24.985699+00:00",
+      "files": [
+        {
+          "label": "RUN/summary.json",
+          "path": "/home/ugrp/ugrp-sim/runs/pairact-r2-reeval-20261026/r2-student-a1/summary.json",
+          "expected_sha256": "185b710347c0d025218998f472ac3f4aaa98939213016df7c76fb87d81e24437",
+          "kind": "measured_20",
+          "sha256": "185b710347c0d025218998f472ac3f4aaa98939213016df7c76fb87d81e24437",
+          "bytes": 425347,
+          "match": true
+        },
+        {
+          "label": "RUN/artifact-sha256.json",
+          "path": "/home/ugrp/ugrp-sim/runs/pairact-r2-reeval-20261026/r2-student-a1/artifact-sha256.json",
+          "expected_sha256": "9bb2321a52949034c65e7cca638cfc365cc6e0b44a7541e200fcdc7496f0215c",
+          "kind": "measured_20",
+          "sha256": "9bb2321a52949034c65e7cca638cfc365cc6e0b44a7541e200fcdc7496f0215c",
+          "bytes": 5093802,
+          "match": true
+        },
+        {
+          "label": "RUN/rejection_table.json",
+          "path": "/home/ugrp/ugrp-sim/runs/pairact-r2-reeval-20261026/r2-student-a1/rejection_table.json",
+          "expected_sha256": "00b0595c4ee71d76a1519c1b9b7faaa8ea508aeee451549f171af62362960310",
+          "kind": "measured_20",
+          "sha256": "00b0595c4ee71d76a1519c1b9b7faaa8ea508aeee451549f171af62362960310",
+          "bytes": 1938,
+          "match": true
+        },
+        {
+          "label": "EVAL",
+          "path": "/home/ugrp/ugrp-sim/runs/pairact-r2-reeval-20261026/student-eval-r2.json",
+          "expected_sha256": "dcc9cc826c1e882297f8b2b9ca6d70ed4ccad6f5ac2e6846af7af1d1c91bfc8d",
+          "kind": "measured_20",
+          "sha256": "dcc9cc826c1e882297f8b2b9ca6d70ed4ccad6f5ac2e6846af7af1d1c91bfc8d",
+          "bytes": 389,
+          "match": true
+        },
+        {
+          "label": "P5/p5-heldout-cases.json",
+          "path": "/home/ugrp/ugrp-sim/runs/pairact-p5-eval-20261025/p5-heldout-cases.json",
+          "expected_sha256": "3e4bf69caa48f4638eb365aec649e8202948de56390dff37cbd540e542e504dc",
+          "kind": "measured_20",
+          "sha256": "3e4bf69caa48f4638eb365aec649e8202948de56390dff37cbd540e542e504dc",
+          "bytes": 102201,
+          "match": true
+        },
+        {
+          "label": "P5/refs-export/canonical-scene.xml",
+          "path": "/home/ugrp/ugrp-sim/runs/pairact-p5-eval-20261025/refs-export/canonical-scene.xml",
+          "expected_sha256": "e3dea4e3995c14d5375c84a7e8dd0a9654bf2c5eb6beaa1ca8801bd791897c60",
+          "kind": "measured_20",
+          "sha256": "e3dea4e3995c14d5375c84a7e8dd0a9654bf2c5eb6beaa1ca8801bd791897c60",
+          "bytes": 506777,
+          "match": true
+        },
+        {
+          "label": "P5/refs-export/per-world-references.json",
+          "path": "/home/ugrp/ugrp-sim/runs/pairact-p5-eval-20261025/refs-export/per-world-references.json",
+          "expected_sha256": "467ea8bd02f30481cbb5b4533ed8da02a120ad3338b1f625bbc5c5f5e579d117",
+          "kind": "measured_20",
+          "sha256": "467ea8bd02f30481cbb5b4533ed8da02a120ad3338b1f625bbc5c5f5e579d117",
+          "bytes": 8663,
+          "match": true
+        },
+        {
+          "label": "/home/ugrp/ugrp-sim/run-r2-reeval.sh",
+          "path": "/home/ugrp/ugrp-sim/run-r2-reeval.sh",
+          "expected_sha256": "73ed1e590963d4f26bdff1fc7326eed713bd22e07b69f41f3ab8827931469aa7",
+          "kind": "measured_20",
+          "sha256": "73ed1e590963d4f26bdff1fc7326eed713bd22e07b69f41f3ab8827931469aa7",
+          "bytes": 1618,
+          "match": true
+        },
+        {
+          "label": "/home/ugrp/ugrp-sim/runs/pairact-r2-reeval-20261026-driver4.log",
+          "path": "/home/ugrp/ugrp-sim/runs/pairact-r2-reeval-20261026-driver4.log",
+          "expected_sha256": "00a6597587dfbd5d928ab77670b1bc83e68b4ee9d9358c1b34cc3ef7dee21bac",
+          "kind": "measured_20",
+          "sha256": "00a6597587dfbd5d928ab77670b1bc83e68b4ee9d9358c1b34cc3ef7dee21bac",
+          "bytes": 6934,
+          "match": true
+        },
+        {
+          "label": "L",
+          "path": "/home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py",
+          "expected_sha256": "4390801e4c2057ddb80cdec08b6fcfcbd80fe4cfbe0bcc717b3118ca8c237d71",
+          "kind": "measured_20",
+          "sha256": "4390801e4c2057ddb80cdec08b6fcfcbd80fe4cfbe0bcc717b3118ca8c237d71",
+          "bytes": 26420,
+          "match": true
+        },
+        {
+          "label": "R/scripts/run_warp_flow_teacher.py",
+          "path": "/home/ugrp/ugrp-sim/src/pairact-p5/root/scripts/run_warp_flow_teacher.py",
+          "expected_sha256": "e7459aedd9af7674c2c6ebe1b3d793ab52d564e7ad9ebd5588138066e8f1555c",
+          "kind": "measured_20",
+          "sha256": "e7459aedd9af7674c2c6ebe1b3d793ab52d564e7ad9ebd5588138066e8f1555c",
+          "bytes": 27078,
+          "match": true
+        },
+        {
+          "label": "R/scripts/warp_flow_episode.py",
+          "path": "/home/ugrp/ugrp-sim/src/pairact-p5/root/scripts/warp_flow_episode.py",
+          "expected_sha256": "73e283092fdb302b4f8d53ee3e5a9dd29031225607a7b8f427b643d1fefede6f",
+          "kind": "measured_20",
+          "sha256": "73e283092fdb302b4f8d53ee3e5a9dd29031225607a7b8f427b643d1fefede6f",
+          "bytes": 17748,
+          "match": true
+        },
+        {
+          "label": "A/scripts/run_beampair1.py",
+          "path": "/home/ugrp/ugrp-sim/src/pairact-p5/adapter/scripts/run_beampair1.py",
+          "expected_sha256": "b190ca61a670df19d1f297e4f68aabedbaf3f9e1fc679cde17bd30c804edce2a",
+          "kind": "measured_20",
+          "sha256": "b190ca61a670df19d1f297e4f68aabedbaf3f9e1fc679cde17bd30c804edce2a",
+          "bytes": 32984,
+          "match": true
+        },
+        {
+          "label": "T/scripts/run_grasp_act_teacher.py",
+          "path": "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247/scripts/run_grasp_act_teacher.py",
+          "expected_sha256": "ac812e25d0d3f43c647ddb6e19ce3bb7ba5d46aa363ec6e192f0e77f8ba4e744",
+          "kind": "measured_20",
+          "sha256": "ac812e25d0d3f43c647ddb6e19ce3bb7ba5d46aa363ec6e192f0e77f8ba4e744",
+          "bytes": 55588,
+          "match": true
+        },
+        {
+          "label": "T/harness/pairact_student_eval.py",
+          "path": "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247/harness/pairact_student_eval.py",
+          "expected_sha256": "03f6a2311c0d4f4a97495fdce5efe7d345a35fa2815c9c5ab3660223818efbec",
+          "kind": "measured_20",
+          "sha256": "03f6a2311c0d4f4a97495fdce5efe7d345a35fa2815c9c5ab3660223818efbec",
+          "bytes": 7921,
+          "match": true
+        },
+        {
+          "label": "T/harness/grasp_act_start_sync.py",
+          "path": "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247/harness/grasp_act_start_sync.py",
+          "expected_sha256": "6333ab411b433a19f8d2cefa22951d3afd0eec5052c475e6782728ad37e6091c",
+          "kind": "measured_20",
+          "sha256": "6333ab411b433a19f8d2cefa22951d3afd0eec5052c475e6782728ad37e6091c",
+          "bytes": 4738,
+          "match": true
+        },
+        {
+          "label": "T/harness/pair_carry_sync.py",
+          "path": "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247/harness/pair_carry_sync.py",
+          "expected_sha256": "93a87245359a131551c128e4f6bf197dbf4141301c2564d3afaea924e78351e0",
+          "kind": "measured_20",
+          "sha256": "93a87245359a131551c128e4f6bf197dbf4141301c2564d3afaea924e78351e0",
+          "bytes": 16079,
+          "match": true
+        },
+        {
+          "label": "S/harness/beamact_pair_student.py",
+          "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student/harness/beamact_pair_student.py",
+          "expected_sha256": "9650e08573adf61e622a2e832a7ca12f476d4e5988f9bbc299bb125a766ee1c6",
+          "kind": "measured_20",
+          "sha256": "9650e08573adf61e622a2e832a7ca12f476d4e5988f9bbc299bb125a766ee1c6",
+          "bytes": 8032,
+          "match": true
+        },
+        {
+          "label": "S/harness/pairact_r1_student.py",
+          "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student/harness/pairact_r1_student.py",
+          "expected_sha256": "3e12d2f5408f82821187401e8a6d4298cb70fb27b48c229d689a54efdef77e81",
+          "kind": "measured_20",
+          "sha256": "3e12d2f5408f82821187401e8a6d4298cb70fb27b48c229d689a54efdef77e81",
+          "bytes": 8603,
+          "match": true
+        },
+        {
+          "label": "S/scripts/pairact_r1_student_worker.py",
+          "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student/scripts/pairact_r1_student_worker.py",
+          "expected_sha256": "7ac86ded4acd1d9055ce6950a69034882bee08906d4e1cd9f47e9839009c8031",
+          "kind": "measured_20",
+          "sha256": "7ac86ded4acd1d9055ce6950a69034882bee08906d4e1cd9f47e9839009c8031",
+          "bytes": 2826,
+          "match": true
+        },
+        {
+          "label": "ACTOR/model.safetensors",
+          "path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/main/step-011000/actor/model.safetensors",
+          "expected_sha256": "8263ad3f135048fea46d5cb85fee1d70910bdc399babbd1f2f20d92c2fbea271",
+          "kind": "actor",
+          "sha256": "8263ad3f135048fea46d5cb85fee1d70910bdc399babbd1f2f20d92c2fbea271",
+          "bytes": 207396736,
+          "match": true
+        },
+        {
+          "label": "ACTOR/config.json",
+          "path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/main/step-011000/actor/config.json",
+          "expected_sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f",
+          "kind": "actor",
+          "sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f",
+          "bytes": 1278,
+          "match": true
+        },
+        {
+          "label": "ACTOR/adapter.json",
+          "path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/main/step-011000/actor/adapter.json",
+          "expected_sha256": "84811d26bb0a8bdcc9431bb3c8d5947c70dc8ccd0ba8cf6471566f15f0f1e018",
+          "kind": "actor",
+          "sha256": "84811d26bb0a8bdcc9431bb3c8d5947c70dc8ccd0ba8cf6471566f15f0f1e018",
+          "bytes": 19848,
+          "match": true
+        },
+        {
+          "label": "ACTOR/SHA256.json",
+          "path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/main/step-011000/actor/SHA256.json",
+          "expected_sha256": "b5c3156fd03477e0663c59d09dfa71db4fe321e4782248cddbb256d2b7169a08",
+          "kind": "actor",
+          "sha256": "b5c3156fd03477e0663c59d09dfa71db4fe321e4782248cddbb256d2b7169a08",
+          "bytes": 265,
+          "match": true
+        },
+        {
+          "label": "S/harness/pairact_r1.py",
+          "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student/harness/pairact_r1.py",
+          "expected_sha256": "8a9869248740bf5ad2da7194cdd9a582347ac09e88783cd6ea127ef3f208a210",
+          "kind": "loader_bound",
+          "sha256": "8a9869248740bf5ad2da7194cdd9a582347ac09e88783cd6ea127ef3f208a210",
+          "bytes": 36651,
+          "match": true
+        },
+        {
+          "label": "S/harness/beamact3.py",
+          "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student/harness/beamact3.py",
+          "expected_sha256": "0bfa3986301e2997d8305106a78101c8ad7a6ed446b633dd1a1ca246b2b8b1d9",
+          "kind": "loader_bound",
+          "sha256": "0bfa3986301e2997d8305106a78101c8ad7a6ed446b633dd1a1ca246b2b8b1d9",
+          "bytes": 9581,
+          "match": true
+        },
+        {
+          "label": "S/harness/grasp_act_contract.py",
+          "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student/harness/grasp_act_contract.py",
+          "expected_sha256": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056",
+          "kind": "loader_bound",
+          "sha256": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056",
+          "bytes": 9352,
+          "match": true
+        },
+        {
+          "label": "dataset manifest",
+          "path": "/home/ugrp/clockfix-build-20261024/dataset-v4/manifest.json",
+          "expected_sha256": "7e544aff426b9ef10a8195c56831d0171224b1feb8ea5728e94956197d990d20",
+          "kind": "provenance",
+          "sha256": "7e544aff426b9ef10a8195c56831d0171224b1feb8ea5728e94956197d990d20",
+          "bytes": 1146701,
+          "match": true
+        },
+        {
+          "label": "stage sidecar",
+          "path": "/home/ugrp/clockfix-build-20261024/dataset-v4-stage/stage-targets.json",
+          "expected_sha256": "65cbd8fbc919730352bb32594a27a6997fe82e65cd1c6c1e719d78e707ec5787",
+          "kind": "provenance",
+          "sha256": "65cbd8fbc919730352bb32594a27a6997fe82e65cd1c6c1e719d78e707ec5787",
+          "bytes": 199327,
+          "match": true
+        },
+        {
+          "label": "normalization",
+          "path": "/home/ugrp/clockfix-build-20261024/dataset-v4/normalization.json",
+          "expected_sha256": "4f465a341fb5436b14f4429372e39da862535a5e8231a5cac0fbe67387305639",
+          "kind": "provenance",
+          "sha256": "4f465a341fb5436b14f4429372e39da862535a5e8231a5cac0fbe67387305639",
+          "bytes": 15532,
+          "match": true
+        },
+        {
+          "label": "train config",
+          "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student/experiments/2026-10-21-pairact-r1/PAIRACT_R1_TRAIN_CONFIG_DRAFT.json",
+          "expected_sha256": "37835e1ff9bd7b9686b4d7258b7597e6cd8e40b84a121c4f4156704c04b49326",
+          "kind": "provenance",
+          "sha256": "37835e1ff9bd7b9686b4d7258b7597e6cd8e40b84a121c4f4156704c04b49326",
+          "bytes": 1515,
+          "match": true
+        },
+        {
+          "label": "checkpoints",
+          "path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/offline-gate/checkpoints.jsonl",
+          "expected_sha256": "f59aa8bc8ba0ff2aba53918db308b49fd82a4fd365978e7dec94b18592fe06ac",
+          "kind": "provenance",
+          "sha256": "f59aa8bc8ba0ff2aba53918db308b49fd82a4fd365978e7dec94b18592fe06ac",
+          "bytes": 39297,
+          "match": true
+        },
+        {
+          "label": "selection",
+          "path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/offline-gate/selection.json",
+          "expected_sha256": "df36fa86587fd943ac4add245f658bf0454dd99585cd911743fa837563b68208",
+          "kind": "provenance",
+          "sha256": "df36fa86587fd943ac4add245f658bf0454dd99585cd911743fa837563b68208",
+          "bytes": 805,
+          "match": true
+        }
+      ],
+      "trees": {
+        "R": {
+          "path": "/home/ugrp/ugrp-sim/src/pairact-p5/root",
+          "head": "e5620e839907dc69d3b014becae2cbda4bbe27da",
+          "expected_head": "e5620e839907dc69d3b014becae2cbda4bbe27da",
+          "match": true,
+          "tracked_status": ""
+        },
+        "A": {
+          "path": "/home/ugrp/ugrp-sim/src/pairact-p5/adapter",
+          "head": "afd7a6e17c6501d308b6a1d9015b15f5d5da9ed4",
+          "expected_head": "afd7a6e17c6501d308b6a1d9015b15f5d5da9ed4",
+          "match": true,
+          "tracked_status": ""
+        },
+        "T": {
+          "path": "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+          "head": "75929e7719ad98a089e3dda5251f4249d8bae511",
+          "expected_head": "75929e7719ad98a089e3dda5251f4249d8bae511",
+          "match": true,
+          "tracked_status": ""
+        },
+        "S": {
+          "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student",
+          "head": "3c9337d5f5c9deefd49139b26ae7117022e3d5cc",
+          "expected_head": "3c9337d5f5c9deefd49139b26ae7117022e3d5cc",
+          "match": true,
+          "tracked_status": ""
+        }
+      },
+      "all_match": true,
+      "disk": {
+        "total": 269307592704,
+        "free": 11178901504
+      }
+    },
+    "cpu_init": {
+      "schema": "ugrp.pair.scoped-cpu-init.v1",
+      "arm": "arm_s",
+      "cpu_init_mj_step_count": 29392,
+      "episodes": [
+        {
+          "world": 0,
+          "seed": 8342000,
+          "phase": "ROLLOUT",
+          "cpu_init_mj_step_count": 7348,
+          "cpu_init_mj_step_calls": 7348,
+          "phase_transitions": [
+            {
+              "phase": "INIT_OR_RESET",
+              "utc": "2026-10-27T19:20:53.210321+00:00"
+            },
+            {
+              "phase": "ROLLOUT",
+              "utc": "2026-10-27T19:21:00.586360+00:00",
+              "reason": "GPU command recorder installation",
+              "world": 0
+            }
+          ]
+        },
+        {
+          "world": 1,
+          "seed": 8342005,
+          "phase": "ROLLOUT",
+          "cpu_init_mj_step_count": 7348,
+          "cpu_init_mj_step_calls": 7348,
+          "phase_transitions": [
+            {
+              "phase": "INIT_OR_RESET",
+              "utc": "2026-10-27T19:20:53.210337+00:00"
+            },
+            {
+              "phase": "ROLLOUT",
+              "utc": "2026-10-27T19:21:06.450177+00:00",
+              "reason": "GPU command recorder installation",
+              "world": 1
+            }
+          ]
+        },
+        {
+          "world": 2,
+          "seed": 8342009,
+          "phase": "ROLLOUT",
+          "cpu_init_mj_step_count": 7348,
+          "cpu_init_mj_step_calls": 7348,
+          "phase_transitions": [
+            {
+              "phase": "INIT_OR_RESET",
+              "utc": "2026-10-27T19:20:53.210343+00:00"
+            },
+            {
+              "phase": "ROLLOUT",
+              "utc": "2026-10-27T19:21:12.371203+00:00",
+              "reason": "GPU command recorder installation",
+              "world": 2
+            }
+          ]
+        },
+        {
+          "world": 3,
+          "seed": 8342018,
+          "phase": "ROLLOUT",
+          "cpu_init_mj_step_count": 7348,
+          "cpu_init_mj_step_calls": 7348,
+          "phase_transitions": [
+            {
+              "phase": "INIT_OR_RESET",
+              "utc": "2026-10-27T19:20:53.210346+00:00"
+            },
+            {
+              "phase": "ROLLOUT",
+              "utc": "2026-10-27T19:21:18.158836+00:00",
+              "reason": "GPU command recorder installation",
+              "world": 3
+            }
+          ]
+        }
+      ],
+      "template": {
+        "world": null,
+        "seed": null,
+        "phase": "INIT_OR_RESET",
+        "cpu_init_mj_step_count": 0,
+        "cpu_init_mj_step_calls": 0,
+        "phase_transitions": [
+          {
+            "phase": "INIT_OR_RESET",
+            "utc": "2026-10-27T19:20:53.210351+00:00"
+          }
+        ]
+      },
+      "batch_phase": "ROLLOUT",
+      "phase_transitions": [
+        {
+          "phase": "ROLLOUT",
+          "utc": "2026-10-27T19:21:00.586360+00:00",
+          "reason": "GPU command recorder installation",
+          "world": 0
+        },
+        {
+          "phase": "ROLLOUT",
+          "utc": "2026-10-27T19:21:06.450177+00:00",
+          "reason": "GPU command recorder installation",
+          "world": 1
+        },
+        {
+          "phase": "ROLLOUT",
+          "utc": "2026-10-27T19:21:12.371203+00:00",
+          "reason": "GPU command recorder installation",
+          "world": 2
+        },
+        {
+          "phase": "ROLLOUT",
+          "utc": "2026-10-27T19:21:18.158836+00:00",
+          "reason": "GPU command recorder installation",
+          "world": 3
+        },
+        {
+          "phase": "ROLLOUT",
+          "utc": "2026-10-27T19:21:18.342990+00:00",
+          "reason": "MJWarp batch initialize begins"
+        }
+      ],
+      "rollout_cpu_denial_events": [],
+      "updated_utc": "2026-10-27T20:10:24.311165+00:00"
+    }
+  },
+  "host": {
+    "schema": "ugrp.baseline.host-zone-restore.v1",
+    "instance_id": "2102818194467198298",
+    "observed": {
+      "project_id": "ugrp-sim-f-1016",
+      "instance": "ugrp-act-l4-gcp6",
+      "machine_type": "g2-standard-8",
+      "zone": "asia-northeast1-c",
+      "account": "kcm5781kcm5781@gmail.com",
+      "provider": "gcp",
+      "schema": "ugrp.grasp_act.host.v1",
+      "host_id": "gcp6",
+      "cpu_count": 8
+    },
+    "original_host_module_sha256": "9a91cd2bd7ef010e818080dac0cb725decc47b8be00e209a8edffc696809812d",
+    "original_approved_zone": "asia-northeast3-a",
+    "restored_zone": "asia-northeast1-c",
+    "frozen_files_modified": false,
+    "policy_or_physics_changed": false
+  },
+  "launch_plan": {
+    "indices": [
+      0,
+      5,
+      9,
+      18
+    ],
+    "seeds": [
+      8342000,
+      8342005,
+      8342009,
+      8342018
+    ],
+    "argv": [
+      "/home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py",
+      "--flow",
+      "beampair",
+      "--adapter-source",
+      "/home/ugrp/ugrp-sim/src/pairact-p5/adapter",
+      "--teacher-source",
+      "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "--cases",
+      "/home/ugrp/ugrp-sim/runs/pairact-p5-eval-20261025/p5-heldout-cases.json",
+      "--indices",
+      "0,5,9,18",
+      "--cap-s",
+      "60",
+      "--out",
+      "/home/ugrp/ugrp-sim/runs/han32-instrumentation-20261028-r2/s4",
+      "--vm-hourly-usd",
+      "1.096",
+      "--gcp6-isolated-v1",
+      "--placement-graspable-filter-v1",
+      "--world-model-parameters-v1",
+      "--native-sleep-policy-compat-v1",
+      "--full-active-dof-workspace-v1",
+      "--warp-native-contact-v1",
+      "--canonical-xml",
+      "/home/ugrp/ugrp-sim/runs/pairact-p5-eval-20261025/refs-export/canonical-scene.xml",
+      "--per-world-model-references-v1",
+      "/home/ugrp/ugrp-sim/runs/pairact-p5-eval-20261025/refs-export/per-world-references.json",
+      "--rejection-table",
+      "/home/ugrp/ugrp-sim/baseline-treatment/prior-funnel.json",
+      "--batch-per-world-speed-v1",
+      "--student-eval",
+      "/home/ugrp/ugrp-sim/runs/han32-instrumentation-20261028-r2/student-eval-instrumented.json",
+      "--physics-backend",
+      "mjwarp_batch_v1"
+    ],
+    "source_sha": "e5620e839907dc69d3b014becae2cbda4bbe27da",
+    "cases_sha256": "3e4bf69caa48f4638eb365aec649e8202948de56390dff37cbd540e542e504dc",
+    "student_eval": {
+      "mode": "pairact_r1_student_eval_v1",
+      "python": "/home/ugrp/ugrp-sim/runs/han32-instrumentation-20261028-r2/ops/eval-python",
+      "source": "/home/ugrp/ugrp-sim/src/pairact-p5/student",
+      "model": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/main/step-011000/actor",
+      "config": "/home/ugrp/ugrp-sim/src/pairact-p5/student/experiments/2026-10-21-pairact-r1/PAIRACT_R1_TRAIN_CONFIG_DRAFT.json",
+      "device": "cuda"
+    }
+  },
+  "batch": {
+    "planned_N": 4,
+    "started_N": 4,
+    "completed_N": 4,
+    "success_n": 0,
+    "model_calls": null,
+    "cap_end": 4,
+    "status": "complete",
+    "host_error": 0,
+    "wall_s": 2969.099521034,
+    "timing": {
+      "render": 38.98271994699138,
+      "readback_remap_jpeg_kinematics": 37.011745127006805,
+      "command_decode_upload": 2.0265190409978686,
+      "physics": 2161.5121195309935
+    },
+    "rejection_table": "/home/ugrp/ugrp-sim/runs/han32-instrumentation-20261028-r2/s4/rejection_table.json",
+    "worlds": [
+      {
+        "world_dir": "world-000",
+        "world_index": 0,
+        "seed": 8342000,
+        "candidate": "pairact_p5_eval",
+        "status": "cap_end",
+        "physical_success": false,
+        "sim_s": 180.0,
+        "cap_end": true,
+        "carry_success": null,
+        "carry_failure": null,
+        "data_admitted": null,
+        "joint_held": null,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        },
+        "first30_wall_per_sim": 18.488832865466666,
+        "first30_wall_per_sim_declared_metric": 4.6222082163666665,
+        "source_sha": null,
+        "episode_plan_sha256": null,
+        "not_fetched_fields": {
+          "note": "월드별 raw/result.json·eval-only.jsonl·student-eval.jsonl은 VM에서 zstd 압축·심볼릭 링크로 저장되어 fetch-lite 목록에서 제외됐다. 해시는 아래 raw_manifest_compressed에 있고 VM 영속 디스크에 보존되어 있다. VM 재기동 없이 회수 불가(비용).",
+          "fields": [
+            "data_admitted",
+            "joint_held",
+            "source_sha",
+            "episode_plan_sha256"
+          ],
+          "raw_manifest_compressed": {
+            "eval-only.jsonl.zst": {
+              "sha256": "10bccd3413cc4e91a1797743dafed87fe3e60ddebbe05b491208ab21aa3b6abd",
+              "bytes": 1859624,
+              "decoded_sha256": "46e4e82232d7b9ca14e9ff1ac431a304c8044d3474b29cfa75377c4147380a80"
+            },
+            "result.json.zst": {
+              "sha256": "1b9cfe347181f40843c3b72fcd5eecfced1e885d451bd4e3f27359935938af42",
+              "bytes": 10560,
+              "decoded_sha256": "0acb0445d182d0588280c960ec5ade7de87fbe42ead78e4e709817ed70bc9490"
+            },
+            "student-eval.jsonl.zst": {
+              "sha256": "f9b305353068282fccf42e811c46b66723d15dacec5de4956ff81a1c4b543a56",
+              "bytes": 494841,
+              "decoded_sha256": "332b643a99e5d6a144d87e68d2278ff46979aa9072034f3f48bc5e54c873d00b"
+            }
+          }
+        }
+      },
+      {
+        "world_dir": "world-001",
+        "world_index": 1,
+        "seed": 8342005,
+        "candidate": "pairact_p5_eval",
+        "status": "cap_end",
+        "physical_success": false,
+        "sim_s": 180.0,
+        "cap_end": true,
+        "carry_success": null,
+        "carry_failure": null,
+        "data_admitted": null,
+        "joint_held": null,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        },
+        "first30_wall_per_sim": 18.287864340599995,
+        "first30_wall_per_sim_declared_metric": 4.571966085149999,
+        "source_sha": null,
+        "episode_plan_sha256": null,
+        "not_fetched_fields": {
+          "note": "월드별 raw/result.json·eval-only.jsonl·student-eval.jsonl은 VM에서 zstd 압축·심볼릭 링크로 저장되어 fetch-lite 목록에서 제외됐다. 해시는 아래 raw_manifest_compressed에 있고 VM 영속 디스크에 보존되어 있다. VM 재기동 없이 회수 불가(비용).",
+          "fields": [
+            "data_admitted",
+            "joint_held",
+            "source_sha",
+            "episode_plan_sha256"
+          ],
+          "raw_manifest_compressed": {
+            "eval-only.jsonl.zst": {
+              "sha256": "e07eada4dee1721b3b6dcfbd2a9c3e8b7fdd8f213bfca1ec3051116d9092c3c1",
+              "bytes": 1727416,
+              "decoded_sha256": "b7b3b38cf4ef440f39db915193fc5578cf3793a959d5e4d82c35583488bb92dc"
+            },
+            "result.json.zst": {
+              "sha256": "06e9a67289998581d400c06126155f6ecad923b7bad44c0e456f8e3955f204ea",
+              "bytes": 9398,
+              "decoded_sha256": "023ca3d35fb097f035b9a3ede451d7cfc8bc9442574f8fd6dbd187784b14a81d"
+            },
+            "student-eval.jsonl.zst": {
+              "sha256": "5ebfc329a90326378ae983cc75d38cd49da66a35ed43498463503ac26faa7707",
+              "bytes": 540305,
+              "decoded_sha256": "f6f0ee739937725d90b8ceecb95ba27d3b0773baae9c096aa46e3f0f6976d94c"
+            }
+          }
+        }
+      },
+      {
+        "world_dir": "world-002",
+        "world_index": 2,
+        "seed": 8342009,
+        "candidate": "pairact_p5_eval",
+        "status": "cap_end",
+        "physical_success": false,
+        "sim_s": 180.0,
+        "cap_end": true,
+        "carry_success": null,
+        "carry_failure": null,
+        "data_admitted": null,
+        "joint_held": null,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        },
+        "first30_wall_per_sim": 18.09578828553333,
+        "first30_wall_per_sim_declared_metric": 4.523947071383333,
+        "source_sha": null,
+        "episode_plan_sha256": null,
+        "not_fetched_fields": {
+          "note": "월드별 raw/result.json·eval-only.jsonl·student-eval.jsonl은 VM에서 zstd 압축·심볼릭 링크로 저장되어 fetch-lite 목록에서 제외됐다. 해시는 아래 raw_manifest_compressed에 있고 VM 영속 디스크에 보존되어 있다. VM 재기동 없이 회수 불가(비용).",
+          "fields": [
+            "data_admitted",
+            "joint_held",
+            "source_sha",
+            "episode_plan_sha256"
+          ],
+          "raw_manifest_compressed": {
+            "eval-only.jsonl.zst": {
+              "sha256": "c9c9d07243fa8384961189fee76cfc6b2c3f2b649a510dc1b65275dc19ab4bd5",
+              "bytes": 1782660,
+              "decoded_sha256": "b052f1fc53f18cc73adf7efe6b517da3544c24ce0de28620899652b6de2c5bf7"
+            },
+            "result.json.zst": {
+              "sha256": "250d45ee4bc5c69e3c6488bc5c536466ed706eaf7f782fffd91033e7a4dd9a4d",
+              "bytes": 10761,
+              "decoded_sha256": "4bc2304e41fe8f29f88309294135db954f468f64fc0e6375ad613396707103ff"
+            },
+            "student-eval.jsonl.zst": {
+              "sha256": "b91d03f4353026f848a28250950f469ce5e83cd29f7c4291f04bf93d5d012e1a",
+              "bytes": 587700,
+              "decoded_sha256": "47f7ce2e5a4f1c8caa1622493523dc9e2bcaaa6d317a01faa58ed116fa1d86b5"
+            }
+          }
+        }
+      },
+      {
+        "world_dir": "world-003",
+        "world_index": 3,
+        "seed": 8342018,
+        "candidate": "pairact_p5_eval",
+        "status": "cap_end",
+        "physical_success": false,
+        "sim_s": 180.0,
+        "cap_end": true,
+        "carry_success": null,
+        "carry_failure": null,
+        "data_admitted": null,
+        "joint_held": null,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        },
+        "first30_wall_per_sim": 17.901828761166666,
+        "first30_wall_per_sim_declared_metric": 4.475457190291666,
+        "source_sha": null,
+        "episode_plan_sha256": null,
+        "not_fetched_fields": {
+          "note": "월드별 raw/result.json·eval-only.jsonl·student-eval.jsonl은 VM에서 zstd 압축·심볼릭 링크로 저장되어 fetch-lite 목록에서 제외됐다. 해시는 아래 raw_manifest_compressed에 있고 VM 영속 디스크에 보존되어 있다. VM 재기동 없이 회수 불가(비용).",
+          "fields": [
+            "data_admitted",
+            "joint_held",
+            "source_sha",
+            "episode_plan_sha256"
+          ],
+          "raw_manifest_compressed": {
+            "eval-only.jsonl.zst": {
+              "sha256": "b24133ab14751af51173ff6a2205ed083114e82f4f5d98ed1ce045865a11dd70",
+              "bytes": 1942427,
+              "decoded_sha256": "b1a5fa70daf25cc599be121177f322f250c372a26a17d6f48919f0d78a329c64"
+            },
+            "result.json.zst": {
+              "sha256": "36086a60e2d96cf4a4a51dda4ef3fe19370a83a010ca4f771e356a8095a7b206",
+              "bytes": 7905,
+              "decoded_sha256": "fc8641c972b2bf738317c33a5ef0b34844b9f256bbea91d5a1f6976af0cdb328"
+            },
+            "student-eval.jsonl.zst": {
+              "sha256": "61d8a59a848215190c1626499a71e88f1b069e803aecf882991e2a11a7381033",
+              "bytes": 512191,
+              "decoded_sha256": "ea0dfef7c80db1dcacbfc093533ffadc0ff74fa90b4b69d971dfa32a6176d99c"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "speed_gate": {
+    "metric": "wall_s/(sim_s*nworld)",
+    "batch_first30_per_world_wall_SIM": 4.261996046541666,
+    "batch_first30_batch_wall_SIM": 17.047984186166666,
+    "warning_threshold": 3.5,
+    "block_threshold": 6.0,
+    "speed_gate_fail": false,
+    "median_of_per_world_declared_metric": 4.547956578266666,
+    "median_definition": "statistics.median of per-world first-30-SIM declared metric (wall_s/(sim_s*nworld))"
+  },
+  "measurement": {
+    "aggregate_file": "experiments/2026-10-28-instr-fix/measurement-aggregate.json",
+    "records_total": 14400,
+    "record_files": 12,
+    "record_file_manifest": [
+      {
+        "file": "eval-geometry-8342000.jsonl",
+        "bytes": 4750455,
+        "sha256": "c5855cf5d508c6dac8a9e43a02b6330c8c9fe7848c6b40e6b28b5d08cbeb2a22"
+      },
+      {
+        "file": "eval-geometry-8342005.jsonl",
+        "bytes": 4725604,
+        "sha256": "11a2ac4ad1e7f90f019e95485f562bb76057523710b12496d24bcd56191b571f"
+      },
+      {
+        "file": "eval-geometry-8342009.jsonl",
+        "bytes": 4747044,
+        "sha256": "1444d8f785ac4e92343668775b9062c1416665024347262a4eebb33b5f5520d9"
+      },
+      {
+        "file": "eval-geometry-8342018.jsonl",
+        "bytes": 4758711,
+        "sha256": "e975081984bca75b24f0639d950088fac9cd57f9bfbdbd7e1bf348ce8505db8b"
+      },
+      {
+        "file": "protocol-8342000.jsonl",
+        "bytes": 15821195,
+        "sha256": "cd761acde735a6cf3109a3dcb11fc28beae248bb26bddd0f8ba7b8c2f744e3a2"
+      },
+      {
+        "file": "protocol-8342005.jsonl",
+        "bytes": 16963359,
+        "sha256": "aac40b68c74b18b59ee9f97c4a84e826bb45f93e3083059e5827f274023f8bd2"
+      },
+      {
+        "file": "protocol-8342009.jsonl",
+        "bytes": 18609045,
+        "sha256": "bf4b5d44ee67ef11ee75ccb5dd20951b1e4c720e51fb2d37a76d50c0d972bcd2"
+      },
+      {
+        "file": "protocol-8342018.jsonl",
+        "bytes": 16015230,
+        "sha256": "411473e07436914e24475ef8504a70cf7866ba891dd9b0bc187350eb2e6690f0"
+      },
+      {
+        "file": "worker-3036a94254d8fd9d.jsonl",
+        "bytes": 46834661,
+        "sha256": "2ed9fedc656108333e07b7596cacc2d5c15a5d3d5ff255b6223480c2a6c3aab9"
+      },
+      {
+        "file": "worker-58d792e4d01e36a9.jsonl",
+        "bytes": 46622758,
+        "sha256": "7ee2666a3424ee98fc3c381567180b78b115b6fe8dc5ca2e1daaf190773a954d"
+      },
+      {
+        "file": "worker-82081318f3eab925.jsonl",
+        "bytes": 49518631,
+        "sha256": "5cbba35abc8fe60b2b86b917439b754abfca297d9798119c264568c6860314b5"
+      },
+      {
+        "file": "worker-ecc03acd604781f4.jsonl",
+        "bytes": 47673654,
+        "sha256": "bd74dec413ff53f0d2612c8042a0832dbde867791dd05ea20074689a72d5d9eb"
+      }
+    ],
+    "stage_argmax_counts_all": {
+      "approach": 63474,
+      "alignment": 7403,
+      "ready": 8334,
+      "execute": 35989
+    },
+    "stage_argmax_mean_prob_all": {
+      "approach": 0.9990022371235816,
+      "alignment": 0.9919502105351311,
+      "ready": 0.9777048599006571,
+      "execute": 0.991658887564981
+    },
+    "barrier_event_reason_categories": {
+      "close_before_learned_ready_suppressed": 4885,
+      "null": 347,
+      "execution_without_GO_ACK": 8
+    },
+    "barrier_event_blocked_objects": {
+      "UNKNOWN:not_observed": 4893,
+      "null": 347
+    },
+    "per_file": [
+      {
+        "file": "worker-3036a94254d8fd9d.jsonl",
+        "records": 3600,
+        "episode_id": "pairact-r1-collect-8342000",
+        "seed": 8342000,
+        "robot": "r2",
+        "checkpoint_sha256": "8263ad3f135048fea46d5cb85fee1d70910bdc399babbd1f2f20d92c2fbea271",
+        "cohort_field": "han32-instrumentation-s4-20261028",
+        "first_t": 2.200000000000151,
+        "last_t": 182.10000000000016,
+        "stage_argmax_counts": {
+          "approach": 10761,
+          "alignment": 1636,
+          "ready": 4373,
+          "execute": 12030
+        },
+        "stage_argmax_mean_prob": {
+          "approach": 0.9976270087669107,
+          "alignment": 0.9928915289564096,
+          "ready": 0.9748334133360962,
+          "execute": 0.9894300813632275
+        },
+        "done_logit_max": 7.3589372634887695,
+        "done_prob_max": 0.9993635304212574,
+        "done_threshold": 0.65,
+        "done_threshold_crossings": 2091,
+        "done_since": 112.50000000000016,
+        "done_since_nonnull_ticks": 1243,
+        "proposal_done_ticks": 2078,
+        "segment_after_counts": {
+          "grasp": 1400,
+          "release": 2200
+        },
+        "barrier_pair_stage_counts": {
+          "approach": 1346,
+          "alignment": 1154,
+          "ready": 925,
+          "execute": 175
+        },
+        "stage_logit_rows_per_record": {
+          "8": 3600
+        },
+        "release_instruction_events": [
+          {
+            "t": 72.20000000000014,
+            "source": "both_own_done_flags"
+          },
+          {
+            "t": 72.20000000000014,
+            "source": "both_own_done_flags"
+          }
+        ],
+        "done_activation": "sigmoid; balanced_bce_v1; not calibrated",
+        "local_ready_true_ticks": 1092,
+        "permit_true_ticks": 236,
+        "final_pair_stage": "alignment",
+        "final_segment": "release",
+        "final_segment_switch_reason": "stay:original_both_own_done_duration_guard_not_satisfied",
+        "final_local_ready": false,
+        "final_local_ready_cause": "not_ready:own_ACT_stage_head_alignment",
+        "final_permit": false,
+        "pose_prediction_status": {
+          "unavailable:frozen_actor_has_no_pose_estimator_output": 3600
+        },
+        "barrier_event_count": 1334,
+        "barrier_event_reason_categories": {
+          "close_before_learned_ready_suppressed": 1085,
+          "null": 241,
+          "execution_without_GO_ACK": 8
+        },
+        "barrier_event_blocked_objects": {
+          "UNKNOWN:not_observed": 1093,
+          "null": 241
+        },
+        "barrier_event_min_gap_status": {
+          "None": 1334
+        },
+        "segment_switch_reasons": {
+          "stay:original_both_own_done_duration_guard_not_satisfied": 3598,
+          "[{\"event\": \"release_instruction\", \"source\": \"both_own_done_flags\", \"t\": 72.20000000000014}]": 2
+        }
+      },
+      {
+        "file": "worker-58d792e4d01e36a9.jsonl",
+        "records": 3600,
+        "episode_id": "pairact-r1-collect-8342018",
+        "seed": 8342018,
+        "robot": "r2",
+        "checkpoint_sha256": "8263ad3f135048fea46d5cb85fee1d70910bdc399babbd1f2f20d92c2fbea271",
+        "cohort_field": "han32-instrumentation-s4-20261028",
+        "first_t": 2.200000000000151,
+        "last_t": 182.10000000000016,
+        "stage_argmax_counts": {
+          "approach": 9866,
+          "alignment": 1215,
+          "ready": 1682,
+          "execute": 16037
+        },
+        "stage_argmax_mean_prob": {
+          "approach": 0.999348677351824,
+          "alignment": 0.9950955580871108,
+          "ready": 0.9829748344085836,
+          "execute": 0.9970724123649318
+        },
+        "done_logit_max": 7.4950456619262695,
+        "done_prob_max": 0.9994444774406651,
+        "done_threshold": 0.65,
+        "done_threshold_crossings": 839,
+        "done_since": null,
+        "done_since_nonnull_ticks": 747,
+        "proposal_done_ticks": 755,
+        "segment_after_counts": {
+          "grasp": 1976,
+          "release": 1624
+        },
+        "barrier_pair_stage_counts": {
+          "approach": 1239,
+          "alignment": 744,
+          "ready": 56,
+          "execute": 1561
+        },
+        "stage_logit_rows_per_record": {
+          "8": 3600
+        },
+        "release_instruction_events": [
+          {
+            "t": 101.00000000000016,
+            "source": "both_own_done_flags"
+          },
+          {
+            "t": 101.00000000000016,
+            "source": "both_own_done_flags"
+          }
+        ],
+        "done_activation": "sigmoid; balanced_bce_v1; not calibrated",
+        "local_ready_true_ticks": 1617,
+        "permit_true_ticks": 1611,
+        "final_pair_stage": "execute",
+        "final_segment": "release",
+        "final_segment_switch_reason": "stay:original_both_own_done_duration_guard_not_satisfied",
+        "final_local_ready": true,
+        "final_local_ready_cause": "persist:own_ACT_stage_head_ready",
+        "final_permit": true,
+        "pose_prediction_status": {
+          "unavailable:frozen_actor_has_no_pose_estimator_output": 3600
+        },
+        "barrier_event_count": 964,
+        "barrier_event_reason_categories": {
+          "close_before_learned_ready_suppressed": 858,
+          "null": 106
+        },
+        "barrier_event_blocked_objects": {
+          "UNKNOWN:not_observed": 858,
+          "null": 106
+        },
+        "barrier_event_min_gap_status": {
+          "None": 964
+        },
+        "segment_switch_reasons": {
+          "stay:original_both_own_done_duration_guard_not_satisfied": 3598,
+          "[{\"event\": \"release_instruction\", \"source\": \"both_own_done_flags\", \"t\": 101.00000000000016}]": 2
+        }
+      },
+      {
+        "file": "worker-82081318f3eab925.jsonl",
+        "records": 3600,
+        "episode_id": "pairact-r1-collect-8342009",
+        "seed": 8342009,
+        "robot": "r2",
+        "checkpoint_sha256": "8263ad3f135048fea46d5cb85fee1d70910bdc399babbd1f2f20d92c2fbea271",
+        "cohort_field": "han32-instrumentation-s4-20261028",
+        "first_t": 2.200000000000151,
+        "last_t": 182.10000000000016,
+        "stage_argmax_counts": {
+          "approach": 22991,
+          "alignment": 2053,
+          "ready": 1078,
+          "execute": 2678
+        },
+        "stage_argmax_mean_prob": {
+          "approach": 0.9992358107439622,
+          "alignment": 0.9942844958610207,
+          "ready": 0.9813321562005576,
+          "execute": 0.984893147251408
+        },
+        "done_logit_max": 7.5558180809021,
+        "done_prob_max": 0.9994772153836884,
+        "done_threshold": 0.65,
+        "done_threshold_crossings": 642,
+        "done_since": null,
+        "done_since_nonnull_ticks": 469,
+        "proposal_done_ticks": 469,
+        "segment_after_counts": {
+          "grasp": 3600
+        },
+        "barrier_pair_stage_counts": {
+          "approach": 2895,
+          "alignment": 705
+        },
+        "stage_logit_rows_per_record": {
+          "8": 3600
+        },
+        "release_instruction_events": [],
+        "done_activation": "sigmoid; balanced_bce_v1; not calibrated",
+        "local_ready_true_ticks": 0,
+        "permit_true_ticks": 0,
+        "final_pair_stage": "approach",
+        "final_segment": "grasp",
+        "final_segment_switch_reason": "stay:original_both_own_done_duration_guard_not_satisfied",
+        "final_local_ready": false,
+        "final_local_ready_cause": "not_ready:own_ACT_stage_head_approach",
+        "final_permit": false,
+        "pose_prediction_status": {
+          "unavailable:frozen_actor_has_no_pose_estimator_output": 3600
+        },
+        "barrier_event_count": 1668,
+        "barrier_event_reason_categories": {
+          "close_before_learned_ready_suppressed": 1668
+        },
+        "barrier_event_blocked_objects": {
+          "UNKNOWN:not_observed": 1668
+        },
+        "barrier_event_min_gap_status": {
+          "None": 1668
+        },
+        "segment_switch_reasons": {
+          "stay:original_both_own_done_duration_guard_not_satisfied": 3600
+        }
+      },
+      {
+        "file": "worker-ecc03acd604781f4.jsonl",
+        "records": 3600,
+        "episode_id": "pairact-r1-collect-8342005",
+        "seed": 8342005,
+        "robot": "r2",
+        "checkpoint_sha256": "8263ad3f135048fea46d5cb85fee1d70910bdc399babbd1f2f20d92c2fbea271",
+        "cohort_field": "han32-instrumentation-s4-20261028",
+        "first_t": 2.200000000000151,
+        "last_t": 182.10000000000016,
+        "stage_argmax_counts": {
+          "approach": 19856,
+          "alignment": 2499,
+          "ready": 1201,
+          "execute": 5244
+        },
+        "stage_argmax_mean_prob": {
+          "approach": 0.9993049547881716,
+          "alignment": 0.9878870324691331,
+          "ready": 0.977523771884986,
+          "execute": 0.9836715675707028
+        },
+        "done_logit_max": 7.657817840576172,
+        "done_prob_max": 0.9995278859952527,
+        "done_threshold": 0.65,
+        "done_threshold_crossings": 1084,
+        "done_since": 177.40000000000018,
+        "done_since_nonnull_ticks": 805,
+        "proposal_done_ticks": 805,
+        "segment_after_counts": {
+          "grasp": 3600
+        },
+        "barrier_pair_stage_counts": {
+          "approach": 2486,
+          "alignment": 1114
+        },
+        "stage_logit_rows_per_record": {
+          "8": 3600
+        },
+        "release_instruction_events": [],
+        "done_activation": "sigmoid; balanced_bce_v1; not calibrated",
+        "local_ready_true_ticks": 0,
+        "permit_true_ticks": 0,
+        "final_pair_stage": "alignment",
+        "final_segment": "grasp",
+        "final_segment_switch_reason": "stay:original_both_own_done_duration_guard_not_satisfied",
+        "final_local_ready": false,
+        "final_local_ready_cause": "not_ready:own_ACT_stage_head_alignment",
+        "final_permit": false,
+        "pose_prediction_status": {
+          "unavailable:frozen_actor_has_no_pose_estimator_output": 3600
+        },
+        "barrier_event_count": 1274,
+        "barrier_event_reason_categories": {
+          "close_before_learned_ready_suppressed": 1274
+        },
+        "barrier_event_blocked_objects": {
+          "UNKNOWN:not_observed": 1274
+        },
+        "barrier_event_min_gap_status": {
+          "None": 1274
+        },
+        "segment_switch_reasons": {
+          "stay:original_both_own_done_duration_guard_not_satisfied": 3600
+        }
+      }
+    ],
+    "known_gaps": [
+      "argmax index·선택 확률의 사전 계산 값이 레코드에 없음(사후 계산만 가능)",
+      "stage-head config/temperature/mask가 레코드에 없음",
+      "계측 코드는 byte-identical 재사용이라 계측 공백 보정에는 계측 코드 수정이 필요(수리 범위 밖)",
+      "레코드 cohort 필드는 worker_trace.py:73의 하드코딩 상수로 원래 실패 코호트를 가리킨다(실제는 -r2)",
+      "월드별 raw/result.json·eval-only.jsonl·student-eval.jsonl은 VM 압축·심볼릭 링크로 미회수(해시는 raw/manifest.json에 보존)"
+    ]
+  },
+  "gpu_ledger": {
+    "schema": "ugrp.han32.instr-fix.gpu-ledger.v1",
+    "scope": "task-scoped (HAN-32 계측 재개). 프로젝트 원장에 더하지 않는다.",
+    "accounting_basis": "VM 할당 구간(lastStopTimestamp - lastStartTimestamp). per-world wall/SIM을 GPU-h로 보지 않는다.",
+    "instance": {
+      "name": "ugrp-act-l4-gcp6",
+      "id": "2102818194467198298",
+      "zone": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-f-1016/zones/asia-northeast1-c",
+      "machine_type": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-f-1016/zones/asia-northeast1-c/machineTypes/g2-standard-8",
+      "project": "ugrp-sim-f-1016",
+      "account": "kcm5781kcm5781@gmail.com"
+    },
+    "status": "TERMINATED",
+    "last_start_timestamp": "2026-10-27T12:13:42.227-07:00",
+    "last_stop_timestamp": "2026-10-27T13:13:37.130-07:00",
+    "batch_start_epoch": 1793128815,
+    "batch_start_utc": "2026-10-27T19:20:15Z",
+    "allocation_window_gpu_h": 0.9985841666666666,
+    "batch_window_gpu_h": 0.889481,
+    "caps": {
+      "task_total_gpu_h": 2.4,
+      "already_spent_before_this_run_gpu_h": 0.088,
+      "n4_diagnostic_batch_cap_gpu_h": 1.2,
+      "conditional_followup_n4_cap_gpu_h": 1.2
+    },
+    "within_task_cap": true,
+    "within_batch_cap": true,
+    "project_ledger": {
+      "total_gpu_h": 21.822120556,
+      "cap_gpu_h": 25.3,
+      "this_task_added": false,
+      "note": "지시: 이 작업의 GPU-h는 프로젝트 원장(21.822120556/25.3)에 더하지 않고 별도 관리한다."
+    },
+    "instances_created": 0,
+    "instances_deleted": 0,
+    "pip_installs": 0,
+    "second_batch_N4_executed": false
+  },
+  "budget": {
+    "task_cap_gpu_h": 2.4,
+    "batch_cap_gpu_h": 1.2,
+    "already_spent_gpu_h": 0.088,
+    "project_ledger": "21.822120556/25.3 — 이 작업량을 더하지 않음(별도 관리)",
+    "instances_created": 0,
+    "instances_deleted": 0,
+    "pip_installs": 0,
+    "second_batch_N4": "미실행 — 수정안 미승인 + 계획 문서 조건(수정이 정당화되지 않으면 2차 배치 미실행)"
+  },
+  "guard": {
+    "command": "python3 ~/.hermes/scripts/recurrence_guard.py --tier all",
+    "executed_by": "parent host terminal (위임 아님)",
+    "new_check": "check_student_eval_interpreter_has_draccus",
+    "canonical_state_files_updated": false,
+    "reason": "systemctl --user 연결 불가 → [HOST_RUNTIME_REQUIRED]",
+    "executed": true,
+    "executed_utc": "2026-10-27T20:22:38.192006+00:00",
+    "exit_code": 1,
+    "overall_ok": false,
+    "invocation_note": "정식 스크립트 경로(/home/ubuntu/.hermes/scripts/recurrence_guard.py)를 HOME=hermes-scratch로 실행했다. 상태 파일이 정식 경로(~/.hermes/guards/recurrence/)에 쓰이지 않도록 격리하기 위함(HOST_RUNTIME_REQUIRED 규칙).",
+    "canonical_state_note": "systemctl --user가 \"Failed to connect to bus: No medium found\"로 host user-manager에 연결할 수 없어 [HOST_RUNTIME_REQUIRED]에 따라 정식 status.json·events.jsonl을 갱신하지 않았다. 실행 산출물은 scratch HOME 안에만 있다.",
+    "checks": {
+      "context_sync_healthy": {
+        "ok": true,
+        "detail": "healthy, canonical=c3cd4c5eb550"
+      },
+      "hermes_doctor_clean": {
+        "ok": false,
+        "detail": "hermes executable not found on PATH"
+      },
+      "providers_configured": {
+        "ok": false,
+        "detail": "config.yaml not found at /home/ubuntu/ugrp-han32-instrumentation-20261028-r2/hermes-scratch/.hermes/config.yaml"
+      },
+      "memory_store_present": {
+        "ok": true,
+        "detail": "writable: /home/ubuntu/ugrp-han32-instrumentation-20261028-r2/hermes-scratch/.hermes/memories"
+      },
+      "lsp_root_not_home": {
+        "ok": true,
+        "detail": "no $HOME/.git marker; LSP roots stay project-scoped"
+      },
+      "student_eval_interpreter_has_draccus": {
+        "ok": true,
+        "detail": "refs=16 probed_ok=0 failures=0 not_probed=16 historical=0; no active student-eval resolves to a draccus-less interpreter; not probed: /home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json -> /home/ugrp/e2emin-20261021/venv/bin/python (remote path, not probed on this host) | /home/ubuntu/UGRP/outputs/reports/2026-10-26-baseline-treatment-evidence/package/student-eval-arm-c.json -> /home/ugrp/e2emin-20261021/venv/bin/python (remote path, not probed on this host)"
+      }
+    },
+    "failure_attribution": "전체 FAIL의 원인은 이 호스트에서 폐기된 Hermes 런타임(hermes 실행 파일·config.yaml 부재)이다. 이번 실패류에 대응하는 신규 검사 check_student_eval_interpreter_has_draccus는 PASS.",
+    "stdout_file": "experiments/2026-10-28-instr-fix/recurrence_guard_stdout.txt",
+    "json_file": "experiments/2026-10-28-instr-fix/recurrence_guard.json",
+    "script_sha256": "a58bcee8ec5ee4da710091dc6c9f4d818de821a946752dba0178957193cfbe5d",
+    "registry_sha256": "d840218e8c14c1be0f3fa6776b4ab4779d67361ed6e9061b431322f91f26cc5c"
+  },
+  "linear": {
+    "issue": "HAN-32",
+    "id": "b6259a51-3a66-4331-9f20-8fc4d54611d4",
+    "commented": true,
+    "comment_id": "fbbb39a2-037c-402c-a318-0f395f483ac9",
+    "comment_created_utc": "2026-10-27T20:21:33.788Z",
+    "comment_body_bytes": 4352,
+    "body_file": "experiments/2026-10-28-instr-fix/linear_han32_body.md",
+    "verified": "Linear GraphQL issue(id:HAN-32).comments로 재조회해 comment_id·createdAt·본문 확인",
+    "create_response": "{\"data\":{\"commentCreate\":{\"success\":true}}}"
+  },
+  "unresolved": [
+    "configs/gcp_hosts.json:83 의 gcp6 존이 서울(asia-northeast3-a)로 낡음 — 범위 밖이라 미수정(실행은 exact-ID·exact-zone 우회)",
+    "수리안(헤드 분리·위치 추정 헤드·DAgger·재학습) 미승인 → 미착수",
+    "조건부 2차 N=4 배치 미실행(잔여 예산 보존)",
+    "월드별 raw/result.json·eval-only.jsonl·student-eval.jsonl 미회수(VM에서 zstd 압축·심볼릭 링크) — 해시는 회수된 raw/manifest.json에 보존, VM 재기동 없이 회수 불가",
+    "계측 공백: argmax 사전 계산값·stage-head config/temperature/mask 미포함(계측 코드 수정 필요, 수리 범위 밖)",
+    "운반 성공 0/4의 원인 미규명 — 계측은 (a) case 5·9의 ready·execute 미진입(같은 사유 1,274+1,668=2,942건), (b) case 0·18의 ready·execute 진입 후에도 같은 사유 1,085+858=1,943건으로 닫힘 억제(총 4,885건)만 기록"
+  ],
+  "evidence": {
+    "fetch_lite_dir": "outputs/reports/2026-10-28-instr-fix-evidence",
+    "vm_originals": "preserved on /home/ugrp/ugrp-sim/runs/han32-instrumentation-20261028-r2 (삭제·수정 없음)",
+    "report": "outputs/reports/2026-10-28-instr-fix-result.md (§11)",
+    "status": "outputs/reports/STATUS.md",
+    "run_queue": "outputs/reports/RUN_QUEUE.md"
+  }
+}

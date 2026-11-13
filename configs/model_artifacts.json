@@ -1200,6 +1200,125 @@
           }
         }
       }
+    },
+    {
+      "id": "pairact-r2-step11000-baseline-20261027",
+      "status": "available",
+      "description": "Previously selected frozen pairact-r2 ACT step-011000 used by the registered supervision-removal baseline; experimental, not a default controller",
+      "source_sha": "3c9337d5f5c9deefd49139b26ae7117022e3d5cc",
+      "release": {
+        "tag": "models-20261027-pairact-r2-step11000-v1",
+        "asset": "pairact-r2-step11000-baseline-20261027.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261027-pairact-r2-step11000-v1/pairact-r2-step11000-baseline-20261027.zip"
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "bytes": 1130,
+          "sha256": "99e2bdc8bf60b28ba1c1160d573f03b06ecdf3d1af2646bee41f56cea8a71e17"
+        },
+        {
+          "path": "actor/SHA256.json",
+          "bytes": 265,
+          "sha256": "b5c3156fd03477e0663c59d09dfa71db4fe321e4782248cddbb256d2b7169a08"
+        },
+        {
+          "path": "actor/adapter.json",
+          "bytes": 19848,
+          "sha256": "84811d26bb0a8bdcc9431bb3c8d5947c70dc8ccd0ba8cf6471566f15f0f1e018"
+        },
+        {
+          "path": "actor/config.json",
+          "bytes": 1278,
+          "sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+        },
+        {
+          "path": "actor/model.safetensors",
+          "bytes": 207396736,
+          "sha256": "8263ad3f135048fea46d5cb85fee1d70910bdc399babbd1f2f20d92c2fbea271"
+        },
+        {
+          "path": "pairact-runtime-config.json",
+          "bytes": 1515,
+          "sha256": "37835e1ff9bd7b9686b4d7258b7597e6cd8e40b84a121c4f4156704c04b49326"
+        },
+        {
+          "path": "provenance/dataset-manifest.json",
+          "bytes": 1146701,
+          "sha256": "7e544aff426b9ef10a8195c56831d0171224b1feb8ea5728e94956197d990d20"
+        },
+        {
+          "path": "provenance/normalization.json",
+          "bytes": 15532,
+          "sha256": "4f465a341fb5436b14f4429372e39da862535a5e8231a5cac0fbe67387305639"
+        },
+        {
+          "path": "provenance/offline-checkpoints.jsonl",
+          "bytes": 39297,
+          "sha256": "f59aa8bc8ba0ff2aba53918db308b49fd82a4fd365978e7dec94b18592fe06ac"
+        },
+        {
+          "path": "provenance/selection.json",
+          "bytes": 805,
+          "sha256": "df36fa86587fd943ac4add245f658bf0454dd99585cd911743fa837563b68208"
+        },
+        {
+          "path": "provenance/stage-targets.json",
+          "bytes": 199327,
+          "sha256": "65cbd8fbc919730352bb32594a27a6997fe82e65cd1c6c1e719d78e707ec5787"
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 3724,
+          "sha256": "7b21467dcaadf64ba10fc2200d7b2a1908f21f9e0562b87a606205cfdfba1c55"
+        },
+        {
+          "path": "requirements-reference-act.txt",
+          "bytes": 330,
+          "sha256": "fa1d4f36fe5cc2eb43c784a41e5b9e754b6a9ca2f53145242e4803a7f904793d"
+        }
+      ],
+      "entrypoints": {
+        "actor": "actor",
+        "runtime_config": "pairact-runtime-config.json",
+        "provenance": "provenance.json"
+      },
+      "verification_scope": {
+        "status": "PASS_public_download_and_fresh_source_CPU_load",
+        "selected_step": 11000,
+        "checkpoint_reselected": false,
+        "trained_in_this_task": false,
+        "frozen_original_10_files_match": true,
+        "policy_forward_calls_for_preservation": 0,
+        "public_archive_and_all_files_verified": true,
+        "verified_files": 13,
+        "fresh_source_sha": "3c9337d5f5c9deefd49139b26ae7117022e3d5cc",
+        "state_entries": 239,
+        "parameter_count": 51818398,
+        "state_devices": [
+          "cpu"
+        ],
+        "cuda_initialized": false,
+        "proof": "experiments/2026-10-27-baseline-resume/model-artifact-verification.json",
+        "proof_sha256": "e846fab594a865fe6b6f6e7c38d63ed1fb1591caa3c07ea5e5d9e9351a49419c",
+        "physical_result": {
+          "C_successes": 0,
+          "C_normal_n": 20,
+          "S_successes": 0,
+          "S_normal_n": 20,
+          "S_scope": "diagnostic descriptive only"
+        }
+      },
+      "limitations": [
+        "Loading and file integrity do not establish physical task success or inference speed.",
+        "Full training images, optimizer state and complete physics raw evidence are not included.",
+        "The inference source is pinned to the exact source_sha; use its upstream LeRobot contract.",
+        "C/S closed-loop results are reported separately without pooling old hosts/backends."
+      ],
+      "archive": {
+        "sha256": "8a64f127dbc727d7f625bc8b7b8520f10fa1d586090795198ff089b8e0d87e01",
+        "bytes": 192222979
+      }
     }
   ]
 }

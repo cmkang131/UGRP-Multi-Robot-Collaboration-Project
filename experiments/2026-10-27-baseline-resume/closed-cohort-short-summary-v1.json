@@ -1,0 +1,327 @@
+{
+  "C": {
+    "N_eff": 20,
+    "successes": 0,
+    "normal_complete": true,
+    "integrity_pass": true,
+    "stage_counts": {
+      "approach": 40567,
+      "alignment": 14405,
+      "ready": 877,
+      "execute": 13752,
+      "carry": 252,
+      "place": 73
+    },
+    "event_funnel": {
+      "ticks": 69926,
+      "inference_calls": 69926,
+      "discard_calls": 69926,
+      "issued_ticks": 69926,
+      "software_hold_ticks": 0,
+      "nonzero_wheel_ticks": 15379,
+      "state225_nonzero": 0
+    },
+    "candidate_funnel": [
+      {
+        "stage": "approach",
+        "passed_cumulative_N": 20,
+        "rejected_N": 0,
+        "denominator_normal_N": 20,
+        "observation_source": "eval_only_GT_geometry"
+      },
+      {
+        "stage": "alignment",
+        "passed_cumulative_N": 0,
+        "rejected_N": 20,
+        "denominator_normal_N": 20,
+        "observation_source": "eval_only_GT_geometry"
+      },
+      {
+        "stage": "READY",
+        "passed_cumulative_N": 0,
+        "rejected_N": 0,
+        "denominator_normal_N": 20,
+        "observation_source": "simultaneous_own_policy_stage_ready"
+      },
+      {
+        "stage": "grasp",
+        "passed_cumulative_N": 0,
+        "rejected_N": 0,
+        "denominator_normal_N": 20,
+        "observation_source": "eval_only_GT_contact"
+      },
+      {
+        "stage": "hold_3s",
+        "passed_cumulative_N": 0,
+        "rejected_N": 0,
+        "denominator_normal_N": 20,
+        "observation_source": "original_physics_held_flag"
+      },
+      {
+        "stage": "carry_1m",
+        "passed_cumulative_N": 0,
+        "rejected_N": 0,
+        "denominator_normal_N": 20,
+        "observation_source": "original_eval_only_carry_evaluator"
+      },
+      {
+        "stage": "door",
+        "passed_cumulative_N": 0,
+        "rejected_N": 0,
+        "denominator_normal_N": 20,
+        "observation_source": "original_eval_only_carry_evaluator"
+      },
+      {
+        "stage": "place",
+        "passed_cumulative_N": 0,
+        "rejected_N": 0,
+        "denominator_normal_N": 20,
+        "observation_source": "original_eval_only_carry_evaluator"
+      }
+    ],
+    "frame_funnel_first5": {
+      "approach": {
+        "eligible": 34963,
+        "passed_cumulative": 25047,
+        "rejected": 9916
+      },
+      "alignment": {
+        "eligible": 25047,
+        "passed_cumulative": 0,
+        "rejected": 25047
+      },
+      "READY": {
+        "eligible": 0,
+        "passed_cumulative": 0,
+        "rejected": 0
+      },
+      "grasp": {
+        "eligible": 0,
+        "passed_cumulative": 0,
+        "rejected": 0
+      },
+      "hold_3s": {
+        "eligible": 0,
+        "passed_cumulative": 0,
+        "rejected": 0
+      }
+    },
+    "actual_rejection_reasons": {},
+    "barrier_event_counts": {
+      "treatment_close_gate_bypassed": 24653
+    },
+    "terminations": {
+      "cap_end": 18,
+      "learned_finished_early": 2
+    },
+    "simultaneous_policy_READY_ticks": 0,
+    "simultaneous_policy_READY_ticks_worlds": 0,
+    "simultaneous_protocol_READY_ticks": 0,
+    "simultaneous_protocol_READY_ticks_worlds": 0,
+    "policy_READY_robot_ticks": 877,
+    "policy_READY_robot_ticks_worlds": 16,
+    "protocol_READY_robot_ticks": 877,
+    "protocol_READY_robot_ticks_worlds": 16,
+    "protocol_GO_count": 0,
+    "protocol_GO_count_worlds": 0,
+    "protocol_ACK_count": 0,
+    "protocol_ACK_count_worlds": 0,
+    "protocol_START_count": 0,
+    "protocol_START_count_worlds": 0,
+    "permit_robot_ticks": 0,
+    "permit_robot_ticks_worlds": 0,
+    "motion": {
+      "max_xy_excursion_m": {
+        "min": 0.17171313525417425,
+        "median": 0.6165717508561681,
+        "max": 1.5542841081021435
+      },
+      "net_xy_displacement_m": {
+        "min": 0.1611255550491428,
+        "median": 0.5705449387527224,
+        "max": 1.4532269340358643
+      },
+      "xy_path_m": {
+        "min": 0.31191102825012723,
+        "median": 1.150099822099194,
+        "max": 2.6851290114793795
+      },
+      "yaw_path_rad": {
+        "min": 0.6972975766292966,
+        "median": 8.126799064168775,
+        "max": 25.51250284706959
+      }
+    },
+    "joint_hold_worlds": 0,
+    "sampled_contact_robot_ticks": 223,
+    "finish_worlds": [
+      13,
+      18
+    ]
+  },
+  "S": {
+    "N_eff": 20,
+    "successes": 0,
+    "normal_complete": true,
+    "integrity_pass": true,
+    "stage_counts": {
+      "approach": 40843,
+      "alignment": 18995,
+      "ready": 1674,
+      "execute": 6868,
+      "place": 582
+    },
+    "event_funnel": {
+      "ticks": 68962,
+      "inference_calls": 68962,
+      "discard_calls": 68962,
+      "issued_ticks": 68962,
+      "software_hold_ticks": 8323,
+      "nonzero_wheel_ticks": 15753,
+      "state225_nonzero": 0
+    },
+    "candidate_funnel": [
+      {
+        "stage": "approach",
+        "passed_cumulative_N": 20,
+        "rejected_N": 0,
+        "denominator_normal_N": 20,
+        "observation_source": "eval_only_GT_geometry"
+      },
+      {
+        "stage": "alignment",
+        "passed_cumulative_N": 1,
+        "rejected_N": 19,
+        "denominator_normal_N": 20,
+        "observation_source": "eval_only_GT_geometry"
+      },
+      {
+        "stage": "READY",
+        "passed_cumulative_N": 0,
+        "rejected_N": 1,
+        "denominator_normal_N": 20,
+        "observation_source": "simultaneous_own_policy_stage_ready"
+      },
+      {
+        "stage": "grasp",
+        "passed_cumulative_N": 0,
+        "rejected_N": 0,
+        "denominator_normal_N": 20,
+        "observation_source": "eval_only_GT_contact"
+      },
+      {
+        "stage": "hold_3s",
+        "passed_cumulative_N": 0,
+        "rejected_N": 0,
+        "denominator_normal_N": 20,
+        "observation_source": "original_physics_held_flag"
+      },
+      {
+        "stage": "carry_1m",
+        "passed_cumulative_N": 0,
+        "rejected_N": 0,
+        "denominator_normal_N": 20,
+        "observation_source": "original_eval_only_carry_evaluator"
+      },
+      {
+        "stage": "door",
+        "passed_cumulative_N": 0,
+        "rejected_N": 0,
+        "denominator_normal_N": 20,
+        "observation_source": "original_eval_only_carry_evaluator"
+      },
+      {
+        "stage": "place",
+        "passed_cumulative_N": 0,
+        "rejected_N": 0,
+        "denominator_normal_N": 20,
+        "observation_source": "original_eval_only_carry_evaluator"
+      }
+    ],
+    "frame_funnel_first5": {
+      "approach": {
+        "eligible": 34481,
+        "passed_cumulative": 23928,
+        "rejected": 10553
+      },
+      "alignment": {
+        "eligible": 23928,
+        "passed_cumulative": 665,
+        "rejected": 23263
+      },
+      "READY": {
+        "eligible": 665,
+        "passed_cumulative": 0,
+        "rejected": 665
+      },
+      "grasp": {
+        "eligible": 0,
+        "passed_cumulative": 0,
+        "rejected": 0
+      },
+      "hold_3s": {
+        "eligible": 0,
+        "passed_cumulative": 0,
+        "rejected": 0
+      }
+    },
+    "actual_rejection_reasons": {
+      "execution_without_GO_ACK": 4682
+    },
+    "barrier_event_counts": {
+      "treatment_close_gate_bypassed": 26109,
+      "READY": 51,
+      "stage_proposal_released_after_GO_ACK": 4,
+      "proposal_rejected": 4682
+    },
+    "terminations": {
+      "learned_finished_early": 3,
+      "cap_end": 17
+    },
+    "simultaneous_policy_READY_ticks": 8,
+    "simultaneous_policy_READY_ticks_worlds": 1,
+    "simultaneous_protocol_READY_ticks": 410,
+    "simultaneous_protocol_READY_ticks_worlds": 2,
+    "policy_READY_robot_ticks": 1674,
+    "policy_READY_robot_ticks_worlds": 7,
+    "protocol_READY_robot_ticks": 4442,
+    "protocol_READY_robot_ticks_worlds": 7,
+    "protocol_GO_count": 7,
+    "protocol_GO_count_worlds": 2,
+    "protocol_ACK_count": 4,
+    "protocol_ACK_count_worlds": 2,
+    "protocol_START_count": 3,
+    "protocol_START_count_worlds": 2,
+    "permit_robot_ticks": 801,
+    "permit_robot_ticks_worlds": 2,
+    "motion": {
+      "max_xy_excursion_m": {
+        "min": 0.1523589168020416,
+        "median": 0.6187214678100991,
+        "max": 1.023511200239424
+      },
+      "net_xy_displacement_m": {
+        "min": 0.15235529750206642,
+        "median": 0.6153860521307521,
+        "max": 1.023511200239424
+      },
+      "xy_path_m": {
+        "min": 0.28764451297040544,
+        "median": 1.0018088563664262,
+        "max": 1.9990120048037752
+      },
+      "yaw_path_rad": {
+        "min": 0.3705061858918004,
+        "median": 8.351676430485213,
+        "max": 34.03787903208362
+      }
+    },
+    "joint_hold_worlds": 0,
+    "sampled_contact_robot_ticks": 0,
+    "finish_worlds": [
+      0,
+      12,
+      18
+    ]
+  }
+}

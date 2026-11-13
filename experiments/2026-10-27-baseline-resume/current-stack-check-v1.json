@@ -1,0 +1,459 @@
+{
+  "schema": "ugrp.current_stack.check.v1",
+  "ok": true,
+  "current_compliant": false,
+  "checker_sha256": "bdef5ad98b8e5ee8a21126f75430a58193d5f44f11f23fa60fd9ca487511eb3b",
+  "scope": "declared manifest fields; not independent runtime/physics verification",
+  "inputs": [
+    {
+      "path": "/home/ubuntu/UGRP/outputs/reports/2026-10-27-baseline-resume-evidence/current-stack-declaration-v1.json",
+      "sha256": "9d3dcc0c53e0d7e8e269d303f6cd94f2359c3ffefdaaca4582e5a779ce31e7a2"
+    }
+  ],
+  "rows": [
+    {
+      "record": "$",
+      "flow": "act_eval",
+      "id": "physics_backend",
+      "expected": "mjwarp_batch_v1",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.physics_backend",
+          "value": "mjwarp_batch_v1"
+        }
+      ],
+      "status": "current",
+      "input": "outputs/reports/2026-10-27-baseline-resume-evidence/current-stack-declaration-v1.json"
+    },
+    {
+      "record": "$",
+      "flow": "act_eval",
+      "id": "contact_profile",
+      "expected": "warp_native_contact_v1",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.contact_profile",
+          "value": "warp_native_contact_v1"
+        }
+      ],
+      "status": "current",
+      "input": "outputs/reports/2026-10-27-baseline-resume-evidence/current-stack-declaration-v1.json"
+    },
+    {
+      "record": "$",
+      "flow": "act_eval",
+      "id": "noslip_iterations",
+      "expected": 0,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.noslip_iterations",
+          "value": 0
+        }
+      ],
+      "status": "current",
+      "input": "outputs/reports/2026-10-27-baseline-resume-evidence/current-stack-declaration-v1.json"
+    },
+    {
+      "record": "$",
+      "flow": "act_eval",
+      "id": "scene_profile",
+      "expected": "walls_floor_contrast_v5_indigo110_s80",
+      "observed": [],
+      "status": "approved_deviation",
+      "original_status": "unknown",
+      "approval": {
+        "id": "scene_profile",
+        "reason": "Frozen canonical-scene.xml and per-world references retained; current scene profile name not independently established by hash-only preflight. No scene substitution permitted.",
+        "approval": {
+          "authority": "user",
+          "evidence": "User direct 2026-10-27 03:45 KST instruction: preserve REGISTERED_FROZEN baseline and step-011000/code, execute C then gated S; zone change is infrastructure only. Frozen sha256 043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb."
+        }
+      },
+      "input": "outputs/reports/2026-10-27-baseline-resume-evidence/current-stack-declaration-v1.json"
+    },
+    {
+      "record": "$",
+      "flow": "act_eval",
+      "id": "end_color_scene",
+      "expected": "grasp_act_teal_blue_v1",
+      "observed": [],
+      "status": "approved_deviation",
+      "original_status": "unknown",
+      "approval": {
+        "id": "end_color_scene",
+        "reason": "Frozen camera/material/model bytes verified; scene label not independently declared. No recolouring or FOV change permitted.",
+        "approval": {
+          "authority": "user",
+          "evidence": "User direct 2026-10-27 03:45 KST instruction: preserve REGISTERED_FROZEN baseline and step-011000/code, execute C then gated S; zone change is infrastructure only. Frozen sha256 043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb."
+        }
+      },
+      "input": "outputs/reports/2026-10-27-baseline-resume-evidence/current-stack-declaration-v1.json"
+    },
+    {
+      "record": "$",
+      "flow": "act_eval",
+      "id": "cargo_version",
+      "expected": "v6",
+      "observed": [],
+      "status": "approved_deviation",
+      "original_status": "unknown",
+      "approval": {
+        "id": "cargo_version",
+        "reason": "Frozen canonical cargo and cases retained; latest cargo version label not independently established. Replacing cargo would violate registration.",
+        "approval": {
+          "authority": "user",
+          "evidence": "User direct 2026-10-27 03:45 KST instruction: preserve REGISTERED_FROZEN baseline and step-011000/code, execute C then gated S; zone change is infrastructure only. Frozen sha256 043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb."
+        }
+      },
+      "input": "outputs/reports/2026-10-27-baseline-resume-evidence/current-stack-declaration-v1.json"
+    },
+    {
+      "record": "$",
+      "flow": "act_eval",
+      "id": "scenario_version",
+      "expected": "v7",
+      "observed": [],
+      "status": "approved_deviation",
+      "original_status": "unknown",
+      "approval": {
+        "id": "scenario_version",
+        "reason": "Frozen heldout20 cases retained; latest scenario version label not independently established. No new cases or reselection permitted.",
+        "approval": {
+          "authority": "user",
+          "evidence": "User direct 2026-10-27 03:45 KST instruction: preserve REGISTERED_FROZEN baseline and step-011000/code, execute C then gated S; zone change is infrastructure only. Frozen sha256 043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb."
+        }
+      },
+      "input": "outputs/reports/2026-10-27-baseline-resume-evidence/current-stack-declaration-v1.json"
+    },
+    {
+      "record": "$",
+      "flow": "act_eval",
+      "id": "heavy_crate",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.heavy_crate",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "outputs/reports/2026-10-27-baseline-resume-evidence/current-stack-declaration-v1.json"
+    },
+    {
+      "record": "$",
+      "flow": "act_eval",
+      "id": "held_object_hidden_v1",
+      "expected": true,
+      "observed": [],
+      "status": "approved_deviation",
+      "original_status": "unknown",
+      "approval": {
+        "id": "held_object_hidden_v1",
+        "reason": "Student receives only own RGB and own-issued command history; this latest teacher toggle is not declared for the frozen student path. No teacher rollout is authorized.",
+        "approval": {
+          "authority": "user",
+          "evidence": "User direct 2026-10-27 03:45 KST instruction: preserve REGISTERED_FROZEN baseline and step-011000/code, execute C then gated S; zone change is infrastructure only. Frozen sha256 043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb."
+        }
+      },
+      "input": "outputs/reports/2026-10-27-baseline-resume-evidence/current-stack-declaration-v1.json"
+    },
+    {
+      "record": "$",
+      "flow": "act_eval",
+      "id": "held_world_reads",
+      "expected": 0,
+      "observed": [],
+      "status": "approved_deviation",
+      "original_status": "unknown",
+      "approval": {
+        "id": "held_world_reads",
+        "reason": "Frozen source and CPU tests audited input path; runtime per-episode truth_inputs/teacher_actions/teacher_steps/gt_inputs must be checked after closed logs, not represented as a premeasured zero.",
+        "approval": {
+          "authority": "user",
+          "evidence": "User direct 2026-10-27 03:45 KST instruction: preserve REGISTERED_FROZEN baseline and step-011000/code, execute C then gated S; zone change is infrastructure only. Frozen sha256 043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb."
+        }
+      },
+      "input": "outputs/reports/2026-10-27-baseline-resume-evidence/current-stack-declaration-v1.json"
+    },
+    {
+      "record": "$",
+      "flow": "act_eval",
+      "id": "nearfield_executor",
+      "expected": "ACT",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.nearfield_executor",
+          "value": "ACT"
+        }
+      ],
+      "status": "current",
+      "input": "outputs/reports/2026-10-27-baseline-resume-evidence/current-stack-declaration-v1.json"
+    },
+    {
+      "record": "$",
+      "flow": "act_eval",
+      "id": "weld",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.weld",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "outputs/reports/2026-10-27-baseline-resume-evidence/current-stack-declaration-v1.json"
+    },
+    {
+      "record": "$",
+      "flow": "act_eval",
+      "id": "top_camera_control",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.top_camera_control",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "outputs/reports/2026-10-27-baseline-resume-evidence/current-stack-declaration-v1.json"
+    },
+    {
+      "record": "$",
+      "flow": "act_eval",
+      "id": "heading_mode",
+      "expected": "on",
+      "observed": [],
+      "status": "approved_deviation",
+      "original_status": "unknown",
+      "approval": {
+        "id": "heading_mode",
+        "reason": "Frozen ACT commands retained; generic navigation heading toggle not declared. No extra heading correction may be introduced.",
+        "approval": {
+          "authority": "user",
+          "evidence": "User direct 2026-10-27 03:45 KST instruction: preserve REGISTERED_FROZEN baseline and step-011000/code, execute C then gated S; zone change is infrastructure only. Frozen sha256 043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb."
+        }
+      },
+      "input": "outputs/reports/2026-10-27-baseline-resume-evidence/current-stack-declaration-v1.json"
+    },
+    {
+      "record": "$",
+      "flow": "act_eval",
+      "id": "ultrasonic_front",
+      "expected": "off",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.ultrasonic_front",
+          "value": "off"
+        }
+      ],
+      "status": "current",
+      "input": "outputs/reports/2026-10-27-baseline-resume-evidence/current-stack-declaration-v1.json"
+    },
+    {
+      "record": "$",
+      "flow": "act_eval",
+      "id": "wall_cap",
+      "expected": null,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.wall_cap",
+          "value": 19080
+        }
+      ],
+      "status": "approved_deviation",
+      "original_status": "deviation",
+      "approval": {
+        "id": "wall_cap",
+        "reason": "User GPU budget 20 total and 5.3 per arm; frozen whole-new-study5.3 GPU-h is enforced as host resource budget from VM allocation. This is not an action-selection or planning wall cap.",
+        "approval": {
+          "authority": "user",
+          "evidence": "User direct 2026-10-27 03:45 KST instruction: preserve REGISTERED_FROZEN baseline and step-011000/code, execute C then gated S; zone change is infrastructure only. Frozen sha256 043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb."
+        }
+      },
+      "input": "outputs/reports/2026-10-27-baseline-resume-evidence/current-stack-declaration-v1.json"
+    },
+    {
+      "record": "$",
+      "flow": "act_eval",
+      "id": "speed_gate",
+      "expected": "record_only",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.speed_gate",
+          "value": "record_only"
+        }
+      ],
+      "status": "current",
+      "input": "outputs/reports/2026-10-27-baseline-resume-evidence/current-stack-declaration-v1.json"
+    },
+    {
+      "record": "$",
+      "flow": "act_eval",
+      "id": "speed_metric",
+      "expected": "wall_s/(sim_s*nworld)",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.speed_metric",
+          "value": "wall_s/(sim_s*nworld)"
+        }
+      ],
+      "status": "current",
+      "input": "outputs/reports/2026-10-27-baseline-resume-evidence/current-stack-declaration-v1.json"
+    },
+    {
+      "record": "$",
+      "flow": "act_eval",
+      "id": "gcp_host",
+      "expected": [
+        "ugrp-act-l4-gcp2",
+        "ugrp-act-l4-gcp3",
+        "ugrp-act-l4-gcp4",
+        "ugrp-act-l4-gcp5",
+        "ugrp-act-l4-gcp6"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_host",
+          "value": "ugrp-act-l4-gcp6"
+        },
+        {
+          "field": "stack_values.gcp_project",
+          "value": "ugrp-sim-f-1016"
+        },
+        {
+          "field": "stack_values.gcp_account",
+          "value": "kcm5781kcm5781@gmail.com"
+        }
+      ],
+      "status": "current",
+      "input": "outputs/reports/2026-10-27-baseline-resume-evidence/current-stack-declaration-v1.json"
+    },
+    {
+      "record": "$",
+      "flow": "act_eval",
+      "id": "gcp_guards",
+      "expected": {
+        "idle_minutes": 20,
+        "budget_stop": true,
+        "credentials_on_vm": false
+      },
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_guards",
+          "value": {
+            "idle_minutes": 20,
+            "budget_stop": true,
+            "credentials_on_vm": false
+          }
+        }
+      ],
+      "status": "current",
+      "input": "outputs/reports/2026-10-27-baseline-resume-evidence/current-stack-declaration-v1.json"
+    },
+    {
+      "record": "$",
+      "flow": "act_eval",
+      "id": "no_pooling",
+      "expected": true,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.no_pooling",
+          "value": true
+        }
+      ],
+      "status": "current",
+      "input": "outputs/reports/2026-10-27-baseline-resume-evidence/current-stack-declaration-v1.json"
+    },
+    {
+      "record": "$",
+      "flow": "act_eval",
+      "id": "rejection_ledger",
+      "expected": [
+        "reason_category",
+        "blocked_object",
+        "minimum_gap_m"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.rejection_ledger",
+          "value": [
+            "reason_category",
+            "blocked_object",
+            "min_gap_m"
+          ]
+        }
+      ],
+      "status": "approved_deviation",
+      "original_status": "deviation",
+      "approval": {
+        "id": "rejection_ledger",
+        "reason": "Frozen original records name the gap field min_gap_m; retain bytes and explicitly report null/unmeasured and blocked_object UNKNOWN. Do not rename original fields to generic minimum_gap_m.",
+        "approval": {
+          "authority": "user",
+          "evidence": "User direct 2026-10-27 03:45 KST instruction: preserve REGISTERED_FROZEN baseline and step-011000/code, execute C then gated S; zone change is infrastructure only. Frozen sha256 043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb."
+        }
+      },
+      "input": "outputs/reports/2026-10-27-baseline-resume-evidence/current-stack-declaration-v1.json"
+    },
+    {
+      "record": "$",
+      "flow": "act_eval",
+      "id": "cap_end_label",
+      "expected": "cap_end",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.cap_end_label",
+          "value": "cap_end"
+        }
+      ],
+      "status": "current",
+      "input": "outputs/reports/2026-10-27-baseline-resume-evidence/current-stack-declaration-v1.json"
+    },
+    {
+      "record": "$",
+      "flow": "act_eval",
+      "id": "gcp_project",
+      "expected": [
+        "ugrp-sim-b-1014",
+        "ugrp-sim-c-1016",
+        "ugrp-sim-d-1016",
+        "ugrp-sim-e-1016",
+        "ugrp-sim-f-1016"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_project",
+          "value": "ugrp-sim-f-1016"
+        }
+      ],
+      "status": "current",
+      "input": "outputs/reports/2026-10-27-baseline-resume-evidence/current-stack-declaration-v1.json"
+    },
+    {
+      "record": "$",
+      "flow": "act_eval",
+      "id": "gcp_account",
+      "expected": [
+        "changmin5781@gmail.com",
+        "kcm5781kcm5781@gmail.com"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_account",
+          "value": "kcm5781kcm5781@gmail.com"
+        }
+      ],
+      "status": "current",
+      "input": "outputs/reports/2026-10-27-baseline-resume-evidence/current-stack-declaration-v1.json"
+    }
+  ],
+  "stack": {
+    "path": "/home/ubuntu/UGRP/configs/current_stack.json",
+    "sha256": "8539f9c5c31d3effd91fc0ef5b737fe451066d4659c094909317b07b9bc8f7d9"
+  },
+  "counts": {
+    "current": 16,
+    "approved_deviation": 9
+  },
+  "admission": "pass"
+}

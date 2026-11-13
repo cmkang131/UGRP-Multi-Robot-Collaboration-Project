@@ -1,0 +1,341 @@
+{
+  "schema": "ugrp.han32.instrumentation.measurement-aggregate.v1",
+  "source_trace_dir": "/home/ubuntu/UGRP/outputs/reports/2026-10-28-instr-fix-evidence/raw/trace",
+  "note": "Stage/done/pose/rejection fields are read directly from the frozen instrumentation records. The per-record 'cohort' literal is a hardcoded string in the byte-identical worker_trace.py and names the ORIGINAL failed cohort (han32-instrumentation-s4-20261028), not this -r2 run; provenance is the run directory + host-identity.json + launch-plan.json.",
+  "records_total": 14400,
+  "stage_labels": [
+    "approach",
+    "alignment",
+    "ready",
+    "execute",
+    "carry",
+    "place",
+    "recover",
+    "complete"
+  ],
+  "stage_argmax_counts_all": {
+    "approach": 63474,
+    "alignment": 7403,
+    "ready": 8334,
+    "execute": 35989
+  },
+  "stage_argmax_mean_prob_all": {
+    "approach": 0.9990022371235816,
+    "alignment": 0.9919502105351311,
+    "ready": 0.9777048599006571,
+    "execute": 0.991658887564981
+  },
+  "done_threshold": 0.65,
+  "barrier_event_reason_categories": {
+    "close_before_learned_ready_suppressed": 4885,
+    "null": 347,
+    "execution_without_GO_ACK": 8
+  },
+  "barrier_event_names": {
+    "treatment_close_gate_bypassed": 4885,
+    "READY": 185,
+    "proposal_rejected": 8,
+    "stage_proposal_released_after_GO_ACK": 162
+  },
+  "barrier_event_blocked_objects": {
+    "UNKNOWN:not_observed": 4893,
+    "null": 347
+  },
+  "per_file": [
+    {
+      "file": "worker-3036a94254d8fd9d.jsonl",
+      "records": 3600,
+      "episode_id": "pairact-r1-collect-8342000",
+      "seed": 8342000,
+      "robot": "r2",
+      "checkpoint_sha256": "8263ad3f135048fea46d5cb85fee1d70910bdc399babbd1f2f20d92c2fbea271",
+      "cohort_field": "han32-instrumentation-s4-20261028",
+      "first_t": 2.200000000000151,
+      "last_t": 182.10000000000016,
+      "stage_argmax_counts": {
+        "approach": 10761,
+        "alignment": 1636,
+        "ready": 4373,
+        "execute": 12030
+      },
+      "stage_argmax_mean_prob": {
+        "approach": 0.9976270087669107,
+        "alignment": 0.9928915289564096,
+        "ready": 0.9748334133360962,
+        "execute": 0.9894300813632275
+      },
+      "done_logit_max": 7.3589372634887695,
+      "done_prob_max": 0.9993635304212574,
+      "done_threshold": 0.65,
+      "done_threshold_crossings": 2091,
+      "done_since": 112.50000000000016,
+      "done_since_nonnull_ticks": 1243,
+      "proposal_done_ticks": 2078,
+      "segment_after_counts": {
+        "grasp": 1400,
+        "release": 2200
+      },
+      "barrier_pair_stage_counts": {
+        "approach": 1346,
+        "alignment": 1154,
+        "ready": 925,
+        "execute": 175
+      },
+      "stage_logit_rows_per_record": {
+        "8": 3600
+      },
+      "release_instruction_events": [
+        {
+          "t": 72.20000000000014,
+          "source": "both_own_done_flags"
+        },
+        {
+          "t": 72.20000000000014,
+          "source": "both_own_done_flags"
+        }
+      ],
+      "done_activation": "sigmoid; balanced_bce_v1; not calibrated",
+      "local_ready_true_ticks": 1092,
+      "permit_true_ticks": 236,
+      "final_pair_stage": "alignment",
+      "final_segment": "release",
+      "final_segment_switch_reason": "stay:original_both_own_done_duration_guard_not_satisfied",
+      "final_local_ready": false,
+      "final_local_ready_cause": "not_ready:own_ACT_stage_head_alignment",
+      "final_permit": false,
+      "pose_prediction_status": {
+        "unavailable:frozen_actor_has_no_pose_estimator_output": 3600
+      },
+      "barrier_event_count": 1334,
+      "barrier_event_reason_categories": {
+        "close_before_learned_ready_suppressed": 1085,
+        "null": 241,
+        "execution_without_GO_ACK": 8
+      },
+      "barrier_event_blocked_objects": {
+        "UNKNOWN:not_observed": 1093,
+        "null": 241
+      },
+      "barrier_event_min_gap_status": {
+        "None": 1334
+      },
+      "segment_switch_reasons": {
+        "stay:original_both_own_done_duration_guard_not_satisfied": 3598,
+        "[{\"event\": \"release_instruction\", \"source\": \"both_own_done_flags\", \"t\": 72.20000000000014}]": 2
+      }
+    },
+    {
+      "file": "worker-58d792e4d01e36a9.jsonl",
+      "records": 3600,
+      "episode_id": "pairact-r1-collect-8342018",
+      "seed": 8342018,
+      "robot": "r2",
+      "checkpoint_sha256": "8263ad3f135048fea46d5cb85fee1d70910bdc399babbd1f2f20d92c2fbea271",
+      "cohort_field": "han32-instrumentation-s4-20261028",
+      "first_t": 2.200000000000151,
+      "last_t": 182.10000000000016,
+      "stage_argmax_counts": {
+        "approach": 9866,
+        "alignment": 1215,
+        "ready": 1682,
+        "execute": 16037
+      },
+      "stage_argmax_mean_prob": {
+        "approach": 0.999348677351824,
+        "alignment": 0.9950955580871108,
+        "ready": 0.9829748344085836,
+        "execute": 0.9970724123649318
+      },
+      "done_logit_max": 7.4950456619262695,
+      "done_prob_max": 0.9994444774406651,
+      "done_threshold": 0.65,
+      "done_threshold_crossings": 839,
+      "done_since": null,
+      "done_since_nonnull_ticks": 747,
+      "proposal_done_ticks": 755,
+      "segment_after_counts": {
+        "grasp": 1976,
+        "release": 1624
+      },
+      "barrier_pair_stage_counts": {
+        "approach": 1239,
+        "alignment": 744,
+        "ready": 56,
+        "execute": 1561
+      },
+      "stage_logit_rows_per_record": {
+        "8": 3600
+      },
+      "release_instruction_events": [
+        {
+          "t": 101.00000000000016,
+          "source": "both_own_done_flags"
+        },
+        {
+          "t": 101.00000000000016,
+          "source": "both_own_done_flags"
+        }
+      ],
+      "done_activation": "sigmoid; balanced_bce_v1; not calibrated",
+      "local_ready_true_ticks": 1617,
+      "permit_true_ticks": 1611,
+      "final_pair_stage": "execute",
+      "final_segment": "release",
+      "final_segment_switch_reason": "stay:original_both_own_done_duration_guard_not_satisfied",
+      "final_local_ready": true,
+      "final_local_ready_cause": "persist:own_ACT_stage_head_ready",
+      "final_permit": true,
+      "pose_prediction_status": {
+        "unavailable:frozen_actor_has_no_pose_estimator_output": 3600
+      },
+      "barrier_event_count": 964,
+      "barrier_event_reason_categories": {
+        "close_before_learned_ready_suppressed": 858,
+        "null": 106
+      },
+      "barrier_event_blocked_objects": {
+        "UNKNOWN:not_observed": 858,
+        "null": 106
+      },
+      "barrier_event_min_gap_status": {
+        "None": 964
+      },
+      "segment_switch_reasons": {
+        "stay:original_both_own_done_duration_guard_not_satisfied": 3598,
+        "[{\"event\": \"release_instruction\", \"source\": \"both_own_done_flags\", \"t\": 101.00000000000016}]": 2
+      }
+    },
+    {
+      "file": "worker-82081318f3eab925.jsonl",
+      "records": 3600,
+      "episode_id": "pairact-r1-collect-8342009",
+      "seed": 8342009,
+      "robot": "r2",
+      "checkpoint_sha256": "8263ad3f135048fea46d5cb85fee1d70910bdc399babbd1f2f20d92c2fbea271",
+      "cohort_field": "han32-instrumentation-s4-20261028",
+      "first_t": 2.200000000000151,
+      "last_t": 182.10000000000016,
+      "stage_argmax_counts": {
+        "approach": 22991,
+        "alignment": 2053,
+        "ready": 1078,
+        "execute": 2678
+      },
+      "stage_argmax_mean_prob": {
+        "approach": 0.9992358107439622,
+        "alignment": 0.9942844958610207,
+        "ready": 0.9813321562005576,
+        "execute": 0.984893147251408
+      },
+      "done_logit_max": 7.5558180809021,
+      "done_prob_max": 0.9994772153836884,
+      "done_threshold": 0.65,
+      "done_threshold_crossings": 642,
+      "done_since": null,
+      "done_since_nonnull_ticks": 469,
+      "proposal_done_ticks": 469,
+      "segment_after_counts": {
+        "grasp": 3600
+      },
+      "barrier_pair_stage_counts": {
+        "approach": 2895,
+        "alignment": 705
+      },
+      "stage_logit_rows_per_record": {
+        "8": 3600
+      },
+      "release_instruction_events": [],
+      "done_activation": "sigmoid; balanced_bce_v1; not calibrated",
+      "local_ready_true_ticks": 0,
+      "permit_true_ticks": 0,
+      "final_pair_stage": "approach",
+      "final_segment": "grasp",
+      "final_segment_switch_reason": "stay:original_both_own_done_duration_guard_not_satisfied",
+      "final_local_ready": false,
+      "final_local_ready_cause": "not_ready:own_ACT_stage_head_approach",
+      "final_permit": false,
+      "pose_prediction_status": {
+        "unavailable:frozen_actor_has_no_pose_estimator_output": 3600
+      },
+      "barrier_event_count": 1668,
+      "barrier_event_reason_categories": {
+        "close_before_learned_ready_suppressed": 1668
+      },
+      "barrier_event_blocked_objects": {
+        "UNKNOWN:not_observed": 1668
+      },
+      "barrier_event_min_gap_status": {
+        "None": 1668
+      },
+      "segment_switch_reasons": {
+        "stay:original_both_own_done_duration_guard_not_satisfied": 3600
+      }
+    },
+    {
+      "file": "worker-ecc03acd604781f4.jsonl",
+      "records": 3600,
+      "episode_id": "pairact-r1-collect-8342005",
+      "seed": 8342005,
+      "robot": "r2",
+      "checkpoint_sha256": "8263ad3f135048fea46d5cb85fee1d70910bdc399babbd1f2f20d92c2fbea271",
+      "cohort_field": "han32-instrumentation-s4-20261028",
+      "first_t": 2.200000000000151,
+      "last_t": 182.10000000000016,
+      "stage_argmax_counts": {
+        "approach": 19856,
+        "alignment": 2499,
+        "ready": 1201,
+        "execute": 5244
+      },
+      "stage_argmax_mean_prob": {
+        "approach": 0.9993049547881716,
+        "alignment": 0.9878870324691331,
+        "ready": 0.977523771884986,
+        "execute": 0.9836715675707028
+      },
+      "done_logit_max": 7.657817840576172,
+      "done_prob_max": 0.9995278859952527,
+      "done_threshold": 0.65,
+      "done_threshold_crossings": 1084,
+      "done_since": 177.40000000000018,
+      "done_since_nonnull_ticks": 805,
+      "proposal_done_ticks": 805,
+      "segment_after_counts": {
+        "grasp": 3600
+      },
+      "barrier_pair_stage_counts": {
+        "approach": 2486,
+        "alignment": 1114
+      },
+      "stage_logit_rows_per_record": {
+        "8": 3600
+      },
+      "release_instruction_events": [],
+      "done_activation": "sigmoid; balanced_bce_v1; not calibrated",
+      "local_ready_true_ticks": 0,
+      "permit_true_ticks": 0,
+      "final_pair_stage": "alignment",
+      "final_segment": "grasp",
+      "final_segment_switch_reason": "stay:original_both_own_done_duration_guard_not_satisfied",
+      "final_local_ready": false,
+      "final_local_ready_cause": "not_ready:own_ACT_stage_head_alignment",
+      "final_permit": false,
+      "pose_prediction_status": {
+        "unavailable:frozen_actor_has_no_pose_estimator_output": 3600
+      },
+      "barrier_event_count": 1274,
+      "barrier_event_reason_categories": {
+        "close_before_learned_ready_suppressed": 1274
+      },
+      "barrier_event_blocked_objects": {
+        "UNKNOWN:not_observed": 1274
+      },
+      "barrier_event_min_gap_status": {
+        "None": 1274
+      },
+      "segment_switch_reasons": {
+        "stay:original_both_own_done_duration_guard_not_satisfied": 3600
+      }
+    }
+  ]
+}

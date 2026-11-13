@@ -95,7 +95,11 @@ def run_live(tmp_path, wire, *, condition='peer_nl', cap_s=12., budget=None, nam
 def clean(tmp_path_factory):
     tmp = tmp_path_factory.mktemp('live-clean')
     wire = LiveShapedWire()
-    record, attempts, out, budget = run_live(tmp, wire)
+    # Module setup precedes the function-scoped no_disk_probe fixture. This
+    # synthetic wire test must not depend on the runner's real free space.
+    with pytest.MonkeyPatch.context() as patch:
+        patch.setattr(llm, 'check_disk', lambda path, *, min_free_gib: 1)
+        record, attempts, out, budget = run_live(tmp, wire)
     return record, attempts, out, budget, wire
 
 

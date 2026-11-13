@@ -1,0 +1,499 @@
+{
+  "schema": "ugrp.baseline-treatment.implementation.v1",
+  "status": "CPU_VALIDATED_GPU_NOT_RUN_DRAFT",
+  "remote_root": "/home/ugrp/ugrp-sim/baseline-treatment",
+  "modes": [
+    "none",
+    "arm_c",
+    "arm_s"
+  ],
+  "default": "none",
+  "original_student_python": "/home/ugrp/e2emin-20261021/venv/bin/python",
+  "original_eval": "/home/ugrp/ugrp-sim/runs/pairact-r2-reeval-20261026/student-eval-r2.json",
+  "baseline_before": "baseline-before-v2.json",
+  "baseline_after": "baseline-after.json",
+  "baseline_reference": "baseline-reference.json",
+  "baseline_files_verified": 33,
+  "measured_report_files_verified": 20,
+  "source_heads": {
+    "R": "e5620e839907dc69d3b014becae2cbda4bbe27da",
+    "A": "afd7a6e17c6501d308b6a1d9015b15f5d5da9ed4",
+    "T": "75929e7719ad98a089e3dda5251f4249d8bae511",
+    "S": "3c9337d5f5c9deefd49139b26ae7117022e3d5cc"
+  },
+  "treatment": {
+    "c": "G1/G4/G5/G6/G7/G8 action paths removed; per-robot completion",
+    "s": "G1 removed; original handshake and joint completion retained",
+    "skill": "grasp every tick including release; destination transition preserved",
+    "protocol_c": "diagnostic only; raw permit retained; never forced True",
+    "cadence": "one discard and one fresh prediction per robot-tick"
+  },
+  "cpu_validation": {
+    "treatment_tests": 16,
+    "audit_tests": 9,
+    "pinned_original_tests": 8,
+    "failures": 0,
+    "actor_cpu_readback": "PASS",
+    "actor_parameters": 51818398,
+    "cuda_initialized": false,
+    "policy_forward_calls": 0
+  },
+  "gpu_episodes": 0,
+  "training_runs": 0,
+  "evaluation_runs": 0,
+  "model_quality_gate_runs": 0,
+  "launcher_execution": 0,
+  "known_limits": [
+    "GPU runtime pilot/cleanup not executed",
+    "20 concurrent lanes invalidate proportional 4/20 pilot-cost assumption",
+    "grasp token stays fixed in release segment by literal instruction",
+    "L historical execution-time bytes not independently frozen",
+    "future resource/storage/credit budget not approved by this metadata"
+  ],
+  "package_files": {
+    "audit_cpu.py": {
+      "sha256": "1850b9861358b1a9f5865000e54b6ad93d63e4a8cd4a92456ff5a328f3da8dcb",
+      "bytes": 4688
+    },
+    "baseline-reference.json": {
+      "sha256": "b978f343ae7d796b0c0905484dde2614b8c2970f916e1c47b7d1cf4ffab5e317",
+      "bytes": 10342
+    },
+    "bootstrap.py": {
+      "sha256": "875c48da7d8909d1fec0bf54e5b07e12a0d971d780abd25cc2bfddae2fe15a2d",
+      "bytes": 2534
+    },
+    "controller.py": {
+      "sha256": "407b385584fb29edfe32a8f5ca674566cfe787659ae2f7b4a5bf9e5b78d61bcf",
+      "bytes": 12847
+    },
+    "cpu_readback.py": {
+      "sha256": "e46543d8aefb1b3b77845e8d0f8eb1d21306db1f1d34d1dcff4d4b6b36e56967",
+      "bytes": 1631
+    },
+    "eval-python": {
+      "sha256": "19d33c89cbfb865cd67d71f9f1d205d2032579ebd37d35c3d28caf1762c09948",
+      "bytes": 159
+    },
+    "eval-python-arm-c": {
+      "sha256": "82f590f79f0f12c7a5279dbdcdabf0e1bceaa804fc5cd212f18d737222132891",
+      "bytes": 102
+    },
+    "eval-python-arm-s": {
+      "sha256": "a5cbb98d35d4acb160913851558edff27c109db525f7ec04d9c72776676dae1a",
+      "bytes": 102
+    },
+    "future_driver.py": {
+      "sha256": "e994f1def17fbe5273ce4019aac58eb4d2ee8fe6a885a426d07c7588f57658a8",
+      "bytes": 7274
+    },
+    "launch-template.json": {
+      "sha256": "48d8ae224360bc5102d96886d0fbe924cd1ee49acddc4eadb75850886e3257aa",
+      "bytes": 1425
+    },
+    "prior-funnel.json": {
+      "sha256": "dd0033b0549ed8164759c91bfd600d08e73ead24ccebb174739a1f30d5ef4c23",
+      "bytes": 2417
+    },
+    "queue-arm-c.json": {
+      "sha256": "b0b10df7da146751fa5ad6a481b61a4f645a476f303c5a211668ec40d29a472a",
+      "bytes": 941
+    },
+    "queue-arm-s.json": {
+      "sha256": "2f966fa2461383705412a21c07598ff0b3cb27bf7f71cc029143825c066a05fd",
+      "bytes": 941
+    },
+    "student-eval-arm-c.json": {
+      "sha256": "6d813017fac778487f5f6d85793135c60531f113bbf5a5c685a8cccd033e06bb",
+      "bytes": 410
+    },
+    "student-eval-arm-c.treatment.json": {
+      "sha256": "1b185f5c1b5d441da9679c5edc393f901bf3f9ba55a7b8482b6e104b8bbe8042",
+      "bytes": 662
+    },
+    "student-eval-arm-s.json": {
+      "sha256": "913660773e392df48471b66cd707a186098b365acef2baf367ea34f0418e28f3",
+      "bytes": 410
+    },
+    "student-eval-arm-s.treatment.json": {
+      "sha256": "741431d877cdd9bdc4fadc189b9b64b4e168f07067a87a11b98c90d61fbc08b8",
+      "bytes": 670
+    },
+    "test_audit_cpu.py": {
+      "sha256": "7d90252eb0eca7e0970415b61625154c36a4a4d5c7ed158c71d41be2a8e65f1f",
+      "bytes": 4288
+    },
+    "test_cpu.py": {
+      "sha256": "e72f6ae47fdb1e074f4bee8f0a904599c07fe34fe26e7078b06254b11f337749",
+      "bytes": 15816
+    },
+    "test_original_cpu.py": {
+      "sha256": "50c8794e22e9823e11438dcde7fc2e6b73924f80f5d7f3e1e58d9b261c26e07c",
+      "bytes": 1488
+    },
+    "verify_baseline.py": {
+      "sha256": "70f27a95e5083d9b47c484dc9b856898ce7bd682edc1368f376f12841ab280d6",
+      "bytes": 1847
+    }
+  },
+  "verification_files": {
+    "cpu-tests-v1.json": {
+      "sha256": "55f93e1588612ae66bbfc33ff3a29dd4d71d18fd3f4954a3b3f9a061ccbf316a"
+    },
+    "cpu-tests-v2.json": {
+      "sha256": "260cb131bf49cdb4bc13cd35618176f40e6fbd0921f97554e0c3863b996c41d1"
+    },
+    "audit-tests-v1.json": {
+      "sha256": "230e289bdfd7f4e139235e076792fd6c991456028ffbb8f47da08cea47c916dc"
+    },
+    "original-tests-v1.json": {
+      "sha256": "4ebcca1a904600e641dff2ba2e4be4f12055dd57b78afbacbdcbe24aa7066969"
+    },
+    "cpu-readback-v1.json": {
+      "sha256": "7823dc0770210e6d0f46ce7a9c7dc3ff6a0c6cc9184c8e46213a814c732c5d04"
+    },
+    "baseline-before-v2.json": {
+      "sha256": "d41750b3893a7bcf5d05d719b2d551af5a8841113bb2f4d246b6a6a416eb51a9"
+    },
+    "baseline-after.json": {
+      "sha256": "116eaa8c838cd84bbc8820b0e4fb48fd1013a169caf67878585f172bdc15ae65"
+    },
+    "worker-cpu-startup-arm-c.json": {
+      "sha256": "6d4956d3303dc71d146555f05b955f62483685bc994d9b3465b3931f06dfb2f4"
+    },
+    "audit-tests-v2.json": {
+      "sha256": "d3d1c5519eab813e5919837dea7634b8f13f490307862ab6c344e6198d3817c2"
+    }
+  },
+  "initial_preflight_path_error_record": "local baseline-before.json: path parser error, superseded by baseline-before-v2.json",
+  "baseline_comparison": [
+    {
+      "label": "RUN/summary.json",
+      "path": "/home/ugrp/ugrp-sim/runs/pairact-r2-reeval-20261026/r2-student-a1/summary.json",
+      "expected_sha256": "185b710347c0d025218998f472ac3f4aaa98939213016df7c76fb87d81e24437",
+      "kind": "measured_20",
+      "sha256": "185b710347c0d025218998f472ac3f4aaa98939213016df7c76fb87d81e24437",
+      "bytes": 425347,
+      "match": true
+    },
+    {
+      "label": "RUN/artifact-sha256.json",
+      "path": "/home/ugrp/ugrp-sim/runs/pairact-r2-reeval-20261026/r2-student-a1/artifact-sha256.json",
+      "expected_sha256": "9bb2321a52949034c65e7cca638cfc365cc6e0b44a7541e200fcdc7496f0215c",
+      "kind": "measured_20",
+      "sha256": "9bb2321a52949034c65e7cca638cfc365cc6e0b44a7541e200fcdc7496f0215c",
+      "bytes": 5093802,
+      "match": true
+    },
+    {
+      "label": "RUN/rejection_table.json",
+      "path": "/home/ugrp/ugrp-sim/runs/pairact-r2-reeval-20261026/r2-student-a1/rejection_table.json",
+      "expected_sha256": "00b0595c4ee71d76a1519c1b9b7faaa8ea508aeee451549f171af62362960310",
+      "kind": "measured_20",
+      "sha256": "00b0595c4ee71d76a1519c1b9b7faaa8ea508aeee451549f171af62362960310",
+      "bytes": 1938,
+      "match": true
+    },
+    {
+      "label": "EVAL",
+      "path": "/home/ugrp/ugrp-sim/runs/pairact-r2-reeval-20261026/student-eval-r2.json",
+      "expected_sha256": "dcc9cc826c1e882297f8b2b9ca6d70ed4ccad6f5ac2e6846af7af1d1c91bfc8d",
+      "kind": "measured_20",
+      "sha256": "dcc9cc826c1e882297f8b2b9ca6d70ed4ccad6f5ac2e6846af7af1d1c91bfc8d",
+      "bytes": 389,
+      "match": true
+    },
+    {
+      "label": "P5/p5-heldout-cases.json",
+      "path": "/home/ugrp/ugrp-sim/runs/pairact-p5-eval-20261025/p5-heldout-cases.json",
+      "expected_sha256": "3e4bf69caa48f4638eb365aec649e8202948de56390dff37cbd540e542e504dc",
+      "kind": "measured_20",
+      "sha256": "3e4bf69caa48f4638eb365aec649e8202948de56390dff37cbd540e542e504dc",
+      "bytes": 102201,
+      "match": true
+    },
+    {
+      "label": "P5/refs-export/canonical-scene.xml",
+      "path": "/home/ugrp/ugrp-sim/runs/pairact-p5-eval-20261025/refs-export/canonical-scene.xml",
+      "expected_sha256": "e3dea4e3995c14d5375c84a7e8dd0a9654bf2c5eb6beaa1ca8801bd791897c60",
+      "kind": "measured_20",
+      "sha256": "e3dea4e3995c14d5375c84a7e8dd0a9654bf2c5eb6beaa1ca8801bd791897c60",
+      "bytes": 506777,
+      "match": true
+    },
+    {
+      "label": "P5/refs-export/per-world-references.json",
+      "path": "/home/ugrp/ugrp-sim/runs/pairact-p5-eval-20261025/refs-export/per-world-references.json",
+      "expected_sha256": "467ea8bd02f30481cbb5b4533ed8da02a120ad3338b1f625bbc5c5f5e579d117",
+      "kind": "measured_20",
+      "sha256": "467ea8bd02f30481cbb5b4533ed8da02a120ad3338b1f625bbc5c5f5e579d117",
+      "bytes": 8663,
+      "match": true
+    },
+    {
+      "label": "/home/ugrp/ugrp-sim/run-r2-reeval.sh",
+      "path": "/home/ugrp/ugrp-sim/run-r2-reeval.sh",
+      "expected_sha256": "73ed1e590963d4f26bdff1fc7326eed713bd22e07b69f41f3ab8827931469aa7",
+      "kind": "measured_20",
+      "sha256": "73ed1e590963d4f26bdff1fc7326eed713bd22e07b69f41f3ab8827931469aa7",
+      "bytes": 1618,
+      "match": true
+    },
+    {
+      "label": "/home/ugrp/ugrp-sim/runs/pairact-r2-reeval-20261026-driver4.log",
+      "path": "/home/ugrp/ugrp-sim/runs/pairact-r2-reeval-20261026-driver4.log",
+      "expected_sha256": "00a6597587dfbd5d928ab77670b1bc83e68b4ee9d9358c1b34cc3ef7dee21bac",
+      "kind": "measured_20",
+      "sha256": "00a6597587dfbd5d928ab77670b1bc83e68b4ee9d9358c1b34cc3ef7dee21bac",
+      "bytes": 6934,
+      "match": true
+    },
+    {
+      "label": "L",
+      "path": "/home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py",
+      "expected_sha256": "4390801e4c2057ddb80cdec08b6fcfcbd80fe4cfbe0bcc717b3118ca8c237d71",
+      "kind": "measured_20",
+      "sha256": "4390801e4c2057ddb80cdec08b6fcfcbd80fe4cfbe0bcc717b3118ca8c237d71",
+      "bytes": 26420,
+      "match": true
+    },
+    {
+      "label": "R/scripts/run_warp_flow_teacher.py",
+      "path": "/home/ugrp/ugrp-sim/src/pairact-p5/root/scripts/run_warp_flow_teacher.py",
+      "expected_sha256": "e7459aedd9af7674c2c6ebe1b3d793ab52d564e7ad9ebd5588138066e8f1555c",
+      "kind": "measured_20",
+      "sha256": "e7459aedd9af7674c2c6ebe1b3d793ab52d564e7ad9ebd5588138066e8f1555c",
+      "bytes": 27078,
+      "match": true
+    },
+    {
+      "label": "R/scripts/warp_flow_episode.py",
+      "path": "/home/ugrp/ugrp-sim/src/pairact-p5/root/scripts/warp_flow_episode.py",
+      "expected_sha256": "73e283092fdb302b4f8d53ee3e5a9dd29031225607a7b8f427b643d1fefede6f",
+      "kind": "measured_20",
+      "sha256": "73e283092fdb302b4f8d53ee3e5a9dd29031225607a7b8f427b643d1fefede6f",
+      "bytes": 17748,
+      "match": true
+    },
+    {
+      "label": "A/scripts/run_beampair1.py",
+      "path": "/home/ugrp/ugrp-sim/src/pairact-p5/adapter/scripts/run_beampair1.py",
+      "expected_sha256": "b190ca61a670df19d1f297e4f68aabedbaf3f9e1fc679cde17bd30c804edce2a",
+      "kind": "measured_20",
+      "sha256": "b190ca61a670df19d1f297e4f68aabedbaf3f9e1fc679cde17bd30c804edce2a",
+      "bytes": 32984,
+      "match": true
+    },
+    {
+      "label": "T/scripts/run_grasp_act_teacher.py",
+      "path": "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247/scripts/run_grasp_act_teacher.py",
+      "expected_sha256": "ac812e25d0d3f43c647ddb6e19ce3bb7ba5d46aa363ec6e192f0e77f8ba4e744",
+      "kind": "measured_20",
+      "sha256": "ac812e25d0d3f43c647ddb6e19ce3bb7ba5d46aa363ec6e192f0e77f8ba4e744",
+      "bytes": 55588,
+      "match": true
+    },
+    {
+      "label": "T/harness/pairact_student_eval.py",
+      "path": "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247/harness/pairact_student_eval.py",
+      "expected_sha256": "03f6a2311c0d4f4a97495fdce5efe7d345a35fa2815c9c5ab3660223818efbec",
+      "kind": "measured_20",
+      "sha256": "03f6a2311c0d4f4a97495fdce5efe7d345a35fa2815c9c5ab3660223818efbec",
+      "bytes": 7921,
+      "match": true
+    },
+    {
+      "label": "T/harness/grasp_act_start_sync.py",
+      "path": "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247/harness/grasp_act_start_sync.py",
+      "expected_sha256": "6333ab411b433a19f8d2cefa22951d3afd0eec5052c475e6782728ad37e6091c",
+      "kind": "measured_20",
+      "sha256": "6333ab411b433a19f8d2cefa22951d3afd0eec5052c475e6782728ad37e6091c",
+      "bytes": 4738,
+      "match": true
+    },
+    {
+      "label": "T/harness/pair_carry_sync.py",
+      "path": "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247/harness/pair_carry_sync.py",
+      "expected_sha256": "93a87245359a131551c128e4f6bf197dbf4141301c2564d3afaea924e78351e0",
+      "kind": "measured_20",
+      "sha256": "93a87245359a131551c128e4f6bf197dbf4141301c2564d3afaea924e78351e0",
+      "bytes": 16079,
+      "match": true
+    },
+    {
+      "label": "S/harness/beamact_pair_student.py",
+      "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student/harness/beamact_pair_student.py",
+      "expected_sha256": "9650e08573adf61e622a2e832a7ca12f476d4e5988f9bbc299bb125a766ee1c6",
+      "kind": "measured_20",
+      "sha256": "9650e08573adf61e622a2e832a7ca12f476d4e5988f9bbc299bb125a766ee1c6",
+      "bytes": 8032,
+      "match": true
+    },
+    {
+      "label": "S/harness/pairact_r1_student.py",
+      "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student/harness/pairact_r1_student.py",
+      "expected_sha256": "3e12d2f5408f82821187401e8a6d4298cb70fb27b48c229d689a54efdef77e81",
+      "kind": "measured_20",
+      "sha256": "3e12d2f5408f82821187401e8a6d4298cb70fb27b48c229d689a54efdef77e81",
+      "bytes": 8603,
+      "match": true
+    },
+    {
+      "label": "S/scripts/pairact_r1_student_worker.py",
+      "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student/scripts/pairact_r1_student_worker.py",
+      "expected_sha256": "7ac86ded4acd1d9055ce6950a69034882bee08906d4e1cd9f47e9839009c8031",
+      "kind": "measured_20",
+      "sha256": "7ac86ded4acd1d9055ce6950a69034882bee08906d4e1cd9f47e9839009c8031",
+      "bytes": 2826,
+      "match": true
+    },
+    {
+      "label": "ACTOR/model.safetensors",
+      "path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/main/step-011000/actor/model.safetensors",
+      "expected_sha256": "8263ad3f135048fea46d5cb85fee1d70910bdc399babbd1f2f20d92c2fbea271",
+      "kind": "actor",
+      "sha256": "8263ad3f135048fea46d5cb85fee1d70910bdc399babbd1f2f20d92c2fbea271",
+      "bytes": 207396736,
+      "match": true
+    },
+    {
+      "label": "ACTOR/config.json",
+      "path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/main/step-011000/actor/config.json",
+      "expected_sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f",
+      "kind": "actor",
+      "sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f",
+      "bytes": 1278,
+      "match": true
+    },
+    {
+      "label": "ACTOR/adapter.json",
+      "path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/main/step-011000/actor/adapter.json",
+      "expected_sha256": "84811d26bb0a8bdcc9431bb3c8d5947c70dc8ccd0ba8cf6471566f15f0f1e018",
+      "kind": "actor",
+      "sha256": "84811d26bb0a8bdcc9431bb3c8d5947c70dc8ccd0ba8cf6471566f15f0f1e018",
+      "bytes": 19848,
+      "match": true
+    },
+    {
+      "label": "ACTOR/SHA256.json",
+      "path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/main/step-011000/actor/SHA256.json",
+      "expected_sha256": "b5c3156fd03477e0663c59d09dfa71db4fe321e4782248cddbb256d2b7169a08",
+      "kind": "actor",
+      "sha256": "b5c3156fd03477e0663c59d09dfa71db4fe321e4782248cddbb256d2b7169a08",
+      "bytes": 265,
+      "match": true
+    },
+    {
+      "label": "S/harness/pairact_r1.py",
+      "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student/harness/pairact_r1.py",
+      "expected_sha256": "8a9869248740bf5ad2da7194cdd9a582347ac09e88783cd6ea127ef3f208a210",
+      "kind": "loader_bound",
+      "sha256": "8a9869248740bf5ad2da7194cdd9a582347ac09e88783cd6ea127ef3f208a210",
+      "bytes": 36651,
+      "match": true
+    },
+    {
+      "label": "S/harness/beamact3.py",
+      "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student/harness/beamact3.py",
+      "expected_sha256": "0bfa3986301e2997d8305106a78101c8ad7a6ed446b633dd1a1ca246b2b8b1d9",
+      "kind": "loader_bound",
+      "sha256": "0bfa3986301e2997d8305106a78101c8ad7a6ed446b633dd1a1ca246b2b8b1d9",
+      "bytes": 9581,
+      "match": true
+    },
+    {
+      "label": "S/harness/grasp_act_contract.py",
+      "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student/harness/grasp_act_contract.py",
+      "expected_sha256": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056",
+      "kind": "loader_bound",
+      "sha256": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056",
+      "bytes": 9352,
+      "match": true
+    },
+    {
+      "label": "dataset manifest",
+      "path": "/home/ugrp/clockfix-build-20261024/dataset-v4/manifest.json",
+      "expected_sha256": "7e544aff426b9ef10a8195c56831d0171224b1feb8ea5728e94956197d990d20",
+      "kind": "provenance",
+      "sha256": "7e544aff426b9ef10a8195c56831d0171224b1feb8ea5728e94956197d990d20",
+      "bytes": 1146701,
+      "match": true
+    },
+    {
+      "label": "stage sidecar",
+      "path": "/home/ugrp/clockfix-build-20261024/dataset-v4-stage/stage-targets.json",
+      "expected_sha256": "65cbd8fbc919730352bb32594a27a6997fe82e65cd1c6c1e719d78e707ec5787",
+      "kind": "provenance",
+      "sha256": "65cbd8fbc919730352bb32594a27a6997fe82e65cd1c6c1e719d78e707ec5787",
+      "bytes": 199327,
+      "match": true
+    },
+    {
+      "label": "normalization",
+      "path": "/home/ugrp/clockfix-build-20261024/dataset-v4/normalization.json",
+      "expected_sha256": "4f465a341fb5436b14f4429372e39da862535a5e8231a5cac0fbe67387305639",
+      "kind": "provenance",
+      "sha256": "4f465a341fb5436b14f4429372e39da862535a5e8231a5cac0fbe67387305639",
+      "bytes": 15532,
+      "match": true
+    },
+    {
+      "label": "train config",
+      "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student/experiments/2026-10-21-pairact-r1/PAIRACT_R1_TRAIN_CONFIG_DRAFT.json",
+      "expected_sha256": "37835e1ff9bd7b9686b4d7258b7597e6cd8e40b84a121c4f4156704c04b49326",
+      "kind": "provenance",
+      "sha256": "37835e1ff9bd7b9686b4d7258b7597e6cd8e40b84a121c4f4156704c04b49326",
+      "bytes": 1515,
+      "match": true
+    },
+    {
+      "label": "checkpoints",
+      "path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/offline-gate/checkpoints.jsonl",
+      "expected_sha256": "f59aa8bc8ba0ff2aba53918db308b49fd82a4fd365978e7dec94b18592fe06ac",
+      "kind": "provenance",
+      "sha256": "f59aa8bc8ba0ff2aba53918db308b49fd82a4fd365978e7dec94b18592fe06ac",
+      "bytes": 39297,
+      "match": true
+    },
+    {
+      "label": "selection",
+      "path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/offline-gate/selection.json",
+      "expected_sha256": "df36fa86587fd943ac4add245f658bf0454dd99585cd911743fa837563b68208",
+      "kind": "provenance",
+      "sha256": "df36fa86587fd943ac4add245f658bf0454dd99585cd911743fa837563b68208",
+      "bytes": 805,
+      "match": true
+    }
+  ],
+  "baseline_tree_comparison": {
+    "R": {
+      "path": "/home/ugrp/ugrp-sim/src/pairact-p5/root",
+      "head": "e5620e839907dc69d3b014becae2cbda4bbe27da",
+      "expected_head": "e5620e839907dc69d3b014becae2cbda4bbe27da",
+      "match": true,
+      "tracked_status": ""
+    },
+    "A": {
+      "path": "/home/ugrp/ugrp-sim/src/pairact-p5/adapter",
+      "head": "afd7a6e17c6501d308b6a1d9015b15f5d5da9ed4",
+      "expected_head": "afd7a6e17c6501d308b6a1d9015b15f5d5da9ed4",
+      "match": true,
+      "tracked_status": ""
+    },
+    "T": {
+      "path": "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "head": "75929e7719ad98a089e3dda5251f4249d8bae511",
+      "expected_head": "75929e7719ad98a089e3dda5251f4249d8bae511",
+      "match": true,
+      "tracked_status": ""
+    },
+    "S": {
+      "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student",
+      "head": "3c9337d5f5c9deefd49139b26ae7117022e3d5cc",
+      "expected_head": "3c9337d5f5c9deefd49139b26ae7117022e3d5cc",
+      "match": true,
+      "tracked_status": ""
+    }
+  },
+  "validation_test_invocations_including_v1": 57
+}

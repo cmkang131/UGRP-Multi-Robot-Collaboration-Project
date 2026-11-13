@@ -1,0 +1,97 @@
+{
+  "schema": "ugrp.baseline-treatment.prior-funnel.v1",
+  "scope": "PRIOR r2 CPU recount, not treatment outcome",
+  "raw": "/home/ugrp/ugrp-sim/runs/pairact-r2-reeval-20261026/r2-student-a1",
+  "prior_rejection_table": "/home/ugrp/ugrp-sim/runs/pairact-r2-reeval-20261026/r2-student-a1/rejection_table.json",
+  "reproduce": [
+    "ssh",
+    "gcp6",
+    "CUDA_VISIBLE_DEVICES= PYTHONDONTWRITEBYTECODE=1 python3 /home/ugrp/codex-analysis/round2-reeval-20261026/recount.py /home/ugrp/codex-analysis/round2-reeval-20261026/result-NEW"
+  ],
+  "cohort": [
+    {
+      "stage": "requested",
+      "passed_cumulative_N": 20,
+      "rejected_N": 0
+    },
+    {
+      "stage": "setup",
+      "passed_cumulative_N": 20,
+      "rejected_N": 0
+    },
+    {
+      "stage": "completed",
+      "passed_cumulative_N": 20,
+      "rejected_N": 0
+    },
+    {
+      "stage": "success",
+      "passed_cumulative_N": 0,
+      "rejected_N": 20
+    }
+  ],
+  "policy_funnel": [
+    {
+      "stage": "approach",
+      "passed_cumulative_N": 10,
+      "rejected_N": 10
+    },
+    {
+      "stage": "alignment",
+      "passed_cumulative_N": 0,
+      "rejected_N": 10
+    },
+    {
+      "stage": "READY",
+      "passed_cumulative_N": 0,
+      "rejected_N": 0
+    },
+    {
+      "stage": "grasp",
+      "passed_cumulative_N": 0,
+      "rejected_N": 0
+    },
+    {
+      "stage": "hold_3s",
+      "passed_cumulative_N": 0,
+      "rejected_N": 0
+    },
+    {
+      "stage": "carry_1m",
+      "passed_cumulative_N": 0,
+      "rejected_N": 0
+    },
+    {
+      "stage": "door",
+      "passed_cumulative_N": 0,
+      "rejected_N": 0
+    },
+    {
+      "stage": "place",
+      "passed_cumulative_N": 0,
+      "rejected_N": 0
+    }
+  ],
+  "candidate_frame_event_counts": {
+    "candidate_N": 20,
+    "ticks": 36000,
+    "robot_ticks": 72000,
+    "stage_approach": 72000,
+    "close_rejection_events": 71709,
+    "other_rejection_events": 0
+  },
+  "rejections": [
+    {
+      "reason_category": "close_before_learned_ready",
+      "count": 71709,
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "not measured: own-command protocol adapter"
+    }
+  ],
+  "source_reports": [
+    "2026-10-26-baseline-gcp6-measure-codex.md",
+    "2026-10-26-round2-reeval-recount-codex.md"
+  ],
+  "unmeasured": "GT per-frame cumulative pass/reject counts are not reconstructed here; use raw eval_passed in future derived funnel"
+}

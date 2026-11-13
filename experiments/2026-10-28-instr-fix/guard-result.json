@@ -1,0 +1,41 @@
+{
+  "executed": true,
+  "executed_utc": "2026-10-27T20:22:38.192006+00:00",
+  "exit_code": 1,
+  "overall_ok": false,
+  "command": "python3 ~/.hermes/scripts/recurrence_guard.py --tier all",
+  "invocation_note": "정식 스크립트 경로(/home/ubuntu/.hermes/scripts/recurrence_guard.py)를 HOME=hermes-scratch로 실행했다. 상태 파일이 정식 경로(~/.hermes/guards/recurrence/)에 쓰이지 않도록 격리하기 위함(HOST_RUNTIME_REQUIRED 규칙).",
+  "canonical_state_files_updated": false,
+  "canonical_state_note": "systemctl --user가 \"Failed to connect to bus: No medium found\"로 host user-manager에 연결할 수 없어 [HOST_RUNTIME_REQUIRED]에 따라 정식 status.json·events.jsonl을 갱신하지 않았다. 실행 산출물은 scratch HOME 안에만 있다.",
+  "checks": {
+    "context_sync_healthy": {
+      "ok": true,
+      "detail": "healthy, canonical=c3cd4c5eb550"
+    },
+    "hermes_doctor_clean": {
+      "ok": false,
+      "detail": "hermes executable not found on PATH"
+    },
+    "providers_configured": {
+      "ok": false,
+      "detail": "config.yaml not found at /home/ubuntu/ugrp-han32-instrumentation-20261028-r2/hermes-scratch/.hermes/config.yaml"
+    },
+    "memory_store_present": {
+      "ok": true,
+      "detail": "writable: /home/ubuntu/ugrp-han32-instrumentation-20261028-r2/hermes-scratch/.hermes/memories"
+    },
+    "lsp_root_not_home": {
+      "ok": true,
+      "detail": "no $HOME/.git marker; LSP roots stay project-scoped"
+    },
+    "student_eval_interpreter_has_draccus": {
+      "ok": true,
+      "detail": "refs=16 probed_ok=0 failures=0 not_probed=16 historical=0; no active student-eval resolves to a draccus-less interpreter; not probed: /home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json -> /home/ugrp/e2emin-20261021/venv/bin/python (remote path, not probed on this host) | /home/ubuntu/UGRP/outputs/reports/2026-10-26-baseline-treatment-evidence/package/student-eval-arm-c.json -> /home/ugrp/e2emin-20261021/venv/bin/python (remote path, not probed on this host)"
+    }
+  },
+  "failure_attribution": "전체 FAIL의 원인은 이 호스트에서 폐기된 Hermes 런타임(hermes 실행 파일·config.yaml 부재)이다. 이번 실패류에 대응하는 신규 검사 check_student_eval_interpreter_has_draccus는 PASS.",
+  "stdout_file": "experiments/2026-10-28-instr-fix/recurrence_guard_stdout.txt",
+  "json_file": "experiments/2026-10-28-instr-fix/recurrence_guard.json",
+  "script_sha256": "a58bcee8ec5ee4da710091dc6c9f4d818de821a946752dba0178957193cfbe5d",
+  "registry_sha256": "d840218e8c14c1be0f3fa6776b4ab4779d67361ed6e9061b431322f91f26cc5c"
+}

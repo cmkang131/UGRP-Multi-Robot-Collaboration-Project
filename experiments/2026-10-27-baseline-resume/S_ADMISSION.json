@@ -1,0 +1,210 @@
+{
+  "schema": "ugrp.baseline.S-admission.v1",
+  "utc": "2026-10-26T21:59:25.781339+00:00",
+  "flow": "act_eval",
+  "arm": "arm_s",
+  "status": "ADMITTED_PENDING_FINAL_LOCAL_HASH_GATE",
+  "authority": "user direct 2026-10-27 03:45 KST resume C20 -> registered gate -> S20; no separate permission required",
+  "root": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z",
+  "RUN_META_sha256": "519723dcdaff812373da9628e8d13a23a119b742217fba5856e1d20d073e9507",
+  "runtime_source_sha": "22fc786b5813e9139bb58d790a98e984e33d03e8",
+  "host": {
+    "instance": "ugrp-act-l4-gcp6",
+    "project": "ugrp-sim-f-1016",
+    "account": "kcm5781kcm5781@gmail.com",
+    "zone": "asia-northeast1-c",
+    "id": "2102818194467198298"
+  },
+  "seeds": [
+    8342000,
+    8342001,
+    8342002,
+    8342003,
+    8342004,
+    8342005,
+    8342006,
+    8342007,
+    8342008,
+    8342009,
+    8342010,
+    8342011,
+    8342012,
+    8342013,
+    8342014,
+    8342015,
+    8342016,
+    8342017,
+    8342018,
+    8342019
+  ],
+  "C": {
+    "normal_N": 20,
+    "successes": 0,
+    "integrity_pass": true,
+    "pilot_pass": true,
+    "speed_pass": true,
+    "batch_wall_s": 6873.517023454,
+    "escalation9180_exceeded": false,
+    "audit_sha256": "b082c1cf1219d2cb414f80d38289b74aaf9e5db059d9cb81ac8f635bd6d62201",
+    "funnel_sha256": "6fb70b5cdc9d7421d6aca9497cf4a70a75984fffa2c9e14067cf1ef0b74575e2"
+  },
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/baseline-resume-20261027T1936Z/derived-C-v1/funnel.json",
+  "registered_runner_rejection_table": "/home/ugrp/ugrp-sim/baseline-treatment/prior-funnel.json",
+  "stack_values": {
+    "physics_backend": "mjwarp_batch_v1",
+    "contact_profile": "warp_native_contact_v1",
+    "noslip_iterations": 0,
+    "heavy_crate": false,
+    "nearfield_executor": "ACT",
+    "weld": false,
+    "top_camera_control": false,
+    "ultrasonic_front": "off",
+    "wall_cap": 19080,
+    "speed_gate": "record_only",
+    "speed_metric": "wall_s/(sim_s*nworld)",
+    "gcp_host": "ugrp-act-l4-gcp6",
+    "gcp_project": "ugrp-sim-f-1016",
+    "gcp_account": "kcm5781kcm5781@gmail.com",
+    "gcp_guards": {
+      "idle_minutes": 20,
+      "budget_stop": true,
+      "credentials_on_vm": false
+    },
+    "no_pooling": true,
+    "cap_end_label": "cap_end",
+    "rejection_ledger": [
+      "reason_category",
+      "blocked_object",
+      "min_gap_m"
+    ]
+  },
+  "stack_deviations": [
+    {
+      "id": "scene_profile",
+      "reason": "Frozen canonical-scene.xml and per-world references retained; current scene profile name not independently established by hash-only preflight. No scene substitution permitted.",
+      "approval": {
+        "authority": "user",
+        "evidence": "User direct 2026-10-27 03:45 KST instruction: preserve REGISTERED_FROZEN baseline and step-011000/code, execute C then gated S; zone change is infrastructure only. Frozen sha256 043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb."
+      }
+    },
+    {
+      "id": "end_color_scene",
+      "reason": "Frozen camera/material/model bytes verified; scene label not independently declared. No recolouring or FOV change permitted.",
+      "approval": {
+        "authority": "user",
+        "evidence": "User direct 2026-10-27 03:45 KST instruction: preserve REGISTERED_FROZEN baseline and step-011000/code, execute C then gated S; zone change is infrastructure only. Frozen sha256 043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb."
+      }
+    },
+    {
+      "id": "cargo_version",
+      "reason": "Frozen canonical cargo and cases retained; latest cargo version label not independently established. Replacing cargo would violate registration.",
+      "approval": {
+        "authority": "user",
+        "evidence": "User direct 2026-10-27 03:45 KST instruction: preserve REGISTERED_FROZEN baseline and step-011000/code, execute C then gated S; zone change is infrastructure only. Frozen sha256 043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb."
+      }
+    },
+    {
+      "id": "scenario_version",
+      "reason": "Frozen heldout20 cases retained; latest scenario version label not independently established. No new cases or reselection permitted.",
+      "approval": {
+        "authority": "user",
+        "evidence": "User direct 2026-10-27 03:45 KST instruction: preserve REGISTERED_FROZEN baseline and step-011000/code, execute C then gated S; zone change is infrastructure only. Frozen sha256 043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb."
+      }
+    },
+    {
+      "id": "held_object_hidden_v1",
+      "reason": "Student receives only own RGB and own-issued command history; this latest teacher toggle is not declared for the frozen student path. No teacher rollout is authorized.",
+      "approval": {
+        "authority": "user",
+        "evidence": "User direct 2026-10-27 03:45 KST instruction: preserve REGISTERED_FROZEN baseline and step-011000/code, execute C then gated S; zone change is infrastructure only. Frozen sha256 043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb."
+      }
+    },
+    {
+      "id": "held_world_reads",
+      "reason": "Frozen source and CPU tests audited input path; runtime per-episode truth_inputs/teacher_actions/teacher_steps/gt_inputs must be checked after closed logs, not represented as a premeasured zero.",
+      "approval": {
+        "authority": "user",
+        "evidence": "User direct 2026-10-27 03:45 KST instruction: preserve REGISTERED_FROZEN baseline and step-011000/code, execute C then gated S; zone change is infrastructure only. Frozen sha256 043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb."
+      }
+    },
+    {
+      "id": "heading_mode",
+      "reason": "Frozen ACT commands retained; generic navigation heading toggle not declared. No extra heading correction may be introduced.",
+      "approval": {
+        "authority": "user",
+        "evidence": "User direct 2026-10-27 03:45 KST instruction: preserve REGISTERED_FROZEN baseline and step-011000/code, execute C then gated S; zone change is infrastructure only. Frozen sha256 043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb."
+      }
+    },
+    {
+      "id": "wall_cap",
+      "reason": "User GPU budget 20 total and 5.3 per arm; frozen whole-new-study5.3 GPU-h is enforced as host resource budget from VM allocation. This is not an action-selection or planning wall cap.",
+      "approval": {
+        "authority": "user",
+        "evidence": "User direct 2026-10-27 03:45 KST instruction: preserve REGISTERED_FROZEN baseline and step-011000/code, execute C then gated S; zone change is infrastructure only. Frozen sha256 043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb."
+      }
+    },
+    {
+      "id": "rejection_ledger",
+      "reason": "Frozen original records name the gap field min_gap_m; retain bytes and explicitly report null/unmeasured and blocked_object UNKNOWN. Do not rename original fields to generic minimum_gap_m.",
+      "approval": {
+        "authority": "user",
+        "evidence": "User direct 2026-10-27 03:45 KST instruction: preserve REGISTERED_FROZEN baseline and step-011000/code, execute C then gated S; zone change is infrastructure only. Frozen sha256 043b9583427d845e08c19bb63448f779e4f33913a858b7ad4f8590f7f0e8dafb."
+      }
+    }
+  ],
+  "current_stack_original_check": "outputs/reports/2026-10-27-baseline-resume-evidence/current-stack-check-v1.json",
+  "C_stack_timing": "late omission disclosed; this S declaration is before submission",
+  "storage": [
+    {
+      "host": "x86",
+      "free_bytes": 14245335040,
+      "expected_bytes": 1073741824,
+      "projected_free_bytes": 13171593216,
+      "floor_bytes": 8589934592,
+      "ok": true
+    },
+    {
+      "host": "arm",
+      "free_bytes": 48793149440,
+      "expected_bytes": 3221225472,
+      "projected_free_bytes": 45571923968,
+      "floor_bytes": 26843545600,
+      "ok": true
+    },
+    {
+      "host": "mac",
+      "free_bytes": 62695985152,
+      "expected_bytes": 1073741824,
+      "projected_free_bytes": 61622243328,
+      "floor_bytes": 21474836480,
+      "ok": true
+    }
+  ],
+  "storage_scope": "GCP S raw peak1GiB; Oracle archive/model/control reserve3GiB; Mac model+fetch-lite reserve1GiB; no other admitted remaining writer",
+  "budget": {
+    "prior_gpu_h_approx": 13.1,
+    "vm_allocated_gpu_h_so_far": 2.382282038611111,
+    "S_forecast_gpu_h": 1.912617080857222,
+    "forecast_basis": "max registered1.7 and observed whole owned C session wall/3600, not a guaranteed bound",
+    "postrun_reserve_gpu_h": 0.16,
+    "projected_new_study_gpu_h": 4.454899119468333,
+    "new_study_cap_gpu_h": 5.3,
+    "projected_cumulative_gpu_h_approx": 17.55489911946833,
+    "total_cap_gpu_h": 20,
+    "host_resource_deadline_utc": "2026-10-27T00:54:29.566+00:00",
+    "budget_stop_function_state": "ACTIVE",
+    "latest_event": {
+      "timestamp": "2026-10-26T21:52:23.047585Z",
+      "net_cost": {
+        "budgetAmount": 1000,
+        "costAmount": 0,
+        "currency": "KRW"
+      }
+    },
+    "credit_balance_scope": "not exposed; net-cost event is not live credit residual"
+  },
+  "S_retry_allowed": false,
+  "C_retry_selected": false,
+  "report_scope": "full registered P14/P19 metrics, no diagnostic reduction",
+  "protocol_changed": false
+}

@@ -1,0 +1,38 @@
+{
+  "schema": "ugrp.han32.instr-fix.gpu-ledger.v1",
+  "scope": "task-scoped (HAN-32 계측 재개). 프로젝트 원장에 더하지 않는다.",
+  "accounting_basis": "VM 할당 구간(lastStopTimestamp - lastStartTimestamp). per-world wall/SIM을 GPU-h로 보지 않는다.",
+  "instance": {
+    "name": "ugrp-act-l4-gcp6",
+    "id": "2102818194467198298",
+    "zone": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-f-1016/zones/asia-northeast1-c",
+    "machine_type": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-f-1016/zones/asia-northeast1-c/machineTypes/g2-standard-8",
+    "project": "ugrp-sim-f-1016",
+    "account": "kcm5781kcm5781@gmail.com"
+  },
+  "status": "TERMINATED",
+  "last_start_timestamp": "2026-10-27T12:13:42.227-07:00",
+  "last_stop_timestamp": "2026-10-27T13:13:37.130-07:00",
+  "batch_start_epoch": 1793128815,
+  "batch_start_utc": "2026-10-27T19:20:15Z",
+  "allocation_window_gpu_h": 0.9985841666666666,
+  "batch_window_gpu_h": 0.889481,
+  "caps": {
+    "task_total_gpu_h": 2.4,
+    "already_spent_before_this_run_gpu_h": 0.088,
+    "n4_diagnostic_batch_cap_gpu_h": 1.2,
+    "conditional_followup_n4_cap_gpu_h": 1.2
+  },
+  "within_task_cap": true,
+  "within_batch_cap": true,
+  "project_ledger": {
+    "total_gpu_h": 21.822120556,
+    "cap_gpu_h": 25.3,
+    "this_task_added": false,
+    "note": "지시: 이 작업의 GPU-h는 프로젝트 원장(21.822120556/25.3)에 더하지 않고 별도 관리한다."
+  },
+  "instances_created": 0,
+  "instances_deleted": 0,
+  "pip_installs": 0,
+  "second_batch_N4_executed": false
+}

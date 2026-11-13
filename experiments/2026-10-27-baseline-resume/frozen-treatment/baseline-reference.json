@@ -1,0 +1,226 @@
+{
+  "schema": "ugrp.baseline-treatment.reference.v1",
+  "aliases": {
+    "RUN": "/home/ugrp/ugrp-sim/runs/pairact-r2-reeval-20261026/r2-student-a1",
+    "EVAL": "/home/ugrp/ugrp-sim/runs/pairact-r2-reeval-20261026/student-eval-r2.json",
+    "P5": "/home/ugrp/ugrp-sim/runs/pairact-p5-eval-20261025",
+    "R": "/home/ugrp/ugrp-sim/src/pairact-p5/root",
+    "A": "/home/ugrp/ugrp-sim/src/pairact-p5/adapter",
+    "S": "/home/ugrp/ugrp-sim/src/pairact-p5/student",
+    "T": "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+    "L": "/home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py",
+    "ACTOR": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/main/step-011000/actor"
+  },
+  "files": [
+    {
+      "label": "RUN/summary.json",
+      "path": "/home/ugrp/ugrp-sim/runs/pairact-r2-reeval-20261026/r2-student-a1/summary.json",
+      "expected_sha256": "185b710347c0d025218998f472ac3f4aaa98939213016df7c76fb87d81e24437",
+      "kind": "measured_20"
+    },
+    {
+      "label": "RUN/artifact-sha256.json",
+      "path": "/home/ugrp/ugrp-sim/runs/pairact-r2-reeval-20261026/r2-student-a1/artifact-sha256.json",
+      "expected_sha256": "9bb2321a52949034c65e7cca638cfc365cc6e0b44a7541e200fcdc7496f0215c",
+      "kind": "measured_20"
+    },
+    {
+      "label": "RUN/rejection_table.json",
+      "path": "/home/ugrp/ugrp-sim/runs/pairact-r2-reeval-20261026/r2-student-a1/rejection_table.json",
+      "expected_sha256": "00b0595c4ee71d76a1519c1b9b7faaa8ea508aeee451549f171af62362960310",
+      "kind": "measured_20"
+    },
+    {
+      "label": "EVAL",
+      "path": "/home/ugrp/ugrp-sim/runs/pairact-r2-reeval-20261026/student-eval-r2.json",
+      "expected_sha256": "dcc9cc826c1e882297f8b2b9ca6d70ed4ccad6f5ac2e6846af7af1d1c91bfc8d",
+      "kind": "measured_20"
+    },
+    {
+      "label": "P5/p5-heldout-cases.json",
+      "path": "/home/ugrp/ugrp-sim/runs/pairact-p5-eval-20261025/p5-heldout-cases.json",
+      "expected_sha256": "3e4bf69caa48f4638eb365aec649e8202948de56390dff37cbd540e542e504dc",
+      "kind": "measured_20"
+    },
+    {
+      "label": "P5/refs-export/canonical-scene.xml",
+      "path": "/home/ugrp/ugrp-sim/runs/pairact-p5-eval-20261025/refs-export/canonical-scene.xml",
+      "expected_sha256": "e3dea4e3995c14d5375c84a7e8dd0a9654bf2c5eb6beaa1ca8801bd791897c60",
+      "kind": "measured_20"
+    },
+    {
+      "label": "P5/refs-export/per-world-references.json",
+      "path": "/home/ugrp/ugrp-sim/runs/pairact-p5-eval-20261025/refs-export/per-world-references.json",
+      "expected_sha256": "467ea8bd02f30481cbb5b4533ed8da02a120ad3338b1f625bbc5c5f5e579d117",
+      "kind": "measured_20"
+    },
+    {
+      "label": "/home/ugrp/ugrp-sim/run-r2-reeval.sh",
+      "path": "/home/ugrp/ugrp-sim/run-r2-reeval.sh",
+      "expected_sha256": "73ed1e590963d4f26bdff1fc7326eed713bd22e07b69f41f3ab8827931469aa7",
+      "kind": "measured_20"
+    },
+    {
+      "label": "/home/ugrp/ugrp-sim/runs/pairact-r2-reeval-20261026-driver4.log",
+      "path": "/home/ugrp/ugrp-sim/runs/pairact-r2-reeval-20261026-driver4.log",
+      "expected_sha256": "00a6597587dfbd5d928ab77670b1bc83e68b4ee9d9358c1b34cc3ef7dee21bac",
+      "kind": "measured_20"
+    },
+    {
+      "label": "L",
+      "path": "/home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py",
+      "expected_sha256": "4390801e4c2057ddb80cdec08b6fcfcbd80fe4cfbe0bcc717b3118ca8c237d71",
+      "kind": "measured_20"
+    },
+    {
+      "label": "R/scripts/run_warp_flow_teacher.py",
+      "path": "/home/ugrp/ugrp-sim/src/pairact-p5/root/scripts/run_warp_flow_teacher.py",
+      "expected_sha256": "e7459aedd9af7674c2c6ebe1b3d793ab52d564e7ad9ebd5588138066e8f1555c",
+      "kind": "measured_20"
+    },
+    {
+      "label": "R/scripts/warp_flow_episode.py",
+      "path": "/home/ugrp/ugrp-sim/src/pairact-p5/root/scripts/warp_flow_episode.py",
+      "expected_sha256": "73e283092fdb302b4f8d53ee3e5a9dd29031225607a7b8f427b643d1fefede6f",
+      "kind": "measured_20"
+    },
+    {
+      "label": "A/scripts/run_beampair1.py",
+      "path": "/home/ugrp/ugrp-sim/src/pairact-p5/adapter/scripts/run_beampair1.py",
+      "expected_sha256": "b190ca61a670df19d1f297e4f68aabedbaf3f9e1fc679cde17bd30c804edce2a",
+      "kind": "measured_20"
+    },
+    {
+      "label": "T/scripts/run_grasp_act_teacher.py",
+      "path": "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247/scripts/run_grasp_act_teacher.py",
+      "expected_sha256": "ac812e25d0d3f43c647ddb6e19ce3bb7ba5d46aa363ec6e192f0e77f8ba4e744",
+      "kind": "measured_20"
+    },
+    {
+      "label": "T/harness/pairact_student_eval.py",
+      "path": "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247/harness/pairact_student_eval.py",
+      "expected_sha256": "03f6a2311c0d4f4a97495fdce5efe7d345a35fa2815c9c5ab3660223818efbec",
+      "kind": "measured_20"
+    },
+    {
+      "label": "T/harness/grasp_act_start_sync.py",
+      "path": "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247/harness/grasp_act_start_sync.py",
+      "expected_sha256": "6333ab411b433a19f8d2cefa22951d3afd0eec5052c475e6782728ad37e6091c",
+      "kind": "measured_20"
+    },
+    {
+      "label": "T/harness/pair_carry_sync.py",
+      "path": "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247/harness/pair_carry_sync.py",
+      "expected_sha256": "93a87245359a131551c128e4f6bf197dbf4141301c2564d3afaea924e78351e0",
+      "kind": "measured_20"
+    },
+    {
+      "label": "S/harness/beamact_pair_student.py",
+      "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student/harness/beamact_pair_student.py",
+      "expected_sha256": "9650e08573adf61e622a2e832a7ca12f476d4e5988f9bbc299bb125a766ee1c6",
+      "kind": "measured_20"
+    },
+    {
+      "label": "S/harness/pairact_r1_student.py",
+      "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student/harness/pairact_r1_student.py",
+      "expected_sha256": "3e12d2f5408f82821187401e8a6d4298cb70fb27b48c229d689a54efdef77e81",
+      "kind": "measured_20"
+    },
+    {
+      "label": "S/scripts/pairact_r1_student_worker.py",
+      "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student/scripts/pairact_r1_student_worker.py",
+      "expected_sha256": "7ac86ded4acd1d9055ce6950a69034882bee08906d4e1cd9f47e9839009c8031",
+      "kind": "measured_20"
+    },
+    {
+      "label": "ACTOR/model.safetensors",
+      "path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/main/step-011000/actor/model.safetensors",
+      "expected_sha256": "8263ad3f135048fea46d5cb85fee1d70910bdc399babbd1f2f20d92c2fbea271",
+      "kind": "actor"
+    },
+    {
+      "label": "ACTOR/config.json",
+      "path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/main/step-011000/actor/config.json",
+      "expected_sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f",
+      "kind": "actor"
+    },
+    {
+      "label": "ACTOR/adapter.json",
+      "path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/main/step-011000/actor/adapter.json",
+      "expected_sha256": "84811d26bb0a8bdcc9431bb3c8d5947c70dc8ccd0ba8cf6471566f15f0f1e018",
+      "kind": "actor"
+    },
+    {
+      "label": "ACTOR/SHA256.json",
+      "path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/main/step-011000/actor/SHA256.json",
+      "expected_sha256": "b5c3156fd03477e0663c59d09dfa71db4fe321e4782248cddbb256d2b7169a08",
+      "kind": "actor"
+    },
+    {
+      "label": "S/harness/pairact_r1.py",
+      "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student/harness/pairact_r1.py",
+      "expected_sha256": "8a9869248740bf5ad2da7194cdd9a582347ac09e88783cd6ea127ef3f208a210",
+      "kind": "loader_bound"
+    },
+    {
+      "label": "S/harness/beamact3.py",
+      "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student/harness/beamact3.py",
+      "expected_sha256": "0bfa3986301e2997d8305106a78101c8ad7a6ed446b633dd1a1ca246b2b8b1d9",
+      "kind": "loader_bound"
+    },
+    {
+      "label": "S/harness/grasp_act_contract.py",
+      "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student/harness/grasp_act_contract.py",
+      "expected_sha256": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056",
+      "kind": "loader_bound"
+    },
+    {
+      "label": "dataset manifest",
+      "path": "/home/ugrp/clockfix-build-20261024/dataset-v4/manifest.json",
+      "expected_sha256": "7e544aff426b9ef10a8195c56831d0171224b1feb8ea5728e94956197d990d20",
+      "kind": "provenance"
+    },
+    {
+      "label": "stage sidecar",
+      "path": "/home/ugrp/clockfix-build-20261024/dataset-v4-stage/stage-targets.json",
+      "expected_sha256": "65cbd8fbc919730352bb32594a27a6997fe82e65cd1c6c1e719d78e707ec5787",
+      "kind": "provenance"
+    },
+    {
+      "label": "normalization",
+      "path": "/home/ugrp/clockfix-build-20261024/dataset-v4/normalization.json",
+      "expected_sha256": "4f465a341fb5436b14f4429372e39da862535a5e8231a5cac0fbe67387305639",
+      "kind": "provenance"
+    },
+    {
+      "label": "train config",
+      "path": "/home/ugrp/ugrp-sim/src/pairact-p5/student/experiments/2026-10-21-pairact-r1/PAIRACT_R1_TRAIN_CONFIG_DRAFT.json",
+      "expected_sha256": "37835e1ff9bd7b9686b4d7258b7597e6cd8e40b84a121c4f4156704c04b49326",
+      "kind": "provenance"
+    },
+    {
+      "label": "checkpoints",
+      "path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/offline-gate/checkpoints.jsonl",
+      "expected_sha256": "f59aa8bc8ba0ff2aba53918db308b49fd82a4fd365978e7dec94b18592fe06ac",
+      "kind": "provenance"
+    },
+    {
+      "label": "selection",
+      "path": "/home/ugrp/clockfix-build-20261024/train-r2-20261025/offline-gate/selection.json",
+      "expected_sha256": "df36fa86587fd943ac4add245f658bf0454dd99585cd911743fa837563b68208",
+      "kind": "provenance"
+    }
+  ],
+  "source_heads": {
+    "R": "e5620e839907dc69d3b014becae2cbda4bbe27da",
+    "A": "afd7a6e17c6501d308b6a1d9015b15f5d5da9ed4",
+    "T": "75929e7719ad98a089e3dda5251f4249d8bae511",
+    "S": "3c9337d5f5c9deefd49139b26ae7117022e3d5cc"
+  },
+  "selected_step": 11000,
+  "reports": {
+    "2026-10-26-baseline-gcp6-measure-codex.md": "77c184a3c23359bdfefda64c77ad5c75de85f80433adc40f0ac5d3bd371de6bb",
+    "2026-10-26-baseline-treatment-review-minimax.md": "ab9710ade6a43144dd1eb5343b0bb18c0ddd6dd42e53533f6803f5bbf7aeacfc",
+    "CHECKPOINT_FREEZE_R2.json": "3957a988a373e173b5ce1435ebe065fba4383823189235c2f951b8a50b8688b5"
+  }
+}

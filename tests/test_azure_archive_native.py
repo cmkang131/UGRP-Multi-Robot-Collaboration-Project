@@ -57,13 +57,26 @@ def test_native_receiver_publishes_full_hashes_and_preserves_legacy_partial(tmp_
     packed = subprocess.check_output(['zstd', '-q'], input=stream.read())
     header = dict(schema=native.SCHEMA, run='one', inventory=hashes)
     module = Path(native.__file__)
-    process = subprocess.Popen([os.sys.executable, str(module), 'receive', '--archive-root', str(root)],
+    # Model enough disk for the existing 25 GiB floor, 64 MiB receiver scratch
+    # reserve and payload. Disk refusal is tested separately below; this child
+    # verifies the real receiver protocol and byte preservation on any runner.
+    available = native.RESERVE + 64 * 2**20 + sum(item['bytes'] for item in hashes.values())
+    bootstrap = ('import runpy,sys,shutil\nfrom types import SimpleNamespace\n'
+                 'available=int(sys.argv[1]);sys.argv=sys.argv[2:]\n'
+                 'shutil.disk_usage=lambda _:SimpleNamespace(free=available)\n'
+                 'runpy.run_path(sys.argv[0],run_name="__main__")\n')
+    process = subprocess.Popen([os.sys.executable, '-c', bootstrap, str(available),
+                                str(module), 'receive', '--archive-root', str(root)],
                                stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                env={**os.environ, 'SSH_ORIGINAL_COMMAND': native.COMMAND})
     process.stdin.write((json.dumps(header) + '\n').encode()); process.stdin.flush()
-    ready = json.loads(process.stdout.readline()); assert ready['ready']
+    ready_line = process.stdout.readline()
+    assert ready_line, process.stderr.read().decode()
+    ready = json.loads(ready_line); assert ready['ready']
     process.stdin.write(packed); process.stdin.close()
-    proof = json.loads(process.stdout.readline())
+    proof_line = process.stdout.readline()
+    assert proof_line, process.stderr.read().decode()
+    proof = json.loads(proof_line)
     assert process.wait(timeout=10) == 0, process.stderr.read()
     assert proof['verified'] and proof['hash_matches'] == len(hashes)
     assert native.inventory(root / 'native-one') == hashes

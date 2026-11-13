@@ -1,0 +1,1995 @@
+{
+  "schema": "ugrp.current_stack.check.v1",
+  "ok": true,
+  "current_compliant": true,
+  "checker_sha256": "bdef5ad98b8e5ee8a21126f75430a58193d5f44f11f23fa60fd9ca487511eb3b",
+  "scope": "declared manifest fields; not independent runtime/physics verification",
+  "inputs": [
+    {
+      "path": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json",
+      "sha256": "7745ae267fef3b9bc5b6c329102b4db1f567009746d7bae50b7531909dd89f16"
+    }
+  ],
+  "rows": [
+    {
+      "record": "$.runs[0]",
+      "flow": "beam_pair",
+      "id": "physics_backend",
+      "expected": "mjwarp_batch_v1",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.physics_backend",
+          "value": "mjwarp_batch_v1"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[0]",
+      "flow": "beam_pair",
+      "id": "contact_profile",
+      "expected": "warp_native_contact_v1",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.contact_profile",
+          "value": "warp_native_contact_v1"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[0]",
+      "flow": "beam_pair",
+      "id": "noslip_iterations",
+      "expected": 0,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.noslip_iterations",
+          "value": 0
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[0]",
+      "flow": "beam_pair",
+      "id": "scene_profile",
+      "expected": "walls_floor_contrast_v5_indigo110_s80",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.scene_profile",
+          "value": "walls_floor_contrast_v5_indigo110_s80"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[0]",
+      "flow": "beam_pair",
+      "id": "end_color_scene",
+      "expected": "grasp_act_teal_blue_v1",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.end_color_scene",
+          "value": "grasp_act_teal_blue_v1"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[0]",
+      "flow": "beam_pair",
+      "id": "cargo_version",
+      "expected": "v6",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.cargo_version",
+          "value": "v6"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[0]",
+      "flow": "beam_pair",
+      "id": "scenario_version",
+      "expected": "v7",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.scenario_version",
+          "value": "v7"
+        },
+        {
+          "field": "parent[1].scenario_id",
+          "value": "s7_pair_with_solo_v7"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[0]",
+      "flow": "beam_pair",
+      "id": "heavy_crate",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.heavy_crate",
+          "value": false
+        },
+        {
+          "field": "parent[1].object_kind contains heavy_crate",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[0]",
+      "flow": "beam_pair",
+      "id": "setdown_lookaround_v1",
+      "expected": true,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.setdown_lookaround_v1",
+          "value": true
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[0]",
+      "flow": "beam_pair",
+      "id": "held_object_hidden_v1",
+      "expected": true,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.held_object_hidden_v1",
+          "value": true
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[0]",
+      "flow": "beam_pair",
+      "id": "held_world_reads",
+      "expected": 0,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.held_world_reads",
+          "value": 0
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[0]",
+      "flow": "beam_pair",
+      "id": "teacher_visibility",
+      "expected": "visible_only",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.teacher_visibility",
+          "value": "visible_only"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[0]",
+      "flow": "beam_pair",
+      "id": "invisible_measurements",
+      "expected": 0,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.invisible_measurements",
+          "value": 0
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[0]",
+      "flow": "beam_pair",
+      "id": "weld",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.weld",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[0]",
+      "flow": "beam_pair",
+      "id": "top_camera_control",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.top_camera_control",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[0]",
+      "flow": "beam_pair",
+      "id": "heading_mode",
+      "expected": "on",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.heading_mode",
+          "value": "on"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[0]",
+      "flow": "beam_pair",
+      "id": "ultrasonic_front",
+      "expected": "off",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.ultrasonic_front",
+          "value": "off"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[0]",
+      "flow": "beam_pair",
+      "id": "wall_cap",
+      "expected": null,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.wall_cap",
+          "value": null
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[0]",
+      "flow": "beam_pair",
+      "id": "speed_gate",
+      "expected": "record_only",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.speed_gate",
+          "value": "record_only"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[0]",
+      "flow": "beam_pair",
+      "id": "speed_metric",
+      "expected": "wall_s/(sim_s*nworld)",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.speed_metric",
+          "value": "wall_s/(sim_s*nworld)"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[0]",
+      "flow": "beam_pair",
+      "id": "gcp_host",
+      "expected": [
+        "ugrp-act-l4-gcp2",
+        "ugrp-act-l4-gcp3",
+        "ugrp-act-l4-gcp4",
+        "ugrp-act-l4-gcp5",
+        "ugrp-act-l4-gcp6"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_host",
+          "value": "ugrp-act-l4-gcp6"
+        },
+        {
+          "field": "parent[0].host.instance",
+          "value": "ugrp-act-l4-gcp6"
+        },
+        {
+          "field": "host.project_id",
+          "value": "ugrp-sim-f-1016"
+        },
+        {
+          "field": "stack_values.gcp_project",
+          "value": "ugrp-sim-f-1016"
+        },
+        {
+          "field": "host.account",
+          "value": "kcm5781kcm5781@gmail.com"
+        },
+        {
+          "field": "stack_values.gcp_account",
+          "value": "kcm5781kcm5781@gmail.com"
+        },
+        {
+          "field": "host.project_id",
+          "value": "ugrp-sim-f-1016"
+        },
+        {
+          "field": "stack_values.gcp_project",
+          "value": "ugrp-sim-f-1016"
+        },
+        {
+          "field": "host.account",
+          "value": "kcm5781kcm5781@gmail.com"
+        },
+        {
+          "field": "stack_values.gcp_account",
+          "value": "kcm5781kcm5781@gmail.com"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[0]",
+      "flow": "beam_pair",
+      "id": "gcp_guards",
+      "expected": {
+        "idle_minutes": 20,
+        "budget_stop": true,
+        "credentials_on_vm": false
+      },
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_guards",
+          "value": {
+            "idle_minutes": 20,
+            "budget_stop": true,
+            "credentials_on_vm": false
+          }
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[0]",
+      "flow": "beam_pair",
+      "id": "no_pooling",
+      "expected": true,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.no_pooling",
+          "value": true
+        },
+        {
+          "field": "parent[0].no_pooling",
+          "value": true
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[0]",
+      "flow": "beam_pair",
+      "id": "planning_cap_basis",
+      "expected": "compute_or_sim",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.planning_cap_basis",
+          "value": "compute_or_sim"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[0]",
+      "flow": "beam_pair",
+      "id": "rejection_ledger",
+      "expected": [
+        "reason_category",
+        "blocked_object",
+        "minimum_gap_m"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.rejection_ledger",
+          "value": [
+            "reason_category",
+            "blocked_object",
+            "minimum_gap_m"
+          ]
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[0]",
+      "flow": "beam_pair",
+      "id": "cap_end_label",
+      "expected": "cap_end",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.cap_end_label",
+          "value": "cap_end"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[0]",
+      "flow": "beam_pair",
+      "id": "gcp_project",
+      "expected": [
+        "ugrp-sim-b-1014",
+        "ugrp-sim-c-1016",
+        "ugrp-sim-d-1016",
+        "ugrp-sim-e-1016",
+        "ugrp-sim-f-1016"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_project",
+          "value": "ugrp-sim-f-1016"
+        },
+        {
+          "field": "parent[0].host.project_id",
+          "value": "ugrp-sim-f-1016"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[0]",
+      "flow": "beam_pair",
+      "id": "gcp_account",
+      "expected": [
+        "changmin5781@gmail.com",
+        "kcm5781kcm5781@gmail.com"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_account",
+          "value": "kcm5781kcm5781@gmail.com"
+        },
+        {
+          "field": "parent[0].host.account",
+          "value": "kcm5781kcm5781@gmail.com"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[0]",
+      "flow": "beam_pair",
+      "id": "static_map_use",
+      "expected": "none",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.static_map_use",
+          "value": "none"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[1]",
+      "flow": "beam_pair",
+      "id": "physics_backend",
+      "expected": "mjwarp_batch_v1",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.physics_backend",
+          "value": "mjwarp_batch_v1"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[1]",
+      "flow": "beam_pair",
+      "id": "contact_profile",
+      "expected": "warp_native_contact_v1",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.contact_profile",
+          "value": "warp_native_contact_v1"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[1]",
+      "flow": "beam_pair",
+      "id": "noslip_iterations",
+      "expected": 0,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.noslip_iterations",
+          "value": 0
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[1]",
+      "flow": "beam_pair",
+      "id": "scene_profile",
+      "expected": "walls_floor_contrast_v5_indigo110_s80",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.scene_profile",
+          "value": "walls_floor_contrast_v5_indigo110_s80"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[1]",
+      "flow": "beam_pair",
+      "id": "end_color_scene",
+      "expected": "grasp_act_teal_blue_v1",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.end_color_scene",
+          "value": "grasp_act_teal_blue_v1"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[1]",
+      "flow": "beam_pair",
+      "id": "cargo_version",
+      "expected": "v6",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.cargo_version",
+          "value": "v6"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[1]",
+      "flow": "beam_pair",
+      "id": "scenario_version",
+      "expected": "v7",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.scenario_version",
+          "value": "v7"
+        },
+        {
+          "field": "parent[1].scenario_id",
+          "value": "s7_pair_with_solo_v7"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[1]",
+      "flow": "beam_pair",
+      "id": "heavy_crate",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.heavy_crate",
+          "value": false
+        },
+        {
+          "field": "parent[1].object_kind contains heavy_crate",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[1]",
+      "flow": "beam_pair",
+      "id": "setdown_lookaround_v1",
+      "expected": true,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.setdown_lookaround_v1",
+          "value": true
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[1]",
+      "flow": "beam_pair",
+      "id": "held_object_hidden_v1",
+      "expected": true,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.held_object_hidden_v1",
+          "value": true
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[1]",
+      "flow": "beam_pair",
+      "id": "held_world_reads",
+      "expected": 0,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.held_world_reads",
+          "value": 0
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[1]",
+      "flow": "beam_pair",
+      "id": "teacher_visibility",
+      "expected": "visible_only",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.teacher_visibility",
+          "value": "visible_only"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[1]",
+      "flow": "beam_pair",
+      "id": "invisible_measurements",
+      "expected": 0,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.invisible_measurements",
+          "value": 0
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[1]",
+      "flow": "beam_pair",
+      "id": "weld",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.weld",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[1]",
+      "flow": "beam_pair",
+      "id": "top_camera_control",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.top_camera_control",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[1]",
+      "flow": "beam_pair",
+      "id": "heading_mode",
+      "expected": "on",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.heading_mode",
+          "value": "on"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[1]",
+      "flow": "beam_pair",
+      "id": "ultrasonic_front",
+      "expected": "off",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.ultrasonic_front",
+          "value": "off"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[1]",
+      "flow": "beam_pair",
+      "id": "wall_cap",
+      "expected": null,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.wall_cap",
+          "value": null
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[1]",
+      "flow": "beam_pair",
+      "id": "speed_gate",
+      "expected": "record_only",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.speed_gate",
+          "value": "record_only"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[1]",
+      "flow": "beam_pair",
+      "id": "speed_metric",
+      "expected": "wall_s/(sim_s*nworld)",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.speed_metric",
+          "value": "wall_s/(sim_s*nworld)"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[1]",
+      "flow": "beam_pair",
+      "id": "gcp_host",
+      "expected": [
+        "ugrp-act-l4-gcp2",
+        "ugrp-act-l4-gcp3",
+        "ugrp-act-l4-gcp4",
+        "ugrp-act-l4-gcp5",
+        "ugrp-act-l4-gcp6"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_host",
+          "value": "ugrp-act-l4-gcp6"
+        },
+        {
+          "field": "parent[0].host.instance",
+          "value": "ugrp-act-l4-gcp6"
+        },
+        {
+          "field": "host.project_id",
+          "value": "ugrp-sim-f-1016"
+        },
+        {
+          "field": "stack_values.gcp_project",
+          "value": "ugrp-sim-f-1016"
+        },
+        {
+          "field": "host.account",
+          "value": "kcm5781kcm5781@gmail.com"
+        },
+        {
+          "field": "stack_values.gcp_account",
+          "value": "kcm5781kcm5781@gmail.com"
+        },
+        {
+          "field": "host.project_id",
+          "value": "ugrp-sim-f-1016"
+        },
+        {
+          "field": "stack_values.gcp_project",
+          "value": "ugrp-sim-f-1016"
+        },
+        {
+          "field": "host.account",
+          "value": "kcm5781kcm5781@gmail.com"
+        },
+        {
+          "field": "stack_values.gcp_account",
+          "value": "kcm5781kcm5781@gmail.com"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[1]",
+      "flow": "beam_pair",
+      "id": "gcp_guards",
+      "expected": {
+        "idle_minutes": 20,
+        "budget_stop": true,
+        "credentials_on_vm": false
+      },
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_guards",
+          "value": {
+            "idle_minutes": 20,
+            "budget_stop": true,
+            "credentials_on_vm": false
+          }
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[1]",
+      "flow": "beam_pair",
+      "id": "no_pooling",
+      "expected": true,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.no_pooling",
+          "value": true
+        },
+        {
+          "field": "parent[0].no_pooling",
+          "value": true
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[1]",
+      "flow": "beam_pair",
+      "id": "planning_cap_basis",
+      "expected": "compute_or_sim",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.planning_cap_basis",
+          "value": "compute_or_sim"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[1]",
+      "flow": "beam_pair",
+      "id": "rejection_ledger",
+      "expected": [
+        "reason_category",
+        "blocked_object",
+        "minimum_gap_m"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.rejection_ledger",
+          "value": [
+            "reason_category",
+            "blocked_object",
+            "minimum_gap_m"
+          ]
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[1]",
+      "flow": "beam_pair",
+      "id": "cap_end_label",
+      "expected": "cap_end",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.cap_end_label",
+          "value": "cap_end"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[1]",
+      "flow": "beam_pair",
+      "id": "gcp_project",
+      "expected": [
+        "ugrp-sim-b-1014",
+        "ugrp-sim-c-1016",
+        "ugrp-sim-d-1016",
+        "ugrp-sim-e-1016",
+        "ugrp-sim-f-1016"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_project",
+          "value": "ugrp-sim-f-1016"
+        },
+        {
+          "field": "parent[0].host.project_id",
+          "value": "ugrp-sim-f-1016"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[1]",
+      "flow": "beam_pair",
+      "id": "gcp_account",
+      "expected": [
+        "changmin5781@gmail.com",
+        "kcm5781kcm5781@gmail.com"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_account",
+          "value": "kcm5781kcm5781@gmail.com"
+        },
+        {
+          "field": "parent[0].host.account",
+          "value": "kcm5781kcm5781@gmail.com"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[1]",
+      "flow": "beam_pair",
+      "id": "static_map_use",
+      "expected": "none",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.static_map_use",
+          "value": "none"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[2]",
+      "flow": "beam_pair",
+      "id": "physics_backend",
+      "expected": "mjwarp_batch_v1",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.physics_backend",
+          "value": "mjwarp_batch_v1"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[2]",
+      "flow": "beam_pair",
+      "id": "contact_profile",
+      "expected": "warp_native_contact_v1",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.contact_profile",
+          "value": "warp_native_contact_v1"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[2]",
+      "flow": "beam_pair",
+      "id": "noslip_iterations",
+      "expected": 0,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.noslip_iterations",
+          "value": 0
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[2]",
+      "flow": "beam_pair",
+      "id": "scene_profile",
+      "expected": "walls_floor_contrast_v5_indigo110_s80",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.scene_profile",
+          "value": "walls_floor_contrast_v5_indigo110_s80"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[2]",
+      "flow": "beam_pair",
+      "id": "end_color_scene",
+      "expected": "grasp_act_teal_blue_v1",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.end_color_scene",
+          "value": "grasp_act_teal_blue_v1"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[2]",
+      "flow": "beam_pair",
+      "id": "cargo_version",
+      "expected": "v6",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.cargo_version",
+          "value": "v6"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[2]",
+      "flow": "beam_pair",
+      "id": "scenario_version",
+      "expected": "v7",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.scenario_version",
+          "value": "v7"
+        },
+        {
+          "field": "parent[1].scenario_id",
+          "value": "s7_pair_with_solo_v7"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[2]",
+      "flow": "beam_pair",
+      "id": "heavy_crate",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.heavy_crate",
+          "value": false
+        },
+        {
+          "field": "parent[1].object_kind contains heavy_crate",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[2]",
+      "flow": "beam_pair",
+      "id": "setdown_lookaround_v1",
+      "expected": true,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.setdown_lookaround_v1",
+          "value": true
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[2]",
+      "flow": "beam_pair",
+      "id": "held_object_hidden_v1",
+      "expected": true,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.held_object_hidden_v1",
+          "value": true
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[2]",
+      "flow": "beam_pair",
+      "id": "held_world_reads",
+      "expected": 0,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.held_world_reads",
+          "value": 0
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[2]",
+      "flow": "beam_pair",
+      "id": "teacher_visibility",
+      "expected": "visible_only",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.teacher_visibility",
+          "value": "visible_only"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[2]",
+      "flow": "beam_pair",
+      "id": "invisible_measurements",
+      "expected": 0,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.invisible_measurements",
+          "value": 0
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[2]",
+      "flow": "beam_pair",
+      "id": "weld",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.weld",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[2]",
+      "flow": "beam_pair",
+      "id": "top_camera_control",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.top_camera_control",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[2]",
+      "flow": "beam_pair",
+      "id": "heading_mode",
+      "expected": "on",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.heading_mode",
+          "value": "on"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[2]",
+      "flow": "beam_pair",
+      "id": "ultrasonic_front",
+      "expected": "off",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.ultrasonic_front",
+          "value": "off"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[2]",
+      "flow": "beam_pair",
+      "id": "wall_cap",
+      "expected": null,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.wall_cap",
+          "value": null
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[2]",
+      "flow": "beam_pair",
+      "id": "speed_gate",
+      "expected": "record_only",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.speed_gate",
+          "value": "record_only"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[2]",
+      "flow": "beam_pair",
+      "id": "speed_metric",
+      "expected": "wall_s/(sim_s*nworld)",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.speed_metric",
+          "value": "wall_s/(sim_s*nworld)"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[2]",
+      "flow": "beam_pair",
+      "id": "gcp_host",
+      "expected": [
+        "ugrp-act-l4-gcp2",
+        "ugrp-act-l4-gcp3",
+        "ugrp-act-l4-gcp4",
+        "ugrp-act-l4-gcp5",
+        "ugrp-act-l4-gcp6"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_host",
+          "value": "ugrp-act-l4-gcp6"
+        },
+        {
+          "field": "parent[0].host.instance",
+          "value": "ugrp-act-l4-gcp6"
+        },
+        {
+          "field": "host.project_id",
+          "value": "ugrp-sim-f-1016"
+        },
+        {
+          "field": "stack_values.gcp_project",
+          "value": "ugrp-sim-f-1016"
+        },
+        {
+          "field": "host.account",
+          "value": "kcm5781kcm5781@gmail.com"
+        },
+        {
+          "field": "stack_values.gcp_account",
+          "value": "kcm5781kcm5781@gmail.com"
+        },
+        {
+          "field": "host.project_id",
+          "value": "ugrp-sim-f-1016"
+        },
+        {
+          "field": "stack_values.gcp_project",
+          "value": "ugrp-sim-f-1016"
+        },
+        {
+          "field": "host.account",
+          "value": "kcm5781kcm5781@gmail.com"
+        },
+        {
+          "field": "stack_values.gcp_account",
+          "value": "kcm5781kcm5781@gmail.com"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[2]",
+      "flow": "beam_pair",
+      "id": "gcp_guards",
+      "expected": {
+        "idle_minutes": 20,
+        "budget_stop": true,
+        "credentials_on_vm": false
+      },
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_guards",
+          "value": {
+            "idle_minutes": 20,
+            "budget_stop": true,
+            "credentials_on_vm": false
+          }
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[2]",
+      "flow": "beam_pair",
+      "id": "no_pooling",
+      "expected": true,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.no_pooling",
+          "value": true
+        },
+        {
+          "field": "parent[0].no_pooling",
+          "value": true
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[2]",
+      "flow": "beam_pair",
+      "id": "planning_cap_basis",
+      "expected": "compute_or_sim",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.planning_cap_basis",
+          "value": "compute_or_sim"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[2]",
+      "flow": "beam_pair",
+      "id": "rejection_ledger",
+      "expected": [
+        "reason_category",
+        "blocked_object",
+        "minimum_gap_m"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.rejection_ledger",
+          "value": [
+            "reason_category",
+            "blocked_object",
+            "minimum_gap_m"
+          ]
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[2]",
+      "flow": "beam_pair",
+      "id": "cap_end_label",
+      "expected": "cap_end",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.cap_end_label",
+          "value": "cap_end"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[2]",
+      "flow": "beam_pair",
+      "id": "gcp_project",
+      "expected": [
+        "ugrp-sim-b-1014",
+        "ugrp-sim-c-1016",
+        "ugrp-sim-d-1016",
+        "ugrp-sim-e-1016",
+        "ugrp-sim-f-1016"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_project",
+          "value": "ugrp-sim-f-1016"
+        },
+        {
+          "field": "parent[0].host.project_id",
+          "value": "ugrp-sim-f-1016"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[2]",
+      "flow": "beam_pair",
+      "id": "gcp_account",
+      "expected": [
+        "changmin5781@gmail.com",
+        "kcm5781kcm5781@gmail.com"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_account",
+          "value": "kcm5781kcm5781@gmail.com"
+        },
+        {
+          "field": "parent[0].host.account",
+          "value": "kcm5781kcm5781@gmail.com"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[2]",
+      "flow": "beam_pair",
+      "id": "static_map_use",
+      "expected": "none",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.static_map_use",
+          "value": "none"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[3]",
+      "flow": "beam_pair",
+      "id": "physics_backend",
+      "expected": "mjwarp_batch_v1",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.physics_backend",
+          "value": "mjwarp_batch_v1"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[3]",
+      "flow": "beam_pair",
+      "id": "contact_profile",
+      "expected": "warp_native_contact_v1",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.contact_profile",
+          "value": "warp_native_contact_v1"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[3]",
+      "flow": "beam_pair",
+      "id": "noslip_iterations",
+      "expected": 0,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.noslip_iterations",
+          "value": 0
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[3]",
+      "flow": "beam_pair",
+      "id": "scene_profile",
+      "expected": "walls_floor_contrast_v5_indigo110_s80",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.scene_profile",
+          "value": "walls_floor_contrast_v5_indigo110_s80"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[3]",
+      "flow": "beam_pair",
+      "id": "end_color_scene",
+      "expected": "grasp_act_teal_blue_v1",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.end_color_scene",
+          "value": "grasp_act_teal_blue_v1"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[3]",
+      "flow": "beam_pair",
+      "id": "cargo_version",
+      "expected": "v6",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.cargo_version",
+          "value": "v6"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[3]",
+      "flow": "beam_pair",
+      "id": "scenario_version",
+      "expected": "v7",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.scenario_version",
+          "value": "v7"
+        },
+        {
+          "field": "parent[1].scenario_id",
+          "value": "s7_pair_with_solo_v7"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[3]",
+      "flow": "beam_pair",
+      "id": "heavy_crate",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.heavy_crate",
+          "value": false
+        },
+        {
+          "field": "parent[1].object_kind contains heavy_crate",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[3]",
+      "flow": "beam_pair",
+      "id": "setdown_lookaround_v1",
+      "expected": true,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.setdown_lookaround_v1",
+          "value": true
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[3]",
+      "flow": "beam_pair",
+      "id": "held_object_hidden_v1",
+      "expected": true,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.held_object_hidden_v1",
+          "value": true
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[3]",
+      "flow": "beam_pair",
+      "id": "held_world_reads",
+      "expected": 0,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.held_world_reads",
+          "value": 0
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[3]",
+      "flow": "beam_pair",
+      "id": "teacher_visibility",
+      "expected": "visible_only",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.teacher_visibility",
+          "value": "visible_only"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[3]",
+      "flow": "beam_pair",
+      "id": "invisible_measurements",
+      "expected": 0,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.invisible_measurements",
+          "value": 0
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[3]",
+      "flow": "beam_pair",
+      "id": "weld",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.weld",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[3]",
+      "flow": "beam_pair",
+      "id": "top_camera_control",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.top_camera_control",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[3]",
+      "flow": "beam_pair",
+      "id": "heading_mode",
+      "expected": "on",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.heading_mode",
+          "value": "on"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[3]",
+      "flow": "beam_pair",
+      "id": "ultrasonic_front",
+      "expected": "off",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.ultrasonic_front",
+          "value": "off"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[3]",
+      "flow": "beam_pair",
+      "id": "wall_cap",
+      "expected": null,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.wall_cap",
+          "value": null
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[3]",
+      "flow": "beam_pair",
+      "id": "speed_gate",
+      "expected": "record_only",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.speed_gate",
+          "value": "record_only"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[3]",
+      "flow": "beam_pair",
+      "id": "speed_metric",
+      "expected": "wall_s/(sim_s*nworld)",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.speed_metric",
+          "value": "wall_s/(sim_s*nworld)"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[3]",
+      "flow": "beam_pair",
+      "id": "gcp_host",
+      "expected": [
+        "ugrp-act-l4-gcp2",
+        "ugrp-act-l4-gcp3",
+        "ugrp-act-l4-gcp4",
+        "ugrp-act-l4-gcp5",
+        "ugrp-act-l4-gcp6"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_host",
+          "value": "ugrp-act-l4-gcp6"
+        },
+        {
+          "field": "parent[0].host.instance",
+          "value": "ugrp-act-l4-gcp6"
+        },
+        {
+          "field": "host.project_id",
+          "value": "ugrp-sim-f-1016"
+        },
+        {
+          "field": "stack_values.gcp_project",
+          "value": "ugrp-sim-f-1016"
+        },
+        {
+          "field": "host.account",
+          "value": "kcm5781kcm5781@gmail.com"
+        },
+        {
+          "field": "stack_values.gcp_account",
+          "value": "kcm5781kcm5781@gmail.com"
+        },
+        {
+          "field": "host.project_id",
+          "value": "ugrp-sim-f-1016"
+        },
+        {
+          "field": "stack_values.gcp_project",
+          "value": "ugrp-sim-f-1016"
+        },
+        {
+          "field": "host.account",
+          "value": "kcm5781kcm5781@gmail.com"
+        },
+        {
+          "field": "stack_values.gcp_account",
+          "value": "kcm5781kcm5781@gmail.com"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[3]",
+      "flow": "beam_pair",
+      "id": "gcp_guards",
+      "expected": {
+        "idle_minutes": 20,
+        "budget_stop": true,
+        "credentials_on_vm": false
+      },
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_guards",
+          "value": {
+            "idle_minutes": 20,
+            "budget_stop": true,
+            "credentials_on_vm": false
+          }
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[3]",
+      "flow": "beam_pair",
+      "id": "no_pooling",
+      "expected": true,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.no_pooling",
+          "value": true
+        },
+        {
+          "field": "parent[0].no_pooling",
+          "value": true
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[3]",
+      "flow": "beam_pair",
+      "id": "planning_cap_basis",
+      "expected": "compute_or_sim",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.planning_cap_basis",
+          "value": "compute_or_sim"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[3]",
+      "flow": "beam_pair",
+      "id": "rejection_ledger",
+      "expected": [
+        "reason_category",
+        "blocked_object",
+        "minimum_gap_m"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.rejection_ledger",
+          "value": [
+            "reason_category",
+            "blocked_object",
+            "minimum_gap_m"
+          ]
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[3]",
+      "flow": "beam_pair",
+      "id": "cap_end_label",
+      "expected": "cap_end",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.cap_end_label",
+          "value": "cap_end"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[3]",
+      "flow": "beam_pair",
+      "id": "gcp_project",
+      "expected": [
+        "ugrp-sim-b-1014",
+        "ugrp-sim-c-1016",
+        "ugrp-sim-d-1016",
+        "ugrp-sim-e-1016",
+        "ugrp-sim-f-1016"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_project",
+          "value": "ugrp-sim-f-1016"
+        },
+        {
+          "field": "parent[0].host.project_id",
+          "value": "ugrp-sim-f-1016"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[3]",
+      "flow": "beam_pair",
+      "id": "gcp_account",
+      "expected": [
+        "changmin5781@gmail.com",
+        "kcm5781kcm5781@gmail.com"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_account",
+          "value": "kcm5781kcm5781@gmail.com"
+        },
+        {
+          "field": "parent[0].host.account",
+          "value": "kcm5781kcm5781@gmail.com"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    },
+    {
+      "record": "$.runs[3]",
+      "flow": "beam_pair",
+      "id": "static_map_use",
+      "expected": "none",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.static_map_use",
+          "value": "none"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json"
+    }
+  ],
+  "stack": {
+    "path": "/home/ubuntu/UGRP/configs/current_stack.json",
+    "sha256": "8539f9c5c31d3effd91fc0ef5b737fe451066d4659c094909317b07b9bc8f7d9"
+  },
+  "counts": {
+    "current": 116
+  },
+  "admission": "pass"
+}

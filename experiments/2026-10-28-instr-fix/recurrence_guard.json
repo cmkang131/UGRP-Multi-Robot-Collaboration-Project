@@ -1,0 +1,37 @@
+{
+  "ok": false,
+  "tier": "all",
+  "checked_at": "2026-10-27T20:22:38.192006+00:00",
+  "checks": [
+    {
+      "id": "context_sync_healthy",
+      "ok": true,
+      "detail": "healthy, canonical=c3cd4c5eb550"
+    },
+    {
+      "id": "hermes_doctor_clean",
+      "ok": false,
+      "detail": "hermes executable not found on PATH"
+    },
+    {
+      "id": "providers_configured",
+      "ok": false,
+      "detail": "config.yaml not found at /home/ubuntu/ugrp-han32-instrumentation-20261028-r2/hermes-scratch/.hermes/config.yaml"
+    },
+    {
+      "id": "memory_store_present",
+      "ok": true,
+      "detail": "writable: /home/ubuntu/ugrp-han32-instrumentation-20261028-r2/hermes-scratch/.hermes/memories"
+    },
+    {
+      "id": "lsp_root_not_home",
+      "ok": true,
+      "detail": "no $HOME/.git marker; LSP roots stay project-scoped"
+    },
+    {
+      "id": "student_eval_interpreter_has_draccus",
+      "ok": true,
+      "detail": "refs=16 probed_ok=0 failures=0 not_probed=16 historical=0; no active student-eval resolves to a draccus-less interpreter; not probed: /home/ubuntu/UGRP/experiments/2026-10-28-instr-fix/han32-instrumentation-queue.json -> /home/ugrp/e2emin-20261021/venv/bin/python (remote path, not probed on this host) | /home/ubuntu/UGRP/outputs/reports/2026-10-26-baseline-treatment-evidence/package/student-eval-arm-c.json -> /home/ugrp/e2emin-20261021/venv/bin/python (remote path, not probed on this host)"
+    }
+  ]
+}
