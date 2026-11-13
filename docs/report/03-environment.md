@@ -42,7 +42,7 @@ PR [#173](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pu
 사용자 결정(2026-09-25): "벽과 문기둥에는 AprilTag(`tag36h11`) 표식을 붙여도 된다. 표식은 새로
 버전을 매긴 지도에 정적 지도 특징으로 등록한다. **화물과 로봇에는 계속 표식을 붙이지 않는다.**"
 ([docs/decision_log.md](../decision_log.md)). 화물 표식 금지는 2026-09-09 표식 제거 결정
-([docs/cargo_marker_removal_20260909.md](../cargo_marker_removal_20260909.md))을 잇는다.
+([docs/cargo_marker_removal_20260909.md](../archive/cargo_marker_removal_20260909.md))을 잇는다.
 
 등록된 태그 지도는 `zones/zone_wide_door_tags_v1.json`,
 `zones/zone_wide_two_doors_tags_v1.json`, `zones/zone_wide_corridor_tags_v1.json`이다
@@ -159,7 +159,7 @@ SO-100/SO-101이나 LeKiwi가 아니며 저장소에 관련 언급이 없다(같
 
 ## 3.6 아직 없는 환경 요소
 
-[docs/e2e_status_20260925.md](../e2e_status_20260925.md)의 "아직 할 일" 표에 있는 항목이다.
+[docs/e2e_status_20260925.md](../archive/e2e_status_20260925.md)의 "아직 할 일" 표에 있는 항목이다.
 
 - **미등록 장애물/가림** — 시작 시·중간 등장 차단, TOP 비가시·자기 RGB 가시 조건 구현.
   설계 제안은 [2026-09-25-zone-unmapped-blockage-codex.md](../design/2026-09-25-zone-unmapped-blockage-codex.md)이며

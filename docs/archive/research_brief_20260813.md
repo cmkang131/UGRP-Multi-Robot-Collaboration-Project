@@ -1,4 +1,4 @@
-> 과거 연구 브리프 보관본입니다. 현재 구현·검증 상태는 [저장소 첫 화면](../README.md)을 따릅니다.
+> 과거 연구 브리프 보관본입니다. 현재 구현·검증 상태는 [저장소 첫 화면](../../README.md)을 따릅니다.
 
 # UGRP 연구 프로젝트 브리프
 
@@ -6,9 +6,9 @@
 >
 > 이 저장소는 UGRP 관련 원자료를 바탕으로 연구 목표, 설계 변천, 현재 구현 상태를 한 곳에서 추적하기 위한 프로젝트 인덱스다.
 >
-> **세션 간 연속성**: 현재 구조와 바로 이어서 할 TODO는 [`docs/current_architecture_todo.md`](current_architecture_todo.md)를 먼저 본다. 상세 결정·문제 해결 이력은 [`docs/decision_log.md`](decision_log.md), 연구 단계는 `ROADMAP.md`를 기준으로 확인한다. 문서의 역할과 기록 규칙은 [`CLAUDE.md`](../CLAUDE.md)에 정리되어 있다.
+> **세션 간 연속성**: 현재 구조와 바로 이어서 할 TODO는 [`docs/current_architecture_todo.md`](../current_architecture_todo.md)를 먼저 본다. 상세 결정·문제 해결 이력은 [`docs/decision_log.md`](../decision_log.md), 연구 단계는 `ROADMAP.md`를 기준으로 확인한다. 문서의 역할과 기록 규칙은 [`CLAUDE.md`](../../CLAUDE.md)에 정리되어 있다.
 
-> **REAL 디버깅**: 실물 MasterPi의 사용자 요청→planner 입력→카메라/검출→commanded pose→actuator 명령→실패 증거를 하나의 `run_id`로 보존하는 trace/RCA 구조는 [`docs/real_trace_system.md`](real_trace_system.md)에 정리되어 있다.
+> **REAL 디버깅**: 실물 MasterPi의 사용자 요청→planner 입력→카메라/검출→commanded pose→actuator 명령→실패 증거를 하나의 `run_id`로 보존하는 trace/RCA 구조는 [`docs/real_trace_system.md`](../real_trace_system.md)에 정리되어 있다.
 
 ## 1. 프로젝트 한눈에 보기
 
@@ -16,7 +16,7 @@
 - **팀**: 4인 연구팀. 강창민이 팀장
 - **공식 연구 제목**: `LLM 기반 다중로봇의 자연어 통신을 활용한 자율적 역할 분담 및 협력 이송 검증`
 - **핵심 질문**: 중앙 계획자 없이 동등한 LLM 에이전트들이 자연어로 협상할 때, 다중로봇의 역할 분담·협력 이송·예외 복구가 규칙 기반 또는 중앙 제어보다 유효한가?
-- **현재 저장소 상태**: `harness/`, `sim/`, `scripts/`, `tests/`에 구현이 있다. 아래 원자료 정리는 초기 연구 배경이며, 현재 상태는 `docs/current_architecture_todo.md`를 따른다. 2026-09-05 창고 역할 협상·비교 실험의 범위는 [`docs/warehouse_research_contract.md`](warehouse_research_contract.md)에 명시했다.
+- **현재 저장소 상태**: `harness/`, `sim/`, `scripts/`, `tests/`에 구현이 있다. 아래 원자료 정리는 초기 연구 배경이며, 현재 상태는 `docs/current_architecture_todo.md`를 따른다. 2026-09-05 창고 역할 협상·비교 실험의 범위는 [`docs/warehouse_research_contract.md`](../warehouse_research_contract.md)에 명시했다.
 
 ## 2. 연구의 핵심 가설
 

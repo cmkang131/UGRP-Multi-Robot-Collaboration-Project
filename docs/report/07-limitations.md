@@ -75,7 +75,7 @@ PR [#188](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pu
 
 ## 7.5 환경·자료 쪽 한계
 
-- **미등록 장애물/가림은 미착수다**([docs/e2e_status_20260925.md](../e2e_status_20260925.md)).
+- **미등록 장애물/가림은 미착수다**([docs/e2e_status_20260925.md](../archive/e2e_status_20260925.md)).
   통신이 정보 이득을 낼 수 있는 핵심 시나리오여서 본실험 전에 필요하다.
 - **구역 과제 time-limit 검사 미착수**(같은 문서).
 - **pickup slot 정의**가 새 지도 버전에 필요하다(설계 v1 3절).

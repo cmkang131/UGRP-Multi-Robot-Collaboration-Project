@@ -18,14 +18,14 @@
 ## 2026-09-09 — 화물 표식 제거
 
 화물의 ArUco 식별판을 사용자 요청으로 제거했다
-([docs/cargo_marker_removal_20260909.md](../cargo_marker_removal_20260909.md)).
+([docs/cargo_marker_removal_20260909.md](../archive/cargo_marker_removal_20260909.md)).
 이 결정은 2026-09-25 AprilTag 허용 결정에서도 유지된다. 태그는 벽·문기둥에만 붙인다.
 
 ## 2026-09-22 — 기본 실행 경로는 로컬 CLI와 MuJoCo 기본 창
 
 환경 구성·시뮬레이션·렌더링의 기본 경로를 로컬 CLI와 MuJoCo 기본 창으로 정했다.
 Colab/Kaggle은 명시적으로 선택하는 유한 배치 경로로 보존한다([AGENTS.md](../../AGENTS.md)).
-구형 브라우저 UI는 퇴역했다([docs/browser_ui_retirement_20260923.md](../browser_ui_retirement_20260923.md)).
+구형 브라우저 UI는 퇴역했다([docs/browser_ui_retirement_20260923.md](../archive/browser_ui_retirement_20260923.md)).
 
 ## 2026-09-23 — 학습 모델도 GitHub에 보존
 

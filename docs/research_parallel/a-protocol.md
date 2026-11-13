@@ -29,7 +29,7 @@
 
 | 자료 | 유지할 내용 | 현재 규칙과의 차이 |
 |---|---|---|
-| [연구 브리프](../research_brief_20260813.md) §1–3,7 | 독립 LLM 협상, 규칙/중앙 비교, 실물 확인 | 옛 일정과 플랫폼 수정안은 구현·승인 완료가 아님 |
+| [연구 브리프](../archive/research_brief_20260813.md) §1–3,7 | 독립 LLM 협상, 규칙/중앙 비교, 실물 확인 | 옛 일정과 플랫폼 수정안은 구현·승인 완료가 아님 |
 | [CoELA 설계](../coela_communication_study.md) §연구 질문·다섯 모듈·A/B/C | 로컬 기억, 선택적 수신자, 고수준 무통신, 비용·실패 보존 | ideal-SIM geometry와 `known_to` 사건은 현재 RGB 계약에 사용할 수 없음 |
 | [warehouse 계약](../warehouse_research_contract.md) §Boundary·Conditions | same action/controller, 결정 보정 금지, 별도 central baseline | RGB-D/range/bearing와 실행기 성공 feedback은 현행 RGB 허용 입력이 아님 |
 | [카메라 경계](../camera_only_control.md) | RGB·자기 발행 명령·inbox, 사후 평가 | raw RGB 경로는 공용 top/공동 스킬을 연결하지 않음 |
