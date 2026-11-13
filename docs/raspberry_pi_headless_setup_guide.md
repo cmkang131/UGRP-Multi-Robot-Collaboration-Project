@@ -49,13 +49,13 @@ update_config=1
 country=KR
 
 network={
-    ssid="UGRP-MAC"
+    ssid="<Wi-Fi 이름 1>"
     psk="AP비밀번호"
     priority=10
 }
 
 network={
-    ssid="changmin-iPhone"
+    ssid="<Wi-Fi 이름 2>"
     psk="핫스팟비밀번호"
     priority=5
 }
@@ -78,9 +78,9 @@ network:
       dhcp4: true
       regulatory-domain: "KR"
       access-points:
-        "UGRP-MAC":
+        "<Wi-Fi 이름 1>":
           password: <PASSWORD: see vault>
-        "changmin-iPhone":
+        "<Wi-Fi 이름 2>":
           password: <PASSWORD: see vault>
       optional: true
 ```
