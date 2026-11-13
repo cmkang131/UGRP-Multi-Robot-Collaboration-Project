@@ -6,7 +6,7 @@
 
 ## 어느 문서를 먼저 믿나
 
-1. [프로젝트 README](../README.md), [지금 하는 일](current_status.md), [연구 설계](research_design.md), [로드맵](../ROADMAP.md): 현재 기준이다.
+1. [프로젝트 README](../README.md), [지금 하는 일](current_status.md), [연구 설계](research_design.md), [Solo 구조와 모델](solo_architecture.md), [로드맵](../ROADMAP.md): 현재 기준이다.
 2. [Sim2Real 안내](sim2real/README.md)와 과제 카드: 실물로 옮기는 일의 기준이다.
 3. 그 밖의 문서, 특히 이름에 날짜가 붙은 문서와 `archive/`, `experiments/`: 그 날짜의 기록이다. 위 문서와 다르면 위 문서가 맞다.
 
@@ -15,6 +15,7 @@
 | 목적 | 문서 | 적용 범위 |
 |---|---|---|
 | **연구 설계** | **[연구 설계](research_design.md)** | 방향, 질문과 가설, 팀 구조, 협업 과제, 지표, 실험의 세 층 |
+| **Solo 구조와 모델** | **[Solo 구조와 모델](solo_architecture.md)** | 단계별 구조, 입력과 출력, ACT 모델, 확인한 범위 |
 | 설치·기존 시뮬 체험 | [Ubuntu 시작](ubuntu_quickstart.md), [로컬 시뮬레이션](local_simulation.md) | 기존 실행 경로; 최신 Solo hybrid는 main 미포함 |
 | 실행 선택·확장 | [표준 관리](simulation_management.md), [확장 안내](simulation_extensions.md) | CLI·환경 구성과 실행 기록 |
 | 작업 규칙·기여 | [AGENTS](../AGENTS.md), [CONTRIBUTING](../CONTRIBUTING.md) | 변경·검증·PR 절차; 날짜별 결정의 적용 범위 확인 |
