@@ -8,7 +8,7 @@
 
 | 목적 | 문서 | 적용 범위 |
 |---|---|---|
-| 연구 현황·한계 | [프로젝트 README](../README.md) | 2026-11-13 기준 현황 |
+| **연구 설계** | **[연구 설계](research_design.md)** | 방향, 질문과 가설, 팀 구조, 협업 과제, 지표, 실험의 세 층 |
 | 설치·기존 시뮬 체험 | [Ubuntu 시작](ubuntu_quickstart.md), [로컬 시뮬레이션](local_simulation.md) | 기존 실행 경로; 최신 Solo hybrid는 main 미포함 |
 | 실행 선택·확장 | [표준 관리](simulation_management.md), [확장 안내](simulation_extensions.md) | CLI·환경 구성과 실행 기록 |
 | 작업 규칙·기여 | [AGENTS](../AGENTS.md), [CONTRIBUTING](../CONTRIBUTING.md) | 변경·검증·PR 절차; 날짜별 결정의 적용 범위 확인 |
