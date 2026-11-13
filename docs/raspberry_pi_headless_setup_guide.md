@@ -79,9 +79,9 @@ network:
       regulatory-domain: "KR"
       access-points:
         "UGRP-MAC":
-          password: "AP비밀번호"
+          password: <PASSWORD: see vault>
         "changmin-iPhone":
-          password: "핫스팟비밀번호"
+          password: <PASSWORD: see vault>
       optional: true
 ```
 
@@ -111,7 +111,7 @@ user:
   name: ugrp1
   shell: /bin/bash
   lock_passwd: false
-  passwd: "생성한_SHA512_비밀번호_해시"
+  passwd: <PASSWORD: see vault>
 ssh_pwauth: true
 runcmd:
   - [ systemctl, enable, --now, ssh ]
