@@ -182,10 +182,10 @@
 
 - **이번 작업에서 실제로 한 일**:
   - SSID 철자 오류를 확인했다.
-  - SD 카드를 다시 마운트한 뒤 설정을 `changmin-iPhone`으로 정확히 수정했다.
+  - SD 카드를 다시 마운트한 뒤 설정을 `<Wi-Fi 이름 2>`으로 정확히 수정했다.
   - SD 재마운트 후 설정 파일과 SSH marker를 다시 확인했다.
 - **실제로 확인한 결과**:
-  - `changmin-iPhone`이 기록되어 있다.
+  - `<Wi-Fi 이름 2>`이 기록되어 있다.
   - 잘못된 `chagmin-iPhone`은 남아 있지 않다.
   - 기존 비밀번호는 출력하지 않고 유지했다.
   - 파일시스템 검증이 exit code 0으로 완료됐다.
@@ -199,7 +199,7 @@
 - **이번 작업에서 실제로 한 일**:
   - 수동 헤드리스 설정 시 `userconf`(계정 생성) 누락 및 Wi-Fi 포맷 오류 문제를 분석하고 점검했다.
   - Raspberry Pi Imager GUI를 실행하여 공식 맞춤설정 주입 방식으로 전환했다.
-  - 맞춤설정 값(호스트명 `ugrp1`, 계정명 `ugrp1`, 무선 LAN `changmin-iPhone`, 무선 LAN 국가 `KR`, SSH 비밀번호 인증 활성화)을 준비했다.
+  - 맞춤설정 값(호스트명 `ugrp1`, 계정명 `ugrp1`, 무선 LAN `<Wi-Fi 이름 2>`, 무선 LAN 국가 `KR`, SSH 비밀번호 인증 활성화)을 준비했다.
 - **실제로 확인한 결과**:
   - Raspberry Pi Imager GUI 프로세스가 정상 실행 중이다.
   - 보안 지침에 따라 실제 계정 비밀번호 및 핫스팟 비밀번호 등 비밀정보는 결정 로그에 기록하지 않았다.
@@ -223,7 +223,7 @@
 - **이번 작업에서 실제로 한 일**:
   - SD 카드의 `bootfs` 파티션에 Bookworm/Bullseye 및 Netplan/cloud-init 모든 방식과 호환되도록 완벽한 자동 설정 주입을 마쳤다:
     1. 계정 설정: `userconf`, `userconf.txt`, `user-data` (계정명 `ugrp1`)
-    2. 무선 네트워크: `wpa_supplicant.conf`, `network-config` (1순위 `UGRP-MAC`, 2순위 `changmin-iPhone`)
+    2. 무선 네트워크: `wpa_supplicant.conf`, `network-config` (1순위 `<Wi-Fi 이름 1>`, 2순위 `<Wi-Fi 이름 2>`)
     3. 서비스: `ssh` 활성화 마커 및 `user-data` runcmd
   - 모니터링 및 IP 자동 탐색 스크립트 `scripts/find_pi.sh`를 작성했다.
   - Mac 시스템 설정의 `인터넷 공유` 화면을 바로 띄웠다.
