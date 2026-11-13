@@ -55,7 +55,7 @@
 | 과거 계획 | [연구 TODO](research_todo.md), [옛 아키텍처](current_architecture_todo.md) | 당시 우선순위와 설계 배경; 현재 일정으로 승계하지 않음 |
 | 결정 이력 | [결정 로그](decision_log.md), [ACT 실행 결정](act_execution_decisions.md) | 필요한 날짜·키워드로 변경 이유 확인 |
 | 과거 E2E·설계 | [E2E 현황](e2e_status_20260925.md), [공동 운반 설계](design/2026-09-25-zone-team-carry-codex.md) | 당시 검증 범위와 미완료 항목 |
-| 연구 기록 탐색 | [카메라 공동 운반 설계](research/show_harness_camera_pair_design.md), [대표 영상 색인](version_videos.md) | 관련 실험 ID·실행 SHA·원본 근거 찾기 |
+| 연구 기록 탐색 | [대표 영상 색인](version_videos.md) | 관련 실험 ID·실행 SHA·원본 근거 찾기 |
 | 퇴역 경로 | [브라우저 UI](browser_ui_retirement_20260923.md), [환경 정리](simulation_cleanup_20260909.md) | 퇴역 이유; 현재 실행 안내로 사용하지 않음 |
 | 저장소 정리 이력 | [2026-09-20](repository_cleanup_20260920.md), [2026-10-06](repository_cleanup_20261006.md) | 과거 이동·정리 범위 확인 |
 
