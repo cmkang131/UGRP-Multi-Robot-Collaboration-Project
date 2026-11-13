@@ -62,7 +62,7 @@ python3 scripts/storage_budget.py --host x86 --past-batch <과거 배치> --past
 
 감시는 `storage_budget.py --host <host> --path <저장 경로> --alert-only`를 5분마다 실행한다. Mac은 `--notify`로 알림도 보낸다. x86·ARM은 systemd journal에 경보와 종료 코드 1을 남긴다. 자동 삭제나 다른 작업 중지는 하지 않는다. 서버 전원 OFF·Mac 절전 중에는 경보가 실행되지 않으므로 제출 검사를 반드시 별도로 한다.
 
-설치 구성은 `configs/storage_watch/`다. 서버는 도구를 `~/ugrp-storage-tools/scripts/`에 두고 user systemd service/timer를 사용한다(x86만 `x86.conf` drop-in). Mac은 `~/Library/Application Support/ugrp-storage-tools/`의 도구와 `com.ugrp.storage-watch` LaunchAgent를 사용한다. worktree 은퇴와 관계없이 감시 도구가 남는다. 설치·실행·파일 해시 확인은 [10/11 적용 기록](../experiments/2026-10-11-storage-rules/README.md)에 있다.
+공통 service/timer 구성은 `configs/storage_watch/`에 있다. 호스트별 환경 변수와 설치 위치는 저장소 밖에서 관리한다. 저장소의 설정 변경은 이미 설치된 감시 도구를 변경하지 않는다.
 
 ## 4. 큰 JSON/JSONL의 무손실 압축
 
@@ -164,8 +164,7 @@ python3 scripts/storage_automation.py --host mac --root ~/projects/ugrp/outputs 
 설치 후 자체 worktree를 지워도 도구는 Mac `~/Library/Application Support/ugrp-storage-tools/`와
 ARM `~/ugrp-storage-tools/`에 남는다. 이전 도구는 버전별 backups에 보존하고 설치 파일의
 전체 SHA-256을 확인한다. ARM stock-bot·crontab·기존 timer는 변경하지 않는다. 과거 하위 폴더는 ugrparch 소유여서 ARM 작업은 sudo -n으로 이 UGRP 도구만 실행한다. 기존 파일 chmod/chown·사용자 그룹은 바꾸지 않는다. 실제 lsof 검사도 모든 사용자의 열린 파일을 확인한다.
-Azure는 `--host azure`/`configs/storage_auto/azure-command.txt`의 적용 명령만 준비했다.
-준비 작업 종료 뒤 서버가 이미 켜져 있을 때 dry-run/검토/설치를 수행해야 한다.
+원격 호스트의 설치 절차는 저장소 밖에서 관리하고, 적용 전에 dry-run 결과를 검토한다.
 자동화는 Azure·oracle-x86에 접속하거나 VM을 시작하지 않는다.
 
 참고: [Apple launchd 주기 실행](https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLaunchdJobs.html)의
