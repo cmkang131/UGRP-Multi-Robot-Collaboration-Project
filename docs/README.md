@@ -4,6 +4,12 @@
 실물 이전의 새 입구는 **[Sim2Real 병렬 과제 안내](sim2real/README.md)**다.
 아래 분류는 문서의 용도를 구분한 것이며, 링크가 있다는 사실은 현재 동작 검증을 뜻하지 않는다.
 
+## 어느 문서를 먼저 믿나
+
+1. [프로젝트 README](../README.md), [지금 하는 일](current_status.md), [연구 설계](research_design.md), [로드맵](../ROADMAP.md): 현재 기준이다.
+2. [Sim2Real 안내](sim2real/README.md)와 과제 카드: 실물로 옮기는 일의 기준이다.
+3. 그 밖의 문서, 특히 이름에 날짜가 붙은 문서와 `archive/`, `experiments/`: 그 날짜의 기록이다. 위 문서와 다르면 위 문서가 맞다.
+
 ## 현재 작업의 진입점
 
 | 목적 | 문서 | 적용 범위 |
@@ -51,7 +57,7 @@
 
 | 종류 | 현재 위치의 링크 | 읽는 목적 |
 |---|---|---|
-| 과거 현황 | [current_status](current_status.md) | 2026-09~10 현황·인계 기록; 최신 현황 입구 아님 |
+| 과거 현황·로드맵 | [2026-10-18 까지의 현황](archive/current_status_20261018.md), [2026-09 로드맵](archive/roadmap_20260904.md) | 그 날짜의 기록; 현재 기준 아님 |
 | 과거 계획 | [연구 TODO](research_todo.md), [옛 아키텍처](current_architecture_todo.md) | 당시 우선순위와 설계 배경; 현재 일정으로 승계하지 않음 |
 | 결정 이력 | [결정 로그](decision_log.md), [ACT 실행 결정](act_execution_decisions.md) | 필요한 날짜·키워드로 변경 이유 확인 |
 | 과거 E2E·설계 | [E2E 현황](e2e_status_20260925.md), [공동 운반 설계](design/2026-09-25-zone-team-carry-codex.md) | 당시 검증 범위와 미완료 항목 |
