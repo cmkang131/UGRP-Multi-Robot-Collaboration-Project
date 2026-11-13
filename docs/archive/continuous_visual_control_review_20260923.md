@@ -28,7 +28,7 @@
 2. **짧은 지평을 open 경로의 실험 조건으로 검토한다.** `ImageRoute`가 정적 지도 waypoint와 현재 화물 RGB를 이미 가지므로, 넓은 직선에서는 소수의 가까운 상대 waypoint/속도 지평을 연속 추종하고 이후 새 RGB로 오차를 보정할 수 있다. 도착 경계·결합 신뢰도 저하·skew 위험에서는 지평을 줄이고 기존 동기/hold gate를 유지한다. 이는 ViNT/visual servo/DP 구조를 현 제어기에 맞춘 **설계 제안**이다. 논문의 4 Hz·5 waypoint·8 step을 복사하거나 실험 없이 명령 지속시간만 늘리면 된다는 뜻은 아니다. 장애물 회전 경로에 같은 제안을 확장하려면 `carry_with_rotation()`의 `.2`, `PairNavigator.decide()`의 `.2` 기반 참조·span-rate, `rigid_pair_commands()`의 duration/clipping과 swept-footprint 검사를 함께 다뤄야 한다.
 3. **느린 추론이 실제로 동작 사이 빈 시간을 만든다면 겹친다.** LLM 역할 합의는 이미 고수준에서 병렬이고, RGB 운반은 그 이후다. open 경로의 `BoundPairSkill.carry()`/`ImageRoute.observe()`가 벽시계 stall의 원인인지 확인한 뒤에만 현재 명령 실행 중 다음 관측 처리·다음 속도 계산을 파이프라인화한다. MuJoCo/카메라 상태의 동시 접근·프레임 시간·명령 유효기간·취소 시점을 명시적으로 관리해야 한다. RTC의 시간 중첩을 참고하되 diffusion inpainting이나 새 학습은 지금 필요하지 않다. **물리 fine-step이나 렌더가 계산량 대부분이면 이 중첩만으로 실시간보다 빨라지지 않는다.**
 
-이 문서는 논문 원문과 현 소스의 정적 읽기 조사다. 새로운 실행·학습·물리 성공 검증은 수행하지 않았다. 정확한 출처와 절/페이지별 검증 사실은 [출처별 검증 기록](continuous_visual_control_sources_20260923.json)에 있다.
+이 문서는 논문 원문과 현 소스의 정적 읽기 조사다. 새로운 실행·학습·물리 성공 검증은 수행하지 않았다. 정확한 출처와 절/페이지별 검증 사실은 [출처별 검증 기록](../continuous_visual_control_sources_20260923.json)에 있다.
 
 ## 원문 링크
 

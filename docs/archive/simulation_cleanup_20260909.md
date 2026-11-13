@@ -8,14 +8,14 @@
 
 ## 로컬 환경
 
-- 옛 Linux `.venv-sim`, `.venv-lightning`, 중복 Mac `.venv-sim-mac` 실제 설치 폴더를 삭제했다. 삭제 전 할당 크기 합계 1,207,734,272 bytes(약 1.21 GB), Python·패키지 목록은 [구성 기록](retired_sim_environments_20260909.json)에 보존했다.
+- 옛 Linux `.venv-sim`, `.venv-lightning`, 중복 Mac `.venv-sim-mac` 실제 설치 폴더를 삭제했다. 삭제 전 할당 크기 합계 1,207,734,272 bytes(약 1.21 GB), Python·패키지 목록은 [구성 기록](../retired_sim_environments_20260909.json)에 보존했다.
 - 현재 `.venv-sim-worker-mac`과 실물 로봇용 `.venv-real-mac`은 유지했다. `.venv-sim`은 기존 실행기 호환을 위해 현재 워커로 연결되는 symlink로 바꿨다. 별도 설치가 아니다.
-- [클라우드 퇴역 요약](cloud_simulation.md)을 작게 남기고 예전 코드 복원 기준을 Git `76aeba36461ddae2044e8b732adb00b8365dde67`로 지정한다. Git 이력을 삭제하거나 대용량 백업을 새로 만들지 않는다.
+- [클라우드 퇴역 요약](../cloud_simulation.md)을 작게 남기고 예전 코드 복원 기준을 Git `76aeba36461ddae2044e8b732adb00b8365dde67`로 지정한다. Git 이력을 삭제하거나 대용량 백업을 새로 만들지 않는다.
 - 이름상 혼동을 주던 `CLOUD_SYNC.md`는 GitHub 수동 동기화 설명이므로 `GITHUB_SYNC.md`로 바꾸고 유지했다.
 
 ## 검증
 
-- [제거한 47개 파일의 목록·크기·SHA-256](retired_sim_sources_20260909.json): 구형 물리 엔진 8개, 전용 학습·평가·렌더·stress 도구, 클라우드 배포 코드와 전용 테스트·서비스를 함께 제거했다. 파일명 변경 `CLOUD_SYNC.md`→`GITHUB_SYNC.md`는 이 삭제 수에서 제외했다.
+- [제거한 47개 파일의 목록·크기·SHA-256](../retired_sim_sources_20260909.json): 구형 물리 엔진 8개, 전용 학습·평가·렌더·stress 도구, 클라우드 배포 코드와 전용 테스트·서비스를 함께 제거했다. 파일명 변경 `CLOUD_SYNC.md`→`GITHUB_SYNC.md`는 이 삭제 수에서 제외했다.
 - Mac 워커 복구는 공유 진입점을 유지하되 클라우드 제공자 선택·배포를 제거했다. 예전 cloud opt-in 설정이 남아도 Azure·Colab·Lightning을 실행하지 않는다. 로컬 `.env.gpu`에서도 폐기한 설정·인증 항목 5개를 제거했다. 비밀값은 기록·Git에 복사하지 않았다.
 - Mac 복구·UI·다중 로봇 라우팅·Bridge·하네스 관련 217개 검사 통과. 최종 구성 파일명 호환 보완 후 복구/UI 25개를 다시 확인했다. 기존 `.env.gpu` 파일명은 유지한다.
 - 삭제된 Python 모듈의 살아 있는 직접 import가 없는지 AST로 검사했다. `git diff --check` 통과.

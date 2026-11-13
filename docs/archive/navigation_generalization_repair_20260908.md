@@ -10,20 +10,20 @@
 
 | 시드 | 결과 | 호출 | 입력 토큰 | 활성 SIM 초 | 영상 |
 |---|---|---:|---:|---:|---|
-| 42 | 성공 | 18 | 80,049 | 204.378 | [전체 영상](../outputs/navigation-generalization-repair-20260908/e7r1/solo-42/motion-1x.mp4) |
-| 43 | 성공 | 16 | 71,435 | 142.628 | [전체 영상](../outputs/navigation-generalization-repair-20260908/e7r1/solo-43/motion-1x.mp4) |
-| 44 | 성공 | 18 | 78,141 | 217.544 | [전체 영상](../outputs/navigation-generalization-repair-20260908/e7r1/solo-44/motion-1x.mp4) |
-| 45 | 성공 | 20 | 90,745 | 222.502 | [전체 영상](../outputs/navigation-generalization-repair-20260908/e7r1/solo-45/motion-1x.mp4) |
-| 46 | 성공 | 20 | 90,489 | 160.002 | [전체 영상](../outputs/navigation-generalization-repair-20260908/e7r1/solo-46/motion-1x.mp4) |
+| 42 | 성공 | 18 | 80,049 | 204.378 | [전체 영상](../../outputs/navigation-generalization-repair-20260908/e7r1/solo-42/motion-1x.mp4) |
+| 43 | 성공 | 16 | 71,435 | 142.628 | [전체 영상](../../outputs/navigation-generalization-repair-20260908/e7r1/solo-43/motion-1x.mp4) |
+| 44 | 성공 | 18 | 78,141 | 217.544 | [전체 영상](../../outputs/navigation-generalization-repair-20260908/e7r1/solo-44/motion-1x.mp4) |
+| 45 | 성공 | 20 | 90,745 | 222.502 | [전체 영상](../../outputs/navigation-generalization-repair-20260908/e7r1/solo-45/motion-1x.mp4) |
+| 46 | 성공 | 20 | 90,489 | 160.002 | [전체 영상](../../outputs/navigation-generalization-repair-20260908/e7r1/solo-46/motion-1x.mp4) |
 
 다섯 실행 합계 92회 호출·410,859 입력 토큰. 호출별 사용량 누락은 없다. 각 실행에서 들어 올림·구역 내부 배치·안정·부착 해제·시각적 내려놓기와 예산 판정을 모두 통과했다. 모든 모델 NAV 이미지 92장, 시간순 영상 샘플 60개, 최종 원본 손목 영상 5장을 검토했고 모든 동영상 프레임 7,621장을 디코딩했다. 전체 영상을 연속 수동 재생한 것은 아니다. 관련 테스트 145개 및 subtest 28개, diff 검사도 통과했다. 실행 세션과 자식 프로세스의 종료를 확인했다.
 
 이번 결과는 수정에 사용한 고정 다섯 조건에서의 성공이다. 새 시드나 반복 실행 전체의 100% 성공률을 보장하지 않는다. 일시적 공급자 응답 장애로 멈춘 E7은 별도 보존하며 E7r1의 성공과 섞지 않았다.
 
-- [전체 감사](../outputs/navigation-generalization-repair-20260908/e7r1/audit-summary.md)
-- [고정 소스와 해시](../outputs/navigation-generalization-repair-20260908/e7-source/manifest.json)
-- [회귀 검사 기록](../outputs/navigation-generalization-repair-20260908/e7-source/verification.json)
-- [프로세스 종료 확인](../outputs/navigation-generalization-repair-20260908/e7r1/cleanup.json)
+- [전체 감사](../../outputs/navigation-generalization-repair-20260908/e7r1/audit-summary.md)
+- [고정 소스와 해시](../../outputs/navigation-generalization-repair-20260908/e7-source/manifest.json)
+- [회귀 검사 기록](../../outputs/navigation-generalization-repair-20260908/e7-source/verification.json)
+- [프로세스 종료 확인](../../outputs/navigation-generalization-repair-20260908/e7r1/cleanup.json)
 
 ## 변경 내용
 
@@ -51,7 +51,7 @@
 | E7 | 1성공·1응답 장애·3미실행 | 중복 문맥 축약, MEDIUM 유지, 요청 대기60초 |
 | E7r1 | **5/5** | 복구 확인 후 E7 동일 소스 전체 재검증; 전부 입력 사용량 확인 |
 
-실패 실행을 보존하고 버전별 전체 결과를 계산한다. 다른 버전의 성공만 골라 5/5로 합치지 않는다. 각 실행의 원본 입력, 모델 결정, 실행 명령, 평가 기록, 동영상, 검토 이미지와 판정은 [작업 결과 폴더](../outputs/navigation-generalization-repair-20260908/)에 있다.
+실패 실행을 보존하고 버전별 전체 결과를 계산한다. 다른 버전의 성공만 골라 5/5로 합치지 않는다. 각 실행의 원본 입력, 모델 결정, 실행 명령, 평가 기록, 동영상, 검토 이미지와 판정은 [작업 결과 폴더](../../outputs/navigation-generalization-repair-20260908)에 있다.
 
 E5 직전 검증:
 
@@ -67,16 +67,16 @@ E5 전체 검증에서 42번은 접근부터 내려놓기까지 성공했다(활
 
 ## 증거와 소스
 
-- [추론 설정 경로 확인](../outputs/navigation-generalization-repair-20260908/inference-setting-verification.json)
-- [E6 고정 소스](../outputs/navigation-generalization-repair-20260908/e6-source/manifest.json)
-- [실험 일지](../outputs/navigation-generalization-repair-20260908/journal.md)
-- [E5 전체 감사](../outputs/navigation-generalization-repair-20260908/e5/audit-summary.json)
-- [E4 전체 감사](../outputs/navigation-generalization-repair-20260908/e4/audit-summary.md)
-- [44번 경로 진단](../outputs/navigation-generalization-repair-20260908/e4-44-navigation-diagnosis.md)
-- [46번 낙하 판정·42번 접근 진단](../outputs/navigation-generalization-repair-20260908/e4-manipulation-diagnosis.md)
-- [42번 원본 RGB 재생 방법](../outputs/navigation-generalization-repair-20260908/e5-approach-rgb-replay/README.md)
-- [46번 종료 RGB 재입력 결과](../outputs/navigation-generalization-repair-20260908/e5-drop-rgb-replay.json)
-- [E5 고정 소스](../outputs/navigation-generalization-repair-20260908/e5-source/manifest.json)
+- [추론 설정 경로 확인](../../outputs/navigation-generalization-repair-20260908/inference-setting-verification.json)
+- [E6 고정 소스](../../outputs/navigation-generalization-repair-20260908/e6-source/manifest.json)
+- [실험 일지](../../outputs/navigation-generalization-repair-20260908/journal.md)
+- [E5 전체 감사](../../outputs/navigation-generalization-repair-20260908/e5/audit-summary.json)
+- [E4 전체 감사](../../outputs/navigation-generalization-repair-20260908/e4/audit-summary.md)
+- [44번 경로 진단](../../outputs/navigation-generalization-repair-20260908/e4-44-navigation-diagnosis.md)
+- [46번 낙하 판정·42번 접근 진단](../../outputs/navigation-generalization-repair-20260908/e4-manipulation-diagnosis.md)
+- [42번 원본 RGB 재생 방법](../../outputs/navigation-generalization-repair-20260908/e5-approach-rgb-replay/README.md)
+- [46번 종료 RGB 재입력 결과](../../outputs/navigation-generalization-repair-20260908/e5-drop-rgb-replay.json)
+- [E5 고정 소스](../../outputs/navigation-generalization-repair-20260908/e5-source/manifest.json)
 
 프로젝트 예외에 따라 결과는 로컬에 보존하며 Google Drive를 사용하지 않는다. 각 실험은 작업 전용 세션으로 실행하고 완료한 세션의 프로세스가 남지 않았는지 확인한다.
 

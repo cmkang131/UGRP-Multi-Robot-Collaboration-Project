@@ -4,7 +4,7 @@
 
 ## 실행 전 등록 — 조건·문턱 불변
 
-[egomap56/57 사전등록](../2026-10-09-goal-route-continuous/README.md)의 acf9cc7e와 [P0/P1 설계](../../docs/selfmap-gtr-research-20261009.md)를 그대로 유지한다. T1 55001–55003(동쪽 시작), T2 55004–55009(서쪽 세 행, 각2회), 총9회. 장면 zone_wide_door_geometry_v3, SEARCH·tape_v1·real_v1·rotL·RBPF100·eg27 wide·switchable·공통 v145 heading factory·eg48 결과동일 가속, pitch/hygiene/accumulation/color gate off. 카메라/검출기/물리계수/모션/지도/제어기/예산 변경0. tape_v1 패턴 생성 규칙·seed16001·물리 스케일도 동일하며, 장면과 맞지 않던 자산 기하만 올바른 원천에서 생성한다.
+[egomap56/57 사전등록](../2026-10-09-goal-route-continuous/README.md)의 acf9cc7e와 [P0/P1 설계](../../docs/archive/selfmap-gtr-research-20261009.md)를 그대로 유지한다. T1 55001–55003(동쪽 시작), T2 55004–55009(서쪽 세 행, 각2회), 총9회. 장면 zone_wide_door_geometry_v3, SEARCH·tape_v1·real_v1·rotL·RBPF100·eg27 wide·switchable·공통 v145 heading factory·eg48 결과동일 가속, pitch/hygiene/accumulation/color gate off. 카메라/검출기/물리계수/모션/지도/제어기/예산 변경0. tape_v1 패턴 생성 규칙·seed16001·물리 스케일도 동일하며, 장면과 맞지 않던 자산 기하만 올바른 원천에서 생성한다.
 
 | 판정 | 고정 값 |
 |---|---|

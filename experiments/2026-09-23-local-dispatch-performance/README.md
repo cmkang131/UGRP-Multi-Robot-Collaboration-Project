@@ -38,4 +38,4 @@ SIM 시간은 물리 적분이 진행한 시간이고 wall 시간은 사용자�
 
 각 run의 manager manifest는 source/input 불변을 기록한다. headless c44와 native v6의 issued/referee/pair/solo trace는 byte-identical임을 독립 감사했다. 원본과 추가 감사는 로컬 `/Users/changmin/projects/ugrp/outputs/simulation-performance-20260923`에 보존하며 raw의 원격 백업을 주장하지 않는다. 새 native TensorBoard 스냅샷은 기본 체크아웃 `outputs/tensorboard`에 추가하고 실제 이벤트 로드·원본 MP4 등록/Range206을 확인한다. 보기 설정은 기본 체크아웃 `outputs/tensorboard-view.json`의 `local_dispatch_performance_20260923` 및 native 비교 항목에 저장한다.
 
-원문 조사와 추후 설계 제안은 [연속 시각 제어 조사](../../docs/continuous_visual_control_review_20260923.md)에 분리한다. 주행 중 관측·다음 추론 중첩은 이번 PR에서 도입한 기능이 아니다. 새 지도·다른 seed·ACT 학생 또는 새 LLM 전체 실행으로 일반화하지 않는다.
+원문 조사와 추후 설계 제안은 [연속 시각 제어 조사](../../docs/archive/continuous_visual_control_review_20260923.md)에 분리한다. 주행 중 관측·다음 추론 중첩은 이번 PR에서 도입한 기능이 아니다. 새 지도·다른 seed·ACT 학생 또는 새 LLM 전체 실행으로 일반화하지 않는다.

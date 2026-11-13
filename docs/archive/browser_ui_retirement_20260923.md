@@ -14,8 +14,8 @@
 `scripts/robot_actions.py`의 과거 `--chat` 예시 문구는 그대로 남겼다. 현재 CLI에서는
 `--chat`을 사용할 수 없으며 아래 표준 경로를 따른다.
 
-현재 사용 경로는 [표준 시뮬레이션 관리](simulation_management.md)의 CLI와
-[MuJoCo 기본 창](local_simulation.md), 완료된 실행 기록의 [TensorBoard](tensorboard.md)다.
+현재 사용 경로는 [표준 시뮬레이션 관리](../simulation_management.md)의 CLI와
+[MuJoCo 기본 창](../local_simulation.md), 완료된 실행 기록의 [TensorBoard](../tensorboard.md)다.
 등록된 장면 선택지는 58개이고 workflow 항목은 21개다. 이 수는 독립된 환경 또는
 실행 성공 수가 아니며, 일부 workflow에는 모델·가중치·실물 장치 또는 별도 원격 자원이 필요하다.
 

@@ -2656,8 +2656,8 @@ No physical MasterPi command was issued for this architecture change. The REAL s
 
 - 사용자 지적에 따라 기록을 감사했다. 상세 보고서는 있었지만 이 중앙 로그가 9월 8일 D1/D2에 머물렀고 실험 인덱스는 N7만 가리켰다. 아래 내용은 당시 기록을 바탕으로 오늘 보완한 것이며 실험 당시에 작성한 로그로 소급하지 않는다.
 - 저장 정책: 현재 프로젝트 AGENTS.md의 2026-09-07 예외에 따라 UGRP는 Drive를 사용하지 않는다. 위의 과거 Drive 업로드 기록은 역사적 사실로 보존하되 향후 저장 지침으로 해석하지 않는다. 코드·요약은 GitHub, raw는 현재 로컬이며 원격 복구는 [이슈 #3](https://github.com/kcm0127-dotcom/ugrp/issues/3)에 남아 있다.
-- D1/D2 이후: [고정 시드 수정](navigation_generalization_repair_20260908.md) E7r1은 42~46에서 5/5. 동일 시드를 반복 튜닝한 결과로 미관측 조건 일반화가 아니다. E7 응답 장애 중단 기록과 분리한다.
-- [표식 제거](markerless_blocks_20260909.md) M4는 2/5였고, [후속 개선](markerless_improvement_trials_20260909.md) N7은 고정 소스로 5/5였다. N1 단독 실행, N2 영상 QA 폐기, N3~N6 실패와 진단 중단을 보존한다. 물리 설정과 기존 완료 기준을 유지하고 RGB 인식·문맥·지시문을 개선했다. 실제 하드웨어·다중 로봇 성공은 검증하지 않았다.
+- D1/D2 이후: [고정 시드 수정](archive/navigation_generalization_repair_20260908.md) E7r1은 42~46에서 5/5. 동일 시드를 반복 튜닝한 결과로 미관측 조건 일반화가 아니다. E7 응답 장애 중단 기록과 분리한다.
+- [표식 제거](markerless_blocks_20260909.md) M4는 2/5였고, [후속 개선](archive/markerless_improvement_trials_20260909.md) N7은 고정 소스로 5/5였다. N1 단독 실행, N2 영상 QA 폐기, N3~N6 실패와 진단 중단을 보존한다. 물리 설정과 기존 완료 기준을 유지하고 RGB 인식·문맥·지시문을 개선했다. 실제 하드웨어·다중 로봇 성공은 검증하지 않았다.
 - [GitHub 관리](github_management_20260909.md): 소스 기준 커밋 c6eb676a3fcf1fd2d9f9911825085dd62542f251은 N7 실행 후 생성됐다. 이번 감사에서도 고정 manifest의 125개 Git blob SHA-256이 모두 일치했다. 향후에는 실행 전에 소스를 커밋한다. 관리 PR #4에서 원본 outputs 의존 테스트를 포터블 fixture로 수정했고 CI 188개+107개 세부 검사가 통과했다.
 - 감사 보완: [실험 인덱스](../experiments/README.md)에 이전 단계와 실패 보고서를 연결하고 [26회 실행 표](../experiments/2026-09-09-markerless-trials/README.md)를 Git에 보존했다. 26개 로컬 result.json과 성공 여부·종료 사유·활성 SIM 시간을 대조했다. 호출·토큰 재집계, 전체 과거 실험의 커밋 매핑 및 raw 원격 백업까지 완료한 것은 아니다. 새 모델 호출이나 시뮬레이션은 실행하지 않았다.
 - 감사 PR #5 CI에서 추가 발견: [PR 실행](https://github.com/kcm0127-dotcom/ugrp/actions/runs/34330522269)은 세션 종료 검사에서 종료코드 143 대신 1로 실패(187개+107개 세부 검사 통과, 1개 실패). [같은 소스 push 실행](https://github.com/kcm0127-dotcom/ugrp/actions/runs/34330496329)은 통과했다. 원인은 미확정이며 [이슈 #6](https://github.com/kcm0127-dotcom/ugrp/issues/6)에 남겼다. 과거 CI 통과 사실과 현재 발견한 실패를 구분하고 원인 확인 전 PR을 병합하지 않는다.
@@ -2668,7 +2668,7 @@ No physical MasterPi command was issued for this architecture change. The REAL s
 - 사용자 요청과 후속 확인 범위는 프로젝트 내부 파일·환경 정리다. 외부 서버·계정 삭제나 과거 raw 실험 증거 삭제는 하지 않았다.
 - 옛 Linux/중복 Mac 가상환경 3개(삭제 전 약 1.21 GB), 사용하지 않는 구형 물리 엔진과 클라우드 배포 파일을 제거했다. 현재 Mac 워커, V2 기반 XML, 실물 코드, 회귀 fixture는 유지했다. `.venv-sim`은 현재 워커의 호환 링크로 통합했다.
 - 현재 운반 기본 회귀 188개+107개 세부 검사, 장면/공유 제어 48개, Bridge 35개 통과. 초기 장면의 물리 진행·NAV 렌더링을 직접 확인했으며 새 전체 운반 실험은 하지 않았다.
-- [정리 기록과 검증](simulation_cleanup_20260909.md), [클라우드 간략 이력](cloud_simulation.md), [삭제 소스 식별값](retired_sim_sources_20260909.json)에 보존했다. 코드 원문은 정리 전 Git 커밋으로 복원할 수 있다.
+- [정리 기록과 검증](archive/simulation_cleanup_20260909.md), [클라우드 간략 이력](cloud_simulation.md), [삭제 소스 식별값](retired_sim_sources_20260909.json)에 보존했다. 코드 원문은 정리 전 Git 커밋으로 복원할 수 있다.
 
 ## 2026-09-25 — 운영 모델·연구 단계·지도·화물·통신 감사·재파지 원인에 대한 사용자 결정 기록
 
@@ -2686,7 +2686,7 @@ Claude 코디네이터가 여러 Codex/Claude 위임 작업을 진행하며 2026
 **보존한 자료:**
 - 세 Codex 설계 제안 원문을 그대로 `docs/design/`에 보존했다: [팀 운반](design/2026-09-25-zone-team-carry-codex.md), [미등록 장애물](design/2026-09-25-zone-unmapped-blockage-codex.md), [한국어 대화](design/2026-09-25-zone-korean-dialogue-codex.md). 각 문서는 제안 당시 상태와 이후 실제 진행 상황을 구분해 적었다.
 - 지도 비교 렌더 `docs/design/media/2026-09-25-zone-open-vs-wide.png`(같은 축척, 하향식, 왼쪽 = 퇴역한 `zone_open` 6.45×2.3 m, 오른쪽 = `zone_wide` 6.45×4.6 m, replay `model.mjb`인 Z3-G5-dyn과 ZC2-s13-dynamic-graspfail에서 렌더링). SHA-256: `d410af3107df3542ecffebb59d50bb243991718a34e151193b4176827fc62fb0`.
-- 파이프라인 단계별 현재 완료/진행/미착수 스냅샷은 [docs/e2e_status_20260925.md](e2e_status_20260925.md)에 별도로 남긴다.
+- 파이프라인 단계별 현재 완료/진행/미착수 스냅샷은 [docs/e2e_status_20260925.md](archive/e2e_status_20260925.md)에 별도로 남긴다.
 
 ## 2026-09-25 — 주 연구 조건 변경: 무통신·동적 통신·AI 지휘
 
@@ -2718,7 +2718,7 @@ Claude 코디네이터가 여러 Codex/Claude 위임 작업을 진행하며 2026
   - 별도 지휘 AI 방안은 전지적 참고 상한으로만 남긴다.
 - **최종 연구의 실행 입력(사용자 결정, 2026-09-25):** 최종 연구의 로봇은 자기 RGB, 정적 지도, 자기가 발행한 명령 이력만으로 성공해야 한다. 정답 교사 실행기(`scripts/zone_teacher.py`, 시뮬레이터 `xpos`를 읽음)는 시연과 학습 표적 생성에만 쓴다. 연구 실행기가 아니며, 교사 주행은 로봇 성공으로 세지 않는다. 사용자 원문: "본인 카메라만 보고 성공해야지".
   - 기존 코드(저장소 내부와 오픈소스)를 최대한 재사용한다.
-  - (a) 벽과 문기둥에는 AprilTag(`tag36h11`) 표식을 붙여도 된다. 표식은 새로 버전을 매긴 지도에 정적 지도 특징으로 등록한다. 화물과 로봇에는 계속 표식을 붙이지 않는다([2026-09-09 표식 제거 결정](cargo_marker_removal_20260909.md) 참고).
+  - (a) 벽과 문기둥에는 AprilTag(`tag36h11`) 표식을 붙여도 된다. 표식은 새로 버전을 매긴 지도에 정적 지도 특징으로 등록한다. 화물과 로봇에는 계속 표식을 붙이지 않는다([2026-09-09 표식 제거 결정](archive/cargo_marker_removal_20260909.md) 참고).
   - (b) 카메라는 실물 로봇과 같게 둔다. MasterPi 팔 끝의 어안 카메라 하나뿐이다. 시뮬레이터 전용 `nav_cam`은 연구에서 로봇 입력으로 쓰지 않는다.
   - **첫 마일스톤 M1:** `zone_wide_door`에서 로봇 1대가 청록 상자 1개를 손목 카메라만으로 문 너머까지 배달한다. TOP은 채점과 영상에만 쓰고, weld는 OFF다. (`zone_wide_door`는 기록 시점에 main이 아니라 PR [#173](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/173) 브랜치에 있다.)
   - 근거 자료로 두 읽기 전용 조사 보고서를 보존했다. 하나는 [자기 카메라 역량·격차 목록](design/2026-09-25-own-camera-inventory-claude.md)이고, 다른 하나는 [오픈소스 재사용 조사](design/2026-09-25-own-camera-oss-survey-claude.md)다. 두 보고서 모두 "저장소에 자기 카메라만으로 지도 위 위치를 추정하는 실행기는 없다"고 확인했다.
