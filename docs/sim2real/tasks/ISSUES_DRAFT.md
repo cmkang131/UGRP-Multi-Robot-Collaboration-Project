@@ -127,13 +127,13 @@
 
 ## T12
 
-제목: `[Sim2Real][T12] Pair 1비트 송수신과 오래된 신호 거부`
+제목: `[Sim2Real][T12] 로봇 간 메시지 송수신과 오래된 메시지 거부`
 
 본문:
-- 목표: 두 endpoint의 허용 신호와 단절 처리를 검증한다. [카드와 절차](T12_pair_signal.md).
-- 준비/의존: 모터 없는 통신 독립. 후속 구동 연결만 T06/07 필요. 본 과제에서 들기를 실행하지 않는다.
-- 완료 후보: 방향별 100회에서 ≥99/100 응답·RTT P95 ≤0.10 s, 오류 주입 시 오래된 신호의 새 구동 허가 0건.
-- 결과: `experiments/sim2real-<YYYYMMDD>-T12-<run>/`, `signal_contract.md`, `signals.csv`와 [공통 template](../04_tasks.md#result-template).
+- 목표: 로봇 사이 계획용 메시지 통로와 단절 처리를 검증한다. [카드와 절차](T12_robot_messaging.md).
+- 준비/의존: 모터 없는 통신 독립. 후속 구동 연결만 T06/07 필요. 본 과제에서 로봇을 움직이지 않는다.
+- 완료 후보: 방향별 100회에서 ≥99/100 응답·RTT P95 ≤0.10 s, 오류 주입 시 오래된 메시지가 최신으로 받아들여진 경우 0건.
+- 결과: `experiments/sim2real-<YYYYMMDD>-T12-<run>/`, `message_contract.md`, `messages.csv`와 [공통 template](../04_tasks.md#result-template).
 - 체크: [ ] 1비트 업무 payload [ ] 감사 필드 옆길 없음 [ ] 지연/역순/손실 [ ] 동일 시계 RTT [ ] 공동 들기 성공과 구별.
 
 ## T13
