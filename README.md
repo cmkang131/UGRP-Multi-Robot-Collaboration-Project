@@ -1,109 +1,98 @@
-# UGRP — LLM 기반 로봇 협력 이송 연구
+# UGRP: 로봇 협력 이송과 Sim2Real
 
-각 로봇의 카메라 관측과 자연어 통신으로 역할 분담·협력 이송을 검증한다. MasterPi와 MuJoCo 시뮬레이션, RGB 기반 제어 하네스로 구성된다.
+MasterPi 로봇의 자기 카메라 관측과 로봇 간 통신으로 역할 분담·협력 이송을 연구한다.
+MuJoCo 시뮬레이션, RGB 기반 제어 코드, ACT 학습 모델과 실험 기록을 함께 관리한다.
+현재는 혼자 상자를 집어 들고 내려놓는 Solo, 두 로봇의 막대 공동 운반 Pair,
+지도 없는 이동을 나누어 개발하며, 실물 이전은 병렬 과제로 준비한다.
 
-## 시작하기
+## 처음 왔다면: 세 갈래 시작
 
-- **[표준 시뮬레이션 관리](docs/simulation_management.md)** — 연구별 실행 선택·버전·입력·결과 기록을 하나의 CLI에서 관리
-- **[로컬 시뮬레이션 · 간편 메뉴/CLI/Python API](docs/local_simulation.md) · [환경·제어기·action 확장](docs/simulation_extensions.md)** — 터미널에서 모델·맵·관찰 속도를 고르고 자연어 지시 → 기존 공동 plan → 로봇별 RGB 스킬 실행과 MuJoCo 기본 창 · [구성 검토](docs/simulation_inventory.md)
-- **[연구 TODO와 우선순위](docs/research_todo.md)** — 독립 에이전트의 무통신·정형·자연어 비교를 중심으로 실행 기반·본실험·ACT/Jev 보조 과제 정리(§0 로드맵 상태 2026-09-29 갱신)
-- **[Kaggle CLI 배치 실행](docs/kaggle_simulation.md)** — 비공개 CPU·오프라인 실행·결과 회수 검증 완료; 신규 계정은 최초 인증 필요
-- **[Colab CLI 시뮬레이션·평가](docs/colab_simulation.md)** — 선택 가능한 원격 배치 경로; 실제 런타임 검증 상태는 안내 참조
-- **[Azure CPU 실행 서버](docs/azure_simulation.md)** — 비용·만료·유휴 가드, 작업 후 할당 해제와 Oracle ARM 원본 보관
-
-- **[현재 상태와 실행 경로](docs/current_status.md)** — 2026-09-30 저녁 요약: 단계 인수 재생·조건부 예측·열린 검토와 E2E의 남은 관문
-- **[Ubuntu 설치·무료 데모](docs/ubuntu_quickstart.md)** — 새 팀원은 여기서 시작
-- [개발·테스트·실험·PR 절차](CONTRIBUTING.md) · [로봇 입력과 작업 규칙](AGENTS.md)
-- [TensorBoard로 학습·실험 기록 보기](docs/tensorboard.md)
-- [S3 동료 로봇의 벽 오인 오프라인 진단·선택 마스크](experiments/2026-10-06-owncam-robot-mask/README.md) — 저장 RGB 16장, 기본 OFF, DRAFT 후보
-- [Pair executor dev v2 드라이버·사전 기록·잠금/실행 절차](experiments/2026-09-27-zone-pair-dev/README.md) — tags_temporary, dev, 연구 결과 아님; 물리 실행은 코디네이터가 별도 수행
-- [2026-09-24 ACT 학습·행동 개선 후보](experiments/2026-09-24-action-act/refinement.md) — 첫 6회 실패 포함 비교와 후속 학습·실시간 추론·영상 접근 보정; 기본 채택 전 후보
-- [학습 모델 다운로드·검증·배포](docs/model_artifacts.md) — GitHub Release 가중치와 저장소의 버전·해시 목록
-- [구형 브라우저 UI 퇴역 기록](docs/browser_ui_retirement_20260923.md) — 로컬 실행은 CLI·MuJoCo 창, 결과 비교는 TensorBoard
-- [연구 제어기 검증·사용 기준](docs/research_controller_validation.md) — RGB 기준선, ACT 완료 거부와 명시적 혼합 제어기를 구분하고 유한한 전체 시험으로 채택 여부 판정
-- [문서 찾아보기](docs/README.md) · [실험 인덱스](experiments/README.md) · [지도 목록](maps/README.md)
-
-- [MasterPi 바퀴 마찰 구동 후보·사양/논문/공개 코드 조사](experiments/2026-10-06-drive-friction/README.md) — 무하중·cyan에서20/30 정지·35/50/100의5초 주행을 재현한 **v7을 DEV 후보로 채택**. 옆 회전−2.49°는 알려진 특성이며 실물 측정·자기 카메라 방향 보정 검증은 #404 TODO. 짝 빔 비교는 아래 기록, PR #402 DRAFT·기본값 유지.
-- S2 realism PR #406 DRAFT: `f0bb26e7` / v121 s1045 full DEV 완료, lifted=true·inside=false(B 밖 배치), 최종 위치 오차3.839m. 가드5·위치 불확실519회는 기록만, freeze ON·모델0·잠금 해제. [기록](experiments/2026-10-06-s2-realism/README.md).
-
-## 현재 검증 범위
-
-- [S4 집게 이탈 저장 영상 감사](experiments/2026-10-06-s4-llm/s4grip/README.md): 실제 모델 응답·이탈 영상 부족으로 S4 정확도 미측정. 기존 CV 참고 진단, 접촉 라벨 평가 전용, 물리/렌더/모델0.
-
-- [S4 빔 공동 출발 준비](experiments/2026-10-06-s4-llm/s4live4/README.md): 기본 OFF LLM claim→GO/ACK→공동 출발·자기 RGB 이탈 정지, 오프라인 준비만. S3 확정 SHA 대기, 4조건×seed601 사전 목록, 실제 모델/물리 0.
-- [S4 실제 모델·Oracle x86 배관 확인](experiments/2026-10-06-s4-llm/s4live1/README.md): 네 통신 조건 각90 SIM초·모델7호출, claim→출발 허가→r3 cyan 약1m 운반 명령 연결. 빔 claim-only, 호스트 중단/재실행 분리, `research_result=false`·배송/E2E 성공 아님. README·TensorBoard·원본 해시 대조 기록.
-
-- [진행 방향 주행 기본 on · v145](experiments/2026-10-09-s2-heading/default-on/README.md): 새 S2·공통 S3/S4 주행은 회전 후 전진, `--heading-mode off`로 옆걸음 재현. 자기 지도 계획 어댑터도 같은 선택기를 사용한다. 고정 v143 비교는 성공1/3, 1068 시야 상실 원인·선택 수정안과 적용 표를 기록했다.
-
-- [S2 손목 카메라 검토·공식 자료와 새 도면 후보](experiments/2026-10-06-robot-camera-review/README.md): 실물 기록1.35%·7.92%, v3 들기5.63%; #403 중간 내려놓기 OFF 및 원래 자리 재관측 파지 확인·재집기 옵션 구현(오프라인). 기본값·기존 번들 유지, #404 확정 뒤 새 카메라+구동 S2 재검증 필요.
-
-2026-09-20 main에 포함된 기록 기준이다. 실험별 실행 SHA와 조건이 다르며 아래 결과를 현재 main에서 새로 실행한 결과로 해석하지 않는다.
-
-| 경로 | 확인한 결과 | 범위와 한계 |
+| 하고 싶은 일 | 시작 문서 | 얻을 수 있는 것 |
 |---|---|---|
-| [3대 공동 출하·복구](experiments/dispatch-adaptive-recovery-20260917/README.md) | 목적지·장애물 변화 6조건에서 새 LLM 합의부터 운반·방출까지 성공 | seed11·조건당 1회·기존 RGB 스킬·수치 접촉 프로필; 임의 배치/역할·실시간 분산·실물 일반화 아님 |
-| [ACT 공동 운반 비교](experiments/2026-09-18-act-pair-carry/README.md) | 운반 진입 3조건에서 교사 3/3, ACT seed18 1/3·seed19 0/3 | 네 번째 조건은 접근 중단; 확정 계획 재생, 새 LLM 호출 없음. ACT는 기존 경로를 대체하지 않음 |
+| 시뮬레이션 돌려 보기 | [Ubuntu 설치·무료 데모](docs/ubuntu_quickstart.md), [로컬 실행](docs/local_simulation.md) | 기존 CLI·MuJoCo 창으로 환경 확인 |
+| 실물로 옮기기 | [Sim2Real 입구](docs/sim2real/README.md), [병렬 과제 목록](docs/sim2real/04_tasks.md) | 맡을 과제, 준비물, 검증 기준과 결과 형식 |
+| 연구 기록 찾기 | [문서 찾아보기](docs/README.md) | 현재 안내와 과거 현황·설계·실험의 구분 |
 
-- [ACT18 C2c v7 시계 진단(HO4)](experiments/2026-10-20-act18-c2c-v7clock/README.md): 제자리 집기→3초 들기→같은 자리 내려놓기 12회 중 과제 성공 6/12(들기 12/12, 내려놓기 6/12). 관문 미통과 진단이며 이동·공동 운반 성공 아님.
+기존 시뮬 실행법은 최신 혼합 방식의 실행법이 아니다.
+**아래 Solo hybrid 코드는 아직 이 저장소 `main`에 포함되지 않았다.**
+사용자 지정 참조는 `hybrid-v2`, 커밋 `c7232b9`이며, 이번 문서 개편에서 코드를 옮기지 않는다.
+새 clone만으로 아래 성적을 재현할 수 있다고 가정하지 않는다.
 
-자기 RGB·공용 top RGB·자기 발행 명령을 사용하고 승인된 지도 경로에서는 정적 지도를 제공한다. 교사 정답은 학습용이며 실행 중 평가 좌표·접촉·관절 측정으로 행동을 보정하지 않는다. 카메라 배치/FOV와 weld OFF를 유지한다. 시뮬레이션 결과는 실물 MasterPi 검증과 구분한다.
+## 지금 되는 것 / 안 되는 것
 
-> 현행 규칙(2026-10-03 [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366))상 공용 top 카메라는 평가·검토 영상 전용이며 제어·지도 만들기·위치 추정 입력으로 금지한다. 이 기존 경로는 아직 TOP 사용(미이행)이다.
+기준일: **2026-11-13**. 아래 연구 결과와 구성·측정 수치는 **사용자 제공**이며,
+이번 문서 작업에서 원시 실행을 독립 재검증하거나 재채점한 결과가 아니다.
+시뮬 성적을 실물 성능으로 해석하지 않으며, 서로 다른 장면 집합은 합산하지 않는다.
 
-이전 단독 운반·접근·동기화·지도 주행 결과는 [과거 검증 요약](docs/archive/validation_summary_20260917.md)에 보존했다.
+| 대상 | 시뮬에서 보고된 것 | 안 되는 것·남은 한계 |
+|---|---|---|
+| Solo 혼합 방식: 로봇 1대, 집기·들기·내려놓기 | 접근 코드를 고치며 본 12장면 중 11개 성공 | 튜닝하며 본 장면이며 새 조건 성적과 구분 |
+| Solo 혼합 방식: 한 번도 안 쓴 새 장면 | 새 12장면 중 6개 성공 | 실패 6개 모두 접근 단계: 주행 기록 오차로 상자를 놓침 |
+| ACT 단독 | 같은 새 12장면 중 0개 성공 | 단독 방식의 성공 확인 안 됨 |
+| Pair: 로봇 2대, 막대 공동 운반 | 두 로봇 통신 허용, 같은 단계 분해 적용 계획 | 폐루프 함께 들기 아직 0; 전체 시도 분모 미제공, 성공률 계산 불가 |
+| 물건 없이 이동 | 지도 없이 초록 벽 색으로 문 통과 12개 중 11개, 구역 도착 6개 중 5개 | 적재·공동 운반 성공을 뜻하지 않음 |
+| 실물 MasterPi | 측정·연결·기록 관련 기존 자산과 새 과제 안내 있음 | 이번 문서 묶음의 실물 시험·임무 성공은 전부 확인 안 됨 |
 
-## 코드 구성
+Solo 접근은 상자 위치를 계속 추정·추적하는 구조로 바꾸는 중이다.
+이 변경의 완료나 새 성능을 위 결과에 포함하지 않는다.
+
+## Solo 혼합 방식의 구성
+
+| 단계 | 사용자 제공 현재 구성 |
+|---|---|
+| 접근 | 시작 시 지정 상자의 방위·거리를 1회 넘겨받고, 코드가 자기 카메라 색 덩어리를 추적해 상자 정면 0.20 m에 정지 |
+| 집기·들기 | ACT, 색 구분 입력 `seg5_v1`, 4000스텝 |
+| 집기 끝 판정 | 자기 발행 명령 기록 규칙 |
+| 놓기 | 교사 시연 140개의 고정 순서 87행 재생 |
+
+이 결과는 ACT 단독이나 완전한 RGB-only 자율 접근의 성적으로 표기하지 않는다.
+시작 방위·거리 1회 제공은 위 구성의 조건이며, 반복적인 정답 공급을 허용하지 않는다.
+단계별 위험과 이관할 자산은 [혼합 파이프라인](docs/sim2real/03_pipeline.md)을 본다.
+
+## 환경과 로봇 계약
+
+- 벽은 짙은 초록: 시뮬 RGBA `.05 .27 .14 1`.
+- 상자는 빨강·파랑만 사용: 시뮬 RGB 빨강 `.80 .12 .10`, 파랑 `.10 .25 .85`.
+- 벽 표식(AprilTag)과 미리 만든 정적 지도는 쓰지 않는다. TOP 카메라는 로봇 입력으로 쓰지 않는다.
+- 자기 RGB는 어안 `640×480`, 모델 입력은 `320×240`이다.
+- 시뮬 명령은 `10 Hz`: 바퀴 4개 각각 속도 `0` 또는 부호 있는 `0.31–0.40`, 펄스 `0–0.15 s`.
+- 서보 5개 `(1,3,4,5,6)`의 시뮬 PWM 범위는 `500–2500`이다.
+- 측정된 시뮬 전진 `0.10 s` 펄스는 약 `11–12 mm`, 회전 `0.10 s` 펄스는 약 `0.09 rad`다.
+- 회전량은 장면마다 `0.06–0.095 rad`로 흔들린다. 이 값을 실물 보정값으로 사용하지 않는다.
+
+[환경·색 보정](docs/sim2real/01_environment.md)과 [로봇 인터페이스](docs/sim2real/02_robot_interface.md)를 따른다.
+PWM 범위는 실물 전범위 구동 허가가 아니다. 현장 안전 범위·비상정지·펄스 중첩 정책을 확인한다.
+
+## 폴더 지도
 
 | 경로 | 역할 |
 |---|---|
-| `harness/` | 모델 입력·계획·행동 실행·RGB 인식 |
-| `sim/` | MuJoCo 환경과 별도 평가 |
-| `scripts/` | 실행·검증·기록·프로세스 관리 |
-| `tests/` | 자동 회귀검사와 재현 fixture |
-| `maps/` | 정적 지도와 지형 목록 |
-| `experiments/` | 실행 SHA에 연결한 설정·전체 결과·원본 식별값 |
-| `docs/` | 현재 안내와 날짜별 설계·진단 기록 |
+| `harness/` | 모델 입력·계획·RGB 인식·행동 실행 |
+| `sim/` | MuJoCo 환경·물리와 별도 평가 |
+| `scripts/` | 실행·검증·기록 도구 |
+| `tests/` | 회귀검사와 재현 fixture |
+| `config/`, `configs/` | 실행 설정·계약·모델 목록; 과거 설정도 포함 |
+| `calibration/masterpi/` | 실물 측정·보정 자산 |
+| `maps/` | 환경·과거 지도 자산; 현재 제어에 정적 지도 사용을 허용한다는 뜻 아님 |
+| `experiments/` | 실험별 코드 SHA·설정·성공/실패·원본 해시 |
+| `docs/sim2real/` | 실물 이전의 새 입구와 병렬 과제 카드 |
+| `docs/archive/` | 보관 문서; 모든 역사 문서가 이동된 상태는 아님 |
 
-## 저장과 변경
+## 참여와 기록 규칙
 
-변경은 작업 브랜치와 PR로 남기고 사용자 승인 뒤 main에 반영한다. 실행 코드는 실험 전에 커밋하며 실패도 보존한다. Git에는 소스·설정·fixture·요약·모델 목록과 해시를, 배포한 학습 가중치와 추론 자산은 GitHub Releases에 보관한다. 현재 제공하는 모델과 미발견 모델은 [모델 목록](configs/model_artifacts.json)을 확인한다. raw 영상·대량 로그·학습 데이터는 별도 보관이며 모델 배포가 이 자료 전체의 백업을 뜻하지 않는다. 인증정보·가상환경은 커밋하지 않으며 UGRP는 Google Drive를 사용하지 않는다.
+- 작업 전 [AGENTS.md](AGENTS.md)와 [CONTRIBUTING.md](CONTRIBUTING.md)를 읽는다.
+- Sim2Real은 단일 선행 과제가 아닌 병렬 과제다. 실제 구동의 의존 조건과 장치 사용자는 조율한다.
+- 학생 제어 입력과 평가 정답을 분리한다. 발행 명령은 실제 관절 상태나 이동 성공이 아니다.
+- 교사·고정 재생·혼합 방식·학생 독립 실행을 구분하고, 시뮬 성공과 실물 성공을 분리한다.
+- 결과에는 전체 시도 수, 실패·미실행·제외, 검증 범위, 코드·설정·원본 해시를 남긴다.
+- 변경은 범위를 나눈 PR로 검토한다. 원본과 이전 결과를 덮어쓰지 않는다.
+- 공개 문서·로그에 개인 절대경로, IP, 이메일, 클라우드 프로젝트 식별자, 비밀값을 넣지 않는다.
 
-## v7 공통 실행 가속
+실행 기록은 [표준 시뮬레이션 관리](docs/simulation_management.md)와 [실행 버전 관리](docs/execution_versioning.md)를 따른다.
+가중치 확보는 [모델 배포 안내](docs/model_artifacts.md)를 확인한다. 모델 로딩은 임무 성공이나 raw 백업이 아니다.
 
-새 소스에서 `masterpi_drive_friction_v7.build_world`를 만드는 모든 경로는 exact relay
-cache를 기본 사용한다. `UGRP_V7_EXACT_SPEEDUPS=off` 또는 Python
-`build_world(..., exact_speedups='off')`로 끈다. 물리·제어·임계값·로그 버퍼링은 바꾸지 않는다.
-실제 적용 모드와 모듈 SHA는 각 실행의 `v7-speedups.json`, `runtime-bundle.json`에 남고,
-공통 결과 writer는 `result.json.runtime_speedups`에도 기록한다. 자체 writer를 쓰는
-자기 지도 실행도 공통 backend reset이 runtime bundle을 기록한다. 봉인 입력 bundle은 유지한다.
+## 과거 기록 읽기
 
-`codex/s2-realism`, `codex/s2-heading`, `claude/ego-wall-map`,
-`codex/s3-three-robot-host`의 후속(`codex/s3-no-prior-smoke`), `codex/ownmap-s2`는
-**다음 코호트 시작 시 main을 merge**하면 공통 v7 가속을 받는다. 진행 중 코호트의
-고정 checkout을 갱신하지 않는다. 기존 봉인 코호트에 새 SHA를 소급 적용하지 말고,
-다음 코호트의 기존 소스 고정 절차로 새 source SHA/해시를 기록한다.
-v107/v108 중 기존 v3 물리를 쓰는 경로를 v7로 바꾸는 변경은 포함하지 않는다.
-
-[경로별 바이트 동등성·속도·끄기 방법](experiments/2026-10-09-sim-speed-core/README.md).
-
-새 공통 host reset은 `UGRP_CONTROLLER_EXACT_SPEEDUPS=exact-v1`(기본)으로
-순수 posterior 계산과 지원되는 자기 지도 계산을 재사용한다. `off`로 끈다.
-실제 적용 항목·지원되지 않은 adapter·소스 해시·유한 캐시 통계는
-`controller-speedups.json`과 `runtime-bundle.json`에 기록한다.
-분포·RNG·물리·관측/렌더 주기는 그대로이며 지원 소스가 달라지면 해당 항목은 적용하지 않는다.
-현재 가속 후보의 측정·동등성 인수는 [speedctrl 기록](experiments/2026-10-09-sim-speed-ctrl/README.md)에 남긴다.
-[후속 정합·타이머 밖 비용·무손실 기록](experiments/2026-10-10-sim-speed-ctrl2/README.md)은
-같은 입력의 ABBA·부하·복원 바이트를 구분한다. 첫 55001에서 느려진 정합 캐시는 기본 off이며,
-2m 후보 제한도 결과가 바뀔 수 있어 기본 off다. 새 물리/온라인 ≤1.5 검증은 아직 없다.
-[Oracle 지연 렌더 비교](experiments/2026-10-10-sim-speed-ctrl3/README.md)는
-`UGRP_CAMERA_RENDER=lazy-v1` 선택 시 소비 시점에 카메라를 생성한다. 기본은
-`eager`이며 기존 JPEG·프레임 원장을 모두 보존한다. 기록 대상이거나 실제 읽는
-프레임은 생략하지 않는다. Mac 물리·렌더 없이 Oracle에서 A4/B4를 동시에 비교하고
-원본·행동 동등성, wall/SIM·CPU/SIM·부하 평균을 분리한다. JSON 키 순서와
-명시된 실측 추론 지연만 분리하며 명령·SIM 시각·원본 JPEG는 직접 비교한다.
-근거는 [Thrun 등, Probabilistic Robotics 4·6·8장](https://mitpress.mit.edu/9780262201629/probabilistic-robotics/),
-[AMCL 거리장 구현](https://github.com/ros-navigation/navigation2/blob/main/nav2_amcl/src/map/map_cspace.cpp),
-[Olson 2009 스캔 정합](https://april.eecs.umich.edu/media/pdfs/olson2009icra.pdf)이다.
-원문 열람 범위와 정확한 계산 재사용 경계는 위 실험 기록의 참고 자료에 적었다.
-
-- [s4grip2 유지/외란 RGB 진단 결과](experiments/2026-10-06-s4-llm/s4grip2/README.md): 24사례 완료; 확증 정탐4/6, 유지 경보0/6, r3 조기경보·unknown으로 안전 감지기 not-ready.
+[이전 README 원문](docs/archive/README_20261113.md)은 내용 그대로 보존한 역사 스냅샷이다.
+[과거 현황](docs/current_status.md)의 “현재”는 기록 당시이며, 위 기준일의 연구 상태를 대신하지 않는다.
+보관 위치와 옛 링크를 읽는 방법은 [문서 찾아보기](docs/README.md)에 정리했다.
