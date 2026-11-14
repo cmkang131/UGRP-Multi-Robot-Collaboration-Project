@@ -466,6 +466,11 @@ def build_parser() -> argparse.ArgumentParser:
         "--duration", type=_bounded_float(0.05, MAX_CHASSIS_SEGMENT_S), default=0.5
     )
     _add_dry_run(drive_parser)
+    parser.add_argument("--execute-at-utc-s", type=float, default=None,
+                        help="Reserved UTC epoch second; supply before the subcommand")
+    parser.add_argument("--action-id", default=None)
+    parser.add_argument("--clock-budget-ms", type=float, default=None,
+                        help="Required explicit uncertainty budget for a reserved motion")
     return parser
 
 
@@ -511,6 +516,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     atexit.register(_atexit_stop)
 
     dry_run = bool(getattr(args, "dry_run", False))
+    if getattr(args, "execute_at_utc_s", None) is not None and args.command not in {"servo", "motor", "drive"}:
+        raise ControlError("UTC scheduling applies only to motion; stop remains immediate")
     is_motor_command = args.command in {"motor", "drive"}
     lease = None
     if not dry_run and args.command in {"motor", "drive", "servo"}:
@@ -519,6 +526,21 @@ def main(argv: Sequence[str] | None = None) -> int:
     if is_motor_command:
         _active_motor_transport = transport
     try:
+        if getattr(args, "execute_at_utc_s", None) is not None:
+            try:
+                from harness.utc_clock import command_deadline, ClockError
+            except ModuleNotFoundError:
+                if (Path(__file__).resolve().parents[1]/'harness').is_dir():
+                    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+                    from harness.utc_clock import command_deadline, ClockError
+                else:
+                    from utc_clock import command_deadline, ClockError
+            try:
+                timing = command_deadline({"id": args.action_id, "execute_at_utc_s": args.execute_at_utc_s,
+                                           "clock_budget_ms": args.clock_budget_ms})
+            except ClockError as exc:
+                raise ControlError(str(exc)) from exc
+            print(json.dumps({"utc_dispatch": timing}), flush=True)
         if args.command == "stop":
             assert transport is not None
             stop_all(transport)

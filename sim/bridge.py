@@ -1388,6 +1388,19 @@ class Handler(BaseHTTPRequestHandler):
                         "team_batch_expected": expected,
                     })
                 known.update({"team_batch_id", "team_batch_expected"})
+                if 'execute_at_utc_s' in obj or 'clock_budget_ms' in obj:
+                    if not self.bridge.remote_authoritative or not worker_contract_compatible(self.bridge.remote_worker_contract):
+                        raise ValueError('UTC reservation requires a compatible remote WebSocket worker')
+                    from harness.utc_clock import parse_utc
+                    import math
+                    target = parse_utc(obj.get('execute_at_utc_s'))
+                    budget = obj.get('clock_budget_ms')
+                    if type(budget) not in (int,float) or not math.isfinite(budget) or not 0 < budget <= 250:
+                        raise ValueError('UTC reservation requires explicit clock_budget_ms in (0, 250]')
+                    if action in {'stop_motion','reset','warehouse_research'}:
+                        raise ValueError('This command must remain immediate')
+                    params.update(execute_at_utc_s=target,clock_budget_ms=float(budget))
+                    known.update({'execute_at_utc_s','clock_budget_ms'})
                 unknown = sorted(set(obj) - known)
                 if unknown:
                     raise ValueError("unsupported command fields: " + ", ".join(unknown))
