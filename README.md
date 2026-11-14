@@ -99,7 +99,7 @@ ACT 모델: LeRobot 0.6.2 구현, ResNet-18, 인코더 4층·디코더 1층, 매
 | 계획과 동작 잇기 | 아직 없다. 여러 로봇이 시뮬레이션에서 동시에 움직이는 것도 아직 없다 |
 | 실물로 옮기기 | 과제 카드 준비 완료, 실물 시험은 아직 없다 |
 
-자세한 것은 [지금 하는 일](docs/current_status.md)과 [로드맵](ROADMAP.md)에 있다. 실험 수치와 날마다의 진행은 팀 Linear(UGRP 팀)에 적는다.
+자세한 것은 [작업 계획](docs/plan.md), [지금 하는 일](docs/current_status.md), [로드맵](ROADMAP.md)에 있다. 실험 수치와 날마다의 진행은 팀 Linear(UGRP 팀)에 적는다.
 
 ## 시작하기
 

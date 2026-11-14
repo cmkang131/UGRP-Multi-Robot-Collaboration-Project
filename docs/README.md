@@ -6,7 +6,7 @@
 
 ## 어느 문서를 먼저 믿나
 
-1. [프로젝트 README](../README.md), [지금 하는 일](current_status.md), [연구 설계](research_design.md), [전체 구조](architecture.md), [Solo 구조와 모델](solo_architecture.md), [로드맵](../ROADMAP.md): 현재 기준이다.
+1. [프로젝트 README](../README.md), [작업 계획](plan.md), [지금 하는 일](current_status.md), [연구 설계](research_design.md), [전체 구조](architecture.md), [Solo 구조와 모델](solo_architecture.md), [로드맵](../ROADMAP.md): 현재 기준이다.
 2. [Sim2Real 안내](sim2real/README.md)와 과제 카드: 실물로 옮기는 일의 기준이다.
 3. 그 밖의 문서, 특히 이름에 날짜가 붙은 문서와 `archive/`, `experiments/`: 그 날짜의 기록이다. 위 문서와 다르면 위 문서가 맞다.
 
