@@ -2,7 +2,20 @@
 
 학습 코드와 가중치는 함께 버전을 관리한다. 저장소의 [모델 목록](../configs/model_artifacts.json)은 모델 ID, 원래 학습/실행 소스, Release 주소, 파일별 크기·SHA-256과 검증 범위를 연결한다. 큰 가중치는 GitHub Release asset으로 배포하고 Git 이력에 직접 넣지 않는다. [GitHub Releases](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases)는 파일별 2 GiB 미만의 바이너리 배포를 지원한다.
 
-## 현재 제공 범위
+## Solo v1 (2026-11-14)
+
+현재 Solo 구조의 코드·모델은 [solo-v1-20261114 릴리스](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/tag/solo-v1-20261114)에 있다. 릴리스에서 아래 ZIP과 `SHA256SUMS.txt`를 함께 내려받아 확인한다.
+
+| 파일 | 크기(바이트) | 내용 |
+|---|---:|---|
+| `solo-pipeline-code.zip` | 69,389 | `solo_pipeline/`의 구성 코드 |
+| `solo-act-model-gseg-step4000.zip` | 207,382,468 | `actor/` 아래의 `model.safetensors`, `config.json`, `adapter.json`, `SHA256.json` |
+
+2026-11-16에는 두 ZIP을 실제 내려받아 배포 SHA-256과 ZIP CRC를 확인했다. [명령·결과 기록](../experiments/2026-11-16-cpu-repro-audit/README.md)에 검증 범위와 해시가 있다. 모델 로딩·장면 실행·대표 성공률의 재현까지 확인한 것은 아니다.
+
+이 Solo 모델은 현재 `configs/model_artifacts.json`에 등록되지 않아 아래의 과거 모델용 `sim_cli models fetch/verify` 명령으로 선택할 수 없다. 실행 보조 파일과 장면·평가 입력의 누락, CPU용 설치·실행 안내는 [#679](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/679)에서 추적한다. 과거 모델로 최신 Solo 결과를 대체하지 않는다.
+
+## 과거 모델의 배포 기록
 
 첫 배포 `models-20260923-v1`은 다음 두 **과거 실험 모델**이다. 표준 RGB 제어기를 ACT로 자동 교체하지 않는다.
 

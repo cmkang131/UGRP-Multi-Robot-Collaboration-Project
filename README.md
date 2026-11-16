@@ -118,6 +118,16 @@ ACT 모델: LeRobot 0.6.2 구현, ResNet-18, 인코더 4층·디코더 1층, 매
 
 ## 시작하기
 
+### 새 체크아웃에서 확인할 수 있는 범위
+
+| 경로 | 확인할 수 있는 것 | 재현 상태 |
+|---|---|---|
+| CPU 설치 데모 | 고정 바퀴 명령, 물리 진행, 장면·자기 카메라 렌더링 | 아래 설치 안내의 무료 GIF 데모. LLM·ACT·자율 운반 성공을 검사하지 않는다 |
+| Solo v1 코드·모델 | 공개 코드 묶음과 ACT 가중치 | [릴리스](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/tag/solo-v1-20261114)에 있다. 실행 보조 파일과 평가 입력 연결이 부족해 새 체크아웃의 전체 평가 재현은 막혀 있다([#679](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/679)) |
+| 최신 2대 LLM–MuJoCo 실행 | 위의 개발 환경에서 확인한 동작 | 든 채 이동·여러 로봇 실행·계획기 연결·천장 카메라 코드는 배포 전이다. 기존 데모로 이 결과를 재현했다고 판단하지 않는다 |
+
+실제로 실행한 명령·출력·수동 작업은 [2026-11-16 새 CPU 환경 점검](experiments/2026-11-16-cpu-repro-audit/README.md)에 있다. 이 점검은 Debian 13의 새 Python 가상환경에서 수행했으며 Ubuntu 24.04 전체 검증을 뜻하지 않는다.
+
 | 하고 싶은 일 | 문서 |
 |---|---|
 | 시뮬레이션 돌려 보기 | [설치와 첫 실행](docs/ubuntu_quickstart.md), [로컬 실행](docs/local_simulation.md) |
