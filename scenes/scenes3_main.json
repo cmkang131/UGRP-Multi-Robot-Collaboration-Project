@@ -1,0 +1,4536 @@
+{
+ "schema": "scenes3.main.v1",
+ "status": "analytical_candidates_not_experimental_results",
+ "scope": "Three-robot main scenes: L3 9, C3 9, K3 6, X3 3 (control), D3 3 (control). Analytic only: no simulation, LLM or paid call was run.",
+ "units": {
+  "position": "m",
+  "yaw": "rad",
+  "time": "s"
+ },
+ "arena": {
+  "x": [
+   -1.05,
+   5.4
+  ],
+  "y": [
+   -3.15,
+   1.45
+  ],
+  "partition_x": 2.2,
+  "door": {
+   "x": 2.2,
+   "y": 0.05,
+   "width": 0.5,
+   "capacity": 1
+  },
+  "box_size": 0.04,
+  "signs": {
+   "11": [
+    5.37,
+    0.4
+   ],
+   "12": [
+    5.37,
+    -2.1
+   ],
+   "13": [
+    3.4,
+    -3.12
+   ]
+  },
+  "drop_centres": {
+   "11": [
+    5.07,
+    0.4
+   ],
+   "12": [
+    5.07,
+    -2.1
+   ],
+   "13": [
+    3.4,
+    -2.82
+   ]
+  }
+ },
+ "knowledge_contract": {
+  "knows_references": "Order IDs only (complete order: colour, count, sign). A robot does not learn that an order it lacks does not exist.",
+  "can_grasp": "Optional {rid: [colours]}: the robot can only grasp those colours. A robot knows its own capability, not the others.",
+  "coordinates": "Evaluator-only. Never give world coordinates, box IDs or oracle plans to the LLM.",
+  "one_carry": "Each robot carries at most one box per run. Demand never exceeds the number of robots.",
+  "one_order_per_sign": "Distinct signs per order.",
+  "boxes": "Always 3 boxes, 2 of one colour and 1 of the other (the largest pool the runner has used for a team scene).",
+  "constraints": "Always empty.",
+  "visibility_verified": false
+ },
+ "model": "model3.py = the time model, oracle and baselines U / S of scenes/check_scenes.py (reproduces its 3-robot estimates)",
+ "selection_rule": "L3, C3, K3: oracle - baseline >= 0.5 correct boxes under BOTH U and S. X3, D3: equal-count controls (control=true): X3 baseline end - oracle completion >= 60 s, D3 >= 1 expected wrong-box move.",
+ "builder": {
+  "file": "build_scenes3.py",
+  "seed": 20261116,
+  "max_try_per_slot": 400000,
+  "attempts_per_scene": {
+   "L3M01": 833,
+   "L3M02": 911,
+   "L3M03": 3257,
+   "L3M04": 3228,
+   "L3M05": 381,
+   "L3M06": 638,
+   "L3M07": 1909,
+   "L3M08": 477,
+   "L3M09": 3063,
+   "C3M01": 2353,
+   "C3M02": 3005,
+   "C3M03": 1696,
+   "C3M04": 779,
+   "C3M05": 1855,
+   "C3M06": 529,
+   "C3M07": 7202,
+   "C3M08": 1626,
+   "C3M09": 242,
+   "K3M01": 1125,
+   "K3M02": 585,
+   "K3M03": 24,
+   "K3M04": 1382,
+   "K3M05": 358,
+   "K3M06": 1555,
+   "X3M01": 15704,
+   "X3M02": 76871,
+   "X3M03": 6212,
+   "D3M01": 1037,
+   "D3M02": 10407,
+   "D3M03": 7427
+  }
+ },
+ "rejections_by_type": {
+  "L3": {
+   "sampled": 14697,
+   "boxes too close": 9404,
+   "robot outside room": 3318,
+   "geometry los": 99,
+   "geometry door": 935,
+   "geometry near": 89,
+   "geometry robotgap": 508,
+   "geometry yaw": 124,
+   "geometry far": 160,
+   "geometry dev65": 26,
+   "geometry corridor": 10,
+   "nearest-box margin": 15
+  },
+  "C3": {
+   "sampled": 19287,
+   "boxes too close": 12374,
+   "robot outside room": 4269,
+   "geometry door": 1271,
+   "geometry robotgap": 650,
+   "geometry near": 133,
+   "geometry los": 121,
+   "geometry far": 222,
+   "geometry dev65": 34,
+   "geometry yaw": 184,
+   "nearest box is not own box": 2,
+   "nearest-box margin": 10,
+   "geometry corridor": 8
+  },
+  "K3": {
+   "sampled": 5029,
+   "geometry robotgap": 152,
+   "boxes too close": 3271,
+   "robot outside room": 1115,
+   "geometry far": 65,
+   "geometry door": 324,
+   "geometry yaw": 34,
+   "geometry los": 27,
+   "geometry near": 27,
+   "geometry dev65": 6,
+   "geometry corridor": 2
+  },
+  "X3": {
+   "sampled": 98787,
+   "boxes too close": 63511,
+   "robot outside room": 22264,
+   "geometry door": 6324,
+   "geometry los": 593,
+   "geometry yaw": 798,
+   "geometry far": 1012,
+   "geometry robotgap": 3369,
+   "geometry near": 577,
+   "X3 crossed box not far enough": 40,
+   "geometry dev65": 150,
+   "nearest-box margin": 75,
+   "geometry corridor": 37,
+   "nearest box is not own box": 13,
+   "X3 C nearest red is not A box": 21
+  },
+  "D3": {
+   "sampled": 18871,
+   "outside room": 6280,
+   "boxes too close": 10857,
+   "holder not far from target": 1039,
+   "geometry robotgap": 111,
+   "geometry door": 275,
+   "geometry yaw": 57,
+   "geometry wall": 172,
+   "geometry far": 33,
+   "geometry near": 15,
+   "geometry los": 20,
+   "geometry dev65": 9
+  }
+ },
+ "scenes": [
+  {
+   "id": "L3M01",
+   "type": "orders_concentrated_3",
+   "type_code": "L3",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 1.25,
+     "y": -1.9
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 0.35,
+     "y": -1.5
+    },
+    {
+     "id": "c",
+     "colour": "red",
+     "x": -0.25,
+     "y": -0.7
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1.55,
+     "y": -2.5,
+     "yaw": 2.2406
+    },
+    {
+     "rid": "r2",
+     "x": -0.4,
+     "y": -2.15,
+     "yaw": 0.809
+    },
+    {
+     "rid": "r3",
+     "x": 0.35,
+     "y": -0.35,
+     "yaw": -1.8291
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o3",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1",
+     "o2",
+     "o3"
+    ],
+    "r2": [],
+    "r3": []
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "o3"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "rand"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "rand"
+     ]
+    ]
+   },
+   "info_flow": [
+    "r2 needs o2 from r1",
+    "r3 needs o3 from r1"
+   ],
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 213.9542,
+    "coop_completion_s": 213.9542,
+    "message_rounds": 2,
+    "baseline_correct": 2.1111,
+    "baseline_S_correct": 2.1111,
+    "baseline_p_full": 0.2222,
+    "baseline_p_full_S": 0.2222,
+    "baseline_capped_completion_s": 747.5454,
+    "baseline_active_end_s": 213.5631,
+    "baseline_errors": 0.8889,
+    "baseline_errors_S": 0.8889,
+    "gap_U": 0.8889,
+    "gap_S": 0.8889,
+    "time_gap_s": -0.3911
+   },
+   "balance": {
+    "doubleton_colour": "red",
+    "holder": "r1",
+    "single_colour_robot": "r1",
+    "holder_in_pair": false,
+    "first_order_colour": "blue"
+   }
+  },
+  {
+   "id": "L3M02",
+   "type": "orders_concentrated_3",
+   "type_code": "L3",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.35,
+     "y": -2.25
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 0.55,
+     "y": -0.1
+    },
+    {
+     "id": "c",
+     "colour": "blue",
+     "x": 0.65,
+     "y": -1.25
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1.6,
+     "y": -1.55,
+     "yaw": 2.9248
+    },
+    {
+     "rid": "r2",
+     "x": -0.45,
+     "y": 0.2,
+     "yaw": -0.7733
+    },
+    {
+     "rid": "r3",
+     "x": 0.95,
+     "y": -2.55,
+     "yaw": 2.2053
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o3",
+     "colour": "blue",
+     "count": 1,
+     "sign": 11
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1",
+     "o2",
+     "o3"
+    ],
+    "r2": [],
+    "r3": []
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "c",
+      "o3"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r3": [
+     [
+      "a",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "c",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "rand"
+     ]
+    ],
+    "r3": [
+     [
+      "a",
+      "rand"
+     ]
+    ]
+   },
+   "info_flow": [
+    "r2 needs o2 from r1",
+    "r3 needs o1 from r1"
+   ],
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 207.5689,
+    "coop_completion_s": 207.5689,
+    "message_rounds": 2,
+    "baseline_correct": 1.6667,
+    "baseline_S_correct": 1.6667,
+    "baseline_p_full": 0.1111,
+    "baseline_p_full_S": 0.1111,
+    "baseline_capped_completion_s": 824.8861,
+    "baseline_active_end_s": 221.7596,
+    "baseline_errors": 1.3333,
+    "baseline_errors_S": 1.3333,
+    "gap_U": 1.3333,
+    "gap_S": 1.3333,
+    "time_gap_s": 14.1907
+   },
+   "balance": {
+    "doubleton_colour": "blue",
+    "holder": "r1",
+    "single_colour_robot": "r2",
+    "holder_in_pair": true,
+    "first_order_colour": "blue"
+   }
+  },
+  {
+   "id": "L3M03",
+   "type": "orders_concentrated_3",
+   "type_code": "L3",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 1.15,
+     "y": -1.15
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 0.3,
+     "y": -1.5
+    },
+    {
+     "id": "c",
+     "colour": "blue",
+     "x": -0.15,
+     "y": -0.5
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1.45,
+     "y": -1.8,
+     "yaw": 2.4448
+    },
+    {
+     "rid": "r2",
+     "x": 0.3,
+     "y": -2.45,
+     "yaw": 1.3947
+    },
+    {
+     "rid": "r3",
+     "x": 0.55,
+     "y": 0.1,
+     "yaw": -1.7781
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o3",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1",
+     "o2",
+     "o3"
+    ],
+    "r2": [],
+    "r3": []
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "o3"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "rand"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "rand"
+     ]
+    ]
+   },
+   "info_flow": [
+    "r2 needs o2 from r1",
+    "r3 needs o3 from r1"
+   ],
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 210.565,
+    "coop_completion_s": 210.565,
+    "message_rounds": 2,
+    "baseline_correct": 1.6667,
+    "baseline_S_correct": 1.6667,
+    "baseline_p_full": 0.1111,
+    "baseline_p_full_S": 0.1111,
+    "baseline_capped_completion_s": 823.3961,
+    "baseline_active_end_s": 214.5339,
+    "baseline_errors": 1.3333,
+    "baseline_errors_S": 1.3333,
+    "gap_U": 1.3333,
+    "gap_S": 1.3333,
+    "time_gap_s": 3.9689
+   },
+   "balance": {
+    "doubleton_colour": "red",
+    "holder": "r1",
+    "single_colour_robot": "r3",
+    "holder_in_pair": true,
+    "first_order_colour": "red"
+   }
+  },
+  {
+   "id": "L3M04",
+   "type": "orders_concentrated_3",
+   "type_code": "L3",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.95,
+     "y": -0.8
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": -0.4,
+     "y": -1.7
+    },
+    {
+     "id": "c",
+     "colour": "blue",
+     "x": -0.05,
+     "y": -0.3
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": -0.25,
+     "y": -2.5,
+     "yaw": 1.3561
+    },
+    {
+     "rid": "r2",
+     "x": 0.95,
+     "y": -1.7,
+     "yaw": 2.3562
+    },
+    {
+     "rid": "r3",
+     "x": -0.5,
+     "y": 0.4,
+     "yaw": -1.1073
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o3",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [],
+    "r2": [
+     "o1",
+     "o2",
+     "o3"
+    ],
+    "r3": []
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o3"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "rand"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "rand"
+     ]
+    ]
+   },
+   "info_flow": [
+    "r1 needs o2 from r2",
+    "r3 needs o1 from r2"
+   ],
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 201.4367,
+    "coop_completion_s": 201.4367,
+    "message_rounds": 2,
+    "baseline_correct": 1.6667,
+    "baseline_S_correct": 1.6667,
+    "baseline_p_full": 0.1111,
+    "baseline_p_full_S": 0.1111,
+    "baseline_capped_completion_s": 822.5531,
+    "baseline_active_end_s": 202.9086,
+    "baseline_errors": 1.3333,
+    "baseline_errors_S": 1.3333,
+    "gap_U": 1.3333,
+    "gap_S": 1.3333,
+    "time_gap_s": 1.4719
+   },
+   "balance": {
+    "doubleton_colour": "blue",
+    "holder": "r2",
+    "single_colour_robot": "r1",
+    "holder_in_pair": true,
+    "first_order_colour": "blue"
+   }
+  },
+  {
+   "id": "L3M05",
+   "type": "orders_concentrated_3",
+   "type_code": "L3",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 0.45,
+     "y": 0.05
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 1.1,
+     "y": -0.8
+    },
+    {
+     "id": "c",
+     "colour": "blue",
+     "x": -0.25,
+     "y": -0.55
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": -0.15,
+     "y": 0.6,
+     "yaw": -1.1997
+    },
+    {
+     "rid": "r2",
+     "x": 0.15,
+     "y": -1.3,
+     "yaw": 1.2726
+    },
+    {
+     "rid": "r3",
+     "x": 1.15,
+     "y": -1.45,
+     "yaw": 2.1089
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o3",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    }
+   ],
+   "knows": {
+    "r1": [],
+    "r2": [
+     "o1",
+     "o2",
+     "o3"
+    ],
+    "r3": []
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o3"
+     ]
+    ],
+    "r2": [
+     [
+      "c",
+      "o1"
+     ]
+    ],
+    "r3": [
+     [
+      "b",
+      "o2"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "rand"
+     ]
+    ],
+    "r2": [
+     [
+      "c",
+      "o1"
+     ]
+    ],
+    "r3": [
+     [
+      "b",
+      "rand"
+     ]
+    ]
+   },
+   "info_flow": [
+    "r1 needs o3 from r2",
+    "r3 needs o2 from r2"
+   ],
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 203.625,
+    "coop_completion_s": 203.625,
+    "message_rounds": 2,
+    "baseline_correct": 2.1111,
+    "baseline_S_correct": 2.1111,
+    "baseline_p_full": 0.2222,
+    "baseline_p_full_S": 0.2222,
+    "baseline_capped_completion_s": 745.25,
+    "baseline_active_end_s": 203.625,
+    "baseline_errors": 0.8889,
+    "baseline_errors_S": 0.8889,
+    "gap_U": 0.8889,
+    "gap_S": 0.8889,
+    "time_gap_s": 0.0
+   },
+   "balance": {
+    "doubleton_colour": "red",
+    "holder": "r2",
+    "single_colour_robot": "r2",
+    "holder_in_pair": false,
+    "first_order_colour": "blue"
+   }
+  },
+  {
+   "id": "L3M06",
+   "type": "orders_concentrated_3",
+   "type_code": "L3",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 1.1,
+     "y": -0.95
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 0.4,
+     "y": -1.8
+    },
+    {
+     "id": "c",
+     "colour": "red",
+     "x": 0.55,
+     "y": -0.15
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1.75,
+     "y": -1.4,
+     "yaw": 2.8827
+    },
+    {
+     "rid": "r2",
+     "x": -0.25,
+     "y": -1.95,
+     "yaw": 0.6897
+    },
+    {
+     "rid": "r3",
+     "x": 0.55,
+     "y": 0.5,
+     "yaw": -1.4221
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o3",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [],
+    "r2": [
+     "o1",
+     "o2",
+     "o3"
+    ],
+    "r3": []
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o3"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "o2"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "rand"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "rand"
+     ]
+    ]
+   },
+   "info_flow": [
+    "r1 needs o3 from r2",
+    "r3 needs o2 from r2"
+   ],
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 192.1313,
+    "coop_completion_s": 192.1313,
+    "message_rounds": 2,
+    "baseline_correct": 1.6667,
+    "baseline_S_correct": 1.6667,
+    "baseline_p_full": 0.1111,
+    "baseline_p_full_S": 0.1111,
+    "baseline_capped_completion_s": 821.3479,
+    "baseline_active_end_s": 192.9815,
+    "baseline_errors": 1.3333,
+    "baseline_errors_S": 1.3333,
+    "gap_U": 1.3333,
+    "gap_S": 1.3333,
+    "time_gap_s": 0.8502
+   },
+   "balance": {
+    "doubleton_colour": "blue",
+    "holder": "r2",
+    "single_colour_robot": "r3",
+    "holder_in_pair": true,
+    "first_order_colour": "blue"
+   }
+  },
+  {
+   "id": "L3M07",
+   "type": "orders_concentrated_3",
+   "type_code": "L3",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 0.7,
+     "y": -2.35
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 0.75,
+     "y": -0.75
+    },
+    {
+     "id": "c",
+     "colour": "red",
+     "x": 0.1,
+     "y": 0.1
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1.1,
+     "y": -1.4,
+     "yaw": -3.0939
+    },
+    {
+     "rid": "r2",
+     "x": -0.25,
+     "y": -2.0,
+     "yaw": 0.5263
+    },
+    {
+     "rid": "r3",
+     "x": -0.55,
+     "y": -0.4,
+     "yaw": -0.1725
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o3",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [],
+    "r2": [],
+    "r3": [
+     "o1",
+     "o2",
+     "o3"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "b",
+      "o3"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "o2"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "rand"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "rand"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "o1"
+     ]
+    ]
+   },
+   "info_flow": [
+    "r1 needs o3 from r3",
+    "r2 needs o1 from r3"
+   ],
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 215.4007,
+    "coop_completion_s": 215.4007,
+    "message_rounds": 2,
+    "baseline_correct": 1.6667,
+    "baseline_S_correct": 1.6667,
+    "baseline_p_full": 0.1111,
+    "baseline_p_full_S": 0.1111,
+    "baseline_capped_completion_s": 823.9334,
+    "baseline_active_end_s": 215.4007,
+    "baseline_errors": 1.3333,
+    "baseline_errors_S": 1.3333,
+    "gap_U": 1.3333,
+    "gap_S": 1.3333,
+    "time_gap_s": 0.0
+   },
+   "balance": {
+    "doubleton_colour": "red",
+    "holder": "r3",
+    "single_colour_robot": "r1",
+    "holder_in_pair": true,
+    "first_order_colour": "red"
+   }
+  },
+  {
+   "id": "L3M08",
+   "type": "orders_concentrated_3",
+   "type_code": "L3",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.85,
+     "y": -0.65
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 1.0,
+     "y": -1.95
+    },
+    {
+     "id": "c",
+     "colour": "red",
+     "x": 0.1,
+     "y": -2.3
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 0.05,
+     "y": -0.15,
+     "yaw": -1.0531
+    },
+    {
+     "rid": "r2",
+     "x": -0.55,
+     "y": -2.75,
+     "yaw": 0.7296
+    },
+    {
+     "rid": "r3",
+     "x": 1.15,
+     "y": -2.7,
+     "yaw": 2.2469
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o3",
+     "colour": "blue",
+     "count": 1,
+     "sign": 11
+    }
+   ],
+   "knows": {
+    "r1": [],
+    "r2": [],
+    "r3": [
+     "o1",
+     "o2",
+     "o3"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o3"
+     ]
+    ],
+    "r2": [
+     [
+      "c",
+      "o2"
+     ]
+    ],
+    "r3": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "rand"
+     ]
+    ],
+    "r2": [
+     [
+      "c",
+      "rand"
+     ]
+    ],
+    "r3": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "info_flow": [
+    "r1 needs o3 from r3",
+    "r2 needs o2 from r3"
+   ],
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 200.3517,
+    "coop_completion_s": 200.3517,
+    "message_rounds": 2,
+    "baseline_correct": 1.6667,
+    "baseline_S_correct": 1.6667,
+    "baseline_p_full": 0.1111,
+    "baseline_p_full_S": 0.1111,
+    "baseline_capped_completion_s": 822.2613,
+    "baseline_active_end_s": 203.9214,
+    "baseline_errors": 1.3333,
+    "baseline_errors_S": 1.3333,
+    "gap_U": 1.3333,
+    "gap_S": 1.3333,
+    "time_gap_s": 3.5697
+   },
+   "balance": {
+    "doubleton_colour": "blue",
+    "holder": "r3",
+    "single_colour_robot": "r2",
+    "holder_in_pair": true,
+    "first_order_colour": "blue"
+   }
+  },
+  {
+   "id": "L3M09",
+   "type": "orders_concentrated_3",
+   "type_code": "L3",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 0.8,
+     "y": -1.15
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": -0.45,
+     "y": -1.65
+    },
+    {
+     "id": "c",
+     "colour": "red",
+     "x": 0.2,
+     "y": -0.1
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1.45,
+     "y": -1.85,
+     "yaw": 2.6139
+    },
+    {
+     "rid": "r2",
+     "x": -0.15,
+     "y": 0.55,
+     "yaw": -1.3838
+    },
+    {
+     "rid": "r3",
+     "x": -0.05,
+     "y": -2.25,
+     "yaw": 1.5359
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o3",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [],
+    "r2": [],
+    "r3": [
+     "o1",
+     "o2",
+     "o3"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "c",
+      "o3"
+     ]
+    ],
+    "r3": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "rand"
+     ]
+    ],
+    "r2": [
+     [
+      "c",
+      "rand"
+     ]
+    ],
+    "r3": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "info_flow": [
+    "r1 needs o2 from r3",
+    "r2 needs o3 from r3"
+   ],
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 200.1983,
+    "coop_completion_s": 200.1983,
+    "message_rounds": 2,
+    "baseline_correct": 2.1111,
+    "baseline_S_correct": 2.1111,
+    "baseline_p_full": 0.2222,
+    "baseline_p_full_S": 0.2222,
+    "baseline_capped_completion_s": 745.7171,
+    "baseline_active_end_s": 204.5647,
+    "baseline_errors": 0.8889,
+    "baseline_errors_S": 0.8889,
+    "gap_U": 0.8889,
+    "gap_S": 0.8889,
+    "time_gap_s": 4.3665
+   },
+   "balance": {
+    "doubleton_colour": "red",
+    "holder": "r3",
+    "single_colour_robot": "r3",
+    "holder_in_pair": false,
+    "first_order_colour": "blue"
+   }
+  },
+  {
+   "id": "C3M01",
+   "type": "same_colour_competition_3",
+   "type_code": "C3",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 1.2,
+     "y": -1.1
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": -0.2,
+     "y": -0.5
+    },
+    {
+     "id": "c",
+     "colour": "blue",
+     "x": 0.55,
+     "y": -1.8
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 0.55,
+     "y": -0.2,
+     "yaw": -1.8532
+    },
+    {
+     "rid": "r2",
+     "x": 1.5,
+     "y": -1.75,
+     "yaw": 2.5987
+    },
+    {
+     "rid": "r3",
+     "x": 0.15,
+     "y": -2.65,
+     "yaw": 1.3538
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o3",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1"
+    ],
+    "r2": [
+     "o2",
+     "o3"
+    ],
+    "r3": [
+     "o2"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "b",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o2"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "o3"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o2"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "o2"
+     ]
+    ]
+   },
+   "info_flow": [
+    "r3 needs o3 from r2"
+   ],
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 210.4997,
+    "coop_completion_s": 210.4997,
+    "message_rounds": 2,
+    "baseline_correct": 2.0,
+    "baseline_S_correct": 2.5,
+    "baseline_p_full": 0.0,
+    "baseline_p_full_S": 0.5,
+    "baseline_capped_completion_s": 900.0,
+    "baseline_active_end_s": 214.6697,
+    "baseline_errors": 1.0,
+    "baseline_errors_S": 0.5,
+    "gap_U": 1.0,
+    "gap_S": 0.5,
+    "time_gap_s": 4.17
+   },
+   "balance": {
+    "doubleton_colour": "blue",
+    "single_colour_robot": "r1",
+    "holder": "r2",
+    "holder_is_lower_of_pair": true,
+    "single_order_id": "o1"
+   }
+  },
+  {
+   "id": "C3M02",
+   "type": "same_colour_competition_3",
+   "type_code": "C3",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 0.15,
+     "y": -0.5
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": -0.45,
+     "y": -1.4
+    },
+    {
+     "id": "c",
+     "colour": "red",
+     "x": 0.9,
+     "y": -1.35
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": -0.6,
+     "y": -2.4,
+     "yaw": 1.0163
+    },
+    {
+     "rid": "r2",
+     "x": 0.2,
+     "y": 0.5,
+     "yaw": -1.5547
+    },
+    {
+     "rid": "r3",
+     "x": 1.25,
+     "y": -1.95,
+     "yaw": 2.4638
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o3",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o2"
+    ],
+    "r2": [
+     "o1"
+    ],
+    "r3": [
+     "o1",
+     "o3"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o3"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "o1"
+     ]
+    ]
+   },
+   "info_flow": [
+    "r2 needs o3 from r3"
+   ],
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 215.3111,
+    "coop_completion_s": 215.3111,
+    "message_rounds": 2,
+    "baseline_correct": 2.0,
+    "baseline_S_correct": 2.5,
+    "baseline_p_full": 0.0,
+    "baseline_p_full_S": 0.5,
+    "baseline_capped_completion_s": 900.0,
+    "baseline_active_end_s": 215.3111,
+    "baseline_errors": 1.0,
+    "baseline_errors_S": 0.5,
+    "gap_U": 1.0,
+    "gap_S": 0.5,
+    "time_gap_s": 0.0
+   },
+   "balance": {
+    "doubleton_colour": "red",
+    "single_colour_robot": "r1",
+    "holder": "r3",
+    "holder_is_lower_of_pair": false,
+    "single_order_id": "o2"
+   }
+  },
+  {
+   "id": "C3M03",
+   "type": "same_colour_competition_3",
+   "type_code": "C3",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": -0.35,
+     "y": -0.1
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 0.2,
+     "y": -1.9
+    },
+    {
+     "id": "c",
+     "colour": "blue",
+     "x": 1.05,
+     "y": -2.25
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": -0.15,
+     "y": -2.5,
+     "yaw": 0.9297
+    },
+    {
+     "rid": "r2",
+     "x": 0.5,
+     "y": 0.25,
+     "yaw": -2.0526
+    },
+    {
+     "rid": "r3",
+     "x": 1.4,
+     "y": -1.3,
+     "yaw": -2.8332
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o3",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o3"
+    ],
+    "r2": [
+     "o1"
+    ],
+    "r3": [
+     "o1",
+     "o2"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "b",
+      "o3"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "o2"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "o3"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "o1"
+     ]
+    ]
+   },
+   "info_flow": [],
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 215.4007,
+    "coop_completion_s": 215.4007,
+    "message_rounds": 2,
+    "baseline_correct": 2.0,
+    "baseline_S_correct": 2.5,
+    "baseline_p_full": 0.0,
+    "baseline_p_full_S": 0.5,
+    "baseline_capped_completion_s": 900.0,
+    "baseline_active_end_s": 216.4469,
+    "baseline_errors": 1.0,
+    "baseline_errors_S": 0.5,
+    "gap_U": 1.0,
+    "gap_S": 0.5,
+    "time_gap_s": 1.0462
+   },
+   "balance": {
+    "doubleton_colour": "blue",
+    "single_colour_robot": "r1",
+    "holder": "r3",
+    "holder_is_lower_of_pair": false,
+    "single_order_id": "o3"
+   }
+  },
+  {
+   "id": "C3M04",
+   "type": "same_colour_competition_3",
+   "type_code": "C3",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 0.6,
+     "y": -0.25
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": -0.15,
+     "y": -1.1
+    },
+    {
+     "id": "c",
+     "colour": "red",
+     "x": 0.85,
+     "y": -1.3
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1.0,
+     "y": -2.0,
+     "yaw": 2.1297
+    },
+    {
+     "rid": "r2",
+     "x": -0.5,
+     "y": -0.35,
+     "yaw": -0.5218
+    },
+    {
+     "rid": "r3",
+     "x": 0.5,
+     "y": 0.5,
+     "yaw": -1.6677
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o3",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o2",
+     "o3"
+    ],
+    "r2": [
+     "o1"
+    ],
+    "r3": [
+     "o2"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "c",
+      "o3"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ],
+    "r3": [
+     [
+      "a",
+      "o2"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "c",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ],
+    "r3": [
+     [
+      "a",
+      "o2"
+     ]
+    ]
+   },
+   "info_flow": [],
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 202.0044,
+    "coop_completion_s": 202.0044,
+    "message_rounds": 2,
+    "baseline_correct": 2.0,
+    "baseline_S_correct": 2.5,
+    "baseline_p_full": 0.0,
+    "baseline_p_full_S": 0.5,
+    "baseline_capped_completion_s": 900.0,
+    "baseline_active_end_s": 202.0044,
+    "baseline_errors": 1.0,
+    "baseline_errors_S": 0.5,
+    "gap_U": 1.0,
+    "gap_S": 0.5,
+    "time_gap_s": 0.0
+   },
+   "balance": {
+    "doubleton_colour": "red",
+    "single_colour_robot": "r2",
+    "holder": "r1",
+    "holder_is_lower_of_pair": true,
+    "single_order_id": "o1"
+   }
+  },
+  {
+   "id": "C3M05",
+   "type": "same_colour_competition_3",
+   "type_code": "C3",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.45,
+     "y": -0.2
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 1.1,
+     "y": -1.6
+    },
+    {
+     "id": "c",
+     "colour": "blue",
+     "x": -0.35,
+     "y": -1.75
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 0.5,
+     "y": 0.5,
+     "yaw": -1.6122
+    },
+    {
+     "rid": "r2",
+     "x": 1.2,
+     "y": -2.4,
+     "yaw": 2.2198
+    },
+    {
+     "rid": "r3",
+     "x": -0.1,
+     "y": -2.7,
+     "yaw": 1.285
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o3",
+     "colour": "blue",
+     "count": 1,
+     "sign": 11
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1",
+     "o3"
+    ],
+    "r2": [
+     "o2"
+    ],
+    "r3": [
+     "o1"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o3"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "o1"
+     ]
+    ]
+   },
+   "info_flow": [],
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 213.2199,
+    "coop_completion_s": 213.2199,
+    "message_rounds": 2,
+    "baseline_correct": 2.0,
+    "baseline_S_correct": 2.5,
+    "baseline_p_full": 0.0,
+    "baseline_p_full_S": 0.5,
+    "baseline_capped_completion_s": 900.0,
+    "baseline_active_end_s": 213.2199,
+    "baseline_errors": 1.0,
+    "baseline_errors_S": 0.5,
+    "gap_U": 1.0,
+    "gap_S": 0.5,
+    "time_gap_s": 0.0
+   },
+   "balance": {
+    "doubleton_colour": "blue",
+    "single_colour_robot": "r2",
+    "holder": "r1",
+    "holder_is_lower_of_pair": true,
+    "single_order_id": "o2"
+   }
+  },
+  {
+   "id": "C3M06",
+   "type": "same_colour_competition_3",
+   "type_code": "C3",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": -0.25,
+     "y": -0.95
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 0.25,
+     "y": 0.3
+    },
+    {
+     "id": "c",
+     "colour": "blue",
+     "x": 0.65,
+     "y": -0.55
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": -0.05,
+     "y": -1.65,
+     "yaw": 1.4266
+    },
+    {
+     "rid": "r2",
+     "x": 1.35,
+     "y": -1.2,
+     "yaw": 2.5951
+    },
+    {
+     "rid": "r3",
+     "x": -0.6,
+     "y": 0.1,
+     "yaw": -0.509
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o3",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1"
+    ],
+    "r2": [
+     "o3"
+    ],
+    "r3": [
+     "o1",
+     "o2"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "c",
+      "o3"
+     ]
+    ],
+    "r3": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "c",
+      "o3"
+     ]
+    ],
+    "r3": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "info_flow": [
+    "r1 needs o2 from r3"
+   ],
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 206.4552,
+    "coop_completion_s": 206.4552,
+    "message_rounds": 2,
+    "baseline_correct": 2.0,
+    "baseline_S_correct": 2.5,
+    "baseline_p_full": 0.0,
+    "baseline_p_full_S": 0.5,
+    "baseline_capped_completion_s": 900.0,
+    "baseline_active_end_s": 211.4145,
+    "baseline_errors": 1.0,
+    "baseline_errors_S": 0.5,
+    "gap_U": 1.0,
+    "gap_S": 0.5,
+    "time_gap_s": 4.9593
+   },
+   "balance": {
+    "doubleton_colour": "red",
+    "single_colour_robot": "r2",
+    "holder": "r3",
+    "holder_is_lower_of_pair": false,
+    "single_order_id": "o3"
+   }
+  },
+  {
+   "id": "C3M07",
+   "type": "same_colour_competition_3",
+   "type_code": "C3",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.3,
+     "y": -0.6
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 0.6,
+     "y": -2.5
+    },
+    {
+     "id": "c",
+     "colour": "red",
+     "x": 0.95,
+     "y": -1.4
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1.8,
+     "y": -1.4,
+     "yaw": -3.0156
+    },
+    {
+     "rid": "r2",
+     "x": -0.05,
+     "y": -2.25,
+     "yaw": 0.4973
+    },
+    {
+     "rid": "r3",
+     "x": 0.7,
+     "y": -0.05,
+     "yaw": -1.7936
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o3",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o2",
+     "o3"
+    ],
+    "r2": [
+     "o2"
+    ],
+    "r3": [
+     "o1"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "c",
+      "o3"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r3": [
+     [
+      "a",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "c",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r3": [
+     [
+      "a",
+      "o1"
+     ]
+    ]
+   },
+   "info_flow": [],
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 199.7436,
+    "coop_completion_s": 199.7436,
+    "message_rounds": 2,
+    "baseline_correct": 2.0,
+    "baseline_S_correct": 2.5,
+    "baseline_p_full": 0.0,
+    "baseline_p_full_S": 0.5,
+    "baseline_capped_completion_s": 900.0,
+    "baseline_active_end_s": 203.625,
+    "baseline_errors": 1.0,
+    "baseline_errors_S": 0.5,
+    "gap_U": 1.0,
+    "gap_S": 0.5,
+    "time_gap_s": 3.8814
+   },
+   "balance": {
+    "doubleton_colour": "red",
+    "single_colour_robot": "r3",
+    "holder": "r1",
+    "holder_is_lower_of_pair": true,
+    "single_order_id": "o1"
+   }
+  },
+  {
+   "id": "C3M08",
+   "type": "same_colour_competition_3",
+   "type_code": "C3",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 1.1,
+     "y": -1.7
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 0.35,
+     "y": -0.45
+    },
+    {
+     "id": "c",
+     "colour": "red",
+     "x": 0.05,
+     "y": -1.55
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": -0.65,
+     "y": -0.45,
+     "yaw": -0.502
+    },
+    {
+     "rid": "r2",
+     "x": -0.5,
+     "y": -2.2,
+     "yaw": 0.7108
+    },
+    {
+     "rid": "r3",
+     "x": 1.15,
+     "y": -2.4,
+     "yaw": 2.0629
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o3",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1"
+    ],
+    "r2": [
+     "o1",
+     "o3"
+    ],
+    "r3": [
+     "o2"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "b",
+      "o3"
+     ]
+    ],
+    "r2": [
+     [
+      "c",
+      "o1"
+     ]
+    ],
+    "r3": [
+     [
+      "a",
+      "o2"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "c",
+      "o1"
+     ]
+    ],
+    "r3": [
+     [
+      "a",
+      "o2"
+     ]
+    ]
+   },
+   "info_flow": [
+    "r1 needs o3 from r2"
+   ],
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 207.8206,
+    "coop_completion_s": 207.8206,
+    "message_rounds": 2,
+    "baseline_correct": 2.0,
+    "baseline_S_correct": 2.5,
+    "baseline_p_full": 0.0,
+    "baseline_p_full_S": 0.5,
+    "baseline_capped_completion_s": 900.0,
+    "baseline_active_end_s": 221.2625,
+    "baseline_errors": 1.0,
+    "baseline_errors_S": 0.5,
+    "gap_U": 1.0,
+    "gap_S": 0.5,
+    "time_gap_s": 13.4419
+   },
+   "balance": {
+    "doubleton_colour": "red",
+    "single_colour_robot": "r3",
+    "holder": "r2",
+    "holder_is_lower_of_pair": false,
+    "single_order_id": "o2"
+   }
+  },
+  {
+   "id": "C3M09",
+   "type": "same_colour_competition_3",
+   "type_code": "C3",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.0,
+     "y": -2.5
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 1.1,
+     "y": -1.85
+    },
+    {
+     "id": "c",
+     "colour": "blue",
+     "x": 0.45,
+     "y": 0.0
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": -0.35,
+     "y": -0.2,
+     "yaw": -0.5874
+    },
+    {
+     "rid": "r2",
+     "x": -0.6,
+     "y": -2.15,
+     "yaw": 0.2942
+    },
+    {
+     "rid": "r3",
+     "x": 0.9,
+     "y": -2.5,
+     "yaw": 2.2069
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o3",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1"
+    ],
+    "r2": [
+     "o1",
+     "o2"
+    ],
+    "r3": [
+     "o3"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "c",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r3": [
+     [
+      "b",
+      "o3"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "c",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r3": [
+     [
+      "b",
+      "o3"
+     ]
+    ]
+   },
+   "info_flow": [
+    "r1 needs o2 from r2"
+   ],
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 192.3601,
+    "coop_completion_s": 192.3601,
+    "message_rounds": 2,
+    "baseline_correct": 2.0,
+    "baseline_S_correct": 2.5,
+    "baseline_p_full": 0.0,
+    "baseline_p_full_S": 0.5,
+    "baseline_capped_completion_s": 900.0,
+    "baseline_active_end_s": 194.5555,
+    "baseline_errors": 1.0,
+    "baseline_errors_S": 0.5,
+    "gap_U": 1.0,
+    "gap_S": 0.5,
+    "time_gap_s": 2.1953
+   },
+   "balance": {
+    "doubleton_colour": "blue",
+    "single_colour_robot": "r3",
+    "holder": "r2",
+    "holder_is_lower_of_pair": false,
+    "single_order_id": "o3"
+   }
+  },
+  {
+   "id": "K3M01",
+   "type": "capability_3",
+   "type_code": "K3",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 0.45,
+     "y": -0.25
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 0.9,
+     "y": -1.15
+    },
+    {
+     "id": "c",
+     "colour": "red",
+     "x": -0.1,
+     "y": -1.8
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1.25,
+     "y": -1.75,
+     "yaw": 2.6197
+    },
+    {
+     "rid": "r2",
+     "x": -0.2,
+     "y": -2.55,
+     "yaw": 1.1715
+    },
+    {
+     "rid": "r3",
+     "x": 0.1,
+     "y": 0.7,
+     "yaw": -1.4066
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o3",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o2",
+     "o3"
+    ],
+    "r2": [
+     "o1"
+    ],
+    "r3": []
+   },
+   "can_grasp": {
+    "r1": [
+     "blue"
+    ],
+    "r2": [
+     "red"
+    ],
+    "r3": [
+     "red"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "b",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "c",
+      "o2"
+     ]
+    ],
+    "r3": [
+     [
+      "a",
+      "o3"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "rand"
+     ]
+    ],
+    "r2": [
+     [
+      "c",
+      "rand"
+     ]
+    ],
+    "r3": [
+     [
+      "a",
+      "rand"
+     ]
+    ]
+   },
+   "info_flow": [
+    "r1 needs o1 from r2",
+    "r2 needs o2 from r1",
+    "r3 needs o3 from r1"
+   ],
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 208.7161,
+    "coop_completion_s": 208.7161,
+    "message_rounds": 2,
+    "baseline_correct": 1.4444,
+    "baseline_S_correct": 2.3333,
+    "baseline_p_full": 0.0741,
+    "baseline_p_full_S": 0.3333,
+    "baseline_capped_completion_s": 849.0414,
+    "baseline_active_end_s": 208.8465,
+    "baseline_errors": 1.5556,
+    "baseline_errors_S": 0.6667,
+    "gap_U": 1.5556,
+    "gap_S": 0.6667,
+    "time_gap_s": 0.1304
+   },
+   "balance": {
+    "doubleton_colour": "red",
+    "odd_robot": "r1",
+    "d1": "r2",
+    "d2": "r3",
+    "d1_is_lower": true,
+    "single_order_id": "o1"
+   }
+  },
+  {
+   "id": "K3M02",
+   "type": "capability_3",
+   "type_code": "K3",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.05,
+     "y": -1.5
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 0.0,
+     "y": 0.15
+    },
+    {
+     "id": "c",
+     "colour": "blue",
+     "x": 0.6,
+     "y": -0.55
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": -0.6,
+     "y": 0.65,
+     "yaw": -0.986
+    },
+    {
+     "rid": "r2",
+     "x": 0.6,
+     "y": 0.35,
+     "yaw": -2.1953
+    },
+    {
+     "rid": "r3",
+     "x": 1.0,
+     "y": -1.6,
+     "yaw": 2.4857
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o3",
+     "colour": "blue",
+     "count": 1,
+     "sign": 11
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1",
+     "o3"
+    ],
+    "r2": [],
+    "r3": [
+     "o2"
+    ]
+   },
+   "can_grasp": {
+    "r1": [
+     "red"
+    ],
+    "r2": [
+     "blue"
+    ],
+    "r3": [
+     "blue"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "c",
+      "o3"
+     ]
+    ],
+    "r3": [
+     [
+      "a",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "rand"
+     ]
+    ],
+    "r2": [
+     [
+      "c",
+      "rand"
+     ]
+    ],
+    "r3": [
+     [
+      "a",
+      "rand"
+     ]
+    ]
+   },
+   "info_flow": [
+    "r1 needs o2 from r3",
+    "r2 needs o3 from r1",
+    "r3 needs o1 from r1"
+   ],
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 211.2555,
+    "coop_completion_s": 211.2555,
+    "message_rounds": 2,
+    "baseline_correct": 1.4444,
+    "baseline_S_correct": 2.3333,
+    "baseline_p_full": 0.0741,
+    "baseline_p_full_S": 0.3333,
+    "baseline_capped_completion_s": 848.9819,
+    "baseline_active_end_s": 211.4057,
+    "baseline_errors": 1.5556,
+    "baseline_errors_S": 0.6667,
+    "gap_U": 1.5556,
+    "gap_S": 0.6667,
+    "time_gap_s": 0.1502
+   },
+   "balance": {
+    "doubleton_colour": "blue",
+    "odd_robot": "r1",
+    "d1": "r3",
+    "d2": "r2",
+    "d1_is_lower": false,
+    "single_order_id": "o2"
+   }
+  },
+  {
+   "id": "K3M03",
+   "type": "capability_3",
+   "type_code": "K3",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 0.4,
+     "y": -0.85
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": -0.05,
+     "y": -0.05
+    },
+    {
+     "id": "c",
+     "colour": "red",
+     "x": 0.45,
+     "y": -2.35
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": -0.15,
+     "y": -2.0,
+     "yaw": 0.4957
+    },
+    {
+     "rid": "r2",
+     "x": -0.65,
+     "y": -0.75,
+     "yaw": -0.0532
+    },
+    {
+     "rid": "r3",
+     "x": 1.25,
+     "y": -1.2,
+     "yaw": -3.0222
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o3",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [],
+    "r2": [
+     "o1",
+     "o2"
+    ],
+    "r3": [
+     "o3"
+    ]
+   },
+   "can_grasp": {
+    "r1": [
+     "red"
+    ],
+    "r2": [
+     "blue"
+    ],
+    "r3": [
+     "red"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "c",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o3"
+     ]
+    ],
+    "r3": [
+     [
+      "a",
+      "o2"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "c",
+      "rand"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "rand"
+     ]
+    ],
+    "r3": [
+     [
+      "a",
+      "rand"
+     ]
+    ]
+   },
+   "info_flow": [
+    "r1 needs o1 from r2",
+    "r2 needs o3 from r3",
+    "r3 needs o2 from r2"
+   ],
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 220.6812,
+    "coop_completion_s": 220.6812,
+    "message_rounds": 2,
+    "baseline_correct": 1.4444,
+    "baseline_S_correct": 2.3333,
+    "baseline_p_full": 0.0741,
+    "baseline_p_full_S": 0.3333,
+    "baseline_capped_completion_s": 849.7614,
+    "baseline_active_end_s": 215.7977,
+    "baseline_errors": 1.5556,
+    "baseline_errors_S": 0.6667,
+    "gap_U": 1.5556,
+    "gap_S": 0.6667,
+    "time_gap_s": -4.8835
+   },
+   "balance": {
+    "doubleton_colour": "red",
+    "odd_robot": "r2",
+    "d1": "r3",
+    "d2": "r1",
+    "d1_is_lower": false,
+    "single_order_id": "o3"
+   }
+  },
+  {
+   "id": "K3M04",
+   "type": "capability_3",
+   "type_code": "K3",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": -0.2,
+     "y": -2.4
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 0.35,
+     "y": -0.5
+    },
+    {
+     "id": "c",
+     "colour": "blue",
+     "x": 0.95,
+     "y": -1.4
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": -0.4,
+     "y": 0.1,
+     "yaw": -1.0829
+    },
+    {
+     "rid": "r2",
+     "x": 0.4,
+     "y": -2.7,
+     "yaw": 1.9243
+    },
+    {
+     "rid": "r3",
+     "x": 1.6,
+     "y": -1.6,
+     "yaw": 2.9899
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o3",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1"
+    ],
+    "r2": [
+     "o2",
+     "o3"
+    ],
+    "r3": []
+   },
+   "can_grasp": {
+    "r1": [
+     "blue"
+    ],
+    "r2": [
+     "red"
+    ],
+    "r3": [
+     "blue"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "o3"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "rand"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "rand"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "rand"
+     ]
+    ]
+   },
+   "info_flow": [
+    "r1 needs o2 from r2",
+    "r2 needs o1 from r1",
+    "r3 needs o3 from r2"
+   ],
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 204.5478,
+    "coop_completion_s": 204.5478,
+    "message_rounds": 2,
+    "baseline_correct": 1.4444,
+    "baseline_S_correct": 2.3333,
+    "baseline_p_full": 0.0741,
+    "baseline_p_full_S": 0.3333,
+    "baseline_capped_completion_s": 848.7475,
+    "baseline_active_end_s": 208.5889,
+    "baseline_errors": 1.5556,
+    "baseline_errors_S": 0.6667,
+    "gap_U": 1.5556,
+    "gap_S": 0.6667,
+    "time_gap_s": 4.0411
+   },
+   "balance": {
+    "doubleton_colour": "blue",
+    "odd_robot": "r2",
+    "d1": "r1",
+    "d2": "r3",
+    "d1_is_lower": true,
+    "single_order_id": "o1"
+   }
+  },
+  {
+   "id": "K3M05",
+   "type": "capability_3",
+   "type_code": "K3",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": -0.35,
+     "y": -0.8
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 1.0,
+     "y": -0.9
+    },
+    {
+     "id": "c",
+     "colour": "red",
+     "x": -0.2,
+     "y": -2.05
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": -0.6,
+     "y": -1.45,
+     "yaw": 0.1104
+    },
+    {
+     "rid": "r2",
+     "x": 0.65,
+     "y": 0.1,
+     "yaw": -1.8214
+    },
+    {
+     "rid": "r3",
+     "x": -0.15,
+     "y": -0.05,
+     "yaw": -1.234
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o3",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o2"
+    ],
+    "r2": [],
+    "r3": [
+     "o1",
+     "o3"
+    ]
+   },
+   "can_grasp": {
+    "r1": [
+     "red"
+    ],
+    "r2": [
+     "red"
+    ],
+    "r3": [
+     "blue"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "c",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o3"
+     ]
+    ],
+    "r3": [
+     [
+      "a",
+      "o2"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "c",
+      "rand"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "rand"
+     ]
+    ],
+    "r3": [
+     [
+      "a",
+      "rand"
+     ]
+    ]
+   },
+   "info_flow": [
+    "r1 needs o1 from r3",
+    "r2 needs o3 from r3",
+    "r3 needs o2 from r1"
+   ],
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 204.9411,
+    "coop_completion_s": 204.9411,
+    "message_rounds": 2,
+    "baseline_correct": 1.4444,
+    "baseline_S_correct": 2.3333,
+    "baseline_p_full": 0.0741,
+    "baseline_p_full_S": 0.3333,
+    "baseline_capped_completion_s": 848.604,
+    "baseline_active_end_s": 211.426,
+    "baseline_errors": 1.5556,
+    "baseline_errors_S": 0.6667,
+    "gap_U": 1.5556,
+    "gap_S": 0.6667,
+    "time_gap_s": 6.4849
+   },
+   "balance": {
+    "doubleton_colour": "red",
+    "odd_robot": "r3",
+    "d1": "r1",
+    "d2": "r2",
+    "d1_is_lower": true,
+    "single_order_id": "o2"
+   }
+  },
+  {
+   "id": "K3M06",
+   "type": "capability_3",
+   "type_code": "K3",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": -0.45,
+     "y": -1.05
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 1.3,
+     "y": -2.2
+    },
+    {
+     "id": "c",
+     "colour": "blue",
+     "x": 0.5,
+     "y": -1.15
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1.25,
+     "y": -1.25,
+     "yaw": -2.3962
+    },
+    {
+     "rid": "r2",
+     "x": -0.25,
+     "y": -0.3,
+     "yaw": -1.3396
+    },
+    {
+     "rid": "r3",
+     "x": 0.7,
+     "y": -2.7,
+     "yaw": 1.4371
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o3",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [],
+    "r2": [
+     "o3"
+    ],
+    "r3": [
+     "o1",
+     "o2"
+    ]
+   },
+   "can_grasp": {
+    "r1": [
+     "blue"
+    ],
+    "r2": [
+     "blue"
+    ],
+    "r3": [
+     "red"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "c",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o2"
+     ]
+    ],
+    "r3": [
+     [
+      "b",
+      "o3"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "c",
+      "rand"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "rand"
+     ]
+    ],
+    "r3": [
+     [
+      "b",
+      "rand"
+     ]
+    ]
+   },
+   "info_flow": [
+    "r1 needs o1 from r3",
+    "r2 needs o2 from r3",
+    "r3 needs o3 from r2"
+   ],
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 199.4005,
+    "coop_completion_s": 199.4005,
+    "message_rounds": 2,
+    "baseline_correct": 1.4444,
+    "baseline_S_correct": 2.3333,
+    "baseline_p_full": 0.0741,
+    "baseline_p_full_S": 0.3333,
+    "baseline_capped_completion_s": 848.353,
+    "baseline_active_end_s": 202.8889,
+    "baseline_errors": 1.5556,
+    "baseline_errors_S": 0.6667,
+    "gap_U": 1.5556,
+    "gap_S": 0.6667,
+    "time_gap_s": 3.4883
+   },
+   "balance": {
+    "doubleton_colour": "blue",
+    "odd_robot": "r3",
+    "d1": "r2",
+    "d2": "r1",
+    "d1_is_lower": false,
+    "single_order_id": "o3"
+   }
+  },
+  {
+   "id": "X3M01",
+   "type": "knowledge_crossed_3",
+   "type_code": "X3",
+   "control": true,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 0.3,
+     "y": -2.05
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 1.15,
+     "y": -1.05
+    },
+    {
+     "id": "c",
+     "colour": "blue",
+     "x": -0.4,
+     "y": -0.35
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": -0.35,
+     "y": -1.95,
+     "yaw": 0.7247
+    },
+    {
+     "rid": "r2",
+     "x": 1.55,
+     "y": -1.85,
+     "yaw": 2.6673
+    },
+    {
+     "rid": "r3",
+     "x": -0.6,
+     "y": 0.3,
+     "yaw": -0.9647
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o3",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o2"
+    ],
+    "r2": [
+     "o1"
+    ],
+    "r3": [
+     "o3"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o3"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "c",
+      "o1"
+     ]
+    ],
+    "r3": [
+     [
+      "b",
+      "o3"
+     ]
+    ]
+   },
+   "info_flow": [
+    "r1 needs o3 from r3",
+    "r2 needs o2 from r1",
+    "r3 needs o1 from r2"
+   ],
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 199.7419,
+    "coop_completion_s": 199.7419,
+    "message_rounds": 2,
+    "baseline_correct": 3.0,
+    "baseline_S_correct": 3.0,
+    "baseline_p_full": 1.0,
+    "baseline_p_full_S": 1.0,
+    "baseline_capped_completion_s": 320.3633,
+    "baseline_active_end_s": 320.3633,
+    "baseline_errors": 0.0,
+    "baseline_errors_S": 0.0,
+    "gap_U": 0.0,
+    "gap_S": 0.0,
+    "time_gap_s": 120.6214
+   },
+   "balance": {
+    "doubleton_colour": "red",
+    "single_colour_robot": "r3",
+    "cross_a": "r2",
+    "straight_b": "r1",
+    "single_order_id": "o1"
+   }
+  },
+  {
+   "id": "X3M02",
+   "type": "knowledge_crossed_3",
+   "type_code": "X3",
+   "control": true,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.55,
+     "y": -0.9
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 0.35,
+     "y": 0.25
+    },
+    {
+     "id": "c",
+     "colour": "blue",
+     "x": -0.45,
+     "y": -0.75
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 0.9,
+     "y": 1.0,
+     "yaw": -1.9904
+    },
+    {
+     "rid": "r2",
+     "x": -0.25,
+     "y": -1.45,
+     "yaw": 1.2257
+    },
+    {
+     "rid": "r3",
+     "x": 1.2,
+     "y": -1.5,
+     "yaw": 2.369
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o3",
+     "colour": "blue",
+     "count": 1,
+     "sign": 11
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o3"
+    ],
+    "r2": [
+     "o1"
+    ],
+    "r3": [
+     "o2"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "c",
+      "o3"
+     ]
+    ],
+    "r3": [
+     [
+      "a",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "o3"
+     ]
+    ],
+    "r2": [
+     [
+      "c",
+      "o1"
+     ]
+    ],
+    "r3": [
+     [
+      "b",
+      "o2"
+     ]
+    ]
+   },
+   "info_flow": [
+    "r1 needs o2 from r3",
+    "r2 needs o3 from r1",
+    "r3 needs o1 from r2"
+   ],
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 215.7856,
+    "coop_completion_s": 215.7856,
+    "message_rounds": 2,
+    "baseline_correct": 3.0,
+    "baseline_S_correct": 3.0,
+    "baseline_p_full": 1.0,
+    "baseline_p_full_S": 1.0,
+    "baseline_capped_completion_s": 283.0493,
+    "baseline_active_end_s": 283.0493,
+    "baseline_errors": 0.0,
+    "baseline_errors_S": 0.0,
+    "gap_U": 0.0,
+    "gap_S": 0.0,
+    "time_gap_s": 67.2637
+   },
+   "balance": {
+    "doubleton_colour": "blue",
+    "single_colour_robot": "r1",
+    "cross_a": "r3",
+    "straight_b": "r2",
+    "single_order_id": "o2"
+   }
+  },
+  {
+   "id": "X3M03",
+   "type": "knowledge_crossed_3",
+   "type_code": "X3",
+   "control": true,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.25,
+     "y": 0.2
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 0.9,
+     "y": -1.1
+    },
+    {
+     "id": "c",
+     "colour": "red",
+     "x": -0.5,
+     "y": -1.1
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1.55,
+     "y": -1.55,
+     "yaw": 2.5676
+    },
+    {
+     "rid": "r2",
+     "x": 0.45,
+     "y": 0.95,
+     "yaw": -1.6797
+    },
+    {
+     "rid": "r3",
+     "x": -0.6,
+     "y": -0.4,
+     "yaw": -0.4071
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o3",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o3"
+    ],
+    "r2": [
+     "o2"
+    ],
+    "r3": [
+     "o1"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "b",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o3"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "o2"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "o3"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "o1"
+     ]
+    ]
+   },
+   "info_flow": [
+    "r1 needs o1 from r3",
+    "r2 needs o3 from r1",
+    "r3 needs o2 from r2"
+   ],
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 198.5214,
+    "coop_completion_s": 198.5214,
+    "message_rounds": 2,
+    "baseline_correct": 3.0,
+    "baseline_S_correct": 3.0,
+    "baseline_p_full": 1.0,
+    "baseline_p_full_S": 1.0,
+    "baseline_capped_completion_s": 293.542,
+    "baseline_active_end_s": 293.542,
+    "baseline_errors": 0.0,
+    "baseline_errors_S": 0.0,
+    "gap_U": 0.0,
+    "gap_S": 0.0,
+    "time_gap_s": 95.0206
+   },
+   "balance": {
+    "doubleton_colour": "red",
+    "single_colour_robot": "r2",
+    "cross_a": "r1",
+    "straight_b": "r3",
+    "single_order_id": "o3"
+   }
+  },
+  {
+   "id": "D3M01",
+   "type": "decoy_boxes_3",
+   "type_code": "D3",
+   "control": true,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.6,
+     "y": -0.15
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 1.5,
+     "y": -1.55
+    },
+    {
+     "id": "c",
+     "colour": "blue",
+     "x": 0.3,
+     "y": -1.9
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": -0.3,
+     "y": -2.2,
+     "yaw": 0.7518
+    },
+    {
+     "rid": "r2",
+     "x": 0.95,
+     "y": -2.3,
+     "yaw": 1.764
+    },
+    {
+     "rid": "r3",
+     "x": -0.1,
+     "y": 0.2,
+     "yaw": -0.9231
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1"
+    ],
+    "r2": [],
+    "r3": []
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ],
+    "r3": []
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "c",
+      "rand"
+     ]
+    ],
+    "r3": [
+     [
+      "a",
+      "rand"
+     ]
+    ]
+   },
+   "info_flow": [
+    "r1 stays idle",
+    "r2 needs o1 from r1",
+    "r3 stays idle"
+   ],
+   "estimate": {
+    "oracle_correct": 1,
+    "oracle_completion_s": 208.8752,
+    "coop_completion_s": 208.8752,
+    "message_rounds": 1,
+    "baseline_correct": 1.0,
+    "baseline_S_correct": 1.0,
+    "baseline_p_full": 1.0,
+    "baseline_p_full_S": 1.0,
+    "baseline_capped_completion_s": 280.1944,
+    "baseline_active_end_s": 280.1944,
+    "baseline_errors": 2.0,
+    "baseline_errors_S": 2.0,
+    "gap_U": 0.0,
+    "gap_S": 0.0,
+    "time_gap_s": 71.3191
+   },
+   "balance": {
+    "doubleton_colour": "blue",
+    "holder": "r1",
+    "carrier": "r2",
+    "idle": "r3",
+    "target_colour": "red"
+   }
+  },
+  {
+   "id": "D3M02",
+   "type": "decoy_boxes_3",
+   "type_code": "D3",
+   "control": true,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": -0.05,
+     "y": -1.45
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 0.8,
+     "y": -2.3
+    },
+    {
+     "id": "c",
+     "colour": "blue",
+     "x": 1.2,
+     "y": -0.65
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1.55,
+     "y": -2.65,
+     "yaw": 2.2245
+    },
+    {
+     "rid": "r2",
+     "x": -0.1,
+     "y": -2.05,
+     "yaw": 0.6084
+    },
+    {
+     "rid": "r3",
+     "x": 0.15,
+     "y": -0.8,
+     "yaw": -0.8637
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [],
+    "r2": [
+     "o1"
+    ],
+    "r3": []
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [],
+    "r2": [],
+    "r3": [
+     [
+      "c",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "rand"
+     ]
+    ],
+    "r2": [
+     [
+      "c",
+      "o1"
+     ]
+    ],
+    "r3": [
+     [
+      "a",
+      "rand"
+     ]
+    ]
+   },
+   "info_flow": [
+    "r1 stays idle",
+    "r2 stays idle",
+    "r3 needs o1 from r2"
+   ],
+   "estimate": {
+    "oracle_correct": 1,
+    "oracle_completion_s": 198.8979,
+    "coop_completion_s": 198.8979,
+    "message_rounds": 1,
+    "baseline_correct": 1.0,
+    "baseline_S_correct": 1.0,
+    "baseline_p_full": 1.0,
+    "baseline_p_full_S": 1.0,
+    "baseline_capped_completion_s": 260.5111,
+    "baseline_active_end_s": 260.5111,
+    "baseline_errors": 2.0,
+    "baseline_errors_S": 2.0,
+    "gap_U": 0.0,
+    "gap_S": 0.0,
+    "time_gap_s": 61.6132
+   },
+   "balance": {
+    "doubleton_colour": "red",
+    "holder": "r2",
+    "carrier": "r3",
+    "idle": "r1",
+    "target_colour": "blue"
+   }
+  },
+  {
+   "id": "D3M03",
+   "type": "decoy_boxes_3",
+   "type_code": "D3",
+   "control": true,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.65,
+     "y": -0.9
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 0.75,
+     "y": -1.8
+    },
+    {
+     "id": "c",
+     "colour": "red",
+     "x": -0.5,
+     "y": -1.95
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 0.3,
+     "y": -2.4,
+     "yaw": 1.7782
+    },
+    {
+     "rid": "r2",
+     "x": 0.1,
+     "y": -0.35,
+     "yaw": -1.3575
+    },
+    {
+     "rid": "r3",
+     "x": 1.5,
+     "y": -1.5,
+     "yaw": 3.0245
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    }
+   ],
+   "knows": {
+    "r1": [],
+    "r2": [],
+    "r3": [
+     "o1"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "c",
+      "o1"
+     ]
+    ],
+    "r2": [],
+    "r3": []
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "rand"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "rand"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "o1"
+     ]
+    ]
+   },
+   "info_flow": [
+    "r1 needs o1 from r3",
+    "r2 stays idle",
+    "r3 stays idle"
+   ],
+   "estimate": {
+    "oracle_correct": 1,
+    "oracle_completion_s": 208.5462,
+    "coop_completion_s": 208.5462,
+    "message_rounds": 1,
+    "baseline_correct": 1.0,
+    "baseline_S_correct": 1.0,
+    "baseline_p_full": 1.0,
+    "baseline_p_full_S": 1.0,
+    "baseline_capped_completion_s": 290.625,
+    "baseline_active_end_s": 290.625,
+    "baseline_errors": 2.0,
+    "baseline_errors_S": 2.0,
+    "gap_U": 0.0,
+    "gap_S": 0.0,
+    "time_gap_s": 82.0788
+   },
+   "balance": {
+    "doubleton_colour": "blue",
+    "holder": "r3",
+    "carrier": "r1",
+    "idle": "r2",
+    "target_colour": "red"
+   }
+  }
+ ]
+}

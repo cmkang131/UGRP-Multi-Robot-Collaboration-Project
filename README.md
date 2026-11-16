@@ -103,7 +103,7 @@ ACT 모델: LeRobot 0.6.2 구현, ResNet-18, 인코더 4층·디코더 1층, 매
 | 로봇 3대 | MuJoCo | 연구 중심이다. 정답 계획으로 장면이 풀리는지 보는 관문의 기준은 [작업 계획 3절](docs/plan.md#3-순서와-일정)에 있고, 결과는 Linear 에 적는다 |
 | 실물 로봇 | | 아직 없다 |
 
-모두 개발용 실행 환경에서 본 것이다. 단계별 세부(끝 조건, 모델 표, 실물에서 맞출 값)는 [Solo 구조와 모델](docs/solo_architecture.md), 구조의 세부는 [전체 구조](docs/architecture.md), [계획기와 메시지 규칙](docs/planning_messages.md), [실행층](docs/execution_layer.md)에 있다. 집기까지의 코드는 `solo_pipeline/` 에 있고, 든 채 이동, 여러 로봇 실행, 계획기 연결, 천장 카메라 코드는 정리한 뒤 올린다.
+모두 개발용 실행 환경에서 본 것이다. 단계별 세부(끝 조건, 모델 표, 실물에서 맞출 값)는 [Solo 구조와 모델](docs/solo_architecture.md), 구조의 세부는 [전체 구조](docs/architecture.md), [계획기와 메시지 규칙](docs/planning_messages.md), [실행층](docs/execution_layer.md)에 있다. 집기까지의 코드는 `solo_pipeline/` 에 있고, 든 채 이동, 여러 로봇 실행, 계획기 연결, 천장 카메라 코드는 `harness/`, `scripts/`, `team/` 에 있다([팀 실행 안내](team/README.md)).
 
 ## 지금 하는 일
 
@@ -139,6 +139,11 @@ Sim2Real 은 순서가 정해진 단계가 아니라 여러 사람이 동시에 
 | `configs/` | 실행 설정 |
 | `calibration/` | 실물 측정과 보정 |
 | `solo_pipeline/` | 로봇 한 대의 구조(둘러보기, 접근, 정면 맞추기, ACT 집기, 내려놓기) 코드 묶음 |
+| `team/` | 팀 실행: LLM 계획기와 그 서버, 시험. 실행기 연결은 `scripts/run_team_carry.py`. [안내](team/README.md) |
+| `analysis/` | 팀 실행 기록의 판정, 원인 분해, 검정, 그림 ([RUNBOOK](analysis/RUNBOOK.md)) |
+| `batch/` | 묶음 실행 스케줄러(작업 VM 여러 대) ([안내](batch/README.md)) |
+| `scenes/` | 팀 실험 장면 파일과 생성기·검사기 |
+| `prereg/` | 사전 등록과 동결 도구 |
 | `docs/sim2real/` | 실물로 옮기는 안내와 과제 |
 | `experiments/` | 실험별 요약. 영상과 큰 자료는 [드라이브](experiments/RAW_DATA_INDEX.md)에 있다 |
 

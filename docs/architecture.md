@@ -85,6 +85,10 @@ LLM 이 계획하고, 고른 행동을 학습 모델(ACT)이나 코드가 실행
 | 부분 | 위치 |
 |---|---|
 | 찾기, 다가가기, 정면 맞추기, ACT 집기, 내려놓기 | [`solo_pipeline/`](../solo_pipeline/README.md) |
-| 든 채 이동, 여러 로봇 실행, 계획기 연결, 천장 카메라 | 아직 저장소에 없음. 정리한 뒤 올린다 |
+| 든 채 이동, 장소 기억, 번호 표식, 천장 카메라 | [`harness/`](../harness) 의 `carry_nav_v1.py`, `place_memory_v1.py`, `robot_tags_v1.py`, `overhead_v1.py`, `drive_record_v1.py` |
+| 여러 로봇 실행, 계획기 연결 | 실행기 [`scripts/run_team_carry.py`](../scripts/run_team_carry.py), 계획기 [`team/`](../team/README.md) |
+| 분석, 묶음 실행, 장면, 사전 등록 | [`analysis/`](../analysis/RUNBOOK.md), [`batch/`](../batch/README.md), [`scenes/`](../scenes/SCENES3.md), [`prereg/`](../prereg/PREREG.md) |
+
+`solo_pipeline/` 은 Solo 평가에 쓴 코드를 그대로 모은 기록이다. 팀 실행에 쓰는 판은 `harness/`, `scripts/` 에 있고 같은 이름 파일은 그 뒤에 고친 것이다.
 
 무엇이 돌아가는지는 [지금 하는 일](current_status.md)에 있다. 수치와 날마다의 진행은 팀 Linear(UGRP 팀)에 적는다. 계획기가 따른 선행 연구는 [계획기와 메시지 규칙 6절](planning_messages.md#6-참고한-연구)에 있다.
