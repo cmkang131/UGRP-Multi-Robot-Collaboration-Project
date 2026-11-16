@@ -191,7 +191,7 @@ MuJoCo 없는 계약·단위 검사 범위이므로 agent_lock과 공용 잠금 
 mkdir -p .pytest_tmp_env
 OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 \
 NUMEXPR_NUM_THREADS=1 GIT_OPTIONAL_LOCKS=0 PYTHONDONTWRITEBYTECODE=1 TMPDIR="$PWD/.pytest_tmp_env" \
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
   tests/test_zone_pair_review3.py tests/test_zone_pair_review2.py tests/test_zone_pair_review.py \
   tests/test_zone_pair_executor.py tests/test_zone_pair_status.py \
   tests/test_zone_own_executor.py tests/test_zone_own_executor_host.py \
@@ -241,7 +241,7 @@ P1-4(dwell 중 이동)·P1-6(재관측 실패 예산 초기화)의 공용 수정
 아니므로 TensorBoard 스냅샷은 만들지 않았다.
 
 ```sh
-OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim/bin/python -m pytest -q \
+OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim/bin/python -m pytest -q \
   tests/test_zone_pair_executor.py tests/test_zone_pair_status.py \
   tests/test_zone_pair_review.py tests/test_zone_pair_review2.py \
   tests/test_zone_pair_review3.py tests/test_zone_pair_review4.py \
@@ -261,7 +261,7 @@ Git fetch는 공용 `.git` 쓰기 제한으로, `gh pr list`는 네트워크 오
 
 기준 HEAD는 `1628a03f717a`이며, 사용자 요청에 따라 **커밋하지 않은 로컬 수정**이다.
 리뷰 원문은
-`/private/tmp/claude-501/-Users-changmin-projects-ugrp/ecd247bf-a1a7-45d6-9190-dad34be56468/scratchpad/codex-235-review5.md`다.
+`/private/tmp/claude-501/-<home>-projects-ugrp/ecd247bf-a1a7-45d6-9190-dad34be56468/scratchpad/codex-235-review5.md`다.
 
 생산 코드 수정 전에 [5차 회귀](../../tests/test_zone_pair_review5.py) 첫 21개에서
 **10 failed / 11 passed**를 확인했다. P1-1 6개와 P1-2 4개가 실패했으며,
@@ -285,7 +285,7 @@ Git fetch는 공용 `.git` 쓰기 제한으로, `gh pr list`는 네트워크 오
 격리·horizon·공용 실행기 회귀도 포함했다. 새 파일은 CI 테스트 목록에 등록했다.
 
 ```sh
-OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
+OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
   tests/test_zone_pair*.py tests/test_zone_own_executor*.py \
   tests/test_pair_owncam_approach.py tests/test_m2_pair_door_v3.py \
   tests/test_m1_owncam.py tests/test_zone_study_protocol.py \
@@ -328,7 +328,7 @@ guard만 교체해 명령 이력·종료 여부·실패 사유·드라이버 상
 - 제외 1개: 실제 MuJoCo world 테스트. 물리 실행·모델 호출·잠금 획득 없음.
 
 ```sh
-OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
+OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
   tests/test_zone_pair*.py tests/test_zone_own_executor*.py \
   tests/test_pair_owncam_approach.py tests/test_m2_pair_door_v3.py \
   tests/test_m1_owncam.py tests/test_zone_study_protocol.py \
@@ -368,7 +368,7 @@ hold가 없으므로, 명령 이력 기록 뒤 `port.hold()`를 호출해야 한
   없었다. 새 회귀를 `run_ci_tests.py`에 등록했다.
 
 ```sh
-OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
+OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
   tests/test_zone_pair*.py tests/test_zone_own_executor*.py \
   tests/test_pair_owncam_approach.py tests/test_m2_pair_door_v3.py \
   tests/test_m1_owncam.py tests/test_zone_study_protocol.py tests/test_camera_robot_port.py \

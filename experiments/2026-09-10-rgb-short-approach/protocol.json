@@ -1,7 +1,7 @@
 {
   "request": "Learn a 20–30 cm straight physical wheel approach after local grasp passed 20/20 new poses and 14/14 retention.",
   "base_sha": "c23602e2e17727165aaa5fb65773e8b40c365f88",
-  "grasp_model_dir": "/Users/changmin/projects/ugrp/outputs/grasp-recovery-model-20260910-v1",
+  "grasp_model_dir": "<home>/projects/ugrp/outputs/grasp-recovery-model-20260910-v1",
   "teacher_training": "25 independent r1/r3 distance pairs on the 20, 22.5, 25, 27.5, 30 cm grid; fixed scene, seed 11.",
   "development_pilot": "20/20 cm, 30/30 cm, 20/30 cm; all are training conditions. Do not tune using the sealed 20-case rollout.",
   "heldout": "20 predeclared new continuous distances: 10 symmetric and 10 independent asymmetric pairs. Same scene; no new object, heading, or layout.",
@@ -40,7 +40,7 @@
   "development_history": [
     {
       "source_sha": "fd3ff26e3e28e9b1c090ce938b6232c6baa079f4",
-      "raw_dir": "/Users/changmin/projects/ugrp/outputs/rgb-approach-teacher-pilot-20260910-v1",
+      "raw_dir": "<home>/projects/ugrp/outputs/rgb-approach-teacher-pilot-20260910-v1",
       "cases": 3,
       "success": 0,
       "approach_contact_steps": 0,
@@ -48,7 +48,7 @@
     },
     {
       "source_sha": "d1a699d",
-      "raw_dir": "/Users/changmin/projects/ugrp/outputs/rgb-approach-teacher-pilot-20260910-v2",
+      "raw_dir": "<home>/projects/ugrp/outputs/rgb-approach-teacher-pilot-20260910-v2",
       "cases": 3,
       "success": 0,
       "approach_contact_steps": 0,
@@ -56,7 +56,7 @@
     },
     {
       "source_sha": "360e747fe8d126d0b42693276f0632b4d8989b3d",
-      "raw_dir": "/Users/changmin/projects/ugrp/outputs/rgb-approach-teacher-pilot-20260910-v3",
+      "raw_dir": "<home>/projects/ugrp/outputs/rgb-approach-teacher-pilot-20260910-v3",
       "cases": 3,
       "success": 3,
       "approach_contact_steps": 0,
@@ -64,7 +64,7 @@
     },
     {
       "source_sha": "360e747fe8d126d0b42693276f0632b4d8989b3d",
-      "raw_dir": "/Users/changmin/projects/ugrp/outputs/rgb-approach-student-pilot-20260910-v1",
+      "raw_dir": "<home>/projects/ugrp/outputs/rgb-approach-student-pilot-20260910-v1",
       "cases": 3,
       "success": 1,
       "approach_contact_steps": 0,
@@ -84,14 +84,14 @@
     "initial_estimate_basis": "25 cm teacher displacement / accumulated command integral, rounded to .2 s",
     "trials": [
       {
-        "raw_dir": "/Users/changmin/projects/ugrp/outputs/rgb-approach-baseline-calibration-20260910-v1",
+        "raw_dir": "<home>/projects/ugrp/outputs/rgb-approach-baseline-calibration-20260910-v1",
         "seconds": 2.2,
         "remaining_m": 0.033148727495373,
         "success": false,
         "approach_contact_steps": 0
       },
       {
-        "raw_dir": "/Users/changmin/projects/ugrp/outputs/rgb-approach-baseline-calibration-20260910-v2",
+        "raw_dir": "<home>/projects/ugrp/outputs/rgb-approach-baseline-calibration-20260910-v2",
         "seconds": 2.4,
         "remaining_m": 0.0049053005850785,
         "success": true,

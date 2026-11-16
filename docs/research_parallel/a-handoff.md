@@ -22,7 +22,7 @@
 
 ## 검증 및 판정
 
-Python 3.12.13, 기존 `/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python` 사용.
+Python 3.12.13, 기존 `<home>/projects/ugrp/.venv-sim-worker-mac/bin/python` 사용.
 로컬 오프라인 집중 검증 **141 passed, 40 subtests passed**. 새 테스트만 stdlib unittest로
 실행하여 **14 passed**도 확인했다. `git diff --check` 통과. 호출·시계·명령은 fake이며
 MuJoCo 실행·렌더링·학습·외부 LLM·원격 실험·실물 구동을 시작하지 않았다.
@@ -59,10 +59,10 @@ A가 그 worktree의 전체 테스트나 실제 통합을 실행했다는 뜻은
 저장소 root에서 다음 명령은 네트워크/시뮬레이터 없는 감사 재현이다.
 
 ```sh
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m unittest discover \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m unittest discover \
   -s tests -p test_rgb_communication_boundary_audit.py -v
 
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
   tests/test_rgb_communication_boundary_audit.py tests/test_camera_policy.py \
   tests/test_camera_runtime.py tests/test_camera_robot_port.py tests/test_coela_runtime.py \
   tests/test_mixed_warehouse_protocol.py tests/test_dispatch_research.py \

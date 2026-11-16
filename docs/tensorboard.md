@@ -51,8 +51,8 @@ HParams의 **session status=success는 이벤트 가져오기 완료**를 뜻한
 
 ```sh
 .venv-sim-worker-mac/bin/python scripts/export_tensorboard.py \
-  --source /Users/changmin/projects/ugrp/outputs/dispatch-action-act-20260924/holdout-a-candidate-act \
-  --coverage-audit /Users/changmin/projects/ugrp/outputs/act-action-training-20260924/audits/v27-a-act-request-coverage.json \
+  --source <home>/projects/ugrp/outputs/dispatch-action-act-20260924/holdout-a-candidate-act \
+  --coverage-audit <home>/projects/ugrp/outputs/act-action-training-20260924/audits/v27-a-act-request-coverage.json \
   --output outputs/tensorboard/action-act-coverage-NEW-ID --max-images 0
 ```
 
@@ -226,7 +226,7 @@ P06은 아래 절차의 **synthetic 파일/event 계약만** 검사한다. 실�
    writer의 `frozen_plan`·`plan_sha256` 필수 인자로 전달한다. 기존 runner의 KeyboardInterrupt
    처리나 trial 생성 전 실패 기록까지 이 PR로 적용됐다고 간주하지 않는다.
 2. 기존 export manifest의 source 경로/해시와 중복 여부를 검사한 뒤, 기본 체크아웃
-   `/Users/changmin/projects/ugrp/outputs/tensorboard/<NEW-ID>`에 새 snapshot을 만든다.
+   `<home>/projects/ugrp/outputs/tensorboard/<NEW-ID>`에 새 snapshot을 만든다.
    원본과 기존 snapshot은 읽기 전용으로 보존한다.
 3. `EventAccumulator(..., size_guidance={'scalars': 0}).Reload()`로 이벤트를 다시 읽는다.
    trial에서 재계산한 성공·PAR-2·SIM cap·배송 수, raw 명령 행 수, 호출·토큰 하한·미상

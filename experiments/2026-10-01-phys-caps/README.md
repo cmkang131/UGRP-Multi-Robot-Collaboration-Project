@@ -9,9 +9,9 @@ Refs #221. **탐색용 점검이다. 확증 결과나 E2E 성공이 아니다.**
 |---|---|---:|---|---|
 | T13b 사건 복구 | **실행 불가** | 0 / 상한 3,600 | 해당 없음 | 없음 |
 | T13a 정체성·개수 | **실행 불가** | 0 / 상한 1,800 | 해당 없음 | 없음 |
-| L1 최소 차단 재확인 (S07, X01) | **실행함** | 125.6 | 관문 대용(L0·L1 끝점 오차 ≤100 mm) 2/2, 명령 바이트가 3c4fe30e 인수와 2/2 동일 | `/Users/changmin/projects/ugrp/outputs/phys-caps-1001-l1-recheck` |
-| L0/L1 측면 오차 탐사 6건, **seed 951(주 결과)** | **실행함** | 357.2 | 관문 대용 6/6 (실패 0, HOST_ERROR 0) | `/Users/changmin/projects/ugrp/outputs/phys-caps-1001-l1-probes6-s951` |
-| 같은 6건, seed 911 (옵션 누락 실수, 탐색용) | 실행함 | 357.2 | 관문 대용 6/6 | `/Users/changmin/projects/ugrp/outputs/phys-caps-1001-l1-probes6` |
+| L1 최소 차단 재확인 (S07, X01) | **실행함** | 125.6 | 관문 대용(L0·L1 끝점 오차 ≤100 mm) 2/2, 명령 바이트가 3c4fe30e 인수와 2/2 동일 | `<home>/projects/ugrp/outputs/phys-caps-1001-l1-recheck` |
+| L0/L1 측면 오차 탐사 6건, **seed 951(주 결과)** | **실행함** | 357.2 | 관문 대용 6/6 (실패 0, HOST_ERROR 0) | `<home>/projects/ugrp/outputs/phys-caps-1001-l1-probes6-s951` |
+| 같은 6건, seed 911 (옵션 누락 실수, 탐색용) | 실행함 | 357.2 | 관문 대용 6/6 | `<home>/projects/ugrp/outputs/phys-caps-1001-l1-probes6` |
 | P01 3×30 s | **실행 불가** | 0 / 상한 90 | 해당 없음 | 없음 |
 | P03 3×120 s | **실행 불가(인계 문서 없음)** | 0 | 해당 없음 | 없음 |
 
@@ -72,7 +72,7 @@ L1 문서 예상 합계는 482.8 SIM초(62.8×2 + 60.8×2 + 58.9×4)이며 주 �
 
 ## TensorBoard
 
-- **seed 951(주 결과):** 새 스냅샷 `/Users/changmin/projects/ugrp/outputs/tensorboard/1001-phys-caps-l1-probes-s951`(6 run `P951-LE_*`). 실행 중인 공용 서버(6006)의 API 값 90개가 원본(`l1_results.json`)과 일치(불일치 0). 설정 키 `phys_caps_l1_s951_20261001`(`outputs/tensorboard-view.json`에 내 키만 추가; 고정 태그 10개와 HParams 열 포함).
+- **seed 951(주 결과):** 새 스냅샷 `<home>/projects/ugrp/outputs/tensorboard/1001-phys-caps-l1-probes-s951`(6 run `P951-LE_*`). 실행 중인 공용 서버(6006)의 API 값 90개가 원본(`l1_results.json`)과 일치(불일치 0). 설정 키 `phys_caps_l1_s951_20261001`(`outputs/tensorboard-view.json`에 내 키만 추가; 고정 태그 10개와 HParams 열 포함).
   [대시보드](http://127.0.0.1:6006/?pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fpass%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fl1_end_error_mm%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fl1_lateral_mm%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fl1_lateral_pred_mm%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fsim_s%22%7D%5D&smoothing=0&runFilter=%5E1001-phys-caps-l1-probes-s951%2F#timeseries)
 - **재확인 2건 + seed 911 6건(탐색용):** 스냅샷 `1001-phys-caps-l1-probes`(8 run `B-*`, `P-LE_*`), 키 `phys_caps_l1_20261001`. 서버 API 값 122개가 원본과 일치. 이 스냅샷의 run 설명은 seed 실수를 표시하지 않으므로 이 README와 함께 읽는다.
 - 공용 logdir의 run이 500개를 넘어 새 run은 기본 미선택이다. 위 링크의 run 필터로 왼쪽 목록에서 선택한다. 첫 화면 렌더는 확인했고 값은 API로 대조했다.

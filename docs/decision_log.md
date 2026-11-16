@@ -2620,7 +2620,7 @@ No physical MasterPi command was issued for this architecture change. The REAL s
 ### 2026-09-07 Camera budget candidate integrated on Mac; one live pilot failed honestly
 
 - User requested continuation from `ugrp_budget_repair_report.md`. Verified all11candidate code/test base hashes against Mac, applied only harness/scripts/tests; preserved existing .gitignore and decision-log changes, unchanged sim physics. Report retained at docs/camera_budget_repair_20260907.md.
-- Located historical RGB/video artifacts intact in /Users/changmin/Project-Archives/20260907/ugrp/outputs/warehouse_research. Four read-only reference symlinks restored test access; no archived files moved/edited. Mac focused122passed,29subtests,zero failures/skips after restoration and ordered action-chain validator correction.
+- Located historical RGB/video artifacts intact in <home>/Project-Archives/20260907/ugrp/outputs/warehouse_research. Four read-only reference symlinks restored test access; no archived files moved/edited. Mac focused122passed,29subtests,zero failures/skips after restoration and ordered action-chain validator correction.
 - Exactly one real Gemini3.8 solo41 pilot,30calls/60000input/300SIMseconds,impratio10,noslip3,communicationnone. Output camera-budget-repair-dev-01/solo-41,source da86e3f4dd0ca695d93a46cd5f3277a4a55d69eaa8df7b374c34cffe483e122b. 14calls,56321reportedinput,0unknownusage/unsettledreservations;170.828activeSIMseconds+1passivesettle. End LLM_INPUT_TOKEN_BUDGET_PREFLIGHT:lift6.936cm,not inside,no release.0peer/obstacle penetration metric. No429 in this run; no extra availability completion or automatic rerun.
 - Video1375frames fully decoded;8chronological spectator frames and all14originalnav inputs reviewed.9in-place rotation decisions cost36981inputtokens/13.5elapsedcontrolseconds,then2forwarddrives,thenobstacle-veto. This is not deliverysuccess or proof of general efficiency improvement.
 - Live audit found candidate integration defect: executor emits top-level execution, runner read details.execution.236logged macro results but0/14requests receivedlast_macro. Fixed runner record_command and regression through real executor callback to planner transmitted context with explicit offline completer. Added verifier trace-to-context gate; it now correctly rejects original pilot feedback. Related final85tests/23subtests pass. No further real Gemini calls.
@@ -2731,7 +2731,7 @@ Claude 코디네이터가 여러 Codex/Claude 위임 작업을 진행하며 2026
 
 - **사용자 결정:** Claude·Codex에 이어 **Kiro를 서브에이전트로 추가한다.** 원문: "kiro도 서브 에이전트로 써주라", "kiro 쓸 때는 opus 5 max!", "Kiro도 여러 개 써. claude랑 같이 쓰면 됨". 즉 Kiro 세션도 여러 개를 Claude와 함께 병렬로 돌린다.
 - **모델 설정:** Kiro는 `claude-opus-5`, effort `max`로 돈다. `~/.kiro/settings/cli.json`의 `chat.defaultModel` = `claude-opus-5`, `chat.modelDefaults.claude-opus-5.output_config.effort` = `max`로 고정했다.
-- **브랜치 접두사:** Kiro의 작업은 `kiro/`로 표시한다(Claude `claude/`, Codex `codex/`와 같은 구분). worktree는 `/Users/changmin/projects/ugrp-wt/<이름>`에 따로 둔다.
+- **브랜치 접두사:** Kiro의 작업은 `kiro/`로 표시한다(Claude `claude/`, Codex `codex/`와 같은 구분). worktree는 `<home>/projects/ugrp-wt/<이름>`에 따로 둔다.
 - **규칙 등록:** `AGENTS.md`의 "여러 에이전트 동시 작업" 절에 Kiro를 3번째 에이전트로 넣는 변경은 **다른 세션의 PR [#182](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/182)** (draft, 미병합)가 소유한다. 이 로그는 그 PR을 참조하며 규칙 본문을 여기에 중복 기록하지 않는다. #182에는 잠금 `--owner kiro`, `kiro-plugin-cc` 호출 시 호출자 브랜치 안에서만 실행, 기본 체크아웃에서는 `--no-trust-all-tools`가 함께 들어 있다.
 
 ### 2. 한국어 대화 연구 작업 패키지 착수 (Kiro draft PR)

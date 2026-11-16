@@ -4,7 +4,7 @@
 
 ## 범위와 저장소
 
-- 작업 경로: `/Users/changmin/projects/ugrp-wt/codex-masterpi-specs`.
+- 작업 경로: `<home>/projects/ugrp-wt/codex-masterpi-specs`.
 - 시작 HEAD: `d5bd208e45331a73f1f71dd9b3e129c26c5eaac6`. 시작 시 작업 트리 깨끗함. 로컬 `origin/main` 및 GitHub 연결 도구로 확인한 main과 같았다.
 - 로컬·기본 체크아웃·원격 main의 AGENTS 지침, README, current_status, CONTRIBUTING을 확인했다. 기본 체크아웃은 읽기만 했고 갱신하지 않았다.
 - `origin`은 이전 URL `https://github.com/kcm0127-dotcom/ugrp.git`. 연결 도구로 요청 대상 `cmkang131/UGRP-Multi-Robot-Collaboration-Project`의 실제 저장소와 main을 확인했다. 공용 Git 설정을 바꾸지 않았다.
@@ -40,7 +40,7 @@ OMP_NUM_THREADS=2 ../../ugrp/.venv-sim/bin/python -m pytest -q -p no:cacheprovid
 녹색 테스트 결과를 확인한 다음 사용자 지정 `git add --sparse -A`를 실행했으나 종료코드128로 실패했다.
 
 ```text
-fatal: Unable to create '/Users/changmin/projects/ugrp/.git/worktrees/codex-masterpi-specs/index.lock': Operation not permitted
+fatal: Unable to create '<home>/projects/ugrp/.git/worktrees/codex-masterpi-specs/index.lock': Operation not permitted
 ```
 
 Git 메타데이터가 쓰기 허용 경로 밖에 있고, 현재 실행 환경은 승인 요청도 허용하지 않는다. GitHub 쓰기 도구 역시 위 승인 정책으로 차단됐다. 제한을 우회하거나 공용 메타데이터를 옮기지 않았다.

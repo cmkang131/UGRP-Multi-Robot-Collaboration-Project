@@ -53,10 +53,10 @@
 
 ```sh
 python3 scripts/ugrp_session.py run traffic-NEW -- \
-  /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/mjpython \
+  <home>/projects/ugrp/.venv-sim-worker-mac/bin/mjpython \
   -m scripts.run_rgb_traffic --scenario crossing --out-dir outputs/traffic-NEW
 
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
   -m scripts.audit_rgb_traffic outputs/traffic-NEW
 ```
 

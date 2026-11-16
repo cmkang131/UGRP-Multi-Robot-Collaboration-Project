@@ -13,7 +13,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-PRIMARY = Path('/Users/changmin/projects/ugrp')
+PRIMARY = Path('<home>/projects/ugrp')
 OUTS = PRIMARY / 'outputs'
 GROUPS = {'recheck': OUTS / 'phys-caps-1001-l1-recheck', 'probes6': OUTS / 'phys-caps-1001-l1-probes6',
           'probes6_s951': OUTS / 'phys-caps-1001-l1-probes6-s951'}

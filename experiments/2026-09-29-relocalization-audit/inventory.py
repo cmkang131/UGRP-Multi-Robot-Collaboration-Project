@@ -4,7 +4,7 @@ import json
 import os
 import sys
 
-OUT = '/Users/changmin/projects/ugrp/outputs'
+OUT = '<home>/projects/ugrp/outputs'
 
 
 def inventory():

@@ -16,4 +16,4 @@ R1 감쇠 보정 영상도 생성·회수했지만 위 직접 검토 범위에 �
 
 이후 hold 동안 자기 영상은 주로 바닥이고, 개요에서도 상자가 로봇 가까이 있어 접촉 유지나 약 12 mm의 몸체 차이를 시각 판정하기 어렵다. 26.7초 이후 복귀·내리기·열기, 33.3초 이후 후퇴·둘러보기로 이어지고 마지막에는 청록 띠가 화면 아래에 남는다. 듬성한 전체 영상만 보면 정상 작업처럼 보이지만, 접촉·높이·끝점은 별도의 매 스텝 원장으로 판단해야 한다. 10 Hz 영상은 4 kHz 접촉 진동이 없다는 증거가 아니다.
 
-Mac 보관 위치는 `/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/simalt5/`다. 원본·10 Hz 기록 ring·모든 상태는 `/home/ugrp/ugrp-sim/runs/simalt5/`에 보존한다.
+Mac 보관 위치는 `<home>/projects/ugrp/outputs/e2e18-admin/playback/simalt5/`다. 원본·10 Hz 기록 ring·모든 상태는 `/home/ugrp/ugrp-sim/runs/simalt5/`에 보존한다.

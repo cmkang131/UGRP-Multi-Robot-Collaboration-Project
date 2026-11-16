@@ -30,7 +30,7 @@
 
 ## gcp3 — 세 번째 프로젝트 L4 (2026-10-16)
 
-사용자 원문: "프로젝트 그럼 하나 더 만들어". 같은 계정 `<account-1>`에 `<project-id-gcp3>`(<project-number-gcp3>)을 추가했다. 결제 계정은 gcp2와 같은 `01C770-8A2F1F-63BA5F`이며 프로젝트 추가를 새 크레딧 지급으로 해석하지 않는다. 기본값은 계속 gcp2다. 할당량 요청에는 `--billing-project=<project-id-gcp3>`도 붙인다.
+사용자 원문: "프로젝트 그럼 하나 더 만들어". 같은 계정 `<account-1>`에 `<project-id-gcp3>`(<project-number-gcp3>)을 추가했다. 결제 계정은 gcp2와 같은 `<billing-account-2>`이며 프로젝트 추가를 새 크레딧 지급으로 해석하지 않는다. 기본값은 계속 gcp2다. 할당량 요청에는 `--billing-project=<project-id-gcp3>`도 붙인다.
 
 - `gcp3` = `ugrp-act-l4-gcp3`, 서울 `asia-northeast3-a`, gcp2 L4와 같은 `g2-standard-8`·L4 1개·140 GB `pd-balanced`·STANDARD. 고정 공개 이미지 `deeplearning-platform-release/common-cu129-ubuntu-2404-nvidia-580-v20261001`에서 재설치한다. 사용 중인 gcp2 디스크의 이미지·원본·키를 복사하지 않는다.
 - 2026-10-16 생성 당시 옵션(상한 제거 결정 전): `--max-run-duration=8h --instance-termination-action=STOP --maintenance-policy=TERMINATE --no-service-account --no-scopes`. 전용 개인키는 Mac `~/.ssh/ugrp_gcp3`에만 있고 VM에는 공개키만 둔다. 시작 스크립트는 `scripts/gcp_idle_guard_startup.sh`; 유휴20분 가드는 ugrp의 Python/MuJoCo/ffmpeg 작업도 확인한다. 임대는 수동 정지를 막되 오래 남은 임대만으로 자동 유휴 종료를 막지는 않는다. gcp2 VM의 기존 메타데이터/장치는 변경하지 않는다.
@@ -126,7 +126,7 @@ CPU 세대가 다르면 렌더 이미지 바이트가 달라질 수 있다. 같�
 
 ## gcp6 — 여섯 번째 프로젝트 L4·다른 계정 (2026-10-16)
 
-사용자 원문: "쳐낼 거 쳐내고, 빠르게 할 건 더 빠르게 할 수 없나", "프로젝트 하나 더 만들어서 L4 하나 더 써", "gcp 계정 하나 더 추가할래". 프로젝트 `<project-id-gcp6>`(<project-number-gcp6>)은 **`<account-3>`**, 결제 `010CD7-4B991B-84AAC7`을 쓴다. 모든 gcloud에 이 계정·프로젝트를 명시하고 Mac 기본 계정 `<account-1>`과 기본 호스트 gcp2는 유지한다. 다른 계정 사용자에게 IAM 접근 권한을 부여하지 않는다.
+사용자 원문: "쳐낼 거 쳐내고, 빠르게 할 건 더 빠르게 할 수 없나", "프로젝트 하나 더 만들어서 L4 하나 더 써", "gcp 계정 하나 더 추가할래". 프로젝트 `<project-id-gcp6>`(<project-number-gcp6>)은 **`<account-3>`**, 결제 `<billing-account-1>`을 쓴다. 모든 gcloud에 이 계정·프로젝트를 명시하고 Mac 기본 계정 `<account-1>`과 기본 호스트 gcp2는 유지한다. 다른 계정 사용자에게 IAM 접근 권한을 부여하지 않는다.
 
 - `gcp6` = `ugrp-act-l4-gcp6`, 서울 `asia-northeast3-a`, STANDARD `g2-standard-8`·NVIDIA L4×1·140GB `pd-balanced`. gcp4와 같은 공개 고정 이미지·패키지에서 새로 설치한다. 원본·디스크·개인키·모델/에이전트 자격 증명은 복사하지 않는다.
 - 프로젝트만 필터한 월 순비용1,000 KRW 예산(모든 크레딧 포함)·기본 결제 IAM 이메일 → Pub/Sub `budget-stop` → Gen2 `stop_on_budget`(`TARGET_PROJECT=<project-id-gcp6>`). e2-micro 발동·시험 VM/디스크 삭제를 확인한 뒤에만 L4를 생성한다. 집계 지연·VM 밖 비용의 한계는 같다.

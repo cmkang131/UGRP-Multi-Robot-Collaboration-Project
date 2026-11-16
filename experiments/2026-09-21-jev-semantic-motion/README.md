@@ -56,9 +56,9 @@
 - 출력 전용 실제 위치 기록으로 원판정과 시간 오차 검산 성공을 모두 다시 계산했다. 원본 195개 동영상은 전체 디코딩을 통과했다. 비교 영상은 12개 새 자세의 반복 0만 보여주며 전체 반복의 지표는 표/JSON으로 공개한다.
 - [protocol.json](protocol.json), 환경 4개, [압축 행동/요청 기록](turns.json.gz), [원본 해시 manifest](raw-manifest.json.gz), [영상 검증](raw-video-verification.json)을 보존했다. 전체 원본은 63,010개 파일, 약 3.65GB이며 로컬 전용이다. Git에 올린 해시는 원본의 원격 백업이 아니다.
 
-로컬 원본: `/Users/changmin/projects/ugrp/outputs/jev-semantic-motion-20260921-v1`
+로컬 원본: `<home>/projects/ugrp/outputs/jev-semantic-motion-20260921-v1`
 
-로컬 비교 영상: `/Users/changmin/projects/ugrp/outputs/jev-semantic-motion-review-20260921/comparison.mp4`
+로컬 비교 영상: `<home>/projects/ugrp/outputs/jev-semantic-motion-review-20260921/comparison.mp4`
 
 ## 연구 방향 판단
 

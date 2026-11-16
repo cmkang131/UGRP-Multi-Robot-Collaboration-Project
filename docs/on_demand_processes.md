@@ -6,7 +6,7 @@
 [로컬 시뮬레이션](local_simulation.md)과 [표준 관리](simulation_management.md)를 따른다.
 
 ```bash
-cd /Users/changmin/projects/ugrp
+cd <home>/projects/ugrp
 bash scripts/open_simulation.command
 ```
 

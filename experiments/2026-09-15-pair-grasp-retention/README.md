@@ -72,9 +72,9 @@ MuJoCo의 연성 접촉 마찰은 접선 방향에서 감쇠에 의존하므로 
 
 ```sh
 python3 scripts/ugrp_session.py run retention-NEW -- \
-  /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
+  <home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
   experiments/2026-09-15-pair-grasp-retention/run_cohort.py \
-  --mjpython /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/mjpython \
+  --mjpython <home>/projects/ugrp/.venv-sim-worker-mac/bin/mjpython \
   --grasp-model-dir /absolute/path/to/models/grasp \
   --out-dir outputs/retention-NEW
 ```

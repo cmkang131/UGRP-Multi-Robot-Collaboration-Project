@@ -4,14 +4,14 @@
     {
       "mode": "stationary",
       "command": [
-        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/mjpython",
-        "/Users/changmin/projects/ugrp-worktrees/pair-grasp-endurance/scripts/run_pair_grasp_endurance.py",
+        "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/mjpython",
+        "<home>/projects/ugrp-worktrees/pair-grasp-endurance/scripts/run_pair_grasp_endurance.py",
         "--map",
-        "/Users/changmin/projects/ugrp-worktrees/pair-grasp-endurance/maps/pair_navigation/narrow-door.json",
+        "<home>/projects/ugrp-worktrees/pair-grasp-endurance/maps/pair_navigation/narrow-door.json",
         "--grasp-model-dir",
-        "/Users/changmin/projects/ugrp-worktrees/pair-loaded-navigation/outputs/pair-navigation/runtime/models/grasp",
+        "<home>/projects/ugrp-worktrees/pair-loaded-navigation/outputs/pair-navigation/runtime/models/grasp",
         "--out-dir",
-        "/Users/changmin/projects/ugrp-worktrees/pair-grasp-endurance/outputs/pair-endurance-stiff-fingers-2026-09-14/stationary",
+        "<home>/projects/ugrp-worktrees/pair-grasp-endurance/outputs/pair-endurance-stiff-fingers-2026-09-14/stationary",
         "--mode",
         "stationary",
         "--noslip-iterations",
@@ -27,7 +27,7 @@
       "returncode": 1,
       "wall_seconds": 8.220891417004168,
       "success": false,
-      "error": "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-endurance/scripts/run_pair_grasp_endurance.py\", line 75, in run\n    scene.finish_grasp(predict_student,gm,after_close=scene.anchor_spacing,hold=scene.hold_spacing,close_pulse=1600)\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-endurance/scripts/camera_approach_scene.py\", line 282, in finish_grasp\n    (hold or self.tick)(float(self.skill['hold_s']))\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-endurance/scripts/run_pair_navigation.py\", line 73, in hold_spacing\n    self.spacing_frame()\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-endurance/scripts/run_pair_navigation.py\", line 63, in spacing_frame\n    raise RuntimeError('grasp spacing stopped: '+json.dumps({r:d.get('error') for r,d in decisions.items()}))\nRuntimeError: grasp spacing stopped: {\"r1\": \"visual grasp formation exceeded recovery envelope\", \"r3\": \"visual grasp formation exceeded recovery envelope\"}\n",
+      "error": "Traceback (most recent call last):\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-endurance/scripts/run_pair_grasp_endurance.py\", line 75, in run\n    scene.finish_grasp(predict_student,gm,after_close=scene.anchor_spacing,hold=scene.hold_spacing,close_pulse=1600)\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-endurance/scripts/camera_approach_scene.py\", line 282, in finish_grasp\n    (hold or self.tick)(float(self.skill['hold_s']))\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-endurance/scripts/run_pair_navigation.py\", line 73, in hold_spacing\n    self.spacing_frame()\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-endurance/scripts/run_pair_navigation.py\", line 63, in spacing_frame\n    raise RuntimeError('grasp spacing stopped: '+json.dumps({r:d.get('error') for r,d in decisions.items()}))\nRuntimeError: grasp spacing stopped: {\"r1\": \"visual grasp formation exceeded recovery envelope\", \"r3\": \"visual grasp formation exceeded recovery envelope\"}\n",
       "evaluation": {
         "grasp_stability": {
           "anchor_spacing_m": 0.6505919557430132,
@@ -51,14 +51,14 @@
     {
       "mode": "shuttle",
       "command": [
-        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/mjpython",
-        "/Users/changmin/projects/ugrp-worktrees/pair-grasp-endurance/scripts/run_pair_grasp_endurance.py",
+        "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/mjpython",
+        "<home>/projects/ugrp-worktrees/pair-grasp-endurance/scripts/run_pair_grasp_endurance.py",
         "--map",
-        "/Users/changmin/projects/ugrp-worktrees/pair-grasp-endurance/maps/pair_navigation/narrow-door.json",
+        "<home>/projects/ugrp-worktrees/pair-grasp-endurance/maps/pair_navigation/narrow-door.json",
         "--grasp-model-dir",
-        "/Users/changmin/projects/ugrp-worktrees/pair-loaded-navigation/outputs/pair-navigation/runtime/models/grasp",
+        "<home>/projects/ugrp-worktrees/pair-loaded-navigation/outputs/pair-navigation/runtime/models/grasp",
         "--out-dir",
-        "/Users/changmin/projects/ugrp-worktrees/pair-grasp-endurance/outputs/pair-endurance-stiff-fingers-2026-09-14/shuttle",
+        "<home>/projects/ugrp-worktrees/pair-grasp-endurance/outputs/pair-endurance-stiff-fingers-2026-09-14/shuttle",
         "--mode",
         "shuttle",
         "--noslip-iterations",
@@ -74,7 +74,7 @@
       "returncode": 1,
       "wall_seconds": 8.11413162498502,
       "success": false,
-      "error": "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-endurance/scripts/run_pair_grasp_endurance.py\", line 75, in run\n    scene.finish_grasp(predict_student,gm,after_close=scene.anchor_spacing,hold=scene.hold_spacing,close_pulse=1600)\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-endurance/scripts/camera_approach_scene.py\", line 282, in finish_grasp\n    (hold or self.tick)(float(self.skill['hold_s']))\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-endurance/scripts/run_pair_navigation.py\", line 73, in hold_spacing\n    self.spacing_frame()\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-endurance/scripts/run_pair_navigation.py\", line 63, in spacing_frame\n    raise RuntimeError('grasp spacing stopped: '+json.dumps({r:d.get('error') for r,d in decisions.items()}))\nRuntimeError: grasp spacing stopped: {\"r1\": \"visual grasp formation exceeded recovery envelope\", \"r3\": \"visual grasp formation exceeded recovery envelope\"}\n",
+      "error": "Traceback (most recent call last):\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-endurance/scripts/run_pair_grasp_endurance.py\", line 75, in run\n    scene.finish_grasp(predict_student,gm,after_close=scene.anchor_spacing,hold=scene.hold_spacing,close_pulse=1600)\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-endurance/scripts/camera_approach_scene.py\", line 282, in finish_grasp\n    (hold or self.tick)(float(self.skill['hold_s']))\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-endurance/scripts/run_pair_navigation.py\", line 73, in hold_spacing\n    self.spacing_frame()\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-endurance/scripts/run_pair_navigation.py\", line 63, in spacing_frame\n    raise RuntimeError('grasp spacing stopped: '+json.dumps({r:d.get('error') for r,d in decisions.items()}))\nRuntimeError: grasp spacing stopped: {\"r1\": \"visual grasp formation exceeded recovery envelope\", \"r3\": \"visual grasp formation exceeded recovery envelope\"}\n",
       "evaluation": {
         "grasp_stability": {
           "anchor_spacing_m": 0.6505919557430132,

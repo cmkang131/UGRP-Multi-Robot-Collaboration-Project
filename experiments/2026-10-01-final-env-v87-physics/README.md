@@ -12,7 +12,7 @@
 | 항목 | 값 |
 |---|---|
 | 소스 커밋 | `04eb11c6a001f2a7d2ab916765d59b3661c06efe` (PR #342 브랜치 `codex/final-env-floor-light`) |
-| 실행 worktree | `/Users/changmin/projects/ugrp-wt/phys-v87-p01cal`, 커밋 고정·작업 트리 깨끗 |
+| 실행 worktree | `<home>/projects/ugrp-wt/phys-v87-p01cal`, 커밋 고정·작업 트리 깨끗 |
 | 잠금 | `agent_lock.py acquire --owner claude --branch claude/phys-v87-p01cal`, 실행마다 획득·해제(trap) |
 | 시드 | 911 |
 | 렌더 | `floor_light_v1` (sha256 `e3ea8aebc473f99def92fa368f8aaa11e5872dc5b2a8ec8ba9a308641d2b6ec5`) |
@@ -33,9 +33,9 @@
 ## 명령 (둘 다 `set -euo pipefail` subshell + 해제 trap)
 
 ```bash
-PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 FINAL_SHA=04eb11c6a001f2a7d2ab916765d59b3661c06efe
-RUN_ROOT=/Users/changmin/projects/ugrp/outputs/final-env-v87-04eb11c6-20261001
+RUN_ROOT=<home>/projects/ugrp/outputs/final-env-v87-04eb11c6-20261001
 # 정적 확인: 두 check 모두 runnable:true, blocked_on [] (P01 90 s 상한, 보정 360 s 상한)
 "$PY" -m scripts.run_final_environment_floor_light --check p01 --expected-source-sha $FINAL_SHA --output $RUN_ROOT/p01
 "$PY" -m scripts.run_final_environment_floor_light --check calibration --expected-source-sha $FINAL_SHA --output $RUN_ROOT/calibration-unloaded
@@ -115,7 +115,7 @@ RUN_ROOT=/Users/changmin/projects/ugrp/outputs/final-env-v87-04eb11c6-20261001
 ## 원본 위치와 해시 (삭제·덮어쓰기 없음)
 
 원본은 기본 체크아웃 `outputs/`에만 있다(원격 백업 아님).
-`/Users/changmin/projects/ugrp/outputs/final-env-v87-04eb11c6-20261001/` (총 5,592개 파일, 191,864,497 바이트)
+`<home>/projects/ugrp/outputs/final-env-v87-04eb11c6-20261001/` (총 5,592개 파일, 191,864,497 바이트)
 
 | 경로 | sha256 |
 |---|---|
@@ -128,7 +128,7 @@ RUN_ROOT=/Users/changmin/projects/ugrp/outputs/final-env-v87-04eb11c6-20261001
   (sha256 `59cca3c1e78c7142b0218447150dabb8e1f011d044fa19983bcf100040b3a310`).
 - `sim-run-records/`: 표준 관리자 실행 기록 4개(복사본). 성공은 P01 `…043941-49d43cbc`, 보정 `…044151-e9591a9f`;
   앞의 두 개는 위 분리 HEAD 거부(`process_failed`). 원본은 worktree
-  `/Users/changmin/projects/ugrp-wt/phys-v87-p01cal/outputs/simulation-runs/`에도 있다(이 worktree는 폐기하지 않음).
+  `<home>/projects/ugrp-wt/phys-v87-p01cal/outputs/simulation-runs/`에도 있다(이 worktree는 폐기하지 않음).
 - `samples/`: 대표 PNG 3장(각 < 1 MiB, 원본의 복사본). 원시 영상 전체는 커밋하지 않는다.
   `p01_door_r1_t1.3.png`(sha256 `a73fd772103e91be83120f3786bd2b7d98e6a67c3c6a405139328634b6dfcac6`), `p01_door_r2_t31.3.png`(`ffe225def581b9119923ca73d280e22aca6056e36bfaa6ef5cfb6ce67716dd9b`),
   `cal_door_r1_frame180_partner_visible.png`(`109095fd0686366370e76e4efdf781eae5315847ed8774ebddcd9abd722a8966`).

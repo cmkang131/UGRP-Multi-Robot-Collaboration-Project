@@ -8,8 +8,8 @@ destination ``<primary>/outputs/retired-worktrees/<label>/<path>``.
 
 Usage (2026-09-26, the 14 merged Codex-app worktrees):
     python3 experiments/2026-09-26-disk-incident/check_relocations.py \
-        --repo /Users/changmin/projects/ugrp --output /tmp/relocations.json \
-        --root /Users/changmin/.codex/worktrees/<name>/ugrp=codex-<name> ...
+        --repo <home>/projects/ugrp --output /tmp/relocations.json \
+        --root <home>/.codex/worktrees/<name>/ugrp=codex-<name> ...
 """
 
 from __future__ import annotations

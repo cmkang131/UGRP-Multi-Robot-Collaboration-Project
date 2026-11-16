@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Rebuilds the representative version videos from saved raw case directories (no simulation is run).
-# Usage: OUT=/Users/changmin/projects/ugrp/outputs bash experiments/2026-09-29-version-videos/build_videos.sh [dest_dir]
+# Usage: OUT=<home>/projects/ugrp/outputs bash experiments/2026-09-29-version-videos/build_videos.sh [dest_dir]
 set -euo pipefail
-OUT="${OUT:-/Users/changmin/projects/ugrp/outputs}"
+OUT="${OUT:-<home>/projects/ugrp/outputs}"
 DEST="${1:-experiments/2026-09-29-version-videos/videos}"
 PY="${PY:-python3}"          # any python with matplotlib; ffmpeg must be on PATH
 R="$PY scripts/render_pair_probe_video.py"

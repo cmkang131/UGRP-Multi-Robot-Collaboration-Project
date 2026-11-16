@@ -47,7 +47,7 @@ Refs #221. 실험 ID `2026-09-29-version-videos`. 도구 `scripts/render_pair_pr
 
 ## 원자료와 해시
 
-경로는 기본 체크아웃 `/Users/changmin/projects/ugrp/outputs/`(Git 밖, 로컬 보관, 원격 백업 아님) 아래이며 `<run>/cases/<case>/`이다.
+경로는 기본 체크아웃 `<home>/projects/ugrp/outputs/`(Git 밖, 로컬 보관, 원격 백업 아님) 아래이며 `<run>/cases/<case>/`이다.
 
 | 영상에 쓴 것 | run · case | 소스 SHA(manifest) · probe · 실행 상태 | result.json sha256 | trace.jsonl sha256 | robots.json sha256 |
 |---|---|---|---|---|---|
@@ -63,7 +63,7 @@ Refs #221. 실험 ID `2026-09-29-version-videos`. 도구 `scripts/render_pair_pr
 ## 재생성
 
 ```
-OUT=/Users/changmin/projects/ugrp/outputs bash experiments/2026-09-29-version-videos/build_videos.sh [출력 폴더]
+OUT=<home>/projects/ugrp/outputs bash experiments/2026-09-29-version-videos/build_videos.sh [출력 폴더]
 ```
 
 한 case만 그릴 때(matplotlib·ffmpeg 필요, 저장소 루트에서):

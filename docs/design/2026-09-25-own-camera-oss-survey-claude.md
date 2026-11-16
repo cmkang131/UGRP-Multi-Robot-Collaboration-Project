@@ -2,7 +2,7 @@
 
 - 작성: Claude subagent (읽기 전용 웹 조사). 후보 라이브러리는 설치하거나 시험하지 않았으며, 적합도와 공수는 추정치다.
 - 날짜: 2026-09-25
-- 읽은 코드: 기본 체크아웃 `/Users/changmin/projects/ugrp`의 작업 트리, HEAD `0add360d00c5f1f274b10a6c1ec578ed93280dc9`(main, 깨끗한 상태). 로컬 `origin/main` ref는 `6d80e3e401f6936bc90cd3ccfc00249018a81748`이고 fetch하지 않았다. HEAD와 다르며, 그 사이 변경분은 읽지 않았다.
+- 읽은 코드: 기본 체크아웃 `<home>/projects/ugrp`의 작업 트리, HEAD `0add360d00c5f1f274b10a6c1ec578ed93280dc9`(main, 깨끗한 상태). 로컬 `origin/main` ref는 `6d80e3e401f6936bc90cd3ccfc00249018a81748`이고 fetch하지 않았다. HEAD와 다르며, 그 사이 변경분은 읽지 않았다.
 - 범위: 저장소 파일, 설치된 가상환경, AGENTS.md를 직접 읽었고 오픈소스 후보는 웹 검색 결과로만 조사했다. 저장소 수정·커밋·시뮬레이션 실행은 하지 않았다.
 
 ## 가장 중요한 결론

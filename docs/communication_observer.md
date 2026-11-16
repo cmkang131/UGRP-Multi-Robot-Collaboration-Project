@@ -15,7 +15,7 @@ TensorBoard의 현재 generic export는 이 JSONL을 Text 카드로 변환하지
 실제 저장 LLM 대화를 새 호출 없이 창에서 확인하려면, 물리 실험이 종료된 뒤 아래의 유한한 관찰 전용 명령을 저장소 루트에서 실행할 수 있다. 이 명령은 저장된 `team.json`의 마지막 세 문장을 **기록 재생**으로 표시한다. 실행 결과와 최신 sidecar를 건드리지 않고 원본 SHA-256·건수·폰트 상태를 새 감사 파일에 기록한다.
 
 ```bash
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/mjpython -m scripts.smoke_communication_overlay \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/mjpython -m scripts.smoke_communication_overlay \
   --source outputs/simulation-runs/20260923-161558-dispatch-cca0ae6c/artifacts/team/team.json \
   --audit outputs/communication-observer/saved-dialogue-native-smoke.json \
   --duration-s 10

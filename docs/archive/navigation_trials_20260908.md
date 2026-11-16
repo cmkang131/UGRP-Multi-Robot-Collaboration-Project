@@ -37,12 +37,12 @@ C2는 새 메모 검증기가 화면상 x=비율을 숨은 좌표로 오인해 �
 
 ## 자료
 
-- [상세 실험 일지](/Users/changmin/projects/ugrp/outputs/navigation-trials-20260908/journal.md)
-- [첫 성공 영상](/Users/changmin/projects/ugrp/outputs/navigation-trials-20260908/d1-budget/solo-41/motion-1x.mp4)
-- [재현 성공 영상](/Users/changmin/projects/ugrp/outputs/navigation-trials-20260908/d2-repeat/solo-41/motion-1x.mp4)
-- [재현 입력·메모 요약](/Users/changmin/projects/ugrp/outputs/navigation-trials-20260908/d2-repeat/solo-41/review-data.json)
-- [재현 검증 결과](/Users/changmin/projects/ugrp/outputs/navigation-trials-20260908/d2-repeat/solo-41/budget-verification.json)
-- [재현 원본NAV 모음](/Users/changmin/projects/ugrp/outputs/navigation-trials-20260908/d2-repeat/solo-41/nav-qa.jpg)
+- [상세 실험 일지](<home>/projects/ugrp/outputs/navigation-trials-20260908/journal.md)
+- [첫 성공 영상](<home>/projects/ugrp/outputs/navigation-trials-20260908/d1-budget/solo-41/motion-1x.mp4)
+- [재현 성공 영상](<home>/projects/ugrp/outputs/navigation-trials-20260908/d2-repeat/solo-41/motion-1x.mp4)
+- [재현 입력·메모 요약](<home>/projects/ugrp/outputs/navigation-trials-20260908/d2-repeat/solo-41/review-data.json)
+- [재현 검증 결과](<home>/projects/ugrp/outputs/navigation-trials-20260908/d2-repeat/solo-41/budget-verification.json)
+- [재현 원본NAV 모음](<home>/projects/ugrp/outputs/navigation-trials-20260908/d2-repeat/solo-41/nav-qa.jpg)
 
 ## 재현 명령
 

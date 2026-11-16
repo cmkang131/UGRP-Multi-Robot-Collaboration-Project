@@ -33,7 +33,7 @@ off는 객체/메서드/출력 그대로, 기존 골든 bytes·RNG 검사로 고
 
 ## 재생 및 물리 관문 (결과 후 변경 금지)
 
-입력 `/Users/changmin/projects/ugrp/outputs/rbpf-motion-gate-v1/baseline/` (egomap23, 180s/901RGB).
+입력 `<home>/projects/ugrp/outputs/rbpf-motion-gate-v1/baseline/` (egomap23, 180s/901RGB).
 같은 own contacts/commands를 사용한다. 원본 SHA 봉인 검사 후 예측을 저장·해시 봉인하고
 GT를 평가에서만 읽는다. off 전체 재생은 기존 frontend 출력과 일치 확인.
 비교는 동일 frontend 시각의 종료 오차 e, σXY=sqrt(최대 XY 공분산 고윳값), e/σ, e/(2σ),
@@ -103,5 +103,5 @@ on은 전체 정답 셀3개도 평가 가시 영역 밖이라 영역 P/R=0이며
 - `code/replay.py off`, `on`, `score`; `code/diagnose.py`. 기존 출력 디렉터리가 있으면 재생 덮어쓰기 거부.
   on/off 예측 raw 8.31MB, 소스·입력·예측 해시는 [raw manifest](results/raw-manifest.json),
   [비교 수치](results/comparison.json), [수락/거부 진단](results/diagnosis.json), [원문 SHA](results/sources.json).
-- raw `/Users/changmin/projects/ugrp/outputs/rbpf-rejection-v1/` 로컬 보존. 작은 표/그림/코드만 Git에 보존.
+- raw `<home>/projects/ugrp/outputs/rbpf-rejection-v1/` 로컬 보존. 작은 표/그림/코드만 Git에 보존.
   PR405 DRAFT 유지. 전체 CI/물리 성공 주장 없음. 조건 미달로 이 단계 종료, 후속 튜닝 없음.

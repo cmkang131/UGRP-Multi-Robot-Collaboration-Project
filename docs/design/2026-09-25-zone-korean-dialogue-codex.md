@@ -3,7 +3,7 @@
 - **작성:** Codex CLI (gpt-6-astra, reasoning xhigh). Claude 코디네이터가 2026-09-25에 위임한 읽기 전용 분석이다. 파일 수정·시뮬레이션·LLM 호출은 하지 않았다.
 - **기준 SHA:** 로컬 main `ad18b93`(TeamJob 기준 `5a720bc`, hard-routes 기준 `dc27695` 병기). 원격 PR 상태는 연결 실패로 확인하지 못했다.
 - **상태:** **제안, 미검증** (proposal, not verified)
-- 아래 본문의 로컬 절대경로 링크(`/Users/changmin/projects/ugrp/...`, `/Users/changmin/projects/ugrp-worktrees/...`)는 작성자 기기와 작성 시점 경로를 가리킨다. 이후 커밋에서 줄 번호·구조가 바뀌었을 수 있다.
+- 아래 본문의 로컬 절대경로 링크(`<home>/projects/ugrp/...`, `<home>/projects/ugrp-worktrees/...`)는 작성자 기기와 작성 시점 경로를 가리킨다. 이후 커밋에서 줄 번호·구조가 바뀌었을 수 있다.
 
 ## 이후 진행 상황 (기록 시점 2026-09-25)
 
@@ -17,11 +17,11 @@
 
 현재 상태는 다음과 같다.
 
-- 구역 프롬프트는 영어이며 한국어 발화 요구가 없다. `message`는 **필수 키지만 빈 문자열로 침묵 가능**하다. 240자는 프롬프트 지시이고 실제 검증 상한은 600자다. [프롬프트](/Users/changmin/projects/ugrp/harness/zone_coordination.py:52), [검증](/Users/changmin/projects/ugrp/harness/three_robot_plan.py:58)
-- ZC2 18개 로그의 실제 전송 메시지는 129건—dynamic 75건, plan_first 54건—이며 한글 포함 메시지는 0건이다. [영어 발화 예시](/Users/changmin/projects/ugrp/outputs/zone-communication-20260925/ZC2-s14-dynamic-graspfail/team/conversation.jsonl:2)
-- 이동 중인 로봇은 구역 판단 호출 대상에서 제외된다. 충돌 시 제한된 재질문은 있지만 자유로운 사건 기반 대화는 아니다. [호출 조건](/Users/changmin/projects/ugrp/scripts/run_zone_dispatch.py:278)
+- 구역 프롬프트는 영어이며 한국어 발화 요구가 없다. `message`는 **필수 키지만 빈 문자열로 침묵 가능**하다. 240자는 프롬프트 지시이고 실제 검증 상한은 600자다. [프롬프트](<home>/projects/ugrp/harness/zone_coordination.py:52), [검증](<home>/projects/ugrp/harness/three_robot_plan.py:58)
+- ZC2 18개 로그의 실제 전송 메시지는 129건—dynamic 75건, plan_first 54건—이며 한글 포함 메시지는 0건이다. [영어 발화 예시](<home>/projects/ugrp/outputs/zone-communication-20260925/ZC2-s14-dynamic-graspfail/team/conversation.jsonl:2)
+- 이동 중인 로봇은 구역 판단 호출 대상에서 제외된다. 충돌 시 제한된 재질문은 있지만 자유로운 사건 기반 대화는 아니다. [호출 조건](<home>/projects/ugrp/scripts/run_zone_dispatch.py:278)
 
-연구 질문은 **C−A: 한국어 대화를 허용한 효과**, **B−A: 정형 정보 교환 효과**, **C−B: 자유로운 설명·협상의 추가 효과**로 나눈다. 이는 [연구 TODO](/Users/changmin/projects/ugrp/docs/research_todo.md:63)의 비교 구조와 일치한다.
+연구 질문은 **C−A: 한국어 대화를 허용한 효과**, **B−A: 정형 정보 교환 효과**, **C−B: 자유로운 설명·협상의 추가 효과**로 나눈다. 이는 [연구 TODO](<home>/projects/ugrp/docs/research_todo.md:63)의 비교 구조와 일치한다.
 
 | 조건 | 로봇 사이에 전달되는 정보 | 호스트 역할 |
 |---|---|---|
@@ -39,11 +39,11 @@ B는 `act, item, zone, role, passage, observed_at, confidence, reply_to` 같은 
 - **최소 물리 동기화 유지:** TeamJob의 동일 spec·상보 역할 확인, 참여자 단계 장벽, 함께 정지·내리기, 만료 처리는 모든 조건에서 동일하게 둔다. A도 독립적으로 맞는 행동을 선택하면 실행 가능해야 한다. 장벽의 누락 참여자·상대 목적지·불일치 원인은 LLM에 반환하지 않는다. 시작/정지로 드러나는 최소 정보는 명시한다.
 - **교사의 판단을 대화로 오인하지 않기:** L1의 의도 기반 선점 정지와 L4의 정답 기반 실패 통보를 해결해야 한다. 영수증을 일반적인 “멈춤”으로 바꾸는 것만으로 정보 출처가 깨끗해지지는 않는다. A2의 교사 실행 결과는 별도 조건으로 표시하고, RGB 기반 사건 인식이 연결되기 전에는 카메라 기반 복구를 주장하지 않는다.
 
-D는 유지하되, 기존 `dynamic` 전체는 **게시판·중재·통지·깨우기 묶음**으로 별도 보존한다. 그 묶음의 메시지 ON/OFF 비교와 D의 게시판 단독 효과를 혼동하지 않는다. [C1 감사 근거](/Users/changmin/projects/ugrp/experiments/2026-09-25-zone-comm-boundary-audit/README.md:76)
+D는 유지하되, 기존 `dynamic` 전체는 **게시판·중재·통지·깨우기 묶음**으로 별도 보존한다. 그 묶음의 메시지 ON/OFF 비교와 D의 게시판 단독 효과를 혼동하지 않는다. [C1 감사 근거](<home>/projects/ugrp/experiments/2026-09-25-zone-comm-boundary-audit/README.md:76)
 
 대화 구현은 다음을 권고한다.
 
-- **한국어 프롬프트를 기본으로 한다.** 과제 설명·출력 설명·자기 판단 요약까지 공통 한국어로 맞춘다. `r1`, 화물·사건·요청 ID, `A/B/C`, `kind`, `role`, JSON 키와 열거값은 원문 그대로 유지한다. 기존 영어 프롬프트+한국어 메시지는 개발 파일럿에서만 비교하고 본실험 전에 하나로 고정한다. 옛 [한국어 요구](/Users/changmin/projects/ugrp/harness/coela_modules.py:182)는 참고하되 그 프롬프트의 협업 전략까지 복사하지 않는다.
+- **한국어 프롬프트를 기본으로 한다.** 과제 설명·출력 설명·자기 판단 요약까지 공통 한국어로 맞춘다. `r1`, 화물·사건·요청 ID, `A/B/C`, `kind`, `role`, JSON 키와 열거값은 원문 그대로 유지한다. 기존 영어 프롬프트+한국어 메시지는 개발 파일럿에서만 비교하고 본실험 전에 하나로 고정한다. 옛 [한국어 요구](<home>/projects/ugrp/harness/coela_modules.py:182)는 참고하되 그 프롬프트의 협업 전략까지 복사하지 않는다.
 - **행동과 송신을 분리한다.** 세 로봇 모두 이동·파지·집결 대기 중 발언할 수 있다. 자기 RGB에서 막힘을 발견하거나, 파지 후 영상 변화가 기대와 다르거나, 집결 대기가 길어지면 로컬 판단을 요청한다. 발언 여부와 내용은 모델이 결정한다. 호스트의 주입 플래그·접촉 정답·동료 상태가 사건 발생을 대신 알려서는 안 된다.
 - **방송과 직접 전달을 모두 허용한다.** B/C 모두 `recipients`로 한 명 또는 두 명을 선택한다. 직접 메시지를 제삼자에게 자동 복사하지 않으며, 방송은 수신자별 전달·입력 토큰 비용까지 기록한다.
 - **한 결정 안에서 왕복을 허용한다.** 시작안은 협상창당 총 6발화, 로봇당 최대 2발화다. 앞선 발화를 실제 수신한 뒤 응답해야 한다. 침묵·거절·결렬도 허용하고, 한도 도달 시 호스트가 합의를 만들어 주지 않는다. 이동 중 행동 변경은 실행기의 공통 안전 경계에서 적용한다.
@@ -72,16 +72,16 @@ D는 유지하되, 기존 `dynamic` 전체는 **게시판·중재·통지·깨�
 
 | 파일·줄 | 후속 변경 범위 |
 |---|---|
-| [zone_coordination.py:23](/Users/changmin/projects/ugrp/harness/zone_coordination.py:23), [zone_solo.py:18](/Users/changmin/projects/ugrp/harness/zone_solo.py:18), [zone_arena.py:191](/Users/changmin/projects/ugrp/sim/zone_arena.py:191) | 공통 한국어 지시, 조건별 메시지 형식, C2 제거 |
-| [zone_coordination.py:95](/Users/changmin/projects/ugrp/harness/zone_coordination.py:95), [193](/Users/changmin/projects/ugrp/harness/zone_coordination.py:193) | 게시판 입력과 동료 선언 중재 분리 |
-| [run_zone_dispatch.py:224](/Users/changmin/projects/ugrp/scripts/run_zone_dispatch.py:224), [367](/Users/changmin/projects/ugrp/scripts/run_zone_dispatch.py:367) | 종료 기반 깨우기·충돌 재질문을 로컬 사건·수신 경로로 분리 |
-| [three_robot_runtime.py:128](/Users/changmin/projects/ugrp/scripts/three_robot_runtime.py:128), [164](/Users/changmin/projects/ugrp/scripts/three_robot_runtime.py:164) | 행동 없는 송신, 수신자 선택, 다턴·이동 중 요청 |
-| [communication_observer.py:91](/Users/changmin/projects/ugrp/harness/communication_observer.py:91), [rgb_communication_evaluation.py:42](/Users/changmin/projects/ugrp/harness/rgb_communication_evaluation.py:42) | 송수신·행동 연결 및 평가 전용 언어·비용 지표 |
-| [test_zone_comm_boundary.py:132](/Users/changmin/projects/ugrp/tests/test_zone_comm_boundary.py:132), [198](/Users/changmin/projects/ugrp/tests/test_zone_comm_boundary.py:198) | 비공개 상태 불변성·깨우기 격리·L1 회귀 |
-| [zone_team_jobs.py:91](/Users/changmin/projects/ugrp-worktrees/zone-team-jobs/harness/zone_team_jobs.py:91), [331](/Users/changmin/projects/ugrp-worktrees/zone-team-jobs/harness/zone_team_jobs.py:331) | 공통 장벽·집결 규칙 유지, 내부 상세 정보 차단 |
-| [hard-routes/zone_teacher.py:616](/Users/changmin/projects/ugrp-worktrees/zone-hard-routes/scripts/zone_teacher.py:616) | 자동 통로 우선순위·후퇴 개입 감사 |
+| [zone_coordination.py:23](<home>/projects/ugrp/harness/zone_coordination.py:23), [zone_solo.py:18](<home>/projects/ugrp/harness/zone_solo.py:18), [zone_arena.py:191](<home>/projects/ugrp/sim/zone_arena.py:191) | 공통 한국어 지시, 조건별 메시지 형식, C2 제거 |
+| [zone_coordination.py:95](<home>/projects/ugrp/harness/zone_coordination.py:95), [193](<home>/projects/ugrp/harness/zone_coordination.py:193) | 게시판 입력과 동료 선언 중재 분리 |
+| [run_zone_dispatch.py:224](<home>/projects/ugrp/scripts/run_zone_dispatch.py:224), [367](<home>/projects/ugrp/scripts/run_zone_dispatch.py:367) | 종료 기반 깨우기·충돌 재질문을 로컬 사건·수신 경로로 분리 |
+| [three_robot_runtime.py:128](<home>/projects/ugrp/scripts/three_robot_runtime.py:128), [164](<home>/projects/ugrp/scripts/three_robot_runtime.py:164) | 행동 없는 송신, 수신자 선택, 다턴·이동 중 요청 |
+| [communication_observer.py:91](<home>/projects/ugrp/harness/communication_observer.py:91), [rgb_communication_evaluation.py:42](<home>/projects/ugrp/harness/rgb_communication_evaluation.py:42) | 송수신·행동 연결 및 평가 전용 언어·비용 지표 |
+| [test_zone_comm_boundary.py:132](<home>/projects/ugrp/tests/test_zone_comm_boundary.py:132), [198](<home>/projects/ugrp/tests/test_zone_comm_boundary.py:198) | 비공개 상태 불변성·깨우기 격리·L1 회귀 |
+| [zone_team_jobs.py:91](<home>/projects/ugrp-worktrees/zone-team-jobs/harness/zone_team_jobs.py:91), [331](<home>/projects/ugrp-worktrees/zone-team-jobs/harness/zone_team_jobs.py:331) | 공통 장벽·집결 규칙 유지, 내부 상세 정보 차단 |
+| [hard-routes/zone_teacher.py:616](<home>/projects/ugrp-worktrees/zone-hard-routes/scripts/zone_teacher.py:616) | 자동 통로 우선순위·후퇴 개입 감사 |
 
-실행 순서는 **hard-routes → TeamJob A2 → 정보 경계 검사 → 한국어 파일럿 → 비교 실험**으로 잡는다. [A2 계획](/Users/changmin/projects/ugrp-worktrees/zone-team-jobs/experiments/2026-09-25-zone-team-jobs/README.md:151)도 hard-routes 이후 연결을 명시한다.
+실행 순서는 **hard-routes → TeamJob A2 → 정보 경계 검사 → 한국어 파일럿 → 비교 실험**으로 잡는다. [A2 계획](<home>/projects/ugrp-worktrees/zone-team-jobs/experiments/2026-09-25-zone-team-jobs/README.md:151)도 hard-routes 이후 연결을 명시한다.
 
 1. **A2 물리 게이트:** 단독·2대·3대 운반, 문 통과, 늦은 집결, 부분 파지 실패·공동 내리기를 확인한다. weld OFF, 이중 소속 없음, 물건당 완료 1회, 오래된 장벽 거부가 기준이다. 고정 계획 검증과 새 LLM 협상을 구분한다.
 2. **정보 경계 게이트:** 동료의 보이지 않는 선언·완료·질문 횟수를 바꿔도 자기 입력·깨우기가 동일해야 한다. A의 송수신 0, B의 자유문자열 차단, C의 본문 변경이 호스트 실행 명령을 직접 바꾸지 않음, 수신자 격리·평가 출력 역류 방지를 검사한다.

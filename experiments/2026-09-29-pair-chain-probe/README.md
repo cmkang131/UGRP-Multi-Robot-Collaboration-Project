@@ -139,16 +139,16 @@ python3 -m scripts.run_pair_stage_probes --stage chain --sources teacher --polic
   --prior-std e2e --cells nominal --nominal-seeds 911 912 913 --output /tmp/never-created
 
 # 2) S0 스모크 driver (자기 PID로 잠금을 잡고 EXIT에서 해제한다)
-cat > /Users/changmin/projects/ugrp/outputs/pair-chain-driver-smoke.sh <<'EOF'
+cat > <home>/projects/ugrp/outputs/pair-chain-driver-smoke.sh <<'EOF'
 #!/bin/bash
 set -u
-cd /Users/changmin/projects/ugrp-wt/pair-chain-probe
+cd <home>/projects/ugrp-wt/pair-chain-probe
 SHA=$(git rev-parse --short=8 HEAD)
 python3 scripts/agent_lock.py acquire --owner claude --branch claude/pair-chain-probe \
   --purpose "chain probe S0 smoke (SIM time, no models)" --pid $$ --expected-minutes 300 || exit 1
 trap 'python3 scripts/agent_lock.py release --owner claude' EXIT
 uptime
-OUT=/Users/changmin/projects/ugrp/outputs/pair-stage-probes-$SHA
+OUT=<home>/projects/ugrp/outputs/pair-stage-probes-$SHA
 # 대조: b-v6d nominal s911
 python3 -m scripts.run_pair_stage_probes --stage chain --sources teacher --policies b-v6d --prior-std e2e \
   --cells nominal --nominal-seeds 911 --workers 1 --case-timeout-s 9000 --execute --lock-owner claude \
@@ -163,8 +163,8 @@ python3 -m scripts.run_pair_stage_probes --stage chain --sources teacher --polic
   --output $OUT-chainS0-lat
 uptime
 EOF
-chmod +x /Users/changmin/projects/ugrp/outputs/pair-chain-driver-smoke.sh
-python3 scripts/ugrp_session.py run chain-s0 -- /Users/changmin/projects/ugrp/outputs/pair-chain-driver-smoke.sh
+chmod +x <home>/projects/ugrp/outputs/pair-chain-driver-smoke.sh
+python3 scripts/ugrp_session.py run chain-s0 -- <home>/projects/ugrp/outputs/pair-chain-driver-smoke.sh
 ```
 
 S1은 같은 형식으로 `--policies b-v6e` 전체 격자(`--cells` 생략, `--seeds 911 --nominal-seeds 911 912 913`)와 대조 nominal 3 seed를 돌린다. S2는 `--setup-variant hA|hB|hC`를 쓴다. 결과는 `cases.jsonl`, `summary.json`(`stages.chain.chain`)과 케이스별 `result.json`(`chain_raw`: 상태 타임라인·leg 경계 스냅샷 원본)에 남는다.

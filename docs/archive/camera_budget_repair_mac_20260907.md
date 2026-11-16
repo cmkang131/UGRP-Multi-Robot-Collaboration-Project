@@ -7,7 +7,7 @@
 ## 적용과 검증
 
 - 대상 코드·테스트 11개 파일이 ZIP 변경 목록의 원본 SHA-256과 모두 일치했다. `harness/`, `scripts/`, `tests/` 패치만 적용하고 원래 결정 로그·사용자 `.gitignore` 변경은 보존했다. `sim/` 물리·접촉·목적지 모델은 변경하지 않았다.
-- 원본 실패 자료는 삭제된 것이 아니라 `/Users/changmin/Project-Archives/20260907/ugrp/outputs/warehouse_research`로 보관돼 있었다. 필요한 4개 기록 폴더를 기존 검사 경로에서 읽도록 심볼릭 링크를 추가했다. 원본을 옮기거나 수정하지 않았다. 목록은 `outputs/camera-budget-integration-20260907/restored-reference-links.json`.
+- 원본 실패 자료는 삭제된 것이 아니라 `<home>/Project-Archives/20260907/ugrp/outputs/warehouse_research`로 보관돼 있었다. 필요한 4개 기록 폴더를 기존 검사 경로에서 읽도록 심볼릭 링크를 추가했다. 원본을 옮기거나 수정하지 않았다. 목록은 `outputs/camera-budget-integration-20260907/restored-reference-links.json`.
 - Mac Python 3.12.13, MuJoCo 3.12.0 환경을 사용했다. 이 환경에 없던 pytest와 pytest-subtests를 설치했다.
 - 원본 자료 연결 및 첫 검증기 보완 후 관련 검사 **122 passed, 29 subtests passed**, 실패·skip 없음. 저장된 파일 `final-focused-tests.txt` 참조.
 - 실제 시험 후 피드백 연결 및 검증기 보완 관련 검사 **85 passed, 23 subtests passed**. 이는 다른 검사 범위이므로 앞의 122개와 합산하지 않는다. `post-live-fix-tests.txt` 참조.

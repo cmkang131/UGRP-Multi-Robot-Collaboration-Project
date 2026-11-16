@@ -91,8 +91,8 @@ r2/r3 전 원본은 저장했지만 모두 개별 확대 검토한 것은 아니
 
 ## 저장 위치
 
-원본은 `/Users/changmin/projects/ugrp/outputs/act-map-preview-20260920-v1` 및
-`/Users/changmin/projects/ugrp/outputs/act-map-preview-20260920-v2`에 로컬 보관한다.
+원본은 `<home>/projects/ugrp/outputs/act-map-preview-20260920-v1` 및
+`<home>/projects/ugrp/outputs/act-map-preview-20260920-v2`에 로컬 보관한다.
 각각 지도·학생 과제·setup/evaluation 전용 JSON·scene XML·TOP/자기/관찰자 영상,
 전체 해시를 포함한다. [artifact-manifest.json](artifact-manifest.json)에 절대 경로와
 원본 파일별 SHA-256을 기록했다. 이 해시와 요약/갤러리의 Git 보관은 raw 원본의

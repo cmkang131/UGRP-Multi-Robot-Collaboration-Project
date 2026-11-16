@@ -23,10 +23,10 @@
 실행:
 
 ```sh
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/ugrp_session.py run terrain-trials-20260914 -- \
-  /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-14-pair-terrain-trials/run_cohort.py \
-  --mjpython /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/mjpython \
-  --grasp-model-dir /Users/changmin/projects/ugrp-worktrees/pair-loaded-navigation/outputs/pair-navigation/runtime/models/grasp \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/ugrp_session.py run terrain-trials-20260914 -- \
+  <home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-14-pair-terrain-trials/run_cohort.py \
+  --mjpython <home>/projects/ugrp/.venv-sim-worker-mac/bin/mjpython \
+  --grasp-model-dir <home>/projects/ugrp-worktrees/pair-loaded-navigation/outputs/pair-navigation/runtime/models/grasp \
   --out-dir outputs/pair-terrain-trials-2026-09-14
 ```
 

@@ -31,7 +31,7 @@
 | `codex/side-grasp-probe` | `525c009ab22769f0caa1760e9af3f85ffbc6c454` | #20 |
 | `codex/ubuntu-quickstart` | `79c156c41a89e519c667ac8f0a074002c4c7b704` | #11 |
 
-모든 위 SHA는 기준 main에서 도달 가능하다. 필요하면 해당 SHA로 로컬 브랜치를 복원하고 명시적으로 원격에 push할 수 있다. worktree 등록 백업과 전후 목록·명령 결과는 원본 Mac의 `/Users/changmin/projects/ugrp/outputs/repository-audit-20260920/`에 있다. 이 로컬 백업을 원격 백업으로 표현하지 않는다.
+모든 위 SHA는 기준 main에서 도달 가능하다. 필요하면 해당 SHA로 로컬 브랜치를 복원하고 명시적으로 원격에 push할 수 있다. worktree 등록 백업과 전후 목록·명령 결과는 원본 Mac의 `<home>/projects/ugrp/outputs/repository-audit-20260920/`에 있다. 이 로컬 백업을 원격 백업으로 표현하지 않는다.
 
 ## 문서 정리
 

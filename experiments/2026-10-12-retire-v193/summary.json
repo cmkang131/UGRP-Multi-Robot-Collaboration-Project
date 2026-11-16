@@ -48,7 +48,7 @@
   },
   "local_tests": {
     "status": "passed",
-    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_s3_recovery.py tests/test_simulation_workflow_manager.py --junitxml=outputs/retire-v193/tests.xml",
+    "command": "<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_s3_recovery.py tests/test_simulation_workflow_manager.py --junitxml=outputs/retire-v193/tests.xml",
     "files": [
       "tests/test_s3_recovery.py",
       "tests/test_simulation_workflow_manager.py"
@@ -66,7 +66,7 @@
   "model_calls": 0,
   "verification_scope": "Only original-source byte/SHA-256 preservation, current workflow retirement, unchanged v195 runtime seal, and the two requested offline test files. No simulation or inherited execution results.",
   "raw_locations": {
-    "local": "/Users/changmin/projects/ugrp-wt/retire-v193/outputs/retire-v193"
+    "local": "<home>/projects/ugrp-wt/retire-v193/outputs/retire-v193"
   },
   "method": "Reuse v189/v191 retirement layout; extract immutable Git blobs and compare full bytes plus SHA-256. No controller algorithm change.",
   "references": [
@@ -104,7 +104,7 @@
   },
   "delivery": {
     "status_at_record_commit": "pending commit, push, and PR creation; no merge authorized",
-    "receipt": "/Users/changmin/projects/ugrp-wt/retire-v193/outputs/retire-v193/delivery-receipt.json"
+    "receipt": "<home>/projects/ugrp-wt/retire-v193/outputs/retire-v193/delivery-receipt.json"
   },
   "class": "dev"
 }

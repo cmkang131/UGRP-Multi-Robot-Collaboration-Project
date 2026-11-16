@@ -1,5 +1,5 @@
 import sys, json, copy, numpy as np, collections
-sys.path.insert(0,'/Users/changmin/projects/ugrp-wt/zone-owncam-loc')
+sys.path.insert(0,'<home>/projects/ugrp-wt/zone-owncam-loc')
 from pathlib import Path
 import scripts.eval_owncam_localization as E
 data=Path(sys.argv[1]); eps=sys.argv[2].split(','); p=json.load(open(sys.argv[3]))['params']

@@ -3,9 +3,9 @@
 # Waits for the shared physics lock, holds it (owner claude, pid = this shell), runs one frozen-source stage-probe group, releases.
 set -u
 TAG=$1; PLC=$2; MIN=$3; SEEDS=${4:-911}   # 4th arg (optional): PF/case seed, default 911 (runner default)
-SRC=/Users/changmin/projects/ugrp-wt/phys-caps-1001-src
-PRIMARY=/Users/changmin/projects/ugrp
-PY=/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python
+SRC=<home>/projects/ugrp-wt/phys-caps-1001-src
+PRIMARY=<home>/projects/ugrp
+PY=<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python
 OUT=$PRIMARY/outputs/phys-caps-1001-l1-$TAG
 LOCKCLI="python3 $PRIMARY/scripts/agent_lock.py"
 until $LOCKCLI acquire --owner claude --branch claude/phys-caps-1001 --purpose "L1 lateral probes $TAG (b-v6h1 4c6b439f)" --pid $$ --expected-minutes $MIN >/dev/null 2>&1; do sleep 20; done

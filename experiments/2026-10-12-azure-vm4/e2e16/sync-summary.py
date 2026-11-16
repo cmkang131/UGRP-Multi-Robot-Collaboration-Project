@@ -26,6 +26,6 @@ for r in d['runs']:
   r['zupt_displacement_evaluation']={rid:{k:v[k] for k in ('zupt_applied','aligned_events','actual_displacement_m')} for rid,v in z['robots'].items()}
 if shutdown.exists():d['vm_final']=json.loads(shutdown.read_text())
 if verified.exists():d['arm_hash_verification']=json.loads(verified.read_text())
-p=Path('/Users/changmin/projects/ugrp-wt/e2e-usstall/experiments/2026-10-12-e2e-usstall/run-summary.json');tmp=p.with_suffix('.json.tmp');tmp.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n');tmp.replace(p)
+p=Path('<home>/projects/ugrp-wt/e2e-usstall/experiments/2026-10-12-e2e-usstall/run-summary.json');tmp=p.with_suffix('.json.tmp');tmp.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n');tmp.replace(p)
 (out/'summary.json').write_bytes(p.read_bytes())
 print(json.dumps({k:d[k] for k in ('status','submitted','exited','condition_counts','zupt_judgements','zupt_stationary','zupt_applied','execution_errors')},ensure_ascii=False))

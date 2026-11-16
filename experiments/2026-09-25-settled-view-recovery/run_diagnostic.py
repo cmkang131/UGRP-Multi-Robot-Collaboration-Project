@@ -19,7 +19,7 @@ import sys
 import time
 
 ROOT = Path(__file__).resolve().parents[2]
-PRIMARY = Path('/Users/changmin/projects/ugrp')
+PRIMARY = Path('<home>/projects/ugrp')
 PROTOCOL = Path(__file__).with_name('physical-protocol.json')
 
 

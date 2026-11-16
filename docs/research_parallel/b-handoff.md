@@ -50,7 +50,7 @@ actor request가 endpoint에 발행되는 계약만 검사했고 물리 성공�
 현재 source에서 가장 작은 재검증 명령:
 
 ```sh
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
   tests/test_rgb_execution_port.py
 ```
 
