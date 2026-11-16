@@ -40,7 +40,7 @@ def test_gate_is_disjoint_and_held_after_exact_six(tmp_path,monkeypatch):
     table=tmp_path/'rejection_table.json';table.write_text('{}')
     value=q.build(source,evidence,table)
     assert value['status']=='HOLD_SCENE' and not any(value[k] for k in ('ready','approved','submitted','scene_approved'))
-    assert value['max_parallel']==16 and value['project_id']=='ugrp-sim-b-1014'
+    assert value['max_parallel']==16 and value['project_id']=='<project-id-gcp2>'
     assert len(value['runs'])==40 and {r['seed'] for r in value['runs']}==set(range(8318700,8318740))
     assert value['runs'][0]['seed']==8318726
     assert value['setup_validity']=='beampair_gate_valid_v2' and value['wall_layer']=='beampair_wall_clear_v1'

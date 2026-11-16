@@ -9,7 +9,7 @@
 
 1. 깨끗한 커밋 상태에서 `python3 scripts/colab_carry_bundle.py pack --output outputs/colab/carry.zip`.
 2. `notebooks/carry_input_colab.ipynb`의 셀을 Colab 임시 노트북에 복사한다.
-   Chrome **강 / kcm0127@gmail.com**, T4 GPU를 사용한다. Drive에 복사하지 않는다.
+   Chrome **강 / <account-2>**, T4 GPU를 사용한다. Drive에 복사하지 않는다.
 3. ZIP과 manifest를 런타임에 직접 업로드한다. Python 3.12 별도 연구 환경과
    기존 pinned LeRobot/PyTorch 의존성을 설치한다. 이어서 `scripts/patch_reference_act.py`로
    로컬에서도 사용하는 두 줄 device 호환 패치를 적용한다. 원본/패치 해시를 검증하며
@@ -61,7 +61,7 @@ GPU→CPU 최대 차이 8.0466e-7(train/dev 각 2표본)이다.
 출력은 `/content/carry-training`, 로그는 `/content/carry-training.log`다.
 `verification.json`에 검증 범위와 원본 위치를 기록했다.
 
-초기 실행은 **강 / kcm0127@gmail.com**의 scratchpad 탭에서 확인했다. 이후 실행은 아래 CLI로 전환했다.
+초기 실행은 **강 / <account-2>**의 scratchpad 탭에서 확인했다. 이후 실행은 아래 CLI로 전환했다.
 새로고침하지 않고 다음 셀로 상태를 읽을 수 있다.
 
 ```python

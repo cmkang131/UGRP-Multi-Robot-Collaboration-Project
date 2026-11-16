@@ -22,7 +22,7 @@ def meta(key):
 
 host = {k: meta(v) for k, v in dict(project='project/project-id', instance='instance/name',
                                   machine='instance/machine-type').items()}
-assert host == dict(project='ugrp-sim-e-1016', instance='ugrp-act-l4-gcp5', machine='g2-standard-8')
+assert host == dict(project='<project-id-gcp5>', instance='ugrp-act-l4-gcp5', machine='g2-standard-8')
 reference = json.loads((source/'source-provenance.json').read_text())
 for name, digest in reference['files_sha256'].items():
     assert hashlib.sha256((source/name).read_bytes()).hexdigest() == digest, name

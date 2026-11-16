@@ -89,7 +89,7 @@ def main():
               'disk_budget': disk['ok'], 'gpu_l4_available': idle_gpu['exit_code'] == 0 and 'L4' in idle_gpu['stdout'],
               'gpu_idle': gpu_processes['exit_code'] == 0 and not gpu_processes['stdout'].strip(),
               'no_competing_user_work': not competing, 'idle_guard_active': guard['stdout'].strip() == 'active',
-              'approved_host_identity': host['project'] == 'ugrp-sim-f-1016' and host['name'] == 'ugrp-act-l4-gcp6'}
+              'approved_host_identity': host['project'] == '<project-id-gcp6>' and host['name'] == 'ugrp-act-l4-gcp6'}
     record = {'schema': 'ugrp.baseline-restored-host-preflight.v1',
               'utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
               'host': host, 'disk': disk, 'package_files': package_files, 'nvidia_smi': idle_gpu,

@@ -31,7 +31,7 @@ def build_queue(sha, pricing):
             'model_keys_on_vm': False, 'budget_stop': 'keep existing; no billing changes',
             'pricing': pricing},
         'preflight_required': [
-            'Confirm project ugrp-act-train-1014, current credit remaining, no budget-stop activation; never bypass or switch host on activation',
+            'Confirm project <project-id-gcp1>, current credit remaining, no budget-stop activation; never bypass or switch host on activation',
             'Verify existing budget-stop subscription/function and 8h STOP; install this SHA idle guard, verify timer and idle 1200s; do not alter billing',
             'Verify L4 quota/zone availability and official current regional VM/disk/snapshot/network prices; recorded price is an estimate, not remaining credits',
             'Record exact gcp1 source disk name and snapshot/clone resource IDs; no snapshot of active writes; do not delete originals',
@@ -104,7 +104,7 @@ def build_main_eval_queue(sha, pricing):
         data_disk_source='existing 100 GB boot disk with source recordings and old smoke preserved')
     q['preflight_required'] = [
         'Verify existing ugrp-act-l4-pilot1 is TERMINATED with its original disk/data; restart it only after budget/credit checks',
-        'Confirm project ugrp-act-train-1014 and remaining credit; no budget-stop activation; stop/report on activation, no bypass or host switch',
+        'Confirm project <project-id-gcp1> and remaining credit; no budget-stop activation; stop/report on activation, no bypass or host switch',
         'Verify budget-stop, max-run-duration=8h STOP and this SHA idle guard (1200s); no billing changes, keys or service-account changes',
         'Verify current official regional VM/disk/network prices; stored pricing is historical estimate, credit balance is unverified',
         'Keep all 50 recordings, prior datasets/checkpoints and raw reports; >=40 GiB free before conversion; stop on insufficient space',
@@ -115,7 +115,7 @@ def build_main_eval_queue(sha, pricing):
     q['transfer'] = {
         'method': 'reuse already extracted, verified recordings on retained pilot1 disk; no new snapshot',
         'restored_runs_root': '/mnt/act-source/home/ugrp/ugrp-sim/runs',
-        'fallback_archive': 'gs://ugrp-act-train-1014-runs/solo-record-6f057f7e/solo-record-6f057f7e-milestone.tar',
+        'fallback_archive': 'gs://<project-id-gcp1>-runs/solo-record-6f057f7e/solo-record-6f057f7e-milestone.tar',
         'archive_sha256': '2917caf7ff8c8c4a429a5b840ac2223c6d4c784eaa95e0e99a11267ea64b00f8',
         'verified_transfer': False, 'credentials_copied': False,
         'gcloud_project_flag_required': '--project=' + PROJECT}

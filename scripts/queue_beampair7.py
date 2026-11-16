@@ -47,7 +47,7 @@ def build(source, stage, table, evidence=None, round_id='r1'):
         approved=True,enabled=True,ready=True,submitted=False,stage=stage) for i,e in episodes]
     digest=hashlib.sha256(table.read_bytes()).hexdigest()
     return dict(kind='beampair',owner='beampair7',stage=stage,round=round_id,source_sha=source,
-        host='gcp2',project='ugrp-sim-b-1014',account='changmin5781@gmail.com',max_parallel=16 if stage=='gate' else 4,
+        host='gcp2',project='<project-id-gcp2>',account='<account-1>',max_parallel=16 if stage=='gate' else 4,
         cap_s=60,sentinel_first=stage=='short',serial_prefix=2 if stage=='short' else 0,runs=runs,ready=True,approved=True,
         review_passed=True,status='APPROVED_PINNED',
         review_detail='REVIEW_SKIPPED_BY_USER (10/15 run-first rule)',

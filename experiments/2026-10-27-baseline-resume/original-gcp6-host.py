@@ -15,12 +15,12 @@ from urllib.request import Request, ProxyHandler, build_opener
 
 
 APPROVED_HOSTS = {
-    'gcp6': ('ugrp-sim-f-1016', 'ugrp-act-l4-gcp6', 'g2-standard-8',
-             'asia-northeast3-a', 'kcm5781kcm5781@gmail.com'),
-    'gcp3': ('ugrp-sim-c-1016', 'ugrp-act-l4-gcp3', 'g2-standard-8',
-             'asia-northeast3-a', 'changmin5781@gmail.com'),
-    'gcp4': ('ugrp-sim-d-1016', 'ugrp-act-l4-gcp4', 'g2-standard-16',
-             'asia-northeast3-a', 'changmin5781@gmail.com'),
+    'gcp6': ('<project-id-gcp6>', 'ugrp-act-l4-gcp6', 'g2-standard-8',
+             'asia-northeast3-a', '<account-3>'),
+    'gcp3': ('<project-id-gcp3>', 'ugrp-act-l4-gcp3', 'g2-standard-8',
+             'asia-northeast3-a', '<account-1>'),
+    'gcp4': ('<project-id-gcp4>', 'ugrp-act-l4-gcp4', 'g2-standard-16',
+             'asia-northeast3-a', '<account-1>'),
 }
 
 

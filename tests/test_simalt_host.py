@@ -5,11 +5,11 @@ from scripts import simalt_host
 
 
 @pytest.mark.parametrize('project,instance,machine,accepted',[
-    ('ugrp-sim-b-1014','ugrp-act-l4-gcp2','g2-standard-8',True),
-    ('ugrp-sim-b-1014','ugrp-sim-gcp2','n4-highcpu-64',True),
-    ('ugrp-act-train-1014','ugrp-act-l4-gcp2','g2-standard-8',False),
-    ('ugrp-sim-b-1014','ugrp-act-l4-pilot1','g2-standard-4',False),
-    ('ugrp-sim-b-1014','ugrp-act-l4-gcp2','g2-standard-4',False),
+    ('<project-id-gcp2>','ugrp-act-l4-gcp2','g2-standard-8',True),
+    ('<project-id-gcp2>','ugrp-sim-gcp2','n4-highcpu-64',True),
+    ('<project-id-gcp1>','ugrp-act-l4-gcp2','g2-standard-8',False),
+    ('<project-id-gcp2>','ugrp-act-l4-pilot1','g2-standard-4',False),
+    ('<project-id-gcp2>','ugrp-act-l4-gcp2','g2-standard-4',False),
 ])
 def test_metadata_binds_project_instance_and_machine(monkeypatch,project,instance,machine,accepted):
     monkeypatch.setattr(simalt_host.platform,'system',lambda:'Linux')

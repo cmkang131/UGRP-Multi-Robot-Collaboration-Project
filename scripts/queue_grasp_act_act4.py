@@ -51,7 +51,7 @@ def build_queue(source):
             'full_hash_and_cpu_load_verification_required': True},
         'note': '91101 was unsubmitted in old-model cohort, but operator must recheck unused status/static setup; NEW candidate only, no old-model retry'})
     return {'schema': 'ugrp.vm3_queue.act4.v1', 'approved': False, 'enabled': False,
-        'source_sha': source, 'project': 'ugrp-act-train-1014', 'branch': 'claude/act-train', 'pr': 504,
+        'source_sha': source, 'project': '<project-id-gcp1>', 'branch': 'claude/act-train', 'pr': 504,
         'remote_execution_started': False, 'gate_promotion_authorized_if_all_conditions_pass': False,
         'status': 'BLOCKED_PENDING_MEASUREMENTS_AND_APPROVAL',
         'source_dataset_manifest_sha256': 'da651587d3cbe51f418f63fda55642b53e985a1fe1551db98909517065ba058b',
@@ -66,7 +66,7 @@ def build_queue(source):
         'required_before_start': [
             'No authorization inherited from f609979c; every stage requires new explicit approval',
             'Check actual credits, active budget-stop alerts and budget-stop function; never bypass or switch hosts',
-            'Every gcloud resource command must include --project=ugrp-act-train-1014',
+            'Every gcloud resource command must include --project=<project-id-gcp1>',
             'Confirm free disk including other approved jobs; preserve original datasets/checkpoints/runs',
             'Verify clean exact source SHA, pinned LeRobot and full dataset/normalization hashes',
             'measurement-receipt: analyze all 1833 held-out unique timesteps incl. per-skill done score quantiles and lateral/yaw signs',

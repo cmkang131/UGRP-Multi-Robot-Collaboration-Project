@@ -66,7 +66,7 @@ PYTHONPATH=. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
 
 `make_scene_texture_plan.py --source-sha <확정 40자리 SHA> --output <새 파일>`이 모든 `approved`·`ready*`·`execute`·`enabled`를 false로 작성한다. 로컬 대기열 이름은 `/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-floortex-<SHA8>.json`이다. 자동 제출 명령/감시는 없다.
 
-1. 소비자 PR가 프로필 선택과 실제 audit 연결을 끝내고 새 소스/번들을 고정한다. GCP 프로젝트 `ugrp-act-train-1014`만 사용하고 같은 머신 종류에서 두 팔을 잰다. 예산 정지, VM 8h 상한/20분 유휴 정지, 512 MiB 자료 예산과 여유 공간을 확인한다.
+1. 소비자 PR가 프로필 선택과 실제 audit 연결을 끝내고 새 소스/번들을 고정한다. GCP 프로젝트 `<project-id-gcp1>`만 사용하고 같은 머신 종류에서 두 팔을 잰다. 예산 정지, VM 8h 상한/20분 유휴 정지, 512 MiB 자료 예산과 여유 공간을 확인한다.
 2. 네 지도(두 문/복도/H1/H2) 각각 고정 6시점에서 기존 프로필·새 프로필의 자기 카메라 640×480 총 48장을 얻는다. 물리 step0, 모델 호출0, 실제 카메라/FOV/로봇/물체/색 유지. setup 자세만 사용하고 위치 정답을 제어기에 주지 않는다. PNG·런타임 JPEG/sha, 컴파일된 물리 배열 동등성, 면 방향/줄무늬/이음매/축척을 확인한다.
 3. 정답 바닥/벽 마스크는 평가에만 사용해 색 오검출 픽셀·연결 성분 n/N, 원래 물체/띠/손잡이/페인트/로봇 검출 유지 여부를 기준 프로필과 비교한다. `detect_boundaries`의 벽띠 std≤3 수용 n/N·정답/오검출 열, `opencv_wall_observation`의 정답/오검출 열, 고정 `own_image_gates`의 두 frame gate 통과 n/N과 dark/spread/std를 PNG·실제 런타임 JPEG에서 각각 기록한다. `wall_floor_lorigo`, `wall_floor_ulrich`, `vendor/lu_vp`는 별도로 검증한다. ORB 전체/실제 floor mask 통과 수를 모두 기록한다. 새 색 오검출 성분이나 기존 대상/정답 벽 열 손실·새 오검출 벽 열/프레임 허위 수용, 반복·매핑 결함이면 중단한다. 필요한 보정은 질감 전용 분기와 새 보정 기록으로만 허용한다.
 4. 정적 관문 뒤 #506의 동일 새 코드·새로 예약한 같은 seed로 프로필만 바꾼 첫30 SIM초 비교. features/matches/inliers, visual/command_only 비율, rebuild·map_updated·stop_reason·wall/SIM을 비교한다. 속도 중앙 >3.5는 경고, >6 또는 미완료/HOST_ERROR는 차단. 결함 확인 시 해당 실행 즉시 정지한다.

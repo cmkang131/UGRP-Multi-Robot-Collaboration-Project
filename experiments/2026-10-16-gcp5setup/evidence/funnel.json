@@ -11,7 +11,7 @@
       "blocking_object": "not_applicable_infrastructure",
       "minimum_gap": "not_measured_infrastructure",
       "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/global-quota.json",
-      "reproduce": "gcloud compute project-info describe --account changmin5781@gmail.com --project ugrp-sim-e-1016"
+      "reproduce": "gcloud compute project-info describe --account <account-1> --project <project-id-gcp5>"
     },
     {
       "gate": "budget_stop",
@@ -33,7 +33,7 @@
       "blocking_object": "not_applicable_infrastructure",
       "minimum_gap": "not_measured_infrastructure",
       "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/disks-after-test.json",
-      "reproduce": "gcloud compute disks list --filter=name=ugrp-budget-test-gcp5 --account changmin5781@gmail.com --project ugrp-sim-e-1016"
+      "reproduce": "gcloud compute disks list --filter=name=ugrp-budget-test-gcp5 --account <account-1> --project <project-id-gcp5>"
     },
     {
       "gate": "mjwarp_cuda_step",

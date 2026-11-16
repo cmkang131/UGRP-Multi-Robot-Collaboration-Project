@@ -4,7 +4,7 @@
 
 | 항목 | 실제 확인 |
 |---|---|
-| 대상 | project ugrp-sim-f-1016 / ugrp-act-l4-gcp6 / asia-northeast1-c / id2102818194467198298 / g2-standard-8·L4 |
+| 대상 | project <project-id-gcp6> / ugrp-act-l4-gcp6 / asia-northeast1-c / id2102818194467198298 / g2-standard-8·L4 |
 | 원본33 | 33/33·4개HEAD일치·tracked clean, 존어댑터후재확인도PASS |
 | 처치10 | 현재C-08 10/10해시일치 |
 | CPU모델 | step-011000 원래로더PASS, CUDA초기화false·forward0·시뮬레이터모듈0 |

@@ -1,6 +1,6 @@
 # gcp4setup — 네 번째 프로젝트 L4 준비
 
-2026-10-16 사용자 원문: "프로젝트 하나 더 만들어서 L4 하나 더 써". `changmin5781@gmail.com` / `ugrp-sim-d-1016`(298701037365)에 gcp3와 같은 실행 기반을 추가한다. 조정자가 만든 프로젝트·결제 연결·할당량을 확인하고 PR #554/#558 위에 쌓는다. 기본 호스트는 gcp2이며 다른 프로젝트와 결과를 합산하지 않는다.
+2026-10-16 사용자 원문: "프로젝트 하나 더 만들어서 L4 하나 더 써". `<account-1>` / `<project-id-gcp4>`(<project-number-gcp4>)에 gcp3와 같은 실행 기반을 추가한다. 조정자가 만든 프로젝트·결제 연결·할당량을 확인하고 PR #554/#558 위에 쌓는다. 기본 호스트는 gcp2이며 다른 프로젝트와 결과를 합산하지 않는다.
 
 ## 상태
 
@@ -8,9 +8,9 @@
 
 ## 예산 정지
 
-프로젝트 번호 `projects/298701037365`만 필터한 월 **순비용1,000 KRW** 예산(`INCLUDE_ALL_CREDITS`)·CURRENT_SPEND 50/100% 알림 → Pub/Sub `budget-stop` → Gen2 함수 `stop_on_budget`, `TARGET_PROJECT=ugrp-sim-d-1016`. 기본 결제 IAM 이메일을 유지한다. 이메일 실제 수신과 실제 청구 집계 지연은 시험하지 않는다.
+프로젝트 번호 `projects/<project-number-gcp4>`만 필터한 월 **순비용1,000 KRW** 예산(`INCLUDE_ALL_CREDITS`)·CURRENT_SPEND 50/100% 알림 → Pub/Sub `budget-stop` → Gen2 함수 `stop_on_budget`, `TARGET_PROJECT=<project-id-gcp4>`. 기본 결제 IAM 이메일을 유지한다. 이메일 실제 수신과 실제 청구 집계 지연은 시험하지 않는다.
 
-함수·requirements는 gcp3 보존본과 바이트 동일하다. 새 실행 계정은 `budget-stopper@ugrp-sim-d-1016.iam.gserviceaccount.com`이며 compute.instanceAdmin.v1·eventarc.eventReceiver·run.invoker를 gcp4에만 부여했다. gcp1/gcp2/gcp3에는 API/SSH 요청을 보내지 않았고 기존 장치를 변경하지 않았다.
+함수·requirements는 gcp3 보존본과 바이트 동일하다. 새 실행 계정은 `<service-account>`이며 compute.instanceAdmin.v1·eventarc.eventReceiver·run.invoker를 gcp4에만 부여했다. gcp1/gcp2/gcp3에는 API/SSH 요청을 보내지 않았고 기존 장치를 변경하지 않았다.
 
 `e2-micro` 시험 VM `ugrp-budget-test-gcp4`(10GB, 서비스 계정/scope 없음, 시험 자체10분 STOP)에 `costAmount=budgetAmount=1000` 수동 발행 후 상태 시계열과 함수 로그를 보존한다. **RUNNING →6.364초 STOPPING →140.309초 TERMINATED**를 관측했고 함수 `stop_all` 로그의 대상 이름도 일치했다. 시험 VM과 부팅 디스크를 삭제한 뒤 각각 목록0을 확인하고 L4를 생성했다. 이 시험은 Pub/Sub 이후 동작만 검증한다. 비용 집계는 지연될 수 있고 VM 정지 뒤에도 디스크·네트워크·빌드 저장소 등 VM 밖 비용은 계속될 수 있다.
 

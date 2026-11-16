@@ -6,8 +6,8 @@ import subprocess
 import time
 
 ROOT = Path(__file__).resolve().parent
-ACCOUNT = 'kcm5781kcm5781@gmail.com'
-PROJECT = 'ugrp-sim-f-1016'
+ACCOUNT = '<account-3>'
+PROJECT = '<project-id-gcp6>'
 SNAPSHOT = 'ugrp-gcp6-baseline-20261026t1850'
 ZONE = 'asia-northeast3-b'
 DISK = 'ugrp-gcp6-baseline-20261027'

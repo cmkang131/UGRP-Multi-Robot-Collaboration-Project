@@ -1,6 +1,6 @@
 # simalt5 작업 기록
 
-- 2026-10-15 16:45:52.759 UTC: gcp2 L4 시작. 계정 changmin5781@gmail.com / 프로젝트 ugrp-sim-b-1014 / g2-standard-8 / asia-northeast3-a. 사용자 상한 10,800초, 종료 시각 상한 19:45:52.759 UTC. CPU gcp2에는 beampair5/scenetex3 임대가 있어 정지하지 않는다. 양쪽 호스트에 simalt5 임대를 만들었다.
+- 2026-10-15 16:45:52.759 UTC: gcp2 L4 시작. 계정 <account-1> / 프로젝트 <project-id-gcp2> / g2-standard-8 / asia-northeast3-a. 사용자 상한 10,800초, 종료 시각 상한 19:45:52.759 UTC. CPU gcp2에는 beampair5/scenetex3 임대가 있어 정지하지 않는다. 양쪽 호스트에 simalt5 임대를 만들었다.
 - simalt4 README·summary·스텝 표·ops-alert 505행을 먼저 검토했다. 원래 11.508172 mm, 48,834스텝/12.2085 SIM초에 5 mm를 처음 넘었다. 파지 30은 같은 3초 trace의 시간 표본이며 독립 시행 수가 아니다.
 - 공식 MuJoCo3.15 b3dd9e617의 dampratio 관성 계산 변경을 확인했다. `actuator_biasprm[:,2]` 4개만 같은 XML의 C3.12 컴파일 값으로 복원하는 compiled-312-v1을 기본 off로 추가했다. XML·actuator 이름/순서·나머지 감사 물리 배열이 다르면 거부한다. 반대 방향(C3.12에 C3.16 감쇠)도 별도 ablation으로 기록했다. 새 물리값을 튜닝하지 않았다.
 - 실행 소스 e89ff15343225a08e826788b5345666f792bc42c, 원래 simalt3 fixture/XML 재사용. C3.12/C3.16 native 교환 2개, Warp 보정 4개를 R1에 등록했다. C3.12에 C3.16 감쇠만 넣으면 원래 C3.12와 끝점 차이 11.305279 mm, 기존 Warp와는 0.574656 mm다. 이 값은 하나의 개입 결과이며 scalar norm을 가산 분해하지 않는다.

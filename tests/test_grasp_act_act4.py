@@ -171,7 +171,7 @@ def test_act4_queue_never_inherits_old_approval_or_starts_before_measurement():
     q = build_queue('b'*40)
     assert not q['approved'] and not q['enabled'] and not q['remote_execution_started']
     assert not q['main_approval_template']['approved']
-    assert q['project'] == 'ugrp-act-train-1014'
+    assert q['project'] == '<project-id-gcp1>'
     assert q['machine']['max_run_duration'] == '8h' and q['machine']['idle_shutdown_s'] == 1200
     assert all(not j['approved'] and not j['enabled'] for j in q['jobs'])
     smoke = next(j for j in q['jobs'] if j['stage'] == 'smoke')

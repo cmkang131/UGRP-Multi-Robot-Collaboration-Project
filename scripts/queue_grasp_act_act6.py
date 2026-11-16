@@ -88,7 +88,7 @@ def build_queue(source):
         materialization='append --temporal-ensemble-coeff only if selected by deployment receipt; command remains null until review',
         first30_required=True,extra_closed_loop_runs_authorized=False))
     return {'schema':'ugrp.vm3_queue.act6.v1',**states,'source_sha':source,'branch':'claude/act-train','pr':504,
-        'project':'ugrp-act-train-1014','status':'PREPARED_UNAPPROVED',
+        'project':'<project-id-gcp1>','status':'PREPARED_UNAPPROVED',
         'gate_promotion_authorized_if_all_conditions_pass':False,'remote_execution_started':False,
         'record':f'{RECORD}/act6.md','teacher_dependency_sha':TEACHER_SHA,'teacher_dependency_root':dependency,
         'prior_queues_untouched':['20261015-act4-40a21045.json','20261015-act5-bd140578.json'],
@@ -113,7 +113,7 @@ def build_queue(source):
         'required_before_start':[
             'Every stage requires new explicit approval. No previous ACT4/ACT5/f609979c approval is inherited.',
             'Check actual remaining credits/current official prices, budget-stop PubSub/function and active alerts; activation stops owned VMs and forbids restart or host switch.',
-            'All gcloud resource commands include --project=ugrp-act-train-1014. Verify 8h STOP and idle 1200s before starting; never bypass.',
+            'All gcloud resource commands include --project=<project-id-gcp1>. Verify 8h STOP and idle 1200s before starting; never bypass.',
             'Verify exact clean ACT+teacher dependency commits and archive hashes; only missing modules come from the dependency checkout.',
             'Full 50 teacher command census still needs remote saved-file analysis; local 2/50 is insufficient for the full-data claim.',
             'Compare fresh seed proposals with live remote inventory; current preparation cannot establish remote non-use.',

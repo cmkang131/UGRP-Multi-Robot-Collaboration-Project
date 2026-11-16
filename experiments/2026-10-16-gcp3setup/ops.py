@@ -8,12 +8,12 @@ import time
 
 ROOT = Path(__file__).resolve().parent
 EVIDENCE = ROOT / 'evidence'
-ACCOUNT = 'changmin5781@gmail.com'
-PROJECT = 'ugrp-sim-c-1016'
+ACCOUNT = '<account-1>'
+PROJECT = '<project-id-gcp3>'
 
 
 def cloud(name, *args, project=PROJECT):
-    if project not in (PROJECT, 'ugrp-sim-b-1014'):
+    if project not in (PROJECT, '<project-id-gcp2>'):
         raise ValueError('Only gcp3 and read-only gcp2 reference calls allowed')
     if project != PROJECT and tuple(args[:3]) not in (
         ('compute', 'instances', 'describe'), ('compute', 'disks', 'describe'),

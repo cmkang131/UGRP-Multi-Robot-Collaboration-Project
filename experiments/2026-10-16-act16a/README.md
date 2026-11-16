@@ -72,7 +72,7 @@ done 요청은26회 모두 안정 들기 전이었다. 그중1회는 settle을 �
 
 Mac 비물리 단위검사7통과/1skip(torch 미설치), GCP2 동일 마스킹/호스트/반전 검사3통과. GCP2 raw25,806행·자기 RGB25,806개 SHA, 자기 발행 이력·clock을 모두 검증했고 입력/교사 입력 감사 위반0, 교사 행동 실행0이다. 보고 집계는 raw 관문을 다시 계산했다. [검증](raw-verification.json), [Release 검증](release-verification.json), [누락 목록](missing-data.json), [재현 지문](reproduction-fingerprints.json).
 
-롤아웃 소스b4db8ba2, 고정 장면/교사6f057f7e, CPU actor torch2.11.0+cpu·고정 LeRobot89236ea0. 호스트는ugrp-sim-b-1014/ugrp-sim-gcp2/n4-highcpu-64다. 고정 교사 runner의 역사적gcp1 enum은 진짜GCP2 CPU metadata를 확인한 identity adapter로만 연결했고 GCP1에 접속하지 않았다. 정책·물리·카메라·상수는 바꾸지 않았다.
+롤아웃 소스b4db8ba2, 고정 장면/교사6f057f7e, CPU actor torch2.11.0+cpu·고정 LeRobot89236ea0. 호스트는<project-id-gcp2>/ugrp-sim-gcp2/n4-highcpu-64다. 고정 교사 runner의 역사적gcp1 enum은 진짜GCP2 CPU metadata를 확인한 identity adapter로만 연결했고 GCP1에 접속하지 않았다. 정책·물리·카메라·상수는 바꾸지 않았다.
 
 GCP2의원본은/home/ugrp/ugrp-sim/runs/act16a-gcp2-<seed>-b4db8ba2[-retry1]/raw, 정합 배치는/home/ugrp/ugrp-sim/act16a/recovery1, 분석/전체 원본 해시 목록은/home/ugrp/ugrp-sim/act16a/final-analysis-v2다. 원본 독립 전체 백업은 미완료다. 실행 argv는정합 배치와runs.json의거부표에 남겼다. 기존 출력에 덮어쓰지 말고새 --output을 쓴다.
 

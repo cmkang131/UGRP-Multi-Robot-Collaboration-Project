@@ -145,7 +145,7 @@ pd-balanced 부팅 디스크)을 재시작·재사용한다. TERMINATED·디스�
 상태이며 운영자가 현재 상태를 확인한다. 새 VM·snapshot·데이터 디스크를 만들지 않는다.
 `/mnt/act-source/home/ugrp/ugrp-sim/runs`의 기존50개 기록을 쓰고, 새 산출물은
 `/mnt/act-source/act-main-<SHA8>/`에 둔다. 저장 공간40 GiB 이상·원본 파일 해시를 확인한다.
-원본 tar는 `gs://ugrp-act-train-1014-runs/solo-record-6f057f7e/solo-record-6f057f7e-milestone.tar`,
+원본 tar는 `gs://<project-id-gcp1>-runs/solo-record-6f057f7e/solo-record-6f057f7e-milestone.tar`,
 SHA-256 `2917caf7ff8c8c4a429a5b840ac2223c6d4c784eaa95e0e99a11267ea64b00f8`다.
 기존 보고의 RUN_META100개 차이는 문서화된 milestone-update manifest와 대조하며 다른 차이는 중단한다.
 
@@ -163,7 +163,7 @@ ImageNet ResNet18 미세조정과 시간 앙상블off는 위 조사 근거·고�
 보류 오차로 체크포인트를 선택하지 않고 고정 step10,000을 쓴다. 500 step마다
 모델·optimizer·RNG를 보존하며 체크포인트 전체 파일 SHA-256·재로딩을 확인한다.
 
-모든 gcloud 명령은 `--project=ugrp-act-train-1014`를 붙인다. 잔여 크레딧·budget-stop을
+모든 gcloud 명령은 `--project=<project-id-gcp1>`를 붙인다. 잔여 크레딧·budget-stop을
 확인하고 발동 시 정지·보고한다. 8h STOP·유휴1200초를 유지하고 키를 저장하지 않는다.
 각 단계 뒤 요약·해시를 회수하고 해당 VM을 정지해 `TERMINATED`를 실제 확인·기록한다.
 다음 단계는 같은 VM을 재시작한다. 폐루프 후에는 소유 작업을 확인한 gcp1과 학습 VM 모두

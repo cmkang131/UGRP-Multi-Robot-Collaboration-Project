@@ -62,7 +62,7 @@ def build(source,worktree,evidence,table):
         source_sha=source,sha=source,source_worktree=str(worktree),pinned_worktree=str(worktree),
         remote_pinned_worktree='/home/ugrp/ugrp-sim/src/'+source,dependency_sha=DEPENDENCY_SHA,
         dependency_root='/home/ugrp/ugrp-sim/src/'+DEPENDENCY_SHA,source_hashes=hashes,
-        host='gcp1',project_id='ugrp-act-train-1014',machine_type='n4-highcpu-64',planned_N=40,
+        host='gcp1',project_id='<project-id-gcp1>',machine_type='n4-highcpu-64',planned_N=40,
         max_parallel=16,host_total_concurrency_limit=40,training_rgb=False,
         scene='cargo_v7 / grasp_act_teal_blue_v1',weld='off',held_object_hidden_v1=True,
         minimum_success=38,qualification_denominator=40,gate_measured_N=0,

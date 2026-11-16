@@ -32,14 +32,14 @@
     "--labels",
     "purpose=ugrp-sim",
     "--account",
-    "changmin5781@gmail.com",
+    "<account-1>",
     "--project",
-    "ugrp-sim-c-1016",
+    "<project-id-gcp3>",
     "--quiet",
     "--format=json"
   ],
   "started_utc": "2026-10-16T03:38:52.113398+00:00",
   "elapsed_s": 12.901872873306274,
   "returncode": 0,
-  "stderr": "Created [https://www.googleapis.com/compute/v1/projects/ugrp-sim-c-1016/zones/asia-northeast3-a/instances/ugrp-act-l4-gcp3].\nWARNING: Some requests generated warnings:\n - Disk size: '140 GB' is larger than image size: '50 GB'. You might need to resize the root repartition manually if the operating system does not support automatic resizing. See https://cloud.google.com/compute/docs/disks/add-persistent-disk#resize_pd for details.\n\n"
+  "stderr": "Created [https://www.googleapis.com/compute/v1/projects/<project-id-gcp3>/zones/asia-northeast3-a/instances/ugrp-act-l4-gcp3].\nWARNING: Some requests generated warnings:\n - Disk size: '140 GB' is larger than image size: '50 GB'. You might need to resize the root repartition manually if the operating system does not support automatic resizing. See https://cloud.google.com/compute/docs/disks/add-persistent-disk#resize_pd for details.\n\n"
 }

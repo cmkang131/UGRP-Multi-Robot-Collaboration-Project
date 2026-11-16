@@ -8,8 +8,8 @@ import time
 
 ROOT = Path(__file__).resolve().parent
 EVIDENCE = ROOT / 'evidence'
-ACCOUNT = 'kcm5781kcm5781@gmail.com'
-PROJECT = 'ugrp-sim-f-1016'
+ACCOUNT = '<account-3>'
+PROJECT = '<project-id-gcp6>'
 
 
 def cloud(name, *args, project=PROJECT):

@@ -2,9 +2,9 @@
   "schema": "ugrp.gcp6setup.v1",
   "ready": true,
   "readiness_scope": "GCP infrastructure, ACT environment and beamact3 dataset only",
-  "account": "kcm5781kcm5781@gmail.com",
-  "project": "ugrp-sim-f-1016",
-  "project_number": "503325597974",
+  "account": "<account-3>",
+  "project": "<project-id-gcp6>",
+  "project_number": "<project-number-gcp6>",
   "billing_account": "010CD7-4B991B-84AAC7",
   "host": "gcp6",
   "instance": "ugrp-act-l4-gcp6",
@@ -87,7 +87,7 @@
     "rejections": [
       {
         "category": "new_service_account_iam_propagation",
-        "blocked_object": "budget-stopper@ugrp-sim-f-1016.iam.gserviceaccount.com",
+        "blocked_object": "<service-account>",
         "minimum_gap_m": null,
         "measurement_status": "not_applicable_infrastructure",
         "evidence": "stopper-compute-retry-command.json",
@@ -126,7 +126,7 @@
       "beamact3_50steps_readback": true
     },
     "recorded_gcp6_commands_checked": 35,
-    "only_human_iam_member": "kcm5781kcm5781@gmail.com",
+    "only_human_iam_member": "<account-3>",
     "first_project_api_calls": 0,
     "other_project_mutations": 0,
     "gcp2_l4_reference_read_only": true,

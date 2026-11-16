@@ -2,68 +2,68 @@
   "bindings": [
     {
       "members": [
-        "serviceAccount:443356522325@cloudbuild.gserviceaccount.com"
+        "serviceAccount:<service-account>"
       ],
       "role": "roles/cloudbuild.builds.builder"
     },
     {
       "members": [
-        "serviceAccount:service-443356522325@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+        "serviceAccount:<service-account>"
       ],
       "role": "roles/cloudbuild.serviceAgent"
     },
     {
       "members": [
-        "serviceAccount:service-443356522325@gcf-admin-robot.iam.gserviceaccount.com"
+        "serviceAccount:<service-account>"
       ],
       "role": "roles/cloudfunctions.standardServiceAgent"
     },
     {
       "members": [
-        "serviceAccount:budget-stopper@ugrp-sim-c-1016.iam.gserviceaccount.com"
+        "serviceAccount:<service-account>"
       ],
       "role": "roles/compute.instanceAdmin.v1"
     },
     {
       "members": [
-        "serviceAccount:443356522325@cloudservices.gserviceaccount.com"
+        "serviceAccount:<service-account>"
       ],
       "role": "roles/compute.instanceGroupManagerServiceAgent"
     },
     {
       "members": [
-        "serviceAccount:service-443356522325@compute-system.iam.gserviceaccount.com"
+        "serviceAccount:<service-account>"
       ],
       "role": "roles/compute.serviceAgent"
     },
     {
       "members": [
-        "serviceAccount:service-443356522325@containerregistry.iam.gserviceaccount.com"
+        "serviceAccount:<service-account>"
       ],
       "role": "roles/containerregistry.ServiceAgent"
     },
     {
       "members": [
-        "serviceAccount:443356522325-compute@developer.gserviceaccount.com",
-        "serviceAccount:ugrp-sim-c-1016@appspot.gserviceaccount.com"
+        "serviceAccount:<service-account>",
+        "serviceAccount:<service-account>"
       ],
       "role": "roles/editor"
     },
     {
       "members": [
-        "user:changmin5781@gmail.com"
+        "user:<account-1>"
       ],
       "role": "roles/owner"
     },
     {
       "members": [
-        "serviceAccount:service-443356522325@gcp-sa-pubsub.iam.gserviceaccount.com"
+        "serviceAccount:<service-account>"
       ],
       "role": "roles/pubsub.serviceAgent"
     },
     {
       "members": [
-        "serviceAccount:service-443356522325@serverless-robot-prod.iam.gserviceaccount.com"
+        "serviceAccount:<service-account>"
       ],
       "role": "roles/run.serviceAgent"
     }

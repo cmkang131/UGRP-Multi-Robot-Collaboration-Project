@@ -1,22 +1,22 @@
 {
   "buildConfig": {
     "automaticUpdatePolicy": {},
-    "build": "projects/443356522325/locations/us-central1/builds/944eaf6f-03bf-475c-9d1e-0c53229f56cf",
+    "build": "projects/<project-number-gcp3>/locations/us-central1/builds/944eaf6f-03bf-475c-9d1e-0c53229f56cf",
     "dockerRegistry": "ARTIFACT_REGISTRY",
-    "dockerRepository": "projects/ugrp-sim-c-1016/locations/us-central1/repositories/gcf-artifacts",
+    "dockerRepository": "projects/<project-id-gcp3>/locations/us-central1/repositories/gcf-artifacts",
     "entryPoint": "stop_on_budget",
     "runtime": "python312",
-    "serviceAccount": "projects/ugrp-sim-c-1016/serviceAccounts/443356522325-compute@developer.gserviceaccount.com",
+    "serviceAccount": "projects/<project-id-gcp3>/serviceAccounts/<service-account>",
     "source": {
       "storageSource": {
-        "bucket": "gcf-v2-sources-443356522325-us-central1",
+        "bucket": "gcf-v2-sources-<project-number-gcp3>-us-central1",
         "generation": "1792121633691277",
         "object": "budget-stop/function-source.zip"
       }
     },
     "sourceProvenance": {
       "resolvedStorageSource": {
-        "bucket": "gcf-v2-sources-443356522325-us-central1",
+        "bucket": "gcf-v2-sources-<project-number-gcp3>-us-central1",
         "generation": "1792121633691277",
         "object": "budget-stop/function-source.zip"
       }
@@ -26,16 +26,16 @@
   "environment": "GEN_2",
   "eventTrigger": {
     "eventType": "google.cloud.pubsub.topic.v1.messagePublished",
-    "pubsubTopic": "projects/ugrp-sim-c-1016/topics/budget-stop",
+    "pubsubTopic": "projects/<project-id-gcp3>/topics/budget-stop",
     "retryPolicy": "RETRY_POLICY_DO_NOT_RETRY",
-    "serviceAccountEmail": "budget-stopper@ugrp-sim-c-1016.iam.gserviceaccount.com",
-    "trigger": "projects/ugrp-sim-c-1016/locations/us-central1/triggers/budget-stop-965507",
+    "serviceAccountEmail": "<service-account>",
+    "trigger": "projects/<project-id-gcp3>/locations/us-central1/triggers/budget-stop-965507",
     "triggerRegion": "us-central1"
   },
   "labels": {
     "deployment-tool": "cli-gcloud"
   },
-  "name": "projects/ugrp-sim-c-1016/locations/us-central1/functions/budget-stop",
+  "name": "projects/<project-id-gcp3>/locations/us-central1/functions/budget-stop",
   "satisfiesPzi": true,
   "serviceConfig": {
     "allTrafficOnLatestRevision": true,
@@ -43,18 +43,18 @@
     "availableMemory": "512Mi",
     "environmentVariables": {
       "LOG_EXECUTION_ID": "true",
-      "TARGET_PROJECT": "ugrp-sim-c-1016"
+      "TARGET_PROJECT": "<project-id-gcp3>"
     },
     "ingressSettings": "ALLOW_ALL",
     "maxInstanceCount": 1,
     "maxInstanceRequestConcurrency": 1,
     "revision": "budget-stop-00001-wus",
-    "service": "projects/ugrp-sim-c-1016/locations/us-central1/services/budget-stop",
-    "serviceAccountEmail": "budget-stopper@ugrp-sim-c-1016.iam.gserviceaccount.com",
+    "service": "projects/<project-id-gcp3>/locations/us-central1/services/budget-stop",
+    "serviceAccountEmail": "<service-account>",
     "timeoutSeconds": 60,
     "uri": "https://budget-stop-lf4jwfhfza-uc.a.run.app"
   },
   "state": "ACTIVE",
   "updateTime": "2026-10-16T03:37:30.485655442Z",
-  "url": "https://us-central1-ugrp-sim-c-1016.cloudfunctions.net/budget-stop"
+  "url": "https://us-central1-<project-id-gcp3>.cloudfunctions.net/budget-stop"
 }

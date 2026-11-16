@@ -35,7 +35,7 @@ assert fn['state']=='ACTIVE' and fn['buildConfig']['entryPoint']=='stop_on_budge
 assert fn['serviceConfig']['environmentVariables']['TARGET_PROJECT']==PROJECT
 budget = read('budget-final')
 assert budget['name'].startswith('billingAccounts/010CD7-4B991B-84AAC7/')
-assert budget['budgetFilter']['projects']==['projects/503325597974']
+assert budget['budgetFilter']['projects']==['projects/<project-number-gcp6>']
 assert budget['budgetFilter']['creditTypesTreatment']=='INCLUDE_ALL_CREDITS'
 assert budget['amount']['specifiedAmount']==dict(currencyCode='KRW',units='1000')
 assert budget['notificationsRule']['pubsubTopic']==f'projects/{PROJECT}/topics/budget-stop'
@@ -47,7 +47,7 @@ config_dir = Path.home()/'.config/gcloud'
 active = (config_dir/'active_config').read_text().strip()
 config = configparser.ConfigParser()
 config.read(config_dir/'configurations'/('config_'+active))
-assert config.get('core','account')=='changmin5781@gmail.com'
+assert config.get('core','account')=='<account-1>'
 observations = read('test-observations')
 stopping = next(x['elapsed_s'] for x in observations if x['status']=='STOPPING')
 assert observations[-1]['status']=='TERMINATED'
@@ -83,7 +83,7 @@ write(E/'funnel.json',funnel)
 start=datetime.datetime.fromisoformat(vm['lastStartTimestamp'])
 stop=datetime.datetime.fromisoformat(vm['lastStopTimestamp'])
 summary=dict(schema='ugrp.gcp6setup.v1',ready=True,readiness_scope='GCP infrastructure, ACT environment and beamact3 dataset only',
-    account=ACCOUNT,project=PROJECT,project_number='503325597974',billing_account='010CD7-4B991B-84AAC7',
+    account=ACCOUNT,project=PROJECT,project_number='<project-number-gcp6>',billing_account='010CD7-4B991B-84AAC7',
     host='gcp6',instance=vm['name'],vm_status=vm['status'],machine='g2-standard-8',gpu='NVIDIA L4 x1',
     disk_gb=140,max_run_s=None,idle_s=1200,default_host='gcp2',default_account_unchanged=True,
     results_pooled=False,source_sha=read('probe-source')['source_sha'],dependencies=['PR #554','PR #558','PR #559'],

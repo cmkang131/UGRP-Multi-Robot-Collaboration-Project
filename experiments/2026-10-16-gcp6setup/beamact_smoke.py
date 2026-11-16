@@ -22,7 +22,7 @@ host = {}
 for name, key in [('project','project/project-id'),('instance','instance/name'),('machine','instance/machine-type')]:
     with urllib.request.urlopen(request(key), timeout=3) as response:
         host[name] = response.read().decode().strip().split('/')[-1]
-assert host == dict(project='ugrp-sim-f-1016',instance='ugrp-act-l4-gcp6',machine='g2-standard-8')
+assert host == dict(project='<project-id-gcp6>',instance='ugrp-act-l4-gcp6',machine='g2-standard-8')
 source_manifest = json.loads((SOURCE/'SOURCE.json').read_text())
 for name, digest in source_manifest['files_sha256'].items():
     assert hashlib.sha256((SOURCE/name).read_bytes()).hexdigest() == digest

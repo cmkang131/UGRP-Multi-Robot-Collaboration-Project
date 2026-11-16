@@ -25,7 +25,7 @@ assert read('guard-final-verification')['guard_exact']
 assert read('guard-final-stop')['returncode']==0
 assert read('gcp2-function-reference')==read('gcp2-function-after')
 assert read('gcp2-topic-policy-reference')==read('gcp2-topic-policy-after')
-assert read('function-active')['serviceConfig']['environmentVariables']['TARGET_PROJECT']=='ugrp-sim-c-1016'
+assert read('function-active')['serviceConfig']['environmentVariables']['TARGET_PROJECT']=='<project-id-gcp3>'
 metadata = {p['key']:p['value'] for p in final[0]['metadata']['items']}
 startup = (ROOT.parents[1]/'scripts/gcp_idle_guard_startup.sh').read_text()
 assert metadata['startup-script']==startup
@@ -58,12 +58,12 @@ manifest={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() fo
           if p.is_file() and '__pycache__' not in p.parts and p.name not in ('summary.json','SHA256.json')}
 write(E/'SHA256.json',manifest)
 write(ROOT/'summary.json',dict(schema='ugrp.gcp3setup.v1',ready=True,readiness_scope='GCP infrastructure only',
-    project='ugrp-sim-c-1016',account='changmin5781@gmail.com',default_host='gcp2',host='gcp3',
+    project='<project-id-gcp3>',account='<account-1>',default_host='gcp2',host='gcp3',
     instance='ugrp-act-l4-gcp3',machine='g2-standard-8',gpu='NVIDIA L4 x1',disk_gb=140,
     vm_status=final[0]['status'],max_run_s=28800,termination_action='STOP',idle_s=1200,
     source_sha=read('probe-source')['source_sha'],
     final_guard_source_sha='9752ff2ba',startup_sha256=hashlib.sha256(startup.encode()).hexdigest(),results_pooled=False,
-    budget=dict(net_krw=1000,credits='INCLUDE_ALL_CREDITS',filter_projects=['projects/443356522325'],
+    budget=dict(net_krw=1000,credits='INCLUDE_ALL_CREDITS',filter_projects=['projects/<project-number-gcp3>'],
                 default_billing_iam_email_enabled=True,email_delivery_tested=False,
                 manual_publish_stopping_s=next(x['elapsed_s'] for x in observations if x['status']=='STOPPING'),
                 manual_publish_terminated_s=observations[-1]['elapsed_s'],test_vm_and_disk_deleted=True),

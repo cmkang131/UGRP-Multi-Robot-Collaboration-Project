@@ -4,7 +4,7 @@
 `6f057f7e97c1a3aec9e8c398b8d9068e27b25df8`로 고정한다. noise는 기존 `act11-noise.json`
 (SHA-256 `c5fc20e0dae610afd24f60960dab9b5b9f77ae057719274ae13e12734fa16565`),
 `recovery_active_search_v1`, `act8_yaw_gain_v1`(0.6790684337506349),
-GCP `ugrp-act-train-1014`의 기존 gcp1 / n4-highcpu-64만 쓴다.
+GCP `<project-id-gcp1>`의 기존 gcp1 / n4-highcpu-64만 쓴다.
 관문 보고는 `/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act11-1fce1155.json`,
 SHA-256 `23a982cac22d1655efdd9998dcacbec204876ce1ee5a2c6e471d193df22dc2a4`다.
 rotation-on 40/40 및 입력 감사 0/0을 기존 검사기로 원본에 다시 연결한다.

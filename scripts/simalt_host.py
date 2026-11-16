@@ -1,4 +1,5 @@
 """Explicit gcp2-only diagnostic identity; never reads metadata credentials."""
+import os
 import platform
 from urllib.request import Request, ProxyHandler, build_opener
 
@@ -15,7 +16,7 @@ def gcp2_identity():
            'machine_type': get('instance/machine-type').rsplit('/', 1)[-1],
            'zone': get('instance/zone').rsplit('/', 1)[-1]}
     allowed = {'ugrp-act-l4-gcp2': 'g2-standard-8', 'ugrp-sim-gcp2': 'n4-highcpu-64'}
-    if (row['project_id'] != 'ugrp-sim-b-1014'
+    if (row['project_id'] != os.environ.get('UGRP_GCP2_PROJECT', '<project-id-gcp2>')
             or row['instance'] not in allowed
             or row['machine_type'] != allowed[row['instance']]
             or not row['zone'].startswith('asia-northeast3-')):

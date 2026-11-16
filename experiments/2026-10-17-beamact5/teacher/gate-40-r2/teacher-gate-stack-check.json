@@ -281,11 +281,11 @@
         },
         {
           "field": "stack_values.gcp_project",
-          "value": "ugrp-sim-f-1016"
+          "value": "<project-id-gcp6>"
         },
         {
           "field": "stack_values.gcp_account",
-          "value": "kcm5781kcm5781@gmail.com"
+          "value": "<account-3>"
         }
       ],
       "status": "current",
@@ -368,16 +368,16 @@
       "flow": "teacher_gate",
       "id": "gcp_project",
       "expected": [
-        "ugrp-sim-b-1014",
-        "ugrp-sim-c-1016",
-        "ugrp-sim-d-1016",
-        "ugrp-sim-e-1016",
-        "ugrp-sim-f-1016"
+        "<project-id-gcp2>",
+        "<project-id-gcp3>",
+        "<project-id-gcp4>",
+        "<project-id-gcp5>",
+        "<project-id-gcp6>"
       ],
       "observed": [
         {
           "field": "parent[0].stack_values.gcp_project",
-          "value": "ugrp-sim-f-1016"
+          "value": "<project-id-gcp6>"
         }
       ],
       "status": "current",
@@ -388,13 +388,13 @@
       "flow": "teacher_gate",
       "id": "gcp_account",
       "expected": [
-        "changmin5781@gmail.com",
-        "kcm5781kcm5781@gmail.com"
+        "<account-1>",
+        "<account-3>"
       ],
       "observed": [
         {
           "field": "parent[0].stack_values.gcp_account",
-          "value": "kcm5781kcm5781@gmail.com"
+          "value": "<account-3>"
         }
       ],
       "status": "current",

@@ -14,7 +14,7 @@ for name in ['enable-services','topic-create','sa-create','stopper-compute-retry
              'budget-publisher-corrected','function-deploy','budget-create','test-vm-create']:
     command = json.loads((reference/(name+'-command.json')).read_text())['command']
     args = command[1:command.index('--account')]
-    args = [x.replace('ugrp-sim-c-1016', PROJECT).replace('443356522325', number)
+    args = [x.replace('<project-id-gcp3>', PROJECT).replace('<project-number-gcp3>', number)
             .replace('gcp3', 'gcp4') for x in args]
     if name == 'function-deploy':
         args = ['--source='+str(ROOT/'function') if x.startswith('--source=') else x for x in args]

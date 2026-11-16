@@ -8,7 +8,7 @@ import time
 ROOT = Path(__file__).resolve().parent
 GCLOUD = ['gcloud', 'compute', 'instances']
 FLAGS = ['ugrp-act-l4-gcp2', '--zone', 'asia-northeast3-a',
-         '--account', 'changmin5781@gmail.com', '--project', 'ugrp-sim-b-1014']
+         '--account', '<account-1>', '--project', '<project-id-gcp2>']
 deadline = datetime.datetime.fromisoformat('2026-10-15T18:02:37.522+00:00').timestamp()+14400
 (ROOT/'guard.pid').write_text(str(__import__('os').getpid()))
 while time.time() < deadline:

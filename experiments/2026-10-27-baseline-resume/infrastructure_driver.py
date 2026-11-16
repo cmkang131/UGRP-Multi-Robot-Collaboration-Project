@@ -10,7 +10,7 @@ from urllib.request import Request, ProxyHandler, build_opener
 # User 2026-10-27 03:45 KST explicitly authorized snapshot restoration to another
 # L4 zone as infrastructure only. These values are the actual restored VM from
 # infra-ready.json / GCE metadata, not a wider project/machine approval.
-EXPECTED = ('ugrp-sim-f-1016', 'ugrp-act-l4-gcp6', 'g2-standard-8', 'asia-northeast1-c')
+EXPECTED = ('<project-id-gcp6>', 'ugrp-act-l4-gcp6', 'g2-standard-8', 'asia-northeast1-c')
 EXPECTED_INSTANCE_ID = '2102818194467198298'
 ORIGINAL_HOST_SHA256 = '9a91cd2bd7ef010e818080dac0cb725decc47b8be00e209a8edffc696809812d'
 HOST_FILE = Path('/home/ugrp/ugrp-sim/src/beamact5-tools/gcp6_host.py')

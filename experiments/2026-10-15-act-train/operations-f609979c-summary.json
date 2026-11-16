@@ -57,7 +57,7 @@
     "source_sha": "f609979cd4e0b7174f999986408401817a5c991a",
     "dataset_manifest_sha256": "da651587d3cbe51f418f63fda55642b53e985a1fe1551db98909517065ba058b",
     "host": {
-      "project": "ugrp-act-train-1014",
+      "project": "<project-id-gcp1>",
       "instance": "ugrp-act-l4-pilot1",
       "machine_type": "g2-standard-4",
       "zone": "asia-northeast3-a"
@@ -102,7 +102,7 @@
     "source_sha": "f609979cd4e0b7174f999986408401817a5c991a",
     "dataset_manifest_sha256": "da651587d3cbe51f418f63fda55642b53e985a1fe1551db98909517065ba058b",
     "host": {
-      "project": "ugrp-act-train-1014",
+      "project": "<project-id-gcp1>",
       "instance": "ugrp-act-l4-pilot1",
       "machine_type": "g2-standard-4",
       "zone": "asia-northeast3-a"
@@ -311,7 +311,7 @@
         "status": "complete",
         "complete": true,
         "host": {
-          "project": "ugrp-act-train-1014",
+          "project": "<project-id-gcp1>",
           "instance": "ugrp-sim-gcp1",
           "machine_type": "n4-highcpu-64",
           "zone": "asia-northeast3-a"
@@ -610,10 +610,10 @@
               "fingerprint": "MxFUqw01eO0=",
               "kind": "compute#networkInterface",
               "name": "nic0",
-              "network": "https://www.googleapis.com/compute/v1/projects/ugrp-act-train-1014/global/networks/default",
+              "network": "https://www.googleapis.com/compute/v1/projects/<project-id-gcp1>/global/networks/default",
               "networkIP": "10.178.0.5",
               "stackType": "IPV4_ONLY",
-              "subnetwork": "https://www.googleapis.com/compute/v1/projects/ugrp-act-train-1014/regions/asia-northeast3/subnetworks/default"
+              "subnetwork": "https://www.googleapis.com/compute/v1/projects/<project-id-gcp1>/regions/asia-northeast3/subnetworks/default"
             }
           ],
           "scheduling": {

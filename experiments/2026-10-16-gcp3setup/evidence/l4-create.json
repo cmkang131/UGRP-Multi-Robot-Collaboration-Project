@@ -32,7 +32,7 @@
           "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-ubuntu-2404"
         ],
         "mode": "READ_WRITE",
-        "source": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-c-1016/zones/asia-northeast3-a/disks/ugrp-act-l4-gcp3",
+        "source": "https://www.googleapis.com/compute/v1/projects/<project-id-gcp3>/zones/asia-northeast3-a/disks/ugrp-act-l4-gcp3",
         "type": "PERSISTENT"
       }
     ],
@@ -40,7 +40,7 @@
     "guestAccelerators": [
       {
         "acceleratorCount": 1,
-        "acceleratorType": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-c-1016/zones/asia-northeast3-a/acceleratorTypes/nvidia-l4"
+        "acceleratorType": "https://www.googleapis.com/compute/v1/projects/<project-id-gcp3>/zones/asia-northeast3-a/acceleratorTypes/nvidia-l4"
       }
     ],
     "id": "8279056993763467938",
@@ -50,7 +50,7 @@
       "purpose": "ugrp-sim"
     },
     "lastStartTimestamp": "2026-10-15T20:39:04.268-07:00",
-    "machineType": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-c-1016/zones/asia-northeast3-a/machineTypes/g2-standard-8",
+    "machineType": "https://www.googleapis.com/compute/v1/projects/<project-id-gcp3>/zones/asia-northeast3-a/machineTypes/g2-standard-8",
     "metadata": {
       "fingerprint": "lZj97wW9OwE=",
       "items": [
@@ -84,10 +84,10 @@
         "fingerprint": "nucB5KG79vw=",
         "kind": "compute#networkInterface",
         "name": "nic0",
-        "network": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-c-1016/global/networks/default",
+        "network": "https://www.googleapis.com/compute/v1/projects/<project-id-gcp3>/global/networks/default",
         "networkIP": "10.178.0.3",
         "stackType": "IPV4_ONLY",
-        "subnetwork": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-c-1016/regions/asia-northeast3/subnetworks/default"
+        "subnetwork": "https://www.googleapis.com/compute/v1/projects/<project-id-gcp3>/regions/asia-northeast3/subnetworks/default"
       }
     ],
     "resourceStatus": {
@@ -111,7 +111,7 @@
       "preemptible": false,
       "provisioningModel": "STANDARD"
     },
-    "selfLink": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-c-1016/zones/asia-northeast3-a/instances/ugrp-act-l4-gcp3",
+    "selfLink": "https://www.googleapis.com/compute/v1/projects/<project-id-gcp3>/zones/asia-northeast3-a/instances/ugrp-act-l4-gcp3",
     "shieldedInstanceConfig": {
       "enableIntegrityMonitoring": true,
       "enableSecureBoot": false,
@@ -125,6 +125,6 @@
     "tags": {
       "fingerprint": "42WmSpB8rSM="
     },
-    "zone": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-c-1016/zones/asia-northeast3-a"
+    "zone": "https://www.googleapis.com/compute/v1/projects/<project-id-gcp3>/zones/asia-northeast3-a"
   }
 ]

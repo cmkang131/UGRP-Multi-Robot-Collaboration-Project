@@ -3,8 +3,8 @@
     "createTime": "2026-10-16T07:14:57.047904626Z",
     "finishTime": "2026-10-16T07:15:56.157724Z",
     "id": "0b21862d-e325-49e6-bf6e-4d1f6468326c",
-    "logUrl": "https://console.cloud.google.com/cloud-build/builds;region=us-central1/0b21862d-e325-49e6-bf6e-4d1f6468326c?project=298701037365",
-    "name": "projects/298701037365/locations/us-central1/builds/0b21862d-e325-49e6-bf6e-4d1f6468326c",
+    "logUrl": "https://console.cloud.google.com/cloud-build/builds;region=us-central1/0b21862d-e325-49e6-bf6e-4d1f6468326c?project=<project-number-gcp4>",
+    "name": "projects/<project-number-gcp4>/locations/us-central1/builds/0b21862d-e325-49e6-bf6e-4d1f6468326c",
     "options": {
       "env": [
         "CNB_APP_DIR=/workspace",
@@ -18,8 +18,8 @@
         "CNB_NO_COLOR=true",
         "CNB_USER_ID=33",
         "CNB_GROUP_ID=33",
-        "CNB_CACHE_IMAGE=us-central1-docker.pkg.dev/ugrp-sim-d-1016/gcf-artifacts/ugrp--sim--d--1016__us--central1__budget--stop/cache:latest",
-        "CNB_PREVIOUS_IMAGE=us-central1-docker.pkg.dev/ugrp-sim-d-1016/gcf-artifacts/ugrp--sim--d--1016__us--central1__budget--stop:latest"
+        "CNB_CACHE_IMAGE=us-central1-docker.pkg.dev/<project-id-gcp4>/gcf-artifacts/<project-id-gcp4>__us--central1__budget--stop/cache:latest",
+        "CNB_PREVIOUS_IMAGE=us-central1-docker.pkg.dev/<project-id-gcp4>/gcf-artifacts/<project-id-gcp4>__us--central1__budget--stop:latest"
       ],
       "logStreamingOption": "STREAM_OFF",
       "logging": "CLOUD_LOGGING_ONLY",
@@ -36,7 +36,7 @@
       ],
       "workerRelease": "legacy"
     },
-    "projectId": "ugrp-sim-d-1016",
+    "projectId": "<project-id-gcp4>",
     "queueTtl": "360s",
     "results": {
       "buildStepImages": [
@@ -55,7 +55,7 @@
         "pre-buildpack": {}
       }
     },
-    "serviceAccount": "projects/ugrp-sim-d-1016/serviceAccounts/298701037365-compute@developer.gserviceaccount.com",
+    "serviceAccount": "projects/<project-id-gcp4>/serviceAccounts/<service-account>",
     "sourceProvenance": {},
     "startTime": "2026-10-16T07:14:57.806937616Z",
     "status": "SUCCESS",
@@ -63,7 +63,7 @@
       {
         "args": [
           "--type=ZipArchive",
-          "--location=gs://gcf-v2-sources-298701037365-us-central1/budget-stop/function-source.zip",
+          "--location=gs://gcf-v2-sources-<project-number-gcp4>-us-central1/budget-stop/function-source.zip",
           "--dest_dir=/workspace",
           "--timeout_gcs=false"
         ],
@@ -82,10 +82,10 @@
       {
         "args": [
           "--phase=pre",
-          "--app_image_unique=us-central1-docker.pkg.dev/ugrp-sim-d-1016/gcf-artifacts/ugrp--sim--d--1016__us--central1__budget--stop:version_1",
-          "--app_image_stable=us-central1-docker.pkg.dev/ugrp-sim-d-1016/gcf-artifacts/ugrp--sim--d--1016__us--central1__budget--stop:latest",
-          "--cache_image_unique=us-central1-docker.pkg.dev/ugrp-sim-d-1016/gcf-artifacts/ugrp--sim--d--1016__us--central1__budget--stop/cache:0b21862d-e325-49e6-bf6e-4d1f6468326c",
-          "--cache_image_stable=us-central1-docker.pkg.dev/ugrp-sim-d-1016/gcf-artifacts/ugrp--sim--d--1016__us--central1__budget--stop/cache:latest",
+          "--app_image_unique=us-central1-docker.pkg.dev/<project-id-gcp4>/gcf-artifacts/<project-id-gcp4>__us--central1__budget--stop:version_1",
+          "--app_image_stable=us-central1-docker.pkg.dev/<project-id-gcp4>/gcf-artifacts/<project-id-gcp4>__us--central1__budget--stop:latest",
+          "--cache_image_unique=us-central1-docker.pkg.dev/<project-id-gcp4>/gcf-artifacts/<project-id-gcp4>__us--central1__budget--stop/cache:0b21862d-e325-49e6-bf6e-4d1f6468326c",
+          "--cache_image_stable=us-central1-docker.pkg.dev/<project-id-gcp4>/gcf-artifacts/<project-id-gcp4>__us--central1__budget--stop/cache:latest",
           "--env_var_names=BUILDER_OUTPUT,GOOGLE_RUNTIME,GOOGLE_LABEL_BUILDER_VERSION,GOOGLE_LABEL_BUILDER_IMAGE,GOOGLE_LABEL_RUN_IMAGE,GOOGLE_LABEL_SOURCE,GOOGLE_USE_SERVERLESS_RUNTIMES_TARBALLS,GOOGLE_RUNTIME_IMAGE_REGION,GOOGLE_RUNTIME_VERSION,X_GOOGLE_SKIP_RUNTIME_LAUNCH,GOOGLE_BUILD_ENV,GOOGLE_BUILD_UNIVERSE,GOOGLE_TPC_TARBALL_PROJECT,GOOGLE_TPC_HOSTNAME,GOOGLE_FUNCTION_TARGET,GOOGLE_FUNCTION_SIGNATURE_TYPE,X_GOOGLE_TARGET_PLATFORM,GOOGLE_LABEL_BUILD_ID,GOOGLE_LABEL_BASE_IMAGE,GOOGLE_LABEL_FUNCTION_TARGET,X_GOOGLE_SET_NODE_HEAP_SIZE",
           "--experimental_skip_retag_cache"
         ],
@@ -95,7 +95,7 @@
           "GOOGLE_LABEL_BUILDER_VERSION=python_20260926_RC00",
           "GOOGLE_LABEL_BUILDER_IMAGE=us-central1-docker.pkg.dev/serverless-runtimes/google-22-full/builder/python:python_20260926_RC00",
           "GOOGLE_LABEL_RUN_IMAGE=us-central1-docker.pkg.dev/serverless-runtimes/google-22-full/scratch/python312:python312_20260915_3_12_14_RC00",
-          "GOOGLE_LABEL_SOURCE=gs://gcf-v2-sources-298701037365-us-central1/budget-stop/function-source.zip#1792134845386631",
+          "GOOGLE_LABEL_SOURCE=gs://gcf-v2-sources-<project-number-gcp4>-us-central1/budget-stop/function-source.zip#1792134845386631",
           "GOOGLE_USE_SERVERLESS_RUNTIMES_TARBALLS=true",
           "GOOGLE_RUNTIME_IMAGE_REGION=us-central1",
           "GOOGLE_RUNTIME_VERSION=3.12.14",
@@ -126,8 +126,8 @@
       },
       {
         "args": [
-          "--tag=us-central1-docker.pkg.dev/ugrp-sim-d-1016/gcf-artifacts/ugrp--sim--d--1016__us--central1__budget--stop:latest",
-          "us-central1-docker.pkg.dev/ugrp-sim-d-1016/gcf-artifacts/ugrp--sim--d--1016__us--central1__budget--stop:version_1"
+          "--tag=us-central1-docker.pkg.dev/<project-id-gcp4>/gcf-artifacts/<project-id-gcp4>__us--central1__budget--stop:latest",
+          "us-central1-docker.pkg.dev/<project-id-gcp4>/gcf-artifacts/<project-id-gcp4>__us--central1__budget--stop:version_1"
         ],
         "entrypoint": "/cnb/lifecycle/creator",
         "env": [
@@ -156,7 +156,7 @@
       "_GOOGLE_LABEL_BUILDER_VERSION": "python_20260926_RC00",
       "_GOOGLE_LABEL_FUNCTION_TARGET": "stop_on_budget",
       "_GOOGLE_LABEL_RUN_IMAGE": "us-central1-docker.pkg.dev/serverless-runtimes/google-22-full/scratch/python312:python312_20260915_3_12_14_RC00",
-      "_GOOGLE_LABEL_SOURCE": "gs://gcf-v2-sources-298701037365-us-central1/budget-stop/function-source.zip#1792134845386631",
+      "_GOOGLE_LABEL_SOURCE": "gs://gcf-v2-sources-<project-number-gcp4>-us-central1/budget-stop/function-source.zip#1792134845386631",
       "_GOOGLE_RUNTIME": "python312",
       "_GOOGLE_RUNTIME_IMAGE_REGION": "us-central1",
       "_GOOGLE_RUNTIME_VERSION": "3.12.14",

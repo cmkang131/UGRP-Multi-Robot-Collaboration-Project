@@ -34,7 +34,7 @@ def viewpoints(static):
 def plan(sha):
     if not re.fullmatch(r'[0-9a-f]{40}',sha):raise ValueError('full committed source SHA required')
     return {'schema':'ugrp.coordinator_queue.v1','task':'floortex-static-and-selfmap-plan',
-        'source_sha':sha,'branch':'claude/scene-floor-texture','host':'gcp1','project':'ugrp-act-train-1014',
+        'source_sha':sha,'branch':'claude/scene-floor-texture','host':'gcp1','project':'<project-id-gcp1>',
         'status':'awaiting_consumer_integration_and_coordinator_approval',
         'approved':False,'ready':False,'ready_for_submission':False,'ready_for_vm':False,
         'ready_for_execution':False,'execute':False,'enabled':False,

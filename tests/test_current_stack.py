@@ -38,7 +38,7 @@ def test_latest_unknown_and_conflicting_runtime_cannot_be_hidden_by_declarations
     assert status(check_document(doc, stack), "held_world_reads") == ["deviation"]
     doc["stack_values"]["gcp_guards"]["credentials_on_vm"] = 0
     assert status(check_document(doc, stack), "gcp_guards") == ["deviation"]
-    doc["stack_values"]["gcp_project"] = "ugrp-sim-c-1016"
+    doc["stack_values"]["gcp_project"] = "<project-id-gcp3>"
     # Both names are allowed individually; this host/project pair is wrong.
     assert status(check_document(doc, stack), "gcp_host") == ["deviation"]
     doc["cargo"] = [{"kind": "heavy_crate"}]
