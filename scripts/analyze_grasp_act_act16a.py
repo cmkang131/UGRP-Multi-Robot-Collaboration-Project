@@ -23,7 +23,7 @@ from harness import grasp_act_contract as c
 from harness.grasp_act_data import read_json, read_rows, sha256, write_json
 
 ROOT = Path(__file__).resolve().parents[1]
-GCP2 = ('ugrp-sim-b-1014', 'ugrp-sim-gcp2', 'n4-highcpu-64')
+GCP2 = (os.environ.get('UGRP_GCP2_PROJECT', '<project-id-gcp2>'), 'ugrp-sim-gcp2', 'n4-highcpu-64')
 
 
 def validate_cpu_identity(project, instance, machine, zone):

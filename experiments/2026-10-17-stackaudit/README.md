@@ -44,8 +44,8 @@ python3 scripts/check_current_stack.py /absolute/summary.json /absolute/scene.xm
     "held_world_reads": 0,
     "wall_cap": null,
     "gcp_host": "ugrp-act-l4-gcp3",
-    "gcp_project": "ugrp-sim-c-1016",
-    "gcp_account": "changmin5781@gmail.com"
+    "gcp_project": "<project-id-gcp3>",
+    "gcp_account": "<account-1>"
   }
 }
 ```

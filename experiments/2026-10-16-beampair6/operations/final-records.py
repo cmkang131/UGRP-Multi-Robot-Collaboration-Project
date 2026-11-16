@@ -14,7 +14,7 @@ table.update(schema='ugrp.beampair6.rejection_table.v1',status=status,branch='A'
 (b/'rejection_table.json').write_text(json.dumps(table,indent=2)+'\n')
 summary=dict(schema='ugrp.beampair6.summary.v1',status=status,branch='A',
     source_sha=r['source_sha'],generator_source_sha='7facb60b921e80831ad50a20a8ae2ee89d0d2b25',dependency_sha='26f84d0f0ada1c33473c83cca2d3415ce51bd247',
-    host='gcp2',project='ugrp-sim-b-1014',machine_type='n4-highcpu-64',scenario_source_sha=c['scenario_source_sha'],
+    host='gcp2',project='<project-id-gcp2>',machine_type='n4-highcpu-64',scenario_source_sha=c['scenario_source_sha'],
     placement_census=dict(v7_unique_beams=7,v7_seeded_ends_N=42,v7_distribution=c['v7_distribution'],v7_inserted_fixed_event_seeded_ends_N=6,v7_event_distribution={'91':6},
         old_gate_N=40,old_gate_ends_N=80,old_gate_distribution=c['gate_distribution'],original_8318626='out_of_research_placement_support; original preserved and not rerun',k=91,k_basis=c['k_basis'],
         new_gate_seed_range=[8318700,8318739],new_gate_N=40,new_gate_ends_distribution={'91':80},new_setup_recheck_N=40),

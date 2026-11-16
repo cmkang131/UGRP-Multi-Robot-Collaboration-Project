@@ -10,7 +10,7 @@ PR #522 (`claude/beam-pair-teacher`)의 2026-10-16 후속 기록이다. gcp1은 
 기준 소스의 gcp1 전용 호스트 판독 부분만 `scripts/rehost_beampair3.py`가
 메모리에서 바꾸고 차이·원본/적용 코드 SHA256을 실행별 `host-portability.json`에 남긴다.
 두 checkout은 clean이며 제어·장면·카메라·입력·수용 상수·성공 판정은 그대로다.
-출력의 실제 project/instance는 `ugrp-sim-b-1014` / `ugrp-sim-gcp2`다.
+출력의 실제 project/instance는 `<project-id-gcp2>` / `ugrp-sim-gcp2`다.
 이 이식은 바이트가 완전히 같은 실행 파일이라고 주장하지 않는다.
 
 소스 사본은 공용 `git-shared.git`에 필요한 객체를 넣은 뒤 모두

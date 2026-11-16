@@ -26,7 +26,7 @@ assert not read('source-lease-released.json')['vm_stop_performed']
 assert read('instances-after-test.json') == read('disks-after-test.json') == []
 observations = read('test-observations.json')
 budget = read('budget-final.json')
-assert budget['budgetFilter']['projects'] == ['projects/1034909621664']
+assert budget['budgetFilter']['projects'] == ['projects/<project-number-gcp5>']
 assert budget['budgetFilter']['creditTypesTreatment'] == 'INCLUDE_ALL_CREDITS'
 assert budget['amount']['specifiedAmount'] == dict(currencyCode='KRW', units='1000')
 assert not budget['notificationsRule'].get('disableDefaultIamRecipients', False)
@@ -44,9 +44,9 @@ def stage(name, count, raw, command):
 
 funnel = dict(schema='ugrp.gcp_setup.funnel.v1', created_utc=stamp,
     candidate_pipeline=[
-        stage('project_quota', 1, str(EVIDENCE/'global-quota.json'), 'gcloud compute project-info describe --account changmin5781@gmail.com --project '+PROJECT),
+        stage('project_quota', 1, str(EVIDENCE/'global-quota.json'), 'gcloud compute project-info describe --account <account-1> --project '+PROJECT),
         stage('budget_stop', 1, str(EVIDENCE/'test-observations.json'), 'Read test_budget.py; destructive replay requires a fresh named trial VM, never the finished setup'),
-        stage('test_vm_disk_deleted', 1, str(EVIDENCE/'disks-after-test.json'), 'gcloud compute disks list --filter=name=ugrp-budget-test-gcp5 --account changmin5781@gmail.com --project '+PROJECT),
+        stage('test_vm_disk_deleted', 1, str(EVIDENCE/'disks-after-test.json'), 'gcloud compute disks list --filter=name=ugrp-budget-test-gcp5 --account <account-1> --project '+PROJECT),
         stage('mjwarp_cuda_step', 1, str(EVIDENCE/'smoke-result.json'), "ssh gcp5 '/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python /home/ugrp/ugrp-sim/setup/smoke.py /home/ugrp/ugrp-sim/setup/NEW-result.json'"),
         stage('act_versions_exact', 1, str(EVIDENCE/'act-freeze.txt'), 'Compare set(act-freeze.txt lines) with act-freeze-reference.txt'),
         stage('act_50_save_reload', 1, str(EVIDENCE/'training-summary.json'), "ssh gcp5 '/home/ugrp/ugrp-rl1b-act-env/bin/python /home/ugrp/ugrp-sim/setup/training_smoke.py /home/ugrp/ugrp-sim/setup/beamact3-reference /home/ugrp/ugrp-sim/setup/training-smoke-NEW'"),
@@ -60,7 +60,7 @@ funnel = dict(schema='ugrp.gcp_setup.funnel.v1', created_utc=stamp,
     version_candidates_pipeline=[dict(gate='exact_ACT_freeze', entered=2, cumulative_pass=1, rejected=1, reason_category='version_mismatch', package='torchcodec', blocking_object='not_applicable_infrastructure', minimum_gap='not_measured_infrastructure', raw=str(EVIDENCE/'environment-rejection-table.json'), reproduce='Compare initial PyTorch-index selection and pin_act_codec.sh repair')],
     frames=0, scope='infrastructure/environment only; not C2 or teacher/student acceptance')
 funnel_path.write_text(json.dumps(funnel, indent=2)+'\n')
-summary = dict(status='READY', created_utc=stamp, project=PROJECT, account='changmin5781@gmail.com',
+summary = dict(status='READY', created_utc=stamp, project=PROJECT, account='<account-1>',
     source_sha=subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
     stacked_dependencies=[554, 558, 559], default_host='gcp2',
     recorded_setup_wall_s=(datetime.datetime.fromisoformat(stamp)-datetime.datetime.fromisoformat(read('project-command.json')['started_utc'])).total_seconds(),

@@ -32,7 +32,7 @@ def run(source, dependency, episode, out):
     adapted = original.replace(old, '        host=gcp2_identity(identity)')
     out.parent.mkdir(parents=True, exist_ok=False)
     proof = dict(baseline_source_sha=BASELINE, execution_host='gcp2',
-        project_id='ugrp-sim-b-1014', controller_source_unchanged=True,
+        project_id='<project-id-gcp2>', controller_source_unchanged=True,
         original_runner_sha256=hashlib.sha256(original.encode()).hexdigest(),
         loaded_runner_sha256=hashlib.sha256(adapted.encode()).hexdigest(),
         host_only_diff=''.join(difflib.unified_diff(original.splitlines(True), adapted.splitlines(True))),

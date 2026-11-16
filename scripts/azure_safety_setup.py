@@ -6,6 +6,7 @@ Re-running intentionally rotates the action-group webhook; schedules use fixed I
 import datetime as dt
 import argparse
 import json
+import os
 from pathlib import Path
 import uuid
 import sys
@@ -14,6 +15,9 @@ if __package__ in (None, ''):
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from scripts.azure_api import ACCOUNT, BASE, RG, SUB, SUBS, VM_ID, Arm
+
+# Alert recipient comes from the environment; the repository keeps a placeholder.
+ALERT_EMAIL = os.environ.get('UGRP_ALERT_EMAIL', '<account-2>')
 
 API = '?api-version=2024-10-23'
 RUNBOOK = ACCOUNT + '/runbooks/Stop-UgrpVMs'
@@ -130,7 +134,7 @@ def main():
         'uri': uri, 'runbook': {'name': 'Stop-UgrpVMs'}, 'parameters': {'Mode': 'Force'}}})
     arm.request('PUT', GROUP + '?api-version=2021-09-01', {'location': 'global', 'properties': {
         'enabled': True, 'groupShortName': 'UGRP-stop',
-        'emailReceivers': [{'name': 'owner', 'emailAddress': 'kcm0127@gmail.com', 'useCommonAlertSchema': False}],
+        'emailReceivers': [{'name': 'owner', 'emailAddress': ALERT_EMAIL, 'useCommonAlertSchema': False}],
         'automationRunbookReceivers': [{'name': 'stop-all', 'automationAccountId': ACCOUNT,
             'runbookName': 'Stop-UgrpVMs', 'webhookResourceId': hook, 'isGlobalRunbook': False,
             'serviceUri': uri, 'useCommonAlertSchema': False}]}})
@@ -141,7 +145,7 @@ def main():
         notices = {}
         for dollars in (50, 100, 150, 160):
             notice = {'enabled': True, 'operator': 'GreaterThanOrEqualTo', 'thresholdType': 'Actual',
-                'threshold': dollars / 160 * 100, 'contactEmails': ['kcm0127@gmail.com']}
+                'threshold': dollars / 160 * 100, 'contactEmails': [ALERT_EMAIL]}
             if scope.startswith('/subscriptions/') and dollars >= 150:
                 notice['contactGroups'] = [GROUP]
             notices[f'USD{dollars}-approx-KRW'] = notice

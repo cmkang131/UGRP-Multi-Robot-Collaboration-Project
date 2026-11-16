@@ -3,7 +3,7 @@
     "stage": "CPU SSH after A offline",
     "error": "gcp2 ProxyCommand pointed to removed gcp-sim-host worktree",
     "effect": "controller stopped before CPU model transfer; A GPU training/offline complete and unchanged",
-    "fix": "verified primary gcpctl.py/config select account changmin5781@gmail.com project ugrp-sim-b-1014, retired gcp1 lifecycle disabled; replaced only gcp2 ProxyCommand, private SSH backup kept, same key/host verified",
+    "fix": "verified primary gcpctl.py/config select account <account-1> project <project-id-gcp2>, retired gcp1 lifecycle disabled; replaced only gcp2 ProxyCommand, private SSH backup kept, same key/host verified",
     "recovery": "A model transfer whole3file hash verified; A20 evaluation and B smoke/main launched, no duplicate training",
     "at": "2026-10-16T05:40:20Z"
   },

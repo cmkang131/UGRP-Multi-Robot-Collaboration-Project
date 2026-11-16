@@ -5,7 +5,7 @@ class **dev**, research_result=false, student_success=false. 학습·저장·재
 - 실행 소스: `961aa7517b29f187f6869e2624ed848ee2c32cfd`; PR #504. 실행 VM 소스는 clean detached이며 기록용 Mac 브랜치는 별도로 유지했다.
 - Dataset manifest SHA-256: `9ed3f155c87c8b53631ae89480bb0a6d868cc2a4c12341ff1e0579541deff925`. train45/validation5, 선택행18086(train16275/validation1811), 정규화는 train45 전용.
 - 승인 대기열: `/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-act13-train-961aa751.json`; 보존 사본 SHA-256 `f16e6081e33c96776c1dbbf6e711e4804641d8da3703ad43bef8d489ab4a5ea4`. coordinator_approval와 두 main-approval 템플릿을 그대로 사용했다.
-- 기존 GCP `ugrp-act-l4-pilot1`, `g2-standard-4`/NVIDIA L4, `asia-northeast3-a`, 프로젝트 `ugrp-act-train-1014`만 사용했다. 신규 VM·다른 호스트·모델 키·Kaggle 자격 증명 반입 없음.
+- 기존 GCP `ugrp-act-l4-pilot1`, `g2-standard-4`/NVIDIA L4, `asia-northeast3-a`, 프로젝트 `<project-id-gcp1>`만 사용했다. 신규 VM·다른 호스트·모델 키·Kaggle 자격 증명 반입 없음.
 - 시작 전 TERMINATED·8h STOP·idle1200·budget-stop ACTIVE/설정 시험 이후 미발동을 확인했다. VM에서 clean detached961aa751·GPU 프로세스0·idle active/enabled·데이터202개 전체 파일 해시·여유22774943744 bytes를 확인했다.
 - p0→p02 순차 실행. seed20261015, balanced_bce_v1/weight1, history dropout0/0.2, 각 군의 정확한 smoke step300에서 optimizer/RNG까지 재개했다. 총 목표10000(신규9700)·checkpoint5000/10000·가드·external_timeout_argv를 유지했다.
 

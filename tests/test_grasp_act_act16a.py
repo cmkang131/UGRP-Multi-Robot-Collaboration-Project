@@ -6,10 +6,10 @@ from scripts.analyze_grasp_act_act16a import validate_cpu_identity, reversal_eve
 
 def test_analysis_rejects_first_project_and_gpu():
     with pytest.raises(ValueError):
-        validate_cpu_identity('ugrp-act-train-1014','ugrp-sim-gcp1','n4-highcpu-64','z')
+        validate_cpu_identity('<project-id-gcp1>','ugrp-sim-gcp1','n4-highcpu-64','z')
     with pytest.raises(ValueError):
-        validate_cpu_identity('ugrp-sim-b-1014','ugrp-act-l4-gcp2','g2-standard-8','z')
-    assert validate_cpu_identity('ugrp-sim-b-1014','ugrp-sim-gcp2','n4-highcpu-64','z')['instance']=='ugrp-sim-gcp2'
+        validate_cpu_identity('<project-id-gcp2>','ugrp-act-l4-gcp2','g2-standard-8','z')
+    assert validate_cpu_identity('<project-id-gcp2>','ugrp-sim-gcp2','n4-highcpu-64','z')['instance']=='ugrp-sim-gcp2'
 
 
 def test_reversal_ends_at_next_target_change_and_keeps_censoring():

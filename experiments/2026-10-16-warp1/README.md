@@ -10,7 +10,7 @@ DEV / 검증 진행 중. 기본 off `physics_backend=mjwarp_batch_v1`. PR #524 `
 
 ## 실행 경계
 
-Mac에서는 비물리 시험만 한다. 실제 실행은 `ugrp-sim-b-1014` / `ugrp-act-l4-gcp2` 및 CPU 비교 `ugrp-sim-gcp2`만 쓰며 임대 파일을 먼저 만든다. L4 4시간 상한, 기존8h STOP·idle20분·budget-stop 유지. 다른 작업 임대/프로세스가 있으면 VM을 정지하지 않는다. raw 분석/영상 생성은 gcp2, Mac은 요약·몽타주·검토 영상만 회수한다.
+Mac에서는 비물리 시험만 한다. 실제 실행은 `<project-id-gcp2>` / `ugrp-act-l4-gcp2` 및 CPU 비교 `ugrp-sim-gcp2`만 쓰며 임대 파일을 먼저 만든다. L4 4시간 상한, 기존8h STOP·idle20분·budget-stop 유지. 다른 작업 임대/프로세스가 있으면 VM을 정지하지 않는다. raw 분석/영상 생성은 gcp2, Mac은 요약·몽타주·검토 영상만 회수한다.
 
 표준 catalog ID `warp-act-teacher`는 `scripts.run_warp_act_teacher` 어댑터를 가리킨다. 직접 CLI의 `--physics-backend` 기본은 off이며 macOS·다른 프로젝트/VM을 simulator import 전에 거부한다. 실제 명령·소스 SHA는 각 실행 summary의 reproduce에 보존한다.
 

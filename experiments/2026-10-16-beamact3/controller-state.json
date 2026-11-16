@@ -287,7 +287,7 @@
       "t": "2026-10-16T03:54:16.535317+00:00",
       "kind": "controller_error",
       "error_type": "CalledProcessError",
-      "error": "Command '['gcloud', 'logging', 'read', 'resource.type=\"cloud_run_revision\" AND resource.labels.service_name=\"budget-stop\" AND timestamp>=\"2026-10-16T02:09:00Z\"', '--limit=20', '--account', 'changmin5781@gmail.com', '--project', 'ugrp-sim-b-1014', '--format=json']' returned non-zero exit status 1."
+      "error": "Command '['gcloud', 'logging', 'read', 'resource.type=\"cloud_run_revision\" AND resource.labels.service_name=\"budget-stop\" AND timestamp>=\"2026-10-16T02:09:00Z\"', '--limit=20', '--account', '<account-1>', '--project', '<project-id-gcp2>', '--format=json']' returned non-zero exit status 1."
     },
     {
       "t": "2026-10-16T03:59:15.633339+00:00",
@@ -465,7 +465,7 @@
       "t": "2026-10-16T09:05:12.796707+00:00",
       "kind": "controller_error",
       "error_type": "CalledProcessError",
-      "error": "Command '['gcloud', 'compute', 'instances', 'describe', 'ugrp-act-l4-gcp2', '--zone', 'asia-northeast3-a', '--account', 'changmin5781@gmail.com', '--project', 'ugrp-sim-b-1014', '--format=json']' returned non-zero exit status 1."
+      "error": "Command '['gcloud', 'compute', 'instances', 'describe', 'ugrp-act-l4-gcp2', '--zone', 'asia-northeast3-a', '--account', '<account-1>', '--project', '<project-id-gcp2>', '--format=json']' returned non-zero exit status 1."
     },
     {
       "t": "2026-10-16T09:14:32.920972+00:00",

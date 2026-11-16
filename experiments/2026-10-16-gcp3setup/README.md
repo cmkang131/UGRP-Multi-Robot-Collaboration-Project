@@ -1,6 +1,6 @@
 # gcp3setup — 세 번째 프로젝트 L4 준비
 
-2026-10-16 사용자 원문: "프로젝트 그럼 하나 더 만들어". 계정 추가 없이 `changmin5781@gmail.com` / `ugrp-sim-c-1016`(443356522325)에 L4 실행 기반을 준비한다. 기본 호스트는 gcp2로 유지한다. 인프라 확인이며 교사·학생·학습·운반 관문 결과가 아니다. 최종 판정·모든 시도·비용 범위·해시는 [summary.json](summary.json)과 [evidence/](evidence/)에 기록한다.
+2026-10-16 사용자 원문: "프로젝트 그럼 하나 더 만들어". 계정 추가 없이 `<account-1>` / `<project-id-gcp3>`(<project-number-gcp3>)에 L4 실행 기반을 준비한다. 기본 호스트는 gcp2로 유지한다. 인프라 확인이며 교사·학생·학습·운반 관문 결과가 아니다. 최종 판정·모든 시도·비용 범위·해시는 [summary.json](summary.json)과 [evidence/](evidence/)에 기록한다.
 
 ## 최종 상태
 
@@ -11,7 +11,7 @@
 ## 경계와 변경
 
 - 브랜치 `codex/gcp3setup`, 시작 HEAD `684451f199f709fef79f1e9583e9bb8861c9a7b7`, fetch 뒤 origin/main 일치를 확인했다. 실제 실행 스크립트는 실행 전 커밋했으며 전송 SHA와 파일별 SHA256은 `evidence/probe-source.json`에 있다.
-- 첫 프로젝트 `ugrp-act-train-1014`에는 gcloud/API/SSH 요청을 보내지 않았다. gcp2에서는 기존 L4 구성·부팅 디스크의 공개 이미지 출처·패키지 버전·비용 함수/토픽을 조회만 했다. 함수/토픽의 작업 전후 JSON이 같다. gcp2 장치·디스크·임대·실행 중 작업은 변경하지 않았다.
+- 첫 프로젝트 `<project-id-gcp1>`에는 gcloud/API/SSH 요청을 보내지 않았다. gcp2에서는 기존 L4 구성·부팅 디스크의 공개 이미지 출처·패키지 버전·비용 함수/토픽을 조회만 했다. 함수/토픽의 작업 전후 JSON이 같다. gcp2 장치·디스크·임대·실행 중 작업은 변경하지 않았다.
 - `configs/gcp_hosts.json`에 gcp3만 추가하고 기본값은 gcp2다. 생성 명령은 GPU/이미지 프로젝트/8h를 반영한다. 실행기 대기는 호스트 상한에서 기존 정리 여유30분을 뺀 값이다(gcp2 23.5h, gcp3 7.5h).
 - GCP 실행기 임대는 작업명·소유 Mac/PID·시작·예상 종료·소스SHA의 JSON이다. 파일 잠금 아래 VM당40개 상한을 검사한다. 완료 검증 전에는 임대를 남긴다. 정지 전 임대 및 ugrp 소유 Python/MuJoCo/ffmpeg를 확인하며 실제 설치 중 정지 요청이75로 거부됐다. GPU 배치 세계 수는 이 CPU 실행 수와 다르므로 제출 전 임대/PID/GPU 메모리도 확인한다.
 - 공용 유휴 가드는 위 실행 프로세스를 확인한다. 임대는 수동 정지를 막고, 오래 남은 detached 임대만으로 자동 유휴 종료를 막지는 않는다. 이 새 스크립트는 gcp3 메타데이터에만 설치했으며 gcp2 VM 메타데이터는 바꾸지 않았다. 새 제어기·판정 상수·탐색 시간 제한·학습 기록 실행기는 만들지 않았다.
@@ -20,7 +20,7 @@
 
 같은 결제 계정 `01C770-8A2F1F-63BA5F`에 **이 프로젝트 번호만 필터**한 월1,000 KRW 예산을 생성했다. `INCLUDE_ALL_CREDITS`로 순비용을 계산하고 CURRENT_SPEND 50%/100% 알림을 둔다. `disableDefaultIamRecipients`가 false(기본값)이므로 결제 관리자/결제 사용자 이메일 알림이 켜져 있다. 이메일 실제 수신이나 실제 청구 집계의 지연은 시험하지 않았다.
 
-`budget-stop` 토픽 → Gen2 ACTIVE 함수 `stop_on_budget`; `TARGET_PROJECT=ugrp-sim-c-1016`. 실행 계정 `budget-stopper@ugrp-sim-c-1016.iam.gserviceaccount.com`의 `roles/compute.instanceAdmin.v1`을 확인했다. 토픽 publisher는 gcp2와 같은 `billing-budget-alert@system.gserviceaccount.com`이다. 함수 소스·requirements는 [gcp2 보존본](../2026-10-15-gcp2setup/evidence/)과 바이트 동일하다.
+`budget-stop` 토픽 → Gen2 ACTIVE 함수 `stop_on_budget`; `TARGET_PROJECT=<project-id-gcp3>`. 실행 계정 `<service-account>`의 `roles/compute.instanceAdmin.v1`을 확인했다. 토픽 publisher는 gcp2와 같은 `billing-budget-alert@system.gserviceaccount.com`이다. 함수 소스·requirements는 [gcp2 보존본](../2026-10-15-gcp2setup/evidence/)과 바이트 동일하다.
 
 | 파일 | SHA256 |
 |---|---|
@@ -33,7 +33,7 @@
 
 ## L4와 환경
 
-`ugrp-act-l4-gcp3`, `asia-northeast3-a`, STANDARD **g2-standard-8 / NVIDIA L4×1 /140GB pd-balanced**. gcp2 디스크를 복사하지 않고 같은 고정 공개 이미지 `deeplearning-platform-release/common-cu129-ubuntu-2404-nvidia-580-v20261001`을 썼다. GPU/CPU 할당량 스냅샷은 `evidence/region-quota.json`, `global-quota.json`에 있다. 할당량 요청은 이번에 추가하지 않았다. 후속 요청은 계정·프로젝트 외 `--billing-project=ugrp-sim-c-1016`도 붙인다.
+`ugrp-act-l4-gcp3`, `asia-northeast3-a`, STANDARD **g2-standard-8 / NVIDIA L4×1 /140GB pd-balanced**. gcp2 디스크를 복사하지 않고 같은 고정 공개 이미지 `deeplearning-platform-release/common-cu129-ubuntu-2404-nvidia-580-v20261001`을 썼다. GPU/CPU 할당량 스냅샷은 `evidence/region-quota.json`, `global-quota.json`에 있다. 할당량 요청은 이번에 추가하지 않았다. 후속 요청은 계정·프로젝트 외 `--billing-project=<project-id-gcp3>`도 붙인다.
 
 `maxRunDuration=28800s`, STOP, host maintenance TERMINATE, serviceAccounts 없음, scope 없음, 프로젝트 SSH 키 차단을 확인한다. 새 개인키는 Mac `~/.ssh/ugrp_gcp3`에만 생성하고 공개키만 VM에 둔다. `Host gcp3`는 이 worktree의 gcpctl/config를 명시하며 기존 SSH 블록은 보존했다.
 

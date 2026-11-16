@@ -347,13 +347,13 @@
 
 - **이번 작업에서 실제로 한 일**:
   - MasterPi(`ugrp1`)에 Tailscale 1.102.3 패키지를 설치하고 `tailscaled.service`를 활성화했다.
-  - 초기 `postech.ac.kr` Tailnet 접속으로 발생한 Hermes 서버(`100.64.252.101`, `kcm0127@gmail.com`)와의 단절을 진단했다.
-  - MasterPi에서 이전 세션을 로그아웃하고 Hermes 서버와 동일한 `kcm0127@gmail.com` Tailnet으로 재인증을 완료했다.
+  - 초기 `postech.ac.kr` Tailnet 접속으로 발생한 Hermes 서버(`100.64.252.101`, `<account-2>`)와의 단절을 진단했다.
+  - MasterPi에서 이전 세션을 로그아웃하고 Hermes 서버와 동일한 `<account-2>` Tailnet으로 재인증을 완료했다.
   - Hermes 서버의 SSH 공개키를 MasterPi의 `~/.ssh/authorized_keys`에 등록하고, Tailscale 표준 OpenSSH 라우팅을 구성했다.
   - Hermes 서버에서 MasterPi(`100.119.44.65`)로의 `tailscale ping` 및 실제 SSH 원격 명령 실행을 종단 간으로 검증했다.
 - **실제로 확인한 결과**:
   - MasterPi의 최종 Tailscale IPv4 주소: `100.119.44.65` (호스트명 `ugrp1`, 사용자 `ugrp1`)
-  - Tailnet 소속: `kcm0127@gmail.com` (Hermes `instance-20260627-1243`과 동일 네트워크 피어 등록 완료)
+  - Tailnet 소속: `<account-2>` (Hermes `instance-20260627-1243`과 동일 네트워크 피어 등록 완료)
   - Hermes -> MasterPi `tailscale ping -c 3 100.119.44.65` 응답 성공 (`pong from ugrp1`)
   - Hermes -> MasterPi `ssh ugrp1@100.119.44.65 "hostname && whoami && tailscale ip -4"` 비대화형 공개키 로그인 성공 (`exit_code: 0`, `ugrp1` / `100.119.44.65` 반환)
 - **아직 확인하지 못한 사항 (Gap)**: 없음 (양방향 Tailscale 네트워크 연결 및 Hermes 서버 발 원격 SSH 자동 접속 종단 간 검증 완료)

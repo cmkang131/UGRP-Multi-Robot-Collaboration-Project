@@ -10,7 +10,7 @@
 
 ## 결과
 
-- 비용 정지: 크레딧 포함 순비용 1,000 KRW 예산, 프로젝트 번호655795919803, Pub/Sub `budget-stop`, 함수의 대상과 VM 정지 IAM 권한 및 모든 zone 순회 코드를 확인했다. `e2-micro` 시험 VM으로 수동 발행 후 RUNNING → 9.019초 STOPPING → 55.517초 TERMINATED. 함수 로그의 `stop_all`과 일치한다. 시험 VM·디스크 삭제 후 목록 0을 확인하고 본 VM을 생성했다. 장치는 변경하지 않았다. 실제 청구 집계 지연과 VM 외 비용 정지는 이 시험의 범위가 아니다.
+- 비용 정지: 크레딧 포함 순비용 1,000 KRW 예산, 프로젝트 번호<project-number-gcp2>, Pub/Sub `budget-stop`, 함수의 대상과 VM 정지 IAM 권한 및 모든 zone 순회 코드를 확인했다. `e2-micro` 시험 VM으로 수동 발행 후 RUNNING → 9.019초 STOPPING → 55.517초 TERMINATED. 함수 로그의 `stop_all`과 일치한다. 시험 VM·디스크 삭제 후 목록 0을 확인하고 본 VM을 생성했다. 장치는 변경하지 않았다. 실제 청구 집계 지연과 VM 외 비용 정지는 이 시험의 범위가 아니다.
 - 본 VM: `ugrp-sim-gcp2`, `asia-northeast3-a`, `n4-highcpu-64`, STANDARD, 400 GB Hyperdisk Balanced, 24h STOP. 서비스 계정 없음·scope 없음·프로젝트 SSH 키 차단, 시작 스크립트 바이트 일치와 유휴20분 타이머 active 확인. CPU Xeon8581C·64 vCPU. 디스크 배분은 [계획](disk-plan.json); 설치/실행 뒤 실측 사용 약8.2GB·여유406.7GB(십진 bytes 기준)는 `evidence/gcp2setup-final-guest.json`.
 - 환경: Ubuntu24.04 공개 이미지 → apt(`python3.12-venv`, `libosmesa6`, `libgl1`, `libglfw3`, `ffmpeg`, `fonts-noto-cjk`, `rsync`, `zstd`) → `~/ugrp-sim/ugrp/.venv-sim` → `requirements-sim.txt`와 SciPy1.17.1. Python3.12.3, MuJoCo3.12.0, NumPy2.5.2, OpenCV-headless5.0.0.93, Pillow12.3.0은 저장된 gcp1 관리 매니페스트와 일치한다. 전체 전이 의존성·OS 라이브러리의 gcp1 lock은 없으므로 전체 동일성은 미확인이다. gcp2 전체 pip freeze와 Mesa25.1.7 등을 기록했다.
 - 소스: 공용 `git-shared.git`을 처음부터 만들었다. c1f02ac0·4a69e6bc 두 사본 모두 `--reference`로 이 공용 저장소를 직접 참조한다. 사본별 `.git/objects`는43 bytes(대체 저장소 경로 파일), 전체 이력을 사본마다 복사하지 않았다. 공용 저장소 자동gc/maintenance는 off; 삭제·gc/prune 금지. 첫 작업트리는 실제1.3GiB여서 사본0.9GB 가정 대신 디스크 계획을 갱신했다.

@@ -57,7 +57,7 @@ grip의 상자 끝점은 3.2691mm / 0.3166°다. 남은 몸체 위치 차이는 
 
 ## 보존·회수·종료
 
-시작 신호를5분 간격으로 확인해25분 뒤 `simalt3:` 줄을 읽고 선행 기록부터 검토했다. 계정 `changmin5781@gmail.com`, 프로젝트 `ugrp-sim-b-1014`, 기존 `ugrp-act-l4-gcp2` 한 대만 사용했다. 첫 프로젝트 API/SSH, 새 VM 생성, Mac 물리·렌더·화면 앱 실행0이다.
+시작 신호를5분 간격으로 확인해25분 뒤 `simalt3:` 줄을 읽고 선행 기록부터 검토했다. 계정 `<account-1>`, 프로젝트 `<project-id-gcp2>`, 기존 `ugrp-act-l4-gcp2` 한 대만 사용했다. 첫 프로젝트 API/SSH, 새 VM 생성, Mac 물리·렌더·화면 앱 실행0이다.
 
 원본 `/home/ugrp/ugrp-sim/runs/simalt4/`의 **1,690/1,690 SHA256 PASS**를 모든 writer 종료 뒤 확인했다. [최종 검증](evidence/remote/raw-verification-final.json), [최종 목록](evidence/remote/SHA256SUMS-final). collector가 자기 완료 로그를 쓴 뒤 생기는 차이를 제외한 최종 감사이며, 앞선 provisional 목록은 기록으로 남겼다. raw는 정지한 L4 영속 디스크에 있고 전체 외부 백업이 아니다. 모델 감사는 항목을 확장한 파생 기록이며 초기 44개 검사 결과는 스텝 metadata와 함께 보존한다.
 

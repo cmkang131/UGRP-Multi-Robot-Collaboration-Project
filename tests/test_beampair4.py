@@ -12,19 +12,19 @@ from harness.failure_rgb_tail import FailureRGBTail
 def test_gcp2_host_port_preserves_real_metadata_and_restores_pinned_admission(monkeypatch):
     from harness.beampair_host import gcp2_identity
     mod = ModuleType('fixture_host')
-    mod.GCP_PROJECT = 'ugrp-act-train-1014'
+    mod.GCP_PROJECT = '<project-id-gcp1>'
     monkeypatch.setitem(sys.modules, mod.__name__, mod)
     def identity(_):
         return dict(project_id=mod.GCP_PROJECT, instance='ugrp-sim-gcp2', machine_type='n4-highcpu-64')
     identity.__module__ = mod.__name__
-    assert gcp2_identity(identity)['project_id'] == 'ugrp-sim-b-1014'
-    assert mod.GCP_PROJECT == 'ugrp-act-train-1014'
+    assert gcp2_identity(identity)['project_id'] == '<project-id-gcp2>'
+    assert mod.GCP_PROJECT == '<project-id-gcp1>'
     def wrong(_):
         return dict(project_id=mod.GCP_PROJECT, instance='ugrp-sim-gcp1', machine_type='n4-highcpu-64')
     wrong.__module__ = mod.__name__
     with pytest.raises(ValueError):
         gcp2_identity(wrong)
-    assert mod.GCP_PROJECT == 'ugrp-act-train-1014'
+    assert mod.GCP_PROJECT == '<project-id-gcp1>'
 
 
 def test_gate_queue_stays_held_for_scene_and_targets_only_gcp2(tmp_path, monkeypatch):
@@ -41,7 +41,7 @@ def test_gate_queue_stays_held_for_scene_and_targets_only_gcp2(tmp_path, monkeyp
     monkeypatch.setattr(queue,'previous',previous)
     q = queue.build(source,evidence,tmp_path/'table.json')
     assert q['status']=='HOLD_SCENE' and not any(q[k] for k in ('ready','approved','submitted','scene_approved'))
-    assert q['host']=='gcp2' and q['project_id']=='ugrp-sim-b-1014'
+    assert q['host']=='gcp2' and q['project_id']=='<project-id-gcp2>'
     assert [r['seed'] for r in q['runs'][:2]]==seeds[:2]
     assert all(r['command'][r['command'].index('--host')+1]=='gcp2' for r in q['runs'])
     assert q['max_parallel']==16 and not q['training_rgb']

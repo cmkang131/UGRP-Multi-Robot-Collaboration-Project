@@ -34,11 +34,11 @@
     "source_quotes": "decision_text는 사용자 원문 발췌 또는 AGENTS/작업 지시의 결정 문구. 아래 reference가 근거이며 조정자 설계는 notes에서 구분."
   },
   "gcp_projects": {
-    "ugrp-sim-b-1014": "changmin5781@gmail.com",
-    "ugrp-sim-c-1016": "changmin5781@gmail.com",
-    "ugrp-sim-d-1016": "changmin5781@gmail.com",
-    "ugrp-sim-e-1016": "changmin5781@gmail.com",
-    "ugrp-sim-f-1016": "kcm5781kcm5781@gmail.com"
+    "<project-id-gcp2>": "<account-1>",
+    "<project-id-gcp3>": "<account-1>",
+    "<project-id-gcp4>": "<account-1>",
+    "<project-id-gcp5>": "<account-1>",
+    "<project-id-gcp6>": "<account-3>"
   },
   "rules": [
     {
@@ -2142,11 +2142,11 @@
       ],
       "notes": "허용 호스트여도 ownership/임대 확인 별도. CPU 비교는 원본 L4 CPU에서; gcp2 CPU 분석 전용 시작 금지.",
       "project_for_instance": {
-        "ugrp-act-l4-gcp2": "ugrp-sim-b-1014",
-        "ugrp-act-l4-gcp3": "ugrp-sim-c-1016",
-        "ugrp-act-l4-gcp4": "ugrp-sim-d-1016",
-        "ugrp-act-l4-gcp5": "ugrp-sim-e-1016",
-        "ugrp-act-l4-gcp6": "ugrp-sim-f-1016"
+        "ugrp-act-l4-gcp2": "<project-id-gcp2>",
+        "ugrp-act-l4-gcp3": "<project-id-gcp3>",
+        "ugrp-act-l4-gcp4": "<project-id-gcp4>",
+        "ugrp-act-l4-gcp5": "<project-id-gcp5>",
+        "ugrp-act-l4-gcp6": "<project-id-gcp6>"
       }
     },
     {
@@ -2378,19 +2378,19 @@
     {
       "id": "gcp_project",
       "current": [
-        "ugrp-sim-b-1014",
-        "ugrp-sim-c-1016",
-        "ugrp-sim-d-1016",
-        "ugrp-sim-e-1016",
-        "ugrp-sim-f-1016"
+        "<project-id-gcp2>",
+        "<project-id-gcp3>",
+        "<project-id-gcp4>",
+        "<project-id-gcp5>",
+        "<project-id-gcp6>"
       ],
       "operator": "one_of",
       "allowed": [
-        "ugrp-sim-b-1014",
-        "ugrp-sim-c-1016",
-        "ugrp-sim-d-1016",
-        "ugrp-sim-e-1016",
-        "ugrp-sim-f-1016"
+        "<project-id-gcp2>",
+        "<project-id-gcp3>",
+        "<project-id-gcp4>",
+        "<project-id-gcp5>",
+        "<project-id-gcp6>"
       ],
       "decision_date": "2026-10-16",
       "source": {
@@ -2467,13 +2467,13 @@
     {
       "id": "gcp_account",
       "current": [
-        "changmin5781@gmail.com",
-        "kcm5781kcm5781@gmail.com"
+        "<account-1>",
+        "<account-3>"
       ],
       "operator": "one_of",
       "allowed": [
-        "changmin5781@gmail.com",
-        "kcm5781kcm5781@gmail.com"
+        "<account-1>",
+        "<account-3>"
       ],
       "decision_date": "2026-10-16",
       "source": {

@@ -1,11 +1,12 @@
 """Runtime/admission checks; no cloud mutations or credentials."""
 import json
+import os
 import platform
 import subprocess
 import urllib.request
 from pathlib import Path
 
-PROJECT = 'ugrp-act-train-1014'
+PROJECT = os.environ.get('UGRP_GCP1_PROJECT', '<project-id-gcp1>')
 ROOT = Path(__file__).resolve().parents[1]
 
 

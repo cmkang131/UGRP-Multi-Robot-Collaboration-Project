@@ -1,4 +1,5 @@
 """Narrow host admission; no cloud mutation or credential access."""
+import os
 import platform
 import urllib.request
 
@@ -17,6 +18,6 @@ def require_gcp2(*, training):
     # beamact2 user authorization: share the existing warp3 L4, never stop its
     # processes. The denied second-L4 proposal is no longer an execution host.
     expected = ('ugrp-act-l4-gcp2', 'g2-standard-8') if training else ('ugrp-sim-gcp2', 'n4-highcpu-64')
-    if project != 'ugrp-sim-b-1014' or (instance, machine) != expected:
+    if project != os.environ.get('UGRP_GCP2_PROJECT', '<project-id-gcp2>') or (instance, machine) != expected:
         raise ValueError('beamact host/project mismatch')
     return dict(project=project, instance=instance, machine_type=machine, zone=zone)

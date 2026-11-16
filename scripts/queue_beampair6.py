@@ -52,7 +52,7 @@ def build(source,evidence,table):
         raise ValueError('exact-source setup funnel required')
     q.update(schema='ugrp.beampair6.gate40_queue.v1',owner='beampair6',runs=runs,
         status='HOLD_SCENE',ready=False,approved=False,submitted=False,scene_approved=False,
-        host='gcp2',project_id='ugrp-sim-b-1014',account='changmin5781@gmail.com',max_parallel=16,
+        host='gcp2',project_id='<project-id-gcp2>',account='<account-1>',max_parallel=16,
         setup_validity='beampair_gate_valid_v2',k=plan['k'],setup_plan=PLAN,setup_plan_sha256=hashlib.sha256(data).hexdigest(),
         setup_funnel=str(setup),setup_funnel_sha256=sha(setup),first_two_seeds=[r['seed'] for r in runs[:2]],
         peer_rendezvous='peer_rendezvous_v2',approach_repair='beampair_approach_v2',wall_layer='beampair_wall_clear_v1',

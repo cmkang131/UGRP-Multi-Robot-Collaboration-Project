@@ -62,7 +62,7 @@ def speed(source, out):
     samples = [r['wall_per_sim'] for r in complete if r['wall_per_sim'] is not None]
     # Existing GCP speed threshold, documented in AGENTS.md/docs/gcp_simulation.md;
     # 3.5 is warning-only, >6.0 or incomplete/HOST_ERROR blocks admission.
-    summary = {'host': 'gcp2', 'project': 'ugrp-sim-b-1014', 'research_result': False,
+    summary = {'host': 'gcp2', 'project': '<project-id-gcp2>', 'research_result': False,
                'source_sha': subprocess.check_output(['git', '-C', str(source), 'rev-parse', 'HEAD'], text=True).strip(),
                'plan_sha256': hashlib.sha256(plan.read_bytes()).hexdigest(), 'concurrency': 16,
                'completed': len(complete), 'planned': 16, 'cap_end': sum(r['cap_end'] for r in rows),

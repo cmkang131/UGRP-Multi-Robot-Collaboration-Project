@@ -1,6 +1,6 @@
 # gcp6setup — 여섯 번째 프로젝트 L4 준비
 
-사용자(2026-10-16): "쳐낼 거 쳐내고, 빠르게 할 건 더 빠르게 할 수 없나", "프로젝트 하나 더 만들어서 L4 하나 더 써", "gcp 계정 하나 더 추가할래". 새 계정 `kcm5781kcm5781@gmail.com` / 프로젝트 `ugrp-sim-f-1016`(503325597974) / 결제 `010CD7-4B991B-84AAC7`에 구성했다. PR #559 위에 쌓으며 #554/#558에 의존한다.
+사용자(2026-10-16): "쳐낼 거 쳐내고, 빠르게 할 건 더 빠르게 할 수 없나", "프로젝트 하나 더 만들어서 L4 하나 더 써", "gcp 계정 하나 더 추가할래". 새 계정 `<account-3>` / 프로젝트 `<project-id-gcp6>`(<project-number-gcp6>) / 결제 `010CD7-4B991B-84AAC7`에 구성했다. PR #559 위에 쌓으며 #554/#558에 의존한다.
 
 ## 결과
 
@@ -16,9 +16,9 @@
 
 ## 예산·계정 경계
 
-월 예산은 `projects/503325597974`만 필터하고 `INCLUDE_ALL_CREDITS`로 순비용1,000 KRW를 측정한다. CURRENT_SPEND50/100% 알림, 기본 결제 IAM 이메일 활성 → `projects/ugrp-sim-f-1016/topics/budget-stop` → Gen2 `budget-stop` / entry point `stop_on_budget` / `TARGET_PROJECT=ugrp-sim-f-1016`. 함수·requirements는 gcp4와 동일하다.
+월 예산은 `projects/<project-number-gcp6>`만 필터하고 `INCLUDE_ALL_CREDITS`로 순비용1,000 KRW를 측정한다. CURRENT_SPEND50/100% 알림, 기본 결제 IAM 이메일 활성 → `projects/<project-id-gcp6>/topics/budget-stop` → Gen2 `budget-stop` / entry point `stop_on_budget` / `TARGET_PROJECT=<project-id-gcp6>`. 함수·requirements는 gcp4와 동일하다.
 
-전용 `budget-stopper@ugrp-sim-f-1016.iam.gserviceaccount.com`에 이 프로젝트의 정지·Eventarc·호출 권한만 추가했다. 사람 IAM 구성원은 `kcm5781kcm5781@gmail.com` 하나이며 다른 계정 사용자에게 권한을 부여하지 않았다. Mac 기본 gcloud 계정 `changmin5781@gmail.com`은 유지한다. 모든 명령은 대상 계정·프로젝트를 명시한다. 첫 프로젝트 API/SSH0, gcp2/gcp3 기존 장치 변경0. gcp2 L4는 환경 조회·데이터 읽기와 자기 전송 임대만 사용했다.
+전용 `<service-account>`에 이 프로젝트의 정지·Eventarc·호출 권한만 추가했다. 사람 IAM 구성원은 `<account-3>` 하나이며 다른 계정 사용자에게 권한을 부여하지 않았다. Mac 기본 gcloud 계정 `<account-1>`은 유지한다. 모든 명령은 대상 계정·프로젝트를 명시한다. 첫 프로젝트 API/SSH0, gcp2/gcp3 기존 장치 변경0. gcp2 L4는 환경 조회·데이터 읽기와 자기 전송 임대만 사용했다.
 
 e2-micro 시험은 Pub/Sub 이후 동작을 검증한다. 이메일 실제 수신·청구 집계 지연·실제 청구액은 미검증이다. 비용 집계가 늦을 수 있으며 VM 정지 뒤에도140GB 디스크·함수/빌드 저장소 비용은 남는다. 계정·프로젝트 추가를 추가 크레딧 지급으로 해석하지 않는다.
 

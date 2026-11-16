@@ -8,11 +8,11 @@ from scripts import gcpctl, remote_run
 
 def test_create_command_has_every_cost_and_credential_guard():
     command = gcpctl.create_command('gcp2', 'ssh-ed25519 AAAA test')
-    assert command[command.index('--project') + 1] == 'ugrp-sim-b-1014'
+    assert command[command.index('--project') + 1] == '<project-id-gcp2>'
     for flag in ('--max-run-duration=24h', '--instance-termination-action=STOP', '--no-service-account', '--no-scopes'):
         assert flag in command
     assert any(part.startswith('ssh-keys=') and 'block-project-ssh-keys=true' in part for part in command)
-    assert command[command.index('--account') + 1] == 'changmin5781@gmail.com'
+    assert command[command.index('--account') + 1] == '<account-1>'
     assert '--provisioning-model=STANDARD' in command
     assert command[command.index('--boot-disk-size') + 1] == '400GB'
     assert gcpctl.STARTUP.is_file() and 'shutdown -h now' in gcpctl.STARTUP.read_text()
@@ -23,14 +23,14 @@ def test_create_command_has_every_cost_and_credential_guard():
 def test_every_gcloud_call_names_the_project():
     with patch.object(gcpctl.subprocess, 'run') as run:
         gcpctl.gcloud('compute', 'instances', 'stop', 'x')
-    assert run.call_args.args[0][-2:] == ['--project', 'ugrp-sim-b-1014']
+    assert run.call_args.args[0][-2:] == ['--project', '<project-id-gcp2>']
 
 
 @pytest.mark.parametrize(('host', 'project', 'account'), [
-    ('gcp3', 'ugrp-sim-c-1016', 'changmin5781@gmail.com'),
-    ('gcp4', 'ugrp-sim-d-1016', 'changmin5781@gmail.com'),
-    ('gcp5', 'ugrp-sim-e-1016', 'changmin5781@gmail.com'),
-    ('gcp6', 'ugrp-sim-f-1016', 'kcm5781kcm5781@gmail.com'),
+    ('gcp3', '<project-id-gcp3>', '<account-1>'),
+    ('gcp4', '<project-id-gcp4>', '<account-1>'),
+    ('gcp5', '<project-id-gcp5>', '<account-1>'),
+    ('gcp6', '<project-id-gcp6>', '<account-3>'),
 ])
 def test_l4_uses_its_project_gpu_image_without_runtime_cap(host, project, account):
     command = gcpctl.create_command(host, 'ssh-ed25519 AAAA test')

@@ -17,7 +17,7 @@ import time
 HERE=Path(__file__).resolve().parent
 RECORD=HERE/'controller-state.json'
 ALERT=Path('/Users/changmin/projects/ugrp/outputs/e2e18-admin/ops-alert.md')
-PROJECT='ugrp-sim-b-1014';ACCOUNT='changmin5781@gmail.com';ZONE='asia-northeast3-a'
+PROJECT='<project-id-gcp2>';ACCOUNT='<account-1>';ZONE='asia-northeast3-a'
 TRAIN_SOURCE='4747c4144a972e348a9ae4c7bbcc769ad116106d'
 ANALYSIS_SOURCE='e62e73f62'  # resolved to a full imported SHA at launch
 BASE='/home/ugrp/ugrp-sim';OUT=BASE+'/ops-reviews/beamact3'

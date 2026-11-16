@@ -31,7 +31,7 @@ def build(source, evidence, table):
         q['source_hashes'][p]=hashlib.sha256(subprocess.check_output(['git','show',source+':'+p],cwd=ROOT)).hexdigest()
     q.update(schema='ugrp.beampair4.gate40_queue.v1',owner='beampair4',
         status='HOLD_SCENE',ready=False,approved=False,submitted=False,
-        host='gcp2',project_id='ugrp-sim-b-1014',account='changmin5781@gmail.com',
+        host='gcp2',project_id='<project-id-gcp2>',account='<account-1>',
         scene_approved=False,scene_profile='beampair3: cargo_v7 / grasp_act_teal_blue_v1 / floor_light_v1',
         scene_approval_owner='coordinator',
         first_two_seeds=wanted[:2],max_parallel=16,approach_repair='beampair_approach_v2',

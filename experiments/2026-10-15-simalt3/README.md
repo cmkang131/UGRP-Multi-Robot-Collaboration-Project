@@ -35,7 +35,7 @@
 
 ## 고정 소스·실행 경계
 
-- 프로젝트 `ugrp-sim-b-1014`, 계정 `changmin5781@gmail.com`, `ugrp-act-l4-gcp2`/서울a/`g2-standard-8`/L4한 장. 첫 프로젝트 API/SSH 접근0. gcp1 사용 금지로 분석·영상 생성도 gcp2 L4에서 했다.
+- 프로젝트 `<project-id-gcp2>`, 계정 `<account-1>`, `ugrp-act-l4-gcp2`/서울a/`g2-standard-8`/L4한 장. 첫 프로젝트 API/SSH 접근0. gcp1 사용 금지로 분석·영상 생성도 gcp2 L4에서 했다.
 - 교사/장면 동결 `6f057f7e97c1a3aec9e8c398b8d9068e27b25df8`, MJWarp개발 `57b4692f4d3cdf4d27d916b4b8c4759ba36e9148`, MuJoCo3.16.0·Warp1.15.0. C3.12 평가 환경과 분리했다. GPU 릴리스 표기3.16.0을 noslip 미지원 정식 tag와 혼동하지 않는다.
 - C3.12/Warp N1은`25bf9995`, C3.16·물리 배치는`737f5a0e`, RGB 배치는`01cd2a9c`다. 후속 변경은 렌더 후변환 동기화·실제 K/D/mount 기록이며 물리/명령 경로를 바꾸지 않았다. full SHA·script/fixture/XML·물리 배열 해시는 summary/각 result에 있다. 코호트가 끝난 뒤 다음 소스를 올렸다.
 - simalt2 인계는`d93837eb..17b19ae7`의12커밋이다. 기존 감사3개는 [인덱스](inherited-audits.json)와 simalt2의`.json.zst`에 보존했고, 전체 복원 해시가 일치한다. 기존 Mac 미추적 원본은 그대로 남겼다.

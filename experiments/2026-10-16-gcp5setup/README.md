@@ -1,6 +1,6 @@
 # gcp5setup — 다섯 번째 프로젝트 L4 / beamact3 C2 준비
 
-사용자(2026-10-16): "프로젝트 하나 더 만들어서 L4 하나 더 써", "쳐낼 거 쳐내고, 빠르게 할 건 더 빠르게 할 수 없나". `changmin5781@gmail.com` / `ugrp-sim-e-1016`(1034909621664)에 gcp4와 같은 기반을 추가한다. PR #554 → #558 → #559 위에 쌓으며 기본 호스트는 gcp2다. gcp1에는 API/SSH 요청을 하지 않았고 gcp2/gcp3/gcp4의 기존 비용 장치는 변경하지 않았다. gcp2 L4는 데이터·환경 조회/전송에만 공유했다.
+사용자(2026-10-16): "프로젝트 하나 더 만들어서 L4 하나 더 써", "쳐낼 거 쳐내고, 빠르게 할 건 더 빠르게 할 수 없나". `<account-1>` / `<project-id-gcp5>`(<project-number-gcp5>)에 gcp4와 같은 기반을 추가한다. PR #554 → #558 → #559 위에 쌓으며 기본 호스트는 gcp2다. gcp1에는 API/SSH 요청을 하지 않았고 gcp2/gcp3/gcp4의 기존 비용 장치는 변경하지 않았다. gcp2 L4는 데이터·환경 조회/전송에만 공유했다.
 
 ## 상태
 
@@ -8,7 +8,7 @@
 
 ## 예산 정지
 
-프로젝트 번호 `projects/1034909621664`만 필터한 월 **순비용1,000 KRW**(`INCLUDE_ALL_CREDITS`)·CURRENT_SPEND 50/100% 알림 → Pub/Sub `budget-stop` → Gen2 함수 `stop_on_budget(TARGET_PROJECT=ugrp-sim-e-1016)`. 기본 결제 IAM 이메일을 유지한다. 함수 코드는 gcp4와 바이트 동일하며 별도의 gcp5 실행 계정만 사용한다.
+프로젝트 번호 `projects/<project-number-gcp5>`만 필터한 월 **순비용1,000 KRW**(`INCLUDE_ALL_CREDITS`)·CURRENT_SPEND 50/100% 알림 → Pub/Sub `budget-stop` → Gen2 함수 `stop_on_budget(TARGET_PROJECT=<project-id-gcp5>)`. 기본 결제 IAM 이메일을 유지한다. 함수 코드는 gcp4와 바이트 동일하며 별도의 gcp5 실행 계정만 사용한다.
 
 `ugrp-budget-test-gcp5`(e2-micro, 10GB, 서비스 계정/scope 없음)에 `costAmount=budgetAmount=1000` 수동 발행 후 **6.983초 STOPPING·36.474초 TERMINATED**를 관측했다. 함수 `stop_all` 로그 대상도 일치한다. 시험 VM·부팅 디스크 삭제 후 각각 목록0을 확인한 다음에만 L4를 생성했다. 실제 비용 집계 지연·결제 이메일 수신은 시험하지 않았다. VM 정지 후에도 디스크·네트워크·빌드 저장소 등 비용은 남을 수 있다.
 

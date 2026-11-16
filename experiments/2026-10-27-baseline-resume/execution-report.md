@@ -67,7 +67,7 @@ L4 할당 시작2026-10-26 19:36:29.566UTC→종료2026-10-27 00:01:51.767UTC의
 
 서울a18:45:45UTC 시작 실패→10분 경계 뒤 a재시도 실패→서울b19:06:00→도쿄a19:16:10→b19:26:20 모두 `ZONE_RESOURCE_POOL_EXHAUSTED_WITH_DETAILS`였습니다. 도쿄c19:36:20 제출이 성공해19:36:29.566 할당됐습니다. a2차는 **18:55:45UTC 이후** 재시도이며 초 단위 실제 시작은 stderr에 없으므로 스케줄 경계로만 기록합니다. 성공 후 불필요한 미국 존 할당은 하지 않았습니다. 원문·명령·시각·해시는 증거 디렉터리와 summary의6개 시도에 연결했습니다. 용량 부족으로 연구를 ABORTED 처리하지 않았습니다.
 
-원본260GB 디스크와 READY snapshot `ugrp-gcp6-baseline-20261026t1850`을 보존했습니다. 복원에 필요한 SSD quota만 서울300→520/도쿄250→260으로 승인됐고 GPU/예산 한도는 늘리지 않았습니다. 미국 quota 요청은 쓰지 않았습니다. 미연결·미부팅인 우리 중복 복원 디스크만 ID/사용자0 확인 뒤 제거했습니다. 실제 실행은 `ugrp-sim-f-1016 / asia-northeast1-c / ugrp-act-l4-gcp6 / id2102818194467198298`, g2-standard-8·L4 한 대입니다.
+원본260GB 디스크와 READY snapshot `ugrp-gcp6-baseline-20261026t1850`을 보존했습니다. 복원에 필요한 SSD quota만 서울300→520/도쿄250→260으로 승인됐고 GPU/예산 한도는 늘리지 않았습니다. 미국 quota 요청은 쓰지 않았습니다. 미연결·미부팅인 우리 중복 복원 디스크만 ID/사용자0 확인 뒤 제거했습니다. 실제 실행은 `<project-id-gcp6> / asia-northeast1-c / ugrp-act-l4-gcp6 / id2102818194467198298`, g2-standard-8·L4 한 대입니다.
 
 C-07은 실제GCP·OracleARM·실제Mac 디스크와 전체 쓰기/동시쓰기0, GPU중복작업0, 원장·budget-stop ACTIVE/IAM/전존 aggregated_list·유휴20분·서비스계정 없음까지 확인했습니다. 은퇴alias의 기본 all-hosts 실패 원문도 남기고 실제3호스트를 따로 측정했습니다. 상세는 [C-07](2026-10-27-baseline-resume-c07.md)입니다. VM에 모델 키나 에이전트 자격 증명을 복사하지 않았습니다.
 

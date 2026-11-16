@@ -13,7 +13,7 @@
 - dataset manifest는 모든 생성 파일 **202개**의 SHA-256을 담고, 자체 SHA-256은 **`9ed3f155c87c8b53631ae89480bb0a6d868cc2a4c12341ff1e0579541deff925`**이다. 정규화 SHA-256 `e03b53f779a55c9ffc5b6d82f92ea365d38c55a6160adc9a8ab28937333137b2`. 전송 checkout SHA(파일럿 da4727b6 / 나머지0a891f53)와 실제 교사1fce1155는 각각 고정해 검증했으며 원본 SOURCE_SHA를 고치지 않았다.
 
 조립본: `gcp1:/home/ugrp/act13train-961aa751/dataset`, 학습본: `ugrp-act-l4-pilot1:/mnt/act-source/act13train-961aa751/dataset`.
-기존 버킷 `gs://ugrp-act-train-1014-runs/act13train-961aa751/dataset.tar.zst`의 압축본225,457,505byte SHA-256 `12bd25224c3854408377718c3e930ebd55ea538d30202ca9f7e9a333ae635926`를 사용했다. GCS 재다운로드와 L4 압축본 SHA-256이 같고, L4에서 전체202파일을 다시 확인했다. 첫 `gcloud storage cp` 재다운로드는 CRC 오류였으며 `storage cat` 스트림 전체 SHA-256 비교로 다시 검증했다. 새 VM·새 버킷·다른 프로젝트·자격 증명 전송은 없다. 원본 전체의 독립 백업은 아직 없으며 데이터셋 GCS 사본이 raw 전체 백업을 뜻하지 않는다.
+기존 버킷 `gs://<project-id-gcp1>-runs/act13train-961aa751/dataset.tar.zst`의 압축본225,457,505byte SHA-256 `12bd25224c3854408377718c3e930ebd55ea538d30202ca9f7e9a333ae635926`를 사용했다. GCS 재다운로드와 L4 압축본 SHA-256이 같고, L4에서 전체202파일을 다시 확인했다. 첫 `gcloud storage cp` 재다운로드는 CRC 오류였으며 `storage cat` 스트림 전체 SHA-256 비교로 다시 검증했다. 새 VM·새 버킷·다른 프로젝트·자격 증명 전송은 없다. 원본 전체의 독립 백업은 아직 없으며 데이터셋 GCS 사본이 raw 전체 백업을 뜻하지 않는다.
 
 ## 실제 L4 스모크
 

@@ -32,7 +32,7 @@ def build(source, evidence, table):
     q.update(schema='ugrp.beampair5.gate40_queue.v1',owner='beampair5',
         queue_builder_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         status='HOLD_SCENE',ready=False,approved=False,submitted=False,
-        host='gcp2',project_id='ugrp-sim-b-1014',account='changmin5781@gmail.com',
+        host='gcp2',project_id='<project-id-gcp2>',account='<account-1>',
         scene_approved=False,scene_profile='beampair3: cargo_v7 / grasp_act_teal_blue_v1 / floor_light_v1',
         scene_approval_owner='coordinator',
         first_two_seeds=[8318620,8318626],max_parallel=16,approach_repair='beampair_approach_v2',wall_layer='beampair_wall_clear_v1',

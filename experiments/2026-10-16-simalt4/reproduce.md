@@ -2,7 +2,7 @@
 
 실행 기록이다. Mac에서 physics/render를 실행하지 않는다. 원본이 있는 gcp2 기존 L4를 별도로 승인된 사용 시간 안에서 재사용하며, 새 VM/첫 프로젝트를 쓰지 않는다. 현재 L4는 정지했다.
 
-모든 gcloud 명령에는 `--account changmin5781@gmail.com --project ugrp-sim-b-1014`를 붙인다. zone은 `asia-northeast3-a`다. `gcloud compute instances describe ugrp-act-l4-gcp2 --zone asia-northeast3-a --account changmin5781@gmail.com --project ugrp-sim-b-1014`로 호스트·수명과 예산 상태를 먼저 확인한다.
+모든 gcloud 명령에는 `--account <account-1> --project <project-id-gcp2>`를 붙인다. zone은 `asia-northeast3-a`다. `gcloud compute instances describe ugrp-act-l4-gcp2 --zone asia-northeast3-a --account <account-1> --project <project-id-gcp2>`로 호스트·수명과 예산 상태를 먼저 확인한다.
 
 원본 root는 `/home/ugrp/ugrp-sim/runs/simalt4`, 원래 fixture/source/환경은 옆 `simalt3`다. 아래 `NEW`는 존재하지 않는 새 폴더여야 하며 기존 결과를 덮어쓰지 않는다. 각 source는 Git의 해당 SHA에서 scripts를 추출해 전송한 사본이다. VM에는 GitHub/모델/Kaggle 자격 증명을 보내지 않는다.
 

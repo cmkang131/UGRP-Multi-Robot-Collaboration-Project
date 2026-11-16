@@ -119,7 +119,7 @@ def test_checked_in_protocol_has_no_promotion():
     from scripts.queue_grasp_act_pilot import build_queue
     q = build_queue('a' * 40, {})
     assert not q['gate_promotion_authorized_if_all_conditions_pass']
-    assert q['project'] == 'ugrp-act-train-1014'
+    assert q['project'] == '<project-id-gcp1>'
     assert q['machine']['max_run_duration'] == '8h'
     assert q['machine']['idle_shutdown_s'] == 1200
     assert not next(j for j in q['jobs'] if j['stage'] == 'main')['enabled']
