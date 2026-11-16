@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 1010" width="1180" height="1010" role="img" aria-label="전체 구조: 팀 구조에 따라 로봇끼리 메시지가 오간다. 로봇마다 LLM 계획기가 자기가 본 상자, 자기 주문, 받은 메시지, 진행 상황을 받아 메시지 초안을 쓰고 행동 목록에서 하나를 고른다. 고를 수 있는 것은 메시지 보내기, 집을 상자, 목적지 표식, 문을 지금 지날지 기다릴지다. 고른 행동은 실행층이 받는다. 상자 찾기와 다가가기, 정면 맞추기는 코드, 집기와 들기는 학습 모델 ACT, 들었는지 확인과 옮기기, 내려놓기, 공통 규칙(양보, 앞 로봇 정지, 문 앞 다시 보기, 목적지 전 듣기)은 코드가 한다. 집기 실패와 문 통과 같은 결과는 계획기에 보고된다. 천장 카메라는 모든 로봇의 위치와 방향을 재서 실행층에만 준다. 계획기는 실행층의 보고로 자기가 있는 방만 안다." font-family="'Noto Sans CJK KR','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',Helvetica,Arial,sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 1010" width="1180" height="1010" role="img" aria-label="전체 구조: 팀 구조에 따라 로봇끼리 메시지가 오간다. 로봇마다 LLM 계획기가 자기가 본 상자, 자기 주문, 받은 메시지, 진행 상황을 받아 메시지 초안을 쓰고 행동 목록에서 하나를 고르며, 고른 행동에 메시지를 덧붙일지도 답한다. 메시지는 행동이 아니라 덧붙이는 것이라 차례를 쓰지 않고, 로봇당 8개까지다. 고를 수 있는 것은 집을 상자, 목적지 표식, 문을 지금 지날지 기다릴지, 든 상자를 내려놓고 끝내기다. 고른 행동은 실행층이 받는다. 상자 찾기와 다가가기, 정면 맞추기는 코드, 집기와 들기는 학습 모델 ACT, 들었는지 확인과 옮기기, 내려놓기, 공통 규칙(양보, 앞 로봇 정지, 문 앞 다시 보기, 목적지 전 듣기)은 코드가 한다. 집기 실패와 문 통과 같은 결과는 계획기에 보고된다. 천장 카메라는 모든 로봇의 위치와 방향을 재서 실행층에만 준다. 계획기는 실행층의 보고로 자기가 있는 방만 안다." font-family="'Noto Sans CJK KR','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',Helvetica,Arial,sans-serif">
   <defs>
     <marker id="h" viewBox="0 0 10 10" refX="9.4" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
       <path d="M0.5 1.2 L10 5 L0.5 8.8 z" fill="#111"/>
@@ -66,12 +66,12 @@
   <g font-size="13.5" font-weight="500" fill="#111" text-anchor="middle">
     <text x="432" y="239">1 메시지 초안 쓰기</text>
     <text x="720" y="239">2 가능한 행동 목록</text>
-    <text x="1008" y="239">3 목록에서 하나 고르기</text>
+    <text x="1008" y="239">3 행동 고르기</text>
   </g>
   <g font-size="11" fill="#555" text-anchor="middle">
     <text x="432" y="259">LLM. 보낼지는 3에서 정한다 (T0 는 없음)</text>
     <text x="720" y="259">코드. 지금 할 수 있는 것만</text>
-    <text x="1008" y="259">LLM</text>
+    <text x="1008" y="259">LLM. 보낼지(send)도 함께 답한다</text>
   </g>
   <text x="310" y="306" font-size="11.5" fill="#555">자기 위치는 방 이름까지만 안다. 다른 로봇의 위치와 주문은 받지 않고 메시지로만 안다.</text>
 
@@ -89,15 +89,15 @@
     <rect x="940" y="378" width="200" height="48" rx="2" fill="#fff"/>
   </g>
   <g font-size="13.5" font-weight="500" fill="#111" text-anchor="middle">
-    <text x="140" y="400">메시지 보내기</text>
+    <text x="140" y="400">메시지 덧붙이기</text>
     <text x="440" y="400">집을 상자</text>
     <text x="740" y="400">목적지 표식</text>
-    <text x="1040" y="400">문: 지금 / 기다림</text>
+    <text x="1040" y="400">문: 지금 / 기다림 / 내려놓기</text>
   </g>
   <g font-size="11" fill="#555" text-anchor="middle">
-    <text x="140" y="417">팀 구조가 정한 상대에게</text>
+    <text x="140" y="417">행동에 붙여, 차례를 안 쓴다. 8개까지</text>
     <text x="440" y="417">자기 목록의 몇 번째 또는 기다리기</text>
-    <text x="740" y="417">벽의 번호 표식 11·12·13 또는 기다리기</text>
+    <text x="740" y="417">표식 11·12·13, 기다리기, 내려놓기</text>
     <text x="1040" y="417">한 번에 한 대만 지난다</text>
   </g>
   <g fill="none" stroke="#111" stroke-width="1.15">
@@ -131,7 +131,7 @@
     <text x="440" y="648">들었는지 확인</text>
     <text x="740" y="528">문 앞으로 가서 지나가기</text>
     <text x="740" y="588">목적지 표식을 찾아 그 앞으로</text>
-    <text x="740" y="648">내려놓기</text>
+    <text x="740" y="648">내려놓기 (표식 앞, 또는 그 자리)</text>
     <text x="1025" y="540">집은 자리에서 기다리기</text>
     <text x="725" y="720">공통 규칙 (모든 팀 구조에 같다)</text>
   </g>
