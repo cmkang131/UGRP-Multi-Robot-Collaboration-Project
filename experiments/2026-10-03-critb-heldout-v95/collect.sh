@@ -7,13 +7,13 @@
 # branch), V95_COORDINATOR_PID (when another claude SIM slot already holds the
 # physics coordinator, e.g. a running v92 collection; default: this shell).
 set -eu
-cd <home>/projects/ugrp-wt/critb-heldout-v94
-PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
+cd /Users/changmin/projects/ugrp-wt/critb-heldout-v94
+PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
 FINAL_SHA="${V95_SOURCE_SHA:?Set the exact 40-character reviewed collection SHA}"
 PRECHECK="${V95_PRECHECK_DIR:?Set the verified heldout-v95-precheck directory}"
 COMMENT="${V95_COMMITMENT_COMMENT:?Post COMMITMENT.md on issue 219 and set its numeric comment ID}"
 FINAL_BRANCH=codex/critb-heldout-new-starts
-RUN_ROOT=<home>/projects/ugrp/outputs/final-pair-v95-heldout-${FINAL_SHA:0:8}-$(date -u +%Y%m%dT%H%M%SZ)
+RUN_ROOT=/Users/changmin/projects/ugrp/outputs/final-pair-v95-heldout-${FINAL_SHA:0:8}-$(date -u +%Y%m%dT%H%M%SZ)
 SLOT="${V95_SIM_SLOT:-sim-claude-v95-heldout}"
 COORDINATOR_PID="${V95_COORDINATOR_PID:-$$}"
 CHILD_PID=""

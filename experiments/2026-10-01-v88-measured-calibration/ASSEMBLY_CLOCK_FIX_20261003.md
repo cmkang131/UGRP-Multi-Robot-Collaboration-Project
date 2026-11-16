@@ -36,7 +36,7 @@
 
 ## 실제 raw 재확인 (사본 출력, raw는 변경 없음)
 
-실행: 조립기를 합친 링크 raw 루트에 돌리고 새 폴더 `<home>/projects/ugrp/outputs/final-pair-v88-measured-dryrun-20261003-035426`에 썼다(수정 커밋 d00208ba, 작업 트리 깨끗).
+실행: 조립기를 합친 링크 raw 루트에 돌리고 새 폴더 `/Users/changmin/projects/ugrp/outputs/final-pair-v88-measured-dryrun-20261003-035426`에 썼다(수정 커밋 d00208ba, 작업 트리 깨끗).
 
 - 세 수집 감사(collection_audit): unloaded PASS, fine PASS, loaded PASS. 적재 선택: lifted 6839, not_lifted 553, missing_bilateral_grip 9.
 - 상태 PARTIAL, 누락 42칸(이전 114칸). 사유별:

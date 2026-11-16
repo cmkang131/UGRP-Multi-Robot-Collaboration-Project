@@ -22,7 +22,7 @@ def integrate(cmds,t0,t1,G,tau,dt=.01):
         x+=(math.cos(th)*vel[0]-math.sin(th)*vel[1])*dt; y+=(math.sin(th)*vel[0]+math.cos(th)*vel[1])*dt; th+=vel[2]*dt; t+=dt
     return np.array([x,y,th])
 CAL=json.load(open(Path(__file__).with_name('calibration_loop.json')))
-O=Path('<home>/projects/ugrp/outputs/owncam-loop-20260925')
+O=Path('/Users/changmin/projects/ugrp/outputs/owncam-loop-20260925')
 def segs(d):
     cmds=[json.loads(l) for l in open(d/'inputs/commands.jsonl')]
     ev=[e for e in map(json.loads,open(d/'eval_only/frames_eval.jsonl')) if e['phase']=='student']

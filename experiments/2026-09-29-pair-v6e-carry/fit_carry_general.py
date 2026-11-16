@@ -29,7 +29,7 @@ sys.path.insert(0, str(HERE/'analysis'))
 import fit_carry_pair_yaw as pfit  # noqa: E402
 import y_error_phases as yph  # noqa: E402
 
-OUT = Path('<home>/projects/ugrp/outputs')
+OUT = Path('/Users/changmin/projects/ugrp/outputs')
 FIT_RAWS = ['ece01311-fcal', '7cecaf9b-fcal2', '7cecaf9b-fcal3', '7cecaf9b-fcal4']   # floor_light_v1 raws only (stage F)
 DIAGNOSTIC_RAWS = ['4fac772d-yawhA']         # scored by the fitted model, never fitted
 GAIN_YY = 1.0159                             # calibration_loop_v2 motion_loaded gain[1][1]

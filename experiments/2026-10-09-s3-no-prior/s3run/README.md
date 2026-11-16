@@ -26,7 +26,7 @@ seed14201·원래 관측 정책·v141 입자 및 σ 문턱 유지, **추가 회�
 
 표준 방법 조사: [Doucet–Johansen particle filtering tutorial](https://www.stats.ox.ac.uk/~doucet/doucet_johansen_tutorialPF.pdf)의 재표본화에 따른 다양성 감소와 rejuvenation, [Nav2 AMCL pf.c](https://github.com/ros-navigation/navigation2/blob/main/nav2_amcl/src/pf/pf.c)의 KLD 및 random recovery를 확인했다. 현재 어댑터는 stationary global KLD 최소2000/최대100000, ESS≤N/2 resampling, slow/fast recovery를 이미 사용한다. 새 kernel·주입률의 적합성을 검증하지 않은 상태에서 본 스모크에 추가하지 않는다.
 
-원본/분석 raw: `<home>/projects/ugrp/outputs/s3run-20261009`; 원본 replay 도구와 corrected baseline은 `../s3diag/` 및 해당 raw 폴더. `r1-support-analysis.json`에 입력 경로·명령·seed·simulation_runs=0·GT 경계가 있다. 큰 particle cloud는 로컬 raw에 보존하며 삭제하지 않았다.
+원본/분석 raw: `/Users/changmin/projects/ugrp/outputs/s3run-20261009`; 원본 replay 도구와 corrected baseline은 `../s3diag/` 및 해당 raw 폴더. `r1-support-analysis.json`에 입력 경로·명령·seed·simulation_runs=0·GT 경계가 있다. 큰 particle cloud는 로컬 raw에 보존하며 삭제하지 않았다.
 
 검증: 호스트 렌더 회귀2 passed, 새 물리 실행0. TensorBoard `1009-s3run-r1` 3조건/18스칼라를 EventAccumulator로 대조했고, 기존6006 서버의 실제 UI에서3개 run·6개 pin과4.2625/4.2626/0.0321m 값을 확인했다. HParams 열은case/family/outcome/evaluation로 적용했다. [대시보드](http://127.0.0.1:6006/?runFilter=%5E1009-s3run-r1%2F#timeseries), 전체 pinned URL은 `tensorboard-verification.json`에 보존한다.
 
@@ -44,7 +44,7 @@ heading 적용 범위를 구분한다: 세 S2 계열 startup localizer에 동일
 
 ## v146 단일 스모크 결과
 
-실행 SHA **3daa830f65f6ed72b94a95b376accc4949b7b7e6**, seed14201, `DEV_NOT_DELIVERED`. 시뮬레이션1회, 자동 추가시행0, 문턱/seed 사후 변경0. raw는 `<home>/projects/ugrp/outputs/s3-host-heading-3daa830f-s14201-v146`. [전체 평가](smoke-report.json), [원 결과](v146-result.json).
+실행 SHA **3daa830f65f6ed72b94a95b376accc4949b7b7e6**, seed14201, `DEV_NOT_DELIVERED`. 시뮬레이션1회, 자동 추가시행0, 문턱/seed 사후 변경0. raw는 `/Users/changmin/projects/ugrp/outputs/s3-host-heading-3daa830f-s14201-v146`. [전체 평가](smoke-report.json), [원 결과](v146-result.json).
 
 | 로봇 | 첫 위치 찾기(기존 σxy/yaw + 인증) | 마지막 XY/yaw 오차 | 마지막 σxy / posterior 모드 | 접근·집기·문 통과·B 놓기 | 종결 |
 |---|---|---|---|---|---|
@@ -83,7 +83,7 @@ wall **159.570026s / SIM45.25s =3.526409 wall/SIM**, reset1.3초 제외. 발행 
 
 Codex 상위 프로세스가nice5여서 직접 실행은 하지 않았다. Terminal 자동화 도구가 해당 앱 접근을 거부하여 CLI에서launchd 기본 우선순위로 실행했고 실제 세 실행 프로세스 모두nice0을 확인했다. nice/renice 호출0, 타 작업 프로세스 종료0. `launchctl submit`의 종료 후 재시작으로 launcher가6회 더 호출됐지만 동일 output 존재 검사에서 **시뮬레이터 구성 전에 모두 거부**됐다. 원 실행/원본은1개다. 자기 job 제거·자기 프로세스 종료·agent_lock 해제를 확인했다. 향후에는KeepAlive=false인 명시적 one-shot 또는nice0 foreground shell을 쓴다. [실행기 기록](launch-verification.json), [잠금](v146-lock.json).
 
-[4배속 대표 영상](http://127.0.0.1:6007/video/1002e122b82730be398a): `<home>/projects/ugrp/outputs/s3run-20261009/views/v146/execution.mp4`,212frames/20fps/10.6s, SHA256 `4f5ea09cf9a182b91625bb098ada0b31a9f447990bcfbcb918a4fd9c91d91b25`. 실제 브라우저에서1920×480 로딩·끝까지 재생·오류없음 확인. [영상 검증](video-verification.json).
+[4배속 대표 영상](http://127.0.0.1:6007/video/1002e122b82730be398a): `/Users/changmin/projects/ugrp/outputs/s3run-20261009/views/v146/execution.mp4`,212frames/20fps/10.6s, SHA256 `4f5ea09cf9a182b91625bb098ada0b31a9f447990bcfbcb918a4fd9c91d91b25`. 실제 브라우저에서1920×480 로딩·끝까지 재생·오류없음 확인. [영상 검증](video-verification.json).
 
 [TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1009-s3-v146%2F&smoothing=0#timeseries): 새snapshot `1009-s3-v146`,24개 원본/이벤트 스칼라 대조,9개 pin·실제 run 선택·시간159.57/45.25 표시·HParams 8열 확인. 기존r1 진단 및v142 snapshot은 보존했다. 전체 pinned URL은 [표시 검증](smoke-tensorboard-verification.json), [화면](smoke-tensorboard-ui.png). 원본은 로컬 보존이며 원격raw 백업으로 표현하지 않는다.
 

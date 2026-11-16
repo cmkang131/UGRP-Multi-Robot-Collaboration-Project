@@ -8,7 +8,7 @@
 # for the own-camera v69 multi-turn runner.
 import glob, hashlib, json, os, sqlite3, statistics as st, sys
 
-ROOT = sys.argv[1] if len(sys.argv) > 1 else '<home>/projects/ugrp/outputs/zone-study-adapter-pilot-r10'
+ROOT = sys.argv[1] if len(sys.argv) > 1 else '/Users/changmin/projects/ugrp/outputs/zone-study-adapter-pilot-r10'
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 RUNS = ('preflight-02-v63', 'cohort-01-v63')
 

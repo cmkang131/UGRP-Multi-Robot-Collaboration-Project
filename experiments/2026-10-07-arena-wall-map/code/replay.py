@@ -11,7 +11,7 @@ import numpy as np
 ROOT=Path(__file__).resolve().parents[3]
 sys.path.insert(0,str(ROOT))
 EXP=Path(__file__).resolve().parents[1]
-RAW=Path('<home>/projects/ugrp/outputs/arena-wall-map-v1')
+RAW=Path('/Users/changmin/projects/ugrp/outputs/arena-wall-map-v1')
 spec=importlib.util.spec_from_file_location('egomap19_map',ROOT/'experiments/2026-10-07-servo-stiffness/code/map_short.py')
 m=importlib.util.module_from_spec(spec)
 spec.loader.exec_module(m)

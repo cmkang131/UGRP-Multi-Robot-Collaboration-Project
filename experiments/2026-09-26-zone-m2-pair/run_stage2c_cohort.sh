@@ -5,8 +5,8 @@
 # usage: run_stage2c_cohort.sh <frozen_worktree> <output_root>
 set -u
 WT=${1:?frozen worktree}; OUT=${2:?output root}
-PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
-SESSION=<home>/projects/ugrp/scripts/ugrp_session.py
+PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+SESSION=/Users/changmin/projects/ugrp/scripts/ugrp_session.py
 export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1
 mkdir -p "$OUT"
 cd "$WT" || exit 1

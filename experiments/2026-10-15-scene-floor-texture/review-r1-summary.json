@@ -168,7 +168,7 @@
       "sha256": "3cdac06f69b692b062d5052eb546d21a476aa6dec29532f69d010569848a73dc",
       "bytes": 7736
     },
-    "command": "PYTHONPATH=. <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_natural_scene_texture.py tests/test_natural_floor_slam.py tests/test_highpose_nearclip.py tests/test_render_profile.py tests/test_own_image_gates.py -k 'not default_scene_has and not compiled and not changes_exactly and not changes_only_lights and not changes_only_the_floor and not verify and not scene_manifest and not output_pixels' --junitxml=outputs/floortex2-resume/pytest-final.xml",
+    "command": "PYTHONPATH=. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_natural_scene_texture.py tests/test_natural_floor_slam.py tests/test_highpose_nearclip.py tests/test_render_profile.py tests/test_own_image_gates.py -k 'not default_scene_has and not compiled and not changes_exactly and not changes_only_lights and not changes_only_the_floor and not verify and not scene_manifest and not output_pixels' --junitxml=outputs/floortex2-resume/pytest-final.xml",
     "scope": "XML/PNG and own-image regression only; all nine compiled-model/render tests deselected"
   },
   "reproduction": {
@@ -177,8 +177,8 @@
     "files_matched": 152,
     "files_N": 152,
     "manifest_bytes_match": true,
-    "path": "<home>/projects/ugrp-wt/floor-texture/outputs/floortex2-resume/reproduced",
-    "command": "PYTHONPATH=. <home>/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/generate_scene_textures.py --output outputs/floortex2-resume/reproduced"
+    "path": "/Users/changmin/projects/ugrp-wt/floor-texture/outputs/floortex2-resume/reproduced",
+    "command": "PYTHONPATH=. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/generate_scene_textures.py --output outputs/floortex2-resume/reproduced"
   },
   "noncolor_raw": {
     "report": {
@@ -190,7 +190,7 @@
     "png_and_jpeg_file_hashes_verified": 144,
     "summary_sums_verified": true,
     "storage": "local only; raw paths and per-file SHA-256 in audit/frame records",
-    "command": "PYTHONPATH=. <home>/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/audit_scene_texture_own_image.py --reference-assets outputs/floortex2-resume/reference/sim/assets/floor_light_textured_v1 --output outputs/floortex2-resume/own-image-audit-final.json",
+    "command": "PYTHONPATH=. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/audit_scene_texture_own_image.py --reference-assets outputs/floortex2-resume/reference/sim/assets/floor_light_textured_v1 --output outputs/floortex2-resume/own-image-audit-final.json",
     "packaging": "split the report frames by arm into four JSON files below 64 KiB; keep raw report unchanged"
   },
   "simulation_runs": 0,

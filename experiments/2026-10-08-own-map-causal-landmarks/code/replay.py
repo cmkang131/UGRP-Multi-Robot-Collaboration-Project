@@ -6,9 +6,9 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 EXP = Path(__file__).resolve().parents[1]
-RAW = Path('<home>/projects/ugrp/outputs/own-map-causal-landmarks-v1')
-EP = Path('<home>/projects/ugrp/outputs/wall-segment-dev-v1/new-seed')
-POINTS = Path('<home>/projects/ugrp/outputs/wall-contact-types-v1/32002/off/points.jsonl')
+RAW = Path('/Users/changmin/projects/ugrp/outputs/own-map-causal-landmarks-v1')
+EP = Path('/Users/changmin/projects/ugrp/outputs/wall-segment-dev-v1/new-seed')
+POINTS = Path('/Users/changmin/projects/ugrp/outputs/wall-contact-types-v1/32002/off/points.jsonl')
 OLD = ROOT/'experiments/2026-10-08-own-map-utility'
 spec=importlib.util.spec_from_file_location('egomap41_replay', OLD/'code/replay.py')
 old=importlib.util.module_from_spec(spec);spec.loader.exec_module(old)

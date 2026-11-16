@@ -9,7 +9,7 @@
     "platform": "macOS-27.0-arm64-arm-64bit",
     "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]"
   },
-  "error": "Traceback (most recent call last):\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-spacing/scripts/run_pair_navigation.py\", line 226, in run\n    (scene.hold_spacing if grasp_spacing=='visual' else scene.tick)(8.)\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-spacing/scripts/run_pair_navigation.py\", line 69, in hold_spacing\n    self.spacing_frame()\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-spacing/scripts/run_pair_navigation.py\", line 59, in spacing_frame\n    raise RuntimeError('grasp spacing stopped: '+json.dumps({r:d.get('error') for r,d in decisions.items()}))\nRuntimeError: grasp spacing stopped: {\"r1\": \"visual grasp formation exceeded recovery envelope\", \"r3\": \"visual grasp formation exceeded recovery envelope\"}\n",
+  "error": "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-spacing/scripts/run_pair_navigation.py\", line 226, in run\n    (scene.hold_spacing if grasp_spacing=='visual' else scene.tick)(8.)\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-spacing/scripts/run_pair_navigation.py\", line 69, in hold_spacing\n    self.spacing_frame()\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-spacing/scripts/run_pair_navigation.py\", line 59, in spacing_frame\n    raise RuntimeError('grasp spacing stopped: '+json.dumps({r:d.get('error') for r,d in decisions.items()}))\nRuntimeError: grasp spacing stopped: {\"r1\": \"visual grasp formation exceeded recovery envelope\", \"r3\": \"visual grasp formation exceeded recovery envelope\"}\n",
   "evaluation": {
     "reason": "no navigation samples",
     "success": false
@@ -244,5 +244,5 @@
   "wall_contact_ticks": 0,
   "wall_seconds": 15.47000112500973,
   "weld_active_ticks": 0,
-  "raw_directory": "<home>/projects/ugrp-worktrees/pair-grasp-spacing/outputs/pair-spacing-diagnostic2-2026-09-14"
+  "raw_directory": "/Users/changmin/projects/ugrp-worktrees/pair-grasp-spacing/outputs/pair-spacing-diagnostic2-2026-09-14"
 }

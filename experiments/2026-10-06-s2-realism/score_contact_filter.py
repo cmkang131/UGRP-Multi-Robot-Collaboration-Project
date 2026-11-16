@@ -30,7 +30,7 @@ def main(folder,out):
     assert not out.exists();criteria=json.loads((HERE/'contact-filter-criteria.json').read_text())
     a=metrics(folder/'replay-off-final.json',criteria);b=metrics(folder/'replay-floor_appearance_v1.json',criteria)
     off=json.loads((folder/'replay-off-final.json').read_text())
-    previous=json.loads(Path('<home>/projects/ugrp/outputs/s2-observed-amcl-20261007/replay-nav2_observed_v1.json').read_text())
+    previous=json.loads(Path('/Users/changmin/projects/ugrp/outputs/s2-observed-amcl-20261007/replay-nav2_observed_v1.json').read_text())
     exact=all(off[k]==previous[k] for k in ('poses','amcl','visibility'))
     assert exact and abs(a['carry_rmse_m']-criteria['admission']['observed_baseline_rmse_m'])<1e-12
     expected=hashlib.sha256((HERE/'contact-filter-criteria.json').read_bytes()).hexdigest()

@@ -139,7 +139,7 @@ PYTHONPATH=. python scripts/zone_study_evidence_cohort.py \
 - 기준 감사 SHA: `a8094cc14e098a55483f53a3c49bf6a0b116043d`.
 - 시작 소스: `d17ca4345affef8cf027e121cf1f3197b36c23e0`.
   감사 SHA 이후 차이는 process-review 기록뿐이며 P06 대상 코드는 같다.
-- 작업: `<home>/projects/ugrp-wt/e2e-p06-evidence`, `codex/evidence-referee`.
+- 작업: `/Users/changmin/projects/ugrp-wt/e2e-p06-evidence`, `codex/evidence-referee`.
 - PR #257/#241/#291과 READINESS/열린 PR을 읽고 fetch했다. #298에 범위를 알렸다.
   P05/P02/P09의 제어·드라이버·host_spec 구현은 바꾸지 않았다.
 

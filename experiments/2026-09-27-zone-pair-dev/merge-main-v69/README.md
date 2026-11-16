@@ -48,7 +48,7 @@ PR #246 커밋 `a5b486eb`의 `review2-fixes/ci-scene-fix`에서 #240 범위만 �
 
 ### `test_zone_start_dock.py` dev13·dev14
 
-- 원인: 테스트가 Mac 전용 절대 경로 `<home>/projects/ugrp/outputs/...`를 썼다. CI에서는 출력 경로 검사가 먼저 걸렸다.
+- 원인: 테스트가 Mac 전용 절대 경로 `/Users/changmin/projects/ugrp/outputs/...`를 썼다. CI에서는 출력 경로 검사가 먼저 걸렸다.
 - 수정
   - 커밋된 영수증에는 승인 봉투가 없다. dev13·dev14는 실행 checkout에만 추가한 봉투로 실행됐다.
   - 따라서 `--execute`는 모든 호스트에서 `prepare-only: execution_authorization ...`로 거부돼야 한다.

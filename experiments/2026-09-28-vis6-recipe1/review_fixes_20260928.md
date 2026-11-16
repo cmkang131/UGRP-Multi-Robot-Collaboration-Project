@@ -1,6 +1,6 @@
 # PR #253 적대적 검토 수정 기록 — 2026-09-28
 
-Claude가 시작한 `claude/vis6-recipe1` PR을 사용자 지시로 Codex가 이어서 수정했다. 시작 HEAD는 `0687c6207bb21ce20707a022f54c77796b1c4206`, base/main은 `d5bd208e45331a73f1f71dd9b3e129c26c5eaac6`다. 검토 원본은 `<home>/projects/ugrp/outputs/review-253-20260928.md`이며 P1 1건·P2 7건·P3 10건을 대상으로 삼았다.
+Claude가 시작한 `claude/vis6-recipe1` PR을 사용자 지시로 Codex가 이어서 수정했다. 시작 HEAD는 `0687c6207bb21ce20707a022f54c77796b1c4206`, base/main은 `d5bd208e45331a73f1f71dd9b3e129c26c5eaac6`다. 검토 원본은 `/Users/changmin/projects/ugrp/outputs/review-253-20260928.md`이며 P1 1건·P2 7건·P3 10건을 대상으로 삼았다.
 
 ## 변경과 확인 범위
 

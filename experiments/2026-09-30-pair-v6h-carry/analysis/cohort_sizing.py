@@ -24,7 +24,7 @@ MODEL_DIR = ROOT / "experiments/2026-09-30-l1-axial-offset"
 MODEL = MODEL_DIR / "analysis/predict_pass.py"
 PLACEMENTS = HERE.parent / "placements_confirmatory_DRAFT.json"
 SAVED = HERE / "sizing_20260930"
-RAW = Path("<home>/projects/ugrp/outputs")
+RAW = Path("/Users/changmin/projects/ugrp/outputs")
 DRAWS, RNG_SEED = 3000, 20261001
 ALPHA = .025  # lower endpoint of a two-sided exact 95% interval
 

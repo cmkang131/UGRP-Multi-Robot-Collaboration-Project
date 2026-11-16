@@ -51,7 +51,7 @@ cosine p05/중앙/p95=0.97507/0.99964/0.999998. 방향 반대38행,
 Mac 화면 앱·open·osascript·computer use는 사용하지 않았다.
 원본 자기 JPEG는1Hz, 저장 평가 qpos는10Hz라 카메라 보정을 복구한 평가 재렌더링이다.
 물리·제어 재실행/보간이 아니며 저장 몸체 위치 차이0m. 원래 촬영10Hz로 주장하지 않는다.
-Mac `<home>/projects/ugrp/outputs/e2e18-admin/playback/beampair3-gate-<seed>-e645b34b/`.
+Mac `/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3-gate-<seed>-e645b34b/`.
 
 - 실패8318620: 전체0–33.7초2Hz69프레임·끝23.7–33.7초10Hz101프레임 전부.
   0–10초 양측 탐색·접근,10–20초 서로 지나가며 각기 다른 끝 접근,
@@ -96,7 +96,7 @@ held_object_hidden_v1, 보이는 것만 아는 교사, weld OFF, 카메라, 성�
 - [Nav2 Obstacle Layer 공식 문서](https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/core_servers/costmap_2d/costmap_plugins/obstacle/):
   observation persistence와 marking/clearing 분리. 만료를 빈 공간으로 간주하지 않는다.
 - [Nav2 대기 뒤 다른 경로 재계획](https://docs.nav2.org/jazzy/getting_started/nav2_behavior_trees/trees/nav_to_pose_and_pause_near_goal_obstacle/nav_to_pose_and_pause_near_goal_obstacle/).
-  원 조사 `<home>/projects/ugrp/outputs/e2e18-admin/research/pair.md`와 함께 읽었다.
+  원 조사 `/Users/changmin/projects/ugrp/outputs/e2e18-admin/research/pair.md`와 함께 읽었다.
 - Coulter1992 원PDF는 이번 접속에서 timeout으로 본문 미확인. 해당 논문의 임계값이나
   완전성 보장을 이 후보에 인용하지 않는다.
 

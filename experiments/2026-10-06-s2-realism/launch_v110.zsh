@@ -1,8 +1,8 @@
 #!/bin/zsh
 setopt NO_BG_NICE
 set -eu
-cd <home>/projects/ugrp-wt/drive-friction
-solo_py=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
+cd /Users/changmin/projects/ugrp-wt/drive-friction
+solo_py=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
 solo_sha=${1:?full source SHA}
 solo_out=${2:?new absolute output}
 solo_stage=${3:?pick or place}

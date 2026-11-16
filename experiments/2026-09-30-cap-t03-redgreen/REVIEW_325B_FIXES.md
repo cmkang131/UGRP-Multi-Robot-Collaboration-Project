@@ -55,6 +55,6 @@ Already up to date였으며 비교 main은 `394f9cda5d67a9d1b94ad1688f39f5616fc0
 실제 red/green 배송, host/runner·새 bundle 통합, v3 카메라/FK/IK/provider 검증과
 독립 재검토는 별도다. 일반 CI는 push로 실행하며 CI 최종 상태는 PR에서 확인한다.
 
-원본은 `<home>/projects/ugrp/outputs/cap-t03-redgreen/`에 로컬 보관한다.
+원본은 `/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/`에 로컬 보관한다.
 Git에는 이 기록·검증 요약·테스트를 보존하며 raw 전체의 원격 백업으로 표현하지 않는다.
 이번 작업은 `/private/tmp`에 후보 추출 디렉터리를 만들지 않았다. Drive 작업 없음.

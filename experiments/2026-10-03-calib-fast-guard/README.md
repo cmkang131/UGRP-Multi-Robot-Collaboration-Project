@@ -76,7 +76,7 @@ physics_holder를 남긴다. 부분 raw 보존과 출력 경로 원자적 생성
 
 ## 최초 구현 검증 기록 (리뷰 수정 전)
 
-로컬 JUnit 원본은 `<home>/projects/ugrp/outputs/calib-fast-guard-validation/local-junit/`에
+로컬 JUnit 원본은 `/Users/changmin/projects/ugrp/outputs/calib-fast-guard-validation/local-junit/`에
 보존한다. `scripts/refresh_ci_durations.py`로 새 4개 파일의 로컬 시간을 추출하고 기존
 CI 측정값은 그대로 유지했다. 시간 자료 coverage는 **413/416 = 99.28%**다.
 새 replay 파일 추정은 강화한 최종 JUnit의 **67.40초**다.
@@ -109,7 +109,7 @@ Python 3.12.13, NumPy 2.5.2, MuJoCo 3.12.0, macOS arm64다. 교대로 old/new �
 7회 원값·raw/bundle/result SHA-256·clearance_min 시계열 해시는 JSON에 있다.
 r8의 실행이나 잠금을 바꾸지 않았다. 이 값은 오프라인 guard CPU 비용이며 배타 wall-time,
 캐시를 포함한 전체 substep 시간, 두 지도 실제 collection 처리율은 측정하지 않았다.
-새로운 로컬 결과 위치는 `<home>/projects/ugrp/outputs/calib-fast-guard-validation/`이며
+새로운 로컬 결과 위치는 `/Users/changmin/projects/ugrp/outputs/calib-fast-guard-validation/`이며
 원본 raw와 전체 JUnit/log는 로컬 보관이다. GitHub에는 소스와 이 요약/해시만 올린다.
 
 ## 남은 검증 범위

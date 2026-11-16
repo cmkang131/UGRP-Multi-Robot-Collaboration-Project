@@ -1,4 +1,4 @@
-"""sha256 of the cases.jsonl of every raw run the analysis reads (raw stays in <home>/projects/ugrp/outputs)."""
+"""sha256 of the cases.jsonl of every raw run the analysis reads (raw stays in /Users/changmin/projects/ugrp/outputs)."""
 import sys, json
 sys.path.insert(0, '.')
 from xb_common import *

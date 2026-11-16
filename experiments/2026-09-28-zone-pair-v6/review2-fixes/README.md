@@ -77,7 +77,7 @@ Git 커밋을 만들지 않는다. 최종 집계는 아래 결과 절과 `valida
 OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 \
 V6_STEP_AUDIT=/private/tmp/v6-review2-step-audit.log \
 PYTHONPATH=/private/tmp/v6-review2-no-physics:. \
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
 experiments/2026-09-28-zone-pair-v6/review2-fixes/run_tests.py
 ```
 

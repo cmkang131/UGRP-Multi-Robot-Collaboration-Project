@@ -31,7 +31,7 @@
   현재 PF의 x 보고만 +1 m 변경하는 음성 테스트 2개와 fixture 누락/변조 검사 4개를 추가했다.
   정상 회귀검사는 subprocess 실행 자체를 금지하여 Git 의존성이 다시 들어오면 실패한다.
 - 최종 VIS5 suite: **38 passed, 0 skipped (0.65 s)**.
-  명령: `OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_vision_loc_v5.py --basetemp=./.pytest_tmp`.
+  명령: `OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_vision_loc_v5.py --basetemp=./.pytest_tmp`.
   로그: `outputs/vision-loc-v5-p2-checks/pytest-vis5.log`.
 - Git 메타데이터·객체·outputs·모델이 없는 최소 소스 복사본에서도 **38 passed, 0 skipped
   (0.65 s)**. 첫 복사본은 `harness`의 import에 필요한 `scripts/robot_actions.py`를 빠뜨려

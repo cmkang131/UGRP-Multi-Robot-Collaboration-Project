@@ -54,11 +54,11 @@ R8 리뷰 원문 전체와 필수 pre-flight 7항목을 읽고 구현했다.
 최종 명령:
 
 ```sh
-OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
+OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
   tests/test_zone_study*.py tests/test_zone_event_scheduler.py tests/test_zone_sim_cost.py \
   tests/test_simulation_workflow_manager.py -q \
   -k 'not test_parent_exit_cleans_background_child' --basetemp=.tmp/r8/final-regression
-OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
+OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
   tests/test_zone_study_review_r8.py -q --basetemp=.tmp/r8/final-r8
 ```
 

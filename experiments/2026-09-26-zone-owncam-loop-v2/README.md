@@ -50,5 +50,5 @@
 - `prereg.json`, `frozen_source.json`, `calibration_loop_v2.json`, `stop_fit_dev.json`, `loaded_extrinsic_dev.json`
 - `fit_stop_dynamics.py`, `fit_loaded_extrinsic.py`(dev 적합)
 - `build_results.py` → `results.json`, `raw_index.json`. 사전 등록 에피소드 전체를 대조하고, 결과가 없으면 `missing`으로 게이트를 막는다.
-- raw: `<home>/projects/ugrp/outputs/owncam-loop-v2-20260926/{dev-a1,test}/<episode>/` — **로컬 보관만 했고 원격 백업은 없다.**
+- raw: `/Users/changmin/projects/ugrp/outputs/owncam-loop-v2-20260926/{dev-a1,test}/<episode>/` — **로컬 보관만 했고 원격 백업은 없다.**
 - 실행: 워크플로 `zone-owncam-loop-run`, `--prereg experiments/2026-09-26-zone-owncam-loop-v2/prereg.json`. prereg의 `student` 블록이 driver v2와 교정 파일을 고른다.

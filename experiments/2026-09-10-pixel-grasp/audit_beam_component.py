@@ -28,7 +28,7 @@ def main() -> None:
     parser.add_argument(
         "--run-dir",
         type=Path,
-        default=Path("<home>/projects/ugrp/outputs/pixel-grasp-20260910-r1-v12"),
+        default=Path("/Users/changmin/projects/ugrp/outputs/pixel-grasp-20260910-r1-v12"),
     )
     parser.add_argument("--json-out", type=Path, default=Path("/tmp/v12_beam_rect_audit.json"))
     parser.add_argument("--image-out", type=Path, default=Path("/tmp/v12_beam_mask_rect_audit.jpg"))

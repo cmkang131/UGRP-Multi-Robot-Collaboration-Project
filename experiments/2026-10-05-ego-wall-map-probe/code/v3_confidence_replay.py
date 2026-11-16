@@ -28,7 +28,7 @@ ROOT = base.ROOT
 OUT = ROOT/'outputs/self-map-v3-confidence-v1'
 RESULTS = ROOT/'experiments/2026-10-05-ego-wall-map-probe/results/v3_confidence_v1'
 PARAMS = {'floor_patch_max_m':.81,'run_step_window':3,'top_edge_px':4}
-EPISODES = {f's{s}': Path('<home>/projects/ugrp/outputs')/f's2-realism-{sha}-s{s}-P1-2-{stage}'
+EPISODES = {f's{s}': Path('/Users/changmin/projects/ugrp/outputs')/f's2-realism-{sha}-s{s}-P1-2-{stage}'
             for s,sha,stage in [(1042,'ef820ab2','pick'),(1043,'f6cb04b3','pick'),(1044,'97c05e41','pick'),
                                 (1045,'f0bb26e7','place'),(1046,'e619ee57','place'),(1047,'1a2dbf5e','place')]}
 

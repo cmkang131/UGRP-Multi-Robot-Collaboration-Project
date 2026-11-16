@@ -2,7 +2,7 @@ FFFFF......FFFFFFFFFFFFFFFFFFFFFFFFFF                                    [100%]
 =================================== FAILURES ===================================
 _______ test_post_setup_start_is_equivalent_and_explained[first_samples] _______
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_post_setup_start_is_equiv0')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_post_setup_start_is_equiv0')
 source = 'first_samples'
 
     @pytest.mark.parametrize('source', ['first_samples', 'manifest', 'log', 'both'])
@@ -26,7 +26,7 @@ E         + insufficient_evidence
 tests/test_sim_speed_review4.py:33: AssertionError
 _________ test_post_setup_start_is_equivalent_and_explained[manifest] __________
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_post_setup_start_is_equiv1')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_post_setup_start_is_equiv1')
 source = 'manifest'
 
     @pytest.mark.parametrize('source', ['first_samples', 'manifest', 'log', 'both'])
@@ -50,7 +50,7 @@ E         + insufficient_evidence
 tests/test_sim_speed_review4.py:33: AssertionError
 ____________ test_post_setup_start_is_equivalent_and_explained[log] ____________
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_post_setup_start_is_equiv2')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_post_setup_start_is_equiv2')
 source = 'log'
 
     @pytest.mark.parametrize('source', ['first_samples', 'manifest', 'log', 'both'])
@@ -74,7 +74,7 @@ E         + insufficient_evidence
 tests/test_sim_speed_review4.py:33: AssertionError
 ___________ test_post_setup_start_is_equivalent_and_explained[both] ____________
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_post_setup_start_is_equiv3')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_post_setup_start_is_equiv3')
 source = 'both'
 
     @pytest.mark.parametrize('source', ['first_samples', 'manifest', 'log', 'both'])
@@ -98,20 +98,20 @@ E         + insufficient_evidence
 tests/test_sim_speed_review4.py:33: AssertionError
 ___________ test_manifest_start_does_not_replace_legacy_log_evidence ___________
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_manifest_start_does_not_r0')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_manifest_start_does_not_r0')
 
     def test_manifest_start_does_not_replace_legacy_log_evidence(tmp_path):
         a, b = (full_run(tmp_path/s) for s in ('a', 'b'))
         set_manifest_start(b, START)
         report = eq.compare(a, b)
 >       assert report['equivalent'], report
-E       AssertionError: {'a': '<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_manifest_start_does_not_r0/a', 'b': '/Use...len_a': 2, 'len_b': 2, 'sha256_a': '667c186d4a2e29d2a1b031767a8039d96e1d8bd9fc2b43ee5c60b5bc0623e135', ...}, ...}, ...}
+E       AssertionError: {'a': '/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_manifest_start_does_not_r0/a', 'b': '/Use...len_a': 2, 'len_b': 2, 'sha256_a': '667c186d4a2e29d2a1b031767a8039d96e1d8bd9fc2b43ee5c60b5bc0623e135', ...}, ...}, ...}
 E       assert False
 
 tests/test_sim_speed_review4.py:46: AssertionError
 __________ test_first_sample_one_step_after_explicit_start_is_allowed __________
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_first_sample_one_step_aft0')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_first_sample_one_step_aft0')
 
     def test_first_sample_one_step_after_explicit_start_is_allowed(tmp_path):
         run = full_run(tmp_path/'run')
@@ -124,7 +124,7 @@ E       assert False
 tests/test_sim_speed_review4.py:70: AssertionError
 ____ test_invalid_explicit_start_cannot_fall_back_to_samples[None-manifest] ____
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca0')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca0')
 source = 'manifest', value = None
 
     @pytest.mark.parametrize('source', ['manifest', 'log'])
@@ -146,7 +146,7 @@ E        +  where False = any(<generator object test_invalid_explicit_start_cann
 tests/test_sim_speed_review4.py:85: AssertionError
 ______ test_invalid_explicit_start_cannot_fall_back_to_samples[None-log] _______
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca1')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca1')
 source = 'log', value = None
 
     @pytest.mark.parametrize('source', ['manifest', 'log'])
@@ -168,7 +168,7 @@ E        +  where False = any(<generator object test_invalid_explicit_start_cann
 tests/test_sim_speed_review4.py:85: AssertionError
 ____ test_invalid_explicit_start_cannot_fall_back_to_samples[True-manifest] ____
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca2')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca2')
 source = 'manifest', value = True
 
     @pytest.mark.parametrize('source', ['manifest', 'log'])
@@ -190,7 +190,7 @@ E        +  where False = any(<generator object test_invalid_explicit_start_cann
 tests/test_sim_speed_review4.py:85: AssertionError
 ______ test_invalid_explicit_start_cannot_fall_back_to_samples[True-log] _______
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca3')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca3')
 source = 'log', value = True
 
     @pytest.mark.parametrize('source', ['manifest', 'log'])
@@ -212,7 +212,7 @@ E        +  where False = any(<generator object test_invalid_explicit_start_cann
 tests/test_sim_speed_review4.py:85: AssertionError
 ___ test_invalid_explicit_start_cannot_fall_back_to_samples[1.3003-manifest] ___
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca4')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca4')
 source = 'manifest', value = '1.3003'
 
     @pytest.mark.parametrize('source', ['manifest', 'log'])
@@ -234,7 +234,7 @@ E        +  where False = any(<generator object test_invalid_explicit_start_cann
 tests/test_sim_speed_review4.py:85: AssertionError
 _____ test_invalid_explicit_start_cannot_fall_back_to_samples[1.3003-log] ______
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca5')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca5')
 source = 'log', value = '1.3003'
 
     @pytest.mark.parametrize('source', ['manifest', 'log'])
@@ -256,7 +256,7 @@ E        +  where False = any(<generator object test_invalid_explicit_start_cann
 tests/test_sim_speed_review4.py:85: AssertionError
 ____ test_invalid_explicit_start_cannot_fall_back_to_samples[-1.0-manifest] ____
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca6')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca6')
 source = 'manifest', value = -1.0
 
     @pytest.mark.parametrize('source', ['manifest', 'log'])
@@ -278,7 +278,7 @@ E        +  where False = any(<generator object test_invalid_explicit_start_cann
 tests/test_sim_speed_review4.py:85: AssertionError
 ______ test_invalid_explicit_start_cannot_fall_back_to_samples[-1.0-log] _______
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca7')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca7')
 source = 'log', value = -1.0
 
     @pytest.mark.parametrize('source', ['manifest', 'log'])
@@ -300,7 +300,7 @@ E        +  where False = any(<generator object test_invalid_explicit_start_cann
 tests/test_sim_speed_review4.py:85: AssertionError
 ____ test_invalid_explicit_start_cannot_fall_back_to_samples[nan-manifest] _____
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca8')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca8')
 source = 'manifest', value = nan
 
     @pytest.mark.parametrize('source', ['manifest', 'log'])
@@ -322,7 +322,7 @@ E        +  where False = any(<generator object test_invalid_explicit_start_cann
 tests/test_sim_speed_review4.py:85: AssertionError
 _______ test_invalid_explicit_start_cannot_fall_back_to_samples[nan-log] _______
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca9')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca9')
 source = 'log', value = nan
 
     @pytest.mark.parametrize('source', ['manifest', 'log'])
@@ -344,7 +344,7 @@ E        +  where False = any(<generator object test_invalid_explicit_start_cann
 tests/test_sim_speed_review4.py:85: AssertionError
 ____ test_invalid_explicit_start_cannot_fall_back_to_samples[inf-manifest] _____
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca10')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca10')
 source = 'manifest', value = inf
 
     @pytest.mark.parametrize('source', ['manifest', 'log'])
@@ -366,7 +366,7 @@ E        +  where False = any(<generator object test_invalid_explicit_start_cann
 tests/test_sim_speed_review4.py:85: AssertionError
 _______ test_invalid_explicit_start_cannot_fall_back_to_samples[inf-log] _______
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca11')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca11')
 source = 'log', value = inf
 
     @pytest.mark.parametrize('source', ['manifest', 'log'])
@@ -388,7 +388,7 @@ E        +  where False = any(<generator object test_invalid_explicit_start_cann
 tests/test_sim_speed_review4.py:85: AssertionError
 ___ test_invalid_explicit_start_cannot_fall_back_to_samples[value6-manifest] ___
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca12')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca12')
 source = 'manifest', value = {}
 
     @pytest.mark.parametrize('source', ['manifest', 'log'])
@@ -410,7 +410,7 @@ E        +  where False = any(<generator object test_invalid_explicit_start_cann
 tests/test_sim_speed_review4.py:85: AssertionError
 _____ test_invalid_explicit_start_cannot_fall_back_to_samples[value6-log] ______
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca13')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca13')
 source = 'log', value = {}
 
     @pytest.mark.parametrize('source', ['manifest', 'log'])
@@ -432,7 +432,7 @@ E        +  where False = any(<generator object test_invalid_explicit_start_cann
 tests/test_sim_speed_review4.py:85: AssertionError
 ___ test_invalid_explicit_start_cannot_fall_back_to_samples[value7-manifest] ___
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca14')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca14')
 source = 'manifest', value = []
 
     @pytest.mark.parametrize('source', ['manifest', 'log'])
@@ -454,7 +454,7 @@ E        +  where False = any(<generator object test_invalid_explicit_start_cann
 tests/test_sim_speed_review4.py:85: AssertionError
 _____ test_invalid_explicit_start_cannot_fall_back_to_samples[value7-log] ______
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca15')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca15')
 source = 'log', value = []
 
     @pytest.mark.parametrize('source', ['manifest', 'log'])
@@ -476,7 +476,7 @@ E        +  where False = any(<generator object test_invalid_explicit_start_cann
 tests/test_sim_speed_review4.py:85: AssertionError
 _ test_fallback_requires_agreeing_first_frame_and_gt[missing_time-inputs/frames.jsonl] _
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_fallback_requires_agreein0')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_fallback_requires_agreein0')
 name = 'inputs/frames.jsonl', case = 'missing_time'
 
     @pytest.mark.parametrize('name', [LOGS[1], 'eval_only/gt_trajectory.jsonl'])
@@ -510,7 +510,7 @@ E        +  where False = any(<generator object test_fallback_requires_agreeing_
 tests/test_sim_speed_review4.py:112: AssertionError
 _ test_fallback_requires_agreeing_first_frame_and_gt[missing_time-eval_only/gt_trajectory.jsonl] _
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_fallback_requires_agreein1')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_fallback_requires_agreein1')
 name = 'eval_only/gt_trajectory.jsonl', case = 'missing_time'
 
     @pytest.mark.parametrize('name', [LOGS[1], 'eval_only/gt_trajectory.jsonl'])
@@ -544,7 +544,7 @@ E        +  where False = any(<generator object test_fallback_requires_agreeing_
 tests/test_sim_speed_review4.py:112: AssertionError
 _ test_fallback_requires_agreeing_first_frame_and_gt[invalid_time-inputs/frames.jsonl] _
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_fallback_requires_agreein2')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_fallback_requires_agreein2')
 name = 'inputs/frames.jsonl', case = 'invalid_time'
 
     @pytest.mark.parametrize('name', [LOGS[1], 'eval_only/gt_trajectory.jsonl'])
@@ -578,7 +578,7 @@ E        +  where False = any(<generator object test_fallback_requires_agreeing_
 tests/test_sim_speed_review4.py:112: AssertionError
 _ test_fallback_requires_agreeing_first_frame_and_gt[invalid_time-eval_only/gt_trajectory.jsonl] _
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_fallback_requires_agreein3')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_fallback_requires_agreein3')
 name = 'eval_only/gt_trajectory.jsonl', case = 'invalid_time'
 
     @pytest.mark.parametrize('name', [LOGS[1], 'eval_only/gt_trajectory.jsonl'])
@@ -612,7 +612,7 @@ E        +  where False = any(<generator object test_fallback_requires_agreeing_
 tests/test_sim_speed_review4.py:112: AssertionError
 _ test_fallback_requires_agreeing_first_frame_and_gt[missing_first_sample-inputs/frames.jsonl] _
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_fallback_requires_agreein4')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_fallback_requires_agreein4')
 name = 'inputs/frames.jsonl', case = 'missing_first_sample'
 
     @pytest.mark.parametrize('name', [LOGS[1], 'eval_only/gt_trajectory.jsonl'])
@@ -646,7 +646,7 @@ E        +  where False = any(<generator object test_fallback_requires_agreeing_
 tests/test_sim_speed_review4.py:112: AssertionError
 _ test_fallback_requires_agreeing_first_frame_and_gt[missing_first_sample-eval_only/gt_trajectory.jsonl] _
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_fallback_requires_agreein5')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_fallback_requires_agreein5')
 name = 'eval_only/gt_trajectory.jsonl', case = 'missing_first_sample'
 
     @pytest.mark.parametrize('name', [LOGS[1], 'eval_only/gt_trajectory.jsonl'])
@@ -680,7 +680,7 @@ E        +  where False = any(<generator object test_fallback_requires_agreeing_
 tests/test_sim_speed_review4.py:112: AssertionError
 ___________ test_conflicting_manifest_and_log_start_is_insufficient ____________
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_conflicting_manifest_and_0')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_conflicting_manifest_and_0')
 
     def test_conflicting_manifest_and_log_start_is_insufficient(tmp_path):
         run = full_run(tmp_path/'run')
@@ -697,7 +697,7 @@ E        +  where False = any(<generator object test_conflicting_manifest_and_lo
 tests/test_sim_speed_review4.py:123: AssertionError
 ______ test_runs_with_different_recording_starts_are_insufficient[False] _______
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_runs_with_different_recor0')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_runs_with_different_recor0')
 explicit = False
 
     @pytest.mark.parametrize('explicit', [False, True])
@@ -726,7 +726,7 @@ E           assert False
 tests/test_sim_speed_review4.py:146: AssertionError
 _______ test_runs_with_different_recording_starts_are_insufficient[True] _______
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_runs_with_different_recor1')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_runs_with_different_recor1')
 explicit = True
 
     @pytest.mark.parametrize('explicit', [False, True])

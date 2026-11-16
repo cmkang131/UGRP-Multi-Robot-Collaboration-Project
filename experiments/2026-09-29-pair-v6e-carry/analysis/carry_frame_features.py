@@ -1,6 +1,6 @@
 import json,glob,os,numpy as np,colorsys
 from PIL import Image
-P='<home>/projects/ugrp/outputs/'
+P='/Users/changmin/projects/ugrp/outputs/'
 res=[]
 for raw in ['pair-stage-probes-ece38792-cal','pair-stage-probes-a704ecc6-calB','pair-stage-probes-d08818ef-cal2','pair-stage-probes-a704ecc6-smokeC']:
     for cd in sorted(glob.glob(P+raw+'/cases/*/')):

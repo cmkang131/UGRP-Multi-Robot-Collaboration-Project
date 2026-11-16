@@ -13,7 +13,7 @@ from scipy.spatial.transform import Rotation
 
 ROOT=Path(__file__).resolve().parents[3]
 EXP=Path(__file__).resolve().parents[1]
-RAW=Path('<home>/projects/ugrp/outputs/camera-frame-audit-v1')
+RAW=Path('/Users/changmin/projects/ugrp/outputs/camera-frame-audit-v1')
 sys.path.insert(0,str(ROOT))
 from harness import servo_camera_fk as fk
 from harness import wall_parallax as parallax
@@ -22,7 +22,7 @@ from sim.masterpi_camera_profile import scaled_camera_matrix
 
 JOINT_NAMES={6:'arm_yaw',5:'shoulder',4:'elbow',3:'wrist_pitch'}
 BASE_RPY=[(0,0,0),(.1,0,0),(0,.1,0),(0,0,.2),(.1,-.1,.2)]
-SCENE=Path('<home>/projects/ugrp/outputs/wall-parallax-texture-v1/tape-north/scene.xml')
+SCENE=Path('/Users/changmin/projects/ugrp/outputs/wall-parallax-texture-v1/tape-north/scene.xml')
 
 
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()

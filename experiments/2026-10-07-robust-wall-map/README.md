@@ -65,7 +65,7 @@ ECE는 같은10개 bin/벽 .15m 라벨을 유지한다. off의 기존 점유 ECE
 
 관련 시험1–3파일 통과 후 사전 등록 commit/push → 구현·골든 시험 → 소스 commit/push →
 두 건 예측·봉인 → 평가1회 → 결과 commit/push. 새 venv/의존성0, 잠금·속도 비교0.
-새 raw: `<home>/projects/ugrp/outputs/robust-wall-map-v1/`, 기존 자료 덮어쓰기/삭제0.
+새 raw: `/Users/changmin/projects/ugrp/outputs/robust-wall-map-v1/`, 기존 자료 덮어쓰기/삭제0.
 PR405 DRAFT, 병합/force/reset0. TensorBoard 생략 지시 유지, Drive0.
 원시 결과는 로컬 보관이며 Git 원격 백업은 코드·작은 결과·그림에 한정한다.
 
@@ -183,5 +183,5 @@ TSDF 중복 scan/포화/각도 다양성/JSON 직렬화·기존 free carving·fr
 정/역 off의 ledger/path/diagnostic/grid/text **10파일 SHA 동일**, 원 metric도 정확히 재현했다.
 기존29개 동결 파일 및 미추적4파일을 보존했다. 두 그림 직접 확인, 각1MiB/실험5MiB 이하.
 원시 결과25파일 **47,581,450bytes**, [manifest](results/raw-manifest.json).
-경로 `<home>/projects/ugrp/outputs/robust-wall-map-v1/`; 로컬 raw는 원격 백업이 아니다.
+경로 `/Users/changmin/projects/ugrp/outputs/robust-wall-map-v1/`; 로컬 raw는 원격 백업이 아니다.
 PR405 DRAFT 유지, 병합/force/reset/삭제0, 다른 프로세스/잠금에 대한 조작0.

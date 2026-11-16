@@ -5,9 +5,9 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 EXP = Path(__file__).resolve().parents[1]
-RAW = Path('<home>/projects/ugrp/outputs/own-map-utility-v1')
-EP = Path('<home>/projects/ugrp/outputs/wall-segment-dev-v1/new-seed')
-POINTS = Path('<home>/projects/ugrp/outputs/wall-contact-types-v1/32002/off/points.jsonl')
+RAW = Path('/Users/changmin/projects/ugrp/outputs/own-map-utility-v1')
+EP = Path('/Users/changmin/projects/ugrp/outputs/wall-segment-dev-v1/new-seed')
+POINTS = Path('/Users/changmin/projects/ugrp/outputs/wall-contact-types-v1/32002/off/points.jsonl')
 from harness.self_pose_graph import between
 from harness.self_odom_grid import transform
 from harness.self_pulse_rotation import RotationPulseOdometry

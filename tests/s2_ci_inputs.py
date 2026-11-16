@@ -14,7 +14,7 @@ def portable_s2_inputs(monkeypatch, tmp_path):
     # Local developer raw must not make a missing fixture silently pass CI.
     original_open = Path.open
     def repository_inputs_only(path, *args, **kwargs):
-        if '<home>/projects/ugrp/outputs/' in str(path):
+        if '/Users/changmin/projects/ugrp/outputs/' in str(path):
             raise AssertionError('offline test attempted developer raw: ' + str(path))
         return original_open(path, *args, **kwargs)
     monkeypatch.setattr(Path, 'open', repository_inputs_only)

@@ -18,7 +18,7 @@
 | 실패 분류 | HOST_ERROR,물리중단,목표미관측,B경로없음,첫/후속 국소정합 실패,전역위치오차,경로/예산. 최종 원인 하나와 부원인 구분,중복 합산0 |
 | 기억 경로 사용률 | 주지표=귀환 중 **수락된 실제 정합 호출수/전체 정합 호출수**. 한 프레임의 nearest5 내부후보는 분모를5배로 늘리지 않음. 호출0이면N/A. 추가로traversal이동/회전 명령 프레임÷귀환 프레임,후속 노드 진척 보고 |
 | 추가 지표 | 마지막 평가 가능 pose 오차 중앙값/최대(표본수),σ/NEES·>3σ,벽/로봇 접촉episode,회전시간비,귀환시간. 예산 소진과 도착시간 구분 |
-| 자료/디스크 | raw `<home>/projects/ugrp/outputs/teach-return-dev-v1/seed<seed>`;8GiB 예산,실행 전 여유≥10GiB,ENOSPC=HOST_ERROR. raw삭제/덮어쓰기0 |
+| 자료/디스크 | raw `/Users/changmin/projects/ugrp/outputs/teach-return-dev-v1/seed<seed>`;8GiB 예산,실행 전 여유≥10GiB,ENOSPC=HOST_ERROR. raw삭제/덮어쓰기0 |
 | 영상 | seed순 첫 성공,실패가 있으면 첫 실패의 실제4배속 wrist RGB(왼쪽)·자기 지도/경로/teach graph(오른쪽). 성공이 없으면 실패1개 이상. GT벽은 평가용 그림에만 |
 
 임무 정지는 기존 실제 물리 실패/실행 오류에 따른다. 한 seed의 임무 실패로 나머지 사전등록 seed를 선별 제외하지 않는다. 공통 실행기 오류가 다시 발생하면 같은 오류로 추가 물리를 낭비하지 않고 원인·미실행을 명시한다. 이는 실패 임무의 seed 선별과 구분한다.

@@ -58,7 +58,7 @@ PF의 σ는 원 `global_std_xy_m=sqrt(trace(CovXY))`, 탐색 종료의 보고σ�
 
 ## 산출·검증
 
-raw `<home>/projects/ugrp/outputs/own-map-return-repeat-v1/seed<seed>`.
+raw `/Users/changmin/projects/ugrp/outputs/own-map-return-repeat-v1/seed<seed>`.
 실행 결과 봉인 후 별도 평가기만 eval_only/GT를 읽는다.
 성공이 있으면 등록 순서의 첫 성공, 실패가 있으면 첫 실패를 골라 각각4배속
 손목RGB | 당시 자기 지도·추정 경로·기억한B 영상을 만든다(최소1개).
@@ -186,9 +186,9 @@ B blacklist 이후 일반 frontier로 전환된 실행은 **4/4**(각 실행에�
 - 바뀐3시험 파일 **16passed**, 기본off 기존 trace·입자·RNG byte 동일.
   결과 정리에서는 제어 소스를 변경하지 않았다. 원장 hash6회·인과적 snapshot4회·종료GT 시각6회를 검증했다.
 - `results/summary.json`, `results/descriptive-audit.json`, `results/provenance.json`에 수치·출처·해시.
-  raw는 `<home>/projects/ugrp/outputs/own-map-return-repeat-v1/seed49001`…`seed49006`에 로컬 보존.
+  raw는 `/Users/changmin/projects/ugrp/outputs/own-map-return-repeat-v1/seed49001`…`seed49006`에 로컬 보존.
 - 성공0회라 성공 영상은 없다. 등록 순서 첫 실패49001의
-  **`<home>/projects/ugrp/outputs/own-map-return-repeat-v1/seed49001/wrist-map-4x.mp4`**:
+  **`/Users/changmin/projects/ugrp/outputs/own-map-return-repeat-v1/seed49001/wrist-map-4x.mp4`**:
   3151프레임/20fps/157.55초/4배속, ffprobe·전체 decode·시작/중간/끝 화면 확인.
   sha256 `73225c6d274c8b0cde8f626234847edb04e93c7cac06416a1354177d6942da78`.
   GT 벽·경로는 영상의 평가 전용 겹쳐 그리기이며 제어 입력이 아니다.

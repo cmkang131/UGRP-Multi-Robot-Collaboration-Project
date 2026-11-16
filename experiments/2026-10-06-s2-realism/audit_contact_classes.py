@@ -16,7 +16,7 @@ def main(out):
     raw=a.RAW;lines=lambda p:[json.loads(x) for x in (raw/p).read_text().splitlines()]
     frames=lines('robots/r3/frames.jsonl');truth={round(r['t'],6):r for r in lines('eval_only/trajectory.jsonl')}
     cams={round(r['t'],6):r for r in lines('eval_only/camera-pose.jsonl')}
-    old=json.loads(Path('<home>/projects/ugrp/outputs/s2-observed-amcl-20261007/projection/columns.json').read_text())
+    old=json.loads(Path('/Users/changmin/projects/ugrp/outputs/s2-observed-amcl-20261007/projection/columns.json').read_text())
     reference={(q['t'],q['column']):q for q in old}
     times=sorted(set(q['t'] for q in old));fs={f['sim_time']:f for f in frames}
     models=a.approximate(json.loads((a.c.ROOT/'configs/calibration/s2_camera_v3_unloaded_sag_v1.json').read_text()))

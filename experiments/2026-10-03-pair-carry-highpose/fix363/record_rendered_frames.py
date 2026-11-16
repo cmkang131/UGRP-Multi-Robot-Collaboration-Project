@@ -131,7 +131,7 @@ if __name__ == '__main__':
     out_root, sha = Path(sys.argv[1]), sys.argv[2]
     seed = int(sys.argv[3]) if len(sys.argv) > 3 else 911
     only = set(sys.argv[4].split(',')) if len(sys.argv) > 4 else None
-    primary = Path('<home>/projects/ugrp/outputs')
+    primary = Path('/Users/changmin/projects/ugrp/outputs')
     if not out_root.is_absolute() or not out_root.resolve().is_relative_to(primary):
         raise SystemExit('raw output must be absolute under primary outputs')
     if shutil.disk_usage(primary).free < 10*1024**3:

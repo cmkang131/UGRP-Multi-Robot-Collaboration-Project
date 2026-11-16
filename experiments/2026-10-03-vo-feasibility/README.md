@@ -156,7 +156,7 @@ Refs #366. **물리 실행 0회, 새 렌더링 0회.** 이미 저장된 자기 �
 
 ## 원본 위치와 해시
 
-- 원본 CSV, 로그, 코드 사본: `<home>/projects/ugrp/outputs/vo-feasibility-20261003/` (7.7 MiB, 26파일, 해시 목록 `SHA256SUMS`. 같은 파일을 이 폴더에도 복사했다.)
+- 원본 CSV, 로그, 코드 사본: `/Users/changmin/projects/ugrp/outputs/vo-feasibility-20261003/` (7.7 MiB, 26파일, 해시 목록 `SHA256SUMS`. 같은 파일을 이 폴더에도 복사했다.)
 - 쌍별 결과는 `<seq>_pairs.csv`, `<seq>_ipm.csv`, 프레임별 특징점 수는 `<seq>_frames.csv`, 창별 누적 오차는 `drift_windows.csv`에 있다.
 - 재현 순서 (`code/` 안에서 실행):
   1. `nice -n 10 ../.venv-sim/bin/python vo_eval.py v88_r1 v92_r1 v92_r2 m1_s101`

@@ -15,8 +15,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-RAW = Path('<home>/projects/ugrp/outputs/zone-owncam-pair-20260926')
-TB = Path('<home>/projects/ugrp/outputs/tensorboard')
+RAW = Path('/Users/changmin/projects/ugrp/outputs/zone-owncam-pair-20260926')
+TB = Path('/Users/changmin/projects/ugrp/outputs/tensorboard')
 ARMS = {'O': ('own_only', (611, 612, 613, 614)), 'S': ('stub_approach', (611, 612))}
 V2_SEEDS = (621, 622, 623, 624, 625, 626)
 ARMS_V2 = {'ON': ('own_only', V2_SEEDS), 'OFF': ('own_only', V2_SEEDS)}   # --status-channel on / off

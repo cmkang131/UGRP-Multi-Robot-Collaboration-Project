@@ -49,7 +49,7 @@ DEV light의 위치 불확실·정적 충돌 거절은 `dev_light_would_stop`으
 ## 검증
 
 ```sh
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
   tests/test_solo_cyan_v106.py tests/test_solo_cyan_v106_runner.py
 ```
 
@@ -76,13 +76,13 @@ v98-exact-v6 기본, nice 0, watchdog(PID·파일 읽기 전용)과 자기 자�
 ```zsh
 setopt NO_BG_NICE
 # SOURCE_SHA는 PR에 적힌 40자리 실행 커밋으로 설정한다.
-RUN_OUT=<home>/projects/ugrp/outputs/solo-cyan-v106-${SOURCE_SHA[1,8]}-s911-P1-2-place
+RUN_OUT=/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-${SOURCE_SHA[1,8]}-s911-P1-2-place
 nohup nice -n 0 /bin/zsh \
-  <home>/projects/ugrp-wt/solo-cyan/experiments/2026-10-05-solo-cyan-v106/launch_dev.zsh \
+  /Users/changmin/projects/ugrp-wt/solo-cyan/experiments/2026-10-05-solo-cyan-v106/launch_dev.zsh \
   "$SOURCE_SHA" "$RUN_OUT" place >"${RUN_OUT}-console.log" 2>&1 </dev/null &
 ```
 
-watchdog는 `<home>/projects/ugrp/outputs/v98-probe-tools/sim_watchdog.py`를 사용한다.
+watchdog는 `/Users/changmin/projects/ugrp/outputs/v98-probe-tools/sim_watchdog.py`를 사용한다.
 상한을 넘기거나 결과 파일이 없는 종료도 실패로 보존한다. `pick`은 실제 시작→파지→HIGH까지,
 `door`는 같은 실제 시작에서 문 뒤까지다. 순간이동/교사 파지로 중간 상태를 만들지 않는다.
 각 단계는 새 출력 폴더로 실행한다. 이번 인계는 첫 P1-2 후보이며, 나머지 5 slot과 seed, 연속 주문, 3대 동시·혼합 호스트는 남아 있다.
@@ -115,10 +115,10 @@ watchdog는 `<home>/projects/ugrp/outputs/v98-probe-tools/sim_watchdog.py`를 �
 
 | # | 실행 SHA | 결과 | 출력 |
 |---|---|---|---|
-| 1 | `457aeccc5315c53a88f84e15917a750518585514` | STAGE_FAILED / CYAN_ALIGN_VIEW_LOST, lifted=false (SIM 50.3 s) | `<home>/projects/ugrp/outputs/solo-cyan-v106-457aeccc-s911-P1-2-place` |
-| 2 | `25638624704fb8c2d348894b40e6d3b69e1ecc52` | STAGE_REACHED_UNQUALIFIED, lifted=true / inside=false (SIM 179.8 s, 명령 3794) | `<home>/projects/ugrp/outputs/solo-cyan-v106-25638624-s911-P1-2-place` |
-| 3 | `ee40923ca165dc4fbf8092ba85aeeaa618ce8838` | STAGE_REACHED_UNQUALIFIED, lifted=true / inside=false (SIM 363.2 s, 명령 12000) | `<home>/projects/ugrp/outputs/solo-cyan-v106-ee40923c-s911-P1-2-place` |
-| 4 | `d18600598b25b45f7b99a47e6b08e1d0afe7366e` | STAGE_REACHED_UNQUALIFIED, **lifted=true / inside=true / success=true(잠정 기하 판정)** (SIM 366.2 s, 명령 12030) | `<home>/projects/ugrp/outputs/solo-cyan-v106-d1860059-s911-P1-2-place` |
+| 1 | `457aeccc5315c53a88f84e15917a750518585514` | STAGE_FAILED / CYAN_ALIGN_VIEW_LOST, lifted=false (SIM 50.3 s) | `/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-457aeccc-s911-P1-2-place` |
+| 2 | `25638624704fb8c2d348894b40e6d3b69e1ecc52` | STAGE_REACHED_UNQUALIFIED, lifted=true / inside=false (SIM 179.8 s, 명령 3794) | `/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-25638624-s911-P1-2-place` |
+| 3 | `ee40923ca165dc4fbf8092ba85aeeaa618ce8838` | STAGE_REACHED_UNQUALIFIED, lifted=true / inside=false (SIM 363.2 s, 명령 12000) | `/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-ee40923c-s911-P1-2-place` |
+| 4 | `d18600598b25b45f7b99a47e6b08e1d0afe7366e` | STAGE_REACHED_UNQUALIFIED, **lifted=true / inside=true / success=true(잠정 기하 판정)** (SIM 366.2 s, 명령 12030) | `/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-d1860059-s911-P1-2-place` |
 
 실행 1: 정렬 중 작은 cuboid가 p45 영상 아래쪽으로 벗어났다 → 25638624에서 아래쪽 행 440 근처에서 한 단계 낮은 시점으로 내리도록 고쳤다.
 실행 2: 집기·운반·놓기를 끝까지 했지만 cyan이 목적 구역 B 밖(마지막 위치 (2.283,-0.185), B 중심과 xy로 3.006 m)에 놓였다.
@@ -163,11 +163,11 @@ watchdog는 `<home>/projects/ugrp/outputs/v98-probe-tools/sim_watchdog.py`를 �
 - **확인: 공식 공개 코드(해당 부분만)** — [Nav2 AMCL amcl_node.cpp](https://raw.githubusercontent.com/ros-navigation/navigation2/main/nav2_amcl/src/amcl_node.cpp) `nomotionUpdateCallback`의 `force_update_`. 정지 중 갱신을 강제해도 실제 측정(스캔)이 있어야 필터가 갱신된다 → 우리도 새 fix 영수증이 있어야 체크포인트를 통과로 인정한다.
 - **확인: 저장소 구현** — `harness/zone_pair_highpose_refix.py`의 v98 set-down 재관측·재집기 순서, `harness/zone_study_pose_delay_p03.py`·`vision_pose_source_p03.py`의 `begin_relocalization`(분포 보존, 영수증 무효화).
 - **채택하지 않음(미확인 포함)** — Di Giammarino et al. (ECCV 2024, Learning Where to Look), rvp-group actloc_benchmark, Bajpai et al. (ECMR 2025): 학습·SfM·VLM 경로라서 무모델 조건에 맞지 않는다. 본문/구현은 이번에 확인하지 않았다(미확인).
-- 외부 논문의 성공 수치를 이 후보의 성공 근거로 합산하지 않는다. 이 문서의 진단 초안은 Codex(2026-10-06 오프라인 감사, `<home>/projects/ugrp/outputs/solo-cyan-v106-pr391-20261006-codex-audit/`)가 작성했다.
+- 외부 논문의 성공 수치를 이 후보의 성공 근거로 합산하지 않는다. 이 문서의 진단 초안은 Codex(2026-10-06 오프라인 감사, `/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-pr391-20261006-codex-audit/`)가 작성했다.
 
 ### 실행 3 — `ee40923ca165dc4fbf8092ba85aeeaa618ce8838` (set-down 재관측 v1, 체크포인트 3개)
 
-출력: `<home>/projects/ugrp/outputs/solo-cyan-v106-ee40923c-s911-P1-2-place`
+출력: `/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-ee40923c-s911-P1-2-place`
 결과: STAGE_REACHED_UNQUALIFIED, **lifted=true / inside=false** (SIM 363.2 s, 명령 12000, 모델 호출 0, `physical_success=null`).
 `dev_light_would_stop`: ARM_COLLISION_GUARD 3, POSE_UNCERTAIN 400, REOBSERVATION_NO_FIX 2(둘 다 마지막 스캔: 스캔 종료 시점과 재관측 결과 시점). 실제 물리 실패 없음.
 
@@ -190,7 +190,7 @@ Borenstein & Feng (1996, UMBmark)의 체계적 오도메트리 오차 보정 원
 
 ### 실행 4 — `d18600598b25b45f7b99a47e6b08e1d0afe7366e` (loaded 이동 프로필 교체, 재관측 v1 유지)
 
-출력: `<home>/projects/ugrp/outputs/solo-cyan-v106-d1860059-s911-P1-2-place` (콘솔 로그와 watchdog 로그는 같은 이름에 `-console.log`/`-watchdog.log`).
+출력: `/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-d1860059-s911-P1-2-place` (콘솔 로그와 watchdog 로그는 같은 이름에 `-console.log`/`-watchdog.log`).
 결과: STAGE_REACHED_UNQUALIFIED, 사후 잠정 기하 판정 **lifted=true, inside=true, floor=true, stable=true(2.0 s), success=true**. SIM 366.2 s, 명령 12030, 모델 호출 0.
 `physical_success=null`, `research_result=false`, 실행 중 낙하·기울기 감지 없음은 그대로다. `dev_light_would_stop`: ARM_COLLISION_GUARD 3, REOBSERVATION_NO_FIX 2(마지막 스캔), POSE_UNCERTAIN 1. 실제 물리 실패 없음. 부하 평균(시작→끝) 3.19→2.54.
 최종 cyan (4.797,-1.692) — B 구역(x 4.3–4.9, y -2.8~-0.7) 안, 동쪽 경계와 x로 약 8.6 cm(상자 반폭 제외) 여유.
@@ -236,7 +236,7 @@ Borenstein & Feng (1996, UMBmark)의 체계적 오도메트리 오차 보정 원
 
 seed914를 DEV admission에 명시 추가했다. 성공·실패를 모두 기록하고 **같은 원인으로 두 실행이 막히면 이후 실행을 중단**한다. 중간 결과를 보고 같은 후보를 튜닝하거나 재시도하지 않는다. 이 목록은 개발 후보의 새 조건 확인이며 정식 E2E/연구 코호트가 아니다. HOST_ERROR/ENOSPC/미실행을 성공 분모에서 빼지 않는다. 낙하·기울기·집게 이탈의 실행 중 감지가 없는 기존 한계는 유지한다.
 
-실행은 `ugrp_session.py run solo-cyan-confirm-s<seed> -- /bin/zsh launch_dev.zsh FULL_SHA ABS_OUT place SEED SLOT`로 한다. 출력은 `<home>/projects/ugrp/outputs/solo-cyan-v106-<sha8>-s<seed>-<slot>-place`. 스크립트가 null 잠금 확인→owner codex/branch claude/solo-cyan/purpose `S2 v106 confirm`/자기 PID 잠금→표준 sim_cli→release한다. nice0/NO_BG_NICE, 한 번에 하나만 실행한다.
+실행은 `ugrp_session.py run solo-cyan-confirm-s<seed> -- /bin/zsh launch_dev.zsh FULL_SHA ABS_OUT place SEED SLOT`로 한다. 출력은 `/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-<sha8>-s<seed>-<slot>-place`. 스크립트가 null 잠금 확인→owner codex/branch claude/solo-cyan/purpose `S2 v106 confirm`/자기 PID 잠금→표준 sim_cli→release한다. nice0/NO_BG_NICE, 한 번에 하나만 실행한다.
 
 ### 추가 참고 자료 (2026-10-06 확인)
 
@@ -262,9 +262,9 @@ seed914를 DEV admission에 명시 추가했다. 성공·실패를 모두 기록
 
 원본 출력(각 경로 뒤 `-managed/manifest.json`에 관리 실행·환경·소스 고정 증거):
 
-- `<home>/projects/ugrp/outputs/solo-cyan-v106-dfec1f19-s912-P1-1-place`
-- `<home>/projects/ugrp/outputs/solo-cyan-v106-dfec1f19-s913-P1-3-place`
-- `<home>/projects/ugrp/outputs/solo-cyan-v106-dfec1f19-s914-P2-2-place`
+- `/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-dfec1f19-s912-P1-1-place`
+- `/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-dfec1f19-s913-P1-3-place`
+- `/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-dfec1f19-s914-P2-2-place`
 
 [전수 해시·사후 판정 재계산·모든 체크포인트 수치](confirm-results.json), [검증기](verify_confirm.py).
 6151/7555/6277개, 총 **19,983개 artifact 파일 SHA-256 일치**, 저장된 평가를 원본 trajectory로 재계산해 세 건 모두 동일했다.
@@ -298,7 +298,7 @@ shard5의 전체 workflow 계획 시험에는 새 `zone-solo-cyan-v106`의 입�
 실행3·4와 새 실행3건을 **`outputs/tensorboard/1006-solo-cyan-v106-confirm-dfec1f19`** 새 snapshot에 등록했다.
 기존 snapshot/원본은 보존했다. 각 원본 result·bundle 해시를 연결하고 EventAccumulator로 5개 event의 실제 값/HParams를 읽었다.
 [대시보드 링크·원본 연결·event 해시·표시 설정](tensorboard.json).
-공유 logdir `<home>/projects/ugrp/outputs/tensorboard`로 자기 뷰어를 시작했고 Chrome `강`의 기존 탭에서 확인했다.
+공유 logdir `/Users/changmin/projects/ugrp/outputs/tensorboard`로 자기 뷰어를 시작했고 Chrome `강`의 기존 탭에서 확인했다.
 성공 판정·SIM 시간·명령 수·모델 호출 4개 Time Series 카드를 고정했고, HParams에서 outcome과 같은 4개 지표 열을 적용해 5개 행을 원본과 대조했다.
 HParams는 공유 전체 3676개 group 중 당시 37페이지에 있으며 Time Series의 run filter와 별도다.
 모델 호출은 0회라 응답 시간은 계측되지 않았고 0으로 만들지 않았다. raw MP4가 없어 영상 등록은 없다.

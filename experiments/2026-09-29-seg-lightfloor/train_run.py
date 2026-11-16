@@ -16,12 +16,12 @@ import numpy as np
 import seg_ft
 import seg_model as sm
 
-OUT = Path('<home>/projects/ugrp/outputs/seg-lightfloor-20260929')
+OUT = Path('/Users/changmin/projects/ugrp/outputs/seg-lightfloor-20260929')
 TRAIN_ROOT = OUT / 'train'
 CACHE = OUT / 'cache' / 'mix'
 CACHE_FL = OUT / 'cache' / 'mix_fl'            # F2 ablation: 8000 floor_light_v1 renders + default + replay (same static-frame count as C)
 CACHE_FAR = OUT / 'cache' / 'mix_far'          # + far-wall corridor frames (search-pose family), C2 iteration
-VLR = Path('<home>/projects/ugrp/outputs/vision-loc-20260926/render')
+VLR = Path('/Users/changmin/projects/ugrp/outputs/vision-loc-20260926/render')
 N_PER_LOOK = 300
 REPLAY_EVERY = 5
 

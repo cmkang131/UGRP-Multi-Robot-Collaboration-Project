@@ -46,7 +46,7 @@ def write(path, values):
 def no_real_raw(monkeypatch):
     original = Path.open
     def guarded(path, *args, **kwargs):
-        assert '<home>/projects/ugrp/outputs/' not in str(path.resolve())
+        assert '/Users/changmin/projects/ugrp/outputs/' not in str(path.resolve())
         return original(path, *args, **kwargs)
     monkeypatch.setattr(Path, 'open', guarded)
 

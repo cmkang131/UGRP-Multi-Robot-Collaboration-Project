@@ -235,7 +235,7 @@ probe 통과는 집기→원래 자리 확인→HIGH 복귀, 실제 lifted 이�
 놓쳤다. 기존 코드의 reset 재생성 계약을 확인하여 그 뒤 명시 옵션 포트를 다시 붙인다.
 실제 IntegerClock.reset 경로를 거치는 회귀 시험을 추가했다. 물리·pulse·계수는 바꾸지 않는다.
 
-raw `<home>/projects/ugrp/outputs/s2-realism-0c8eb624-s1037-P1-2-pick`과 v113을 그대로 보존한다.
+raw `/Users/changmin/projects/ugrp/outputs/s2-realism-0c8eb624-s1037-P1-2-pick`과 v113을 그대로 보존한다.
 새 **v114 / workflow7.7.0**, 새 미사용 **s1039/P1-2 probe**를 [사전 등록](registration-v114.json)한다.
 이전 s1037도 재사용하지 않는다. [번호/seed 조회](reservation-scan-v114.json).
 통과 기준, full1029–1031 조건, 동일 원인2회/120초1cm 정체 중단, 모델·출력 옵션은 v113과 같다.
@@ -256,7 +256,7 @@ probe를 이용한 재튜닝은 하지 않았다. [전체 완료 기록과 raw �
 |1030/P2-1 full|NOT_RUN: probe 미통과|미측정|미측정|미측정|미측정|
 |1031/P1-2 full|NOT_RUN: probe 미통과|미측정|미측정|미측정|미측정|
 
-s1039 raw는 `<home>/projects/ugrp/outputs/s2-realism-ab27cffd-s1039-P1-2-pick`이다.
+s1039 raw는 `/Users/changmin/projects/ugrp/outputs/s2-realism-ab27cffd-s1039-P1-2-pick`이다.
 full 세 seed의 예정 경로는 완료 JSON에 남겼으나 실제 출력 디렉터리는 생성되지 않았다.
 시작 reset 1.3초를 제외한 check SIM은 133.55초, 세션 관리 wall은 392.537초다.
 명령 1,188개·모델 호출 0개. dev_light would-stop은 ARM_COLLISION_GUARD 5개,
@@ -295,7 +295,7 @@ s1033의 출발 문턱 미달은 **제어 출력 실패**로 유지한다. 새 s
   공용 view에는 자기 `s2_realism_20261006` 키만 추가했고 기존 서버는 변경하지 않았다.
   HParams 열 존재와 pinned tag 수치를 검사했으며 브라우저는 사용자 지시대로 생략했다.
 - 4배속 own-RGB MP4 1개:
-  `<home>/projects/ugrp/outputs/s2-realism-ab27cffd-analysis/views/s1039-probe/execution.mp4`.
+  `/Users/changmin/projects/ugrp/outputs/s2-realism-ab27cffd-analysis/views/s1039-probe/execution.mp4`.
   32.65초 / 653 frames / 640×480 / 20fps, 734351 bytes;
   SHA-256 `4dd715f59db58128907f109abe47faea1e054e85e57f7318441a85c9719bd46c`.
   전체 디코딩과 첫/중간/마지막 프레임, TensorBoard manifest의 영상 등록을 확인했다.
@@ -431,8 +431,8 @@ v115 소스 `57f8c174bb32648bef495a8ae9335dd1815745e3`, v116 소스
 |1030/P2-1 full|NOT_RUN, probe 미통과|미측정|미측정|미측정|미측정|미측정|
 |1031/P1-2 full|NOT_RUN, probe 미통과|미측정|미측정|미측정|미측정|미측정|
 
-raw는 각각 `<home>/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick`,
-`<home>/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick`이다.
+raw는 각각 `/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick`,
+`/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick`이다.
 full 예정 경로는 cohort JSON에 있으나 실제 디렉터리는 없다. wall 시간은 reset/cleanup 포함,
 SIM 시간은 reset 1.3초 포함이다. seed와 호스트 부하가 달라 시간 차이를 성능 개선으로 해석하지 않는다.
 모델 호출은 모두0, 명령 수 1276/1216, would-stop 13/50개는 기록만 했다.
@@ -472,7 +472,7 @@ s1040의 한 펄스 평면 이동 중앙값은 forward7.470mm, lateral7.034mm였
   검사했고, 브라우저는 사용자 지시에 따라 생략했다. 변환 시 dirty 표시는 사후 기록/분석 파일이며
   실행 closure와 변환기 자체는 변경되지 않았다.
 - 대표 4배속 MP4는 s1040(P1-2, 두 실패 중 첫 실행)을 선택했다. 새 seed 지시 때문에 옛 s1039와
-  paired seed 비교가 아니다. `<home>/projects/ugrp/outputs/s2-realism-57f8c174-analysis/views/s1040-probe/execution.mp4`,
+  paired seed 비교가 아니다. `/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-analysis/views/s1040-probe/execution.mp4`,
   26.15초/523frames/640×480/20fps/575008bytes,
   SHA256 `384ad6944cf42b44e0238cb3650b82af413c75b97f87cebc72d20c220915c84c`.
   전체 decode, 첫/중간/정렬 끝/마지막 프레임, TensorBoard manifest 등록을 확인했다.
@@ -498,7 +498,7 @@ s1040의 한 펄스 평면 이동 중앙값은 forward7.470mm, lateral7.034mm였
 
 hover 카메라 원점(x,y,z; floor-heading,m): 이전[.205223,.000000,.115322], v3[.212001,.000000,.134357]. 광축(x,y,z): 이전[.558204,−.000000,−.829704], v3[.594437,−.000000,−.804142]. 두 seed의 블록 중심은 각각[.203915,−.004457,.015892]/[.201402,.000734,.015892]. 전체 회전행렬·모서리·명령 자세는 JSON에 있다. 정렬 시점 v3 예측 bbox는 관측과 최대2px 차이다. 카메라 위치/방향은 **기존 정지 명령별 SIM 보정 + mount 강체 변환**이며 각 프레임의 실제 관절·roll/pitch는 저장되지 않았다. 이 한계와 장면 occlusion을 계산하지 않았음을 남긴다. 이전 카메라 재실행 성공이나 실물 성공을 주장하지 않는다.
 
-Raw는 원래 s1040/s1041 폴더 그대로다. contact sheet는 `<home>/projects/ugrp/outputs/s2-realism-hover-offline-20261006/s1040-hover-contact-sheet.png`, `s1041-hover-contact-sheet.png`다.
+Raw는 원래 s1040/s1041 폴더 그대로다. contact sheet는 `/Users/changmin/projects/ugrp/outputs/s2-realism-hover-offline-20261006/s1040-hover-contact-sheet.png`, `s1041-hover-contact-sheet.png`다.
 
 ### 실물 근거와 명시 옵션
 
@@ -514,7 +514,7 @@ Raw는 원래 s1040/s1041 폴더 그대로다. contact sheet는 `<home>/projects
 
 main+열린 PR14개 및 raw에서 seed1042 사용 없음, bundle 최대116/workflow7.9.0 확인(`reservation-scan-v117.json`). 새 **zone-s2-realism-v117 / workflow7.10.0**, seed**1042/P1-2/pick**1개를 탐색적 수정 probe로 등록했다. s1040/1041은 원인 분석 자료이며 확증 분모에 넣지 않는다. `registration-v117.json`은 기존 실패2회를 별도 보존하고 사용자 지시의 수정 후1회만 허용한다. 자동 재시도/full 실행 없음, 결과와 무관하게 이 probe 뒤 종료한다. ENOSPC=HOST_ERROR,eval-only120SIM초1cm 미만 정체 중단,dev_light,agent_lock/ugrp_session,모델 호출0을 유지한다.
 
-출력 예정 `<home>/projects/ugrp/outputs/s2-realism-<실행SHA8>-s1042-P1-2-pick`. 소스·이 README·사전 등록을 **시험 통과→commit→push한 뒤** 고정 SHA로 실행한다. `hover-preservation.json`: v115/v116 각각332개 실행 소스의 바이트를 유지했다. 변경 모듈 시험5개는 off 명령/기록 바이트 동일,실제 align/hover 기본 실패 경로 동일,실물 pre-grasp 확인→0px hover 하강/닫기,stale/미확인/주행 이탈 거부,저장 투영 재현 및 새 admission을 검사한다. 물리 probe의 결과는 아래 완료 기록으로 따로 보고한다.
+출력 예정 `/Users/changmin/projects/ugrp/outputs/s2-realism-<실행SHA8>-s1042-P1-2-pick`. 소스·이 README·사전 등록을 **시험 통과→commit→push한 뒤** 고정 SHA로 실행한다. `hover-preservation.json`: v115/v116 각각332개 실행 소스의 바이트를 유지했다. 변경 모듈 시험5개는 off 명령/기록 바이트 동일,실제 align/hover 기본 실패 경로 동일,실물 pre-grasp 확인→0px hover 하강/닫기,stale/미확인/주행 이탈 거부,저장 투영 재현 및 새 admission을 검사한다. 물리 probe의 결과는 아래 완료 기록으로 따로 보고한다.
 
 ### v117/s1042 완료 (실행 SHA `ef820ab2d367b1a25e14b0cc4df6be4b3e58bb3d`)
 
@@ -528,9 +528,9 @@ main+열린 PR14개 및 raw에서 seed1042 사용 없음, bundle 최대116/workf
 
 95.45초 `pickup-site comparison region is clipped`로 기준 ROI를 만들지 못했으며120.15초 원래 자리 판정은before=null/samples=[]/unknown이다. pre-grasp4회 면적은 **집기 전후 면적 비교가 아니다**. 따라서 driver의 `PROBE_SITE_OR_LIFT_GATE_FAILED`는 이번에는 **site 확인 실패만**을 뜻한다(lifted=true). 사용자 지시대로 이1회 뒤 종료했으며 full1029–1031·추가 seed·재시도는 실행하지 않았다. 카메라 각도 및 ROI 조건도 수정하지 않았다.
 
-- raw: `<home>/projects/ugrp/outputs/s2-realism-ef820ab2-s1042-P1-2-pick`
-- 사후 요약/해시: `<home>/projects/ugrp/outputs/s2-realism-ef820ab2-analysis/`; Git의 `completed-v117.json`, `hover-record-verification.json`에 연결했다. 원본과 이전 snapshot은 보존했고 자기 세션/드라이버 종료·잠금 해제·일회성 launchd unload를 확인했다.
-- 4배속 영상: `<home>/projects/ugrp/outputs/s2-realism-ef820ab2-analysis/views/s1042-probe/execution.mp4`,34.05초/681frames/640×480/20fps/579138bytes, SHA256 `5ed6f0714aaab173ece3a9630964dfcb76252969e6f08fdd0ec35b0425ad2041`. 전체681frame decode 및 첫/hover/하강/마지막 프레임을 확인했다. 출력 프레임 양자화로 원본시간/4와25ms 차이(1frame 이내)다.
+- raw: `/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-s1042-P1-2-pick`
+- 사후 요약/해시: `/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-analysis/`; Git의 `completed-v117.json`, `hover-record-verification.json`에 연결했다. 원본과 이전 snapshot은 보존했고 자기 세션/드라이버 종료·잠금 해제·일회성 launchd unload를 확인했다.
+- 4배속 영상: `/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-analysis/views/s1042-probe/execution.mp4`,34.05초/681frames/640×480/20fps/579138bytes, SHA256 `5ed6f0714aaab173ece3a9630964dfcb76252969e6f08fdd0ec35b0425ad2041`. 전체681frame decode 및 첫/hover/하강/마지막 프레임을 확인했다. 출력 프레임 양자화로 원본시간/4와25ms 차이(1frame 이내)다.
 - TensorBoard 새 snapshot `1006-s2-realism-hover-v117`: **완료 probe1개 + 새 오프라인 투영2개 =3기록/41scalar**. 세 개를 시행3회로 합산하지 않는다. 원본→event→기존live6006 API 수치가 모두 일치하고 영상 등록/HParams 열/핀 태그를 확인했다. 공용 view의 자기 새 키`s2_realism_hover_20261006`만 추가했고 기존 서버PID52016/logdir와 다른 키를 보존했다. 사용자 지시대로 browser UI 검증은 생략했다. [TensorBoard 수치](http://127.0.0.1:6006/?runFilter=%5E1006-s2-realism-hover-v117%2F#timeseries), 상세`hover-delivery-verification.json`.
 
 로컬 시험5개 통과 뒤에만 실행 소스가 커밋·push됐다. 사후에는 실행 코드를 바꾸지 않고 raw/source closure·등록 수치·영상만 검증했다. 최종 기록도 별도 commit/push하고 PR #406은 DRAFT·미병합으로 유지한다. 남은 문제는 pickup-site ROI이며 이 후속 요청에서 새 시야/ROI 방식이나 추가 실행은 도입하지 않았다.
@@ -601,7 +601,7 @@ main+열린 PR14개의 ID/버전과 명시적 seed 필드·이름·CLI 및 공�
 
 변경 시험 `tests/test_s2_real_site.py`와 `tests/test_s2_idle_contacts.py` **22개 통과(10.74s)**. 저장 JPEG의 기존 ROI 실패/새 기준 수용, off 명령·기록 바이트,9fresh/정지/동일자세/밝은 저대비/검은영상·중복·이동 거부,바닥 검출 실패·재집기 한도,범위·등록 seed·result 옵션을 확인했다. 실제 사후 RGB 확인은 아직 실행 전이다. 시험 중 발견한 저대비 색 확인 경로를 고친 뒤 전부 재통과했으며 이 시험을 물리 성공으로 세지 않는다.
 
-raw 예정 `<home>/projects/ugrp/outputs/s2-realism-<SHA8>-s1043-P1-2-pick`. `ugrp_session run`→`launch_v119.zsh`→표준`sim_cli workflow run`이며 실행기 PID의 agent_lock을 acquire하고 finally/EXIT에서 release한다. 한 번에1개·nice0·dev_light·120SIM초/1cm 정체 eval 중단·실제 물리 실패 중단을 유지한다. case cap1800SIM초,wall cap10800초,시작 시 여유51.26GiB를 확인했다. ENOSPC는HOST_ERROR이고 부분 raw도 보존한다. 같은 원인이2회면 중단한다(기존 ROI 확인불가 s1042=1회; 동일 원인 재발이면 추가 seed 없음). 이 probe1회 뒤에는 결과에 관계없이 이번 실행을 끝내고 기록하며 full1029–1031은 이 등록에 포함하지 않는다.
+raw 예정 `/Users/changmin/projects/ugrp/outputs/s2-realism-<SHA8>-s1043-P1-2-pick`. `ugrp_session run`→`launch_v119.zsh`→표준`sim_cli workflow run`이며 실행기 PID의 agent_lock을 acquire하고 finally/EXIT에서 release한다. 한 번에1개·nice0·dev_light·120SIM초/1cm 정체 eval 중단·실제 물리 실패 중단을 유지한다. case cap1800SIM초,wall cap10800초,시작 시 여유51.26GiB를 확인했다. ENOSPC는HOST_ERROR이고 부분 raw도 보존한다. 같은 원인이2회면 중단한다(기존 ROI 확인불가 s1042=1회; 동일 원인 재발이면 추가 seed 없음). 이 probe1회 뒤에는 결과에 관계없이 이번 실행을 끝내고 기록하며 full1029–1031은 이 등록에 포함하지 않는다.
 
 freeze 전후 결과는 합산하지 않는다. off s1042 wall/SIM=**2.587649**와 새 실행의 wall/SIM만 기술적으로 나란히 기록하며, seed·확인 동작이 달라 인과적인 가속률로 해석하지 않는다. 결과·전후 면적·재집기·시간·영상·TensorBoard는 종료 후 실제 값으로 기록한다. PR #406은 DRAFT·미병합으로 유지한다.
 
@@ -622,8 +622,8 @@ freeze 전후 결과는 합산하지 않는다. off s1042 wall/SIM=**2.587649**�
 
 중단 기준은 보수적으로 **원래 자리 기준을 렌즈 경계에서 확보하지 못하는 문제**의2회(s1042,s1043)로 묶었다. 세부 원인은 s1042=확장 여백,s1043=cyan 자체의 경계 접촉으로 구별했다. 따라서 새 seed·추가 튜닝·물리 실행 없이 중단한다. 남은 문제는 정렬 허용 위치에서 재관측 기준 전체가 보일 만큼의 시야 여유 확보이며, 카메라 하드웨어 각도는 사용자 실물 확인 대상이다.
 
-- raw `<home>/projects/ugrp/outputs/s2-realism-f6cb04b3-s1043-P1-2-pick`; managed 기록은 같은 경로 뒤`-managed/manifest.json`이다.
-- 4배속 own-RGB 영상 `<home>/projects/ugrp/outputs/s2-realism-f6cb04b3-analysis/views/s1043-probe/execution.mp4`:27.15초/543frames/20fps/414,990bytes,전체 decode통과,sha256 `32e44a41e9c76a2bd54a55fd64435cfebfa28d1e7e4918a303da8c1ae0fa0776`.
+- raw `/Users/changmin/projects/ugrp/outputs/s2-realism-f6cb04b3-s1043-P1-2-pick`; managed 기록은 같은 경로 뒤`-managed/manifest.json`이다.
+- 4배속 own-RGB 영상 `/Users/changmin/projects/ugrp/outputs/s2-realism-f6cb04b3-analysis/views/s1043-probe/execution.mp4`:27.15초/543frames/20fps/414,990bytes,전체 decode통과,sha256 `32e44a41e9c76a2bd54a55fd64435cfebfa28d1e7e4918a303da8c1ae0fa0776`.
 - [TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1006-s2-realism-site-v119%2F#timeseries): **실패 probe1건+오프라인 ROI 분석1건/29scalar**,원본→event→기존live6006 API 수치 일치. 두 기록을 실행2회로 세지 않는다. 영상 등록과 HParams/핀 설정을 확인하고 공용 view에 자기 키`s2_realism_site_20261006`만 추가했다. PID52016/logdir 및 과거 snapshot은 보존했다. 사용자 지시대로 browser UI 대신 수치만 대조했다.
 - 첫 도구 셸 실행은 inherited nice10 검사에서 **SIM·seed 사용 전에 거부**됐다. 로그를 보존하고 기존 일회성 launchd(KeepAlive=false)→ugrp_session 경로로 nice0 실행1회만 시작했다. **agent_lock release·세션 stopped·launchd unload·자식 종료**를 확인했다. 다른 작업 프로세스/자료는 건드리지 않았다.
 - eval idle 옵션 sidecar는 #407 기본 정책 문구를 유지하고, 실행 bundle에는 후속 사용자 지시의 DEV seed 사전 기록 예외가 별도로 명시돼 있다. 실제 옵션 적용값은 둘 다 freeze_v1이다. 본 연구 예외나 S3/짝 실행으로 해석하지 않는다.
@@ -741,7 +741,7 @@ PR405의 잠금이 실제 `null`이 된 뒤만 acquire했다. 기존 tool proces
   따라서 전후 비교 면적은 null. pregrasp 면적이나 held 영상 면적을 site-after로 넣지 않는다.
 - 재집기0, 명령2039, 모델 호출0, RGB2129장. wall **177.457465s**, total SIM **110.7s**,
   check SIM109.4s, wall/SIM **1.603048**. 출력:
-  `<home>/projects/ugrp/outputs/s2-realism-97c05e41-s1044-P1-2-pick`.
+  `/Users/changmin/projects/ugrp/outputs/s2-realism-97c05e41-s1044-P1-2-pick`.
 - freeze 전 s1042 **2.587649**, freeze 후 s1043 **1.467896**, 이번 s1044 **1.603048**.
   wall/SIM만 나란히 기록한다. seed·경로·검사 시간이 다르므로 인과 속도 개선 주장이 아니며
   성공률/결과를 합산하지 않는다.
@@ -755,7 +755,7 @@ PR405의 잠금이 실제 `null`이 된 뒤만 acquire했다. 기존 tool proces
 [TensorBoard 수치·HParams·영상·정리 검증](inhand-delivery-verification.json).
 실행 bundle source closure **349파일**과 raw manifest/프레임 hash를 대조했다.
 4배속 MP4(26.6s,532frames)는
-`<home>/projects/ugrp/outputs/s2-realism-97c05e41-analysis/views/s1044-probe/execution.mp4`,
+`/Users/changmin/projects/ugrp/outputs/s2-realism-97c05e41-analysis/views/s1044-probe/execution.mp4`,
 SHA256 `0a45916aa7917022bf98d22fe14413f80644faebe1022385c7b7a0498571a15b`;
 ffprobe 및 전체 decode 통과, TensorBoard video id `0df1674a7a870162f501` 등록.
 [TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1006-s2-realism-inhand-v120%2F#timeseries)의
@@ -831,7 +831,7 @@ ENOSPC는 HOST_ERROR이고 partial raw/seed를 보존한다. 모델 호출0, GT�
 **24 passed /20.88s**. unknown→carry 연속성, 실패를 성공으로 바꾸지 않는 result,
 trace-off 바이트 동일/trace-on 상태 불변, seed·freeze 범위, 기존 off 명령/record bytes를 확인했다.
 README·소스 커밋/push 뒤만 agent_lock status null→acquire, ugrp_session 단독 실행한다.
-raw `<home>/projects/ugrp/outputs/s2-realism-<sha8>-s1045-P1-2-place`.
+raw `/Users/changmin/projects/ugrp/outputs/s2-realism-<sha8>-s1045-P1-2-place`.
 PR #406 DRAFT 유지, 병합 금지. 실행 전 가용 공간 약49GiB.
 
 ## v121/s1045 전체 DEV 완료 — B 밖에 놓음
@@ -857,7 +857,7 @@ PID/PGID19865 nice0, freeze ON, 모델 호출0. 실행 소스352파일을 종료
 - **벽시계1359.968446s / total SIM693.95s / wall/SIM1.959750**, check SIM692.65s,
   명령5023, 프레임13794. 기존 제어기 내부 상한900s와 외부 case cap1800s 이전에
   place 시퀀스가 자연 종료했다. 상한을 늘리거나 실행 중 제어를 바꾸지 않았다.
-  출력 `<home>/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place`.
+  출력 `/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place`.
 - freeze 비교는 wall/SIM만: s1042 OFF **2.587649**, s1043 ON **1.467896**,
   s1044 ON **1.603048**, s1045 ON **1.959750**. 서로 다른 seed·probe/full 경로이며
   속도 인과 효과/성공률로 합산하지 않는다. 이번 read-only eval trace 비용도 포함한다.
@@ -913,7 +913,7 @@ s1039 집기 정렬에서 본 계열이며, 당시 수정은 align에만 적용�
 실행 source closure352파일, raw artifact manifest, 모든 RGB sha256을 대조했고,
 독립 궤적 채점의 lifted/inside/floor/stable/success가 원래 result와 일치한다.
 4배속 영상(172.45s,3449frames,640×480,20fps):
-`<home>/projects/ugrp/outputs/s2-realism-f0bb26e7-analysis/views/s1045-full/execution.mp4`,
+`/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-analysis/views/s1045-full/execution.mp4`,
 sha256 `241adc738fa3d932530a4d27c9f9eb7bb254de74ac5b611f2e3585eb9d238c4d`.
 ffprobe·전체 decode 통과, TensorBoard video id `23a311153dfa35b93ce4` 등록.
 
@@ -940,7 +940,7 @@ agent_lock 해제(null), ugrp_session stopped, PGID19865 잔여0, 일회 launchd
 
 실제 v121 Runtime 생성과 PF 경로 감사 결과, 1.56 공통 이득이 활성인 것은 아니었다. `v7_diag_v1` gain diag=[1.403796,0.415429,2.336931], 축별 tau=[0.318027,0.085276,0.021913]가 양 하중 상태에 적용된다. 문제는 이 보정이 양의 펄스 각1회뿐이고 loaded/reverse가 미확증인 점이다. [실제 경로·분리검사](v122-model-audit.json)에 저장했다.
 
-아래는 저장된 20Hz eval 궤적을 펄스 시작 body 좌표로 바꾼 값이다. 명령 종료 후 최대0.20초(다음 펄스 전까지)의 이동을 포함한다. GT는 이 완료 기록의 보정·채점에만 사용했다. 요청된35–40 중36–40 자료는 **0건**이며, 실제 coarse lateral65도 빠짐없이 별도 기재한다. 개별 raw는 수정하지 않았다. 원본 해시·5/50/95분위와 전체 분포는 [pulse-groups](v122-pulse-groups.json), 개별 펄스는 `<home>/projects/ugrp/outputs/s2-pulse-cal-20261007/offline/pulses.jsonl`.
+아래는 저장된 20Hz eval 궤적을 펄스 시작 body 좌표로 바꾼 값이다. 명령 종료 후 최대0.20초(다음 펄스 전까지)의 이동을 포함한다. GT는 이 완료 기록의 보정·채점에만 사용했다. 요청된35–40 중36–40 자료는 **0건**이며, 실제 coarse lateral65도 빠짐없이 별도 기재한다. 개별 raw는 수정하지 않았다. 원본 해시·5/50/95분위와 전체 분포는 [pulse-groups](v122-pulse-groups.json), 개별 펄스는 `/Users/changmin/projects/ugrp/outputs/s2-pulse-cal-20261007/offline/pulses.jsonl`.
 
 | 하중 | 축·출력·초 | n | Δ전진 중앙(cm) | Δ옆 중앙(cm) | Δyaw 중앙(°) |
 |---|---|---:|---:|---:|---:|
@@ -1001,8 +1001,8 @@ agent_lock 해제(null), ugrp_session stopped, PGID19865 잔여0, 일회 launchd
 
 dev_light에 따라 보수적 정지 지점은 위 두 종류를 기록만 했고, 낙하/집게 이탈/기울기/정체/실행 오류 중단은 없었다. B 배치·위치 추정 실패가 반복되어 **이번 1회로 종료**, 추가 시뮬레이션·seed 재사용·후속 재보정 없음. source closure 전체, raw manifest, RGB6500개 해시와 독립 기하 판정을 검증했다([완료 기록](completed-v122.json)). 원본 result/trace는 수정하지 않았다.
 
-출력: `<home>/projects/ugrp/outputs/s2-realism-e619ee57-s1046-P1-2-place`.
-4배속 MP4: `<home>/projects/ugrp/outputs/s2-realism-e619ee57-analysis/views/s1046-full/execution.mp4` (640×480,20fps,81.25초, SHA256`34a95ea928fc5872017886e0184d51d4df22b5d33b944654b39d178236b066da`). 전체 decode 및 등록된 원본 HTTP206 바이트 대조 통과.
+출력: `/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-s1046-P1-2-place`.
+4배속 MP4: `/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-analysis/views/s1046-full/execution.mp4` (640×480,20fps,81.25초, SHA256`34a95ea928fc5872017886e0184d51d4df22b5d33b944654b39d178236b066da`). 전체 decode 및 등록된 원본 HTTP206 바이트 대조 통과.
 TensorBoard 새 snapshot `1007-s2-realism-pulse-v122`: 완료 실행1+오프라인 보정감사1, **26개 scalar 원본/event/live API 일치**, 기존 viewer PID52016/logdir 유지. [대시보드](http://127.0.0.1:6006/?runFilter=%5E1007-s2-realism-pulse-v122%2F#timeseries), [영상](http://127.0.0.1:6007/video/286cb3ea73aabecc1c6a), [검증](pulse-delivery-verification.json). 사용자 요청대로 숫자만 대조하고 브라우저는 열지 않았다. 공유 view에는 자기 키만 추가했다.
 
 CI preflight는 [새 실행37493154746](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37493154746)에서 **24초 success**로 시간초과 수정 확인. 전체 CI는 기록 시 진행 중이며 미완료를 통과로 표현하지 않는다([조회](v122-ci-readback.json)). 세션 stopped, 소유PID32708/32712/32722/32728 모두 종료, one-shot launchd 해제, **agent_lock=null**. PR406 DRAFT 유지·병합 금지.
@@ -1117,10 +1117,10 @@ yaw 0.015/−0.026/0.146°. 이 채점값은 검출 후에만 결합했다. 무�
 - **wall 410.407985s / SIM 259.30s = 1.582754 wall/SIM**, 명령 3,679, own RGB 5,100장.
   freeze OFF s1042 **2.587649**, ON s1046 **1.878291**, ON s1047 **1.582754**.
   seed/단계/코드가 달라 wall/SIM 참고 비교만 하며 결과를 합산하거나 가속 인과 효과를 주장하지 않는다.
-- 원본: `<home>/projects/ugrp/outputs/s2-realism-1a2dbf5e-s1047-P1-2-place`.
+- 원본: `/Users/changmin/projects/ugrp/outputs/s2-realism-1a2dbf5e-s1047-P1-2-place`.
   [전체 결과](completed-v123.json), [위치](s1047-navigation.json), [체크포인트 채점](s1047-checkpoint-evaluation.json).
   source closure **362파일**, raw manifest, RGB 전체 SHA와 독립 기하 판정 일치. 원본 보존.
-- 4배속 영상: `<home>/projects/ugrp/outputs/s2-realism-1a2dbf5e-analysis/views/s1047-full/execution.mp4`
+- 4배속 영상: `/Users/changmin/projects/ugrp/outputs/s2-realism-1a2dbf5e-analysis/views/s1047-full/execution.mp4`
   (640×480, 20fps, 63.75s, sha256 `4ce34a1ae8cc2f43eb06f25c7e15659895a8a296f59d651f8bfcd5770ad246aa`).
   [TensorBoard](http://127.0.0.1:6006/) snapshot `1007-s2-realism-visual-v123`: full 1건/오프라인 감사 1건,
   **29개 scalar** 원본=event=API 확인. 사용자 요청대로 수치만 대조하고 브라우저는 열지 않았다.
@@ -1229,7 +1229,7 @@ cyan z=0.015892 m, bilateral=false였다. 앞선 하중 source `486c5cce`와 같
   lifted/inside 및 운반 wall/SIM의 새 결과는 없다. 이전 결과와 합산하지 않는다.
 - [촬영·모든 raw 해시·정리 요약](extrinsic-calibration-summary.json),
   [첫 하중 불채택](calibration-load-rejected.json), [두 번째 이탈 중단](calibration-load-stop.json).
-  raw는 `<home>/projects/ugrp/outputs/s2-calibration-<sha8>-checkerboard[-loaded]`에 보존한다.
+  raw는 `/Users/changmin/projects/ugrp/outputs/s2-calibration-<sha8>-checkerboard[-loaded]`에 보존한다.
   첫 강제 중단의 관리 manifest는 원래 `running`으로 남았지만 실제 소유 PID 종료를 확인하고
   별도 요약에서 `ABORTED`로 기록했다. 원본 manifest를 덮어쓰지 않았다.
   모든 촬영은 agent_lock/ugrp_session과 nice0, 순차 실행. 최종 lock=null, 자체 프로세스 종료.
@@ -1376,7 +1376,7 @@ posterior support<0.10이 3048개, inlier fraction<0.66이 2745/3007개였다.
 오검출도 남아 있다. gate 문턱은 그대로다. GT 위치오차는 지연된 t_est에서 평가했으며
 후보 선택/제어에는 사용하지 않았다.
 
-오프라인 산출물은 `<home>/projects/ugrp/outputs/s2-unloaded-sag-replay-20261007/`의
+오프라인 산출물은 `/Users/changmin/projects/ugrp/outputs/s2-unloaded-sag-replay-20261007/`의
 12개 `s<seed>-<variant>.json`, `geometry-evaluation.json`, `fixture-loss-audit.json`,
 `summary.json`에 보존했다. 원본·이전 TensorBoard·영상은 변경하지 않았다. 이번 물리
 실행/모델 호출은 0이며, freeze 전후 wall/SIM의 새 비교값은 없다.
@@ -1497,7 +1497,7 @@ augmented-MCL running average를 새 `1+sum(pz^3)` 값과 섞지 않으며, 그 
 결과를 본 뒤 sigma/mixture/주기/문턱/카메라 표를 튜닝하지 않았다.
 
 [수치·해시 요약](soft-mcl-summary.json), 원본 파생 기록:
-`<home>/projects/ugrp/outputs/s2-soft-mcl-20261007/`.
+`/Users/changmin/projects/ugrp/outputs/s2-soft-mcl-20261007/`.
 `s1045/s1046/s1047-amcl_likelihood_field_v1.json`에 각 시각의 추정·KL·가중치 범위·receipt,
 `residual-decomposition.json`에 평가 전용 분해를 보존한다. 저장 영상/명령은
 13,794/6,500/5,101개를 재생했으며 세 실행 모두 저장 pose의 RGB 대응 누락은0이었다.
@@ -1757,7 +1757,7 @@ visibility attempt 중6열 미만은5538/5605,3355/3362,2344/2347회였다. 시�
 카메라 mount/FOV·공용 `sim/camera_robot_port.py`·다른 제어기·PR405는 변경하지 않았다.
 다음 후보에는 실제 시야에 들어오는 특징/정지 재관측의 별도 근거와 검증이 필요하다.
 
-재현 산출물: `<home>/projects/ugrp/outputs/s2-visibility-20261007/`의
+재현 산출물: `/Users/changmin/projects/ugrp/outputs/s2-visibility-20261007/`의
 `s1045/1046/1047-command_geometry_v1.json`, `geometry-shadow.json`,
 `feature-geometry.json`, `summary.json`; 커밋용 `visibility-summary.json`은 summary와
 바이트가 같다. 중간 `geometry.json`/로그도 보존했다. `replay_visibility.py`는 평가 raw를
@@ -1802,7 +1802,7 @@ TensorBoard: 새 snapshot `1007-s2-visibility`, 15뷰·132스칼라의 원본→
 ### 확정한 불일치와 아직 측정하지 못한 항목
 
 `real-carry-evidence.json`에 ZIP 전체/선택 member와 코드의 SHA256을 남겼다.
-원본 `<home>/projects/ugrp/outputs/experiment-archives-20260907/real_traces-20260907.zip`
+원본 `/Users/changmin/projects/ugrp/outputs/experiment-archives-20260907/real_traces-20260907.zip`
 (SHA256 `22fba4801d67464203c5607259e0aae31bac99730e9e9d3233f130ca0ffd949c`)을
 읽기 전용으로 검증했다. 원본을 다시 풀거나 변경하지 않았다.
 
@@ -1903,7 +1903,7 @@ nominal HIGH→REAL의 중앙열 바닥 범위는0.346–1.188m→0.326–1.736m
 쓰지 않는다. 새 옵션을 실행 번들에 허용하지 않고 기본 off 상태의 S2 후보로 남긴다.
 추가 자세/mount 후보 탐색, 물리·정지 렌더, 새 seed·번들·영상 생성은 모두0이다.
 
-raw/파생 기록: `<home>/projects/ugrp/outputs/s2-real-carry-20261007/`의
+raw/파생 기록: `/Users/changmin/projects/ugrp/outputs/s2-real-carry-20261007/`의
 `geometry.json`, `rows.jsonl`, `geometry.log`; `real-carry-summary.json`은 geometry.json과
 byte 동일하다. `archive-evidence-v2.json`은 ZIP에서 읽은 선택 사건의 파생본이고, 최초
 `archive-evidence.json`은 event 키를 잘못 조회해 선택 명령이 비었던 중간 기록으로 보존했다.
@@ -2033,7 +2033,7 @@ blind 파지했다고 보고하지 않는다. 사용자 지시대로1회 뒤 멈
 무엇이 초기 오수렴을 만들었는지는 이번 기록만으로 확정하지 않았고 다음 조사 과제로
 남긴다. 새 carry 자세의 가시성/AMCL/실제 운반 효과를 실패 또는 성공으로 판정하지 않는다.
 
-raw: `<home>/projects/ugrp/outputs/s2-realism-a8ab38b8-s1049-P1-2-place/`.
+raw: `/Users/changmin/projects/ugrp/outputs/s2-realism-a8ab38b8-s1049-P1-2-place/`.
 관리 기록은 같은 경로의`-managed/manifest.json`, 추가 평가 요약은
 `outputs/s2-realism-a8ab38b8-s1049-summary.json`이다. 원본 result·record·궤적·입력목록·
 카메라·bundle의sha256은 커밋한`full-real-carry-summary.json`에 있다.
@@ -2041,7 +2041,7 @@ raw: `<home>/projects/ugrp/outputs/s2-realism-a8ab38b8-s1049-P1-2-place/`.
 추정오차의GT는 종료 후 평가에서만 읽었고 제어/성공 전환에 전달하지 않았다.
 
 4배속 자기RGB 영상:
-`<home>/projects/ugrp/outputs/s2-realism-a8ab38b8-analysis/views/s1049-full/execution.mp4`.
+`/Users/changmin/projects/ugrp/outputs/s2-realism-a8ab38b8-analysis/views/s1049-full/execution.mp4`.
 SIM1.30–74.10초,640×480/20fps,18.35초(고정 출력fps에 따른 끝 padding 포함),
 마지막 정착3초에는 저장RGB가 없어 영상으로 만들지 않았다. 전체decode와HTTP Range,
 TensorBoard 영상등록을 확인했다. SHA는`full-real-carry-delivery-verification.json`.
@@ -2178,12 +2178,12 @@ prior_view_columns=0이고 검출점의 자기 가림/짐 가림 제거는 모�
 오프라인 기준 미달로 실행하지 않았다. 시각 가중 갱신 횟수를 완전한 절대 pose fix
 횟수로 해석하지 않는다.
 
-raw: `<home>/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place/`.
+raw: `/Users/changmin/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place/`.
 `analyze_amcl_full.py`는 종료된 기록만 읽어5117 입력 프레임의sha256, 초기 오차,
 운반 RMSE와 마스크 제거 횟수를 대조했다. 관리manifest·result·평가·record의 원본은
 그대로 두고 별도 `full-amcl-summary.json`에 출처 해시를 기록했다.
 4배속 자기RGB 영상은
-`<home>/projects/ugrp/outputs/s2-amcl-v125-analysis/views/s1050-full/execution.mp4`
+`/Users/changmin/projects/ugrp/outputs/s2-amcl-v125-analysis/views/s1050-full/execution.mp4`
 (640×480/20fps/64.10초). SIM1.30–257.10초 입력이며 마지막 정착3초는 저장RGB가
 없다. 전체 decode·등록·HTTP Range 검증을 기록한다.
 
@@ -2312,7 +2312,7 @@ lifted=true/inside=false와 wall/SIM2.59259를 이번 새 실행 결과로 승�
 `observed-amcl-summary.json`, `s1050-projection-summary.json`에 수치/원본 해시,
 `replay_observed_amcl.py`, `score_observed_amcl.py`, `audit_s1050_projection.py`에
 재현 경로를 보존한다. 모든 raw는
-`<home>/projects/ugrp/outputs/s2-observed-amcl-20261007/`에 있다.
+`/Users/changmin/projects/ugrp/outputs/s2-observed-amcl-20261007/`에 있다.
 PR #406 DRAFT/병합 금지, PR #405 및 다른 worktree 변경0, 모델/물리/렌더 호출0.
 
 전달 검증: 새 TensorBoard `1007-s2-observed-amcl`의3뷰26 scalar와 HParams를
@@ -2440,7 +2440,7 @@ unknown·불확실성은 dev_light 기록만, 실제 물리 실패/오류/유한
 
 관련 시험은6개, 번들/실행 연결 추가 후3파일15개 통과. 최초 합성 시험에서 학습하지 않은 Gaussian 중간 색까지 바닥으로 기대해 실패했고, 원 방법의 unknown 동작을 보존하는 기대값과 경계 포함 참조 사례로 고쳤다. 구현 상수는 바꾸지 않았다. 최종 e89883e3의 default-off 전체 재생도 이전 poses/amcl/visibility와 동일하다. 최초 진단용 audit는3621b05d 이전 작업 트리에서 실행했고, 최종 인수 off/on은 둘 다e89883e3에서 실행했다.
 
-기준·분류·갱신 JSON과 고정 외형 표는 Git에, 접점 전수/이미지와 재생 raw는 `<home>/projects/ugrp/outputs/s2-contact-audit-20261007/`에 보존한다. raw는 로컬 보관이며 원격 백업이라고 표현하지 않는다. 논문은 web PDF로 내용을 확인했으며 별도 urllib 원문 다운로드는HTTP403으로 미완료다. 이 실패를 인용 미확인으로 바꾸지 않는다.
+기준·분류·갱신 JSON과 고정 외형 표는 Git에, 접점 전수/이미지와 재생 raw는 `/Users/changmin/projects/ugrp/outputs/s2-contact-audit-20261007/`에 보존한다. raw는 로컬 보관이며 원격 백업이라고 표현하지 않는다. 논문은 web PDF로 내용을 확인했으며 별도 urllib 원문 다운로드는HTTP403으로 미완료다. 이 실패를 인용 미확인으로 바꾸지 않는다.
 
 실제 PF 격자는 `vl.column_positions(96,2)`(u10–629)다. 위7195열은 기존 투영 진단의 동일 분모를 유지한 것이며 실제 모든 제어 tick의 접점 수가 아니다. 갱신별18회 표는 실제 PF에 들어간 endpoint를 직접 기록했으므로 이 격자 차이를 포함하지 않는다.
 
@@ -2477,15 +2477,15 @@ seed1051/P1-2/B/place. 입력·실행 소스 변경false, 관리 exit0, controll
 freeze 비교도 wall/SIM만 기술적으로 기록한다: OFF s1042=2.587649,
 ON s1050=2.592588, ON s1051=1.315929. seed·길이·부하·코드가 달라 인과 가속률은 아니다.
 
-raw: `<home>/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place/`.
-분석: `<home>/projects/ugrp/outputs/s2-contact-audit-20261007/`.
+raw: `/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place/`.
+분석: `/Users/changmin/projects/ugrp/outputs/s2-contact-audit-20261007/`.
 `result.json.options`와bundle의25옵션이 같고 새2옵션·freeze ON을 확인했다.
 5202프레임sha256, 발행3818명령+초기서보1행, 원본 결과/trace 해시를 대조했다.
 full 후처리 첫 인수는 이전 진단 격자u8–631로 실제97.95초30열을29열로 재구성해
 실패했고, 실제 `column_positions(96,2)`를 사용해27회 전부 일치시켰다. 제어·결과·후보는
 변경하지 않았고, 진단7195열의 원본 분모도 유지했다.
 
-4배속 MP4: `<home>/projects/ugrp/outputs/s2-contact-audit-20261007/views/s1051-full/execution.mp4`
+4배속 MP4: `/Users/changmin/projects/ugrp/outputs/s2-contact-audit-20261007/views/s1051-full/execution.mp4`
 (640×480,20fps,65.05초). 입력 SIM1.30–261.35초를 담고 마지막3초 정착에는 저장RGB가 없다.
 전체 decode, 등록된 media ID, HTTP206/원본 바이트 일치를 확인했다.
 TensorBoard **1007-s2-floor-contact**의5뷰53scalar·HParams를 source→event→live API로
@@ -2590,7 +2590,7 @@ v122는 loaded forward(+35/100ms)70, coarse left(−/+65/650ms)188/195, turn(−
 
 **새 full DEV·물리·렌더·모델 호출0**, 새 seed/번들 예약0. lifted/inside·실제 가시율·B 거리·would-stop·wall/SIM은 새 실행이 없으므로 N/A다. 이전 s1051의 lifted=true/inside=false·wall/SIM1.315929를 새 옵션 성능으로 승계하지 않는다. A/B 옵션은 기본off 미채택 상태로만 남기고 이번 작업에서 추가 후보나 반복 실행은 하지 않는다.
 
-raw `<home>/projects/ugrp/outputs/s2-load-height-20261007/`는 로컬 보관이며 원격 백업이 아니다. 기존 raw·번들·영상은 보존했다. TensorBoard **1007-s2-load-height / 7뷰41scalar** source→event→live API와 HParams를 대조하고 기존PID52016/logdir를 유지했다. 수치 대조만 했고 새 영상은 없다. [대시보드](http://127.0.0.1:6006/?runFilter=1007-s2-load-height&smoothing=0#timeseries), [전달 검증](load-height-delivery-verification.json). 공용view는 직전 다시 읽어 자기 키만 추가했다.
+raw `/Users/changmin/projects/ugrp/outputs/s2-load-height-20261007/`는 로컬 보관이며 원격 백업이 아니다. 기존 raw·번들·영상은 보존했다. TensorBoard **1007-s2-load-height / 7뷰41scalar** source→event→live API와 HParams를 대조하고 기존PID52016/logdir를 유지했다. 수치 대조만 했고 새 영상은 없다. [대시보드](http://127.0.0.1:6006/?runFilter=1007-s2-load-height&smoothing=0#timeseries), [전달 검증](load-height-delivery-verification.json). 공용view는 직전 다시 읽어 자기 키만 추가했다.
 
 오프라인 ugrp_session `s2-load-height-offline` stopped; 물리 잠금은 획득할 실행이 없었고 **status=null** 확인. 다른 프로세스·PR·worktree 변경0, Google Drive 사용0. PR406 DRAFT·병합 금지, CI 전체 상태는 로컬 시험/재생과 별도다. 출처 원문과 다운로드 해시는 [참고 자료](load-height-sources.json), Nav2 pin `235fc5ce55bdf94d9be360fdbca39d89dc0e4f74`다.
 
@@ -2652,9 +2652,9 @@ GT 평가로 measured3회의 VO 병진 오차는1.921–3.058mm, yaw0.057–0.12
 
 **새 full DEV/시뮬레이션/렌더/모델 호출0**, seed/번들 예약0. 후보는 기본off이며 새 실행 번들에 채택하지 않았다. 새 lifted/inside·운반 실제 가시율·B 거리·would-stop 목록·wall/SIM은 N/A다. 마지막 물리 s1051(v126)의 lifted=true/inside=false·B까지2.178m·wall/SIM1.315929와 합산하지 않는다. 오프라인 두 재생 wall143.50초는 시뮬레이션 wall/SIM 속도가 아니다.
 
-raw `<home>/projects/ugrp/outputs/s2-blocked-pulse-20261007/`의 `result.json`에 원본25옵션+후보 옵션을 보존했다. `six-pulses.json`, `motion-score.json`, 전체 재생2개·검증·참고 원문/해시는 로컬 보관이며 원격 백업이라고 하지 않는다. 원본은 변경/삭제하지 않았다. [참고 자료 다운로드 검증](blocked-pulse-sources.json).
+raw `/Users/changmin/projects/ugrp/outputs/s2-blocked-pulse-20261007/`의 `result.json`에 원본25옵션+후보 옵션을 보존했다. `six-pulses.json`, `motion-score.json`, 전체 재생2개·검증·참고 원문/해시는 로컬 보관이며 원격 백업이라고 하지 않는다. 원본은 변경/삭제하지 않았다. [참고 자료 다운로드 검증](blocked-pulse-sources.json).
 
-영상은 **새 실행이 아닌 저장된 s1051의95–115초** 자기 RGB401프레임을 4배속80fps/H.264로 묶었다: `<home>/projects/ugrp/outputs/s2-blocked-pulse-20261007/s1051-north-wall-4x.mp4`(5.0125초). [영상](http://127.0.0.1:6007/video/262b0aa5172ea4ce95c4), 원본 프레임 SHA와 ffprobe는 raw `video-provenance.json`에 있다.
+영상은 **새 실행이 아닌 저장된 s1051의95–115초** 자기 RGB401프레임을 4배속80fps/H.264로 묶었다: `/Users/changmin/projects/ugrp/outputs/s2-blocked-pulse-20261007/s1051-north-wall-4x.mp4`(5.0125초). [영상](http://127.0.0.1:6007/video/262b0aa5172ea4ce95c4), 원본 프레임 SHA와 ffprobe는 raw `video-provenance.json`에 있다.
 
 TensorBoard **1007-s2-blocked-pulse-v2 / 5뷰36scalar**를 source→event→live API/HParams와 대조했고, 등록 영상은 HTTP 전체 재다운로드 SHA까지 일치했다. [대시보드](http://127.0.0.1:6006/?runFilter=1007-s2-blocked-pulse-v2&smoothing=0#timeseries), [전달 검증](blocked-pulse-delivery-verification.json). 수치 대조만 했으며 PID52016/공용logdir/다른view키는 유지했다. 첫 비공개 snapshot은 SSE 비율을 수기로 옮긴 불필요한 scalar를 제거한 v2로 대체했다(95.837803→정확95.837822%; raw `delivery-correction.json`). 이전 snapshot/원본을 보존했고, 최종 기본 보기는 v2만 가리킨다.
 
@@ -2759,7 +2759,7 @@ raw 해시·실행 당시 커밋 소스 해시·사전 기준 해시를 다시 �
 이전 full s1051의 lifted=true/inside=false, wall/SIM=1.315929를 이 후보 결과에 승계하지 않는다.
 두 offline ugrp_session은 stopped. agent_lock은 획득하지 않았으며 종료 확인 시 null.
 다른 PR/프로세스/worktree와 원본 이미지·로그는 수정/종료/삭제하지 않았다.
-로컬 raw: `<home>/projects/ugrp/outputs/s2-flow-fusion-20261007/`.
+로컬 raw: `/Users/changmin/projects/ugrp/outputs/s2-flow-fusion-20261007/`.
 [분석·6회 표](flow-fusion-analysis.json), [result/options](flow-fusion-result.json),
 [원문 출처·해시](flow-fusion-sources.json), [채점기](score_flow_fusion.py),
 [층별 분해 재현](analyze_flow_layers.py), [TensorBoard 수치 검증](flow-fusion-delivery-verification.json).
@@ -2871,7 +2871,7 @@ feature fit의 위치/yaw 공분산은 별도 유지한다. 알려진 동적 자
 would-stop·wall/SIM은 N/A. 마지막 실제 s1051의 true/false, B까지2.178m,
 wall/SIM1.315929를 후보 결과에 승계하지 않는다. offline wall147.943초는 wall/SIM이 아니다.
 
-원본과 새 raw는 로컬 보존: `<home>/projects/ugrp/outputs/s2-slip-detect-20261007/`.
+원본과 새 raw는 로컬 보존: `/Users/changmin/projects/ugrp/outputs/s2-slip-detect-20261007/`.
 새 TensorBoard **1007-s2-slip-detect / 3뷰22scalar**, source→event→live API/HParams 수치 대조 완료.
 [대시보드](http://127.0.0.1:6006/?runFilter=%5E1007-s2-slip-detect%2F&smoothing=0&pinnedCards=%5B%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fcarry_rmse_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fcarry_updates%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fmax_gap_s%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fsix_error_pass_count%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fnonblocked_new_xy_rmse_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fadmission_pass%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fmodel_calls%22%7D%5D#timeseries) · [검증](slip-detect-delivery-verification.json).
 
@@ -2981,9 +2981,9 @@ renice/상시서비스/재실행 없음. session stopped, 자체 PID61789/61797/
 launchd 항목 제거, own lock release 및 종료 후 null 확인. 다른 작업의 잠금/프로세스는 건드리지 않았다.
 [검증/분석 소스 해시](slip-full-verification.json).
 
-raw: `<home>/projects/ugrp/outputs/s2-realism-18e5e42e-s1052-P1-2-place/`.
-분석: `<home>/projects/ugrp/outputs/s2-slip-full-analysis-20261007/`.
-4배속 MP4: `<home>/projects/ugrp/outputs/s2-slip-full-analysis-20261007/views/s1052-full/execution.mp4`
+raw: `/Users/changmin/projects/ugrp/outputs/s2-realism-18e5e42e-s1052-P1-2-place/`.
+분석: `/Users/changmin/projects/ugrp/outputs/s2-slip-full-analysis-20261007/`.
+4배속 MP4: `/Users/changmin/projects/ugrp/outputs/s2-slip-full-analysis-20261007/views/s1052-full/execution.mp4`
 (640×480,20fps,4501frame,225.05초; 원본18001장을4칸 간격 선택; 전체decode 통과).
 SHA256 `851d556f5ca1c080a23da6e36248cd3db8bab1ad91ff029d452aed655caaeb5f`.
 TensorBoard **1007-s2-slip-full-v127 / 2뷰26scalar** 원본=event=live API/HParams 일치,
@@ -3129,9 +3129,9 @@ agent_lock driver68682로 acquire 후 `ugrp_session s2-slip-matched-s1051` 단�
 자체 session/driver/managed/runner 종료, session stopped, launchd 제거, own lock release 및
 status=null 확인. 도크 분석은 물리 종료 뒤 시작했다. [검증](slip-matched-verification.json).
 
-raw: `<home>/projects/ugrp/outputs/s2-realism-45b0c173-s1051-P1-2-place-slip-matched/`.
-분석: `<home>/projects/ugrp/outputs/s2-slip-matched-analysis-20261007/`.
-4배속 영상: `<home>/projects/ugrp/outputs/s2-slip-matched-analysis-20261007/views/s1051-slip/execution.mp4`
+raw: `/Users/changmin/projects/ugrp/outputs/s2-realism-45b0c173-s1051-P1-2-place-slip-matched/`.
+분석: `/Users/changmin/projects/ugrp/outputs/s2-slip-matched-analysis-20261007/`.
+4배속 영상: `/Users/changmin/projects/ugrp/outputs/s2-slip-matched-analysis-20261007/views/s1051-slip/execution.mp4`
 (640×480,20fps,3774frame,188.70초; RGB15094장에서 stride4; 전체decode 통과).
 SHA256 `7695eebcb317904e939269f57a2cd1ffb83f1f7007dfcfc6ad5709c61cec824e`.
 
@@ -3293,9 +3293,9 @@ manifest/source closure/RGB5018장 SHA 확인. agent_lock driver82237, 시작 lo
 종료 뒤 자체 PID82233/82237/82248/82254 종료, session stopped, launchd 제거,
 own lock release·status=null 확인. [검증](slip-recovery-full-verification.json).
 
-raw: `<home>/projects/ugrp/outputs/s2-realism-d4fee717-s1051-P1-2-place-slip-recovery/`.
-분석: `<home>/projects/ugrp/outputs/s2-slip-recovery-20261007/`.
-4배속 영상: `<home>/projects/ugrp/outputs/s2-slip-recovery-20261007/views/s1051-recovery/execution.mp4`
+raw: `/Users/changmin/projects/ugrp/outputs/s2-realism-d4fee717-s1051-P1-2-place-slip-recovery/`.
+분석: `/Users/changmin/projects/ugrp/outputs/s2-slip-recovery-20261007/`.
+4배속 영상: `/Users/changmin/projects/ugrp/outputs/s2-slip-recovery-20261007/views/s1051-recovery/execution.mp4`
 (640×480,20fps,1255frame,62.75초,5018 RGB에서 stride4; 전체decode 통과).
 SHA256 `889bf700a3b8a83a0a2413c658dac51b02718b24fc0209126373e1d181240117`.
 raw는 로컬 보존이며 원격 백업이 아니다. 이전 번들/원본/재생 판정은 변경하지 않았다.
@@ -3404,7 +3404,7 @@ s2v28 slip 회복은 실패·기본off로 보존하며, 이번 작업은 도크 
 214프레임의 off x/y/yaw/std 차이 **0**. 초기 audit의 alpha0 표기만 .001/.1로 교정한 재생은
 [pose·입자·관측·시선순위가 모두 동일](dock-augmented-metadata-equivalence.json)했다. 후보 재튜닝은 없다.
 GT는 모든 예측 완성 뒤 별도 채점에만 썼다. 물리0·모델0·새 번들0, 기존 v129와 PR406 DRAFT 유지.
-raw/소스/검증은 `<home>/projects/ugrp/outputs/s2-dock-augmented-20261007/`에 보존한다.
+raw/소스/검증은 `/Users/changmin/projects/ugrp/outputs/s2-dock-augmented-20261007/`에 보존한다.
 따라서 lifted/inside·운반 fix/공백·운반 RMSE·벽 가시율·B거리·wall/SIM·정지 목록의 **새 물리 수치는 없다**.
 
 **전달/종료:** 최종 관련 **21시험/9.20s PASS**. TensorBoard
@@ -3502,7 +3502,7 @@ PR405가 부른 절은 egomap19이며 사용자 명칭19b의 근거를 위 commi
 새 full DEV·seed·번들 등록 없음. lifted/inside·벽 하단 가시율·B 거리·정지 목록·wall/SIM은
 새 물리 결과가 없어 N/A, 과거 s1051 성공/실패를 승계하지 않음.
 `ugrp_session` 오프라인 세션3개 정상 종료, 물리 잠금 취득0.
-출력: `<home>/projects/ugrp/outputs/s2-ground-vo-20261007/`.
+출력: `/Users/changmin/projects/ugrp/outputs/s2-ground-vo-20261007/`.
 기존 영상은 그대로 보존하며 새 물리 영상은 없다.
 TensorBoard `1007-s2-ground-vo-v30` 3뷰·21 scalar 원본/이벤트/live API 대조, HParams 로드 통과.
 [수치 대시보드](http://127.0.0.1:6006/?runFilter=%5E1007-s2-ground-vo-v30%2F#timeseries).
@@ -3579,7 +3579,7 @@ LOOK_P20 명령FK의 이상적인 강체 기하도96/96열 가시이나 **강성
 Augmented 마지막3.357254m/RMSE3.288994m·갱신5회. 기존 실패 재현, off pose 차이0.
 새 영상/보정 없이 알고리즘 반복으로 관측 문제를 해결했다고 하지 않는다.
 강성on 재생은 아직 NOT_EVALUABLE, **기준 미달로 full 없음**. 도크/행 사전정보0·모델0.
-출력 `<home>/projects/ugrp/outputs/s2-start-view-20261007/`.
+출력 `/Users/changmin/projects/ugrp/outputs/s2-start-view-20261007/`.
 새 lifted/inside·운반 fix/공백·RMSE·B거리·정지 목록·wall/SIM·영상은 N/A.
 오프라인 session2개 stopped, 물리 잠금 미획득/null.
 
@@ -3674,7 +3674,7 @@ SEARCH16펄스에 적용했다. 이 자료는10Hz·다른 도장/정지로봇 �
 새 full seed/번들0, lifted/inside·운반 fix/공백·가시율·B거리·정지목록·wall/SIM은 N/A.
 정적 보정133.30SIM/58.16wall초, 정지 시작11.95SIM/9.72wall초; 성능 코호트 비교가 아니다.
 두 획득 모두 agent_lock+ugrp_session, 순차1개씩 종료·release/null 확인. 모델0·낙하 실험0.
-raw `<home>/projects/ugrp/outputs/s2-stiff-cal-20261007/`, 원본 PNG/JPG/실패·명령 보존.
+raw `/Users/changmin/projects/ugrp/outputs/s2-stiff-cal-20261007/`, 원본 PNG/JPG/실패·명령 보존.
 로컬/원격 백업을 혼동하지 않으며 새 full 영상은 없다.
 
 CI 수정 `e17a27a5`: 로컬 실패 관련44시험 통과, 엔진 없는 조건15통과/6제외,
@@ -3818,7 +3818,7 @@ GT로 가장 좋은 bin을 골라 오차를 대신 보고하지 않았다. RMSE�
 계산 시간은 초기화와 영상 읽기/처리 포함, 파일 직렬화·GT 채점 제외, 단일 off→on 순서다.
 호스트 잠금 아래 순차 측정했으나 반복 통계/일반 속도 성능으로 해석하지 않는다.
 `ugrp_session s2-kld-v33` 정상 종료, 계산 시간용 `agent_lock` release/status=null 확인.
-raw `<home>/projects/ugrp/outputs/s2-kld-start-20261007/replay/`:
+raw `/Users/changmin/projects/ugrp/outputs/s2-kld-start-20261007/replay/`:
 off/on 예측 JSON·입자 npz·결과·잠금 기록을 원본과 별도로 보존했다.
 
 전달: [TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1007-s2-kld-v33%2F#timeseries)
@@ -3888,7 +3888,7 @@ JSON 구성 병합 버그만 수정하고 동일 사전 등록의 시작 물리1
 소스73d53def, seed1052 시작만1회. 종료 오차 **3.3750m**,
 30.00 SIM초/207.35 wall초, 선택10·완료10행동,
 87바퀴 펄스, 갱신8회. 종료 `TIME_CAP`.
-[결과](active-markov-result.json), raw `<home>/projects/ugrp/outputs/s2-active-markov-73d53def-s1052-start`.
+[결과](active-markov-result.json), raw `/Users/changmin/projects/ugrp/outputs/s2-active-markov-73d53def-s1052-start`.
 GT는 종료 평가만, 시작 도크 prior0·운반0·모델0. 잠금 해제, 세션 종료.
 사용자 감독 예외에 따라 로컬 SHA 실행·push 대기. 25cm 미달로 이 위치찾기 옵션의 full DEV는 제안하지 않는다.
 다음 s2v36은 별도 사용자 허가된 하중/벽 접촉 ablation이며 이 결과를 운반 성공에 합산하지 않는다.
@@ -4057,7 +4057,7 @@ cached matplotlib 설치 후 동일 격자/문턱 재계산 완료. 모델/물�
 ### v131 seed1051 full DEV 결과 — 물리 파지/내려놓기, B 밖
 
 소스 **b5fbe149**, 번들 `zone-s2-realism-v131`/7.24.0,
-raw `<home>/projects/ugrp/outputs/s2-realism-b5fbe149-s1051-P1-2-lookahead`.
+raw `/Users/changmin/projects/ugrp/outputs/s2-realism-b5fbe149-s1051-P1-2-lookahead`.
 [전체 결과](look-ahead-dev-result.json): `lifted=true`, `inside=false`, floor/stable=true.
 상태기계는done(`STAGE_REACHED_UNQUALIFIED`)이나 **목적지 성공은false**. B 경계까지 **2.336m**.
 총271.25 SIM초/479.144 wall초, wall/SIM **1.766**. 모델호출0·재집기0, 실제 낙하/파지이탈 판정0.
@@ -4151,7 +4151,7 @@ Nav2는 해당 LaserScan의 range_max로 나눈다. 벽 선을 따라 평행한 
 ### 최대 군집 재생 결과 — 시작 관문 FAIL, 새 물리 0회
 
 사전 등록/실행 소스 **9b87378b6624651878fecb2da24b191401b5b475**, 관련2시험 파일 **14 PASS**.
-raw `<home>/projects/ugrp/outputs/s2-best-cluster-9b87378b-replay`;
+raw `/Users/changmin/projects/ugrp/outputs/s2-best-cluster-9b87378b-replay`;
 [전체 판정/군집 질량](best-cluster-result.json). off/on 각각 s1052 214프레임,
 v131 s1051 5340프레임을 처리했다. 두 off가 해당 기존 pose 기록을 **차이0**으로 재현했고,
 off/on 전체 입자·가중치 궤적 바이트 해시와 AMCL 갱신 audit가 동일하다.
@@ -4233,7 +4233,7 @@ seed1051 v131+best_cluster+sensor full DEV1회, 모두 agent_lock/ugrp_session·
 ### s2v38 결과 — 기존 점수식과 수치상 동등, 시작 관문 FAIL
 
 소스 **78c716819a8d46c8bbb0e2f9b401339608011e33**, [결과](amcl-sensor-result.json),
-raw `<home>/projects/ugrp/outputs/s2-amcl-sensor-78c71681-replay`.
+raw `/Users/changmin/projects/ugrp/outputs/s2-amcl-sensor-78c71681-replay`.
 214+5340프레임을 조건별1회 재생 완료. best_cluster는 양쪽on, 다른 옵션/명령/영상 동일.
 off가 s2v37 on을 두 녹화 모두 pose 차이0으로 재현했다.
 
@@ -4311,7 +4311,7 @@ S20–150/V≥35, 성분300px, 선40px·양쪽 지지80%, 바닥평면 직선 �
 ### v39 재생 결과 및 조건부 물리 사전 등록
 
 예측 소스`da3d2eb8`, [원본 판정](landmarks-result.json), raw
-`<home>/projects/ugrp/outputs/s2-landmarks-da3d2eb8-replay`.
+`/Users/changmin/projects/ugrp/outputs/s2-landmarks-da3d2eb8-replay`.
 
 | 고정 녹화 지표 | off | on |
 |---|---:|---:|
@@ -4383,8 +4383,8 @@ wheel/body/finger/cargo–wall 양의 접촉력 표본 모두0이다. would-stop
 문 특징의 실녹화 유효성은 아직 확보하지 못했다. 일부 벽/바닥 접점이 색 경계로 남는 문제와
 POSE_UNCERTAIN293도 보존한다. 이번 결과 뒤에는 추가 수정·추가 물리를 하지 않았다.
 
-- 시작 raw: `<home>/projects/ugrp/outputs/s2-realism-b2de2b30-s1052-landmark-start`
-- full raw: `<home>/projects/ugrp/outputs/s2-realism-b2de2b30-s1051-landmark-full`
+- 시작 raw: `/Users/changmin/projects/ugrp/outputs/s2-realism-b2de2b30-s1052-landmark-start`
+- full raw: `/Users/changmin/projects/ugrp/outputs/s2-realism-b2de2b30-s1051-landmark-full`
 - 4배속 own RGB 영상: 위 full의 `execution.mp4` (640×480,20fps,76.7s,1,495,364bytes).
   원본6137장/20Hz를80Hz 입력→20fps로 내보냈다. ffprobe·전체 디코딩·SHA256·native영상Range206 확인.
 - [TensorBoard](http://127.0.0.1:6006): `1008-s2-landmarks-v39` 재생32수치,
@@ -4427,7 +4427,7 @@ would-stop 목록과 실제 실패를 따로 보존하고 own RGB 영상 각1개
 agent_lock이 null일 때 acquire → ugrp_session + 표준 sim_cli 관리 → finally release,
 두 실행은 순차 진행한다. 현재 ego-map 물리가 잠금을 보유하므로 물리는 시작하지 않았다.
 freeze는 S2 단독 DEV만이며 S3/짝 운반/본 연구에는 금지; 폐기된 조건과 합산0.
-raw: `<home>/projects/ugrp/outputs/s2-realism-027c567c-s{1053,1054}-v133-reproduction`.
+raw: `/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s{1053,1054}-v133-reproduction`.
 사전등록 이후 결과에 따라 문턱/옵션/기준 변경0. PR #406 DRAFT·병합0.
 
 
@@ -4467,8 +4467,8 @@ s1054의 탐색이 길었다. 운반 진입은 s1053 **94.8** 대 s1054 **203.7*
 agent_lock을 acquire/finally release, 각 lock.json의 status_after=null이다. 다음 실행 전에도
 null을 확인했으며 다른 작업과 물리 동시 실행0. 단계 사이 감독 파일은 지시 없음이었다.
 
-- s1053 raw: `<home>/projects/ugrp/outputs/s2-realism-027c567c-s1053-v133-reproduction`
-- s1054 raw: `<home>/projects/ugrp/outputs/s2-realism-027c567c-s1054-v133-reproduction`
+- s1053 raw: `/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1053-v133-reproduction`
+- s1054 raw: `/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1054-v133-reproduction`
 - 각 raw의 `execution.mp4`: own RGB4배속/640×480/20fps, **76.0초·1,382,679bytes** /
   **107.0초·1,856,004bytes**. 입력 프레임20Hz 연속성·ffprobe·전체 디코딩·SHA256 확인.
   원본 프레임/로그/과거 번들 모두 보존. raw 로컬 보관이며 원격 백업으로 표현하지 않는다.
@@ -4501,7 +4501,7 @@ NEES는 단일 군집이며 저장 군집XY 공분산 trace와 보고된 전체�
 ### v41 결과 — 경고를 줄이기 전에 공분산의 정확성부터 검증해야 함
 
 감사 사전기록/소스 커밋 **2c5b4bc2**. [집계·출처](formal-stop-result.json),
-행별 원본 `<home>/projects/ugrp/outputs/s2-formal-stop-v41-20261008/s{1051,1053,1054}.json`.
+행별 원본 `/Users/changmin/projects/ugrp/outputs/s2-formal-stop-v41-20261008/s{1051,1053,1054}.json`.
 기존 성공3회의 후향 감사이며 새 물리0·명령 변경0·문턱 변경0이다. 아래 회수는 서로 독립인
 실패 시행 수가 아니라 같은 실행 안에서 반복된 **주행 결정 시점**의 수다.
 
@@ -4719,7 +4719,7 @@ agent_lock을 acquire/finally release, 종료 후 status=null·세션 stopped를
 - 30g 블록 양측 파지 유지 **100%**, 최소 중심 높이165.56mm, 최대 차체 tilt .15882°,
   벽 접촉0·weld0·낙하0. 제어/명령 선택에 GT 사용0, 고정 시계열 그대로 실행했다.
 - [봉인 원본 이후 적합/확인 결과](loaded-rotation-result.json), 원본은
-  `<home>/projects/ugrp/outputs/s2-loaded-rotation-v42-20261008`.
+  `/Users/changmin/projects/ugrp/outputs/s2-loaded-rotation-v42-20261008`.
 
 | 하중 회전 응답,5반복 | v122 °/펄스 | 실제 평균±SD °/펄스 |
 |---|---:|---:|
@@ -4875,7 +4875,7 @@ GT 없는 RGB 잡음 fit은 성립했지만 대상이 큰 옆 펄스뿐이라 �
 소스/사전등록899e49b7 → 후보6e18bdb9 → fit봉인/재생97d737e2. 관련11시험 PASS,
 off300프레임 pose 직렬화와 입자 궤적 byte 동일, 기존 v133 실행 소스 불변.
 재생은 `ugrp_session s2v44-offline-replay`로 종료했고 물리 잠금은 획득하지 않았다.
-raw `<home>/projects/ugrp/outputs/s2-consistency-v44-20261008`에 모든 예측·GT평가·
+raw `/Users/changmin/projects/ugrp/outputs/s2-consistency-v44-20261008`에 모든 예측·GT평가·
 적합 입력·원본해시를 분리 보존했다. 새 영상 없음, 이전 성공 영상을 재변환하지 않았다.
 
 전달: [수치 검증](consistency-delivery.json), native TensorBoard 새 `1008-s2-consistency-v44`
@@ -4952,7 +4952,7 @@ idle_robot_contacts_contract일 수 있다. 원본 실행 가드는 보존하고
 
 [전체 판정](bias-tempering-result.json), [보정 확인](bias-tempering-forward-heldout.json),
 [관측 전후 ESS/보고 공분산](bias-tempering-measurements.json), [남은 편향](bias-tempering-remaining-bias.json).
-원본·12재생·전체 관측별 기록은 `<home>/projects/ugrp/outputs/s2-bias-tempering-v45-20261008/`.
+원본·12재생·전체 관측별 기록은 `/Users/changmin/projects/ugrp/outputs/s2-bias-tempering-v45-20261008/`.
 조건/문턱/α의 사후 변경0. scale은2적합/1확인×3, temper는 학습값 없이 사전고정α를 같은
 holdout에서 확인했다. 세 녹화는 이미 사용한 DEV 탐색 자료이며 새 확증 성공으로 세지 않는다.
 
@@ -5049,7 +5049,7 @@ ground VO의 pitch 범위±0.3°/완전coverage/최대간격0.15초도 기존 �
 
 사전등록 `9a7f8f13`, 구현/전체 재생 소스 `2aa7321c`. 여섯 예측을 모두 봉인한 뒤
 GT 채점했다. [전체 결과](innovation-result.json), [추가 진단](innovation-supplement.json),
-raw `<home>/projects/ugrp/outputs/s2-innovation-v46-20261008/`.
+raw `/Users/changmin/projects/ugrp/outputs/s2-innovation-v46-20261008/`.
 이전 v45 표·실패는 보존했고, 새 적합/문턱 변경/물리/모델 호출0이다.
 
 |확인seed|조건|NEES 초과(유효/고정분모)|무경고25cm초과|POSE_UNCERTAIN|운반RMSE(m)|판정|
@@ -5120,7 +5120,7 @@ off 전체20,778프레임 pose 직렬화·입자열SHA 동일, 기존 번들436�
 사용자 지시에 따라 광류 디버깅은 보류했다. 아래는 **원본 3녹화의 오프라인 진단**이며
 제어기·기존 옵션·기존 성공 판정은 바꾸지 않았다. 감독 파일의 11:25 지시보다 최신인
 s2v47의 접촉 회피 범위를 따른다. 원본은 보존하고 새 자료는
-`<home>/projects/ugrp/outputs/s2-peer-clearance-v47-20261008/`에 저장한다.
+`/Users/changmin/projects/ugrp/outputs/s2-peer-clearance-v47-20261008/`에 저장한다.
 
 ### 회피 후보 평가 전 사전등록
 
@@ -5252,7 +5252,7 @@ legacy `preregistered_run=false`는 본 연구 코호트가 아님을 나타내�
 ### v48 측면 진단 결과 — 고개를 돌리면 로봇 외관 검출
 
 소스`32776381`/v134 seed1054 진단1회 완료. [결과·원본해시](side-scan-result.json), raw
-`<home>/projects/ugrp/outputs/s2-realism-32776381-s1054-v134-side-scan/`.
+`/Users/changmin/projects/ugrp/outputs/s2-realism-32776381-s1054-v134-side-scan/`.
 12초 첫left .65/.65s를 발행하지 않고 팬 관측,23초 완료 후3초 안정 기록.
 주행 명령0·peer접촉0·집기/운반0,24.7 SIM초/24.344 wall초(15분 이내).
 정면1500=0/32, 왼쪽2300=16/16, 오른쪽700=0/16 검출. 왼쪽 원본00309.jpg에는
@@ -5443,8 +5443,8 @@ stable=true는 출발점 바닥에 둔 **미파지 상자**의 안정 상태이�
 자기 RGB로 확인하는 시선/우회 연결이며, 이번에는 고치지 않았다.
 
 raw(각 result.json·student_record·bundle·eval_only·자기RGB 보존):
-- `<home>/projects/ugrp/outputs/s2-realism-4436222c-s1054-v136-goal-heading`
-- `<home>/projects/ugrp/outputs/s2-realism-4436222c-s1055-v136-goal-heading`
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-4436222c-s1054-v136-goal-heading`
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-4436222c-s1055-v136-goal-heading`
 
 두 세션 모두 종료, 각 lock.json의release와status_after=null 확인. GT는 실행 종료 후
 접촉/성공/NEES 평가에만 사용했고 모델 호출0이다. controller 성공을 새로 주장하지 않는다.
@@ -5546,7 +5546,7 @@ carry(운반 중 경유점 이동)는 기존 unknown veto/우회/최종 yaw latc
 먼저 분리한다. 이번에는 이 후속 구현을 하지 않는다. 전체영상 정지영역을 임의 축소하거나
 622/699px 아래/위로 문턱을 조절하지 않는다.
 
-raw: `<home>/projects/ugrp/outputs/s2-staged-approach-v50-20261008/`.
+raw: `/Users/changmin/projects/ugrp/outputs/s2-staged-approach-v50-20261008/`.
 새 영상은 없다. 참고 영상은 기존 v49의 두 `execution.mp4`와 v48 측면 진단이며
 재등록/재인코딩하지 않는다. 이 작업은 agent_lock을 획득하지 않았고 물리·서버를 시작하지
 않았다. 마지막 확인에서 다른 작업 egomap45의 잠금이 있어 그대로 보존했다.
@@ -5636,8 +5636,8 @@ wall/SIM은 초기화/마지막 정착의 별도 시간축이 있는 실행기 �
 전체 운반 성공은 **0/2**, 과거v133 3/3와 합산하지 않는다.
 
 4배속 자기RGB 영상(20Hz→4x, 전체 디코딩/sha256 확인):
-- `<home>/projects/ugrp/outputs/s2-realism-d5fd85dd-s1054-v138-staging-only/execution.mp4` (75초)
-- `<home>/projects/ugrp/outputs/s2-realism-d5fd85dd-s1055-v138-staging-only/execution.mp4` (95초)
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-d5fd85dd-s1054-v138-staging-only/execution.mp4` (75초)
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-d5fd85dd-s1055-v138-staging-only/execution.mp4` (95초)
 새 TensorBoard `1008-s2-staging-only-v51` 및 `-media`에 실패 두 건·영상2개를 등록했다.
 [전달 대조](staging-only-delivery.json): 원본/event/native live API 수치30개 일치,
 영상 HTTP206·전체 디코딩 PASS. 기존v49 실패 비교는 별도 run으로 유지한다.
@@ -5728,9 +5728,9 @@ s1057→s1058을 시작했으며 각 실행의 `lock.json`에서 acquire/release
 종료 후 null을 확인했다. 자기 세션 모두 종료, 타 작업 종료/잠금 해제0.
 
 새 raw (각 폴더에 결과·입력·명령·GT 평가·4배속 `execution.mp4` 보존):
-- `<home>/projects/ugrp/outputs/s2-realism-027c567c-s1056-v133-reproduction`
-- `<home>/projects/ugrp/outputs/s2-realism-027c567c-s1057-v133-reproduction`
-- `<home>/projects/ugrp/outputs/s2-realism-027c567c-s1058-v133-reproduction`
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1056-v133-reproduction`
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1057-v133-reproduction`
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1058-v133-reproduction`
 
 [전달·영상 검증](baseline-v52-delivery.json): 20Hz ownRGB를4배속 MP4로 만들고
 전체 디코딩·sha256·시간축 확인. 새 TensorBoard `1008-s2-v133-baseline-v52`에
@@ -5932,9 +5932,9 @@ s1059/s1061 벽 접촉0. 제외/HOST_ERROR/중단 실행0, 실패도 전체3개 
 
 실행별 raw·4배속(20fps, 4프레임 간격) 영상:
 
-- s1059: `<home>/projects/ugrp/outputs/s2-realism-329eb4b6-s1059-v139-unknown-start/motion.mp4`
-- s1060: `<home>/projects/ugrp/outputs/s2-realism-329eb4b6-s1060-v139-unknown-start/motion.mp4`
-- s1061: `<home>/projects/ugrp/outputs/s2-realism-329eb4b6-s1061-v139-unknown-start/motion.mp4`
+- s1059: `/Users/changmin/projects/ugrp/outputs/s2-realism-329eb4b6-s1059-v139-unknown-start/motion.mp4`
+- s1060: `/Users/changmin/projects/ugrp/outputs/s2-realism-329eb4b6-s1060-v139-unknown-start/motion.mp4`
+- s1061: `/Users/changmin/projects/ugrp/outputs/s2-realism-329eb4b6-s1061-v139-unknown-start/motion.mp4`
 
 세 영상 전체 디코딩·SHA256·HTTP206 PASS. 첫 s1059 setpts 영상의 추가 꼬리.125s는
 `execution.mp4`에 보존하고 대표영상은 정확한 stride 방식 `motion.mp4`로 새로 만들었다.
@@ -6042,7 +6042,7 @@ off5,771프레임의 pose JSON 바이트와 매 프레임 PF입자/가중치 SHA
 5개 고정 카드와 RMSE/마지막 오차 표시 확인. 공유 HParams에 condition/offline열은 없어
 seed만 적용했고 서버는 변경하지 않았다. 기존 성공/실패4배속 영상의 SHA와 raw HTTP206 확인.
 [TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1008-s2-tracking-recovery-v55%2F#timeseries).
-raw `<home>/projects/ugrp/outputs/s2-tracking-recovery-20261008/`에는 전체 off/on/baseline
+raw `/Users/changmin/projects/ugrp/outputs/s2-tracking-recovery-20261008/`에는 전체 off/on/baseline
 pose, particle snapshots, 관측 전후 ESS·가중치, 접촉 평가를 보존한다. 로컬 보존을 원격 백업으로 표시하지 않는다.
 
 ## s2v56 특징별 우도·ESS 감사 및 고정 후보 사전등록 (2026-10-08)
@@ -6173,7 +6173,7 @@ agent_lock 획득/해제0(자기 지도 잠금 유지), seed1062–1064 미등�
 구별할 문 기둥/다른 방향 구역 경계를 확보**하는 것이다. 이번 결과로 α/σ/게이트를 다시 맞추지 않는다.
 
 [9건 결과·관문·해시](sensor-consistency-result.json), [s1060 원인 수치](sensor-consistency-cause.json).
-raw `<home>/projects/ugrp/outputs/s2-sensor-consistency-v56-20261008/`에 예측·입자·
+raw `/Users/changmin/projects/ugrp/outputs/s2-sensor-consistency-v56-20261008/`에 예측·입자·
 특징별 시계열 및 `s1060-feature-consistency.png/pdf`를 보존한다. raw는 로컬에만 보존했다.
 
 [표시 검증](sensor-consistency-delivery.json): native TensorBoard 새 snapshot
@@ -6283,7 +6283,7 @@ s1051은 stride2에서 기존52.35s의 단일 벽 열을 놓쳐 다음 wall-only
 두 offline ugrp_session은 정상 종료했다. 기존 번들/물리 성공 판정/원본은 변경하지 않았다.
 
 [9건 결과](beamskip-result.json), [작동 내역·상수](beamskip-mechanism.json), [표시 검증](beamskip-delivery.json).
-raw `<home>/projects/ugrp/outputs/s2-beamskip-v57-20261008/`에 예측·입자·평가와
+raw `/Users/changmin/projects/ugrp/outputs/s2-beamskip-v57-20261008/`에 예측·입자·평가와
 `s1060-feature-consistency.png/pdf`를 보존했다(raw는 로컬만). 기존 baseline 사건 파일은 재사용했다.
 Native TensorBoard는 후보9뷰만 새 snapshot `1008-s2-beamskip-v57`으로 등록했다. 기존off9뷰는
 재변환하지 않았다. 18뷰33,637값을 원본 요약→event→서버 API로 대조했고 Chrome 강의
@@ -6377,14 +6377,14 @@ NEES85.4–99.8%, 무경고>25cm 총55건(s1063:30/s1064:25)도 남아 정식 E2
 | 1064 | 52 / 17.25 | 99.97% | 0.153 | ARM_COLLISION_GUARD:6, GLOBAL_START_UNRESOLVED:1, POSE_UNCERTAIN:10, GRASP_INHAND_UNCONFIRMED:1 |
 
 [전체 수치·옵션·해시](active-observation-result.json). 원본 경로:
-- `<home>/projects/ugrp/outputs/s2-realism-e532f52e-s1060-v140-active-observation`
-- `<home>/projects/ugrp/outputs/s2-realism-e532f52e-s1062-v140-active-observation`
-- `<home>/projects/ugrp/outputs/s2-realism-e532f52e-s1063-v140-active-observation`
-- `<home>/projects/ugrp/outputs/s2-realism-e532f52e-s1064-v140-active-observation`
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-e532f52e-s1060-v140-active-observation`
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-e532f52e-s1062-v140-active-observation`
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-e532f52e-s1063-v140-active-observation`
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-e532f52e-s1064-v140-active-observation`
 
 4배속 비교 영상(전체 디코드 검증, 원본 프레임 불변):
-- 성공on: `<home>/projects/ugrp/outputs/s2-realism-e532f52e-s1060-v140-active-observation/motion.mp4` (79.25s, sha256 c4c07f5bfe136b2437beb4e231e5400794fd06ee73cf57a2d401fb89ee419e81).
-- 실패off(v139 기존 기록): `<home>/projects/ugrp/outputs/s2-realism-329eb4b6-s1060-v139-unknown-start/motion.mp4` (72.15s, sha256 8fe3a4da29c17338c4803b2d9e68094316978040566a93e316699389d2216e59). 이번on 실패 영상은 존재하지 않는다.
+- 성공on: `/Users/changmin/projects/ugrp/outputs/s2-realism-e532f52e-s1060-v140-active-observation/motion.mp4` (79.25s, sha256 c4c07f5bfe136b2437beb4e231e5400794fd06ee73cf57a2d401fb89ee419e81).
+- 실패off(v139 기존 기록): `/Users/changmin/projects/ugrp/outputs/s2-realism-329eb4b6-s1060-v139-unknown-start/motion.mp4` (72.15s, sha256 8fe3a4da29c17338c4803b2d9e68094316978040566a93e316699389d2216e59). 이번on 실패 영상은 존재하지 않는다.
 
 새 TensorBoard `1009-s2-active-v58-r2`의 4뷰/80태그/4,768 수치를 source→event→native API 대조.
 기존v139 뷰는 재변환하지 않았다. 초기 파생 요약에서 s1064를 능동0회로 잘못 서술한 문장만 v2에서 정정했고,
@@ -6528,16 +6528,16 @@ CPU 측정은 번들 admission 뒤 실행/후처리 구간, 그룹wall은 자식
 |1070|ARM_COLLISION_GUARD:6, POSE_CLUSTER_UNCERTAIN:30, GLOBAL_START_UNRESOLVED:1, POSE_UNCERTAIN:269, GRASP_INHAND_UNCONFIRMED:1|
 
 원본(실행 중·과거 자료 불변):
-- `<home>/projects/ugrp/outputs/s2-realism-99d81d8c-s1065-v141-graduation`
-- `<home>/projects/ugrp/outputs/s2-realism-99d81d8c-s1066-v141-graduation`
-- `<home>/projects/ugrp/outputs/s2-realism-99d81d8c-s1067-v141-graduation`
-- `<home>/projects/ugrp/outputs/s2-realism-99d81d8c-s1068-v141-graduation`
-- `<home>/projects/ugrp/outputs/s2-realism-99d81d8c-s1069-v141-graduation`
-- `<home>/projects/ugrp/outputs/s2-realism-99d81d8c-s1070-v141-graduation`
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-99d81d8c-s1065-v141-graduation`
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-99d81d8c-s1066-v141-graduation`
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-99d81d8c-s1067-v141-graduation`
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-99d81d8c-s1068-v141-graduation`
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-99d81d8c-s1069-v141-graduation`
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-99d81d8c-s1070-v141-graduation`
 
 4배속 대표 영상(원본 RGB, 전체 디코드·해시 검증):
-- 성공1066: `<home>/projects/ugrp/outputs/s2-realism-99d81d8c-s1066-v141-graduation/motion.mp4` (70.40s).
-- 실패1065: `<home>/projects/ugrp/outputs/s2-realism-99d81d8c-s1065-v141-graduation/motion.mp4` (225.05s).
+- 성공1066: `/Users/changmin/projects/ugrp/outputs/s2-realism-99d81d8c-s1066-v141-graduation/motion.mp4` (70.40s).
+- 실패1065: `/Users/changmin/projects/ugrp/outputs/s2-realism-99d81d8c-s1065-v141-graduation/motion.mp4` (225.05s).
 
 감독16:30의 `heading_mode=path_tangent_v1` 제안은 **다음 S2 작업**으로 분리한다.
 현재 east-facing mecanum pursuit의 옆걸음·진행 방향 시야 문제는 위 벽 접촉 실패와 함께 기록했고,

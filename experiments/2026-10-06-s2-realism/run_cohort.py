@@ -10,7 +10,7 @@ import time
 
 def main(source):
     root = Path(__file__).resolve().parents[2]
-    primary = Path('<home>/projects/ugrp')
+    primary = Path('/Users/changmin/projects/ugrp')
     assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip() == source
     assert not subprocess.check_output(['git','status','--porcelain'],cwd=root,text=True).strip()
     plan = json.loads((Path(__file__).parent/'registration-v110.json').read_text())

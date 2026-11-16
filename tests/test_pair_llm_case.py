@@ -391,12 +391,12 @@ def test_a_host_error_keeps_partial_records_and_classifies_enospc(tmp_path):
 def test_cli_plans_without_running_and_refuses_missing_calibration_and_unfrozen_source(capsys):
     from scripts import run_pair_llm as cli
     args = ['--condition', 'peer_nl', '--expected-source-sha', 'a' * 40, '--output',
-            '<home>/projects/ugrp/outputs/never-created', '--synthetic-plumbing-calibration']
+            '/Users/changmin/projects/ugrp/outputs/never-created', '--synthetic-plumbing-calibration']
     assert cli.main(args) == 0
     plan = json.loads(capsys.readouterr().out)
     assert plan['execution_started'] is False and plan['model_kind'] == 'stub' and plan['research_result'] is False
     assert plan['execution_bundle_id'] == 'zone-pair-llm-v100' and plan['workflow_version'] == '3.12.0'
-    assert not Path('<home>/projects/ugrp/outputs/never-created').exists()
+    assert not Path('/Users/changmin/projects/ugrp/outputs/never-created').exists()
     assert cli.main(args + ['--live', '--cap-s', '60']) == 0       # a live PLAN touches no network and no proxy
     assert json.loads(capsys.readouterr().out)['model_kind'] == 'live'
     with pytest.raises(ValueError):

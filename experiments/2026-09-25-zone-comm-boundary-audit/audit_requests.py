@@ -20,7 +20,7 @@ import os
 import re
 from pathlib import Path
 
-DEFAULT_ROOT = Path('<home>/projects/ugrp/outputs/zone-communication-20260925')
+DEFAULT_ROOT = Path('/Users/changmin/projects/ugrp/outputs/zone-communication-20260925')
 
 
 def sha(path):

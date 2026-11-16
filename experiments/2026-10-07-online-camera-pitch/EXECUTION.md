@@ -24,10 +24,10 @@
 재현(기존 raw 경로는 덮어쓰지 않고 새 `--output`을 지정):
 
 ```sh
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-07-online-camera-pitch/code/conditions.py
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-07-online-camera-pitch/code/evaluate_pitch.py --split development --camera-pitch online_vp_v1 --output <home>/projects/ugrp/outputs/online-camera-pitch-v1-complete
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-07-online-camera-pitch/code/evaluate_pitch.py --split confirmation --camera-pitch online_vp_v1 --freeze experiments/2026-10-07-online-camera-pitch/freeze.json --output <home>/projects/ugrp/outputs/online-camera-pitch-v1-complete
-PYTHONPATH=outputs/self-map-plot-deps <home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-07-online-camera-pitch/code/report.py
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-07-online-camera-pitch/code/conditions.py
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-07-online-camera-pitch/code/evaluate_pitch.py --split development --camera-pitch online_vp_v1 --output /Users/changmin/projects/ugrp/outputs/online-camera-pitch-v1-complete
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-07-online-camera-pitch/code/evaluate_pitch.py --split confirmation --camera-pitch online_vp_v1 --freeze experiments/2026-10-07-online-camera-pitch/freeze.json --output /Users/changmin/projects/ugrp/outputs/online-camera-pitch-v1-complete
+PYTHONPATH=outputs/self-map-plot-deps /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-07-online-camera-pitch/code/report.py
 ```
 
 위 명령은 실제 사용 기록이다. conditions는 새 run 경로로 `OUT`을 명시해야 하며 기존 폴더가 있으면 거부한다.

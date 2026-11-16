@@ -79,7 +79,7 @@ main의 새 preflight가 요구한 frozen gzip fixture 3개는 sparse 체크아�
 신규 테스트 두 파일이 정상 CI의 `test_vision_loc*.py` 목록에 들어가는 것도 확인했다.
 
 검증 결과와 원본 해시는 `review_fix_verification.json`에 기록한다.
-로그/JUnit 원본은 `<home>/projects/ugrp/outputs/e2e-p03-review-fixes-20260930/`에
+로그/JUnit 원본은 `/Users/changmin/projects/ugrp/outputs/e2e-p03-review-fixes-20260930/`에
 로컬 보관한다. 최초 구현의 `verification.json`과 raw는 이전 기록으로 보존한다.
 
 실제 이전 leg 이후 3체크포인트 × 120 SIM초, Release 다운로드·로딩, 최종 카메라/모델

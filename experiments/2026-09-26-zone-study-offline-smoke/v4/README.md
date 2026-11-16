@@ -42,7 +42,7 @@ v4에서 처음으로 `zone_study_report.py` 보고서를 만들고 TensorBoard�
 
 ## TensorBoard (`tensorboard.json`)
 
-- 스냅샷: `<home>/projects/ugrp/outputs/tensorboard/0926-zone-study-offline-smoke-v4` (run 35개 = 시행 30 + 코호트 5, scalar 789개).
+- 스냅샷: `/Users/changmin/projects/ugrp/outputs/tensorboard/0926-zone-study-offline-smoke-v4` (run 35개 = 시행 30 + 코호트 5, scalar 789개).
 - 보기 키 `zone_study_offline_smoke_v4_20260926`만 `outputs/tensorboard-view.json`에 추가했다. 고정 카드는 성공·makespan·호출 수·사고/발화 SIM 비용·토큰·**사용량 미상 호출**·발화다.
 - 기존 공용 서버(PID 9291, 다른 작업 소유, 재시작하지 않음)의 응답을 대조했다. scalar 789개와 `scalars.json` 불일치 0건, raw 시행 기록 대조 120건 불일치 0건. 저장 링크를 headless Chrome으로 열어 35개 run이 선택되고 고정 카드 8개가 표시되는 것을 캡처했다(`outputs/zone-study-offline-smoke-v4-report/tensorboard-pinned-v4.png`).
 - **한계:** 공용 logdir의 병합 HParams 실험은 다른 스냅샷의 요약에 있는 9개 열만 보여 준다. 그래서 `condition`·`scenario`·`leader_id`·`end_reason`·`tokens_complete` 열은 선택할 수 없다. 세션 35개의 값은 session_groups API로 확인했다(`tokens_complete=True` 35/35). 미상 표지는 Time Series의 `result/usage_unknown_calls`로 본다.
@@ -74,7 +74,7 @@ v4 `config.json`의 값은 실행 SHA에서 코드·파일로 다시 계산했�
 | `sha256.json` | 실행기가 계산한 산출물 해시 |
 | `raw_index.json` | raw·보고서·스냅샷의 위치·해시와 이 폴더의 커밋 파일 해시 |
 
-raw 30건(57.5 MB, 요청 원문 포함)은 처음부터 기본 체크아웃의 `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v4/`에 썼다. 보고서는 `…/outputs/zone-study-offline-smoke-v4-report/`에 있다. 로컬 보관이며 원격 백업이 아니다. v1~v3 raw도 worktree `outputs/`에서 같은 상대 경로로 `mv`했다. 이동 전후 해시가 같았다(각 `raw_index.json`의 `relocation`).
+raw 30건(57.5 MB, 요청 원문 포함)은 처음부터 기본 체크아웃의 `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v4/`에 썼다. 보고서는 `…/outputs/zone-study-offline-smoke-v4-report/`에 있다. 로컬 보관이며 원격 백업이 아니다. v1~v3 raw도 worktree `outputs/`에서 같은 상대 경로로 `mv`했다. 이동 전후 해시가 같았다(각 `raw_index.json`의 `relocation`).
 
 ## 참고 자료
 

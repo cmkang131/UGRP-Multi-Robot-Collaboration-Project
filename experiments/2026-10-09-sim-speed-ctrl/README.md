@@ -120,7 +120,7 @@ egomap58/59의 공통 입력 접두는 중복되어 독립 연구 코호트로 �
 역사 receipt와 frozen fixture SHA는 유지했다. 원래 Git producer와 현재 off를 같은 수치 환경에서 전체
 canonical bytes로 대조하고, current source 해시·행동 필드는 별도로 확인한다. 플랫폼 간 bytes 일치는 주장하지 않는다.
 
-원본·실패·실험 raw는 `<home>/projects/ugrp/outputs/speedctrl-20261009-v1`–`v15`와 원래 실행 경로에
+원본·실패·실험 raw는 `/Users/changmin/projects/ugrp/outputs/speedctrl-20261009-v1`–`v15`와 원래 실행 경로에
 보존한다. 로컬 raw를 원격 백업이라고 표현하지 않는다. Git에는 작은 표·해시·검증 기록만 넣으며 Drive는 사용하지 않는다.
 v12 egomap58 55003 off worker는 완전하지만 관리 manifest는 당시 EPERM 최종화 실패다. 이 실패 기록은 유지했다.
 관리자는 자기 자식이 이미 종료된 EPERM만 허용하고 살아 있는 자식의 오류는 계속 거부한다.

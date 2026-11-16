@@ -31,7 +31,7 @@
 
 ## TensorBoard (`tensorboard.json`)
 
-- **스냅샷:** `<home>/projects/ugrp/outputs/tensorboard/0927-zone-study-offline-smoke-v6`. run은 35개(시행 30 `<condition>/<trial_id>` + 코호트 5)이고 scalar는 789개다. 원본·보고서 해시는 `collection.json`에 있다. v4·v5 스냅샷은 건드리지 않았다.
+- **스냅샷:** `/Users/changmin/projects/ugrp/outputs/tensorboard/0927-zone-study-offline-smoke-v6`. run은 35개(시행 30 `<condition>/<trial_id>` + 코호트 5)이고 scalar는 789개다. 원본·보고서 해시는 `collection.json`에 있다. v4·v5 스냅샷은 건드리지 않았다.
 - **보기 키:** `zone_study_offline_smoke_v6_20260927` 하나만 `outputs/tensorboard-view.json`에 추가했다. 쓰기 직전에 파일을 다시 읽었고, 다른 102개 키의 값·순서·형식이 같은지 확인했다. 필터 `^(0926-zone-study-offline-smoke-v5|0927-zone-study-offline-smoke-v6)/`는 v5 기준선을 함께 보여 준다. 값이 같아서 두 버전의 점이 겹친다. 고정 카드는 8개다: 성공, makespan, 호출 수, 사고·발화 SIM 비용, 토큰, 사용량 미상 호출, 발화.
 - **확인:**
   - 기존 공용 서버(PID 9291, 다른 작업 소유, 재시작하지 않음)가 v6 run 35개를 목록에 올렸다.
@@ -59,7 +59,7 @@ v1~v5와 같다. 이 결과는 언어 이해, 조건 간 우열, 물리 운반 �
 | `environment.json`, `sha256.json` | 실행기 환경과 실행기가 계산한 산출물 해시(raw 바이트 복사) |
 | `raw_index.json` | raw·보고서·스냅샷의 위치·해시와 이 폴더의 커밋 파일 해시 |
 
-raw 30건(요청 원문 포함)은 처음부터 기본 체크아웃의 `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/`에 썼다. 보고서와 캡처는 `…/outputs/zone-study-offline-smoke-v6-report/`에 있다. 로컬 보관이며 원격 백업이 아니다.
+raw 30건(요청 원문 포함)은 처음부터 기본 체크아웃의 `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/`에 썼다. 보고서와 캡처는 `…/outputs/zone-study-offline-smoke-v6-report/`에 있다. 로컬 보관이며 원격 백업이 아니다.
 
 ## 참고 자료
 

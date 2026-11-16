@@ -154,7 +154,7 @@ python3 -m scripts.run_pair_stage_probes --stage carry --sources teacher \
   --passage-map zone_wide_corridor_tags_v3 --passage-target A --passage auto \
   --legs 1 2 3 6 7 --cells nominal lat+/same lat-/same yaw+/same yaw-/same corner--/same \
   --policies <정책> --seeds 911 --nominal-seeds 911 912 913 \
-  --workers 2 --execute --lock-owner claude --output <home>/projects/ugrp/outputs/pair-passage-carry
+  --workers 2 --execute --lock-owner claude --output /Users/changmin/projects/ugrp/outputs/pair-passage-carry
 python3 scripts/agent_lock.py release
 ```
 

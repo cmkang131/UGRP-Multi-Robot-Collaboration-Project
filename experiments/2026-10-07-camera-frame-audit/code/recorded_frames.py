@@ -14,9 +14,9 @@ from harness.self_odom_grid import motion_profiles
 from harness.servo_camera_fk import commanded_joints,transform_from_commands
 
 EPISODES={**old.EPISODES,
-    's1050':Path('<home>/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place'),
-    's1051':Path('<home>/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place'),
-    **{name:Path('<home>/projects/ugrp/outputs/wall-parallax-texture-v1')/name for name in ('tape-north','tape-south')}}
+    's1050':Path('/Users/changmin/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place'),
+    's1051':Path('/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place'),
+    **{name:Path('/Users/changmin/projects/ugrp/outputs/wall-parallax-texture-v1')/name for name in ('tape-north','tape-south')}}
 
 
 def rows(p):return old.base.read_rows(p)
@@ -137,7 +137,7 @@ def audit_case(case,ep,dest):
 
 
 def yaw_audit(case,ep):
-    frames=rows(Path('<home>/projects/ugrp/outputs/wall-parallax-texture-v1/replay/parallax_v1')/case/'predictions.jsonl')
+    frames=rows(Path('/Users/changmin/projects/ugrp/outputs/wall-parallax-texture-v1/replay/parallax_v1')/case/'predictions.jsonl')
     body={round(r['t'],6):r for r in rows(ep/'eval_only/trajectory.jsonl')}
     commands=rows(ep/'robots/r3/commands.jsonl')
     first=body[round(frames[0]['t'],6)]

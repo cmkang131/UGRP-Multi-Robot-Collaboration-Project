@@ -26,7 +26,7 @@ import vision_sigma as vs
 
 HERE = Path(__file__).resolve().parent
 PLAN = HERE / 'sigma_plan_v4.json'
-VISW = Path('<home>/projects/ugrp/outputs/vision-worker-closed-loop-20260927/vl3-dev-s942')
+VISW = Path('/Users/changmin/projects/ugrp/outputs/vision-worker-closed-loop-20260927/vl3-dev-s942')
 RUNTIME = ('vision_sigma.py', 'vision_pf_v4.py', 'vision_loc.py', 'vision_loc_cli_v4.py',
            'vision_motion.py', 'vision_loc_io.py', 'diagnose_v4.py',
            '../2026-09-26-markerless-probe/markerless_probe.py',

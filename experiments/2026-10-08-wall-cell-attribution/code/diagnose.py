@@ -6,9 +6,9 @@ import numpy as np
 
 ROOT=Path(__file__).resolve().parents[3]
 EXP=Path(__file__).resolve().parents[1]
-RAW=Path('<home>/projects/ugrp/outputs/wall-cell-attribution-v1')
-EPISODES={'31001':Path('<home>/projects/ugrp/outputs/active-frontier-audit-v1/new-seed'),
-          '32002':Path('<home>/projects/ugrp/outputs/wall-segment-dev-v1/new-seed')}
+RAW=Path('/Users/changmin/projects/ugrp/outputs/wall-cell-attribution-v1')
+EPISODES={'31001':Path('/Users/changmin/projects/ugrp/outputs/active-frontier-audit-v1/new-seed'),
+          '32002':Path('/Users/changmin/projects/ugrp/outputs/wall-segment-dev-v1/new-seed')}
 sys.path.insert(0,str(ROOT))
 sys.path.insert(0,str(ROOT/'experiments/2026-10-05-ego-wall-map-probe/code'))
 import odom_grid_replay as metric

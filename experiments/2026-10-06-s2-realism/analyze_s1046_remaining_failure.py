@@ -1,5 +1,5 @@
 import json,pathlib,math,bisect,numpy as np
-R=pathlib.Path('<home>/projects/ugrp/outputs/s2-realism-e619ee57-s1046-P1-2-place');D=pathlib.Path('<home>/projects/ugrp/outputs/s2-realism-e619ee57-analysis')
+R=pathlib.Path('/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-s1046-P1-2-place');D=pathlib.Path('/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-analysis')
 r=lambda p:json.loads(p.read_text());s=r(R/'student_record.json');tr=[json.loads(x) for x in (R/'eval_only/trajectory.jsonl').read_text().splitlines()];ts=np.array([a['t'] for a in tr]);v=np.array([[*a['robot_xyz_m'][:2],a['robot_yaw_rad']] for a in tr]);v[:,2]=np.unwrap(v[:,2])
 def gt(t):return np.array([np.interp(t,ts,v[:,j]) for j in range(3)])
 def wrap(x):return (x+math.pi)%(2*math.pi)-math.pi

@@ -1,7 +1,7 @@
 import sys,json,pathlib,numpy as np
-root=pathlib.Path('<home>/projects/ugrp-wt/drive-friction');sys.path.insert(0,str(root))
+root=pathlib.Path('/Users/changmin/projects/ugrp-wt/drive-friction');sys.path.insert(0,str(root))
 from scripts.analyze_s2_pulse_calibration import extract
-base=pathlib.Path('<home>/projects/ugrp/outputs');data={}
+base=pathlib.Path('/Users/changmin/projects/ugrp/outputs');data={}
 for seed,raw in [(1045,'s2-realism-f0bb26e7-s1045-P1-2-place'),(1046,'s2-realism-e619ee57-s1046-P1-2-place')]:
  rows,_=extract(base/raw);out=[]
  for prev,row in zip(rows,rows[1:]):

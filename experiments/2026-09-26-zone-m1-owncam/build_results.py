@@ -13,7 +13,7 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-RAW = Path('<home>/projects/ugrp/outputs/m1-owncam-20260926')
+RAW = Path('/Users/changmin/projects/ugrp/outputs/m1-owncam-20260926')
 ATTEMPTS = {
     'dev-a1': '969e03e, skill v4, loop v2 calibration (before amendment A1)',
     'dev-a2': '32c7069, amendment A1: skill v5 m1 mode, fine motion + kidnap reset, post-manipulation look, pan-probe re-anchor',

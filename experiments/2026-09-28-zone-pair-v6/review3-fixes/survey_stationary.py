@@ -16,7 +16,7 @@ from collections import defaultdict
 from pathlib import Path
 
 SETTLE_S = .6   # v6 relook settle after a pan/arm move (zone_pair_align / zone_pair_grasp)
-OUT = Path('<home>/projects/ugrp/outputs')
+OUT = Path('/Users/changmin/projects/ugrp/outputs')
 ROOT_OF = {}
 
 

@@ -4,7 +4,7 @@
 Reads only the evaluate/select JSONs of a finished VIS6 output root (seed-mean metrics already computed by
 ``replay_v6.py evaluate``). Every scalar is copied from the hashed metrics JSON; nothing is recomputed.
 
-  python3 build_tb_views.py --root <home>/projects/ugrp/outputs/vis6-recipe1-20260929 \
+  python3 build_tb_views.py --root /Users/changmin/projects/ugrp/outputs/vis6-recipe1-20260929 \
       --output <root>/tb-derived --source-sha <sha>
 """
 from __future__ import annotations

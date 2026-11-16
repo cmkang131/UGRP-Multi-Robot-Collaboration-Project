@@ -77,7 +77,7 @@ real_v1 강성에서 실제 pitch 오차는 평가 전용으로 재측정한다.
 
 아래 사전 등록은 실행 전에 고정했다. 구현·오프라인·DEV 결과는 마지막 절에 별도로 기록한다.
 TensorBoard 변환은 사용자 앞선 생략 지시 유지.
-raw: `<home>/projects/ugrp/outputs/active-wall-map-v1/`.
+raw: `/Users/changmin/projects/ugrp/outputs/active-wall-map-v1/`.
 
 ## 구현 전/오프라인 검증 기록
 

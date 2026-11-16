@@ -1,6 +1,6 @@
 # P07 검증 기록
 
-- 배정 경로: `<home>/projects/ugrp-wt/e2e-p07-manifest`
+- 배정 경로: `/Users/changmin/projects/ugrp-wt/e2e-p07-manifest`
 - 브랜치: `codex/run-manifest`
 - 시작 HEAD/origin/main: `d17ca4345affef8cf027e121cf1f3197b36c23e0`
 - 감사 main: `a8094cc14e098a55483f53a3c49bf6a0b116043d`
@@ -76,7 +76,7 @@ P01 catalog·보정 변조, v2/v3 거절과 기존 raw 충돌 반례를 포함�
 
 2026-09-30 11:33 UTC 정적 대조에서 보호 대상60파일은 시작 SHA와 bytes가 같았다.
 목록/해시와 최초 실패 JUnit 원본은
-`<home>/projects/ugrp/outputs/e2e-p07-manifest/verification-20260930T1133/`에
+`/Users/changmin/projects/ugrp/outputs/e2e-p07-manifest/verification-20260930T1133/`에
 보존한다. 로컬 보관이며 원격 raw 백업 주장이 아니다.
 
 [manifest_DRAFT.json](manifest_DRAFT.json)은 runtime267파일·근거73파일·23claim을

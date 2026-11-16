@@ -5,7 +5,7 @@ from harness.zone_s3_no_prior_contract import hp,old
 from harness.zone_solo_cyan_landmarks import MapFeatures,landmark_likelihood,wrap
 from harness.zone_solo_cyan_amcl_sensor import likelihood
 from harness.zone_solo_cyan_likelihood_field import Field
-B=pathlib.Path('<home>/projects/ugrp/outputs/s3diag-20261009');OUT=pathlib.Path(__file__).parent
+B=pathlib.Path('/Users/changmin/projects/ugrp/outputs/s3diag-20261009');OUT=pathlib.Path(__file__).parent
 RAW=B.parent/'s3-no-prior-6c657124-s14201-v142'
 static=hp.resolve(old.solo.MAP_ID)[0];mapped=MapFeatures(static);field=Field(static)
 def read(p):return json.loads(p.read_text())

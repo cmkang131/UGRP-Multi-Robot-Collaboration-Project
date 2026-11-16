@@ -59,7 +59,7 @@ D4는 loaded 카메라만 사전에 명시한 **8초 준비+8초 측정**, 반�
 
 [70초 무렌더 검사](revision_d1_d4/headless_revised_check.json)는 개정 일정의 정확한 0–70초 접두 구간(prefix), **1,244개 명령**을 실행했다. 전체 1,401표본 중 들기 전 82표본은 not_lifted, 나머지 1,319표본은 lifted였다. 사전 지정한 [8,70)초의 **1,240/1,240표본**이 빔 바닥 1 cm 이상·네 집게 접촉·외부 지지 없음·weld 없음이었다. HIGH의 32/38/48/60/68초에서 두 로봇 모두 기하 경계와 가림 없는 중간점 90열이었다. 기존 hover의 14초는 0열이다. HIGH 첫 측정 [32,40)초의 빔 바닥 최솟값은 약 114.816 mm였다. 이는 렌더 검출 수치가 아니다.
 
-표준 세션 래퍼는 `/bin/ps` 차단으로 물리 시작 전에 종료됐다. 자식·잠금 정리 확인 뒤 같은 소스를 자식 없는 단일 프로세스로 실행하고 종료 후 SIM 슬롯/공용 잠금 해제를 확인했다. 시작/종료 부하 평균과 원본은 `<home>/projects/ugrp/outputs/v92-loaded-d1-d4-20261003/`에 보존했다. [최종 검증](revision_d1_d4/validation.json).
+표준 세션 래퍼는 `/bin/ps` 차단으로 물리 시작 전에 종료됐다. 자식·잠금 정리 확인 뒤 같은 소스를 자식 없는 단일 프로세스로 실행하고 종료 후 SIM 슬롯/공용 잠금 해제를 확인했다. 시작/종료 부하 평균과 원본은 `/Users/changmin/projects/ugrp/outputs/v92-loaded-d1-d4-20261003/`에 보존했다. [최종 검증](revision_d1_d4/validation.json).
 
 [TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1003-v92-%28high-d1d4%7Cloaded-design-r2%29%2F&tagFilter=%5E%28result%2F%28sim_s%7Ccommands%7Cmodel_calls%29%7Coffline%2F%28lifted_selected_samples%7Ccontroller_edge_columns%7Ccandidate_edge_columns%29%29%24&pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fsim_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fcommands%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Flifted_selected_samples%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fcontroller_edge_columns%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fcandidate_edge_columns%22%7D%5D&scalarSmoothing=0#timeseries)의 새 `1003-v92-high-d1d4/high-prefix`를 기존 두 짧은 검사와 함께 표시했다. 이벤트·서버 API·Chrome 강의 실제 카드 값과 6개 pin을 대조하고 HParams 기본 네 열을 다시 적용했다. 개별 새 HParams 행은 미확인이다. 새 영상은 0개다. [표시 기록](revision_d1_d4/tensorboard_verification.json). 전체 720초, 실제 RGB 추적, 모형 적합·승인, 학생 운반 성공은 조정자의 후속 검증이다. 금지된 v91 held-out 원본은 읽지 않는다.
 
@@ -68,7 +68,7 @@ D4는 loaded 카메라만 사전에 명시한 **8초 준비+8초 측정**, 반�
 SIM 슬롯 수집 명령은 다음과 같다. 정확한 검토 소스 SHA를 사용하고 새 출력 경로가 필요하다. 스크립트는 HEAD·브랜치·clean tree·디스크·슬롯을 확인하며, 같은 조정자의 슬롯만 함께 사용할 수 있다.
 
 ```bash
-cd <home>/projects/ugrp-wt/v92-loaded
+cd /Users/changmin/projects/ugrp-wt/v92-loaded
 V92_SOURCE_SHA=<최종 PR 댓글의 40자리 SHA> \
   bash experiments/2026-10-03-v92-loaded-schedule/collect.sh
 ```
@@ -81,7 +81,7 @@ R2의 남은 조건 두 개를 닫았다. 필수 CI 실패(SIM 슬롯 경쟁)는
 
 - 소스 `0d9ad122`, `probe_headless.py --mode full`, 720.0 SIM s, 명령 22,302개, 렌더 0, 모델 호출 0, 카메라 경계 호출 7,202회. 시계는 고정 substep 누적값으로 맞췄다([CLOCK_FIX](review_r2_response/CLOCK_FIX.md)). 학습 자료가 아니다(`training_eligible=false`).
 - `scripts/check_final_pair_loaded_support.py`로 동결 B″ loaded 선별(빔 들림·네 집게 접촉·외부 지지 없음·weld 없음)을 적용했다. 유효 표본 **13,926/14,401**(제외 475개는 모두 `not_lifted`, 들기 전·내린 뒤). **288/288칸 통과**, 칸별 완전 창 최솟값 **137**(기준 100). 13모수 식별성은 별도이며 이 검사로 주장하지 않는다.
-- 출력: `<home>/projects/ugrp/outputs/v92-headless-check-20261003T074418Z/` — `raw/artifacts.sha256.json` sha256 `a3c23c88…`, `raw/summary.json` `6e69187d…`, `verification/support_audit.json` `177be499…`. 사본: [요약](review_r2_response/full_headless_summary.json), [288칸 감사](review_r2_response/full_headless_support_audit.json).
+- 출력: `/Users/changmin/projects/ugrp/outputs/v92-headless-check-20261003T074418Z/` — `raw/artifacts.sha256.json` sha256 `a3c23c88…`, `raw/summary.json` `6e69187d…`, `verification/support_audit.json` `177be499…`. 사본: [요약](review_r2_response/full_headless_summary.json), [288칸 감사](review_r2_response/full_headless_support_audit.json).
 - 실패한 앞선 두 시도도 보존했다: `…T071647Z`(시계 누적 오차로 `inexact SIM advance`, 위 수정의 원인), `…T071802Z`(sandbox의 `/bin/ps` 차단).
 - 관련 테스트(로더·v92 조립기·SIM 슬롯·fast guard) **138 passed in 312s**.
 

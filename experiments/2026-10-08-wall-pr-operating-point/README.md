@@ -78,7 +78,7 @@ confidence는 지지수/방위 다양성/공분산 같은 증거이며 calibrate
   [egomap35](../2026-10-08-wall-cell-attribution/README.md), 선분 추출/병합의 원본 출처는
   [egomap34](../2026-10-08-wall-segment-dev/README.md) 그대로다.
 
-raw: `<home>/projects/ugrp/outputs/wall-pr-operating-point-v1`.
+raw: `/Users/changmin/projects/ugrp/outputs/wall-pr-operating-point-v1`.
 원본·실패 보존, TensorBoard 생략 유지, Google Drive0. 관련1–3개 시험파일 초록 후
 커밋·push, Co-Authored-By: Codex. PR405 DRAFT/병합0, force/reset/삭제0.
 

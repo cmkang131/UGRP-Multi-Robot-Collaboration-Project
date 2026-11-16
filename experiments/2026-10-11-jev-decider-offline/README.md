@@ -47,7 +47,7 @@ Jev(jev-1.13.0, 선택 API): 표현 2(raw, semantic) × 3회. Gemma(google/gemma
 - 규칙에서 추론한 라벨 9개(피어 "미끄러졌다" 등)는 하드 검사가 아니다(R-GRIPPEER). change 쌍 6개는 전부 이 종류다. 이 라벨 자체는 사용자 확인이 필요하다.
 - 결정 지점 `approve`에 B04(claim) 상태가 들어 있다. carry/post_look는 상태 수가 적다(holdout post_look 1상태). 모호 상태는 4개뿐이라 보정 결론은 약하다.
 - 이 평가는 텍스트 상태 비교다. E2E에서 GO/ACK의 "내 RGB가 그립을 지지"는 손목 영상 판단이다. Jev는 이미지를 받지 못한다. 영상 요약을 누가 만드는지(Gemma 또는 코드 분류기)는 시험하지 않았다. 폐루프·실제 시뮬레이션·실제 영상 입력은 확인 안 됨.
-- 원본: `<home>/projects/ugrp/outputs/jev-decider-offline-20261011/`(phase1, improved, probe, real 호출 일지, 응답 원문, azure 요청 사본). 일지 해시는 `summary.json`. Azure 요청 원본은 `~/ugrp-sim/runs/e2eaz1-*/cases/*/raw/wire`(읽기 전용 복사).
+- 원본: `/Users/changmin/projects/ugrp/outputs/jev-decider-offline-20261011/`(phase1, improved, probe, real 호출 일지, 응답 원문, azure 요청 사본). 일지 해시는 `summary.json`. Azure 요청 원본은 `~/ugrp-sim/runs/e2eaz1-*/cases/*/raw/wire`(읽기 전용 복사).
 
 ## 판정 (사전 등록 기준 적용; 표본이 작아 통계적 유의성은 주장하지 않는다)
 Jev를 행동 결정기로 쓸 수 있는가: **semantic_v2 형태일 때만, 그리고 영상 입력 문제를 풀어야 한다는 조건으로 예.** raw 필드나 사용 조건 없는 semantic으로는 아니오(하드 라벨 105/153, 136/153; 피어 문장 반응 0/18, 3/18).

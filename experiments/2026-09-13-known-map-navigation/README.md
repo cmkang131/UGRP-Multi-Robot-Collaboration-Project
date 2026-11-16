@@ -62,7 +62,7 @@
 
 [전체 결과](all-results.json), [최종 비교 표](heldout-results.csv), [원본 위치](raw-locations.json), [업로드한 증거 해시](published-evidence-sha256.json), [사전 프로토콜](protocol.md)을 보존했다. `records/`에는 모든 시도의 설정·환경·결과·입력/장면 해시·감사와 프로세스 로그가 있다. 결정/평가 JSONL은 동일한 원본을 gzip 압축했고, 해제한 바이트의 SHA는 해당 원본 manifest와 일치한다.
 
-Git에는 코드·지도·위 기록·대표 영상 3개·비교 그림·검토 표본·회귀용 카메라 원본 1쌍을 보관한다. **전체 RGB와 나머지 영상은 `<home>/projects/ugrp/outputs/known-map-*`에 로컬 보관**한다. 해시만 있는 전체 원본을 원격 백업 완료로 표현하지 않는다. 전체 입력 재생 감사는 이 원본과 실행 당시 항법 코드가 필요하다.
+Git에는 코드·지도·위 기록·대표 영상 3개·비교 그림·검토 표본·회귀용 카메라 원본 1쌍을 보관한다. **전체 RGB와 나머지 영상은 `/Users/changmin/projects/ugrp/outputs/known-map-*`에 로컬 보관**한다. 해시만 있는 전체 원본을 원격 백업 완료로 표현하지 않는다. 전체 입력 재생 감사는 이 원본과 실행 당시 항법 코드가 필요하다.
 
 최종 비교 재실행은 깨끗한 실행 SHA 체크아웃에서 아래 명령을 사용한다. 별도 worktree이면 환경 실행 파일은 절대 경로로 지정한다.
 

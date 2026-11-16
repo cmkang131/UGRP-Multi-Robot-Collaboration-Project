@@ -2,10 +2,10 @@
 # usage: run_real_rej_task.sh CFG ROBOT SEED_OFFSET   CFG: base (tree at #363 HEAD, recorded DEV calibration) | ctrlC | CR1 | I (calibration C)
 # Case: v98-dev-probe-dock_approach-1236c63d (commit 1236c63d has the arrival-view check): r1's arrival is REALLY rejected (recorded begin_relocalization at provider
 # time 46.24 s = frame time 46.40 s, then a second rejection ends the approach at ~64 s). The recorded relocalization is armed through the production helper.
-D=<home>/projects/ugrp/outputs/pf-gaincal-v101-20261005
-S=/private/tmp/claude-501/-<home>-projects-ugrp/e27d913e-82e1-4e26-ba35-c8e9658b6400/scratchpad/gc
-PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
-RAW=<home>/projects/ugrp/outputs/v98-dev-probe-dock_approach-1236c63d/zone_wide_door_geometry_v3
+D=/Users/changmin/projects/ugrp/outputs/pf-gaincal-v101-20261005
+S=/private/tmp/claude-501/-Users-changmin-projects-ugrp/e27d913e-82e1-4e26-ba35-c8e9658b6400/scratchpad/gc
+PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+RAW=/Users/changmin/projects/ugrp/outputs/v98-dev-probe-dock_approach-1236c63d/zone_wide_door_geometry_v3
 cfg=$1; r=$2; off=$3
 CAL=""
 case $cfg in base) T=base94d;; ctrlC) T=tree_C;; CR1) T=tree_CR1;; I) T=tree_I;; esac

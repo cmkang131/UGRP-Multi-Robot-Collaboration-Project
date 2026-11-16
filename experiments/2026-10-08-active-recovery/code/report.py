@@ -4,7 +4,7 @@ import argparse,hashlib,importlib.util,json,sys,subprocess
 import numpy as np
 ROOT=Path(__file__).resolve().parents[3]
 EXP=Path(__file__).resolve().parents[1]
-RAW=Path('<home>/projects/ugrp/outputs/active-recovery-v1')
+RAW=Path('/Users/changmin/projects/ugrp/outputs/active-recovery-v1')
 EP=RAW/'new-seed'
 sys.path.insert(0,str(ROOT))
 from harness.self_odom_grid import transform

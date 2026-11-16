@@ -3,7 +3,7 @@
 2026-09-30 정적 감사. **C6/C7 전체 파일럿은 아직 준비되지 않았다.** v2의 정적 필요조건은 s1–s5 `feasible`, s6 `conditional`이지만, 실행기는 cyan 단독 및 제한된 r1/r2 빔 운반만 받는다. 다색·can·tile·heavy_crate, 혼합 재고/identity, r3 파트너, 새 통로, 회전/순서·사건 복구를 각각 닫아야 한다.
 
 - 요청 감사 기준: `a8094cc14e098a55483f53a3c49bf6a0b116043d`.
-- 배정 checkout/branch: `<home>/projects/ugrp-wt/e2e-p09-caps`, `codex/scenario-capabilities`; 시작 HEAD/main `d17ca4345affef8cf027e121cf1f3197b36c23e0`. 그 사이 변경은 별도 절차 조사 기록이며 이 감사의 입력 코드·지도·시나리오는 기준 SHA와 같다. 파일별 해시는 [manifest](data/manifest.json)의 `input_sha256`, 함수 위치는 `symbols`를 따른다.
+- 배정 checkout/branch: `/Users/changmin/projects/ugrp-wt/e2e-p09-caps`, `codex/scenario-capabilities`; 시작 HEAD/main `d17ca4345affef8cf027e121cf1f3197b36c23e0`. 그 사이 변경은 별도 절차 조사 기록이며 이 감사의 입력 코드·지도·시나리오는 기준 SHA와 같다. 파일별 해시는 [manifest](data/manifest.json)의 `input_sha256`, 함수 위치는 `symbols`를 따른다.
 - 후속: [READINESS S01/S04/S13, C6/C7](https://github.com/kcm0127-dotcom/ugrp/blob/codex/e2e-readiness/experiments/2026-09-30-e2e-readiness/READINESS.md), [#298](https://github.com/kcm0127-dotcom/ugrp/pull/298).
 - **문서와 정적 검사만 변경했다.** 기존 s1–s6·지도·controller·bundle/workflow registry는 바꾸지 않는다. **로컬 정적 감사**의 물리/SIM/렌더/모델 호출 0회, 학생 trial 0회. 초기 자동 CI를 범위 이탈로 해석해 취소한 것은 잘못됐으며 [취소 이력과 정정](CI_INCIDENT.md)에 원본 증거를 보존한다. 원격까지 모델0으로 주장하지 않는다. raw 삭제·Drive·병합 없음. 작은 dev cyan+봉 시험은 C6/C7의 대체가 아니다.
 

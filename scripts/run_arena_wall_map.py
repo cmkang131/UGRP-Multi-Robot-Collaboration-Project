@@ -8,7 +8,7 @@ from scripts import run_wall_parallax_strafe as old
 from scripts.run_wall_servo_stiffness import arm
 ROOT=old.ROOT
 EXP=ROOT/'experiments/2026-10-07-arena-wall-map'
-RAW=Path('<home>/projects/ugrp/outputs/arena-wall-map-v1')
+RAW=Path('/Users/changmin/projects/ugrp/outputs/arena-wall-map-v1')
 
 
 def acquire_case(case,out,source,backend_factory):

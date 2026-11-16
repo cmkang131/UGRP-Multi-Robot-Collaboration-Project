@@ -9,7 +9,7 @@ import sys
 import numpy as np
 from sim.solo_cyan_v106 import evaluate
 
-ROOT = Path('<home>/projects/ugrp/outputs')
+ROOT = Path('/Users/changmin/projects/ugrp/outputs')
 SHA = 'dfec1f19e1580534242d3b1b436eb45c07a979ea'
 def digest(p):
     return hashlib.sha256(p.read_bytes()).hexdigest()

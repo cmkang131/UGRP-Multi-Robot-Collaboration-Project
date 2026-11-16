@@ -15,7 +15,7 @@ import sys
 from pathlib import Path
 
 OUT = Path(sys.argv[1])
-O = Path('<home>/projects/ugrp/outputs')
+O = Path('/Users/changmin/projects/ugrp/outputs')
 COL = O / 'calib-loaded-gain-v102-274a6206-20261005T0306Z'
 FIT_P = O / 'calib-loaded-gain-v102-fit-20261005/fit.json'
 HELD_P = O / 'calib-loaded-gain-v102-heldout-20261005/heldout.json'

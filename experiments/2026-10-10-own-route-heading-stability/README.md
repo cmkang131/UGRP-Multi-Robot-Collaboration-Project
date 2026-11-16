@@ -130,7 +130,7 @@ a 목표방위 우세 반전 내부: waypoint 갱신 우세 224, 자기 XY 이�
 
 ### 원본·바이트 동일성·전달
 
-- raw: `<home>/projects/ugrp/outputs/oracle-runs/egomap65-{batch,input-recovery,smoke}`. 실행중Mac여유가45GiB로확인되어 부분회수계획을 전체보존으로 확대; RGB/지도포함 **57,588파일/11,845,055,253bytes** 서버SHA와 로컬SHA 모두일치, 누락0. 서버원본도유지. 전송·저장만했고Mac물리/제어재생0.
+- raw: `/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap65-{batch,input-recovery,smoke}`. 실행중Mac여유가45GiB로확인되어 부분회수계획을 전체보존으로 확대; RGB/지도포함 **57,588파일/11,845,055,253bytes** 서버SHA와 로컬SHA 모두일치, 누락0. 서버원본도유지. 전송·저장만했고Mac물리/제어재생0.
 - off의 egomap64 대비 첫60초 **12조건×300=3600/3600행 bytes동일**. 기존1257제어모듈 동결검사+설치off identity시험 유지. [전체결과](results/comparison-v2.json), [원인분해](results/diagnosis.json), [hold/시간집계](results/hold-audit.json).
 - 변경3시험파일 **25시험 통과(1.84s)**. CI완료대기0. 본 물리는code4f/복구drivercc41로종료; 뒤의전달코드수정은물리동작을변경하지않음.
 - TensorBoard `1010-egomap65-v2` 24조건/600scalar, `1010-egomap65-infra-v2` 5입력실패/20scalar. EventAccumulator/HParams29건과원본수치모두대조통과. 최초스냅샷은보존: 전체회수였는데부분회수라는scope문구가남아 v2에서그문구만정정했고, **성능수치모두동일**. 원본comparison.json도덮어쓰지않음. [검증기록](results/delivery-verification.json).

@@ -60,14 +60,14 @@ SHA-256/크기/mtime이 전후 같았다. 설치 프록시·로그는 읽기만 
 중복을 제외하면 **396개 검사**다. 모델·socket 연결을 거절하는 fixture만 사용했다.
 
 ```sh
-OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
+OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
   --basetemp=./.pytest_tmp -q \
   tests/test_zone_pilot_settlement.py tests/test_zone_pilot_proxy_log.py \
   tests/test_zone_pilot_source_migration.py tests/test_zone_study_review_r8.py \
   tests/test_zone_study_review_r9.py tests/test_zone_study_review_r10.py \
   tests/test_zone_study_fenced_reply.py tests/test_rgb_execution_bundle.py
 # 394 passed in 130.36s
-OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
+OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
   --basetemp=./.pytest_tmp -q tests/test_zone_pilot_settlement.py
 # 35 passed in 1.18s
 ```

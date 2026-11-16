@@ -62,6 +62,6 @@ prereg.json은 바꾸지 않았다. 게이트·seed·중단 규칙도 그대로�
 ## 파일
 - `prereg.json`, `prereg_amendments.json`, `frozen_source.json`, `calibration_loop.json`
 - `fit_motion_rowscale.py`(dev 재적합), `posthoc_stop_coast.py`(사후 분석), `build_results.py` → `results.json`(모든 시도 22개, dev a1–a4와 test), `raw_index.json`(실행 디렉터리별 파일 수·바이트·파일 목록 sha256)
-- raw: `<home>/projects/ugrp/outputs/owncam-loop-20260925/{dev-a1,dev-a2,dev-a3,dev-a4,test}/<episode>/` (`inputs/`는 학생 입력, `frames/`는 학생이 본 JPEG, `eval_only/`는 GT·접촉·교사 이벤트로 평가 전용, `manifest.json`, `result.json`). **로컬 보관만 했고 원격 백업은 없다.**
+- raw: `/Users/changmin/projects/ugrp/outputs/owncam-loop-20260925/{dev-a1,dev-a2,dev-a3,dev-a4,test}/<episode>/` (`inputs/`는 학생 입력, `frames/`는 학생이 본 JPEG, `eval_only/`는 GT·접촉·교사 이벤트로 평가 전용, `manifest.json`, `result.json`). **로컬 보관만 했고 원격 백업은 없다.**
 - 실행: `scripts/run_owncam_closed_loop.py --prereg experiments/2026-09-25-zone-owncam-loop/prereg.json --only <ids> --output <dir>`(`ugrp_session.py run`으로 감쌈)
 - TensorBoard 변환·표시는 코디네이터가 맡았다.

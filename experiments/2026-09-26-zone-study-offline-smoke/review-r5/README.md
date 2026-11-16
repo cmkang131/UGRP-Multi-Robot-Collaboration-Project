@@ -33,7 +33,7 @@
 
 ## 기존 스냅샷
 
-v4 TensorBoard 스냅샷은 그대로 둔다. 위치는 `<home>/projects/ugrp/outputs/tensorboard/0926-zone-study-offline-smoke-v4`이다. 이 스냅샷은 옛 run 이름 `<condition>/<scenario>-s<seed>`와 scalars v1을 쓴다.
+v4 TensorBoard 스냅샷은 그대로 둔다. 위치는 `/Users/changmin/projects/ugrp/outputs/tensorboard/0926-zone-study-offline-smoke-v4`이다. 이 스냅샷은 옛 run 이름 `<condition>/<scenario>-s<seed>`와 scalars v1을 쓴다.
 
 - `collection.json` SHA-256이 v4 `raw_index.json`에 적힌 `15eaacf9…`와 같다. 그보다 새로 바뀐 파일은 0개다.
 - v4 `scalars.json`의 run 35개는 모두 이름이 다르다. 시행 30개는 (조건, 시나리오, seed)가 모두 달라서 v4에서는 run이 합쳐지지 않았다.

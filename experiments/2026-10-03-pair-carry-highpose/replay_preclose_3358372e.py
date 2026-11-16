@@ -7,8 +7,8 @@ from harness.zone_final_pair_vision import PairVision
 from harness import zone_pair_grasp_entry_v6c as entry
 from harness import zone_pair_beam_track as bt
 
-RAW = Path('<home>/projects/ugrp/outputs/v98-dev-probe-raise_high_align-3358372e/before_door')
-CAL = '<home>/projects/ugrp/outputs/v92-dev-pilot-c0zero-20261003T104043Z/result/calibration_dev_pilot.json'
+RAW = Path('/Users/changmin/projects/ugrp/outputs/v98-dev-probe-raise_high_align-3358372e/before_door')
+CAL = '/Users/changmin/projects/ugrp/outputs/v92-dev-pilot-c0zero-20261003T104043Z/result/calibration_dev_pilot.json'
 SHA = '398372ae6b9b0fef7344d7f29146ce75b309d334b3ce31af527bc071c0e582f5'
 cal = c.student_calibration(c.admitted_calibration(CAL, SHA, 'zone_wide_door_geometry_v3')) if hasattr(c, 'student_calibration') else None
 vision = PairVision(cal)

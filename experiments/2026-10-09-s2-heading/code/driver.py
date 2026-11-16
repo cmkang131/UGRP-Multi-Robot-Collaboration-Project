@@ -6,8 +6,8 @@ from scripts import agent_lock
 from scripts.run_s2_heading import queue_receipt
 from scripts.run_final_environment_checks import check_source,write
 SHA='b60acdca6e1c0c477d650b47717b84edb3f08a06'
-ROOT=Path('<home>/projects/ugrp-wt/s2-heading')
-OUT=Path('<home>/projects/ugrp/outputs/s2-heading-b60acdca-cohort')
+ROOT=Path('/Users/changmin/projects/ugrp-wt/s2-heading')
+OUT=Path('/Users/changmin/projects/ugrp/outputs/s2-heading-b60acdca-cohort')
 assert os.getpriority(os.PRIO_PROCESS,0)==0
 check_source(SHA)
 OUT.mkdir(exist_ok=False)

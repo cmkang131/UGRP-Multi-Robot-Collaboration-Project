@@ -26,7 +26,7 @@ def main(out,destination=None):
         results.append(dict(option=name,carry_rmse_m=float(np.sqrt(np.mean(np.square(error)))),
             carry_updates=len(fixes),max_gap_s=float(max(np.diff([lo,*fixes,hi]))),stationary_max_m=max(initial),
             off_max_difference=r['baseline_max_delta']))
-    pulses=json.loads(Path('<home>/projects/ugrp/outputs/s2-load-height-20261007/drift-decomposition.json').read_text())['rows']
+    pulses=json.loads(Path('/Users/changmin/projects/ugrp/outputs/s2-load-height-20261007/drift-decomposition.json').read_text())['rows']
     vo={round(r['t'],6):r for r in replay['candidate']['slip_detection']['rows']};motion=[]
     for p in pulses:
         row=vo.get(round(p['t'],6),{});new=row.get('applied_delta',p['predicted_delta']) if row.get('prediction_replaced') else p['predicted_delta']

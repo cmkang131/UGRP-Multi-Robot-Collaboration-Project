@@ -5,7 +5,7 @@
 set -euo pipefail
 out=$1; cal=$2; obs=$3; orc=$4; filters=$5; eps=$6; shift 6
 HERE=$(cd "$(dirname "$0")" && pwd)
-PY=${VL_PY:-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python}
+PY=${VL_PY:-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python}
 MAXJ=${VL_JOBS:-4}
 export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1
 mkdir -p "$out"

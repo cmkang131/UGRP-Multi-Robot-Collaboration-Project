@@ -33,7 +33,7 @@ T09a 코드·테스트를 바꾸지 않았으므로 기존 역할 제거 변이 
 
 명령·검사별 개수·소스 및 raw 해시는 [verification.json](verification.json)에 있다.
 원본 로그/JUnit/검증 manifest는
-`<home>/projects/ugrp/outputs/2026-10-01-t09a-main-sync-01/`에 로컬 보관한다.
+`/Users/changmin/projects/ugrp/outputs/2026-10-01-t09a-main-sync-01/`에 로컬 보관한다.
 검사 뒤 최신 fetch에서도 main SHA가 같음을 확인했다.
 
 물리·렌더·모델 실행은 없으며 실제 문 통과나 E2E 인수 결과가 아니다.

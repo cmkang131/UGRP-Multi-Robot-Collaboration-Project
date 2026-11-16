@@ -69,7 +69,7 @@ Yamauchi 전체 탐색기/DFS로 갈아끼우는 것이 아니라 **관측/목�
 6. 영상은 시간에 맞는 online-map snapshot + 자기 RGB/추정·GT 경로(평가 표식)의 4배속.
    실행 후 추가 seed/재튜닝0, 실패 그대로 기록. 부하·소스·raw 해시 보존.
 
-raw `<home>/projects/ugrp/outputs/frontier-visibility-v1/`, 예산 1GiB,
+raw `/Users/changmin/projects/ugrp/outputs/frontier-visibility-v1/`, 예산 1GiB,
 여유10GiB 이상, 물리 wall 상한30분. ENOSPC=HOST_ERROR. push 서버 오류는 로컬 SHA 진행 후 재시도.
 
 ## 실행 결과 — 미채택, 사후 변경 없음

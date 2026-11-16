@@ -1,10 +1,10 @@
 """Collect the small result files of the study into analysis/ and print the README tables (numpy only).
 
-usage: make_tables.py   (reads <home>/projects/ugrp/outputs/seg-lightfloor-20260929/{eval,summary,model,b1})
+usage: make_tables.py   (reads /Users/changmin/projects/ugrp/outputs/seg-lightfloor-20260929/{eval,summary,model,b1})
 """
 import json, shutil, sys, hashlib
 from pathlib import Path
-O = Path('<home>/projects/ugrp/outputs/seg-lightfloor-20260929')
+O = Path('/Users/changmin/projects/ugrp/outputs/seg-lightfloor-20260929')
 HERE = Path(__file__).resolve().parent
 A = HERE / 'analysis'
 A.mkdir(exist_ok=True)

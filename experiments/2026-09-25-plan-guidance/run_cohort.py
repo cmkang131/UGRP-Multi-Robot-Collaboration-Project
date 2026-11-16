@@ -23,7 +23,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--repeats', type=int, default=5)
-    parser.add_argument('--python', default=str(Path('<home>/projects/ugrp/.venv-sim-worker-mac/bin/python')))
+    parser.add_argument('--python', default=str(Path('/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python')))
     args = parser.parse_args(argv)
     args.output.mkdir(parents=True, exist_ok=True)
     sha = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()

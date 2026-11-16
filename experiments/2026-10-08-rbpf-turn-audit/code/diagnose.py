@@ -5,8 +5,8 @@ from collections import Counter
 import numpy as np
 ROOT=Path(__file__).resolve().parents[3];sys.path.insert(0,str(ROOT))
 EXP=Path(__file__).resolve().parents[1]
-RAW=Path('<home>/projects/ugrp/outputs/rbpf-motion-gate-v1/baseline')
-BASE=Path('<home>/projects/ugrp/outputs/rbpf-insertion-v1/on/prediction.json')
+RAW=Path('/Users/changmin/projects/ugrp/outputs/rbpf-motion-gate-v1/baseline')
+BASE=Path('/Users/changmin/projects/ugrp/outputs/rbpf-insertion-v1/on/prediction.json')
 from harness.self_pulse_odom import PulseOdometry
 from harness.self_map_prob import wrap
 

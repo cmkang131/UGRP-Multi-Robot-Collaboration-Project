@@ -8,7 +8,7 @@ import json, math
 from pathlib import Path
 import numpy as np
 
-OUT = Path('<home>/projects/ugrp/outputs')
+OUT = Path('/Users/changmin/projects/ugrp/outputs')
 
 
 def load_case(case_dir: Path):

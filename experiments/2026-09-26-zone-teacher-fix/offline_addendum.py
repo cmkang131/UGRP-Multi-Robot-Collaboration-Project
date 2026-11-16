@@ -27,7 +27,7 @@ import numpy as np
 from harness import zone_color_boxes as zcb
 from sim.zone_arena import top_views
 
-A2_S12 = Path('<home>/projects/ugrp-worktrees/zone-team-a2/outputs/zone-team-a2-20260925/a-two-dynamic-s12')
+A2_S12 = Path('/Users/changmin/projects/ugrp-worktrees/zone-team-a2/outputs/zone-team-a2-20260925/a-two-dynamic-s12')
 RUNS = [f'mix-{m}-s{s}' for s in (21, 22, 23) for m in ('dynamic', 'independent')] + \
     [f'tri-dynamic-s{s}' for s in (21, 22)]
 RELAXED_S_MIN = 60

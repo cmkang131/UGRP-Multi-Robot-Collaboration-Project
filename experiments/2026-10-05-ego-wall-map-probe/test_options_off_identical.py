@@ -38,7 +38,7 @@ import height_free_wall as hfw  # noqa: E402
 import wall_probe as wp  # noqa: E402
 from test_floor_patch_extent import POSE_508, POSE_740  # noqa: E402
 
-OUTPUTS = Path(os.environ.get('UGRP_OUTPUTS', '<home>/projects/ugrp/outputs'))
+OUTPUTS = Path(os.environ.get('UGRP_OUTPUTS', '/Users/changmin/projects/ugrp/outputs'))
 GOLDEN = OUTPUTS / 'ego-wall-map-probe' / 'harness-full'
 EPISODE = OUTPUTS / 'v98-dev-align_to_carry-a3415342-s911-wtA' / 'zone_wide_door_geometry_v3'
 

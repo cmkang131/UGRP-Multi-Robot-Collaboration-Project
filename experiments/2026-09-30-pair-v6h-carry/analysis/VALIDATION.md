@@ -1,6 +1,6 @@
 # 기존 raw 배치 분류 대조 (2026-09-30, Codex)
 
-분석 기반 HEAD `188618f452b124f93c7f1194264f610be5964490`(`origin/claude/b-v6h-gain`), `chain_analysis.py`는 PR #288의 전체 연쇄 하드 한계 검사가 포함된 버전이다. 아래는 새로운 물리 실험 결과가 아니라 **기존 로컬 raw의 읽기 전용 재분류**다. 원본은 `<home>/projects/ugrp/outputs/`이며 원격 백업으로 표현하지 않는다.
+분석 기반 HEAD `188618f452b124f93c7f1194264f610be5964490`(`origin/claude/b-v6h-gain`), `chain_analysis.py`는 PR #288의 전체 연쇄 하드 한계 검사가 포함된 버전이다. 아래는 새로운 물리 실험 결과가 아니라 **기존 로컬 raw의 읽기 전용 재분류**다. 원본은 `/Users/changmin/projects/ugrp/outputs/`이며 원격 백업으로 표현하지 않는다.
 
 대조 출처: `experiments/2026-09-30-b-v6h-gain/README.md`의 코호트 표/부분 스모크 절, `experiments/2026-09-30-door-relax-envelope/README.md`의 연쇄 표. 모든 값은 **공개 값 = 이번 계산 값**이다. 공개 표와 같은 통계끼리 대조했다: gain 배치는 모든 기록 시드 통과(strict), 케이스는 두 leg 모두 통과. 별도 주 시드 911 분류를 공개 strict 값과 섞지 않았다.
 

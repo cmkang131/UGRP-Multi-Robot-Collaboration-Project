@@ -32,7 +32,7 @@ from yaw_direction_dataset import case_dir, replay_yaw, wrap  # noqa: E402
 
 FIT_RAWS = ['ece38792-cal', 'a704ecc6-calB2', 'a704ecc6-calB']
 REPLICATE_RAWS = ['d08818ef-cal2']
-OUT = Path('<home>/projects/ugrp/outputs')
+OUT = Path('/Users/changmin/projects/ugrp/outputs')
 MIN_WINDOW_S = 8.
 
 

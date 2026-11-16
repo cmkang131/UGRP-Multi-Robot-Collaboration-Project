@@ -11,7 +11,7 @@ from harness.pf_resampling_diversity import OPTIONS
 
 HERE=Path(__file__).parent
 ROOT=HERE.parents[2]
-RAW=Path('<home>/projects/ugrp/outputs')
+RAW=Path('/Users/changmin/projects/ugrp/outputs')
 CASES=[('55001','ownmap',RAW/'goal-route-motion-audit-v1/seed55001'),
        ('55002','ownmap',RAW/'goal-route-motion-audit-v1/seed55002'),
        ('v149','s3',RAW/'s3-sweep-b73ce193-s14201-v149'),

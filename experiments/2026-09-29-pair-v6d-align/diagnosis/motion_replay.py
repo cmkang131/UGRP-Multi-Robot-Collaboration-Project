@@ -1,8 +1,8 @@
 """Diagnosis only: does the PF velocity model explain GT displacement for align pulses?"""
 import json, math, bisect, glob, os, sys
 import numpy as np
-BASE='<home>/projects/ugrp/outputs/pair-stage-probes-b5234b7a-v6c-align/cases/'
-ROOT='<home>/projects/ugrp-wt/claude-v6d-align/'
+BASE='/Users/changmin/projects/ugrp/outputs/pair-stage-probes-b5234b7a-v6c-align/cases/'
+ROOT='/Users/changmin/projects/ugrp-wt/claude-v6d-align/'
 loop=json.load(open(ROOT+'experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json'))['params']
 m1=json.load(open(ROOT+'experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json'))['params']
 PROFILES={'default':loop['motion'],'m1_fine':m1['motion_profiles']['fine']}

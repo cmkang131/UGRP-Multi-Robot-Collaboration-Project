@@ -16,7 +16,7 @@ import numpy as np
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 PR210_RESULTS = ROOT/'experiments'/'2026-09-26-markerless-probe'/'results'/'metrics_test.json'
-ENV_V3_LOOP_TEST = Path('<home>/projects/ugrp/outputs/zone-env-v3-20260926/loop/test')
+ENV_V3_LOOP_TEST = Path('/Users/changmin/projects/ugrp/outputs/zone-env-v3-20260926/loop/test')
 
 
 def sha_file(p) -> str:
@@ -94,7 +94,7 @@ def main(argv=None):
     ap.add_argument('--estimates-dir', required=True)
     ap.add_argument('--train-info', type=Path, required=True)
     ap.add_argument('--bench', type=Path)
-    ap.add_argument('--renders', type=Path, default=Path('<home>/projects/ugrp/outputs/vision-loc-20260926/render'))
+    ap.add_argument('--renders', type=Path, default=Path('/Users/changmin/projects/ugrp/outputs/vision-loc-20260926/render'))
     ap.add_argument('--render-glob', default='vl-*', help='render folders to list (round 3: vl3-*)')
     ap.add_argument('--output', type=Path, default=HERE/'results'/'results.json')
     ap.add_argument('--secondary-metrics', type=Path, help='round 3: exploratory secondary scoring')

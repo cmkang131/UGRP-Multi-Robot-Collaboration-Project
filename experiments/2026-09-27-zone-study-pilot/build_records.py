@@ -24,8 +24,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-RAW = Path('<home>/projects/ugrp/outputs/zone-study-adapter-pilot-r10')
-TB_ROOT = Path('<home>/projects/ugrp/outputs/tensorboard')
+RAW = Path('/Users/changmin/projects/ugrp/outputs/zone-study-adapter-pilot-r10')
+TB_ROOT = Path('/Users/changmin/projects/ugrp/outputs/tensorboard')
 SNAPSHOT = '0927-zone-study-pilot'
 RUNS = ('preflight-01', 'preflight-02-v63', 'cohort-01-v63')
 CONDITIONS = ('no_comm', 'peer_ko', 'leader_ko', 'structured')

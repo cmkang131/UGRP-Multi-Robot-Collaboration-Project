@@ -1,11 +1,11 @@
 import sys,json,pathlib,bisect,math,hashlib
 import numpy as np
 from types import SimpleNamespace as NS
-ROOT=pathlib.Path('<home>/projects/ugrp-wt/drive-friction');sys.path.insert(0,str(ROOT))
+ROOT=pathlib.Path('/Users/changmin/projects/ugrp-wt/drive-friction');sys.path.insert(0,str(ROOT))
 from harness import zone_s2_realism_contract_v121 as c
 from harness.zone_solo_cyan_inhand import Runtime
 from scripts.fit_s2_pulse_calibration import interpolate,training
-BASE=pathlib.Path('<home>/projects/ugrp/outputs/s2-pulse-cal-20261007');raw=pathlib.Path('<home>/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place')
+BASE=pathlib.Path('/Users/changmin/projects/ugrp/outputs/s2-pulse-cal-20261007');raw=pathlib.Path('/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place')
 read=lambda p:json.loads(p.read_text());rows=[json.loads(s) for s in (BASE/'offline/pulses.jsonl').read_text().splitlines()]
 model=read(ROOT/'configs/s2_motion_v7_pulse_cal_v1.json');b=c.bundle('a'*40,seed=1045,**c.NEW_OPTIONS)
 r=Runtime(c.old.hp.resolve(c.old.MAP_ID)[0],c.ROOT/c.old.CALIBRATION,c.old.CALIBRATION_SHA,**{k:v for k,v in b['options'].items() if k not in ('drive_profile','stagnation_watch','idle_robot_contacts','dev_grasp_policy','eval_camera_trace')},motion_model=b['motion_model'])

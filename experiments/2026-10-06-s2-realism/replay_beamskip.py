@@ -21,7 +21,7 @@ from scripts.run_s2_landmarks_dev import runtime_factory as prior_factory
 from scripts.run_s2_unknown_start import runtime_factory as global_factory
 
 HERE=Path(__file__).resolve().parent
-OUTPUTS=Path('<home>/projects/ugrp/outputs')
+OUTPUTS=Path('/Users/changmin/projects/ugrp/outputs')
 RUNS={q['seed']:Path(q['raw']) for q in json.loads((HERE/'baseline-v52-result.json').read_text())['runs']}
 RUNS.update({s:OUTPUTS/f's2-realism-329eb4b6-s{s}-v139-unknown-start' for s in (1059,1060,1061)})
 

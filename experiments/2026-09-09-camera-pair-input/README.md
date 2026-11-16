@@ -21,7 +21,7 @@
 
 이 변경은 공동 운반용 새 실행 경로의 입력/동작 경계를 구현·실제 검증한 결과다. 기존 저장소의 모든 독립 실행기를 전면 대체한 것은 아님. 현재 각 모델은 현재2개 영상만 받으며 자체 이력/동료 통신도 제공하지 않는다. 운반을 위해서는 이 영상 경계 안에서 시각적 자기 식별, 접근·파지 판단을 추가 검증해야 한다. 좌표 기반 성공 결과는 이 경로의 성능 근거로 사용하지 않는다.
 
-raw 위치: <home>/projects/ugrp/outputs/camera-pair-20260909-{first,validated}. 전체 영상과16건 원본 요청은 로컬 보관, 원격은 코드/보고/첫 입력 예시/해시/평가 기록. main병합은 명시적 사용자 승인 대기.
+raw 위치: /Users/changmin/projects/ugrp/outputs/camera-pair-20260909-{first,validated}. 전체 영상과16건 원본 요청은 로컬 보관, 원격은 코드/보고/첫 입력 예시/해시/평가 기록. main병합은 명시적 사용자 승인 대기.
 
 실행: `.venv-sim-worker-mac/bin/python scripts/ugrp_session.py run camera-pair -- .venv-sim-worker-mac/bin/python scripts/run_camera_pair_transport.py --out-dir outputs/NEW-camera-pair --rounds 8`
 감사: `.venv-sim-worker-mac/bin/python scripts/audit_camera_pair_inputs.py outputs/NEW-camera-pair`

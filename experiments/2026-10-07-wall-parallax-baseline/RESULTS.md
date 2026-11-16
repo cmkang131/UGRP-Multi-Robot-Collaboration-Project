@@ -118,7 +118,7 @@ cross covariance를 섞어 PSD 오류1회로 중단됐다. 결과를 생성하�
   oracle 옵션의 production 거부, 미검출 recall 분모). RGB/eligibility 2건 golden byte 동일.
 - 원본 예측/GT·주석 해시를 receipt에 연결했다. 수치표 [summary.json](results/summary.json),
   녹화별6조건 JSON 및 [raw manifest](results/raw-manifest.json) 보존.
-- 새 raw35파일 **16,153,701bytes**, `<home>/projects/ugrp/outputs/wall-parallax-baseline-v1`.
+- 새 raw35파일 **16,153,701bytes**, `/Users/changmin/projects/ugrp/outputs/wall-parallax-baseline-v1`.
   raw는 로컬이며 원격 백업으로 주장하지 않는다. Git에는 코드·표·해시·작은 PNG2장만 둔다.
 - 물리/렌더/모델 호출/새 dependency 설치0, wall-time 성능 비교0(잠금 불필요), 자기 세션 모두 종료.
   다른 worktree·#406 수정0, 기존 미추적4파일 보존. PR #405 DRAFT 유지, 병합/force/reset0.

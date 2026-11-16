@@ -268,7 +268,7 @@ def main():
     print(f'beam columns={int((bt < HEIGHT).sum())}  box columns={int((bx < HEIGHT).sum())}')
 
     out = Path(args.out) if args.out else Path(
-        '<home>/projects/ugrp/outputs/ego-wall-map-probe')/f'{Path(args.frame).stem}_self_mask.png'
+        '/Users/changmin/projects/ugrp/outputs/ego-wall-map-probe')/f'{Path(args.frame).stem}_self_mask.png'
     try:
         out.parent.mkdir(parents=True, exist_ok=True)
     except OSError:

@@ -91,9 +91,9 @@
 재개 후 실행 명령(기존 환경 재사용, #328에 따라 host lock 없이 실행):
 
 ```sh
-T10B_BATCH_MUTATIONS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
+T10B_BATCH_MUTATIONS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
   experiments/2026-09-30-corridor-control/validate_offline.py \
-  <home>/projects/ugrp/outputs/2026-09-30-t10b-corridor/NEW-FINAL-ID \
+  /Users/changmin/projects/ugrp/outputs/2026-09-30-t10b-corridor/NEW-FINAL-ID \
   tests/test_zone_own_executor_corridor_control.py \
   tests/test_zone_own_executor_corridor_contract.py \
   tests/test_zone_pair_status.py \

@@ -183,7 +183,7 @@ HOST_ERROR는 물리 묶음 **0/10**; c3의 공동 닫기 장벽 실패는 위�
   `outputs/oracle-runs/s3fix16-inactive-source-cache/source-dedup.json`.
   이후5SIM pathcheck31.653wall초, 양쪽 pregrasp_descend, HOST_ERROR0.
 - 본 묶음 raw **34,338파일**과 pathcheck335파일 회수·전체 해시 일치.
-  로컬 루트 `<home>/projects/ugrp/outputs/oracle-runs/` 아래
+  로컬 루트 `/Users/changmin/projects/ugrp/outputs/oracle-runs/` 아래
   `s3fix16-batch-r1/cohort/*/raw`, `s3fix16-pathcheck-r2/`,
   `s3fix16-visibility-r1/diagnosis`, `s3fix16-band-replay-r1/replay`,
   `s3fix16-eval-r1/evaluation`. 판정 source도ad844d13, GT는평가전용.

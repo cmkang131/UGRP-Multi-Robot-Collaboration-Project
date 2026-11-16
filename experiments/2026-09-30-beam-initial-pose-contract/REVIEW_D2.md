@@ -33,9 +33,9 @@ D2는 현재 차체·팔 구현의 누락이 아니라, 누락을 탐지하지 �
 디스크의 production 소스·봉인·등록 bytes는 바꾸지 않는다.
 
 ```sh
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
   experiments/2026-09-30-beam-initial-pose-contract/review_d2_verify.py \
-  <home>/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-NEW-ID
+  /Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-NEW-ID
 ```
 
 로컬 물리·렌더·모델·네트워크 호출은 차단한다. 이 로컬 제한은 GitHub CI에는
@@ -73,6 +73,6 @@ D2는 현재 차체·팔 구현의 누락이 아니라, 누락을 탐지하지 �
 기하 자체가 아니라 기대값 배열의 순서 문제였으며 테스트만 고친 뒤 위 전체 결과를 얻었다.
 [첫 실패 로그](review_d2/initial-fixture-order.txt)를 보존한다.
 
-원본 로그와 JUnit은 `<home>/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b` 및 첫 시도 `<home>/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-a`에 로컬 보존한다.
+원본 로그와 JUnit은 `/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b` 및 첫 시도 `/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-a`에 로컬 보존한다.
 Git의 작은 로그 사본은 줄 끝 공백만 정리했고 원본/사본 해시를 구분했다. 이 기록은 raw 전체의 원격 백업이 아니다.
 정상 GitHub CI는 push 후 별도 상태로 보고하며, CI와 본 정적 검사는 물리·E2E 인수가 아니다.

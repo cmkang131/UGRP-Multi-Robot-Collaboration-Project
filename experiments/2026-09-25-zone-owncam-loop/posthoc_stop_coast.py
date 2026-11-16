@@ -9,7 +9,7 @@ from pathlib import Path
 import numpy as np
 exec(Path(__file__).with_name('fit_motion_rowscale.py').read_text().split('CAL=json.load')[0])
 CAL = json.loads(Path(__file__).with_name('calibration_loop.json').read_text())
-O = Path('<home>/projects/ugrp/outputs/owncam-loop-20260925')
+O = Path('/Users/changmin/projects/ugrp/outputs/owncam-loop-20260925')
 
 
 def segs_stop(d, after=6):

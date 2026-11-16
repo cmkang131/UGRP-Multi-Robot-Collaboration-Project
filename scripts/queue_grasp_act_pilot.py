@@ -90,7 +90,7 @@ def build_main_eval_queue(sha, pricing):
     q.update(status='approved_main_eval_pending_worker_preflight',
         purpose='solo-only training/closed-loop plumbing pilot; not final model or gate promotion',
         prior_smoke={'source_sha': '7caf99447c5d7543b087722957d4d9987c22cbee',
-            'report': '<home>/projects/ugrp/outputs/e2e18-admin/gcp-reports/act-smoke-7caf9944.json',
+            'report': '/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act-smoke-7caf9944.json',
             'evidence_scope': 'operations worker/coordinator report; no independent remote verification',
             'resume_allowed': False, 'reason': 'source, labels, manifest and normalization changed'},
         coordinator_approval={'approved': True, 'stage': 'main+eval', 'steps': 10000,

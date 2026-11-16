@@ -212,16 +212,16 @@
     }
   },
   "pre_fix_counterexamples": {
-    "raw": "<home>/projects/ugrp/outputs/cap-t03-redgreen/offline-9qu22q6u",
+    "raw": "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/offline-9qu22q6u",
     "command": [
-      "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
       "-m",
       "pytest",
       "-p",
       "offline_guard",
       "-q",
       "--junitxml",
-      "<home>/projects/ugrp/outputs/cap-t03-redgreen/offline-9qu22q6u/junit.xml",
+      "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/offline-9qu22q6u/junit.xml",
       "tests/test_review_325b.py"
     ],
     "returncode": 1,
@@ -249,16 +249,16 @@
     }
   },
   "targeted_after_fix": {
-    "raw": "<home>/projects/ugrp/outputs/cap-t03-redgreen/offline-9b4gqwfq",
+    "raw": "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/offline-9b4gqwfq",
     "command": [
-      "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
       "-m",
       "pytest",
       "-p",
       "offline_guard",
       "-q",
       "--junitxml",
-      "<home>/projects/ugrp/outputs/cap-t03-redgreen/offline-9b4gqwfq/junit.xml",
+      "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/offline-9b4gqwfq/junit.xml",
       "tests/test_review_325b.py"
     ],
     "returncode": 0,
@@ -286,16 +286,16 @@
     }
   },
   "broad_regression": {
-    "raw": "<home>/projects/ugrp/outputs/cap-t03-redgreen/offline-sqqgfqap",
+    "raw": "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/offline-sqqgfqap",
     "command": [
-      "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
       "-m",
       "pytest",
       "-p",
       "offline_guard",
       "-q",
       "--junitxml",
-      "<home>/projects/ugrp/outputs/cap-t03-redgreen/offline-sqqgfqap/junit.xml",
+      "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/offline-sqqgfqap/junit.xml",
       "tests/test_zone_pair_registered_source.py",
       "tests/test_zone_pair_door_relax.py",
       "tests/test_zone_own_executor_color_seals.py",
@@ -419,7 +419,7 @@
     "count": 18,
     "killed": 18,
     "errors": 0,
-    "raw": "<home>/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001",
+    "raw": "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001",
     "summary_sha256": "09c4b05aa05bf916f311229c38361fcd5ca758b67576fb0c4e661d8cd62c4a22",
     "results": [
       {
@@ -429,7 +429,7 @@
         "new": "supported = ('cyan',)",
         "target": "tests/test_zone_own_executor_color_boxes.py::test_executor_passes_kind_into_controller_and_skill",
         "command": [
-          "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+          "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
           "-m",
           "pytest",
           "-q",
@@ -437,7 +437,7 @@
           "t03_mutant",
           "tests/test_zone_own_executor_color_boxes.py::test_executor_passes_kind_into_controller_and_skill",
           "--junitxml",
-          "<home>/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/red_green_dispatch_removed.xml"
+          "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/red_green_dispatch_removed.xml"
         ],
         "returncode": 1,
         "failures": 2,
@@ -456,7 +456,7 @@
         "new": "if True:",
         "target": "tests/test_zone_own_executor_color_boxes.py::test_m1_search_and_coarse_order_keep_kind",
         "command": [
-          "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+          "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
           "-m",
           "pytest",
           "-q",
@@ -464,7 +464,7 @@
           "t03_mutant",
           "tests/test_zone_own_executor_color_boxes.py::test_m1_search_and_coarse_order_keep_kind",
           "--junitxml",
-          "<home>/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/search_kind_filter_removed.xml"
+          "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/search_kind_filter_removed.xml"
         ],
         "returncode": 1,
         "failures": 3,
@@ -483,7 +483,7 @@
         "new": "'red': ((85, 98),)",
         "target": "tests/test_zone_own_executor_color_boxes.py::test_same_policy_and_box_geometry_for_three_kinds[red]",
         "command": [
-          "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+          "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
           "-m",
           "pytest",
           "-q",
@@ -491,7 +491,7 @@
           "t03_mutant",
           "tests/test_zone_own_executor_color_boxes.py::test_same_policy_and_box_geometry_for_three_kinds[red]",
           "--junitxml",
-          "<home>/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/red_segmentation_changed_to_cyan.xml"
+          "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/red_segmentation_changed_to_cyan.xml"
         ],
         "returncode": 1,
         "failures": 1,
@@ -510,7 +510,7 @@
         "new": "kind='cyan', **kwargs",
         "target": "tests/test_zone_own_executor_color_boxes.py::test_full_fake_attachment_probe_then_other_color_loss",
         "command": [
-          "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+          "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
           "-m",
           "pytest",
           "-q",
@@ -518,7 +518,7 @@
           "t03_mutant",
           "tests/test_zone_own_executor_color_boxes.py::test_full_fake_attachment_probe_then_other_color_loss",
           "--junitxml",
-          "<home>/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/attachment_kind_reverted_to_cyan.xml"
+          "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/attachment_kind_reverted_to_cyan.xml"
         ],
         "returncode": 1,
         "failures": 2,
@@ -537,7 +537,7 @@
         "new": "and False",
         "target": "tests/test_zone_own_executor_color_boxes.py::test_wrong_kind_placement_cannot_increment_delivered_count",
         "command": [
-          "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+          "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
           "-m",
           "pytest",
           "-q",
@@ -545,7 +545,7 @@
           "t03_mutant",
           "tests/test_zone_own_executor_color_boxes.py::test_wrong_kind_placement_cannot_increment_delivered_count",
           "--junitxml",
-          "<home>/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/placement_kind_barrier_removed.xml"
+          "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/placement_kind_barrier_removed.xml"
         ],
         "returncode": 1,
         "failures": 1,
@@ -564,7 +564,7 @@
         "new": "cyan = color_mask(frame, 'cyan') > 0",
         "target": "tests/test_zone_own_executor_color_boxes.py::test_bottom_clip_uses_ordered_kind",
         "command": [
-          "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+          "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
           "-m",
           "pytest",
           "-q",
@@ -572,7 +572,7 @@
           "t03_mutant",
           "tests/test_zone_own_executor_color_boxes.py::test_bottom_clip_uses_ordered_kind",
           "--junitxml",
-          "<home>/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/clip_kind_reverted_to_cyan.xml"
+          "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/clip_kind_reverted_to_cyan.xml"
         ],
         "returncode": 1,
         "failures": 4,
@@ -591,7 +591,7 @@
         "new": "self.cyan[n:] = self.cyan[n:]",
         "target": "tests/test_zone_own_executor_color_seals.py::test_actual_slot_filter_and_clip_use_selected_kind",
         "command": [
-          "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+          "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
           "-m",
           "pytest",
           "-q",
@@ -599,7 +599,7 @@
           "t03_mutant",
           "tests/test_zone_own_executor_color_seals.py::test_actual_slot_filter_and_clip_use_selected_kind",
           "--junitxml",
-          "<home>/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/slot_filter_removed.xml"
+          "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/slot_filter_removed.xml"
         ],
         "returncode": 1,
         "failures": 3,
@@ -618,7 +618,7 @@
         "new": "LegacyDeliverController._search_detect(self, obs, report)",
         "target": "tests/test_zone_own_executor_color_seals.py::test_actual_slot_filter_and_clip_use_selected_kind",
         "command": [
-          "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+          "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
           "-m",
           "pytest",
           "-q",
@@ -626,7 +626,7 @@
           "t03_mutant",
           "tests/test_zone_own_executor_color_seals.py::test_actual_slot_filter_and_clip_use_selected_kind",
           "--junitxml",
-          "<home>/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/controller_search_reverted_to_cyan.xml"
+          "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/controller_search_reverted_to_cyan.xml"
         ],
         "returncode": 1,
         "failures": 2,
@@ -645,7 +645,7 @@
         "new": "return 'cyan'",
         "target": "tests/test_zone_own_executor_color_boxes.py::test_kind_survives_job_end_and_wrong_kind_held_flag_is_not_yes",
         "command": [
-          "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+          "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
           "-m",
           "pytest",
           "-q",
@@ -653,7 +653,7 @@
           "t03_mutant",
           "tests/test_zone_own_executor_color_boxes.py::test_kind_survives_job_end_and_wrong_kind_held_flag_is_not_yes",
           "--junitxml",
-          "<home>/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/finished_job_kind_lost.xml"
+          "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/finished_job_kind_lost.xml"
         ],
         "returncode": 1,
         "failures": 1,
@@ -672,7 +672,7 @@
         "new": "True",
         "target": "tests/test_zone_own_executor_color_boxes.py::test_kind_survives_job_end_and_wrong_kind_held_flag_is_not_yes",
         "command": [
-          "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+          "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
           "-m",
           "pytest",
           "-q",
@@ -680,7 +680,7 @@
           "t03_mutant",
           "tests/test_zone_own_executor_color_boxes.py::test_kind_survives_job_end_and_wrong_kind_held_flag_is_not_yes",
           "--junitxml",
-          "<home>/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/holding_kind_barrier_removed.xml"
+          "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/holding_kind_barrier_removed.xml"
         ],
         "returncode": 1,
         "failures": 1,
@@ -699,7 +699,7 @@
         "new": "except (TypeError, ValueError, OverflowError):\n            pass",
         "target": "tests/test_review_325b.py::test_real_kind_loss_requires_fresh_face_votes",
         "command": [
-          "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+          "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
           "-m",
           "pytest",
           "-q",
@@ -707,7 +707,7 @@
           "t03_mutant",
           "tests/test_review_325b.py::test_real_kind_loss_requires_fresh_face_votes",
           "--junitxml",
-          "<home>/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/invalid_target_keeps_old_votes.xml"
+          "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/invalid_target_keeps_old_votes.xml"
         ],
         "returncode": 1,
         "failures": 9,
@@ -726,7 +726,7 @@
         "new": "if not (math.isfinite(tx) and math.isfinite(ty)) or math.hypot(tx, ty) <= 1e-9:\n            pass",
         "target": "tests/test_review_325b.py::test_invalid_target_ends_all_alignment_evidence[nan]",
         "command": [
-          "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+          "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
           "-m",
           "pytest",
           "-q",
@@ -734,7 +734,7 @@
           "t03_mutant",
           "tests/test_review_325b.py::test_invalid_target_ends_all_alignment_evidence[nan]",
           "--junitxml",
-          "<home>/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/nonfinite_target_keeps_old_votes.xml"
+          "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/nonfinite_target_keeps_old_votes.xml"
         ],
         "returncode": 1,
         "failures": 1,
@@ -753,7 +753,7 @@
         "new": "if False:",
         "target": "tests/test_review_325b.py::test_current_evidence_loss_ends_ready_window",
         "command": [
-          "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+          "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
           "-m",
           "pytest",
           "-q",
@@ -761,7 +761,7 @@
           "t03_mutant",
           "tests/test_review_325b.py::test_current_evidence_loss_ends_ready_window",
           "--junitxml",
-          "<home>/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/lost_frame_keeps_old_votes.xml"
+          "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/lost_frame_keeps_old_votes.xml"
         ],
         "returncode": 1,
         "failures": 5,
@@ -780,7 +780,7 @@
         "new": "pass",
         "target": "tests/test_review_325b.py::test_base_motion_reset_ends_alignment_evidence",
         "command": [
-          "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+          "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
           "-m",
           "pytest",
           "-q",
@@ -788,7 +788,7 @@
           "t03_mutant",
           "tests/test_review_325b.py::test_base_motion_reset_ends_alignment_evidence",
           "--junitxml",
-          "<home>/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/reset_keeps_old_ready_metadata.xml"
+          "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/reset_keeps_old_ready_metadata.xml"
         ],
         "returncode": 1,
         "failures": 1,
@@ -807,7 +807,7 @@
         "new": "            return {**base,",
         "target": "tests/test_review_325b.py::test_ready_result_expires_when_votes_no_longer_agree",
         "command": [
-          "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+          "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
           "-m",
           "pytest",
           "-q",
@@ -815,7 +815,7 @@
           "t03_mutant",
           "tests/test_review_325b.py::test_ready_result_expires_when_votes_no_longer_agree",
           "--junitxml",
-          "<home>/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/expired_vote_keeps_last_ready.xml"
+          "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/expired_vote_keeps_last_ready.xml"
         ],
         "returncode": 1,
         "failures": 1,
@@ -834,7 +834,7 @@
         "new": "except ValueError:\n            pass",
         "target": "tests/test_review_325b.py::test_rejected_own_frame_invalidates_prior_votes",
         "command": [
-          "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+          "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
           "-m",
           "pytest",
           "-q",
@@ -842,7 +842,7 @@
           "t03_mutant",
           "tests/test_review_325b.py::test_rejected_own_frame_invalidates_prior_votes",
           "--junitxml",
-          "<home>/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/invalid_own_frame_keeps_old_votes.xml"
+          "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/invalid_own_frame_keeps_old_votes.xml"
         ],
         "returncode": 1,
         "failures": 6,
@@ -861,7 +861,7 @@
         "new": "def __init__(self, order, *, mode='diagnostic', **kwargs):",
         "target": "tests/test_review_325b.py::test_default_skill_and_placement_require_m1_pose",
         "command": [
-          "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+          "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
           "-m",
           "pytest",
           "-q",
@@ -869,7 +869,7 @@
           "t03_mutant",
           "tests/test_review_325b.py::test_default_skill_and_placement_require_m1_pose",
           "--junitxml",
-          "<home>/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/default_mode_reverted_to_diagnostic.xml"
+          "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/default_mode_reverted_to_diagnostic.xml"
         ],
         "returncode": 1,
         "failures": 3,
@@ -888,7 +888,7 @@
         "new": "if False:",
         "target": "tests/test_review_325b.py::test_m1_executor_rejects_factory_mode_mismatch",
         "command": [
-          "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+          "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
           "-m",
           "pytest",
           "-q",
@@ -896,7 +896,7 @@
           "t03_mutant",
           "tests/test_review_325b.py::test_m1_executor_rejects_factory_mode_mismatch",
           "--junitxml",
-          "<home>/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/factory_mode_barrier_removed.xml"
+          "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-mutations-20261001/factory_mode_barrier_removed.xml"
         ],
         "returncode": 1,
         "failures": 9,
@@ -1373,7 +1373,7 @@
     },
     "bundle": {
       "command": [
-        "<home>/projects/ugrp/.venv-sim-worker-mac/bin/python",
+        "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
         "-m",
         "harness.rgb_execution_bundle",
         "verify-current",
@@ -1387,7 +1387,7 @@
     },
     "registry": {
       "command": [
-        "<home>/projects/ugrp/.venv-sim-worker-mac/bin/python",
+        "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
         "-m",
         "harness.rgb_execution_bundle",
         "verify-registry",
@@ -1423,12 +1423,12 @@
       "ubuntu-simulation-runtime": 15,
       "ubuntu-simulation-scenarios": 15
     },
-    "main_identical_report": "<home>/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-preservation-20261001.json"
+    "main_identical_report": "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-preservation-20261001.json"
   },
   "extra_raw_sha256": {
-    "<home>/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-source-20261001.json": "8bc81d2b8055fc47b35bb02d049a2ddf6f94b254b4198024d89864dc6e4a1a2e",
-    "<home>/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-preservation-20261001.json": "00e9f4daebd4987455d01f4dd532da232e2257088dab4c4f7cc60b9adaa77ecc",
-    "<home>/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-static-20261001.json": "4430462b1dc5fb33bb9788fbb44f2aae981d4999d0f04630bd413e4a775130f9"
+    "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-source-20261001.json": "8bc81d2b8055fc47b35bb02d049a2ddf6f94b254b4198024d89864dc6e4a1a2e",
+    "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-preservation-20261001.json": "00e9f4daebd4987455d01f4dd532da232e2257088dab4c4f7cc60b9adaa77ecc",
+    "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/review-325b-fixes-static-20261001.json": "4430462b1dc5fb33bb9788fbb44f2aae981d4999d0f04630bd413e4a775130f9"
   },
   "scope": {
     "local_physics_steps": 0,

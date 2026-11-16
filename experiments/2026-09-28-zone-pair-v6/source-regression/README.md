@@ -52,7 +52,7 @@ mkdir -p /private/tmp/v6-no-physics
 cp experiments/2026-09-28-zone-pair-v6/source-regression/step_tripwire.py /private/tmp/v6-no-physics/sitecustomize.py
 OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 \
 V6_STEP_AUDIT=/private/tmp/v6-physics-audit.log PYTHONPATH=/private/tmp/v6-no-physics:. \
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
 experiments/2026-09-28-zone-pair-v6/source-regression/run_final_tests.py
 ```
 

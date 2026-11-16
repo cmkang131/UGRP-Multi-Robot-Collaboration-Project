@@ -29,7 +29,7 @@ GO/ACK 형식·시한·시작 지연은 기존 고정 `GraspStartSync`를 그대
 ## 확인 결과
 
 ```sh
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_beamact2.py tests/test_beamact4.py tests/test_beamact4_policy.py
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_beamact2.py tests/test_beamact4.py tests/test_beamact4_policy.py
 ```
 
 현재 **15 passed / 1 skipped**. 기존 barrier·원본 명령 재생 9개와 새 후보 시험 6개가 통과했다. 새 시험은 1PWM 감소의 READY 오인 방지, 열린 집게 제안의 학습 READY, 철회 후 새 GO/ACK·시작 지연, done 다음 틱의 새 추론, 모의 70행 명령/프로토콜 재생과 PWM·단계 로그 변조 탐지, 숨은 표적/출력 필드 거부를 확인한다. 선택적인 Linux 합성 head/loss gradient 시험은 Mac에서 건너뛰었다. 실제 체크포인트 저장/재로딩·학습 손실/기울기·자기 RGB 인식 정확도·공급자·물리 성공은 검증하지 않았다.

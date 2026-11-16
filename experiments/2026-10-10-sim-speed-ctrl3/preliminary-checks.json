@@ -3,7 +3,7 @@
   "records": [
     {
       "name": "speedctrl3-tests-f012",
-      "local_metadata": "<home>/projects/ugrp/outputs/oracle-runs/speedctrl3-tests-f012",
+      "local_metadata": "/Users/changmin/projects/ugrp/outputs/oracle-runs/speedctrl3-tests-f012",
       "source": "f012da8e3f34bfb78c7d5744e5467ee8ab133506",
       "exit": 1,
       "command": ".venv-sim/bin/python -m pytest tests/test_lazy_camera.py tests/test_controller_replay.py -q",
@@ -12,7 +12,7 @@
     },
     {
       "name": "speedctrl3-tests-90a4",
-      "local_metadata": "<home>/projects/ugrp/outputs/oracle-runs/speedctrl3-tests-90a4",
+      "local_metadata": "/Users/changmin/projects/ugrp/outputs/oracle-runs/speedctrl3-tests-90a4",
       "source": "90a467acad129e6a9d6414628950beb1724b6848",
       "exit": 0,
       "command": ".venv-sim/bin/python -m pytest tests/test_lazy_camera.py tests/test_controller_replay.py -q",
@@ -21,7 +21,7 @@
     },
     {
       "name": "speedctrl3-tests-1f8b",
-      "local_metadata": "<home>/projects/ugrp/outputs/oracle-runs/speedctrl3-tests-1f8b",
+      "local_metadata": "/Users/changmin/projects/ugrp/outputs/oracle-runs/speedctrl3-tests-1f8b",
       "source": "1f8bb9cacc05cde371cd8d4ae51637f028ca6dfe",
       "exit": 0,
       "command": ".venv-sim/bin/python -m pytest tests/test_lazy_camera.py tests/test_controller_replay.py tests/test_controller_exact_speedups.py -q",
@@ -30,7 +30,7 @@
     },
     {
       "name": "speedctrl3-pathcheck-90a4",
-      "local_metadata": "<home>/projects/ugrp/outputs/oracle-runs/speedctrl3-pathcheck-90a4",
+      "local_metadata": "/Users/changmin/projects/ugrp/outputs/oracle-runs/speedctrl3-pathcheck-90a4",
       "source": "90a467acad129e6a9d6414628950beb1724b6848",
       "exit": 2,
       "command": "/usr/bin/env UGRP_EXECUTION_HOST=oracle-x86 MPLBACKEND=Agg PYTHONPATH=/home/ubuntu/ugrp-sim/egomap60-deps .venv-sim/bin/python -m scripts.sim_cli run lazy-camera-abba --record outputs/speedctrl3-pathcheck-90a4/managed --timeout 7200 -- --kind abba --sim-s 5 --output outputs/speedctrl3-pathcheck-90a4/data --expected-source-sha 90a467acad129e6a9d6414628950beb1724b6848",
@@ -39,7 +39,7 @@
     },
     {
       "name": "speedctrl3-pathcheck-90a4-r2",
-      "local_metadata": "<home>/projects/ugrp/outputs/oracle-runs/speedctrl3-pathcheck-90a4-r2",
+      "local_metadata": "/Users/changmin/projects/ugrp/outputs/oracle-runs/speedctrl3-pathcheck-90a4-r2",
       "source": "90a467acad129e6a9d6414628950beb1724b6848",
       "exit": 130,
       "command": "/usr/bin/env UGRP_EXECUTION_HOST=oracle-x86 MPLBACKEND=Agg PYTHONPATH=/home/ubuntu/ugrp-sim/egomap60-deps .venv-sim/bin/python -m scripts.sim_cli workflow run lazy-camera-abba --record outputs/speedctrl3-pathcheck-90a4-r2/managed --timeout 7200 -- --kind abba --sim-s 5 --output outputs/speedctrl3-pathcheck-90a4-r2/data --expected-source-sha 90a467acad129e6a9d6414628950beb1724b6848",

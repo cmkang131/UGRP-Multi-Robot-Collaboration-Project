@@ -5,7 +5,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import numpy as np
 import seg_ft
 
-DEV = Path('<home>/projects/ugrp/outputs/seg-lightfloor-20260929/dev')
+DEV = Path('/Users/changmin/projects/ugrp/outputs/seg-lightfloor-20260929/dev')
 ap = argparse.ArgumentParser()
 ap.add_argument('ckpt'); ap.add_argument('out')
 ap.add_argument('--pre', default='rgb'); ap.add_argument('--xf', default='none'); ap.add_argument('--max-frames', type=int)

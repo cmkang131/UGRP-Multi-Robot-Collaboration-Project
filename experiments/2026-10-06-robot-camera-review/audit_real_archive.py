@@ -13,7 +13,7 @@ from datetime import datetime, timezone
 import cv2
 import numpy as np
 
-PRIMARY = Path('<home>/projects/ugrp')
+PRIMARY = Path('/Users/changmin/projects/ugrp')
 RAW = PRIMARY/'outputs/camera-review-20261006/search-v3/real-analysis-v1'
 ARCHIVE = PRIMARY/'outputs/experiment-archives-20260907/real_traces-20260907.zip'
 MANIFEST = ARCHIVE.with_suffix('.manifest.jsonl')

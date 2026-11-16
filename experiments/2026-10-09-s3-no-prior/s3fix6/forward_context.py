@@ -3,7 +3,7 @@ import argparse,json
 from collections import Counter
 from pathlib import Path
 import numpy as np
-RAW=Path('<home>/projects/ugrp/outputs')
+RAW=Path('/Users/changmin/projects/ugrp/outputs')
 CASES=[('v149',RAW/'s3-sweep-b73ce193-s14201-v149','r2',False),('55001',RAW/'goal-route-motion-audit-v1/seed55001','r3',True),('55002',RAW/'goal-route-motion-audit-v1/seed55002','r3',True)]
 def rows(path):return [json.loads(s) for s in path.read_text().splitlines()]
 def evaluate(pulses_dir):

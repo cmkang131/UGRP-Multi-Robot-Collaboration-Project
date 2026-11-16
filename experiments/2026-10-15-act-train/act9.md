@@ -41,13 +41,13 @@ training_rgb OFF다. 새 큐의 동시 상한은 n4-highcpu-64 실측 40개와 �
 아래 명령은 이 worktree에서 실행한다. 재생 output은 매번 새 경로를 쓴다.
 
 ```sh
-PYTHONDONTWRITEBYTECODE=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_grasp_act_act9.py tests/test_grasp_act_act8.py tests/test_grasp_act_act7.py tests/test_grasp_act_act6.py tests/test_grasp_act_data.py
-PYTHONDONTWRITEBYTECODE=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.audit_grasp_act_act9 --summary <home>/projects/ugrp/outputs/e2e18-admin/gcp-reports/act8-01a892fa.json --noise experiments/2026-10-15-act-train/act9-noise.json --output /tmp/act9-independent-replay
-python3 -m scripts.queue_grasp_act_act9 --output-dir <home>/projects/ugrp/outputs/e2e18-admin/vm3-queue
+PYTHONDONTWRITEBYTECODE=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_grasp_act_act9.py tests/test_grasp_act_act8.py tests/test_grasp_act_act7.py tests/test_grasp_act_act6.py tests/test_grasp_act_data.py
+PYTHONDONTWRITEBYTECODE=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.audit_grasp_act_act9 --summary /Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act8-01a892fa.json --noise experiments/2026-10-15-act-train/act9-noise.json --output /tmp/act9-independent-replay
+python3 -m scripts.queue_grasp_act_act9 --output-dir /Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue
 ```
 
 계획 재생성은 `PYTHONDONTWRITEBYTECODE=1`을 켜고 위 큐 CLI에
-`--prepare --dependency-root <home>/projects/ugrp-wt/solo-teacher`를 붙인다.
+`--prepare --dependency-root /Users/changmin/projects/ugrp-wt/solo-teacher`를 붙인다.
 로컬 큐가 바뀌면 시드 목록/해시 영수증도 다시 검토한다. Git 전체 검색은 쓰지 않는다.
 
 ## 참고 자료

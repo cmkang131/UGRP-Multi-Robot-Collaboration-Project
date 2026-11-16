@@ -15,7 +15,7 @@ ROOT=Path(__file__).resolve().parents[2];HERE=Path(__file__).resolve().parent
 
 def replay(option,out):
     if out.exists():raise ValueError('new output required')
-    criteria=json.loads((HERE/'dock-augmented-criteria.json').read_text());raw=Path('<home>/projects/ugrp/outputs/s2-stiff-cal-20261007/start')
+    criteria=json.loads((HERE/'dock-augmented-criteria.json').read_text());raw=Path('/Users/changmin/projects/ugrp/outputs/s2-stiff-cal-20261007/start')
     record={'commands':json.loads((raw/'fixed_commands.json').read_text())};bundle=json.loads((raw/'setup_bundle.json').read_text())
     result=json.loads((raw/'result.json').read_text());assert result['options']['servo_stiffness']=='real_v1'
     record['poses']=[dict(x=0.,y=0.,yaw=0.,std_xy_m=0.)]*214

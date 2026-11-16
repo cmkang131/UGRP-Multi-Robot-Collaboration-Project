@@ -4,7 +4,7 @@ import argparse,hashlib,json,subprocess,sys
 
 ROOT=Path(__file__).resolve().parents[3]
 EXP=Path(__file__).resolve().parents[1]
-PRIMARY=Path('<home>/projects/ugrp')
+PRIMARY=Path('/Users/changmin/projects/ugrp')
 
 
 def read(p):return json.loads(p.read_text())

@@ -36,7 +36,7 @@ import numpy as np  # noqa: E402
 
 X = Path(__file__).resolve().parent
 ENV_V3 = ROOT/'experiments'/'2026-09-26-zone-env-v3'
-RAW = Path('<home>/projects/ugrp/outputs/zone-eval-topcam-20260926')
+RAW = Path('/Users/changmin/projects/ugrp/outputs/zone-eval-topcam-20260926')
 PREREG = json.loads((X/'prereg.json').read_text())
 MOVED = 'cctv_top_north_east'
 MAP_V3, MAP_V1 = 'zone_wide_corridor_tags_v3', 'zone_wide_corridor_tags_v1'

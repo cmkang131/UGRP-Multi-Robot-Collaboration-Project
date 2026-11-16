@@ -16,7 +16,7 @@ Mac 물리 step·렌더·학습·원격 호스트 접속은 0이다. 호스트·
 재사용하고, 미제출 39개도 재사용한다. 기존 실패는 새 관문 분모에 넣지 않는다.
 
 커밋 뒤 `python3 -m scripts.queue_grasp_act_act7 --output-dir
-<home>/projects/ugrp/outputs/e2e18-admin/vm3-queue`로
+/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue`로
 `20261015-act7-<SHA8>.json`을 만든다. 새 SHA의 **관문 40회만** 준비한다.
 모든 approved/enabled/ready/stage_ready/submitted는 false이며 이전 큐 3개는 보존한다.
 운영 승인·최신 재고/비용/종료 장치 점검·새 잡음 관문과 회복 성능 검증은 남아 있다.

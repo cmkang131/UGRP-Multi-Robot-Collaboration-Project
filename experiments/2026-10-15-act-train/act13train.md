@@ -28,7 +28,7 @@
 
 - p0 summary SHA-256 `a08674f1d1d6c54d8ddc7573fa63954b20f150d95685881112fe5ecd59ecdba1`
 - p0.2 summary SHA-256 `9706e053c89925ecacc8e402cb5e49bbbce9f8803b94482de1878f79e67edfd6`
-- 원격 원본 `ugrp-act-l4-pilot1:/mnt/act-source/act13train-961aa751/{p0,p02}`, 각 최종 체크포인트622,002,255byte. 원격 파일27개 전체 해시와 회수 파일23개를 검증했다. lite266,240byte SHA-256 `2555b265f72f775e7047ff3ed6938d251a620e5f8c09b613641796e5b3c172ef`. 가벼운 회수본 `<home>/projects/ugrp-wt/act-train/outputs/act13train-ops/retrieved`. 원격 가중치·optimizer와 기존 모델은 보존했다.
+- 원격 원본 `ugrp-act-l4-pilot1:/mnt/act-source/act13train-961aa751/{p0,p02}`, 각 최종 체크포인트622,002,255byte. 원격 파일27개 전체 해시와 회수 파일23개를 검증했다. lite266,240byte SHA-256 `2555b265f72f775e7047ff3ed6938d251a620e5f8c09b613641796e5b3c172ef`. 가벼운 회수본 `/Users/changmin/projects/ugrp-wt/act-train/outputs/act13train-ops/retrieved`. 원격 가중치·optimizer와 기존 모델은 보존했다.
 
 시작 전 VM TERMINATED·8h STOP·startup idle1200초, 부팅 뒤 timer active/enabled·GPU 프로세스0을 확인했다. 종료 직전 source clean·GPU 프로세스0·idle active, 최종 **TERMINATED**(2026-10-15T02:27:07.532-07:00)를 확인했다. budget-stop은 시작 전/후 ACTIVE·설정 시험 이후 미발동이며 최신 저장 메시지는 2026-10-15T08:48:24.228312Z 순비용0KRW다. 비용 집계 지연·크레딧 잔액/실청구 미확인은 남는다. 자신의 L4만 정지했고 gcp1의 다른 작업은 변경하지 않았다.
 
@@ -44,7 +44,7 @@
 
 ## 미승인 본 학습 대기열과 보존 계획
 
-새 파일 `<home>/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-act13-train-961aa751.json`(SHA-256 `5bc3930a2f6d8308eb5c987ad3594a0802b7f62ea8246f4e33ff6d3351dc859f`)에 정확한 source/data/smoke SHA를 채웠다. 기존 ready 초안은 변경하지 않았다. 모든 bool 플래그는 false다. p0/p0.2 main10k는 각각 step300에서 재개하며 process21600초·외부21900초·예약23400초의 별도 <=8h VM 창이다. 매 군 새 사전 점검 후 실행·회수·정지/TERMINATED를 요구한다. 두 창 예약 상한46,800초 compute **$11.800282**.
+새 파일 `/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-act13-train-961aa751.json`(SHA-256 `5bc3930a2f6d8308eb5c987ad3594a0802b7f62ea8246f4e33ff6d3351dc859f`)에 정확한 source/data/smoke SHA를 채웠다. 기존 ready 초안은 변경하지 않았다. 모든 bool 플래그는 false다. p0/p0.2 main10k는 각각 step300에서 재개하며 process21600초·외부21900초·예약23400초의 별도 <=8h VM 창이다. 매 군 새 사전 점검 후 실행·회수·정지/TERMINATED를 요구한다. 두 창 예약 상한46,800초 compute **$11.800282**.
 
 [main-approval p0](act13train-main-approval-p0.json) / [p0.2](act13train-main-approval-p02.json)는 approved=false다. 조정자의 독립 재집계 결과·smoke 검토와 SHA 고정 main 승인 뒤에만 사용한다. `grasp_act_training_guard`를 우회하지 않는다.
 

@@ -50,7 +50,7 @@ egomap31과 egomap33은 **같은 seed31001 녹화의 off/on 추정**임을 명�
 미달 함수는 F 준비완료/LLM 투입 성공으로 보고하지 않는다. 비교는 raster P/R/RMSE로 판정하고
 연속 선 표본값을 보조로 남긴다. 미달이면 원인만 기록, 문턱/옵션 사후변경0.
 
-raw `<home>/projects/ugrp/outputs/wall-segment-dev-v1`, 기존 raw 보존.
+raw `/Users/changmin/projects/ugrp/outputs/wall-segment-dev-v1`, 기존 raw 보존.
 기본off bytes 골든·관련1–3개 시험파일 통과 후 커밋·push. PR405 DRAFT/병합0.
 TensorBoard 생략 유지, Drive0. 단계마다 supervisor 확인.
 
@@ -124,7 +124,7 @@ egomap26 삽입 수정은 켜져 있고 관문 통과64/64를 삽입했다.
 ![새 DEV 지도·경로와 신뢰도 점검](figures/new-seed.png)
 
 [4배속 미리보기](figures/wrist-map-4x-preview.mp4) / 원본
-`<home>/projects/ugrp/outputs/wall-segment-dev-v1/wrist-map-4x.mp4`.
+`/Users/changmin/projects/ugrp/outputs/wall-segment-dev-v1/wrist-map-4x.mp4`.
 901프레임·20fps·45.05초, 매 시각 이전 online snapshot만 사용한다(마지막 지도를 과거에 채우지 않음).
 원본1280×480의 처음/중간/마지막 화면과 전체 디코드 확인. 오른쪽 회색 벽·초록 실제 경로는
 평가용 도식이며 로봇 관측이 아니다. [영상 해시](results/video.json).

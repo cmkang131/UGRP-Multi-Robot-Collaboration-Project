@@ -65,7 +65,7 @@ ENOSPC/기술 오류=HOST_ERROR로 보존, 같은 원인 두 번이면 중단. �
 이번에도 최대폭·비율·경로 오차·종료 오차를 GT 평가 전용 표로 분리한다. 질감으로 운동 모델
 척도 오류가 해결된 것으로 간주하지 않는다. #406 참고용이며 해당 브랜치/파일 수정0·계수 재튜닝0.
 
-원본 raw는 `<home>/projects/ugrp/outputs/wall-parallax-texture-v1/`에 새로 저장.
+원본 raw는 `/Users/changmin/projects/ugrp/outputs/wall-parallax-texture-v1/`에 새로 저장.
 기존 raw/사용자 미추적4파일 보존, 다른 worktree 수정0. 시험 후 commit/push·Codex trailer,
 PR #405 DRAFT·merge/force/reset 금지. 기존 venv 재사용. TensorBoard 기존 면제·Drive 예외 유지.
 
@@ -106,10 +106,10 @@ preview를 직접 확인하고 manifest SHA를 `render-review.json`에 봉인·c
 
 ```sh
 TAPE_SOURCE_SHA="$(git rev-parse HEAD)"
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/ugrp_session.py run egomap16-preview -- \
-  <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.sim_cli workflow run wall-parallax-texture -- \
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/ugrp_session.py run egomap16-preview -- \
+  /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.sim_cli workflow run wall-parallax-texture -- \
   --case preview --wall-texture tape_v1 --expected-source-sha "$TAPE_SOURCE_SHA" \
-  --output <home>/projects/ugrp/outputs/wall-parallax-texture-v1/preview --execute
+  --output /Users/changmin/projects/ugrp/outputs/wall-parallax-texture-v1/preview --execute
 ```
 
 렌더 봉인 뒤 위 명령의 case/output을 `tape-north`, 그 다음 `tape-south`로 바꿔 순차 실행한다.

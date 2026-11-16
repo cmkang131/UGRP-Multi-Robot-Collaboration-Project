@@ -8,7 +8,7 @@ sys.path.insert(0, str(ROOT))
 from sim.wall_texture import generate_assets, walls_from_xml, sha
 
 if __name__ == '__main__':
-    source = Path('<home>/projects/ugrp/outputs/wall-parallax-strafe-v1/strafe-north-host-retry1/scene.xml')
+    source = Path('/Users/changmin/projects/ugrp/outputs/wall-parallax-strafe-v1/strafe-north-host-retry1/scene.xml')
     destination = Path(__file__).resolve().parents[1] / 'assets'
     generate_assets(walls_from_xml(source.read_text()), destination)
     provenance = dict(source_scene=str(source), source_scene_sha256=sha(source),

@@ -13,7 +13,7 @@ DRAFT 유지, 독립 제어기 검토는 감독이 배정한다. PR 병합은 �
 - main의 `AGENTS.md`, `docs/decision_log.md`, `docs/retired_modules.md`를 바이트 그대로 유지했다. #417 퇴역 소스 87개와 시험 2개 모두 부재 확인.
 - 기존 S2 실험 기록·template·fixture 507개 Git blob 불변. 각 부모의 기본 catalog·조각·registry 57개/20개 바이트 동일. 공통 경로는 양쪽에서 중복 계산한다. ID 충돌이 없어 새 ID 등록·은퇴 번들 이동은 필요하지 않았다. 저장된 실행 번들을 새 소스로 재생성하지 않았다.
 - 기존 Mac 환경에서 `tests/test_ci_sharding.py tests/test_ci_fast_path.py tests/test_simulation_workflow_manager.py`: **96 passed, 280 subtests passed (5.46초)**. workflow 시험은 fake fixture/읽기 전용 plan이며 물리를 시작하지 않았다. `git diff --check` 통과. 넓은 시험은 CI에 맡긴다.
-- [기계 판독 검증·로컬 원본 해시](merge-preparation-20261009.json). 원본 로그·JUnit·파일별 보존 대조는 `<home>/projects/ugrp/outputs/s2-merge-prep-20261009/`에 보존한다.
+- [기계 판독 검증·로컬 원본 해시](merge-preparation-20261009.json). 원본 로그·JUnit·파일별 보존 대조는 `/Users/changmin/projects/ugrp/outputs/s2-merge-prep-20261009/`에 보존한다.
 
 ## S2 판정과 분모
 

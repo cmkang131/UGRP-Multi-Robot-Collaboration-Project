@@ -9,7 +9,7 @@
     "real_vision_worker_attempts": 0,
     "network_attempts": 0
   },
-  "command": "OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p tests.pose_provider_no_physics tests/test_zone_pair*.py tests/test_zone_start_dock*.py tests/test_owncam*.py tests/test_zone_own*.py tests/test_pose_provider*.py tests/test_vision_pose_source.py tests/test_zone_study_pair_delay.py tests/test_zone_study_integration*.py tests/test_real_scene_memory.py --basetemp=./.pytest_tmp",
+  "command": "OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p tests.pose_provider_no_physics tests/test_zone_pair*.py tests/test_zone_start_dock*.py tests/test_owncam*.py tests/test_zone_own*.py tests/test_pose_provider*.py tests/test_vision_pose_source.py tests/test_zone_study_pair_delay.py tests/test_zone_study_integration*.py tests/test_real_scene_memory.py --basetemp=./.pytest_tmp",
   "skipped_tests": [
     "tests/test_zone_own_executor.py::test_team_host_feeds_each_executor_only_its_own_camera",
     "tests/test_zone_own_executor_host.py::test_team_host_isolation_abort_and_horizon_on_the_real_world"

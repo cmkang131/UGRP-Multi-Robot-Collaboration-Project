@@ -77,10 +77,10 @@ cyan은 표준 Scene 물체를 HIGH 집게에 초기 배치하는 진단이며 �
 
 ```sh
 python3 scripts/ugrp_session.py run drive-friction-CASE -- \
-  <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.sim_cli workflow run masterpi-drive-friction-probe --record <home>/projects/ugrp/outputs/drive-friction-record-NEW-ID -- \
+  /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.sim_cli workflow run masterpi-drive-friction-probe --record /Users/changmin/projects/ugrp/outputs/drive-friction-record-NEW-ID -- \
   --expected-source-sha SHA --drive-profile masterpi_drive_friction_v1 \
   --cases rest forward left turn push no_contact rated_speed \
-  --output <home>/projects/ugrp/outputs/drive-friction-NEW-ID
+  --output /Users/changmin/projects/ugrp/outputs/drive-friction-NEW-ID
 ```
 
 실행/결과/실패·wall/SIM·TensorBoard 기록은 아래에 있다. 실물·짝 빔·v106 완주 검증은 없다.
@@ -112,7 +112,7 @@ python3 scripts/ugrp_session.py run drive-friction-CASE -- \
 - `995ff901` 구조 검사 5 passed. 첫 호출은 다른 Codex 카메라 진단 잠금으로 시작 전 거부.
 - 두 번째 호출은 초기 정지까지 실행 후 기록 코드가 `robot_mass_kg` property를 함수로 불러 HOST_ERROR.
   표준 NamespacedMasterPi API를 확인해 읽기만 고쳤으며 물리 수치는 바꾸지 않음.
-  원본: `<home>/projects/ugrp/outputs/drive-friction-995ff901-forward{,-record}`. 실패 원본 보존.
+  원본: `/Users/changmin/projects/ugrp/outputs/drive-friction-995ff901-forward{,-record}`. 실패 원본 보존.
 
 - `5f04f473` 무하중 7조건 완료: 직진 .08077 m/s, 옆 명령이 반대로 -.07026 m/s, 회전 .02219 rad/s.
   이는 기존 장식 롤러를 그대로 물리화했을 때의 잘못된 handedness 진단이며 채택 결과가 아니다.
@@ -158,7 +158,7 @@ cyan 최저 높이는 약 .141 m로 초기 .143 m 부근을 유지했다. 집기
 
 ## 원본, 재현, 검증 기록
 
-- 최신 원본: `<home>/projects/ugrp/outputs/drive-friction-f323a7b7-{empty,legacy,cyan}/`.
+- 최신 원본: `/Users/changmin/projects/ugrp/outputs/drive-friction-f323a7b7-{empty,legacy,cyan}/`.
   각 조건에 result/trace/실제 XML, 실행 루트에 SHA·명령·잠금 기록이 있다.
   해당 `-record/`에는 표준 관리 실행의 환경/소스 기록이 있다. 모든 잠금은 자기 PID로 해제했다.
 - 과거 잘못된 형상 7개와 HOST_ERROR 1개도 보존했다. 총 26개 결과 행 중 25개는 유한 측정 완료,
@@ -175,7 +175,7 @@ cyan 최저 높이는 약 .141 m로 초기 .143 m 부근을 유지했다. 집기
   전체 시험은 로컬에서 돌리지 않았으며 GitHub CI 결과는 PR에 별도로 표시된다.
 - [summarize.py](summarize.py)는 완성된 JSON을 읽기만 해 기존 공식 exporter로 새 snapshot을 만든다.
   26개 run / 424개 scalar를 원본→event→실행 중인 TensorBoard API까지 대조했고 원본 85개 해시가 일치했다.
-  snapshot은 `<home>/projects/ugrp/outputs/tensorboard/1006-drive-friction`이다.
+  snapshot은 `/Users/changmin/projects/ugrp/outputs/tensorboard/1006-drive-friction`이다.
   기본 `outputs/tensorboard-view.json`의 `masterpi_drive_friction_20261006` 키에 고정 링크와 열 설정을 추가했다.
 - [TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1006-drive-friction%2F#timeseries):
   기존 타 작업 뷰어 PID 52016의 공용 logdir를 읽었다. 서버 재시작/종료 없음.
@@ -269,7 +269,7 @@ MasterPi에서 검증된 MuJoCo 모델이 아니다. 확인한 공개 자료와 
 
 ### v2 원본과 검증
 
-- `<home>/projects/ugrp/outputs/drive-friction-13a8ed32-{empty,cyan}/`: 결과/trace/XML/manifest.
+- `/Users/changmin/projects/ugrp/outputs/drive-friction-13a8ed32-{empty,cyan}/`: 결과/trace/XML/manifest.
   대응 `-record/`에는 표준 관리 실행 소스/환경 기록을 보존했다.
 - 두 배치 모두 `ugrp_session.py run`에서 자기 PID로 `status=null` 확인 후 acquire/release했다.
   세션 두 개 모두 종료, 종료 직후 공용 잠금 null 확인. 다른 프로세스/서버는 변경하지 않았다.
@@ -302,7 +302,7 @@ MasterPi에서 검증된 MuJoCo 모델이 아니다. 확인한 공개 자료와 
   108행은 모두 dx/dy 측정 null이며 실제 속도 데이터가 아니다. 해당 두 핵심 제어/보정 파일의 모든 브랜치 이력은 초기 import뿐이다.
 - [PR #385](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/385) `88c5803c` 확인:
   Pi4 legacy I2C 제어 파일과 팔 dry-run·카메라/전압 진단이며 바퀴 속도/토크 측정 없음. raw는 Windows 로컬 경로라 Mac에서 회수하지 않았다.
-- `<home>/projects`의 다른 프로젝트/옛 worktree/이관 backup을 읽기 검색했다. 독립 실물 SDK/유효 속도 로그를 찾지 못했다.
+- `/Users/changmin/projects`의 다른 프로젝트/옛 worktree/이관 backup을 읽기 검색했다. 독립 실물 SDK/유효 속도 로그를 찾지 못했다.
   가상환경·node_modules·가중치·Git object 바이너리는 일반 파일 검색에서 제외했고, Git 이력은 별도로 검색했다.
   최초 import 이전 실물 SDK 원본 및 보드 firmware의 PWM→전압 변환은 **미확인**이다.
 
@@ -393,7 +393,7 @@ v106/짝 실행기 도입에는 위의 v101/v102 gain·deadband·시간상수·�
   공식 SDK·모터·MuJoCo 자료 URL과 확인/미확인 구분은 바로 위 조사 절에 있다.
 - [18개 결과](v3-results.json), [raw 66파일 해시](v3-artifacts.sha256.json),
   [관리 기록 12파일 해시](v3-managed-records.sha256.json), [TensorBoard 검증](v3-tensorboard-verification.json).
-- raw는 `<home>/projects/ugrp/outputs/drive-friction-a4964a0a-{v2-empty,v2-cyan,low-empty,low-cyan,high-empty,35-cyan}/`,
+- raw는 `/Users/changmin/projects/ugrp/outputs/drive-friction-a4964a0a-{v2-empty,v2-cyan,low-empty,low-cyan,high-empty,35-cyan}/`,
   각 대응 `-record/`는 표준 관리 기록이다. 기존 원본/실패 기록/스냅샷은 보존했다. raw 원격 백업은 하지 않았다.
 - 모든 배치는 `ugrp_session.py run`에서 공용 잠금 null 확인 후 자기 PID로 acquire/release했다.
   시작한 여섯 세션은 종료했고 마지막 잠금 null을 확인했다. 다른 작업의 프로세스는 변경하지 않았다.
@@ -657,9 +657,9 @@ v5 접촉 제거는 원인 분리용 1건뿐이고 v6 검증으로 승계하지 
 [raw 해시](v6-artifacts.sha256.json), [관리 기록 해시](v6-managed-records.sha256.json),
 [TensorBoard 수치 대조](v6-tensorboard-verification.json).
 Raw:
-`<home>/projects/ugrp/outputs/drive-friction-a7e5ad76-audit-{v4,v5}/`,
-`<home>/projects/ugrp/outputs/drive-friction-19621cfc-hard-empty/`,
-`<home>/projects/ugrp/outputs/drive-friction-b438cddb-v6-empty/`.
+`/Users/changmin/projects/ugrp/outputs/drive-friction-a7e5ad76-audit-{v4,v5}/`,
+`/Users/changmin/projects/ugrp/outputs/drive-friction-19621cfc-hard-empty/`,
+`/Users/changmin/projects/ugrp/outputs/drive-friction-b438cddb-v6-empty/`.
 
 다음 근거가 필요한 사항은 장착 TT 토크/출력 곡선, 출력35의 충분한 구동력, 롤러 전환/접촉
 저항의 바퀴축 환산이다. 실측 또는 공개 모델 대조 없이 b나 모터 기울기를 바꾸지 않는다.
@@ -809,9 +809,9 @@ PR #402 **DRAFT / NOT_READY / 병합 금지**를 유지한다.
 [14개 결과·판정](v7-results.json), [v6 멎음 토크 분해](v7-stall-diagnosis.json),
 [raw 해시](v7-artifacts.sha256.json), [관리 기록 해시](v7-managed-records.sha256.json),
 [TensorBoard 수치 대조](v7-tensorboard-verification.json).
-Raw는 `<home>/projects/ugrp/outputs/drive-friction-7d1025f3-v6-stall/` 및
-`<home>/projects/ugrp/outputs/drive-friction-f837428b-v7-{empty,cyan,motion}/`.
-후처리 소스는 `<home>/projects/ugrp/outputs/drive-friction-v7-audit-20261006/postprocess-source.py`,
+Raw는 `/Users/changmin/projects/ugrp/outputs/drive-friction-7d1025f3-v6-stall/` 및
+`/Users/changmin/projects/ugrp/outputs/drive-friction-f837428b-v7-{empty,cyan,motion}/`.
+후처리 소스는 `/Users/changmin/projects/ugrp/outputs/drive-friction-v7-audit-20261006/postprocess-source.py`,
 SHA256 `0b05a718c8177d00a254483f88a2c793d171a79b40ee0d866d40e348c4151dc0`로 로컬 보존했다.
 
 v102의 시간/하중 gain, v106의 하중 이동·자세별 속도, 짝 빔을 통한 수동 밀림/파지 유지,
@@ -913,7 +913,7 @@ finger midpoint 변화로, 빔 전체 이동이나 바퀴-바닥 접촉 미끄�
 
 [짝 빔 결과·원본 위치](pair-v7-results.json), [raw14파일/관리4파일 해시](pair-v7-artifacts.sha256.json),
 [TensorBoard 대조](pair-v7-tensorboard-verification.json). raw는
-`<home>/projects/ugrp/outputs/drive-friction-c05130d9-pair-{legacy,v7}/`.
+`/Users/changmin/projects/ugrp/outputs/drive-friction-c05130d9-pair-{legacy,v7}/`.
 TensorBoard 새 snapshot `1006-drive-friction-pair`:2 runs/**48 scalars** 원본→event→실행 중
 API 일치. 공용 view에는 자기 `masterpi_drive_pair_v7_20261006` key만 추가했다.
 처음 API 확인은 서버의 새 snapshot 재읽기 전404였고, 재읽기 후 일치했다(중복 변환 없음).
@@ -921,7 +921,7 @@ API 일치. 공용 view에는 자기 `masterpi_drive_pair_v7_20261006` key만 �
 기본값·기존 번들·v7 물성은 불변, PR #402 DRAFT·미병합. v7은 DEV 후보이고 실물 측정 TODO,
 S2·v102/v106 및 카메라 보정이 포함된 새 운반 검증은 다음 범위다.
 
-후처리 소스 로컬 보존: `<home>/projects/ugrp/outputs/drive-friction-pair-audit-20261006/postprocess-source.py`, SHA256 `62a804e167af88c7eb14d05d656e4a897f075f6d6afc834a8dcb56fcaecff331`.
+후처리 소스 로컬 보존: `/Users/changmin/projects/ugrp/outputs/drive-friction-pair-audit-20261006/postprocess-source.py`, SHA256 `62a804e167af88c7eb14d05d656e4a897f075f6d6afc834a8dcb56fcaecff331`.
 
 ## PR #402 독립 리뷰 반영 (2026-10-09)
 

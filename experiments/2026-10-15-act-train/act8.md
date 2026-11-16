@@ -32,5 +32,5 @@ clean 보정 effort norm 4,526틱: 중앙.19777/p95 .24758/최대.26053.
 새 시드8316800–8316839 정적 계획40개(4색 각10), 로컬 큐/실행 이름 중복0;
 원격 미사용·최종 접촉 원인·물리 성공·회복 유용성은 미확인.
 커밋 뒤 `python3 -m scripts.queue_grasp_act_act8 --output-dir
-<home>/projects/ugrp/outputs/e2e18-admin/vm3-queue`로 새SHA 큐를 만든다.
+/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue`로 새SHA 큐를 만든다.
 모든 승인/실행 플래그false, act7 큐 보존, 이전 결과와 합산 금지.

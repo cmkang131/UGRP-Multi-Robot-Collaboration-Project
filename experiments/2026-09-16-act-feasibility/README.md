@@ -91,19 +91,19 @@ seed17 case10은 r1 준비 완료 후 r3 접근 동안4회 대기했다. 준비 
 
 ```sh
 python3 scripts/ugrp_session.py run act-train-NEW -- \
-  <home>/Project-Runtimes/ugrp/.venv-reference-act/bin/python \
+  /Users/changmin/Project-Runtimes/ugrp/.venv-reference-act/bin/python \
   scripts/train_act_feasibility.py \
-  --teacher-dirs <home>/projects/ugrp/outputs/rgb-approach-teacher-20260910-v1 outputs/teacher-expand30-v1 \
+  --teacher-dirs /Users/changmin/projects/ugrp/outputs/rgb-approach-teacher-20260910-v1 outputs/teacher-expand30-v1 \
   --protocol experiments/2026-09-16-act-feasibility/protocol.json \
   --sampling balanced --steps 10000 --seed 20260916 --out-dir outputs/act-NEW
 
 python3 scripts/ugrp_session.py run act-physics-NEW -- \
-  <home>/Project-Runtimes/ugrp/.venv-reference-act/bin/python \
+  /Users/changmin/Project-Runtimes/ugrp/.venv-reference-act/bin/python \
   scripts/run_reference_approach_pilot.py \
-  --mjpython <home>/projects/ugrp/.venv-sim-worker-mac/bin/mjpython \
-  --act-python <home>/Project-Runtimes/ugrp/.venv-reference-act/bin/python \
+  --mjpython /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/mjpython \
+  --act-python /Users/changmin/Project-Runtimes/ugrp/.venv-reference-act/bin/python \
   --comparison-dir outputs/act-NEW \
-  --grasp-model-dir <home>/projects/ugrp/outputs/grasp-recovery-model-20260910-v1 \
+  --grasp-model-dir /Users/changmin/projects/ugrp/outputs/grasp-recovery-model-20260910-v1 \
   --protocol experiments/2026-09-16-act-feasibility/protocol.json --out-dir outputs/act-physics-NEW
 ```
 

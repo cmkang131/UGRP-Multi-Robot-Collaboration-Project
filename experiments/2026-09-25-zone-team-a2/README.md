@@ -149,5 +149,5 @@ A1 부품(`harness/zone_goal_v2.py`, `zone_team_jobs.py`, `zone_team_formation.p
   - cohort 2 dynamic s12(1초 늦춘 같은 궤적이라 731초에 중단)
   - 자기 카메라 전용 실행기. 최종 연구 조건이며, 이 기록은 교사 시연 가능성만 다룬다
 - 이 결과는 교사 실현 가능성이다. 로봇 성공, RGB 스킬 성공, 학생 성공으로 보고하지 않는다. 로봇에게 가는 결과는 교사 영수증이다(`teacher_receipt_L4`, L4 미해결).
-- 원본은 로컬에만 있다(원격 백업 아님): cohort 1은 `<home>/projects/ugrp-worktrees/zone-team-a2/outputs/zone-team-a2-20260925/`, cohort 2는 `<home>/projects/ugrp-worktrees/zone-team-a2-dev/outputs/zone-team-a2-v2-20260925/`. 기록되지 않은 디버그 실행(`dbg-dyn`, `dbg-plan`, `dbg-plan2`, `dbg-dump`)은 scratchpad에만 있고 결과에 넣지 않았다.
+- 원본은 로컬에만 있다(원격 백업 아님): cohort 1은 `/Users/changmin/projects/ugrp-worktrees/zone-team-a2/outputs/zone-team-a2-20260925/`, cohort 2는 `/Users/changmin/projects/ugrp-worktrees/zone-team-a2-dev/outputs/zone-team-a2-v2-20260925/`. 기록되지 않은 디버그 실행(`dbg-dyn`, `dbg-plan`, `dbg-plan2`, `dbg-dump`)은 scratchpad에만 있고 결과에 넣지 않았다.
 

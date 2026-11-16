@@ -13,13 +13,13 @@
 코드 검토·커밋 후 물리 실행이 없는 창에서만 아래 경로를 사용한다. `RECORD`는 새 관리 출력으로 정해 덮어쓰지 않는다. 원본 해시는 [실패 감사](train-seed24-deployed-first-failure-audit.json)와 대조한다. `SOURCE_FREEZE_SHA`는 동결 파일을 별도로 확인해 기입한다.
 
 ```bash
-UGRP_SIM_PYTHON=<home>/Project-Runtimes/ugrp/.venv-reference-act/bin/python \
+UGRP_SIM_PYTHON=/Users/changmin/Project-Runtimes/ugrp/.venv-reference-act/bin/python \
 OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 \
 bash scripts/open_simulation.command workflow run act-input-finalization \
   --record "$RECORD" --timeout 720 -- \
-  --failed-run <home>/projects/ugrp/outputs/act-action-training-20260924/train-seed24-deployed-first-managed \
-  --dataset <home>/projects/ugrp/outputs/act-action-training-20260924/data/combined-dataset.json \
-  --source-freeze <home>/projects/ugrp/outputs/act-action-training-20260924/refinement-source-freeze.json \
+  --failed-run /Users/changmin/projects/ugrp/outputs/act-action-training-20260924/train-seed24-deployed-first-managed \
+  --dataset /Users/changmin/projects/ugrp/outputs/act-action-training-20260924/data/combined-dataset.json \
+  --source-freeze /Users/changmin/projects/ugrp/outputs/act-action-training-20260924/refinement-source-freeze.json \
   --expected-manifest-sha256 aa90d237e0c772eff7a87797e76542cf92764b929375fa8d0c74f0c6cae0fedb \
   --expected-report-sha256 eb9c083a14aa9bab9d809fbb0935ffb339ac6324efdf7fd8f9d767a6a043a055 \
   --expected-checkpoint-sha256 546a7cf3c3f761eb269b793e85037c83e00c0dba2cc6248a13cc0fa7e908e6f0 \

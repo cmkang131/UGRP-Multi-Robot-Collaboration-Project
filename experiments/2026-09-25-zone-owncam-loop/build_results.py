@@ -10,7 +10,7 @@ import json
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-RAW = Path('<home>/projects/ugrp/outputs/owncam-loop-20260925')
+RAW = Path('/Users/changmin/projects/ugrp/outputs/owncam-loop-20260925')
 ATTEMPTS = {
     'dev-a1': 'dev attempt 1 (155cb71): v1 calibration',
     'dev-a2': 'dev attempt 2 (a5559e7): + loaded/unloaded elevation bias',

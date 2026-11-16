@@ -35,8 +35,8 @@ builder의 `build()['cases']`에서 `registration_run_id`만 뺀 바이트는 �
 다른 작업의 공용 `core.worktree` 설정에 영향을 받지 않도록 이 worktree 경로를 명시한다. 공용 host lock은 획득하지 않는다.
 
 ```sh
-export GIT_WORK_TREE=<home>/projects/ugrp-wt/v6h-register
-V6H_PYTHON=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
+export GIT_WORK_TREE=/Users/changmin/projects/ugrp-wt/v6h-register
+V6H_PYTHON=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
 $V6H_PYTHON -m experiments.2026-09-30-pair-v6h-carry.build_prereg_v6h --verify
 $V6H_PYTHON -m experiments.2026-09-30-pair-v6h-carry.build_prereg_v6h --verify-seal --seal-revision v2 --seal-commit "$V6H_SEAL_V2_COMMIT"
 $V6H_PYTHON -m pytest -q -p tests.pose_provider_no_physics tests/test_zone_pair_v6h_seal.py tests/test_zone_pair_registered_source.py tests/test_zone_study_source_pinning.py tests/test_zone_pair_v6h.py tests/test_zone_pair_v6h_review_delta.py tests/test_v6h_classify_placements.py tests/test_v6h_classifier_properties.py tests/test_v6h_recorder_contract.py tests/test_v6h_blinded_run_manifest.py
@@ -52,8 +52,8 @@ $V6H_PYTHON -m pytest -q -p tests.pose_provider_no_physics tests/test_zone_pair_
 $V6H_PYTHON -m experiments.2026-09-30-pair-v6h-carry.analysis.apply_sealed_analysis \
   --seal-commit "$V6H_SEAL_V2_COMMIT" \
   --prereg experiments/2026-09-30-pair-v6h-carry/analysis/seal_v2/prereg_v6h.json \
-  --raw <home>/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930 \
-  --output <home>/projects/ugrp/outputs/v6h1-sealed-analysis-v2-NEW
+  --raw /Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930 \
+  --output /Users/changmin/projects/ugrp/outputs/v6h1-sealed-analysis-v2-NEW
 ```
 
 이 명령은 내부에서 고정된 `classify_placements.analyse`를 `--recorded-run-manifest`와 그 고정 해시로 적용한다. 실행이 미봉인이었다는 classifier 원보고서를 보존한 뒤, 별도 봉인 gate로 941×60의 48/60·전체 안전·B를 판정하고 943×12를 민감도로 구분한다. HOST_ERROR/ENOSPC/누락은 UNCLASSIFIED이며 분모를 줄이지 않고 통과를 막는다. 원본 분류기는 `--sealed-manifest`와 recorded-run manifest의 혼용을 계속 거절한다.

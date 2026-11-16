@@ -10,7 +10,7 @@ from scripts.run_wall_servo_stiffness import arm
 
 ROOT=old.ROOT
 EXP=ROOT/'experiments/2026-10-08-active-recovery'
-RAW=Path('<home>/projects/ugrp/outputs/active-recovery-v1')
+RAW=Path('/Users/changmin/projects/ugrp/outputs/active-recovery-v1')
 
 
 def dump(path,value):

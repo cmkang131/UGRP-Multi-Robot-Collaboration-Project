@@ -1,7 +1,7 @@
 {
   "schema": "ugrp.action_act_refinement_evaluation_design.v1",
   "status": "preregistered_design_only_no_refinement_source_or_physics",
-  "parent_protocol": "<home>/.codex/worktrees/action-act-refinement/ugrp/experiments/2026-09-24-action-act/refinement-protocol.json",
+  "parent_protocol": "/Users/changmin/.codex/worktrees/action-act-refinement/ugrp/experiments/2026-09-24-action-act/refinement-protocol.json",
   "timing_boundary": "Start only after the frozen-v27 first physical six-trial study has closed and all raw results are preserved. Freeze refined source, execution bundle, checkpoint, and common inputs before the first qualification case; no mid-cohort case or arm substitution.",
   "question": "On three nearby but previously unused open-map spawn triples, does refined RGB improve the complete mission over frozen v27 RGB, and does refined ACT carry complete the same physical tasks under the refined source?",
   "claim_limit": "Nearby initial-pose variation with same open map, seed11, dock_a, saved plan, grasp start, cameras and contact profile. This is not new-map, unseen-task, independent communication, or broad reliability generalization.",
@@ -186,7 +186,7 @@
       "--reference-top",
       "tests/fixtures/camera_goal_transport/reference-top.jpg"
     ],
-    "per_trial": "Pass --spawn-offset DX DY YAW_DEG, a fresh --output path, --max-wall-s as specified by arm, and the same frozen grasp/stage model directories as first study. ACT arm additionally passes --carry-act-model CHECKPOINT_DIR --carry-act-python <home>/Project-Runtimes/ugrp/.venv-reference-act/bin/python --carry-act-stop-mode rgb_guarded. Record exact command and resolved inputs in manager manifest."
+    "per_trial": "Pass --spawn-offset DX DY YAW_DEG, a fresh --output path, --max-wall-s as specified by arm, and the same frozen grasp/stage model directories as first study. ACT arm additionally passes --carry-act-model CHECKPOINT_DIR --carry-act-python /Users/changmin/Project-Runtimes/ugrp/.venv-reference-act/bin/python --carry-act-stop-mode rgb_guarded. Record exact command and resolved inputs in manager manifest."
   },
   "readout": {
     "denominators": "For each case and arm: planned, started, process completed, protocol complete, beam and box physical success, timeout, typed failure. Include all nine slots and do not replace failures.",

@@ -51,7 +51,7 @@ Git checkout과 이력은 바꾸지 않았다.
 
 ```sh
 OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 \
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
   tests/test_sim_speed_review5.py tests/test_sim_speed_review4.py \
   tests/test_sim_speed_review3.py tests/test_sim_speed_review2.py \
   tests/test_sim_speed_tools.py tests/test_sim_slots.py tests/test_exact_speedups.py \

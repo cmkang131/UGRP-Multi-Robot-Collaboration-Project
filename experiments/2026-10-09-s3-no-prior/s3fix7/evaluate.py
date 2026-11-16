@@ -12,7 +12,7 @@ from harness.zone_final_pair_binding import bind
 from harness.python_source_closure import source_closure
 
 HERE=Path(__file__).parent
-RAW=Path('<home>/projects/ugrp/outputs')
+RAW=Path('/Users/changmin/projects/ugrp/outputs')
 
 
 def read(p):return json.loads(p.read_text())

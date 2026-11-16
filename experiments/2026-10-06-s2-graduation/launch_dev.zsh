@@ -2,8 +2,8 @@
 # Frozen S2 graduation launcher, adapted from PR #391.
 setopt NO_BG_NICE
 set -eu
-cd $HOME/projects/ugrp-wt/s2-graduation
-solo_py=$HOME/projects/ugrp/.venv-sim-worker-mac/bin/python
+cd <home>/projects/ugrp-wt/s2-graduation
+solo_py=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 solo_sha=${1:?expected full source SHA required}
 solo_out=${2:?absolute new output directory required}
 solo_stage=${3:-place}
@@ -14,7 +14,7 @@ solo_slot=${5:?preregistered slot required}
 [[ -z $(git status --porcelain) ]]
 [[ ! -e "$solo_out" && ! -e "${solo_out}-managed" ]]
 [[ $(ps -o nice= -p $$ | tr -d ' ') == 0 ]]
-[[ -f $HOME/projects/ugrp/outputs/v98-probe-tools/sim_watchdog.py ]]
+[[ -f <home>/projects/ugrp/outputs/v98-probe-tools/sim_watchdog.py ]]
 
 [[ $("$solo_py" scripts/agent_lock.py status) == null ]]
 "$solo_py" scripts/agent_lock.py acquire --owner codex --branch codex/s2-graduation \
@@ -42,7 +42,7 @@ trap 'exit 143' TERM
   --stage-probe "$solo_stage" --seed "$solo_seed" --robot-id r3 --pickup-slot "$solo_slot" \
   --destination B --passage-id door_1 --speedups v98-exact-v6 --lock-owner codex &
 solo_sim_pid=$!
-"$solo_py" $HOME/projects/ugrp/outputs/v98-probe-tools/sim_watchdog.py \
+"$solo_py" <home>/projects/ugrp/outputs/v98-probe-tools/sim_watchdog.py \
   "$solo_out" --pid "$solo_sim_pid" --stall-sim 30 --hung-wall 300 --every 30 \
   >"${solo_out}-watchdog.log" 2>&1 &
 solo_watch_pid=$!

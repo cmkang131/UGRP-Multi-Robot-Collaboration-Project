@@ -5,7 +5,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).parent))
 from common import auc
 
-rows = json.load(open(Path('<home>/projects/ugrp/outputs/stall-detection-research/flow_rows_lag1.json')))
+rows = json.load(open(Path('/Users/changmin/projects/ugrp/outputs/stall-detection-research/flow_rows_lag1.json')))
 feats = ['mad_full', 'mad_dark', 'pc_dark_px', 'pc_resp', 'pc_full_px', 'fb_dark_px', 'beam_edge_dpx']
 lab = {l: [r for r in rows if r['label'] == l] for l in ('STALL', 'MOVING', 'REST')}
 out = {'n_pairs': {l: len(v) for l, v in lab.items()},

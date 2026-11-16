@@ -2,8 +2,8 @@
 
 2026-10-08 사용자 지시. 기준21582623, PR405 DRAFT. 물리·렌더·모델 호출0.
 egomap47 seed47001의 봉인된 own frontend-ledger/poses로 마지막 graph를 계산한다.
-원본 `<home>/projects/ugrp/outputs/navfn-start-recovery-v1/new-seed`는 수정하지 않는다.
-새 raw `<home>/projects/ugrp/outputs/graph-runtime-v1`; GT는 최종 계산 봉인 후 채점만.
+원본 `/Users/changmin/projects/ugrp/outputs/navfn-start-recovery-v1/new-seed`는 수정하지 않는다.
+새 raw `/Users/changmin/projects/ugrp/outputs/graph-runtime-v1`; GT는 최종 계산 봉인 후 채점만.
 
 순서: 문서/드라이버 커밋→배타 timing 잠금→기존 최종 graph cProfile1회(30분 상한 제거,
 유한한204스캔 입력1회만)→상위 병목과 표준 원문 확인→기본off 옵션 구현·시험→고정 on/off 시간/동일성.
@@ -127,7 +127,7 @@ egomap47의 프레임 가속1.524×(29.222→19.179초/30SIM초)에 이번 캐�
   `audit.py`(기록35회+마지막 입력중복), `report.py`(봉인 후 GT채점), `performance.py`(동일성·외삽).
 - 시험: `test_self_graph_cache.py`, `test_self_pose_graph.py`, `test_self_wall_robust.py` **36 passed**.
   동일 입력 재사용/입력 변경 무효화/다른 로봇 차단/LRU퇴출/return 복사/기본off/메모리 연결 검사 포함.
-- raw: `<home>/projects/ugrp/outputs/graph-runtime-v1`.
+- raw: `/Users/changmin/projects/ugrp/outputs/graph-runtime-v1`.
   `off-profile/cpu.prof`, `top.txt`, 각 조건 graph/grid/stats, `benchmark.json`, `reuse-audit.json`, `performance.json`.
   SHA·환경·입력 manifest는 `results/validation.json`. 원 녹화/4개 사용자 미추적 파일/다른 worktree 수정0.
 - 그림1장<1MiB. 기존 egomap47 영상은 원위치 유지(새물리/새영상 아님).

@@ -3,7 +3,7 @@ import hashlib,json,math
 from collections import Counter
 from pathlib import Path
 import numpy as np
-O=Path('<home>/projects/ugrp/outputs/s2-stiff-cal-20261007')
+O=Path('/Users/changmin/projects/ugrp/outputs/s2-stiff-cal-20261007')
 E=Path(__file__).resolve().parent
 read=lambda p:json.loads(p.read_text())
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()

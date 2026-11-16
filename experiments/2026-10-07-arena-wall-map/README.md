@@ -60,7 +60,7 @@
 (속도 비교 아님). agent_lock status null→ownPID acquire, ugrp_session+sim_cli 관리
 workflow, nice0/NO_BG_NICE, 한 번에 하나, freeze0. ENOSPC=HOST_ERROR, 원본 보존.
 초기 free42.65GiB, project52.48/58GiB. raw는
-`<home>/projects/ugrp/outputs/arena-wall-map-v1/`. 실험 Git 미디어≤1MiB/파일,
+`/Users/changmin/projects/ugrp/outputs/arena-wall-map-v1/`. 실험 Git 미디어≤1MiB/파일,
 총≤5MiB. 새 의존성/venv0. 변경 시험1–3파일/off 골든 통과 후 commit/push.
 PR405 DRAFT·병합/force/reset0, #406/#409/다른 worktree 수정0. 기존 미추적4파일 보존.
 TensorBoard 생략 지시 유지, Drive 사용0. raw 로컬 보존과 Git 원격 보존을 구분한다.

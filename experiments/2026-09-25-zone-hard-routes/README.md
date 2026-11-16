@@ -109,6 +109,6 @@
 
 ## 원본과 재현
 
-- 원본(로컬 전용, gitignore): `<home>/projects/ugrp-worktrees/zone-hard-routes/outputs/zone-hard-routes-20260925/` (`matrix/`, `wide-baseline/`, `base-v1-*`, `ident-v1-*`, `matrix-superseded/`, `matrix-aborted/`, 실행마다 `result.json`, `teacher-events.json`, `scene.xml`, `replay/`, `team/`, `rgb/`). 파일 해시는 `results.json`에 있다. 원격 백업은 없다.
+- 원본(로컬 전용, gitignore): `/Users/changmin/projects/ugrp-worktrees/zone-hard-routes/outputs/zone-hard-routes-20260925/` (`matrix/`, `wide-baseline/`, `base-v1-*`, `ident-v1-*`, `matrix-superseded/`, `matrix-aborted/`, 실행마다 `result.json`, `teacher-events.json`, `scene.xml`, `replay/`, `team/`, `rgb/`). 파일 해시는 `results.json`에 있다. 원격 백업은 없다.
 - 영상(관찰 전용, 4배속, 960×540): `media/door-G8-dynamic-s13.mp4`(대치 1회, 일반 비키기 3회, 통로 대기 65.5 s), `media/two-G8-dynamic-s12.mp4`, `media/corr-G5-dynamic-s12.mp4`(복도 대치 1회, 대기 30.2 s).
 - 재현: `python experiments/2026-09-25-zone-hard-routes/run_matrix.py --output <dir> --jobs 2 [--variants ...]`, `analyze_runs.py --output <dir>/matrix --record <이 폴더> --media <dir>/media --videos <run>...`, `build_results.py`.

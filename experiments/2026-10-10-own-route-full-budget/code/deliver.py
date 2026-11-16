@@ -3,7 +3,7 @@ from pathlib import Path
 import argparse,hashlib,importlib.util,json,statistics,subprocess,sys
 from collections import Counter
 ROOT=Path(__file__).resolve().parents[3];EXP=Path(__file__).resolve().parents[1]
-PRIMARY=Path('<home>/projects/ugrp')
+PRIMARY=Path('/Users/changmin/projects/ugrp')
 
 def read(p):return json.loads(p.read_text())
 def write(p,r):p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(r,indent=2)+'\n')

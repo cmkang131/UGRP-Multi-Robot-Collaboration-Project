@@ -2,7 +2,7 @@
 
 대상: [2026-09-25-beam-regrasp-binding](../2026-09-25-beam-regrasp-binding/README.md)의 v61 Y1·Y2(소스 `222db60`, 번들 `rgb-standard-dispatch-v61`). 재파지 뒤 재접근 세 번이 모두 모델 슬롯 `r3`의 TOP 기하 모델에서 `rgb_pose_outside_support`로 멈췄다. 직교 잔차는 12.11 / 12.51 / 15.49였고, 한계는 11.56이다.
 
-- **새 SIM 물리 실행은 없다.** 기존 raw 출력(`<home>/projects/ugrp/outputs/beam-regrasp-20260925/{Y1,Y2}-grasp`, 로컬 전용)만 읽었다.
+- **새 SIM 물리 실행은 없다.** 기존 raw 출력(`/Users/changmin/projects/ugrp/outputs/beam-regrasp-20260925/{Y1,Y2}-grasp`, 로컬 전용)만 읽었다.
 - replay qpos는 관찰자 전용 평가 도구로만 썼다. 로봇·제어기 입력으로 쓰지 않았다.
 - 오프라인 렌더는 replay의 `model.mjb`와 qpos로 `cctv_top`만 다시 그렸다. 판정에는 실행과 같은 모델 파일·canonical 변환·`predict_stage`를 썼다.
 - 물리·학습 잠금 대상(realtime, wall 시간, 학습·추론 속도)이 아니다. 참고로 부하 평균(1분)은 실행 전후 4.62 / 6.28이었다.

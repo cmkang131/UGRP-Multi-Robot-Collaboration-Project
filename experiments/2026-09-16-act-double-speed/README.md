@@ -58,10 +58,10 @@
 
 ## 영상과 전체 결과
 
-- [속도 비교](<home>/projects/ugrp-worktrees/act-double-speed-generalization/outputs/video-speed-v1/in_domain-01-comparison.mp4)
-- [먼 시작: 학습 초기값에 따라 성공과 실패가 갈림](<home>/projects/ugrp-worktrees/act-double-speed-generalization/outputs/video-generalization-v1/distance_shift-07-comparison.mp4)
-- [횡방향3cm: 네 방법 모두 실패](<home>/projects/ugrp-worktrees/act-double-speed-generalization/outputs/video-generalization-v1/lateral_shift-05-comparison.mp4)
-- [방향8도: 네 방법 모두 실패](<home>/projects/ugrp-worktrees/act-double-speed-generalization/outputs/video-generalization-v1/yaw_shift-05-comparison.mp4)
+- [속도 비교](/Users/changmin/projects/ugrp-worktrees/act-double-speed-generalization/outputs/video-speed-v1/in_domain-01-comparison.mp4)
+- [먼 시작: 학습 초기값에 따라 성공과 실패가 갈림](/Users/changmin/projects/ugrp-worktrees/act-double-speed-generalization/outputs/video-generalization-v1/distance_shift-07-comparison.mp4)
+- [횡방향3cm: 네 방법 모두 실패](/Users/changmin/projects/ugrp-worktrees/act-double-speed-generalization/outputs/video-generalization-v1/lateral_shift-05-comparison.mp4)
+- [방향8도: 네 방법 모두 실패](/Users/changmin/projects/ugrp-worktrees/act-double-speed-generalization/outputs/video-generalization-v1/yaw_shift-05-comparison.mp4)
 
 [전체128회 감사](results/final-audit-v1.json) · [원래 속도 교사17회 진단](results/teacher1-diagnostic-audit-v1.json) · [출처와 해시](provenance.json)
 

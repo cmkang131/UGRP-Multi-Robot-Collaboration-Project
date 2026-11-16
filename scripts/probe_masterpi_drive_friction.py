@@ -11,7 +11,7 @@ import subprocess
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
-RAW_ROOT = Path('<home>/projects/ugrp/outputs')
+RAW_ROOT = Path('/Users/changmin/projects/ugrp/outputs')
 PROFILE = 'masterpi_drive_friction_v1'
 PUBLIC_PROFILE = 'masterpi_drive_friction_v2'
 THRESHOLD_PROFILE = 'masterpi_drive_friction_v3'

@@ -64,7 +64,7 @@ GT 진단 수치로 이 단계에 진입하지 않는다. 실패 시 멈추고 �
   원 모델 SHA256 `2245bb9fdcb69d872893dd6ffafb57151750dd42916394a287b6d10bab11d69d`.
   모델은 과거 S2 자료의 탐색적 평균 응답/분산이며 실물·독립 확증 보정으로 부르지 않는다.
 - GT 진단 어댑터는 이 실험 폴더에만 둔다. harness에 GT 옵션/GT loader를 넣지 않는다.
-- raw `<home>/projects/ugrp/outputs/wall-parallax-baseline-v1`, 원본 보존,
+- raw `/Users/changmin/projects/ugrp/outputs/wall-parallax-baseline-v1`, 원본 보존,
   ENOSPC=HOST_ERROR, 같은 원인 두 번 중단. wall-time 성능 측정/물리 실행이 없어 잠금 없음.
   결과/그림/해시는 로컬+Git, raw 원격 백업으로 주장하지 않는다. TensorBoard 기존 사용자 면제 유지.
 - 관련 시험 통과 후 commit/push, `Co-Authored-By: Codex <noreply@openai.com>`, PR #405 DRAFT·병합 금지.

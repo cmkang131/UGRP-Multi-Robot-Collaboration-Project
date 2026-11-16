@@ -1,6 +1,6 @@
 # P03 — 무표식 위치 제공자와 재측위의 상태 보존
 
-UGRP main 기준 감사 `a8094cc14e098a55483f53a3c49bf6a0b116043d`의 [READINESS S02/S03](../READINESS.md)를 처리한다. AGENTS.md·CONTRIBUTING.md·README.md·docs/current_status.md를 읽고 fetch/열린 PR을 확인한다. `<home>/projects/ugrp`의 배정된 자기 worktree/codex 브랜치만 수정한다. 다른 작업의 소스·공용 설정은 바꾸지 않는다.
+UGRP main 기준 감사 `a8094cc14e098a55483f53a3c49bf6a0b116043d`의 [READINESS S02/S03](../READINESS.md)를 처리한다. AGENTS.md·CONTRIBUTING.md·README.md·docs/current_status.md를 읽고 fetch/열린 PR을 확인한다. `/Users/changmin/projects/ugrp`의 배정된 자기 worktree/codex 브랜치만 수정한다. 다른 작업의 소스·공용 설정은 바꾸지 않는다.
 
 **CI:** 아래 실행 금지는 이 Mac의 로컬 작업 범위다. 정상 GitHub CI는 실행하고 결과를 확인한다. CI를 취소하거나 `[skip ci]`를 쓰지 않는다.
 

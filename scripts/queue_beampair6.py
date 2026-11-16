@@ -35,7 +35,7 @@ def build(source,evidence,table):
         name=f'beampair6-gate-{e["seed"]}-{source[:8]}'
         command=deepcopy(template['command'])
         old=template['name'];command=[v.replace(old,name) for v in command]
-        command[1]='<home>/projects/ugrp-wt/gcp-sim-host/scripts/remote_run.py'
+        command[1]='/Users/changmin/projects/ugrp-wt/gcp-sim-host/scripts/remote_run.py'
         for flag,value in [('--host','gcp2'),('--per-run-mb','256'),('--plan',PLAN),('--episode',str(i)),('--rendezvous','peer_rendezvous_v2')]:
             command[command.index(flag)+1]=value
         command+=['--approach-repair','beampair_approach_v2','--wall-layer','beampair_wall_clear_v1','--failure-tail']

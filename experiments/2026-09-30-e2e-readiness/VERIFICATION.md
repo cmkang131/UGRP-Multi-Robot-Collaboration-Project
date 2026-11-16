@@ -138,7 +138,7 @@ raise SystemExit(0 if result.wasSuccessful() and result.testsRun == 8 else 1)
 실행 명령(저장소 루트):
 
 ```sh
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python - <<'PY'
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python - <<'PY'
 from pathlib import Path
 import re
 p = Path('experiments/2026-09-30-e2e-readiness/VERIFICATION.md')

@@ -83,7 +83,7 @@ snapshot·영상·카드 검증은 코디네이터 인계에 포함했다.
 재현 예시(새 결과 경로 사용, 호스트 잠금 없음):
 
 ```sh
-PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
+PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
 PYTHONPATH=.:experiments/2026-09-30-e2e-p03-provider "$PY" -m pytest -q -p offline_guard \
   tests/test_zone_final_environment_runnable.py tests/test_simulation_workflow_manager.py \
   tests/test_vision_loc_provider_lifecycle.py \

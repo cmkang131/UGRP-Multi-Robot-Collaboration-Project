@@ -57,12 +57,12 @@
   [review_c303_mutations.py](review_c303_mutations.py)다.
 
 ```sh
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
   experiments/2026-09-30-e2e-p06-evidence/redesign_test_driver.py \
   --junitxml=/absolute/new-final.xml
 
 # 아래 실행은 해당 결함을 되살리므로 pytest 종료 코드 1이 기대값이다.
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
   experiments/2026-09-30-e2e-p06-evidence/review_c303_mutations.py \
   canonical_sort_bypass --junitxml=/absolute/new-mutation.xml
 ```
@@ -82,7 +82,7 @@ worker import를 차단하고 스레드를 1개로 제한한다. #328에 따라 
   `LITERATURE.md`는 main의 더 상세한 CI 해석 정정을 유지했다.
 - 합성 TensorBoard 이벤트를 실제 EventAccumulator로 다시 읽었다. 새 연구
   결과가 아니므로 공용 snapshot·서버·대시보드는 변경하지 않는다. 원본 로그와
-  JUnit 위치는 `<home>/projects/ugrp/outputs/p06-review303c-fixes-20261001/`다.
+  JUnit 위치는 `/Users/changmin/projects/ugrp/outputs/p06-review303c-fixes-20261001/`다.
   이 로컬 원본 전체를 원격 백업으로 표현하지 않는다. UGRP 예외에 따라 Drive
   작업도 없다.
 - PR #303은 draft를 유지한다. 이 기록은 코드·합성 증거 검증이며 독립 재검토,

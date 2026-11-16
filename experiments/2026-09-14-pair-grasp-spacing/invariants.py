@@ -1,7 +1,7 @@
 """Compare observer-only source invariants against the preceding full cohort."""
 from pathlib import Path
 import json,hashlib,sys
-root,out=map(Path,sys.argv[1:]);baseline=Path('<home>/projects/ugrp-worktrees/pair-transport-robustness/outputs/pair-robust-final-2026-09-14')
+root,out=map(Path,sys.argv[1:]);baseline=Path('/Users/changmin/projects/ugrp-worktrees/pair-transport-robustness/outputs/pair-robust-final-2026-09-14')
 c=json.loads((root/'cohort.json').read_text());checks=[]
 for t in c['trials']:
  p=root/t['id'];b=baseline/t['id'];r=json.loads((p/'result.json').read_text());old=json.loads((b/'result.json').read_text())

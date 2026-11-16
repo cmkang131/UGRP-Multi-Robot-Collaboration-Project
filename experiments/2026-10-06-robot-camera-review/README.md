@@ -3,7 +3,7 @@
 상태: **실물 보관 영상 복구·면적 측정 완료. 사용자 관찰 기반 v3 후보 추가; draft 유지·병합 금지.**
 기준 main `b07f33aba278fda7434acaed0974c3d38f7b9ef0`.
 모델 호출·실물 명령·동적 임무 재실행 없음. 기존 v106과 기본 프로필은 바꾸지 않는다.
-원본은 `<home>/projects/ugrp/outputs/camera-review-20261006/`에만 보존한다.
+원본은 `/Users/changmin/projects/ugrp/outputs/camera-review-20261006/`에만 보존한다.
 
 **최신 결론(16:40 지시 반영):** 실물 영상이 ZIP에 남아 있었다. 집기 뒤 빨간 블록은 화면의 약1.35%, 파란 블록은 약7.92%였다(외부 파지 성공 확인은 없음). 가림이 많으면 파지 확인이 쉬워져 SIM이 낙관적일 수 있으므로 **가림이 많으면 보수적이라는 가정을 폐기**한다. v3는 사용자 관찰 기반 목표 후보이며 실측 카메라 보정으로 승격하지 않는다. 이전 절의 “자료 없음”은 v1/v2 당시 탐색 범위의 기록이고 아래 v3 결과로 대체된다.
 
@@ -158,15 +158,15 @@ OpenCV의 K/왜곡 모델을 각각 확인한다. 최근 Wise 등의 RWHEC 연�
 ```sh
 # 공통 세션으로 실행하며 render 모드는 내부에서 공용 잠금을 확인/획득/반환한다.
 python3 scripts/ugrp_session.py run camera-review-render-NEW -- \
-  <home>/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/review_masterpi_camera.py render \
-  --source <home>/projects/ugrp/outputs/s2-graduation-fae1fc4a-s1026-P2-2-place \
-  --output <home>/projects/ugrp/outputs/camera-review-NEW
+  /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/review_masterpi_camera.py render \
+  --source /Users/changmin/projects/ugrp/outputs/s2-graduation-fae1fc4a-s1026-P2-2-place \
+  --output /Users/changmin/projects/ugrp/outputs/camera-review-NEW
 ```
 
 `analyze` 모드는 원본 이미지 읽기만 한다. `export_review.py`는 기록을
 기존 native TensorBoard 변환기에 넘기고 event를 다시 읽어 수치를 검증한다.
 완료된 snapshot은 덧쓰지 않는다. 같은 호스트에서 재포장할 때 새 출력 경로를 정해야 한다.
-공유 보기 root는 `<home>/projects/ugrp/outputs/tensorboard`, 새 snapshot은
+공유 보기 root는 `/Users/changmin/projects/ugrp/outputs/tensorboard`, 새 snapshot은
 `1006-camera-review-v1`이다. saved-1320 / static-old / static-drawing / render-error를
 서로 다른 조건으로 표시한다. raw MP4는 이번 정지 진단에 없고 동영상 등록도 없다.
 정지 RGB·입력 XML·실패 흔적·공식 이미지·해시·세션 로그는 로컬 보관이며 원격 백업이 아니다.
@@ -217,7 +217,7 @@ SDK tool=100 mm, v3 pad centre=86.85 mm, shoulder 기준도 달라 SDK 목표 �
 - [공식 Camera.py](https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/Camera.py), [MasterPi.py](https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/MasterPi.py): 원문 전체 확인. 처리된 cam.frame이 MJPEG로 전달됨.
 - [공식 color_sorting.py](https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/functions/color_sorting.py), [공식 IK](https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/kinematics_sdk/kinematics/arm_move_ik.py), [역기구학](https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/kinematics_sdk/kinematics/inversekinematics.py): 수학·서보 매핑·sequence 확인, 보드 호출 없음.
 - 표준 방법: OpenCV Brown 보정/출력 K 및 hand-eye의 좌표 변환을 그대로 사용. 위 OpenCV·MuJoCo 문서와 Wise2026 논문/공개 코드를 다시 확인했다. 새로운 최적화나 파라미터 fit은 하지 않았다.
-- raw 출처/해시/계산: `<home>/projects/ugrp/outputs/camera-review-20261006/references-v2/{manifest,derived}.json`.
+- raw 출처/해시/계산: `/Users/changmin/projects/ugrp/outputs/camera-review-20261006/references-v2/{manifest,derived}.json`.
 
 ### v2 결과: 실물 관찰과의 차이가 남았다
 
@@ -307,7 +307,7 @@ v2 정지3장의 범위22.436–24.428%; 동적 HIGH/lift28장 모두31.4667%였
 
 바뀐 프로필/진단의 시험 `tests/test_masterpi_camera_review_v2.py` **5 passed** 뒤 commit/push,
 그 SHA로 실행했다. 시뮬레이션 재시도0. 원본/이전v1/다른 번들은 보존했다.
-raw는 `<home>/projects/ugrp/outputs/camera-review-20261006/render-v2/` 로컬이며 원격 백업이 아니다.
+raw는 `/Users/changmin/projects/ugrp/outputs/camera-review-20261006/render-v2/` 로컬이며 원격 백업이 아니다.
 [계산/요약/원본 해시](comparison-v2.json), [공식 소스 해시](official-sdk-manifest.json),
 [공식 수치 계산](official-sdk-derived.json)을 Git에 보존한다.
 
@@ -342,10 +342,10 @@ noWindowsAvailable을 반환했고 재조회에서 다른 작업의 활성 탭�
 `outputs/masterpi_v2_carry.jpg`도 SIM이다. `.ugrp-git-migration-backup-20260831T083348Z`는
 Git 백업이 아니라 저장소가 아니라는 안내문뿐이었다.
 
-`<home>/projects`에서 무시 파일을 포함해 경로를 수집했고, 다른 프로젝트의 미디어 경로,
+`/Users/changmin/projects`에서 무시 파일을 포함해 경로를 수집했고, 다른 프로젝트의 미디어 경로,
 UGRP outputs/docs/calibration/notebooks/experiments와 retired outputs를 확인했다.
 `outputs/real_traces/README-EXPERIMENT-ARCHIVE.md`가 가리키는 외부 원본 폴더는 없었으나,
-**`<home>/projects/ugrp/outputs/experiment-archives-20260907/real_traces-20260907.zip`**은 있었다.
+**`/Users/changmin/projects/ugrp/outputs/experiment-archives-20260907/real_traces-20260907.zip`**은 있었다.
 ZIP SHA256=`22fba4801d67464203c5607259e0aae31bac99730e9e9d3233f130ca0ffd949c`.
 2026-09-07 보존 manifest와 **5,789개 파일 모두** SHA256 일치, JPEG4,735장이다.
 집기3회의 JPEG44개를 원본 ZIP 변경 없이 새 raw 하위 폴더에 복사했다. recorder에 연결된 것은43개이며
@@ -459,7 +459,7 @@ Chrome 강에서 v3 링크를 열었으나 본문이 비었고1회 새로고침�
 
 [v3 TensorBoard 저장 링크](http://127.0.0.1:6006/?pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fvalid_fraction%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Ffull_fraction%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fwall_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fcommands%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%5D&smoothing=0&runFilter=%5E1006-camera-review-v3%2F#timeseries).
 
-재현: `scripts/ugrp_session.py run <새 이름> -- <home>/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/review_masterpi_camera_v3.py --source <home>/projects/ugrp/outputs/s2-graduation-fae1fc4a-s1026-P2-2-place --output <home>/projects/ugrp/outputs/<새 경로>` (내부 잠금 확인·획득·반환).
+재현: `scripts/ugrp_session.py run <새 이름> -- /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/review_masterpi_camera_v3.py --source /Users/changmin/projects/ugrp/outputs/s2-graduation-fae1fc4a-s1026-P2-2-place --output /Users/changmin/projects/ugrp/outputs/<새 경로>` (내부 잠금 확인·획득·반환).
 
 ### #403 후속: 중간 내려놓기 OFF 오프라인 구현
 
@@ -542,7 +542,7 @@ native TensorBoard 새 스냅샷 `1006-camera-v3-relook-off-v2`에 두 조건의
 분리했고 event·실행 중 서버 API의 수치8개가 원자료와 일치했다.
 [검증·저장 대시보드 링크](relook-off-tensorboard.json),
 [v106 소스305개 불변·시험 기록](relook-off-verification.json)을 보존했다.
-원자료는 `<home>/projects/ugrp/outputs/camera-review-20261006/`에 있다.
+원자료는 `/Users/changmin/projects/ugrp/outputs/camera-review-20261006/`에 있다.
 첫 export는 파생 뷰 schema 누락으로 실패했고 이를 보완한 새 폴더에 변환했다.
 브라우저 확인은 사용자 허용에 따라 생략하며 기존 서버를 변경하지 않는다.
 
@@ -664,7 +664,7 @@ HIGH에서 자기 RGB를 기존 loaded HIGH 광선과 바닥 cyan 검출기로 �
 native TensorBoard 새 스냅샷 `1006-camera-scene-check-v2`에 합성 분기 결과만 별도로 기록했고
 event·서버 API 수치6개 및 JPEG7장 SHA256을 확인했다.
 [검증·저장 대시보드 링크](scene-check-tensorboard.json)를 보존한다.
-raw JPEG와 감사 원문은 `<home>/projects/ugrp/outputs/camera-review-20261006/scene-check-offline-v2/`.
+raw JPEG와 감사 원문은 `/Users/changmin/projects/ugrp/outputs/camera-review-20261006/scene-check-offline-v2/`.
 브라우저 확인은 기존 사용자 허용에 따라 생략한다.
 
 #404 이후 새 카메라+새 구동 S2에서 **추가로** 확인할 것:

@@ -14,7 +14,7 @@
 
 ## 2. 기록 데이터 측정 (오프라인, 물리 실행 없음)
 
-원본은 `<home>/projects/ugrp/outputs/v98-dev-probe-raise_high_align-3358372e/before_door`(r1)이다. 재생 스크립트는 `blind_final_approach_replay/`의 `measure_last_visible.py`, `replay_track.py`, `lateral_mid.py`에 있다.
+원본은 `/Users/changmin/projects/ugrp/outputs/v98-dev-probe-raise_high_align-3358372e/before_door`(r1)이다. 재생 스크립트는 `blind_final_approach_replay/`의 `measure_last_visible.py`, `replay_track.py`, `lateral_mid.py`에 있다.
 
 | 시점(SIM초) | 자세(서보 3/4/5) | 공구 높이 | 빔 색 픽셀 | 측정된 카메라 모델 | 제어기 쪽 결과 |
 |---|---|---|---|---|---|

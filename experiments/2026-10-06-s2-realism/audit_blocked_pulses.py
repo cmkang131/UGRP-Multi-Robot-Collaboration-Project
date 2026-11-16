@@ -4,8 +4,8 @@ from pathlib import Path
 import cv2
 import numpy as np
 
-RAW=Path('<home>/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place')
-OUT=Path('<home>/projects/ugrp/outputs/s2-blocked-pulse-20261007')
+RAW=Path('/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place')
+OUT=Path('/Users/changmin/projects/ugrp/outputs/s2-blocked-pulse-20261007')
 TIMES=(107.35,108.30,109.25,110.20,111.15,113.70)
 
 def main():
@@ -13,7 +13,7 @@ def main():
     lines=lambda p:[json.loads(l) for l in (RAW/p).read_text().splitlines()]
     record=read('student_record.json');contacts=lines('eval_only/contacts.jsonl')
     supervisor=lines('eval_only/supervisor.jsonl');frames=lines('robots/r3/frames.jsonl')
-    drift=json.loads(Path('<home>/projects/ugrp/outputs/s2-load-height-20261007/drift-decomposition.json').read_text())
+    drift=json.loads(Path('/Users/changmin/projects/ugrp/outputs/s2-load-height-20261007/drift-decomposition.json').read_text())
     rows=[];sheet=[]
     for t in TIMES:
         d=next(r for r in drift['rows'] if abs(r['t']-t)<1e-6)

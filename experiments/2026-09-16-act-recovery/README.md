@@ -88,7 +88,7 @@ seed 20260916, 학습 및 체크포인트 선택에 쓰인 개발 분포의 고�
 
 교사 초기 파일럿/진단, 커리큘럼, 학생 상태 수집, 개발 비교, 명령 변환 진단, 최종 비교까지 물리 실행 총 262개를 보존했다. 7개 모델 묶음×로봇 2대를 학습했으며 최종 비교는 그중 6개 묶음이다. 로봇별 총 업데이트는 부트스트랩 2×5,000 + 최종 12×10,000 = 130,000이다. [학습 요약](training-summary.json), [재현 절차](REPRODUCE.md).
 
-코드·설정·결과 요약은 Git에 기록한다. 원시 영상·RGB·로그·모델은 `<home>/projects/ugrp-worktrees/act-recovery-generalization/outputs` 및 별도 명령 진단 worktree의 `outputs`에 **로컬 보관**한다. 원격 백업이나 Drive 업로드는 하지 않았다. PR 63은 PR 61에 의존하며 main에 병합하지 않았다.
+코드·설정·결과 요약은 Git에 기록한다. 원시 영상·RGB·로그·모델은 `/Users/changmin/projects/ugrp-worktrees/act-recovery-generalization/outputs` 및 별도 명령 진단 worktree의 `outputs`에 **로컬 보관**한다. 원격 백업이나 Drive 업로드는 하지 않았다. PR 63은 PR 61에 의존하며 main에 병합하지 않았다.
 
 ## 후속 실험의 우선순위
 

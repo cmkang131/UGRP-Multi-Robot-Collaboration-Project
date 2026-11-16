@@ -18,7 +18,7 @@ import common  # noqa: E402  (B1)
 import cv2, numpy as np  # noqa: E402
 import seg_ft  # noqa: E402
 
-OUT = Path('<home>/projects/ugrp/outputs/seg-lightfloor-20260929')
+OUT = Path('/Users/changmin/projects/ugrp/outputs/seg-lightfloor-20260929')
 
 
 def make_obs(ckpt, pre, xf, src: Path, dst: Path, infer_size=None):

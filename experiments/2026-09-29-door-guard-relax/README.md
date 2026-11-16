@@ -167,7 +167,7 @@ Refs #216. 의존: PR #278(`claude/pair-v6g`, 정책 b-v6g, hR2 56/70). 이 PR�
 
 raw는 로컬 `outputs/`에만 있다(원격 백업 아님). 케이스 수, cases.jsonl sha256 앞 16자, 크기:
 
-| raw (`<home>/projects/ugrp/outputs/pair-stage-probes-<sha8>-<태그>`) | 내용 | 케이스 | sha256 | 크기 | 시작 / 끝 부하(1분) |
+| raw (`/Users/changmin/projects/ugrp/outputs/pair-stage-probes-<sha8>-<태그>`) | 내용 | 케이스 | sha256 | 크기 | 시작 / 끝 부하(1분) |
 |---|---|---|---|---|---|
 | `1b776a34-dsmokeK0` | 스모크 k0 | 6 | 42fa52ad2f5ce574 | 73 MB | 13.5 / 17.1 |
 | `1b776a34-dK0g` | k0g 문 | 20 | 5f8d2723b75e31de | 235 MB | 13.3 / 15.9 |

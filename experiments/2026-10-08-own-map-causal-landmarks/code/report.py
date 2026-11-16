@@ -68,7 +68,7 @@ def main():
         conv=f"예 / {r['convergence_s']:.1f}" if r['converged'] else '없음 / —'
         yawstd=r.get('final_yaw_std_deg')
         if yawstd is None:
-            oldpred=load(Path('<home>/projects/ugrp/outputs/own-map-utility-v1')/f"{r['condition']}-{r['trial']}.json")
+            oldpred=load(Path('/Users/changmin/projects/ugrp/outputs/own-map-utility-v1')/f"{r['condition']}-{r['trial']}.json")
             yawstd=oldpred['rows'][-1]['circular_yaw_std_rad']*180/math.pi
         text+=f"|{label}|{[60,90,120][r['trial']]}|{r['condition']}|{r['input_frames']} / {r['point_samples']:,} / {r.get('landmark_samples',0):,}|{conv}|{r['final_xy_m']:.3f} / {r['final_yaw_deg']:.2f}|{r['final_std_xy_m']:.3f} / {yawstd:.2f}|{int(r['correct_recorded_goal'])} / {int(r['false_goal'])}|\n"
     text+='''\nLM 수는 관측 선분 표본이며 서로 다른 물리 랜드마크 수가 아니다. 중첩 구간을

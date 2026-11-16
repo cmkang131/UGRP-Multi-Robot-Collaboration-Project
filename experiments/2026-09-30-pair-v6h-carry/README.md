@@ -33,7 +33,7 @@ python -m experiments.2026-09-30-pair-v6h-carry.build_prereg_v6h --verify
 
 ## 검증
 
-허용된 파일만 실행했다: `tests/test_zone_pair_v6h.py` **64**, `tests/test_zone_pair_registered_source.py` **24**, `tests/test_ci_sharding.py` **66**, 합계 **154 passed**(14.92초; 성능 측정이 아님). `scripts.run_ci_tests.run_locked`로 공용 잠금을 획득·반환하고 pytest를 실행했다. 마지막 JUnit: `<home>/projects/ugrp/outputs/v6h-register-unit-20260930/pytest-ci-fix-01.xml`. 모든 이전 시도도 같은 폴더에 보존했다. 첫 5개 실패는 잘못된 테스트 역할명과 JSON tuple/list 계약 차이를 고쳤고, 추가 guard golden 준비 오류도 수정했다. 지정되지 않은 테스트는 로컬에서 실행하지 않았다.
+허용된 파일만 실행했다: `tests/test_zone_pair_v6h.py` **64**, `tests/test_zone_pair_registered_source.py` **24**, `tests/test_ci_sharding.py` **66**, 합계 **154 passed**(14.92초; 성능 측정이 아님). `scripts.run_ci_tests.run_locked`로 공용 잠금을 획득·반환하고 pytest를 실행했다. 마지막 JUnit: `/Users/changmin/projects/ugrp/outputs/v6h-register-unit-20260930/pytest-ci-fix-01.xml`. 모든 이전 시도도 같은 폴더에 보존했다. 첫 5개 실패는 잘못된 테스트 역할명과 JSON tuple/list 계약 차이를 고쳤고, 추가 guard golden 준비 오류도 수정했다. 지정되지 않은 테스트는 로컬에서 실행하지 않았다.
 
 18개 기존 정책의 loaded PF 출력은 main `a8094cc1`의 저장된 평균·표준편차 골든과 1e-9 이내다. 입자 bytes와 난수 상태는 같은 호스트에서 동결된 main carry 모듈을 별도 provider로 실행한 값과 정확히 일치한다. localizer/beam-edge 의존성은 그 commit의 blob과 현재 바이트가 같은지도 확인한다. 저장된 Mac 입자 해시는 참고 기록이며 Linux에 그대로 강제하지 않는다. 4개 대표 정책의 PairCommandGuard 명령·monitor·gate 골든도 일치한다. 각 옵션의 on/off, gain 복사/중복 적용/재사용 방지, 당시 loaded-motion 범위, invalid fix, axial 시간, 정책·번들·CI 목록·workflow 조합을 검사했다. 빌더 두 모드와 stage-probe CLI의 `--policies b-v6h1 --stage chain` 계획 모드도 확인했다(새 output 폴더나 물리 생성 없음). `git diff --check` 통과. 단위 검증을 인수 재생·E2E·실물 성공으로 표현하지 않는다. 새 실험 결과가 없으므로 TensorBoard 변환·서버 시작은 하지 않았다.
 
@@ -52,7 +52,7 @@ python -m scripts.run_pair_stage_probes \
   --seeds 941 --nominal-seeds 941 \
   --env-placements experiments/2026-09-30-pair-v6h-carry/placements_confirmatory_DRAFT.json \
   --render-profile floor_light_v1 --chain-stop-leg 1 --pf-track --contact-track \
-  --workers 4 --omp-threads 1 --output <home>/projects/ugrp/outputs/v6h-confirmatory-NEW
+  --workers 4 --omp-threads 1 --output /Users/changmin/projects/ugrp/outputs/v6h-confirmatory-NEW
 ```
 
 주 시드 941의 60건과 봉인된 첫 12곳/시드 943를 함께 준비한다. 제한·재배치·prior·정책·렌더·종료 leg·trace·worker/OMP/timeout 옵션 변경은 거부한다. 입력 파일·소스 해시와 실제 파생 case 전체를 검사하며 worker도 물리 import 전에 다시 검사한다. `REGISTERED` 실행은 기존 조정자 승인 봉투(authorization envelope), live GitHub 검증, 깨끗한 고정 HEAD, 잠금과 새 raw 경로가 필요하다. 기존 승인 형식은 run별이므로 `--run-id <봉인 ID> --expected-source-sha <40자리 SHA> --execute --lock-owner <소유자>`로 한 승인 run을 선택한다. 전체 72건 검사는 선택 전에도 유지한다. 승인 없는 probe는 manifest에 `unsealed_stage_probe`로 표시한다.

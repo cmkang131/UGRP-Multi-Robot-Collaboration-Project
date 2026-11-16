@@ -30,7 +30,7 @@ S3 `7a4bda7ac71bc7b59d7d9a9101d9d3c619498df1`을 S4에 병합했다.
 공통 명령(이름/조건/cap만 위 표대로 치환):
 
 ```sh
-ORACLE_HOST=oracle-x86 "$S/oracle_run.sh" <home>/projects/ugrp-wt/s4-llm "$NAME" -- \
+ORACLE_HOST=oracle-x86 "$S/oracle_run.sh" /Users/changmin/projects/ugrp-wt/s4-llm "$NAME" -- \
   .venv-sim/bin/python -m scripts.sim_cli workflow run zone-s4-live-dev-v157 --record "outputs/$NAME/managed" -- \
   --expected-source-sha "$SHA" --condition "$CONDITION" --cap-s "$CAP" \
   --relay-receipt /home/ubuntu/ugrp-sim/s4live1-relay.json \
@@ -44,7 +44,7 @@ SOURCE_SHA/COMMAND/EXIT, raw 요청·응답·영상·eval_only와 artifact manif
 네 조건 모두 **90 SIM초 / EXIT0 / DEV_STAGE_FINISHED**. 실제 모델의 세 로봇 claim,
 r3 새 `continue` 출발 허가, r3 물리 집기·상승·운반 명령 연결을 확인했다.
 전체 raw 9시도(완료5 + 호스트 중단4), **28,687개 파일 서버/로컬 SHA256 일치**.
-원본은 `<home>/projects/ugrp/outputs/oracle-runs/s4live1-*`,
+원본은 `/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live1-*`,
 서버는 `/home/ubuntu/ugrp-sim/runs/s4live1-*`; Git에는 요약·출처·해시만 보존한다.
 [전체 판정](batch-audit.json) · [회수 검증](retrieval-verification.json) · [원장 대조](reconciliation.json).
 

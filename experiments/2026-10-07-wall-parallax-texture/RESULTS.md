@@ -91,7 +91,7 @@ M1 평균을 v7 횡이동 실측 모델이라고 부르지 않는다. **GT로 DR
   24개 시각면 collision mask0 및 기존 명령/실제 궤적 대조 확인.
   [검증 영수증](results/verification.json), [상세 진단](results/diagnosis.json).
 - raw436파일12,257,609bytes(약11.69MiB)는
-  `<home>/projects/ugrp/outputs/wall-parallax-texture-v1/` 로컬에 보존.
+  `/Users/changmin/projects/ugrp/outputs/wall-parallax-texture-v1/` 로컬에 보존.
   [전체 SHA256/크기](results/raw-manifest.json) 검증. 원격 raw 백업으로 주장하지 않는다.
   Git에는 코드·PNG/SVG 배치도·주석·요약·그림·해시를 보존했다. 각 미디어1MiB 미만.
 - 초기 실행 잠금은 #406 live 작업 중이라 기다렸고 null 뒤 취득했다. 다른 실행 종료/잠금 인수0.

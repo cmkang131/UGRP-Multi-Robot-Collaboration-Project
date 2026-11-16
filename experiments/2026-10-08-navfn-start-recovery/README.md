@@ -54,7 +54,7 @@ egomap46와 동일하게 기존 local hold는 유지하며, 품질/σ는 실행 
 물리 한 번에 하나, agent_lock/ugrp_session/sim_cli workflow. S2 잠금 중에는 대기.
 기존 호스트 상한30분, raw예산1GiB, 여유10GiB 미만 시작 금지, ENOSPC=HOST_ERROR.
 freeze·모델 호출0. push 장애 시 로컬SHA로 진행하되 마지막 재시도. Co-Authored-By Codex, 병합 금지.
-원본·4배속 영상: `<home>/projects/ugrp/outputs/navfn-start-recovery-v1/`.
+원본·4배속 영상: `/Users/changmin/projects/ugrp/outputs/navfn-start-recovery-v1/`.
 단계 사이 지정 supervisor 파일 확인. 과거 egomap46의 “다음 실행 없음”은 해당 단계 지시이며,
 이번 사용자 egomap47의 새1회 실행 승인을 따른다. TensorBoard 생략 유지.
 
@@ -127,7 +127,7 @@ bootstrap1·정합수락118·low_overlap20·high_residual57·search_boundary1·i
 
 [수치](results/comparison.json), [원본/소스 해시](results/raw.json), [영상 해시](results/video.json).
 4배속90.05초·1801프레임·20fps, ffprobe와 전체 ffmpeg decode 통과:
-`<home>/projects/ugrp/outputs/navfn-start-recovery-v1/wrist-map-4x.mp4`.
+`/Users/changmin/projects/ugrp/outputs/navfn-start-recovery-v1/wrist-map-4x.mp4`.
 
 ## 감독 추가 지시 — 오프라인 성능 진단 사전등록
 

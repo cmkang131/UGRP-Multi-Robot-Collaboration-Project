@@ -46,7 +46,7 @@ freeze 없이 실행한다. 여기서 관문 미달이면 새 물리·RBPF100/po
 
 초음파는 기존 모델/site/입력 어댑터를 확인만 한다. 공개 제조사 범위·빔각/불확실성을 기록하고
 전방 보조 거리 관측 사용은 제안만 한다. 새 센서 구현/활성화0, #406 파일 및 다른 worktree 수정0.
-원본/raw는 `<home>/projects/ugrp/outputs/camera-frame-audit-v1/`, ENOSPC=HOST_ERROR.
+원본/raw는 `/Users/changmin/projects/ugrp/outputs/camera-frame-audit-v1/`, ENOSPC=HOST_ERROR.
 시험 통과 후 Codex trailer commit/push, PR #405 DRAFT·병합/force/reset0.
 TensorBoard는 기존 사용자 생략 결정을 유지, Drive는 프로젝트 규칙상 사용하지 않는다.
 결과는 [RESULTS.md](RESULTS.md), 표준 근거는 [REFERENCES.md](REFERENCES.md)에 남긴다.

@@ -122,9 +122,9 @@ P03의 신규 fake 검사는 자체로는 의미가 있다. PF 입자/가중치/
 | #310 기존 생성 경로 반례 | **1 failed**, 예상한 명시적 거절 대신 `StopIteration`, C310-1 재현 |
 | #311+#312 P03 JSON 변경 반례 | **1 failed**, 실제 run bundle은 변경됐지만 draft digest는 동일, C311-1 재현 |
 
-합계는 서로 다른 선택 시험 **222 passed**, 결함을 드러내도록 작성/선택한 반례 **3 failed**다. 전체 suite 통과라는 뜻이 아니다. #312의 첫 시도는 archive에 `.git`이 없어 과거 `git show 22c84842...:<M1 calibration/localizer>`를 읽지 못했다(**35 failed, 46 passed, 1 deselected**). 이 실패를 제품 결함에 합산하지 않았다. 해당 suite의 Git 호출이 읽기 전용임을 확인하고 `GIT_DIR=<home>/projects/ugrp/.git`로 과거 blob 접근만 제공하여 81개를 다시 검사했다. 소스나 등록 파일을 수정하지 않았다.
+합계는 서로 다른 선택 시험 **222 passed**, 결함을 드러내도록 작성/선택한 반례 **3 failed**다. 전체 suite 통과라는 뜻이 아니다. #312의 첫 시도는 archive에 `.git`이 없어 과거 `git show 22c84842...:<M1 calibration/localizer>`를 읽지 못했다(**35 failed, 46 passed, 1 deselected**). 이 실패를 제품 결함에 합산하지 않았다. 해당 suite의 Git 호출이 읽기 전용임을 확인하고 `GIT_DIR=/Users/changmin/projects/ugrp/.git`로 과거 blob 접근만 제공하여 81개를 다시 검사했다. 소스나 등록 파일을 수정하지 않았다.
 
-공용 잠금 PID 12268/14828의 획득·반환과 로그를 보존했다. 시간 기록은 성능 비교가 아니다. 원본 위치는 `<home>/projects/ugrp/outputs/review-e2e-batch-c-20260930/`이며 **로컬 보관**이다. `run_review.py`, `run_review_round2.py`, `review_guard.py`, `repro_310.py`, `repro_311_312.py`, 최초 실패와 최종 로그, CI 로그 및 고정 SHA/12쌍 합성/3개 source hash 비교를 보존했다. `checksums.json` SHA-256은 `c5013bd0475fb20b0d1e483a613b295e410325c89c215b884dd3585d12ff44db`다. 이 문서만 Git에 올리며 로컬 raw 전체의 원격 백업을 주장하지 않는다.
+공용 잠금 PID 12268/14828의 획득·반환과 로그를 보존했다. 시간 기록은 성능 비교가 아니다. 원본 위치는 `/Users/changmin/projects/ugrp/outputs/review-e2e-batch-c-20260930/`이며 **로컬 보관**이다. `run_review.py`, `run_review_round2.py`, `review_guard.py`, `repro_310.py`, `repro_311_312.py`, 최초 실패와 최종 로그, CI 로그 및 고정 SHA/12쌍 합성/3개 source hash 비교를 보존했다. `checksums.json` SHA-256은 `c5013bd0475fb20b0d1e483a613b295e410325c89c215b884dd3585d12ff44db`다. 이 문서만 Git에 올리며 로컬 raw 전체의 원격 백업을 주장하지 않는다.
 
 최소 재현은 고정 HEAD를 archive한 별도 디렉터리에서 위 테스트 파일들을 실행하는 것이다. 물리·실제 worker/network를 막는 guard와 공용 잠금을 유지한다. C310-1 추가 검사의 핵심은 다음과 같다.
 

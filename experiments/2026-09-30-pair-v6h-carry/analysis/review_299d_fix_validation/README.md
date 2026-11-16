@@ -50,7 +50,7 @@ import/runtime 오류는 검출로 세지 않는다.
 `provenance.json`의 각 command 배열에 정확한 Python·명령·종료 코드·소스 해시가
 있다. 호스트 잠금 없이 기존 `.venv-sim-worker-mac`에서 직접 pytest/분석기를
 실행했다. 기록된 소요 시간은 성능 비교가 아니다. 원 로그·17개 전체 판정·697개
-입력 해시 목록은 `<home>/projects/ugrp/outputs/v6h-classifier-299d-fix/`에,
+입력 해시 목록은 `/Users/changmin/projects/ugrp/outputs/v6h-classifier-299d-fix/`에,
 작은 최종 요약과 로그는 이 디렉터리에 보존한다. `artifact_index.json`이 둘을 연결한다.
 
 수정 전 `--runxfail -m xfail`은 의도대로 10 failed / 4 deselected였으며,

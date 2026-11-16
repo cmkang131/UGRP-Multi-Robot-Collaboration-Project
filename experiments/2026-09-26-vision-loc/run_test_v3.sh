@@ -5,8 +5,8 @@
 set -euo pipefail
 out=$1
 HERE=$(cd "$(dirname "$0")" && pwd)
-PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
-TPY=<home>/Project-Runtimes/ugrp/.venv-reference-act/bin/python
+PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+TPY=/Users/changmin/Project-Runtimes/ugrp/.venv-reference-act/bin/python
 MAXJ=${VL_JOBS:-4}
 export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1
 pre=$HERE/prereg_v3.json

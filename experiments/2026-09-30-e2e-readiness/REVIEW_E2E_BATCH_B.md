@@ -139,6 +139,6 @@ T02는 ‘P02 소유’라고 적으면서 정식 6종의 다색/count/can/tile/
 
 초기 리뷰 실행의 환경 오류도 보존했다. #308은 `/tmp`와 `/private/tmp`의 혼합 경로로 pytest 수집 범위가 넓어져 수집 전에 거절됐고, 반례 파일을 archive의 `tests/`에 둔 뒤 정상 수집했다. #302는 새 basetemp 상위 폴더가 없어 123 pass/1 setup error였으며, 새 경로를 만든 뒤 124건과 정적 계산을 재실행했다. 이 두 오류는 대상 PR 결함으로 세지 않는다. 이전 raw/실패 로그를 덮어쓰지 않았다.
 
-명령·대상 SHA·테스트 결과·초기 오류·잠금 획득/반환·원본 경로·SHA-256은 [verification.json](review_batch_b/verification.json)에 있다. raw/JUnit/가짜 request·SQLite는 `<home>/projects/ugrp/outputs/review-e2e-b-20260930/`에 로컬 보존했다. 두 리뷰 잠금이 모두 반환됐음을 확인했다. 제출 전 원격 재조회에서 #307/#308은 실패 check, #302는 재시작한 정상 check를 확인했으며 전체 CI 통과를 주장하지 않는다.
+명령·대상 SHA·테스트 결과·초기 오류·잠금 획득/반환·원본 경로·SHA-256은 [verification.json](review_batch_b/verification.json)에 있다. raw/JUnit/가짜 request·SQLite는 `/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930/`에 로컬 보존했다. 두 리뷰 잠금이 모두 반환됐음을 확인했다. 제출 전 원격 재조회에서 #307/#308은 실패 check, #302는 재시작한 정상 check를 확인했으며 전체 CI 통과를 주장하지 않는다.
 
 물리/학습/학생 평가 cohort를 새로 만든 것이 아니므로 TensorBoard snapshot이나 서버는 변경하지 않았다. UGRP 예외에 따라 Drive 작업도 없다. 본 리뷰는 로컬 raw와 Git에 남긴 검토 문서/작은 재현 코드만 보존하며 raw의 원격 백업 완료를 주장하지 않는다.

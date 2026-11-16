@@ -9,7 +9,7 @@ from harness.zone_pair_highpose_exact_speedups import install
 from harness import zone_pair_highpose_frame_gate as frame_gate
 
 ROOT=Path(__file__).resolve().parents[2]
-RAW=Path('<home>/projects/ugrp/outputs')
+RAW=Path('/Users/changmin/projects/ugrp/outputs')
 RUNS={1047:'1a2dbf5e',1049:'a8ab38b8'}
 EXCLUDE=('drive_profile','stagnation_watch','idle_robot_contacts','dev_grasp_policy','eval_camera_trace')
 EXTRA=dict(carry_pose='real_delivery_v1',camera_calibration='v3_unloaded_sag_v1',

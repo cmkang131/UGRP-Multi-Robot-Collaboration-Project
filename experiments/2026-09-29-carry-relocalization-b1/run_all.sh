@@ -2,10 +2,10 @@
 # Full cohort of the carry-relocalization B1 measurement (offline: no physics step, no model calls, no agent_lock).
 # Run from the repository root of the worktree. Output root is the primary checkout's outputs/ (raw stays local).
 set -euo pipefail
-SIM=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
-TORCH=<home>/Project-Runtimes/ugrp/.venv-reference-act/bin/python
+SIM=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+TORCH=/Users/changmin/Project-Runtimes/ugrp/.venv-reference-act/bin/python
 B1=experiments/2026-09-29-carry-relocalization-b1
-OUT=${OUT:-<home>/projects/ugrp/outputs/carry-relocalization-b1-20260929/cohort}
+OUT=${OUT:-/Users/changmin/projects/ugrp/outputs/carry-relocalization-b1-20260929/cohort}
 export OMP_NUM_THREADS=1
 mkdir -p "$OUT"
 uptime > "$OUT/load_start.txt"

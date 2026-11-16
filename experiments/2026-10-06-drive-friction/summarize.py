@@ -10,7 +10,7 @@ from pathlib import Path
 import subprocess
 import sys
 
-RAW = Path('<home>/projects/ugrp/outputs')
+RAW = Path('/Users/changmin/projects/ugrp/outputs')
 ROOT = Path(__file__).resolve().parents[2]
 
 def sha(p):

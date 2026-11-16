@@ -4,8 +4,8 @@ import sys,json,hashlib,importlib.util
 import numpy as np
 ROOT=Path(__file__).resolve().parents[3]
 sys.path.insert(0,str(ROOT))
-RAW=Path('<home>/projects/ugrp/outputs/wall-segment-dev-v1/new-seed')
-OUT=Path('<home>/projects/ugrp/outputs/frontier-visibility-v1/diagnosis')
+RAW=Path('/Users/changmin/projects/ugrp/outputs/wall-segment-dev-v1/new-seed')
+OUT=Path('/Users/changmin/projects/ugrp/outputs/frontier-visibility-v1/diagnosis')
 from harness.active_wall_recovery import RecoveryMapper
 from harness.active_camera import SEARCH
 from scripts.run_active_wall_rotleft import install_profile,dump

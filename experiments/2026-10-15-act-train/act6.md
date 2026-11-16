@@ -170,7 +170,7 @@ workflow 등록은 read-only plan 시험1개로 확인했다. JUnit 원본은 �
 
 ```sh
 python3 -m scripts.queue_grasp_act_act6 \
-  --output-dir <home>/projects/ugrp/outputs/e2e18-admin/vm3-queue
+  --output-dir /Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue
 ```
 
 `20261015-act6-<최종SHA8>.json`: **잡음 교사 관문40 → 기록50 → 변환/합성 →

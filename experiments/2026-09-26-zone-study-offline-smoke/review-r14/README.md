@@ -40,8 +40,8 @@
 
 ```sh
 OMP_NUM_THREADS=1 \
-UGRP_ZONE_PILOT_REGRESSION_ROOT=<home>/projects/ugrp/outputs/zone-study-adapter-pilot-r10 \
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
+UGRP_ZONE_PILOT_REGRESSION_ROOT=/Users/changmin/projects/ugrp/outputs/zone-study-adapter-pilot-r10 \
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
   --basetemp=./.pytest_tmp -q -rP \
   tests/test_zone_pilot_settlement.py tests/test_zone_pilot_proxy_log.py \
   tests/test_zone_pilot_source_migration.py tests/test_zone_study_review_r8.py \
@@ -55,7 +55,7 @@ skip하지 않고 실패한다. socket 연결은 fixture로 차단한다.
 
 ## 원본 보존과 범위
 
-원본은 `<home>/projects/ugrp/outputs/zone-study-adapter-pilot-r10/budget.sqlite`다.
+원본은 `/Users/changmin/projects/ugrp/outputs/zone-study-adapter-pilot-r10/budget.sqlite`다.
 WAL·SHM·journal 부재를 확인하고 `mode=ro&immutable=1`로 연 뒤 SQLite backup API로
 `:memory:`에 복제한다. 메모리 복제본의 integrity와 원본 snapshot 일치를 확인한다.
 테스트의 DB 연결만 메모리에 묶으며 원래 meta/path/pilot ID/소스 이관 체인을 바꾸지 않는다.

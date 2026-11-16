@@ -33,7 +33,7 @@ def test_compile_preserves_mass_contact_and_other_robots():
     from sim.wall_servo_stiffness import make_scene
     from sim import wall_parallax_strafe as old
     # Build standard Scene XML without stepping/rendering.
-    source=Path('<home>/projects/ugrp/outputs/wall-parallax-texture-v1/tape-north/scene.xml')
+    source=Path('/Users/changmin/projects/ugrp/outputs/wall-parallax-texture-v1/tape-north/scene.xml')
     if not source.exists():pytest.skip('local old scene fixture')
     text=source.read_text()
     a=mujoco.MjModel.from_xml_string(text)
@@ -75,7 +75,7 @@ def test_default_scene_wrapper_bytes_and_frozen_explore_vocabulary():
         map_id='zone_wide_two_doors_final_v3',contact_profile='cargo_noslip_v1')
     a,b=old.make_scene(bundle,15101),new.make_scene(bundle,15101)
     assert a.config==b.config
-    source=Path('<home>/projects/ugrp/outputs/wall-parallax-strafe-v1/strafe-north-host-retry1/scene.xml')
+    source=Path('/Users/changmin/projects/ugrp/outputs/wall-parallax-strafe-v1/strafe-north-host-retry1/scene.xml')
     if source.exists():
         text=source.read_text()
         assert a.transform(text).encode()==b.transform(text).encode()

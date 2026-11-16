@@ -56,7 +56,7 @@ def test_fixture_is_small_and_frames_are_the_recorded_drive_posture():
     assert sum(p.stat().st_size for p in FIX.iterdir()) < 1024*1024
     for row in MANIFEST['frames'].values():
         assert {int(k): v for k, v in row['commanded_servo'].items()} == SEARCH_POSE
-    raw = Path('<home>/projects/ugrp')/MANIFEST['frames']['false_arrival_r1_t118p50']['source']
+    raw = Path('/Users/changmin/projects/ugrp')/MANIFEST['frames']['false_arrival_r1_t118p50']['source']
     if raw.exists():                                              # primary outputs present: the source is unchanged
         assert hashlib.sha256(raw.read_bytes()).hexdigest() == MANIFEST['frames']['false_arrival_r1_t118p50']['sha256']
 

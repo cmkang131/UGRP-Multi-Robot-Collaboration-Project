@@ -56,7 +56,7 @@ cp experiments/2026-09-28-zone-pair-v6/source-regression/step_tripwire.py /priva
 OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 \
 V6_STEP_AUDIT=/private/tmp/v6-review1-step-audit.log \
 PYTHONPATH=/private/tmp/v6-review1-no-physics:. \
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
 experiments/2026-09-28-zone-pair-v6/review1-fixes/run_tests.py
 ```
 

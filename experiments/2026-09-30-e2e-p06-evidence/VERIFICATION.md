@@ -9,10 +9,10 @@
 ## 환경과 실행 경계
 
 - Python 3.12.13, macOS 27.2 arm64, pytest 9.1.1, TensorBoard 2.21.0, Pillow 12.3.0.
-- 기존 `<home>/projects/ugrp/.venv-sim-worker-mac/bin/python` 재사용. 설치 없음.
+- 기존 `/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python` 재사용. 설치 없음.
 - `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1`, `OMP_NUM_THREADS=1`, `OPENBLAS_NUM_THREADS=1`,
   `MKL_NUM_THREADS=1`, `VECLIB_MAXIMUM_THREADS=1`, `PYTHONPATH=<자기 worktree>`.
-- `scripts.run_ci_tests.run_locked`로 `<home>/projects/ugrp/outputs/agent-locks`
+- `scripts.run_ci_tests.run_locked`로 `/Users/changmin/projects/ugrp/outputs/agent-locks`
   공용 잠금을 획득한 다음에만 pytest를 시작했다. 점유 중에는 pytest 미시작(exit 3),
   유한 대기(최대 300초) 후 재시도했다. 다른 작업의 잠금·프로세스는 조작하지 않았다.
 - 아래 테스트의 import/fixture/call 경로를 읽었다. 평가/변환은 순수 JSON/NumPy/fake

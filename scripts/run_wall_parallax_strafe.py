@@ -8,7 +8,7 @@ import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
 EXP = ROOT/'experiments/2026-10-07-wall-parallax-strafe'
-RAW = Path('<home>/projects/ugrp/outputs/wall-parallax-strafe-v1')
+RAW = Path('/Users/changmin/projects/ugrp/outputs/wall-parallax-strafe-v1')
 CASES = {'strafe-north': dict(seed=15101, spawn=[3.25,.75,3.141592653589793], sign=1),
          'strafe-south': dict(seed=15102, spawn=[3.25,-.70,3.141592653589793], sign=-1)}
 PULSES = {1:2000,3:740,4:2320,5:1320,6:1500}

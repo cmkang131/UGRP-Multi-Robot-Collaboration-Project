@@ -1,13 +1,13 @@
 #!/bin/zsh
 # Pre-registered pair v2 cohort: seeds 621-626, own_only, arms ON/OFF (--status-channel). 2 lanes, thread caps.
 set -u
-WT=<home>/projects/ugrp-wt/zone-owncam-pair
+WT=/Users/changmin/projects/ugrp-wt/zone-owncam-pair
 cd $WT
 SHA=$(git rev-parse --short HEAD)
-OUT=<home>/projects/ugrp/outputs/zone-owncam-pair-20260926/cohort-v2-$SHA
+OUT=/Users/changmin/projects/ugrp/outputs/zone-owncam-pair-20260926/cohort-v2-$SHA
 mkdir -p $OUT
 LOG=$OUT/cohort.log
-source <home>/projects/ugrp/.venv-sim-worker-mac/bin/activate
+source /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/activate
 export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1
 
 run1() {

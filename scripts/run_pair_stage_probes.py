@@ -32,7 +32,7 @@ if str(ROOT) not in sys.path:
 from harness import pair_stage_probe as sp  # noqa: E402
 
 WORKFLOW = 'pair-stage-probes'
-E2E_DEFAULT = Path('<home>/projects/ugrp/outputs/zone-pair-dev-v6-3c26acddec066adcd9164e6d2a6f51c1261c5f66')
+E2E_DEFAULT = Path('/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v6-3c26acddec066adcd9164e6d2a6f51c1261c5f66')
 E2E_RUNS = ('v6-s911-v5h', 'v6-s912-v5h')
 MAP_ID = 'zone_wide_door_tags_v2_dock_v3'
 CALIBRATION = 'experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json'

@@ -19,7 +19,7 @@ from pathlib import Path
 from harness.zone_perception_v2 import observe_items, public_labels
 from sim.zone_arena import top_views
 
-SOURCE = Path('<home>/projects/ugrp-worktrees/zone-team-a2/outputs/zone-team-a2-20260925/a-two-dynamic-s12')
+SOURCE = Path('/Users/changmin/projects/ugrp-worktrees/zone-team-a2/outputs/zone-team-a2-20260925/a-two-dynamic-s12')
 CAPTURES = ('038-claim-37-0', '039-claim-38-0', '040-final')
 
 

@@ -3,7 +3,7 @@ from scripts.run_s2_heading import runtime_factory
 from harness import zone_solo_cyan_contract_v106 as legacy
 from harness.zone_color_boxes import _frame,_mask,OWN_ZONE_CYAN_HSV
 import cv2,numpy as np
-root=pathlib.Path('<home>/projects/ugrp/outputs')
+root=pathlib.Path('/Users/changmin/projects/ugrp/outputs')
 allrows={}
 for name, times in [('s2-realism-99d81d8c-s1068-v141-graduation',[63.25,85.,86.75,91.35,96.5]),('s2-heading-b60acdca-s1068-v143',[147.1,186.7,187.1,187.5,187.9,188.3,189.,191.5,269.8,898.])]:
  p=root/name; b=json.loads((p/'bundle.json').read_text()); d=json.loads((p/'student_record.json').read_text())

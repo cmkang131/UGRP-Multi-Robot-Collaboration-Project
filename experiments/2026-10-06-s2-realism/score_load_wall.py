@@ -3,7 +3,7 @@ import json,hashlib
 from pathlib import Path
 import numpy as np
 ROOT=Path(__file__).resolve().parents[2]
-RAW=Path('<home>/projects/ugrp/outputs/s2-load-wall-bf8f6411')
+RAW=Path('/Users/changmin/projects/ugrp/outputs/s2-load-wall-bf8f6411')
 
 def main():
     result=json.loads((RAW/'result.json').read_text());summary=[]
@@ -28,14 +28,14 @@ def main():
         a,b=[next(x for x in summary if x['wall']=='far' and x['pose']==name and x['loaded']==v) for v in (False,True)]
         comparisons.append(dict(pose=name,load_relative_difference=abs(b['mean_lateral_mm']/a['mean_lateral_mm']-1),
             yaw_difference_deg=abs(a['mean_abs_yaw_deg']-b['mean_abs_yaw_deg']),load_gate_pass=abs(b['mean_lateral_mm']/a['mean_lateral_mm']-1)<=.10 and abs(a['mean_abs_yaw_deg']-b['mean_abs_yaw_deg'])<=1.))
-    empty=json.loads(Path('<home>/projects/ugrp/outputs/s2-load-wall-b161a388/far-look_ahead-empty/result.json').read_text())
+    empty=json.loads(Path('/Users/changmin/projects/ugrp/outputs/s2-load-wall-b161a388/far-look_ahead-empty/result.json').read_text())
     loaded=next(r for r in result['results'] if r['case']=='far-look_ahead-loaded')
     cal=dict(schema='ugrp.s2.look_ahead_calibration.v1',option='look_ahead_v1',servo_stiffness='real_v1',fit_uses_gt=False,
         pose_key='1050,2035,1894,1500',camera_models={k:r['calibration']['record'] for k,r in [('unloaded',empty),('loaded',loaded)]},
         quality={k:r['calibration']['quality'] for k,r in [('unloaded',empty),('loaded',loaded)]},
         pitch_difference_deg=abs(empty['calibration']['normal']['pitch_deg']-loaded['calibration']['normal']['pitch_deg']),
         bilateral_fraction=loaded['bilateral_fraction'],origin='surveyed known boards, free chassis, RGB solvePnP; GT audit separate',
-        raw={k:str(Path(r.get('preserved_raw',RAW/r['case']))) for k,r in [('unloaded',{**empty,'preserved_raw':'<home>/projects/ugrp/outputs/s2-load-wall-b161a388/far-look_ahead-empty'}),('loaded',loaded)]})
+        raw={k:str(Path(r.get('preserved_raw',RAW/r['case']))) for k,r in [('unloaded',{**empty,'preserved_raw':'/Users/changmin/projects/ugrp/outputs/s2-load-wall-b161a388/far-look_ahead-empty'}),('loaded',loaded)]})
     cal['admission_pass']=all(v['holdout']['rms_px']<=1 for v in cal['quality'].values()) and cal['pitch_difference_deg']<=.5 and cal['bilateral_fraction']>=.99
     (ROOT/'configs/calibration/s2_camera_look_ahead_v1.json').write_text(json.dumps(cal,indent=2)+'\n')
     out=dict(schema='ugrp.s2.load_wall.summary.v1',rows=summary,comparisons=comparisons,look_ahead_calibration=cal,

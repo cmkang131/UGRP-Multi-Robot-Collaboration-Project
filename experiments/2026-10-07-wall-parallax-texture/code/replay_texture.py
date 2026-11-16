@@ -10,7 +10,7 @@ sys.path.insert(0,str(ROOT/'experiments/2026-10-07-wall-parallax/code'))
 import replay as frozen
 c=frozen.c
 c.EXP=EXP
-c.OUT=Path('<home>/projects/ugrp/outputs/wall-parallax-texture-v1/replay')
+c.OUT=Path('/Users/changmin/projects/ugrp/outputs/wall-parallax-texture-v1/replay')
 c.EPISODES={'tape-north':c.OUT.parent/'tape-north',
             'tape-south':c.OUT.parent/'tape-south'}
 

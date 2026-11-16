@@ -38,9 +38,9 @@
 - 기본 off bytes/scene identity,9 seed 전부 물리 객체 생성 없이 XML 검사,원천 지도 변경 시 자산 자동 변경,오래된 지도/배치/PNG/XML 거부,preflight 실패 시 lock/backend 호출0,동일 오류2회→남은7회 차단,제어 설정·판정 전체 동일을 해당 모듈 시험으로 고정한다.
 - `python -m pytest -q tests/test_goal_route_preflight.py tests/test_goal_route_continuous.py`
 - 자산 생성: `sim.goal_route_assets.generate(static_map('zone_wide_door_geometry_v3'))` (새 hash 경로에만 생성).
-- 표준 workflow `goal-route-preflight-dev`, 단일 슬롯 `python -m scripts.run_goal_route_preflight --seed 55001 --expected-source-sha <SHA> --output <home>/projects/ugrp/outputs/goal-route-preflight-v1/seed55001`는 XML 검사만. `--execute`는 선행 queue 증거와 공유 잠금 필수.
+- 표준 workflow `goal-route-preflight-dev`, 단일 슬롯 `python -m scripts.run_goal_route_preflight --seed 55001 --expected-source-sha <SHA> --output /Users/changmin/projects/ugrp/outputs/goal-route-preflight-v1/seed55001`는 XML 검사만. `--execute`는 선행 queue 증거와 공유 잠금 필수.
 - 9회 유한 실행: `python scripts/ugrp_session.py run egomap58-p1-nine -- python experiments/2026-10-09-goal-route-preflight/code/run_cohort.py --source <SHA>`.
-- raw: `<home>/projects/ugrp/outputs/goal-route-preflight-v1`. 이전 raw는 `outputs/goal-route-continuous-v1`에 별도 보존. source·queue·lock·XML·해시·번들·적용 heading/speedups·각 회 결과를 보존한다.
+- raw: `/Users/changmin/projects/ugrp/outputs/goal-route-preflight-v1`. 이전 raw는 `outputs/goal-route-continuous-v1`에 별도 보존. source·queue·lock·XML·해시·번들·적용 heading/speedups·각 회 결과를 보존한다.
 
 ## 로컬 검증 완료
 
@@ -106,8 +106,8 @@ S3 s3fix v147(`0a690821`) result/trial terminal과 PID95118 종료·잠금null�
 
 기존 P1 렌더러를 데이터 경로/표제만 egomap58로 바꿔 재사용했다(두 문자열을 원복하면 소스 bytes 동일).20fps에 원본5Hz 프레임을 순서대로 넣은4배속.2462/614프레임·123.1/30.7초,ffprobe 시간/프레임 대조·전체 ffmpeg 재디코딩 통과. 첫/중간/마지막 손목 RGB와 지도 장면도 시각 확인했다. GT 회색 벽은 평가 그림만,제어로 전달0.
 
-- [55003 B 실제 도착 후 상자 탐색 예산 소진 영상](<home>/projects/ugrp/outputs/goal-route-preflight-v1/seed55003/wrist-map-route-4x.mp4) — 전체 임무 성공 영상이 아니다.
-- [55005 출력 계약 HOST_ERROR 영상](<home>/projects/ugrp/outputs/goal-route-preflight-v1/seed55005/wrist-map-route-4x.mp4).
+- [55003 B 실제 도착 후 상자 탐색 예산 소진 영상](/Users/changmin/projects/ugrp/outputs/goal-route-preflight-v1/seed55003/wrist-map-route-4x.mp4) — 전체 임무 성공 영상이 아니다.
+- [55005 출력 계약 HOST_ERROR 영상](/Users/changmin/projects/ugrp/outputs/goal-route-preflight-v1/seed55005/wrist-map-route-4x.mp4).
 
 ![55003 마지막 손목 RGB와 자기 지도](figures/55003-final.jpg)
 ![55005 마지막 손목 RGB와 자기 지도](figures/55005-final.jpg)

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # E2E17: run ON the admitted VM3 (pair) or VM4 (broad), after prior owner exits.
 # No VM allocation, source deployment, secret transfer or relay startup is performed here.
-# Mac relay: <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.s4_proxy_relay --output <OWN_OUTPUT>/relay --seconds 28800 --idempotent --listen-port 18424 --remote-port 18393 --driver-profile study_gemma4_31b_v1 --upstream openrouter_v1 --gemma-state <OWN_OUTPUT>/upstream
+# Mac relay: /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.s4_proxy_relay --output <OWN_OUTPUT>/relay --seconds 28800 --idempotent --listen-port 18424 --remote-port 18393 --driver-profile study_gemma4_31b_v1 --upstream openrouter_v1 --gemma-state <OWN_OUTPUT>/upstream
 # Mac tunnel: ssh -T -n -o BatchMode=yes -o ExitOnForwardFailure=yes -o ServerAliveInterval=15 -R 127.0.0.1:18393:127.0.0.1:18424 <COORDINATOR_VM> 'sleep 28800'
 # Manage both Mac commands with scripts/ugrp_session.py; copy only relay/identity.json to $B/relays/e2e-idle/a.json.
 # Use the new committed relay source: e2e-idle-[ab]-s61001..61003 is its admitted namespace.

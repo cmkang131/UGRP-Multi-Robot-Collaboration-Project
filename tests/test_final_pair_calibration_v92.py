@@ -502,7 +502,7 @@ def test_optional_reports_are_inputs_not_raw_permission(tmp_path):
     path = tmp_path/'score.json'
     result = {'schema':'ugrp.consumer_B_validation.v91','criterion_sha256':b.CRITERION_SHA256,
         'axis_pass':{'forward':True,'left':False,'rotate':None},'pass':False,
-        'input_files':[{'path':'<home>/projects/ugrp/outputs/final-pair-v91-heldout-FORBIDDEN/pose.jsonl','sha256':'a'*64}]}
+        'input_files':[{'path':'/Users/changmin/projects/ugrp/outputs/final-pair-v91-heldout-FORBIDDEN/pose.jsonl','sha256':'a'*64}]}
     write(path,result)
     inputs = raw.Inputs()
     report = a.optional_evidence(inputs,None,[path],{})

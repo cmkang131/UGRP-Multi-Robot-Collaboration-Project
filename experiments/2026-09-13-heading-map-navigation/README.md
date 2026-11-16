@@ -60,7 +60,7 @@
 
 ## 저장 범위와 재현
 
-[사전 계획](protocol.md), [전체 결과](all-results.json), [비교 CSV](comparison.csv), [원본 위치·해시](raw-locations.json), `records/`의 원본 메타데이터·결정/평가 로그(gzip, 손실 없음)를 보관한다. 대표 영상·재현용 실제 JPEG도 Git에 포함한다. 전체 RGB와 나머지 raw 영상은 `<home>/projects/ugrp/outputs/`의 로컬 보관이며 원격 백업으로 주장하지 않는다. 알려진 장애물·고정 관측·접은 팔·짐 없는 한 대의 차체 주행 범위다. 카메라만 별도로 돌리는 목 동작, 이동 장애물, 가림 복구, 하중 운반과 실물 로봇은 검증하지 않았다.
+[사전 계획](protocol.md), [전체 결과](all-results.json), [비교 CSV](comparison.csv), [원본 위치·해시](raw-locations.json), `records/`의 원본 메타데이터·결정/평가 로그(gzip, 손실 없음)를 보관한다. 대표 영상·재현용 실제 JPEG도 Git에 포함한다. 전체 RGB와 나머지 raw 영상은 `/Users/changmin/projects/ugrp/outputs/`의 로컬 보관이며 원격 백업으로 주장하지 않는다. 알려진 장애물·고정 관측·접은 팔·짐 없는 한 대의 차체 주행 범위다. 카메라만 별도로 돌리는 목 동작, 이동 장애물, 가림 복구, 하중 운반과 실물 로봇은 검증하지 않았다.
 
 ```sh
 # 해당 소스로 체크아웃한 깨끗한 작업 브랜치에서 새 output 이름을 사용한다.

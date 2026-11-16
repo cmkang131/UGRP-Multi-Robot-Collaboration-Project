@@ -1,6 +1,6 @@
 # Batch A 재현 코드
 
-실행용 원본과 로그의 로컬 보관 위치: `<home>/projects/ugrp/outputs/review-e2e-batch-a-20260930-76c6a8fe`. 이 문서는 코드 예시이며 CI/실험 실행기에 등록하지 않았다. 각 코드는 아래 고정 Git archive에서 기존 Python·공용 잠금 아래 실행한다. 실제 결과 디렉터리는 대상으로 쓰지 않는다.
+실행용 원본과 로그의 로컬 보관 위치: `/Users/changmin/projects/ugrp/outputs/review-e2e-batch-a-20260930-76c6a8fe`. 이 문서는 코드 예시이며 CI/실험 실행기에 등록하지 않았다. 각 코드는 아래 고정 Git archive에서 기존 Python·공용 잠금 아래 실행한다. 실제 결과 디렉터리는 대상으로 쓰지 않는다.
 
 ## P06
 

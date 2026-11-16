@@ -1,8 +1,8 @@
 """Postprocess completed, frozen simspeed2 outputs; never run physics."""
 import hashlib,json,statistics,sys
 from pathlib import Path
-ROOT=Path('<home>/projects/ugrp-wt/sim-speed-core')
-BASE=Path('<home>/projects/ugrp/outputs')
+ROOT=Path('/Users/changmin/projects/ugrp-wt/sim-speed-core')
+BASE=Path('/Users/changmin/projects/ugrp/outputs')
 RUN=BASE/'simspeed-core-20261009-v3'
 SHA='725f45b155fda3f7dc93beba782b848ca3b4a6dd'
 sys.path.insert(0,str(ROOT))
@@ -90,7 +90,7 @@ for p in summary['profiles']:
     lines += ['', '## egomap '+p['mode']+' Python 상위 10개', '', '분모는 C 확장/대기를 포함한 cProfile 전체 self time. Python 항목만 순위화하며 cumulative 중복 합산 없음.',
               '|함수|호출|self s|비율|cumulative s|','|---|---:|---:|---:|---:|']
     for f in p['top10_python']:
-        name=f['function'].replace(str(RUN/'egomap/adapter')+'/','').replace(str(ROOT)+'/','').replace('<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/lib/python3.12/site-packages/','')
+        name=f['function'].replace(str(RUN/'egomap/adapter')+'/','').replace(str(ROOT)+'/','').replace('/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/lib/python3.12/site-packages/','')
         lines.append(f"|`{name}`|{f['calls']:,}|{f['self_s']:.5f}|{f['percent']:.3f}%|{f['cumulative_s']:.5f}|")
 lines += ['', '추가 미세 개선인 torque 속성 직접 보관은 캐시와 함께 측정됐다. 공통 step의 불필요한 zeros 할당 제거는 양쪽에 동일하게 적용되어 이 표에서 독립 효과를 주장하지 않는다.',
           'mj_forward는 이번에도 제거하지 않았다. 선행 #415의 카메라 갱신 호출 확인과 MuJoCo의 적분 후 파생 상태 설명에 따라 유지했다.',

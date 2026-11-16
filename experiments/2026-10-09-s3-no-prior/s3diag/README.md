@@ -3,7 +3,7 @@
 **물리 실행 0회, 아직 S3 위치 수렴 0/3.** HOST_ERROR 두 계약을 수정했고, S3가 S2의 런타임 v3 카메라 바인딩을 누락한 것을 찾았다. 마운트 보정만 한 저장 입력 재생에서 r2/r3의 최종 위치 오차가 0.065/0.074m로 줄지만 σ 기준은 통과하지 못한다. r1은 반대 방향의 잘못된 모드가 남는다. 성공으로 승격하거나 문턱을 낮추지 않았다.
 
 - 수정 코드: `f965ad158a68add5654559fcb069a792ebb24f47`; HOST 수정 `da7059b2`. 원본 소스 `6c6571244e33a6e9e39b00afcd38d805035aed7d`, seed14201.
-- 기준 원본: `<home>/projects/ugrp/outputs/s3-no-prior-6c657124-s14201-v142`; 파생 결과: `<home>/projects/ugrp/outputs/s3diag-20261009`.
+- 기준 원본: `/Users/changmin/projects/ugrp/outputs/s3-no-prior-6c657124-s14201-v142`; 파생 결과: `/Users/changmin/projects/ugrp/outputs/s3diag-20261009`.
 - 원본 **2561개 파일 SHA-256 전부 일치**. 프레임 각846개·명령3356개 전체 호스트 재생 일치. 수정 후 runtime/trial JSON 모두 생성, 직렬화 오류0. 과거 원본 파일은 추가/수정하지 않았다.
 - 코드 시험: `python -m pytest -q tests/test_s3_no_prior.py` **11 passed**. 공통 frozen S2/v107/v108 파일과 카탈로그는 바이트 동일; 새 옵션은 기본 off이며 실제 물리 검증은 없다.
 
@@ -77,7 +77,7 @@
 - [Fox/Burgard/Thrun 1999](https://arxiv.org/abs/1106.0222), [AAAI98 동적 환경 연구](https://www.ri.cmu.edu/pub_files/pub1/fox_dieter_1998_3/fox_dieter_1998_3.pdf): 동적 장애물 관측 거부의 표준 근거. 이번 마스크 비교가 실패를 복구하지 못했으므로 distance filter를 원인 해결책으로 추가하지 않았다.
 - [MuJoCo xipos](https://mujoco.readthedocs.io/en/stable/APIreference/APItypes.html#mjdata): 평가 높이의 COM 기준.
 
-원본 대표 [4배속 영상](<home>/projects/ugrp/outputs/s3-v142-recovery-6c657124-20261009/s14201-mixed-4x/execution.mp4)은 그대로 보존한다. 이 진단을 위한 새 물리 영상은 없다.
+원본 대표 [4배속 영상](/Users/changmin/projects/ugrp/outputs/s3-v142-recovery-6c657124-20261009/s14201-mixed-4x/execution.mp4)은 그대로 보존한다. 이 진단을 위한 새 물리 영상은 없다.
 
 
 ## TensorBoard

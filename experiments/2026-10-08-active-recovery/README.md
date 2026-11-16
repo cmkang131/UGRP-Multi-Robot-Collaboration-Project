@@ -69,7 +69,7 @@ footprint union>0.485m², hold비율<695/891, 벽 접촉0,180초 완료**를 탐
 기준선과 이동/면적/hold, 종료오차/σ/eσ, 영역P/R 분자분모, 전체 벽 덮임,
 잠재 가시표본/점유셀/삽입/RGB, B 자기 확인과GT도착/접촉/잘못된 문 계획 proxy를 함께 기록한다.
 
-raw `<home>/projects/ugrp/outputs/active-recovery-v1/`, 물리≤500MiB+오프라인≤100MiB,
+raw `/Users/changmin/projects/ugrp/outputs/active-recovery-v1/`, 물리≤500MiB+오프라인≤100MiB,
 wall상한30분. ENOSPC=HOST_ERROR, 시작 이후 실패도1회로 계수하고 보존(재시도0).
 사전 등록→구현/시험→소스 커밋/push→단일 물리→봉인 후 GT 평가→결과 커밋/push.
 서버500은 로컬SHA로 진행 가능한 기존 사용자 예외, 작업 끝 정상push 재시도. DRAFT/병합금지 유지.

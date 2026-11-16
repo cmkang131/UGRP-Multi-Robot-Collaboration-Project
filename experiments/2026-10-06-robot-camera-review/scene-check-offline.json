@@ -20,7 +20,7 @@
   "new_renders": 0,
   "model_calls": 0,
   "hardware_commands": 0,
-  "before_image": "<home>/projects/ugrp/outputs/camera-review-20261006/scene-check-offline-v2/before.jpg",
+  "before_image": "/Users/changmin/projects/ugrp/outputs/camera-review-20261006/scene-check-offline-v2/before.jpg",
   "rows": [
     {
       "case": "remains",
@@ -76,7 +76,7 @@
         "before_after_changed_pixels": 0,
         "reason": "cyan_remains_at_pickup_site"
       },
-      "after_image": "<home>/projects/ugrp/outputs/camera-review-20261006/scene-check-offline-v2/remains.jpg"
+      "after_image": "/Users/changmin/projects/ugrp/outputs/camera-review-20261006/scene-check-offline-v2/remains.jpg"
     },
     {
       "case": "absent-held-strip",
@@ -133,7 +133,7 @@
         "clear_floor_fraction": 1.0,
         "reason": "visible_floor_at_old_cyan_site"
       },
-      "after_image": "<home>/projects/ugrp/outputs/camera-review-20261006/scene-check-offline-v2/absent-held-strip.jpg"
+      "after_image": "/Users/changmin/projects/ugrp/outputs/camera-review-20261006/scene-check-offline-v2/absent-held-strip.jpg"
     },
     {
       "case": "absent-shift8",
@@ -190,7 +190,7 @@
         "clear_floor_fraction": 1.0,
         "reason": "visible_floor_at_old_cyan_site"
       },
-      "after_image": "<home>/projects/ugrp/outputs/camera-review-20261006/scene-check-offline-v2/absent-shift8.jpg"
+      "after_image": "/Users/changmin/projects/ugrp/outputs/camera-review-20261006/scene-check-offline-v2/absent-shift8.jpg"
     },
     {
       "case": "occluded",
@@ -247,7 +247,7 @@
         "clear_floor_fraction": 0.0,
         "reason": "site_occluded_or_ambiguous"
       },
-      "after_image": "<home>/projects/ugrp/outputs/camera-review-20261006/scene-check-offline-v2/occluded.jpg"
+      "after_image": "/Users/changmin/projects/ugrp/outputs/camera-review-20261006/scene-check-offline-v2/occluded.jpg"
     },
     {
       "case": "wrong-view",
@@ -294,7 +294,7 @@
         "after_full_cyan_area_px": 0,
         "reason": "registration_failed"
       },
-      "after_image": "<home>/projects/ugrp/outputs/camera-review-20261006/scene-check-offline-v2/wrong-view.jpg"
+      "after_image": "/Users/changmin/projects/ugrp/outputs/camera-review-20261006/scene-check-offline-v2/wrong-view.jpg"
     },
     {
       "case": "held-at-internal-lens-rim",
@@ -350,7 +350,7 @@
         "before_after_changed_pixels": 5228,
         "reason": "held_or_clipped_cyan_overlaps_site"
       },
-      "after_image": "<home>/projects/ugrp/outputs/camera-review-20261006/scene-check-offline-v2/held-at-internal-lens-rim.jpg"
+      "after_image": "/Users/changmin/projects/ugrp/outputs/camera-review-20261006/scene-check-offline-v2/held-at-internal-lens-rim.jpg"
     }
   ],
   "fixture_source": "tests/test_solo_cyan_v106_scene_check.py: frame/obs/memory",
@@ -367,6 +367,6 @@
     "ECC can be unavailable on blank floors; UNKNOWN remains unconfirmed in dev_light",
     "Loaded arm return and moving-load stability pending combined camera+drive S2 after #404"
   ],
-  "prior_diagnostic_preserved": "<home>/projects/ugrp/outputs/camera-review-20261006/scene-check-offline/audit.json",
+  "prior_diagnostic_preserved": "/Users/changmin/projects/ugrp/outputs/camera-review-20261006/scene-check-offline/audit.json",
   "correction": "Treat the calibrated internal fisheye valid-pixel boundary as clipping, not only the outer image edge; no K/D changes"
 }

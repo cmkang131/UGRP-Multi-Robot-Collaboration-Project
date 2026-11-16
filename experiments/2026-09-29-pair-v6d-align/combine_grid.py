@@ -11,7 +11,7 @@ finishing pilot and two single-worker shards. Each cell was physically run exact
   <output>/manifest.json  members (manifest / summary sha256, source sha, uptime at start/end, states), baseline
   <output>/artifacts.sha256.json  the three files above
 
-  combine_grid.py --output <home>/projects/ugrp/outputs/<name> --expect-cases-of <baseline cases.jsonl> \
+  combine_grid.py --output /Users/changmin/projects/ugrp/outputs/<name> --expect-cases-of <baseline cases.jsonl> \
       --baseline-policy b-v6c --policy b-v6d --member <dir> [--member <dir> ...]
 """
 from __future__ import annotations

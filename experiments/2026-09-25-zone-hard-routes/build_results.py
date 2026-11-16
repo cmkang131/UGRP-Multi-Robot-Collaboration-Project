@@ -74,7 +74,7 @@ def main():
                        'coordination': ['plan_first', 'dynamic', 'independent'],
                        'seeds': {'zone_wide_door': [11, 12, 13], 'zone_wide_two_doors': [11, 12],
                                  'zone_wide_corridor': [11, 12], 'zone_wide (baseline)': [11, 12, 13]}},
-        'raw_root': '<home>/projects/ugrp-worktrees/zone-hard-routes/outputs/zone-hard-routes-20260925 (local only, gitignored)',
+        'raw_root': '/Users/changmin/projects/ugrp-worktrees/zone-hard-routes/outputs/zone-hard-routes-20260925 (local only, gitignored)',
         'v1_identity_sim': {'run': 'zone_wide G8 dynamic seed 12 fixture', 'sha256': ident,
                             'identical': all(len(set(v.values())) == 1 for v in ident.values()),
                             'teacher_events_matches_ZC2_gate2_dynamic_nominal':

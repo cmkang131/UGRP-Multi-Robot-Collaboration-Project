@@ -22,8 +22,8 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 from harness import m1_contract  # noqa: E402
 
-RAW = Path('<home>/projects/ugrp/outputs/zone-owncam-skill-20260925')
-TB = Path('<home>/projects/ugrp/outputs/tensorboard')
+RAW = Path('/Users/changmin/projects/ugrp/outputs/zone-owncam-skill-20260925')
+TB = Path('/Users/changmin/projects/ugrp/outputs/tensorboard')
 VIEW = RAW / 'tensorboard-view-v5'
 V5_TEST_SEEDS = tuple(range(541, 549))
 V4_TEST_SEEDS = tuple(range(531, 541))

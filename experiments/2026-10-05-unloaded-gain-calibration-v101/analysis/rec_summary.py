@@ -10,8 +10,8 @@ import glob, os, re, sys
 import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from analyze_pf import load_truth, load_replay, score_frames
-D = '<home>/projects/ugrp/outputs/pf-gaincal-v101-20261005/replay'
-RAW = '<home>/projects/ugrp/outputs/v98-dev-probe-raise_high-1f7fb800/zone_wide_door_geometry_v3'
+D = '/Users/changmin/projects/ugrp/outputs/pf-gaincal-v101-20261005/replay'
+RAW = '/Users/changmin/projects/ugrp/outputs/v98-dev-probe-raise_high-1f7fb800/zone_wide_door_geometry_v3'
 wins = [(40, 49), (50, 56), (56, 60), (60, 66)]
 names = {'ctrlC': 'C only', 'CR1': 'C+R1', 'I': 'C+R1+R2'}
 print('cells: median |err| mm / median NEES2 per window; sigma_x mm 40-49 s -> 60-66 s; injections events/particles (total | before 49 s); expansion rows')

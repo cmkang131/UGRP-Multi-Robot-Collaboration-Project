@@ -188,7 +188,7 @@ reserve는 **1024,1025,1037,1038**이다. 이전 31회 metadata와 seed·두 경
   로컬 테스트이며 GitHub CI 실행·통과를 뜻하지 않는다.
 
   ```sh
-  OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
+  OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
     --basetemp=./.pytest_tmp tests/test_vision_loc.py tests/test_vision_loc_v4.py \
     tests/test_vision_loc_sigma_v4.py tests/test_markerless_probe.py
   # 종료 후 .pytest_tmp 삭제 (이 작업에서는 finally 블록으로 수행)

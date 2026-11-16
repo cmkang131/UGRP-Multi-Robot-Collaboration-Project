@@ -42,8 +42,8 @@
 요청된 `tests/test_zone_pair_registered_source.py`, `tests/test_zone_study_source_pinning.py`를 기존 Python 환경에서 host lock 없이 실행했다. **57 passed (124.74초)**. 물리 step·실제 비전 worker·network 호출을 거절하는 기존 `tests.pose_provider_no_physics` 플러그인을 적용했고 각 시도 수는 모두 **0**이다. 결과는 [source_tests.txt](source_tests.txt), [source_tests.xml](source_tests.xml)에 보존한다. 봉인 후 회귀 통과가 아니라 변경 전 `4c6b439f`의 오프라인 소스 고정 회귀다.
 
 ```sh
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-30-pair-v6h-carry/analysis/seal_preflight/verify_frozen_sources.py
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p tests.pose_provider_no_physics tests/test_zone_pair_registered_source.py tests/test_zone_study_source_pinning.py
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-30-pair-v6h-carry/analysis/seal_preflight/verify_frozen_sources.py
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p tests.pose_provider_no_physics tests/test_zone_pair_registered_source.py tests/test_zone_study_source_pinning.py
 ```
 
 블라인드 raw 경로의 목록·내용을 열지 않았고 결과를 계산하지 않았다. 물리·렌더링을 실행하지 않았다. 허용된 blinded-run 메타데이터도 이번 중단 판단에는 필요하지 않아 읽지 않았다. `.github/workflows`를 수정하지 않았으며 `/private/tmp`에 추출 디렉터리를 만들지 않았다. 신규 실험 결과가 없으므로 TensorBoard 변환·서버 작업은 없다. UGRP의 예외에 따라 Google Drive는 사용하지 않는다.

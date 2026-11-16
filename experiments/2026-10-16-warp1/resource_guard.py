@@ -17,7 +17,7 @@ while time.time() < deadline:
     time.sleep(min(30, max(0, deadline-time.time())))
 else:
     # The allocation is ours, but another lease always blocks a VM stop.
-    check = subprocess.run(['ssh', '-i', '<home>/.ssh/ugrp_gcp2',
+    check = subprocess.run(['ssh', '-i', '/Users/changmin/.ssh/ugrp_gcp2',
         '-o', 'IdentitiesOnly=yes', '-o', 'ConnectTimeout=10', 'ugrp@34.64.179.69',
         'python3 /home/ugrp/ugrp-sim/runs/warp1/simalt_lease_audit.py warp1'],
         capture_output=True, text=True)

@@ -6,7 +6,7 @@ from urllib.request import urlopen
 import numpy as np
 from tensorboard.backend.event_processing.event_accumulator import EventAccumulator
 from scripts.tensorboard_tools.offline_audit import convert
-ROOT=Path('<home>/projects/ugrp/outputs/s2-active-observation-v58-20261009')
+ROOT=Path('/Users/changmin/projects/ugrp/outputs/s2-active-observation-v58-20261009')
 SHARED=ROOT.parent/'tensorboard';NAME='1009-s2-active-v58-r2'
 def read(p):return json.loads(p.read_text())
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()

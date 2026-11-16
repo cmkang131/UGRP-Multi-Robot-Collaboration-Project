@@ -18,7 +18,7 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-RAW = Path('<home>/projects/ugrp/outputs/zone-owncam-skill-20260925')
+RAW = Path('/Users/changmin/projects/ugrp/outputs/zone-owncam-skill-20260925')
 PROBES = {'probe1_rest_drive_door': 'view-probe-4219506', 'probe2_door_first': 'view-probe-a868328-doorfirst'}
 COHORT = 'cohort-d016c04'
 TEST_SEEDS = (501, 502, 503, 504, 505)

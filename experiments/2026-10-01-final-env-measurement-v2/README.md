@@ -115,7 +115,7 @@ MuJoCo/Torch/worker import와 네트워크를 차단하고 fake backend만 사�
 정적 실행 계획 확인은 물리 완주, 정상상태 수집 또는 보정 적합 완료를 뜻하지 않는다.
 
 ```sh
-PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
+PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
 "$PY" -m scripts.check_measurement_v2_identifiability \
   --config configs/final_environment_measurement_v2.json --output /private/tmp/measurement-v2-check-NEW.json
 "$PY" -m pytest -q tests/test_final_environment_measurement_v2.py \

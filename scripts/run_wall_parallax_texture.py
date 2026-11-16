@@ -10,8 +10,8 @@ from sim.wall_texture import DEFAULT_ASSETS, transform_xml
 
 ROOT = previous.ROOT
 EXP = ROOT / 'experiments/2026-10-07-wall-parallax-texture'
-RAW = Path('<home>/projects/ugrp/outputs/wall-parallax-texture-v1')
-OLD_RAW = Path('<home>/projects/ugrp/outputs/wall-parallax-strafe-v1')
+RAW = Path('/Users/changmin/projects/ugrp/outputs/wall-parallax-texture-v1')
+OLD_RAW = Path('/Users/changmin/projects/ugrp/outputs/wall-parallax-strafe-v1')
 CASES = {'tape-north': previous.CASES['strafe-north'], 'tape-south': previous.CASES['strafe-south']}
 write, sha = previous.write, previous.sha
 

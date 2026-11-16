@@ -64,7 +64,7 @@ pytest 67.52초는 검사 실행 시간이며 물리/모델 성능 비교가 아
 worktree 루트에서 기존 Python으로 실행한다. 새 출력 경로를 사용해야 한다.
 
 ```sh
-PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
+PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
 DRIVER=experiments/2026-09-30-two-door-route-interface/review_d1/run_checks.py
 $PY "$DRIVER" --output /tmp/t09a-d1-clean-NEW tests/test_zone_own_executor_door_routes.py
 $PY "$DRIVER" --mutation end_neg --output /tmp/t09a-d1-neg-NEW tests/test_zone_own_executor_door_routes.py
@@ -77,7 +77,7 @@ Git blob 그대로 저장해 `--before-tests <절대 경로>`로 넘겼다. 기�
 CI 회귀는 `--mutation ci_before`와
 `tests/test_ci_fast_path.py::CiFastPathTests::test_new_commits_preserve_running_and_pending_ci`로 재현한다.
 
-- raw/JUnit/잠금 영수증/명령: `<home>/projects/ugrp/outputs/2026-09-30-t09a-d1-fixes/`.
+- raw/JUnit/잠금 영수증/명령: `/Users/changmin/projects/ugrp/outputs/2026-09-30-t09a-d1-fixes/`.
 - Git의 `.txt`는 잠금 대기 줄과 줄 끝 공백만 제거했다. raw 로그는 보존했고
   원본 해시는 verification.json에 기록했다. Git 기록과 로컬 raw 보관은 구분한다.
 - 기존 등록·harness·sim·지도·설정 **549/549** Git blob이 검토 HEAD와 같다.

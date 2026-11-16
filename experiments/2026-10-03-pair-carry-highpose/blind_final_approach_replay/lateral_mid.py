@@ -4,7 +4,7 @@ import numpy as np
 from pathlib import Path
 sys.path.insert(0, str(__import__('pathlib').Path(__file__).resolve().parents[3]))  # repo root
 from harness.zone_final_pair_vision import PairVision
-RUN = Path('<home>/projects/ugrp/outputs/v98-dev-probe-raise_high_align-3358372e')
+RUN = Path('/Users/changmin/projects/ugrp/outputs/v98-dev-probe-raise_high_align-3358372e')
 cal = json.load(open(RUN/'dev_pilot_calibration.json')); v = PairVision(cal)
 case = RUN/'before_door'
 frames = {json.loads(l)['frame_id']: json.loads(l) for l in open(case/'robots/r1/frames.jsonl')}

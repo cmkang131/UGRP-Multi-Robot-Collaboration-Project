@@ -48,7 +48,7 @@ def main():
                    default='main_study_gemini_v1')
     p.add_argument('--decider',choices=('off','jev_v1'),default='off')
     p.add_argument('--gemma-state', type=Path,
-        default=Path('<home>/projects/ugrp/outputs/gemma-fallback'))
+        default=Path('/Users/changmin/projects/ugrp/outputs/gemma-fallback'))
     a = p.parse_args()
     if not 0 < a.seconds <= MAX_RELAY_SECONDS: raise ValueError('finite <=8h relay required')
     a.output.mkdir(parents=True, exist_ok=False)

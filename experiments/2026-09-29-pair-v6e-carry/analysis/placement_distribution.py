@@ -9,7 +9,7 @@ align teacher_grid and grasp_lift teacher_grid / tolerance_boundary (designed of
 import json, math, glob, sys
 from pathlib import Path
 import numpy as np
-OUT = Path('<home>/projects/ugrp/outputs')
+OUT = Path('/Users/changmin/projects/ugrp/outputs')
 groups = {}
 for root in sorted(OUT.glob('pair-stage-probes-*')):
     if not (root/'cases.jsonl').exists():

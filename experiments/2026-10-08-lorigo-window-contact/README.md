@@ -160,7 +160,7 @@ bootstrap1/improved22/low_overlap8/high_residual14/search_boundary2,
   search_boundary2/high_residual19/low_overlap7; 이 시각을 이번에도 그대로 썼다.
 - 사전등록 `b5459a2d` → 구현 `1266adda` → 개발 결과/설정 동결 `a656bccd`.
   원문 조사부터 사전등록까지265초. 원문 미명시 수치는 위 표대로 고정했다.
-- raw: `<home>/projects/ugrp/outputs/lorigo-window-contact-v1`.
+- raw: `/Users/changmin/projects/ugrp/outputs/lorigo-window-contact-v1`.
   [원본 해시 목록](results/raw-manifest.json), [최종 검증](results/verification.json),
   [출처](REFERENCES.md). raw는 로컬 보존이며 원격 백업으로 표현하지 않는다.
   기존 미추적4파일 해시 불변, 다른 worktree/프로세스 변경0, PR405 DRAFT 유지.

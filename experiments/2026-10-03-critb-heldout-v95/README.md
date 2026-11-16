@@ -42,7 +42,7 @@ Codex 중단본 두 커밋(`2686f38c`, `0bc0857d`)을 검토했다. 운동 필�
 
 ## 사전검사 결과 (렌더링 없음, 수집 아님, 기준 B 채점 아님)
 
-- 폴더: `<home>/projects/ugrp/outputs/heldout-v95-precheck-20261003T085307Z` (로컬 보관, 원격 백업 아님, 파일 39개, 20 MB). 소스 `12c1e58c3ee129d5a635fe5f300145566656489a`. SIM 슬롯 `sim-claude-v95-precheck`(owner claude, `nice -n 15`) 08:54–09:30 UTC, 끝난 뒤 해제했다. 요약은 `precheck_record.json`.
+- 폴더: `/Users/changmin/projects/ugrp/outputs/heldout-v95-precheck-20261003T085307Z` (로컬 보관, 원격 백업 아님, 파일 39개, 20 MB). 소스 `12c1e58c3ee129d5a635fe5f300145566656489a`. SIM 슬롯 `sim-claude-v95-precheck`(owner claude, `nice -n 15`) 08:54–09:30 UTC, 끝난 뒤 해제했다. 요약은 `precheck_record.json`.
 - `precheck.json` sha256 `868ffa29e1ee6e74366af0039796bbe87e43b99ebeb07928c26717a777a39dbe`, `SHA256SUMS.json` `fd8d7f1127ec976728fef18bf5936dc273511bef8e1996f481753df6a054a461`, `binding.json` `636fd14eb795b0a31397c4ff5cd735e00f04a141ec14631bfd658284326ef923`.
 
 | 지도 | 로봇 | 지원 칸 | 이전 자료와 비교 | 최소 벽 여유 | 가장 가까운 이전 위치 | 이동 범위 x×y | yaw 범위 |
@@ -66,7 +66,7 @@ Codex 중단본 두 커밋(`2686f38c`, `0bc0857d`)을 검토했다. 운동 필�
 
 - 약속 게시: #219 comment [5968608872](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/219#issuecomment-5968608872)(11:12:35Z, 수정 없음). 본문은 `COMMITMENT.md`(sha256 `164ccaaa…`)와 바이트까지 같다. 수집 시작은 그 뒤인 11:13:06Z다.
 - 실행: 소스 `2fe14826fc6b79f0121cfe6d7e6d8b4a1722957b`, `collect.sh`를 `nice -n 10`으로 실행했다. SIM 슬롯 `sim-claude-v95-heldout`(owner claude)은 끝난 뒤 해제했다. 2026-10-03 11:13:06Z → 11:38:40Z, 종료 코드 0. 부하 평균은 시작 16.28 / 15.42 / 16.87, 끝 12.60 / 15.42 / 16.14였다.
-- 결과 폴더: `<home>/projects/ugrp/outputs/final-pair-v95-heldout-2fe14826-20261003T111306Z` (238 MB, 로컬 보관이며 원격 백업 아님).
+- 결과 폴더: `/Users/changmin/projects/ugrp/outputs/final-pair-v95-heldout-2fe14826-20261003T111306Z` (238 MB, 로컬 보관이며 원격 백업 아님).
 
 | 지도 | 상태 | 프로토콜 완료 | reset / 확인 SIM s | 파일·해시 | `result.json` sha256 | `artifacts.sha256.json` sha256 |
 |---|---|---|---|---|---|---|
@@ -77,7 +77,7 @@ Codex 중단본 두 커밋(`2686f38c`, `0bc0857d`)을 검토했다. 운동 필�
 
 ### 운동 관문 (채점 전, 운동 필드만 사용)
 
-- 폴더: `<home>/projects/ugrp/outputs/heldout-v95-gate-20261003T113908Z`.
+- 폴더: `/Users/changmin/projects/ugrp/outputs/heldout-v95-gate-20261003T113908Z`.
 - 고정 검증기 `scripts/validate_consumer_criterion_b_v95.py --pose`(4개): 이전 자료 38개와 비교 152건 모두 `DISJOINT`, B 판정 null. `kinematic_gate.json` sha256 `8b19208449a43023e384589d4b011ab24ca6df45a688d3d1055a5d994502688c`.
 - 새 궤적끼리 비교(검토 지적 1, 6쌍): 고정 검증기는 이전 자료와의 비교만 한다. 그런데 약속 문구는 "또는 서로와"라고 썼다. 그래서 검증기는 바꾸지 않고 `harness.kinematic_overlap.overlap()`을 6쌍에 따로 돌렸다. 6쌍 모두 `DISJOINT`. `within_collection_overlap.json` sha256 `c936df73ca6a9bcf8e7239029324d0632f812ccd2f4978317d1d21df6ef3b4c2`.
 - 렌더링 수집본의 운동 해시 4개는 사전검사 해시와 같다(예: 문 r1 `4f94796d…`). 렌더링 유무가 운동을 바꾸지 않았고, 사전검사가 실제 수집 궤적을 그대로 검사했다는 뜻이다.
@@ -91,4 +91,4 @@ Codex 중단본 두 커밋(`2686f38c`, `0bc0857d`)을 검토했다. 운동 필�
 
 ### 운영 메모 (검토 지적 4)
 
-`collect.sh`는 worktree 경로 `<home>/projects/ugrp-wt/critb-heldout-v94`(이름은 v94)를 고정한다. 재실행 가능성이 남아 있는 동안 이 worktree를 retire하지 않는다. worktree 안의 무시된 `outputs/simulation-runs/20261003-20{1403,2425}-zone-final-pair-heldout-v95-*` 수집 기록도 retire할 때 `agent_worktree.py retire`로 옮겨 보존한다.
+`collect.sh`는 worktree 경로 `/Users/changmin/projects/ugrp-wt/critb-heldout-v94`(이름은 v94)를 고정한다. 재실행 가능성이 남아 있는 동안 이 worktree를 retire하지 않는다. worktree 안의 무시된 `outputs/simulation-runs/20261003-20{1403,2425}-zone-final-pair-heldout-v95-*` 수집 기록도 retire할 때 `agent_worktree.py retire`로 옮겨 보존한다.

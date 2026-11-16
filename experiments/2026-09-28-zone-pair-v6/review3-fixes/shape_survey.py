@@ -13,9 +13,9 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 from harness import owncam_pair_beam_v2 as ob2
 from harness.owncam_pair_beam import GRIP_INSET_M
-RAW = ['<home>/projects/ugrp/outputs/zone-pair-dev-v5h-f87921dc52f7a3f12d41b4bc6ab5c30227890e8e',
-       '<home>/projects/ugrp/outputs/zone-pair-dev-v5b-3ea2edc08e5addafaf3cedc934c463ad8e1635c8',
-       '<home>/projects/ugrp/outputs/zone-pair-dev-v5g-c38f94e6c551d8c0fa9993945ff4df087754672e']
+RAW = ['/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v5h-f87921dc52f7a3f12d41b4bc6ab5c30227890e8e',
+       '/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v5b-3ea2edc08e5addafaf3cedc934c463ad8e1635c8',
+       '/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v5g-c38f94e6c551d8c0fa9993945ff4df087754672e']
 
 
 def module(rev):

@@ -7,7 +7,7 @@ import subprocess
 import shlex
 import time
 
-L4=['ssh','-o','BatchMode=yes','-i','<home>/.ssh/ugrp_gcp2','ugrp@34.64.52.225']
+L4=['ssh','-o','BatchMode=yes','-i','/Users/changmin/.ssh/ugrp_gcp2','ugrp@34.64.52.225']
 CPU=['ssh','-o','BatchMode=yes','gcp2']
 BASE='/home/ugrp/ugrp-sim/ops-reviews/beamact2'
 

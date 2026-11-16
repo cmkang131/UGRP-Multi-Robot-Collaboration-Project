@@ -13,7 +13,7 @@ import subprocess
 
 
 ROOT = Path(__file__).resolve().parents[4]
-RAW = Path('<home>/projects/ugrp/outputs/v6h1-acceptance-3c4fe30e-claude-20260930')
+RAW = Path('/Users/changmin/projects/ugrp/outputs/v6h1-acceptance-3c4fe30e-claude-20260930')
 REGISTERED = '4c6b439f3f7c9a147c901f8b260a1e214d4eb396'
 CLASSIFIER = 'f32d5fd9afc54ca57ed49860843f54d6b5ca174d'
 

@@ -15,8 +15,8 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-RAW = Path('<home>/projects/ugrp/outputs/zone-owncam-skill-20260925')
-TB = Path('<home>/projects/ugrp/outputs/tensorboard')
+RAW = Path('/Users/changmin/projects/ugrp/outputs/zone-owncam-skill-20260925')
+TB = Path('/Users/changmin/projects/ugrp/outputs/tensorboard')
 VIEW = RAW / 'tensorboard-view-v4'
 DEFINITION = ('evaluation-only GT: box upright on floor inside the ordered slot (+-0.06 m); '
               'pose_source=gt_stub_eval_only, NOT M1')

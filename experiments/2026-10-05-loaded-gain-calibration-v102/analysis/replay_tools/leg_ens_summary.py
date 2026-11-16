@@ -24,8 +24,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from analyze_pf import load_truth, load_replay  # noqa: E402
 from leg_summary import legs_of, leg_row  # noqa: E402
 
-D = os.environ.get('REPLAY_DIR', '<home>/projects/ugrp/outputs/pf-loadedgain-v102-20261005/replay7194')   # the replay set to summarize (summary files go to its parent)
-RAW = '<home>/projects/ugrp/outputs/v98-dev-probe-align_to_carry-fcc5215f/zone_wide_door_geometry_v3'
+D = os.environ.get('REPLAY_DIR', '/Users/changmin/projects/ugrp/outputs/pf-loadedgain-v102-20261005/replay7194')   # the replay set to summarize (summary files go to its parent)
+RAW = '/Users/changmin/projects/ugrp/outputs/v98-dev-probe-align_to_carry-fcc5215f/zone_wide_door_geometry_v3'
 SEEDS = (0, 101, 102, 103, 104)
 CFGS = ('rec', 'v102')
 MODES = ('nomeas', 'meas')

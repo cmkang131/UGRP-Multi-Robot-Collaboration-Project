@@ -1,7 +1,7 @@
 import json,hashlib,sys,bisect
 from pathlib import Path
 import numpy as np
-ROOT=Path('<home>/projects/ugrp/outputs')
+ROOT=Path('/Users/changmin/projects/ugrp/outputs')
 DEST=ROOT/'s2-active-observation-v58-20261009'
 def read(p):return json.loads(p.read_text())
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()

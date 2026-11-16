@@ -1,5 +1,5 @@
 import json,math,bisect,sys
-BASE='<home>/projects/ugrp/outputs/pair-stage-probes-b5234b7a-v6c-align/cases/'
+BASE='/Users/changmin/projects/ugrp/outputs/pair-stage-probes-b5234b7a-v6c-align/cases/'
 def wrap(a): return (a+math.pi)%(2*math.pi)-math.pi
 def run(case,rid,t0,t1,step=1):
     tr=[json.loads(l) for l in open(BASE+case+'/eval_only/trace.jsonl')]

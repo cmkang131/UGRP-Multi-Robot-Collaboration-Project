@@ -15,7 +15,7 @@
 
 ## 검증
 
-모든 pytest는 지정 interpreter `<home>/projects/ugrp/.venv-sim-worker-mac/bin/python`, `OMP_NUM_THREADS=1`, `PYTHONDONTWRITEBYTECODE=1`, worktree 내부 `TMPDIR`/`--basetemp`를 사용했다. 슬롯 파일은 임시 디렉터리에만 만들었다. lifecycle 테스트는 실제 flock·자식 프로세스를 사용하지만 입장 census는 격리 fixture이며, Linux 호스트 가시성은 별도 proc fixture로 검증했다.
+모든 pytest는 지정 interpreter `/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python`, `OMP_NUM_THREADS=1`, `PYTHONDONTWRITEBYTECODE=1`, worktree 내부 `TMPDIR`/`--basetemp`를 사용했다. 슬롯 파일은 임시 디렉터리에만 만들었다. lifecycle 테스트는 실제 flock·자식 프로세스를 사용하지만 입장 census는 격리 fixture이며, Linux 호스트 가시성은 별도 proc fixture로 검증했다.
 
 - 여섯 항목 핵심 회귀 **29 failed → 모두 통과**. HEAD 원본 3개 모듈을 worktree 안에 복사해 새 테스트에 로드했다. 원본 worktree나 Git 이력을 바꾸지 않았다. 기록: `tmp/round3-tests/red-verified.txt` (1.63초).
 - 그룹 종료 가시성·잘못된 phase 타입 추가 반례 **3 failed → 모두 통과**: `additional-red.txt`.
@@ -28,7 +28,7 @@
 
 ```sh
 OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 TMPDIR="$PWD/tmp/test-env" \
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
   tests/test_sim_speed_review3.py tests/test_sim_speed_review2.py \
   tests/test_sim_speed_tools.py tests/test_sim_slots.py tests/test_exact_speedups.py \
   tests/test_sim_speed_runtime.py::ProfileRestoreTests \

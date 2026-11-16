@@ -51,7 +51,7 @@ behind-camera 출력0, off bytes 동일, GT 입력0을 모두 요구한다. 0.10
 오프라인만 예정: 새 물리·렌더·모델 호출0, freeze 옵션 사용0. 새 물리가 필요하면 별도 유한 사전 등록 후
 agent_lock/ugrp_session/한 번에 하나를 따른다. 현재 남은 로그로 진단하며 자동 장기 물리 재생은 하지 않는다.
 시험 통과 후에만 commit/push, Codex trailer, DRAFT 유지·병합/강제 push/reset 없음.
-raw `<home>/projects/ugrp/outputs/camera-pose-projection-v1/`, 원본 보존, ENOSPC=HOST_ERROR.
+raw `/Users/changmin/projects/ugrp/outputs/camera-pose-projection-v1/`, 원본 보존, ENOSPC=HOST_ERROR.
 PR #406 재사용 가능성만 기록하며 그 파일/브랜치는 수정하지 않는다. TensorBoard/Drive는 이전 결정대로 생략.
 
 ## 구현·조합
@@ -170,8 +170,8 @@ PR #406에는 동일한 자기 명령→고정 TF 인터페이스를 재사용�
 원본을 덮어쓰지 않는다. 다른 보존 출력 루트로 재현할 때 수치 소스 변경 여부를 별도 기록해야 한다.
 
 ```sh
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-07-camera-pose-projection/code/audit.py
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-07-camera-pose-projection/code/evaluate_fk.py --split development
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-07-camera-pose-projection/code/evaluate_fk.py --split confirmation --freeze experiments/2026-10-07-camera-pose-projection/freeze.json
-PYTHONPATH=outputs/self-map-plot-deps <home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-07-camera-pose-projection/code/report.py
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-07-camera-pose-projection/code/audit.py
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-07-camera-pose-projection/code/evaluate_fk.py --split development
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-07-camera-pose-projection/code/evaluate_fk.py --split confirmation --freeze experiments/2026-10-07-camera-pose-projection/freeze.json
+PYTHONPATH=outputs/self-map-plot-deps /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-07-camera-pose-projection/code/report.py
 ```

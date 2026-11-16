@@ -4,14 +4,14 @@
 # SIM-time only, not a timing benchmark. Each run takes its own sim-* slot under THIS shell's PID (the coordinator),
 # which must outlive every worker. Runs are launched at most V101_MAXPAR at a time.
 set -eu
-cd <home>/projects/ugrp-wt/calib-unloaded-gain
-PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
+cd /Users/changmin/projects/ugrp-wt/calib-unloaded-gain
+PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
 FINAL_SHA="${V101_SOURCE_SHA:?Set the exact 40-character SHA}"
 STAMP="${V101_STAMP:?Set a UTC stamp such as 20261005T0330Z}"
 MAXPAR="${V101_MAXPAR:-2}"
 RUNS="${V101_RUNS:-fitA1 fitA2 heldA3 heldM1 heldP1 heldP2}"
 BRANCH=claude/calib-unloaded-gain
-OUT=<home>/projects/ugrp/outputs/calib-gain-v101-${FINAL_SHA:0:8}-${STAMP}
+OUT=/Users/changmin/projects/ugrp/outputs/calib-gain-v101-${FINAL_SHA:0:8}-${STAMP}
 test "${#FINAL_SHA}" -eq 40
 test "$(git rev-parse HEAD)" = "$FINAL_SHA"
 test "$(git branch --show-current)" = "$BRANCH"

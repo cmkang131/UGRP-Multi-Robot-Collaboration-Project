@@ -14,7 +14,7 @@
 ## 자료와 측정 범위
 
 - act4가 확인한 raw 폴더의 RGB는 비어 있었지만 기존
-  `<home>/projects/ugrp/outputs/e2e18-admin/videos/act-91100/`에서 찾았다.
+  `/Users/changmin/projects/ugrp/outputs/e2e18-admin/videos/act-91100/`에서 찾았다.
   입력 원장에 참조된 **900/900장** SHA-256이 일치한다. 폴더의 추가 1장은 입력900행에
   쓰이지 않아 분모에서 제외했다. 새 다운로드나 원격 접속은 하지 않았다.
 - 전체 900개 발행 명령과 자기 입력, 교사 86000·86001의 local 719행을 읽었다.
@@ -125,7 +125,7 @@ default0의 RNG·배열 동일성, task/clock/표적 보존, RNG 복원, 정지 
 
 ```sh
 python3 -m scripts.queue_grasp_act_act5 \
-  --output-dir <home>/projects/ugrp/outputs/e2e18-admin/vm3-queue
+  --output-dir /Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue
 ```
 
 12단계 모두 `approved=false/enabled=false`다. act4 미실행 큐를 보존하며, 운영 승인 시에만

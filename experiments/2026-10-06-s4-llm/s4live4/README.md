@@ -38,7 +38,7 @@
 | `s4live4-structured-s601-pair-go` | structured | 601 | `.venv-sim/bin/python -m scripts.run_s4_live --expected-source-sha <S4_SHA> --output outputs/s4live4-structured-s601-pair-go/raw --condition structured --cap-s 90 --relay-receipt /home/ubuntu/ugrp-sim/s4live4-relay.json --pair-mode mutual_go_v1 --pair-release experiments/2026-10-06-s4-llm/s4live4/release.json --execute` |
 
 읽기 전용 계획: `python -m scripts.submit_s4_pair_batch`.
-후속 일괄 제출: `python -m scripts.submit_s4_pair_batch --oracle-runner "$S/oracle_run.sh" --output <home>/projects/ugrp/outputs/s4live4-admission.json --submit`.
+후속 일괄 제출: `python -m scripts.submit_s4_pair_batch --oracle-runner "$S/oracle_run.sh" --output /Users/changmin/projects/ugrp/outputs/s4live4-admission.json --submit`.
 
 소스 archive를 먼저 한 번 끝까지 전송하고 네 제출을 동시에 시작한다. 자체 최대4개(허용6 이내). runner exit3만 같은 SHA/argv로30초 대기 후 재제출하며120회 이내 유한 대기한다. 일반 실행 실패는 자동 재실행하지 않는다. 이미 있는 raw 실행 디렉터리를 덮어쓰지 않는다. memory 대기/host 종료는 정책 실패와 분리한다. 소스 archive가 이미 있거나 전송 실패한 경우 자동 삭제하지 않고 사전 상태를 확인한다. 실행 중 계획·seed·설정 변경 없이 네 raw를 회수한 뒤 한꺼번에 판정한다. 이번 준비 라운드의 스모크도 0회다.
 
@@ -63,7 +63,7 @@
 
 기본 off 및 기존 S4 회귀, 늦은/과거/다른 epoch/못 본 ACK 거절, 한쪽 GO만 있을 때 timeout, 같은 tick 후행 로봇 실패 때 앞서 수집한 명령 제거, 원격 memory exit3 동일 argv 재제출과 일반 오류 재시도 없음, pending release 실행 차단을 확인했다. 표준 CLI와 batch 계획 읽기 전용 출력도 확인했다. 처음 작성한 시험의 pytest 예약 인자명과 structured 메시지 fixture 형식을 고쳤고, GO 신호가 도착하기 전 중복 질의되던 문제 및 응답/handshake 기한 구분을 한 묶음으로 수정했다. 이 수정 과정에도 실제 실행0이다.
 
-[전체 수치·소스 파일 SHA256·raw204파일 해시](offline-validation.json). raw `<home>/projects/ugrp/outputs/s4live4-offline`, 별도 fixture 요청·응답·자기 이미지 해시 보존. fixture 원장의 호출/usage는 합성값이며 실제 모델 호출 분모는0이다. 새 물리 영상은 없다. S3 최종 SHA와 설정/새 번들 번호 확정, 그 위의 통합시험·원격 제출은 아직 남아 있다.
+[전체 수치·소스 파일 SHA256·raw204파일 해시](offline-validation.json). raw `/Users/changmin/projects/ugrp/outputs/s4live4-offline`, 별도 fixture 요청·응답·자기 이미지 해시 보존. fixture 원장의 호출/usage는 합성값이며 실제 모델 호출 분모는0이다. 새 물리 영상은 없다. S3 최종 SHA와 설정/새 번들 번호 확정, 그 위의 통합시험·원격 제출은 아직 남아 있다.
 
 ## TensorBoard·전달
 

@@ -30,7 +30,7 @@ CRITERIA = json.loads((HERE/'unloaded-sag-criteria.json').read_text())
 TABLE_PATH = ROOT/'configs/calibration/s2_camera_v3_extrinsic_v1.json'
 TABLE = json.loads(TABLE_PATH.read_text())
 RUNS = {1045:'f0bb26e7', 1046:'e619ee57', 1047:'1a2dbf5e'}
-RAW = Path('<home>/projects/ugrp/outputs')
+RAW = Path('/Users/changmin/projects/ugrp/outputs')
 
 
 def digest(path):

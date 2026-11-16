@@ -85,10 +85,10 @@ obs = masked_observations(vl, own_bgr, camera, gates, robot_mask='orange_columns
 
 ```sh
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 OMP_NUM_THREADS=1 PYTHONPATH=. \
-  <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
+  /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
   tests/test_opencv_wall_robot_mask.py
 
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
   scripts/diagnose_owncam_robot_mask.py --output /absolute/path/to/NEW-output
 ```
 
@@ -102,7 +102,7 @@ CI 목록에 이 시험을 등록했으며 원격 CI는 PR에서 별도로 확�
 원본 경로·SHA-256과 함께 약 272 kB로 보존한다. 원래 raw는 수정/삭제하지 않았다.
 이 작은 fixture 복사본만 Git 보존이며 원래 실행 전체의 원격 백업은 아니다.
 전체 진단 산출물·원자료 점검·시험 로그는
-`<home>/projects/ugrp/outputs/owncam-robot-mask-offline-20261006/`에 있다.
+`/Users/changmin/projects/ugrp/outputs/owncam-robot-mask-offline-20261006/`에 있다.
 Git에 [수치](result.json)와 [검증 기록](validation.json)을 보존한다.
 
 작업 기록: 관리 도구의 worktree 상한 9/8에 한 번 걸려 사용자 지정 worktree 생성/다른 작업 보존

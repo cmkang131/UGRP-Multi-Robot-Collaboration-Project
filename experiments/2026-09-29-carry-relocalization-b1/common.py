@@ -22,8 +22,8 @@ sys.path.insert(0, str(VL))
 
 import numpy as np  # noqa: E402
 
-PRIMARY_OUT = Path('<home>/projects/ugrp/outputs/carry-relocalization-b1-20260929')
-CHECKPOINT = Path('<home>/projects/ugrp/outputs/vision-loc-20260926/model/seg-v2/seg_lraspp_mbv3.pt')
+PRIMARY_OUT = Path('/Users/changmin/projects/ugrp/outputs/carry-relocalization-b1-20260929')
+CHECKPOINT = Path('/Users/changmin/projects/ugrp/outputs/vision-loc-20260926/model/seg-v2/seg_lraspp_mbv3.pt')
 CHECKPOINT_SHA256 = '348539030fda962cc5ba64e21c956619bc4db9321a99cd3ae6746611a9939fd9'
 MAP_FILE = ROOT / 'maps' / 'zones' / 'zone_wide_door_geometry_v2.json'           # final environment map (walls_v3, no tags)
 TRAIN_MAP_FILE = VL / 'maps' / 'zone_wide_door_walls_v3_notags.json'              # the map the VIS3 model was trained on

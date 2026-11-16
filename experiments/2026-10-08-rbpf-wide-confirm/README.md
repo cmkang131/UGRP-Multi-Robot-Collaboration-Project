@@ -47,7 +47,7 @@ B 자체 확인과 GT 도착을 구분하고, 잘못된 문 지표는 실제 통
 
 ## 실행·산출물·중단
 
-raw `<home>/projects/ugrp/outputs/rbpf-wide-confirm-v1/new-seed/` (예상≤500MiB),
+raw `/Users/changmin/projects/ugrp/outputs/rbpf-wide-confirm-v1/new-seed/` (예상≤500MiB),
 평가/4배속 MP4는 그 상위 디렉터리, 작은 지도 PNG/표/해시는 이 실험에 보존한다.
 901프레임이면 소스5Hz→20fps 영상 약45초: 왼쪽 자기 손목 RGB, 오른쪽 그 시각까지의
 **실제 온라인 frontend 지도 스냅샷**과 경로(회색 GT 벽/실제 경로는 평가 표시만).

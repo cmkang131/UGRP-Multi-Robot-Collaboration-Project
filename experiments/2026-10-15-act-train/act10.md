@@ -53,12 +53,12 @@ worktree 루트에서 실행한다. 재생 출력은 매번 새 경로를 지정
 
 ```sh
 export PYTHONDONTWRITEBYTECODE=1
-ACT_PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
+ACT_PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
 $ACT_PY -m pytest -q tests/test_grasp_act_act10.py tests/test_grasp_act_act9.py tests/test_grasp_act_act8.py tests/test_grasp_act_act7.py tests/test_grasp_act_act6.py tests/test_grasp_act_data.py
-$ACT_PY -m scripts.audit_grasp_act_act10 --runs-root <home>/projects/ugrp/outputs/gcp1-runs --evidence-root <home>/projects/ugrp/outputs/e2e18-admin/gcp-reports/act9-ec0bd628-ops --dependency-root <home>/projects/ugrp-wt/solo-teacher --output /tmp/act10-independent-replay
-$ACT_PY -m scripts.queue_grasp_act_act10 --prepare --dependency-root <home>/projects/ugrp-wt/solo-teacher --output-dir <home>/projects/ugrp/outputs/e2e18-admin/vm3-queue
+$ACT_PY -m scripts.audit_grasp_act_act10 --runs-root /Users/changmin/projects/ugrp/outputs/gcp1-runs --evidence-root /Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act9-ec0bd628-ops --dependency-root /Users/changmin/projects/ugrp-wt/solo-teacher --output /tmp/act10-independent-replay
+$ACT_PY -m scripts.queue_grasp_act_act10 --prepare --dependency-root /Users/changmin/projects/ugrp-wt/solo-teacher --output-dir /Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue
 # --prepare 변경을 커밋해 작업 트리를 clean으로 만든 뒤:
-$ACT_PY -m scripts.queue_grasp_act_act10 --output-dir <home>/projects/ugrp/outputs/e2e18-admin/vm3-queue
+$ACT_PY -m scripts.queue_grasp_act_act10 --output-dir /Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue
 ```
 
 ## 참고 자료

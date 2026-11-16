@@ -64,7 +64,7 @@ PR406 `2fa4bf9a0e8097bcd4d1e1933b7d04e4d54dd965`의
 
 ## 기록·검증
 
-raw `<home>/projects/ugrp/outputs/own-map-closed-loop-v1`.
+raw `/Users/changmin/projects/ugrp/outputs/own-map-closed-loop-v1`.
 손목 RGB | 해당시각 자기지도·추정경로·기억한B의 **4배속 wrist-map-4x.mp4**를 outputs에
 보존한다. 최종 지도를 과거 영상에 채우지 않는다. 평가 GT 오버레이는 명시한다.
 바뀐 모듈1–3시험 파일만 실행, 기본off pose/입자/RNG/명령 bytes 동일. 초록 후 커밋·push,
@@ -178,7 +178,7 @@ B 기억 중심의 평가 오차는0.3521m이며 실제B 바깥이다. 내부 �
 
 ![chronological wrist/map checks](figures/video-check.jpg)
 
-- 영상: `<home>/projects/ugrp/outputs/own-map-closed-loop-v1/wrist-map-4x.mp4`
+- 영상: `/Users/changmin/projects/ugrp/outputs/own-map-closed-loop-v1/wrist-map-4x.mp4`
   (620프레임,1280×480,20fps,31.00초,4배속). ffprobe+전체decode 및 시작/중간/끝 그림 확인.
   회색 실제벽·녹색 실제경로는 평가 오버레이; 파란 자기지도·주황 추정·자홍 기억한B.
   각 시각 이전 snapshot만 사용하고 최종지도 역주입0.

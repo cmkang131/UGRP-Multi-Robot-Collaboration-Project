@@ -295,11 +295,11 @@ C에서 접촉 21057개 중 정확 13517개. 열 단위 행 오차는 -0.63 (-3.
 ## 7. 재현
 
 ```bash
-PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
-WT=<home>/projects/ugrp-wt/ego-wall-map
+PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+WT=/Users/changmin/projects/ugrp-wt/ego-wall-map
 CODE=$WT/experiments/2026-10-05-ego-wall-map-probe/code
-EP=<home>/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3
-OUT=<home>/projects/ugrp/outputs/ego-wall-map-probe/wall-bias-fix/final
+EP=/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3
+OUT=/Users/changmin/projects/ugrp/outputs/ego-wall-map-probe/wall-bias-fix/final
 cd $WT   # -I로 돌리므로 스크립트 폴더가 sys.path 앞에 들어가지 않는다 (아래 §7.3)
 
 # A. 옛 채점 재현 (모델 카메라 + 옛 적재 규칙 + 기존 검출기)
@@ -324,7 +324,7 @@ $PY -I $CODE/classify_missed.py --episode $EP --robot r1 --per-frame $OUT/main-B
 $PY -I $CODE/diag_sag.py --episode $EP --output $OUT/main-sag
 
 # 옵션 실행 (모든 구성은 옵션 플래그 하나하나; 꺼진 것은 적지 않는다). 기본값 = 끔
-OPT=<home>/projects/ugrp/outputs/ego-wall-map-probe/wall-bias-fix/options
+OPT=/Users/changmin/projects/ugrp/outputs/ego-wall-map-probe/wall-bias-fix/options
 $PY -I $CODE/score_harness.py --episode $EP --robot r1 --output $OPT/main-A-legacy --every 2 --gt-camera model     # A: 모두 끔, 옛 채점
 $PY -I $CODE/score_harness.py --episode $EP --robot r1 --output $OPT/main-A2-scorer --every 2                      # A2: 모두 끔, 고친 채점기
 $PY -I $CODE/score_harness.py --episode $EP --robot r1 --output $OPT/main-B-load --every 2 --load-rule gripper     # B
@@ -351,7 +351,7 @@ $PY -m pytest tests/test_self_wall_memory.py tests/test_coela_runtime_self_walls
 
 ### 7.1 산출물 위치
 
-모든 산출물은 `<home>/projects/ugrp/outputs/ego-wall-map-probe/wall-bias-fix/final/` (약 19 MB, 커밋하지 않음). 이전 세션의 `harness-full`, `harness-full-all`, `wall_analysis`, `design_synthesis.md`는 건드리지 않았다. 옵션 실행은 `options/`(열 단위 `<녹화>-<구성>/`, 면 단위 `seg-offset0/<녹화>-<구성>-sag<off|on>-<gate>/`(기본: 팔 축 오프셋 안 더함) 과 `seg/…`(같은 매트릭스, 0.0482 m를 더함; §13.5), `sag-fit.json`, `settle-*.json`)에 있다(`final/`은 §0–§9의 표, `options/`는 §10 이후의 표와 `final/`의 옵션 재현). 개발 중 중간·버린 실행은 같은 `wall-bias-fix/` 아래 `0-legacy-reproduce`, `1-truegt-gripper*`, `2-cause-separation`, `3-missed-classification`, `4-clamp-horizon`, `scratch/`, `heldout-*`에 있다(최종 표에는 `final/`만 쓴다).
+모든 산출물은 `/Users/changmin/projects/ugrp/outputs/ego-wall-map-probe/wall-bias-fix/final/` (약 19 MB, 커밋하지 않음). 이전 세션의 `harness-full`, `harness-full-all`, `wall_analysis`, `design_synthesis.md`는 건드리지 않았다. 옵션 실행은 `options/`(열 단위 `<녹화>-<구성>/`, 면 단위 `seg-offset0/<녹화>-<구성>-sag<off|on>-<gate>/`(기본: 팔 축 오프셋 안 더함) 과 `seg/…`(같은 매트릭스, 0.0482 m를 더함; §13.5), `sag-fit.json`, `settle-*.json`)에 있다(`final/`은 §0–§9의 표, `options/`는 §10 이후의 표와 `final/`의 옵션 재현). 개발 중 중간·버린 실행은 같은 `wall-bias-fix/` 아래 `0-legacy-reproduce`, `1-truegt-gripper*`, `2-cause-separation`, `3-missed-classification`, `4-clamp-horizon`, `scratch/`, `heldout-*`에 있다(최종 표에는 `final/`만 쓴다).
 
 ### 7.2 코드
 
@@ -1560,8 +1560,8 @@ P는 최종 점유 셀 중 정답 벽 ≤0.15 m인 비율, R은 전체 벽 표�
 재현(각 출력 경로는 새 경로를 사용):
 
 ```sh
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/own_map_csm_replay.py --split development --output outputs/self-map-csm-v1-development-NEW
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/own_map_csm_replay.py --split confirmation_replay --output outputs/self-map-csm-v1-confirmation-NEW
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/own_map_csm_replay.py --split development --output outputs/self-map-csm-v1-development-NEW
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/own_map_csm_replay.py --split confirmation_replay --output outputs/self-map-csm-v1-confirmation-NEW
 ```
 
 그림·선택 진단 생성기는 [csm_result_report.py](code/csm_result_report.py)다. 새로 선택된 계수는 없고,
@@ -1716,9 +1716,9 @@ s913-r2 경로 RMSE 감소율도 17.0%로 20% 미달이다. s912-r2/s913-r2 벽 
 ![v2 off/on 경로 오차: v1과 같은 보정 궤적](results/own_map_csm_v2/path-errors-off-on.png)
 
 ```sh
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/csm_insertion_diagnosis.py --output outputs/self-map-csm-v2-diagnosis-NEW
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/own_map_csm_v2_replay.py --split development --output outputs/self-map-csm-v2-development-NEW
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/own_map_csm_v2_replay.py --split confirmation_replay --output outputs/self-map-csm-v2-confirmation-NEW
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/csm_insertion_diagnosis.py --output outputs/self-map-csm-v2-diagnosis-NEW
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/own_map_csm_v2_replay.py --split development --output outputs/self-map-csm-v2-development-NEW
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/own_map_csm_v2_replay.py --split confirmation_replay --output outputs/self-map-csm-v2-confirmation-NEW
 ```
 
 비교 생성기는 기존 `csm_result_report.py`를 `--development`/`--confirmation`에 v2 경로를 지정해 그대로 재사용했다.
@@ -1831,7 +1831,7 @@ prob 삽입 식의 `σ_sensor`는 0.08 m 보정 하한이며, 큰 자세 공분�
 최종 점유 판정은 기존과 동일한 log-odds >0이다. 확률이 낮아졌다는 이유로 평가 문턱을 바꾸지 않는다.
 
 ```sh
-PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
+PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
 $PY experiments/2026-10-05-ego-wall-map-probe/code/run_prob_cohort.py \
   --split development --output outputs/self-map-prob-rbpf-v1-NEW
 $PY experiments/2026-10-05-ego-wall-map-probe/code/run_prob_cohort.py \
@@ -2139,7 +2139,7 @@ r1에서는 **0–0.8%**여서 모든 문제를 해결할 후보는 아니다.
 24개 거짓 셀 분해 파일이 그대로**임을 검사했다. 기본 off 및 기존 v1/v2/prob/RBPF 추정 소스는 변경하지 않았다.
 
 ```sh
-PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
+PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
 $PY experiments/2026-10-05-ego-wall-map-probe/code/map_error_oracle.py \
   --output outputs/self-map-oracle-diagnostic-v2-NEW
 PYTHONPATH=outputs/self-map-plot-deps $PY experiments/2026-10-05-ego-wall-map-probe/code/map_oracle_report.py \
@@ -2223,7 +2223,7 @@ guard on에서도 광학적으로 불가능한 원본 검출이 진단 파일에
 관측 변경으로 RBPF pose도 달라질 수 있다. 그 온라인 피드백은 이번 결과로 검증했다고 주장하지 않는다.
 
 ```sh
-PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
+PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
 $PY experiments/2026-10-05-ego-wall-map-probe/code/projection_guard_replay.py \
   --wall-projection-guard positive_depth_v1 --output outputs/wall-projection-guard-v1-NEW
 ```
@@ -2433,7 +2433,7 @@ N scan마다 생성·2N에서 완료 패턴(N=10)을 확인했다. 전역 배치
 유지한다. solver·보간·frontend 교체 외에는 scan/submap 상대 SE(2) 목적함수 구조를 유지한다.
 
 ```sh
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
   experiments/2026-10-05-ego-wall-map-probe/code/own_submap_replay.py \
   --pose-graph own_submap_v1 --output outputs/own-submap-v1-NEW
 ```
@@ -2880,12 +2880,12 @@ confidence를 적용하면 옅은 지도 셀이 기존 graph의 확률 gate에 �
 증거를 덮어쓰지 않는다. 결과 자료를 옮기거나 지우는 대신 새 작업용 출력 위치를 별도로 정해야 한다.
 
 ```sh
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/v3_confidence_replay.py extract --case s1044 --camera off
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/v3_confidence_replay.py extract --case s1044 --camera v3_unloaded_extrinsic_v1
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/v3_confidence_replay.py predict --case s1044 --camera off
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/v3_confidence_replay.py predict --case s1044 --camera v3_unloaded_extrinsic_v1
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/v3_confidence_replay.py predict --case s1044 --camera v3_unloaded_extrinsic_v1 --confidence
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/v3_confidence_report.py score s1044
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/v3_confidence_replay.py extract --case s1044 --camera off
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/v3_confidence_replay.py extract --case s1044 --camera v3_unloaded_extrinsic_v1
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/v3_confidence_replay.py predict --case s1044 --camera off
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/v3_confidence_replay.py predict --case s1044 --camera v3_unloaded_extrinsic_v1
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/v3_confidence_replay.py predict --case s1044 --camera v3_unloaded_extrinsic_v1 --confidence
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/v3_confidence_report.py score s1044
 ```
 
 개발 보조 명령의 시스템 Python/SciPy 누락과 넓은 glob의 `-managed` 폴더 혼입은 각각 1회 발생 후

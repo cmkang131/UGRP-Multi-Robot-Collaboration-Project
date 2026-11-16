@@ -4,7 +4,7 @@ setopt NO_BG_NICE
 set -eu
 s3_root=${0:A:h:h:h}
 cd "$s3_root"
-s3_py=$HOME/projects/ugrp/.venv-sim-worker-mac/bin/python
+s3_py=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
 s3_sha=${1:?full committed and pushed source SHA required}
 s3_out=${2:?new absolute directory under primary outputs required}
 [[ ${3:-} == --release-s3-simulation ]] || { print -u2 'S3 reserved for PR #393; coordinator release required'; exit 2; }
@@ -12,7 +12,7 @@ s3_out=${2:?new absolute directory under primary outputs required}
 [[ $(git rev-parse origin/codex/s3-three-robot-host) == "$s3_sha" ]]
 [[ $(git branch --show-current) == codex/s3-three-robot-host ]]
 [[ -z $(git status --porcelain) ]]
-[[ ! -e "$s3_out" && "$s3_out" == $HOME/projects/ugrp/outputs/* ]]
+[[ ! -e "$s3_out" && "$s3_out" == /Users/changmin/projects/ugrp/outputs/* ]]
 [[ $(ps -o nice= -p $$ | tr -d ' ') == 0 ]]
 [[ $("$s3_py" scripts/agent_lock.py status) == null ]]
 "$s3_py" scripts/agent_lock.py acquire --owner codex --branch codex/s3-three-robot-host \

@@ -7,7 +7,7 @@ from harness.zone_solo_cyan_pulse_cal import response
 
 
 def audit():
-    path=Path('<home>/projects/ugrp/outputs/s2-flow-fusion-20261007/replay-candidate.json')
+    path=Path('/Users/changmin/projects/ugrp/outputs/s2-flow-fusion-20261007/replay-candidate.json')
     r=json.loads(path.read_text());pulse=next(p for p in r['visual_odometry']['rows'] if p['t']==107.35)
     bundle=json.loads((Path(r['source_raw'])/'bundle.json').read_text());profile=bundle['pulse_calibration']['profiles'][pulse['key']]
     f=VelocityEKF();rows=[];total=np.zeros(3);raw=np.zeros(3)

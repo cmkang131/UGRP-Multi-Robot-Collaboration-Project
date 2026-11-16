@@ -8,7 +8,7 @@ from harness import zone_solo_cyan_contract_v106 as c
 from harness.zone_solo_cyan_augmented_start import Runtime
 from harness.opencv_wall_observation import DETECTOR,observations
 from harness.vision_pose_source_final import measured_column_model
-R=Path('<home>/projects/ugrp/outputs/s2-realism-18e5e42e-s1052-P1-2-place')
+R=Path('/Users/changmin/projects/ugrp/outputs/s2-realism-18e5e42e-s1052-P1-2-place')
 parser=argparse.ArgumentParser();parser.add_argument('--output',type=Path,required=True);parser.add_argument('--pr405-copy',type=Path,required=True);args=parser.parse_args()
 O=args.output;ROOT=Path(__file__).resolve().parents[2]
 if O.exists(): raise ValueError('new output directory required')
@@ -85,7 +85,7 @@ for old in json.loads((O/'camera-component-ablation.json').read_text())['rows']:
  rows.append(dict(t=old['t'],pose=pose,nominal_fk_pitch_deg=float(np.degrees(np.arcsin(rot[2,2]))),nominal_height_m=float(org[2]),nominal_visible_columns=int(np.count_nonzero((bottom>=4)&(bottom<=470))),nominal_rows_px=np.quantile(bottom,[0,.5,1]).tolist(),measured_off_pitch_deg=old['actual_pitch_deg'],fixed_table_pitch_deg=old['fixed_pitch_deg'],scope='fixed CAD nominal geometry, not stiffness-on observation'))
 search=[];inputs={}
 for mode in ('static-off','static-on'):
- p=Path('<home>/projects/ugrp/outputs/servo-stiffness-v1')/mode/'eval_only/camera.jsonl'
+ p=Path('/Users/changmin/projects/ugrp/outputs/servo-stiffness-v1')/mode/'eval_only/camera.jsonl'
  data=[json.loads(l) for l in p.read_text().splitlines()];data=[q for q in data if 5.3<=q['t']<7.3]
  inp=[];bottoms=[];pitches=[]
  g=truth[11.6]

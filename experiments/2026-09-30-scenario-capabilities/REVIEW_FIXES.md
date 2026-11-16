@@ -20,7 +20,7 @@
 - 다음 검사에서는 229 passed / 22 failed였다. 실패 22건은 모두 `test_zone_study_source_pinning.py`가 실제 지도 정보의 출처인 `sim.session_scenes.ROOT`를 읽는 import를 임시 가드가 막았기 때문이다. 해시 불일치가 아니며, 정적 모듈 import만 허용하고 `Scene.__init__`를 차단한 최종 가드에서 251건 전부 통과했다. 제품 소스·등록 JSON·기존 테스트는 수정하지 않았다.
 - CI fixture 사전검사는 처음에 sparse checkout에서 빠진 기존 v3/v4/v5 `example_trial_record.json.gz` 3개를 거절했다. 합계 158,676바이트만 sparse 목록에 추가해 원래 Git blob 그대로 복원한 뒤 통과했다. 새 데이터로 대체하거나 검사를 생략하지 않았다. CI shard 목록은 새 회귀 파일을 정확히 한 번 포함한다.
 - 수정 전 등록 JSON·v6e 고정 소스·번들/workflow 등록·기존 P09 data **145파일**을 원래 HEAD와 바이트 대조했다. 수정 후에도 같은 145파일의 해시가 전부 동일함을 확인했다. source-pinning 검사나 기존 등록 해시를 완화하지 않는다.
-- raw/음성 대조 문서/보호 해시/로그/JUnit은 `<home>/projects/ugrp/outputs/p09-review-fixes-20260930/`에 로컬 보존한다. 원격 백업 완료로 표시하지 않는다.
+- raw/음성 대조 문서/보호 해시/로그/JUnit은 `/Users/changmin/projects/ugrp/outputs/p09-review-fixes-20260930/`에 로컬 보존한다. 원격 백업 완료로 표시하지 않는다.
 
 ## 전달 범위
 

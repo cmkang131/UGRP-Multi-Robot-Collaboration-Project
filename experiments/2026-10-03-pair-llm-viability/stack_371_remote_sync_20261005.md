@@ -15,14 +15,14 @@
 ## 최종 재검사 명령
 
 ```sh
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p no:cacheprovider --tb=short \
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p no:cacheprovider --tb=short \
   tests/test_pair_llm_cli.py tests/test_pair_llm_inputs.py tests/test_highpose_host_clock.py \
   tests/test_highpose_dev_pilot.py tests/test_zone_final_pair_highpose.py \
   tests/test_dev_pair_checkpoint.py::test_runner_default_is_unchanged_signature \
   tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_catalog_has_registered_workflows_and_distinct_adapters
 ```
 
-로그: `<home>/projects/ugrp/outputs/stack-371-clock-v2-20261005/pytest-v103-remote-integration.log`.
+로그: `/Users/changmin/projects/ugrp/outputs/stack-371-clock-v2-20261005/pytest-v103-remote-integration.log`.
 이 결과는 앞 513개 검사와 겹치므로 합산하지 않는다. 바뀐 highpose CLI와 선택 기능 기본 OFF, pair_llm 보정·시계·입력 경계, 카탈로그 연결을 재검증한다.
 
 ## 범위와 명령

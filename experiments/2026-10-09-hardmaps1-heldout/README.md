@@ -66,12 +66,12 @@ MasterPi v3 공식 외형(길이 0.185m·폭 0.162m, `sim/masterpi_geometry_v3.p
 - PNG는 각각 17KiB 미만. raw/무늬 PNG/XML은 기본 checkout의 `outputs/`에 보존하며 원격 백업이라고 부르지 않는다. UGRP 예외에 따라 Drive를 사용하지 않는다.
 
 ```sh
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_zone_heldout_maps.py
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.prepare_zone_heldout --output /absolute/new-output
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_zone_heldout_maps.py
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.prepare_zone_heldout --output /absolute/new-output
 # 공용 잠금이 비었을 때만: 표준 Scene의 정지 XML 로드/forward/렌더, mj_step 0회
 python3 scripts/ugrp_session.py run hardmaps1-stationary-NEW -- \
-  <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.prepare_zone_heldout \
-  --stationary --wait-lock-seconds 3600 --output <home>/projects/ugrp/outputs/hardmaps1-stationary-NEW
+  /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.prepare_zone_heldout \
+  --stationary --wait-lock-seconds 3600 --output /Users/changmin/projects/ugrp/outputs/hardmaps1-stationary-NEW
 ```
 
 `--write-maps`는 초기 저작 시에만 쓰며 기존 지도 파일이 있으면 거부한다. 모든 실행 출력 경로도 덮어쓰기를 거부한다. 정지 확인은 0 SIM초의 초기 장면이며 운전·물리 안정성·완주 시험이 아니다.

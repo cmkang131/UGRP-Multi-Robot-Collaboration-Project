@@ -15,7 +15,7 @@ v88 r8도 같은 운영 항목만 적었다. 로컬 raw는 원격 백업이 아�
 ## 수집 목록
 
 공통: seed 911, 370 SIM초(+reset 1.3 SIM초), 결과 `COLLECTED_UNQUALIFIED`, `protocol_complete=true`,
-`physical_success=null`(성공 판정 아님), 파일 3,725개씩. 경로는 모두 `<home>/projects/ugrp/outputs/` 아래.
+`physical_success=null`(성공 판정 아님), 파일 3,725개씩. 경로는 모두 `/Users/changmin/projects/ugrp/outputs/` 아래.
 
 | 수집 | 소스 / 번들 / workflow | 시작 → 끝 (UTC) | 실제 시간 | 부하(1분) 시작 → 끝 |
 |---|---|---|---|---|
@@ -51,7 +51,7 @@ corridor `c52a72bf…c9dad2`.
   `.venv-sim-worker-mac`에 설치해 해결했다(numpy 2.5.2, mujoco 3.12.0은 그대로).
 - 둘째 실행: 결과 `PARTIAL`. 세 수집(unloaded, fine, loaded) 모두 수집 감사(audit)가
   "r1 frame clock must be a finite numeric time"로 실패했다. 출력은
-  `<home>/projects/ugrp/outputs/final-pair-v88-measured-20261003`
+  `/Users/changmin/projects/ugrp/outputs/final-pair-v88-measured-20261003`
   (calibration.json `c28aaf08…99e7aa`, fit_report.json `4b99d1c4…bee067`).
 - 원인: 조립기(assembler)는 `frames.jsonl`의 키 `t`를 읽는데 실행기는 `sim_time`으로 쓴다.
   고치는 일은 별도 PR(브랜치 `claude/calib-assembly-clock`)이 한다. 이 PR에서는 고치지 않았다.

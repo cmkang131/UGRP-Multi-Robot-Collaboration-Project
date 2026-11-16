@@ -8,7 +8,7 @@ Usage: pf_at_stage_end.py [raw ...]   (default: every align / grasp_lift raw wit
 import json, math, sys, glob
 from pathlib import Path
 import numpy as np
-OUT = Path('<home>/projects/ugrp/outputs')
+OUT = Path('/Users/changmin/projects/ugrp/outputs')
 def wrap(a): return (a + math.pi) % (2*math.pi) - math.pi
 def stats(px, logw):
     w = np.exp(logw - logw.max()); w /= w.sum()

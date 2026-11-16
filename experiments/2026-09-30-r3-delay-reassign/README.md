@@ -50,7 +50,7 @@ r1/r2 API를 유지한다. 역할용 study 연결도 `zone_pair_role_integration
 
 최초 157개 검사 중 155 통과·2 실패도 raw JUnit에 보존했다. 경계 fixture가 대기자의 heartbeat를 갱신하지 않아 host가 수락 직후 안전 종료했으며, 이를 포트 오류로 분류하던 처리를 정상 terminal 결과로 고쳤다. healthy heartbeat 경계 검사와 silent peer 반례를 분리했다. 중간 253개 통과를 최종 수에 더하지 않는다. 시작 시점 보존 파일62개 중58개 바이트/해시 불변, T07에서 물려받은4개 파일은 `1a17829e`와 바이트 동일함을 확인했다. `git diff --check`와 변경 Python 구문 검사도 통과했다.
 
-최종 명령·결과·환경·raw 해시는 [verification.json](verification.json)에 있다. 원본 JUnit은 `<home>/projects/ugrp/outputs/cap-t12-r3-delay/20260930T213220-junit.xml`이다. 단위/fake 검사는 물리·학습·평가 cohort가 아니므로 TensorBoard 성공률을 만들지 않았다. 실제 결과의 snapshot/화면 검증은 [코디네이터 인계](COORDINATOR_HANDOFF.md)를 따른다. 로컬 raw는 primary `outputs/cap-t12-r3-delay/`에 보존하며 원격 백업으로 표현하지 않는다. UGRP 예외에 따라 Drive 작업은 없다.
+최종 명령·결과·환경·raw 해시는 [verification.json](verification.json)에 있다. 원본 JUnit은 `/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/20260930T213220-junit.xml`이다. 단위/fake 검사는 물리·학습·평가 cohort가 아니므로 TensorBoard 성공률을 만들지 않았다. 실제 결과의 snapshot/화면 검증은 [코디네이터 인계](COORDINATOR_HANDOFF.md)를 따른다. 로컬 raw는 primary `outputs/cap-t12-r3-delay/`에 보존하며 원격 백업으로 표현하지 않는다. UGRP 예외에 따라 Drive 작업은 없다.
 
 ## 참고 자료
 

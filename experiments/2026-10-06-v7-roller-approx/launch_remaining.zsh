@@ -3,8 +3,8 @@
 set -eu
 setopt NO_BG_NICE
 task_sha=${1:?expected committed SHA required}
-task_python=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
-task_raw=<home>/projects/ugrp/outputs
+task_python=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+task_raw=/Users/changmin/projects/ugrp/outputs
 for phase in equivalence speed profile render; do
   until [[ "$(python3 scripts/agent_lock.py status)" == null ]]; do
     sleep 15

@@ -1,10 +1,10 @@
 """Diagnosis-only: replay saved align frames through beam heading estimators vs eval-only GT."""
 import json, math, bisect, os, sys, collections
 import numpy as np, cv2
-sys.path.insert(0,'<home>/projects/ugrp-wt/claude-v6d-align')
+sys.path.insert(0,'/Users/changmin/projects/ugrp-wt/claude-v6d-align')
 from harness import owncam_pair_beam as v1
 from harness.owncam_view import base_rays
-BASE='<home>/projects/ugrp/outputs/pair-stage-probes-b5234b7a-v6c-align/cases/'
+BASE='/Users/changmin/projects/ugrp/outputs/pair-stage-probes-b5234b7a-v6c-align/cases/'
 def wrap(a): return (a+math.pi)%(2*math.pi)-math.pi
 def half(a):
     a=wrap(a)

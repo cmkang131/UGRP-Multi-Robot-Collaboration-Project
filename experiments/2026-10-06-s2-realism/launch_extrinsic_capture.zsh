@@ -1,8 +1,8 @@
 #!/bin/zsh
 setopt NO_BG_NICE
 set -eu
-cd <home>/projects/ugrp-wt/drive-friction
-cal_py=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
+cd /Users/changmin/projects/ugrp-wt/drive-friction
+cal_py=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
 cal_sha=${1:?source SHA}
 cal_out=${2:?absolute output}
 cal_states=${3:-all}

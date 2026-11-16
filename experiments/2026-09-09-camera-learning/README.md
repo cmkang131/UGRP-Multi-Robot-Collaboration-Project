@@ -48,14 +48,14 @@
 
 네 영상의 0/5/10/15/20/29초 총 24프레임을 contact-sheet로 검토했고, 기존 r1 round 8, memory r1 round 15, temporal r1 round 13, learned r3 round 11의 실제 입력도 확인했다. 비교 영상의 15초 렌더를 확인했다. 움직임은 있으나 목표 빔은 제자리에 남았다. 영상의 단계/높이 표시는 사후 표시이며 모델 입력에 포함되지 않는다.
 
-`comparison.mp4`는 네 조건을 같은 SIM 시간으로 나란히 놓은 약 30초 비교 영상이다. 코드, 전체 결과 JSON/평가 로그/입력 감사, 원본 해시, round 11 대표 실제 입력(필요한 이전 영상 포함), 비교 영상·contact-sheet를 이 폴더에 보존한다. 각 조건의 전체 raw 영상과 전체 wire/JPEG는 `<home>/projects/ugrp/outputs/camera-learning-20260909-<mode>/`에 로컬 보관한다. 전체 raw 원격 백업은 아니다.
+`comparison.mp4`는 네 조건을 같은 SIM 시간으로 나란히 놓은 약 30초 비교 영상이다. 코드, 전체 결과 JSON/평가 로그/입력 감사, 원본 해시, round 11 대표 실제 입력(필요한 이전 영상 포함), 비교 영상·contact-sheet를 이 폴더에 보존한다. 각 조건의 전체 raw 영상과 전체 wire/JPEG는 `/Users/changmin/projects/ugrp/outputs/camera-learning-20260909-<mode>/`에 로컬 보관한다. 전체 raw 원격 백업은 아니다.
 
 검증: 로컬 217 tests / 126 subtests 통과. source SHA의 GitHub offline-regressions와 Ubuntu simulation CI 모두 통과. 작업 세션 네 개 모두 종료. PR은 사용자 확인 전 main에 병합하지 않는다.
 
 예시(저장소 루트, 기존 Mac runtime):
 
 ```sh
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/ugrp_session.py run camera-learning-new -- <home>/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/run_camera_pair_transport.py --out-dir outputs/NEW-ID --rounds 30 --task grasp --mode learned
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/ugrp_session.py run camera-learning-new -- /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/run_camera_pair_transport.py --out-dir outputs/NEW-ID --rounds 30 --task grasp --mode learned
 ```
 
 새 실행은 새 out-dir를 사용한다. 환경 상세는 environment.json, 사전 조건은 plan.md, 수치 전체는 comparison.json을 참고한다.

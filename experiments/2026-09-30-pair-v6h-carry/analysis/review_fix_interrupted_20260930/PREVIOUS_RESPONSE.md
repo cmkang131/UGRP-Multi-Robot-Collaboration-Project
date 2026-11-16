@@ -15,7 +15,7 @@
 
 ## 중단 근거
 
-cA raw: `<home>/projects/ugrp/outputs/b-v6h-gain-69c2a99a-cA`.
+cA raw: `/Users/changmin/projects/ugrp/outputs/b-v6h-gain-69c2a99a-cA`.
 첫 대조 배열 `[케이스 수, 연쇄 통과, 모든 시드 통과 배치, 전체 배치, L0 통과, L1 통과]`는 공개 `[24,24,12,12,24,24]`, 수정안 `[24,0,0,12,24,24]`였다. 첫 불일치에서 검증 루프를 종료했으므로 **나머지 284건을 수정안으로 재검증하지 않았다**. 전체 308건 일치를 확인했다는 주장은 하지 않는다.
 
 대표 케이스 `chain@b-v6h.k1g+p2f:teacher:F_hR2_04:s913:pPOST:VENV`는 `row.first_failure=null`, `chain.first_failure=null`, `result.failures={'r1': null, 'r2': null}`, `termination.outcome=STUDY_LAYER_DONE`, `chain_stop_leg=1`, 두 로봇 `wait_lower`다. `stop_sim_s`와 L1 끝 시각은 둘 다 `61.50000000020264`다. raw의 `category=STAGE_BUDGET_EXHAUSTED`만으로 의도된 stage stop을 실제 timeout이라고 판단해서도 안 된다.

@@ -9,10 +9,10 @@ import argparse, hashlib, json, os, subprocess, sys, time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-OUTS = {'v1': Path('<home>/projects/ugrp/outputs/fine-gain-schedule-20260924'),
-        'v2': Path('<home>/projects/ugrp/outputs/fine-gain-schedule-20260924-sync'),
-        'v3': Path('<home>/projects/ugrp/outputs/fine-gain-schedule-20260924-sync-v3')}
-MODELS = Path('<home>/.codex/worktrees/faster-dispatch/ugrp/outputs/dispatch-models/e78a5a5777f5bc48/models')
+OUTS = {'v1': Path('/Users/changmin/projects/ugrp/outputs/fine-gain-schedule-20260924'),
+        'v2': Path('/Users/changmin/projects/ugrp/outputs/fine-gain-schedule-20260924-sync'),
+        'v3': Path('/Users/changmin/projects/ugrp/outputs/fine-gain-schedule-20260924-sync-v3')}
+MODELS = Path('/Users/changmin/.codex/worktrees/faster-dispatch/ugrp/outputs/dispatch-models/e78a5a5777f5bc48/models')
 ORDERS = {'v1': [('A1', False), ('B1', True), ('B2', True), ('A2', False)],
           'v2': [('A1', False), ('B1', True), ('B2', True), ('A2', False)],
           # v3: the synchronous OFF baseline is deterministic (v2 A1 == A2);

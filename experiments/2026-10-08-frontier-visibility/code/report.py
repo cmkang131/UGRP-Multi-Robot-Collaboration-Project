@@ -2,9 +2,9 @@
 from pathlib import Path
 import sys,json,importlib.util,math,collections,hashlib
 import numpy as np
-ROOT=Path('<home>/projects/ugrp-wt/ego-wall-map');sys.path.insert(0,str(ROOT))
+ROOT=Path('/Users/changmin/projects/ugrp-wt/ego-wall-map');sys.path.insert(0,str(ROOT))
 EXP=ROOT/'experiments/2026-10-08-frontier-visibility'
-RAW=Path('<home>/projects/ugrp/outputs/frontier-visibility-v1');EP=RAW/'new-seed'
+RAW=Path('/Users/changmin/projects/ugrp/outputs/frontier-visibility-v1');EP=RAW/'new-seed'
 from scripts.run_active_wall_rotleft import dump
 from harness.self_odom_grid import transform
 from harness.self_map_prob import wrap
@@ -61,7 +61,7 @@ def main():
     m=report_module();metrics=m.metrics_module();metrics.verify(EP)
     partial=load(EP/'result.json')['prediction_view']!='completed_graph'
     metrics.evaluate('new-seed',partial=partial)
-    old_ep=Path('<home>/projects/ugrp/outputs/wall-segment-dev-v1/new-seed')
+    old_ep=Path('/Users/changmin/projects/ugrp/outputs/wall-segment-dev-v1/new-seed')
     baseline=load(ROOT/'experiments/2026-10-08-wall-segment-dev/results/new-seed.json')
     fresh=load(EXP/'results/new-seed.json');new=extras(EP);old=extras(old_ep)
     gate=dict(recorded_180s=fresh['acquisition']['status']=='RECORDED' and fresh['acquisition']['frames']==901,

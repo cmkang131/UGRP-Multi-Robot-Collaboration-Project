@@ -46,7 +46,7 @@
 
 원본 RGB의 식별용 개폐 쌍, 방향 추정 오류 프레임, own 끝점 전환·화면 밖 추정 프레임과 대표 접근/마지막 상태를 직접 검토했다. `v8-selected-inputs.jpg`는 실제 r0/214/399의 두 카메라를 나란히 배치한 자료다. 빨간 점은 목표, 청록 점은 집게 움직임 중심의 후처리 주석이며 제어 입력이 아니다. 모든 프레임을 사람 수준으로 전수 판독한 것은 아니다.
 
-- 로컬 raw: `<home>/projects/ugrp/outputs/pixel-grasp-20260910-*`, `jaw-visibility-20260910-r1`, `jaw-amplitude-20260910-*`.
+- 로컬 raw: `/Users/changmin/projects/ugrp/outputs/pixel-grasp-20260910-*`, `jaw-visibility-20260910-r1`, `jaw-amplitude-20260910-*`.
 - 원격 보존 범위: 실행 결과·전체 평가·정확 입력 감사·원본 파일 해시, 소규모 회귀 입력·대표 자료·분석 코드. `v10-observer-12x.mp4`는 전체 v10 관찰 영상을 12배속으로 변환한 별도 검토 자료이며, 화면의 평가 높이와 관찰 카메라는 제어 입력에 포함되지 않는다. raw 전체 JPEG/영상은 로컬 보관이며 원격 백업이 아니다.
 - 코드 및 검토: [PR24](https://github.com/kcm0127-dotcom/ugrp/pull/24). 사용자 명시 승인 전 main 병합하지 않는다. 프로젝트 지침에 따라 Drive는 사용하지 않는다.
 

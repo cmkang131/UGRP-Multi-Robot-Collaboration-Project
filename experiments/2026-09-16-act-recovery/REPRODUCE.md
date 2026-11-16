@@ -2,11 +2,11 @@
 
 이 실험은 기존 로컬 MuJoCo 환경과 RGB 파지 스킬 원본을 사용한다. Git에는 설정·코드·작은 결과 요약만 포함한다. 원시 시연과 체크포인트가 없는 새 clone만으로 최종 모델을 재평가할 수 있다고 주장하지 않는다.
 
-- 실험 worktree: `<home>/projects/ugrp-worktrees/act-recovery-generalization`
-- 시뮬레이션 Python: `<home>/projects/ugrp/.venv-sim-worker-mac/bin/python`
+- 실험 worktree: `/Users/changmin/projects/ugrp-worktrees/act-recovery-generalization`
+- 시뮬레이션 Python: `/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python`
 - macOS MuJoCo 실행기: 같은 환경의 `bin/mjpython`
-- ACT Python: `<home>/Project-Runtimes/ugrp/.venv-reference-act/bin/python`
-- 공통 파지 스킬: `<home>/projects/ugrp/outputs/grasp-recovery-model-20260910-v1`
+- ACT Python: `/Users/changmin/Project-Runtimes/ugrp/.venv-reference-act/bin/python`
+- 공통 파지 스킬: `/Users/changmin/projects/ugrp/outputs/grasp-recovery-model-20260910-v1`
 
 모든 긴 작업은 `scripts/ugrp_session.py run <고유 세션 이름> -- <명령>`으로 실행한다. 결과 디렉터리는 매번 새로 지정한다. 시뮬레이션은 하나씩, CPU 학습은 최대 두 개(각 torch 2 threads)씩 실행했다. 클라우드 GPU나 외부 모델 API는 사용하지 않았다.
 

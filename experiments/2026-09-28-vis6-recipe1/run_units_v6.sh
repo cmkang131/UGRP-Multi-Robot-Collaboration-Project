@@ -7,7 +7,7 @@ set -euo pipefail
 out=$1; cands=$2; seeds=$3; eps=$4
 HERE=$(cd "$(dirname "$0")" && pwd)
 VIS=$HERE/../2026-09-26-vision-loc
-PY=${VL_PY:-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python}
+PY=${VL_PY:-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python}
 MAXJ=${VL_JOBS:-4}
 export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1
 if command -v pmset >/dev/null && pmset -g batt | grep -q "Battery Power"; then

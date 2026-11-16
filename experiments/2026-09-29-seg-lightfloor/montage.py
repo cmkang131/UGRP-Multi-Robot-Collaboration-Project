@@ -5,8 +5,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import cv2, numpy as np
 import seg_ft
 import vision_loc as vl
-C = Path('<home>/projects/ugrp/outputs/carry-relocalization-b1-20260929/cohort/render_floor_light_v1')
-O = Path('<home>/projects/ugrp/outputs/seg-lightfloor-20260929')
+C = Path('/Users/changmin/projects/ugrp/outputs/carry-relocalization-b1-20260929/cohort/render_floor_light_v1')
+O = Path('/Users/changmin/projects/ugrp/outputs/seg-lightfloor-20260929')
 names = sys.argv[2:] or ['cp1_r1_p20_1500', 'cp3_r2_p20_1500', 'cp7_r1_p20_2030', 'cp2_r1_search_1500']
 segs = {'seg-v2': seg_ft.Seg(seg_ft.SEG_V2), 'C_mix_rgb': seg_ft.Seg(O / 'model/C_mix_rgb/seg_lraspp_mbv3.pt')}
 pal = np.array([[60, 60, 60], [40, 200, 40], [200, 60, 60], [60, 60, 220], [0, 0, 0]], np.uint8)   # floor grey, wall green, self red, object blue, bg black

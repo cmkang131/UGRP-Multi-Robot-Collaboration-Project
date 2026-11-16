@@ -73,8 +73,8 @@ network 사용을 막는다. 실제 명령·JUnit·입력 해시·원본 위치�
 [review_fixes_verification.json](review_fixes_verification.json)에 있다.
 
 ```sh
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-30-r3-delay-reassign/review_checks.py --related
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-30-r3-delay-reassign/review_checks.py --tests-only tests/test_ci_sharding.py tests/test_ci_fast_path.py
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-30-r3-delay-reassign/review_checks.py --related
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-30-r3-delay-reassign/review_checks.py --tests-only tests/test_ci_sharding.py tests/test_ci_fast_path.py
 ```
 
 원본은 primary `outputs/cap-t12-r3-delay/review-*`에 로컬 보존하며 원격 raw 백업으로 표현하지

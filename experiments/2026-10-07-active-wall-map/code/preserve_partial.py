@@ -13,7 +13,7 @@ sys.path.insert(0, str(ROOT))
 from scripts.run_active_wall_map import dump
 from harness.self_wall_evidence import build_evidence
 
-RAW = Path('<home>/projects/ugrp/outputs/active-wall-map-v1')
+RAW = Path('/Users/changmin/projects/ugrp/outputs/active-wall-map-v1')
 ep = RAW/'speckle'
 out = RAW/'speckle-partial'
 assert not out.exists()

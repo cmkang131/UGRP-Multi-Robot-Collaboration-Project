@@ -1,6 +1,6 @@
 # P01 — 최종 지도·장면·제공자 등록 연결
 
-UGRP의 E2E 준비 작업이다. 저장소 `<home>/projects/ugrp`의 main에서 **배정된 자기 worktree/codex 브랜치만** 사용한다. AGENTS.md, CONTRIBUTING.md, README.md, docs/current_status.md를 먼저 읽고 fetch/열린 PR로 중복 작업을 확인한다. 기준 감사는 `a8094cc14e098a55483f53a3c49bf6a0b116043d`, [READINESS S01](../READINESS.md)이다. 최신 코드에서 이미 해결됐다면 재구현하지 말고 검증한다.
+UGRP의 E2E 준비 작업이다. 저장소 `/Users/changmin/projects/ugrp`의 main에서 **배정된 자기 worktree/codex 브랜치만** 사용한다. AGENTS.md, CONTRIBUTING.md, README.md, docs/current_status.md를 먼저 읽고 fetch/열린 PR로 중복 작업을 확인한다. 기준 감사는 `a8094cc14e098a55483f53a3c49bf6a0b116043d`, [READINESS S01](../READINESS.md)이다. 최신 코드에서 이미 해결됐다면 재구현하지 말고 검증한다.
 
 **범위:** 최종 지도3개가 같은 static-map resolver를 통해 scenario validator·공개 지도·표준 Scene 선택·provider 설정·실행 bundle에 연결되도록 파일/설정 계약을 구현한다. 물리/시뮬레이션/렌더/비전 추론/LLM 호출은 금지한다. Scene/World 생성 없이 dict·가짜 factory로 검사한다. 기존 지도·실험·봉인 bytes와 기본값은 보존한다.
 

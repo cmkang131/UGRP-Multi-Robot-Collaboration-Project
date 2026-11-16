@@ -187,9 +187,9 @@ Fisher 양측 α 0.025, 검정력 0.8 / 0.9. Bayes는 Beta(1,1) 사전분포에�
 ## 7. 재현과 입력 해시
 
 ```bash
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
   experiments/2026-09-25-zc3-prereg-draft/analysis/zc3_prereg_analysis.py \
-  --outputs-root <home>/projects/ugrp/outputs
+  --outputs-root /Users/changmin/projects/ugrp/outputs
 ```
 
 - 두 번 실행해 산출물 네 개가 바이트 단위로 같음을 확인했다(약 8초, SIM/LLM 호출 없음).

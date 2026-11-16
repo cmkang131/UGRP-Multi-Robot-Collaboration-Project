@@ -40,7 +40,7 @@ MuJoCo·torch·물리 worker import를 막고 BLAS/OMP/MKL/VECLIB 스레드를 1
 [redesign_test_driver.py](redesign_test_driver.py)에 보존했다.
 
 ```sh
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
   experiments/2026-09-30-e2e-p06-evidence/redesign_test_driver.py \
   --junitxml=/absolute/new-result.xml
 ```
@@ -86,7 +86,7 @@ seed는 `30320260930 + 연산번호(0..3)`이며 1–5개 시행·1–3개 주�
 `redesign_verification.json`과 `redesign_source_files.sha256`를 따른다.
 최종 실행에는 생성 검사도 모두 포함한다.
 
-원본 로그·JUnit은 `<home>/projects/ugrp/outputs/p06-evidence-redesign-20260930/`에
+원본 로그·JUnit은 `/Users/changmin/projects/ugrp/outputs/p06-evidence-redesign-20260930/`에
 보존한다. 임시 synthetic JSON/JPEG/event는 OS 임시 디렉터리에만 생성했다.
 작은 검증 요약·재현 코드·소스 해시만 GitHub에 올리며 로컬 raw 전체의 원격 백업을 주장하지 않는다.
 

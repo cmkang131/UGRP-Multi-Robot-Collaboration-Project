@@ -63,7 +63,7 @@ python -m pytest -q -p no:cacheprovider \
 provenance.json을 따른다. 전/후 코드 해시와 실제 종료 코드를 함께 기록한다.
 
 전체 보고서·임시 실행 로그·드라이버는 로컬
-`<home>/projects/ugrp/outputs/v6h-classifier-redesign-20260930/`에 보존한다.
+`/Users/changmin/projects/ugrp/outputs/v6h-classifier-redesign-20260930/`에 보존한다.
 이 폴더에는 작은 검증 결과만 커밋하며 원 raw의 원격 백업이라고 부르지 않는다.
 새 실험 결과가 없어 TensorBoard 재변환·새 서버·브라우저 열기를 하지 않았다.
 기존 snapshot을 보존했다. 독립 재검토와 실제 recorder v3 계약 인수·봉인은 별도다.

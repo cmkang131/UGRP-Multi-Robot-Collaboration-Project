@@ -31,7 +31,7 @@
 # 1) 교사 렌더(최대 2 sim, 스레드 1, df >= 30 GiB, 기계 전체 sim < 6 대기)
 experiments/2026-09-26-vision-loc/run_render.sh kiro-vl-renderA <out>/render vl-dev-s909,vl-train-s901,...
 # 2) 보정(train), 학습(train, dev 검증), 관측(학생 입력만), 필터, 채점
-PY=.venv-sim-worker-mac/bin/python; TPY=<home>/Project-Runtimes/ugrp/.venv-reference-act/bin/python
+PY=.venv-sim-worker-mac/bin/python; TPY=/Users/changmin/Project-Runtimes/ugrp/.venv-reference-act/bin/python
 $PY  experiments/2026-09-26-vision-loc/vision_loc_cli.py calibrate --episodes vl-train-s901 ... --settled-s 0.3 --output calibration_train.json
 $TPY experiments/2026-09-26-vision-loc/vision_loc_cli.py train --output <out>/model/seg-v2 --epochs 4 --every 3
 $TPY experiments/2026-09-26-vision-loc/vision_loc_cli.py segment --episodes <eps> --checkpoint <ckpt> --output <out>/obs-v2
@@ -153,7 +153,7 @@ M1 실행기를 그대로 쓰고 장면(태그 0)·자세 원천(GT 교사)·분
 | `references.md` | 참고 자료 |
 | `tests/test_vision_loc.py` | 19개(합성 라벨 기하, 문틀 열, 구간, 필터 추적, 안정 게이트, 입력 경계, 분할·렌더 분리, torch 시 분할기) |
 
-- 원본(로컬 전용, 원격 백업 아님): `<home>/projects/ugrp/outputs/vision-loc-20260926/`(렌더 672 MB, 모델, 관측, 추정, 격자). 모델 `model/seg-v2/seg_lraspp_mbv3.pt`(13.1 MB, sha256 `348539030fda962cc5ba64e21c956619bc4db9321a99cd3ae6746611a9939fd9`). **GitHub Release 등록은 보류**(`docs/model_artifacts.md` 절차 미수행).
+- 원본(로컬 전용, 원격 백업 아님): `/Users/changmin/projects/ugrp/outputs/vision-loc-20260926/`(렌더 672 MB, 모델, 관측, 추정, 격자). 모델 `model/seg-v2/seg_lraspp_mbv3.pt`(13.1 MB, sha256 `348539030fda962cc5ba64e21c956619bc4db9321a99cd3ae6746611a9939fd9`). **GitHub Release 등록은 보류**(`docs/model_artifacts.md` 절차 미수행).
 - TensorBoard: `outputs/tensorboard/0926-vision-loc`(31 run: 에피소드 6 × 필터 4, 풀링 4, 태그 참조 2, 학습 1). EventAccumulator 재독 684건·공용 서버(127.0.0.1:6006) HTTP 660건 대조, 불일치 0. 보기 설정 `outputs/tensorboard-view.json`의 `vision_loc_20260926`.
 
 ## 검토 범위와 한계

@@ -41,7 +41,7 @@ def main():
     remote.ssh('azure',f'mkdir -p ~/ugrp-sim/leases; test ! -e {root} && touch {lease}')
     started=time.monotonic();archived=False
     evidence=args.worktree/'experiments/2026-10-11-egomap-reconfirmation'
-    local=Path('<home>/projects/ugrp/outputs/egomap71-orchestration')
+    local=Path('/Users/changmin/projects/ugrp/outputs/egomap71-orchestration')
     local.mkdir(exist_ok=True)
     def ssh(command):
         return remote.ssh('azure',command,capture_output=True,text=True).stdout.strip()

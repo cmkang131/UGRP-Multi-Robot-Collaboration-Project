@@ -31,7 +31,7 @@
    물리 진입점을 등록하지 않는다. `sim_cli workflow plan <새 ID> ...`의 dry plan과
    등록 검사를 통과한 뒤에만 `ugrp_session.py run`으로 실행한다. 임의 직접 runner 우회 금지.
 7. 공용 잠금을 driver PID로 획득하고 디스크 >=10 GiB를 확인한다. raw는 primary
-   `<home>/projects/ugrp/outputs/<새 T10b 후보>/<cell>-<attempt>/`에 쓴다.
+   `/Users/changmin/projects/ugrp/outputs/<새 T10b 후보>/<cell>-<attempt>/`에 쓴다.
    셀 시작 전에 immutable manifest를 저장하고 실행 뒤 변경하지 않는다. 재시도는 새 폴더다.
 
 ## 고정 경로·배치와 8셀

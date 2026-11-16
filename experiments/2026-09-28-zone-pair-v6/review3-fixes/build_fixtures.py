@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 OUT = ROOT/'tests/fixtures/zone_pair_v6_review3'
-RAW = Path('<home>/projects/ugrp/outputs')
+RAW = Path('/Users/changmin/projects/ugrp/outputs')
 V5H = RAW/'zone-pair-dev-v5h-f87921dc52f7a3f12d41b4bc6ab5c30227890e8e'
 V5B = RAW/'zone-pair-dev-v5b-3ea2edc08e5addafaf3cedc934c463ad8e1635c8'
 GRIP_INSET_M = .03

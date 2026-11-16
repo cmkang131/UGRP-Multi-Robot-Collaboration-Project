@@ -3,9 +3,9 @@
 다음 문서를 먼저 읽고 기존 RestingBeamTrack / PairSweepGuard / PairGraspRelook / STATUS를 확장했다.
 설계의 좌표계 분리·loaded 제한을 새로운 성공 근거로 바꾸지 않는다.
 
-- `/private/tmp/claude-501/-<home>-projects-ugrp/ecd247bf-a1a7-45d6-9190-dad34be56468/scratchpad/codex-dev13-14-design.md`
+- `/private/tmp/claude-501/-Users-changmin-projects-ugrp/ecd247bf-a1a7-45d6-9190-dad34be56468/scratchpad/codex-dev13-14-design.md`
 - 같은 경로의 `codex-dev11-12-diag.md`
-- `<home>/projects/ugrp-wt/codex-pair-parity/experiments/2026-09-27-zone-pair-parity/beam_frame_design.md`
+- `/Users/changmin/projects/ugrp-wt/codex-pair-parity/experiments/2026-09-27-zone-pair-parity/beam_frame_design.md`
 - 같은 경로의 `loaded_stage_design.md`
 
 ## 상대 보고

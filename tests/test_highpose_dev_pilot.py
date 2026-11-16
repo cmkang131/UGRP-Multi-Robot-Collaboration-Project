@@ -22,7 +22,7 @@ from scripts import run_pair_highpose as run
 
 UNLOADED = ['gain', 'tau_s', 'tau_axis_s', 'tau_stop_s', 'noise_rel', 'noise_abs',
             'scale_std', 'scale_walk', 'use_scale', 'rest_noise']
-REAL = Path('<home>/projects/ugrp/outputs/v92-dev-pilot-c0zero-20261003T104043Z/result/calibration_dev_pilot.json')
+REAL = Path('/Users/changmin/projects/ugrp/outputs/v92-dev-pilot-c0zero-20261003T104043Z/result/calibration_dev_pilot.json')
 REAL_SHA = '398372ae6b9b0fef7344d7f29146ce75b309d334b3ce31af527bc071c0e582f5'
 C_SHA = 'aba4ac586b2554844ad5b4b17efe968a4247278664ffb433f83f6785ca1769c4'
 V102_SHA = 'ce447ada62295d24c7f7a5929ce878e70fa297651e16ca192536f4a403cd8c5f'

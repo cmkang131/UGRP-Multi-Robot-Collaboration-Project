@@ -3,15 +3,15 @@
 # envelope lives in the single tracked prereg of this worktree, one run_id at a time.
 # usage: run_cohort.sh <approval comment URL> [run_id ...]
 set -euo pipefail
-PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
-WT=<home>/projects/ugrp-wt/claude-v6-dev
+PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+WT=/Users/changmin/projects/ugrp-wt/claude-v6-dev
 cd "$WT"
 REF=$1; shift
 RUNS=${*:-"v6-s911-v5h v6-s911-b v6-s911-ab v6-s912-v5h v6-s912-b v6-s912-ab"}
 BRANCH=$(git branch --show-current)
 SHA=$(git rev-parse HEAD)
 PREREG=experiments/2026-09-28-zone-pair-v6/prereg_v6.json
-ROOT=<home>/projects/ugrp/outputs/zone-pair-dev-v6-$SHA
+ROOT=/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v6-$SHA
 LOG=$ROOT/cohort.log
 test "$BRANCH" = claude/zone-pair-v6-dev
 test -z "$(git status --porcelain --untracked-files=all)"

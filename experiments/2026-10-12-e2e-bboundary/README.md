@@ -51,12 +51,12 @@
 재현 명령(저장 자료 필요, 실행 아님):
 
 ```sh
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/diagnose_e2e_bboundary.py \
-  --outputs <home>/projects/ugrp/outputs \
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/diagnose_e2e_bboundary.py \
+  --outputs /Users/changmin/projects/ugrp/outputs \
   --record experiments/2026-10-12-e2e-bboundary
 ```
 
-`summary.json`은 모든 시도·측정 범위·소스 SHA·raw 위치를 포함한다. 상세 진단, 선택 RGB 계측, 전체 입력 hash manifest와 시험 JUnit은 `<home>/projects/ugrp/outputs/e2e-bboundary-20261012/`에 저장했다. 상세 JSON은 zstd 압축 뒤 해제 SHA를 확인했으며 원본 회수 자료는 수정하지 않았다. 해당 상세 자료는 **Mac 로컬 보관**이고 GitHub raw 백업은 아니다. [참고 자료](REFERENCES.md). Refs #433.
+`summary.json`은 모든 시도·측정 범위·소스 SHA·raw 위치를 포함한다. 상세 진단, 선택 RGB 계측, 전체 입력 hash manifest와 시험 JUnit은 `/Users/changmin/projects/ugrp/outputs/e2e-bboundary-20261012/`에 저장했다. 상세 JSON은 zstd 압축 뒤 해제 SHA를 확인했으며 원본 회수 자료는 수정하지 않았다. 해당 상세 자료는 **Mac 로컬 보관**이고 GitHub raw 백업은 아니다. [참고 자료](REFERENCES.md). Refs #433.
 
 ## B 흰 표식 판정 토글 `b_marker_detect=contrast_v1` (2026-10-12 추가)
 

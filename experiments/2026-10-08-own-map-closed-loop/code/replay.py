@@ -5,8 +5,8 @@ import numpy as np
 ROOT=Path(__file__).resolve().parents[3]
 sys.path.insert(0,str(ROOT))
 EXP=Path(__file__).resolve().parents[1]
-RAW=Path('<home>/projects/ugrp/outputs/own-map-closed-loop-v1/offline')
-CACHE=Path('<home>/projects/ugrp/outputs/own-map-causal-landmarks-v1')
+RAW=Path('/Users/changmin/projects/ugrp/outputs/own-map-closed-loop-v1/offline')
+CACHE=Path('/Users/changmin/projects/ugrp/outputs/own-map-causal-landmarks-v1')
 source=ROOT/'experiments/2026-10-08-own-map-causal-landmarks/code/replay.py'
 spec=importlib.util.spec_from_file_location('causal_replay',source)
 base=importlib.util.module_from_spec(spec);spec.loader.exec_module(base)

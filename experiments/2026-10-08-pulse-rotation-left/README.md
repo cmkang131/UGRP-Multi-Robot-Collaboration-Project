@@ -109,5 +109,5 @@ on이 제안한 행동을 실행한 것이 아니므로 새 탐색 거리·B 도
 off의 전체891 trace bytes 및 frontend/graph 지도는 원본과 동일하다.
 CW 연속10펄스의 자세·공분산 bytes와 CW/하중/XY/분산/다른 profile 불변도 시험했다.
 원본·예측·그림 해시는 [검증 기록](results/verification.json)에 보존한다.
-raw는 `<home>/projects/ugrp/outputs/pulse-rotation-left-v1`에 로컬 보존,
+raw는 `/Users/changmin/projects/ugrp/outputs/pulse-rotation-left-v1`에 로컬 보존,
 PR405 DRAFT 유지. 결과는 PR406에 코멘트로만 공유하며 #406 코드/모델 수정0.

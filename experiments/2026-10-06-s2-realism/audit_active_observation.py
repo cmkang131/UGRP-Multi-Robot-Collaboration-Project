@@ -8,7 +8,7 @@ from harness.owncam_localizer import LoadState
 from harness import vision_loc_protocol as vp
 from replay_sensor_consistency import RUNS,read,sha,global_factory,prior_factory
 HERE=Path(__file__).resolve().parent
-BASE=Path('<home>/projects/ugrp/outputs/s2-sensor-consistency-v56-20261008')
+BASE=Path('/Users/changmin/projects/ugrp/outputs/s2-sensor-consistency-v56-20261008')
 
 
 def audit(seed,out):

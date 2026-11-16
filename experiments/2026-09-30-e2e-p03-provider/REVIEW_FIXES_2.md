@@ -60,7 +60,7 @@ python scripts/check_ci_fixtures.py
 
 파일 해시·JUnit 집계·변이 실패 원문은 `f312_1_verification.json`에 기록했다.
 원본 로그·JUnit·실패한 기존 CI 로그는
-`<home>/projects/ugrp/outputs/e2e-p03-f312-1-20261001/`에 로컬 보관한다.
+`/Users/changmin/projects/ugrp/outputs/e2e-p03-f312-1-20261001/`에 로컬 보관한다.
 원격 raw 전체 백업으로 표현하지 않는다. 임시 archive 추출 디렉터리는 만들지 않았다.
 
 이 검증 뒤 정상 push로 GitHub CI를 실행하고, 해당 HEAD의 실제 결과를 #312의

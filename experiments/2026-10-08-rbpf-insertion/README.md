@@ -73,7 +73,7 @@ pitch 항은 이 Jacobian×.13°(rad),1px 항은 Jacobian/fy.
 GT 차체 자세로 옮긴 검출점의 최근접 실제 벽 거리를 total_wall 오차로 각각 보고한다.
 후자는 검출/대응 오류도 포함한다. 카메라 GT는 진단 스크립트에만 존재한다.
 
-raw `<home>/projects/ugrp/outputs/rbpf-insertion-v1/`; ENOSPC=HOST_ERROR.
+raw `/Users/changmin/projects/ugrp/outputs/rbpf-insertion-v1/`; ENOSPC=HOST_ERROR.
 출력/입력 sha256 보존, 다른 worktree·PR406·사용자 미추적 파일 변경0.
 
 구현은 `harness.rbpf_insertion.install(grid, rbpf_insertion='gmapping_range_v1')`.

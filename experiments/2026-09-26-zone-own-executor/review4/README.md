@@ -1,7 +1,7 @@
 # PR #206 4차 리뷰 수정 검증 — 2026-09-27
 
 기준 HEAD: `6fde26071b602f56770047a4838820b93b876559`.
-리뷰 원문: `/private/tmp/claude-501/-<home>-projects-ugrp/ecd247bf-a1a7-45d6-9190-dad34be56468/scratchpad/codex-206-review4.md`.
+리뷰 원문: `/private/tmp/claude-501/-Users-changmin-projects-ugrp/ecd247bf-a1a7-45d6-9190-dad34be56468/scratchpad/codex-206-review4.md`.
 커밋·push·물리 실행 없이 작업 트리에서 수정했다. 아래는 비물리 회귀검사 결과이며 운반 성공·속도 측정이 아니다.
 
 ## 수정과 반례
@@ -23,12 +23,12 @@
 - `regression.txt`: 기존 + 신규 **172 passed, 85 subtests passed, 1 deselected**.
 - 제외한 검사는 `test_team_host_isolation_abort_and_horizon_on_the_real_world`다. 다른 검사는 scripted pose·fake host·정적 지도·저장 fixture를 사용했다.
 
-모든 pytest 호출에 `OMP_NUM_THREADS=1`과 `--basetemp=./.pytest_tmp`를 적용했다. Python은 기존 `<home>/projects/ugrp/.venv-sim-worker-mac/bin/python`을 재사용했다.
+모든 pytest 호출에 `OMP_NUM_THREADS=1`과 `--basetemp=./.pytest_tmp`를 적용했다. Python은 기존 `/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python`을 재사용했다.
 
 최종 명령(독립 테스트 사본을 cwd로 실행):
 
 ```sh
-OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
+OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
   tests/test_zone_own_executor.py tests/test_zone_own_executor_boundaries.py \
   tests/test_zone_own_executor_guards.py tests/test_zone_own_executor_host.py \
   tests/test_zone_own_executor_review3.py tests/test_zone_own_executor_sweep_start.py \

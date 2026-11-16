@@ -78,7 +78,7 @@ pan 1890–2030 구간이었다. 이번 spawn·0.10 m 벽·초기 위치추정 �
 - `git diff --check` 통과. 전체 저장소 CI, 새 seed 물리 스모크, 배송 성공은 검증하지 않았다.
 
 ```sh
-OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
+OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
   tests/test_zone_own_executor_sweep_start.py tests/test_zone_own_executor_review3.py \
   tests/test_zone_own_executor.py tests/test_zone_own_executor_guards.py \
   tests/test_zone_own_executor_boundaries.py tests/test_zone_own_executor_host.py \

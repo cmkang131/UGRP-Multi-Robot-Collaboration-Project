@@ -5,6 +5,6 @@ Actual countTokens on peer_ko s601 call-0261-r1: 8203 → compact ko 2144 / en 2
 Seed601 snapshot eligibility: no_comm 306→82; peer 265→118; leader 313→126; structured 319→121. Targets unmet; counterfactual execution is not measured.
 Global shared budget: 14400 TPM / 27 RPM / 12960 RPD; synchronous quota waits preserve SIM and request identity.
 plan.json: 16 paired DEV stage runs, seed603, Gemma/Gemini × event on/off × 4 conditions; Azure notification + own-map + moving-camera qualification pending.
-Evidence and limits: summary.json; raw <home>/projects/ugrp/outputs/s4-gemma-standard; prior full raw oracle:/home/ubuntu/ugrp-archive/runs/s4live11-*.
+Evidence and limits: summary.json; raw /Users/changmin/projects/ugrp/outputs/s4-gemma-standard; prior full raw oracle:/home/ubuntu/ugrp-archive/runs/s4live11-*.
 References: [Gemma API](https://ai.google.dev/gemma/docs/core/gemma_on_gemini_api), [countTokens](https://ai.google.dev/gemini-api/docs/tokens), [rate limits](https://ai.google.dev/gemini-api/docs/rate-limits), [CoMuRoS event replanning](https://www.frontiersin.org/journals/robotics-and-ai/articles/10.3389/frobt.2026.1843313/full).
 API-only initial claim: Gemma 3/3 replies accepted + 1 API 500 (4 attempts); Gemini 4/4. Physical/general quality remains unqualified.

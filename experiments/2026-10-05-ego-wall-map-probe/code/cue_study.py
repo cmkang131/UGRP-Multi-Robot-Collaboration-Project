@@ -168,7 +168,7 @@ import markerless_probe as mp           # noqa: E402
 import wall_probe as wp                 # noqa: E402  (episode plumbing + seed bias)
 
 WIDTH, HEIGHT, CY, FY = mp.WIDTH, mp.HEIGHT, mp.CY, mp.FY
-DEFAULT_OUT = Path('<home>/projects/ugrp/outputs/ego-wall-map-probe/cue_study')
+DEFAULT_OUT = Path('/Users/changmin/projects/ugrp/outputs/ego-wall-map-probe/cue_study')
 
 # Gate-local knobs.  None of them is a wall height; they are image tolerances in the
 # same units as height_free_wall.PARAMS (rows, 8-bit levels) plus one floor-texture

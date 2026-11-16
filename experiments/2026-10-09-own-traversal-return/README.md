@@ -87,6 +87,6 @@ API: `self_map_return_repeat.attach(explorer, map_utility='remembered_goal_360_v
 
 - 사전등록570f8127, 동결 구현3bb2d8c6, 조기종료 입력 어댑터e52c6d60. 첫 두 prediction은3bb2d8c6, 나머지는e52c6d60; graph/controller 코드 바이트 동일, raw/봉인 보존. `freeze.json`에 초기·현재 해시와 어댑터 변경 이력.
 - 관련2파일 **18시험 통과**, off trace/particles/RNG 및 pulse 출력 바이트 동일. 결과 후 제어 코드·수치 변경0. 네 기존 미추적 사용자 파일 보존.
-- `results/{49001..49006}.json`, `gate.json`, `diagnosis.json`; raw `<home>/projects/ugrp/outputs/own-traversal-return-v1/`의 `prediction.json`/`seal.json`/로그·RGB 출처 SHA.
+- `results/{49001..49006}.json`, `gate.json`, `diagnosis.json`; raw `/Users/changmin/projects/ugrp/outputs/own-traversal-return-v1/`의 `prediction.json`/`seal.json`/로그·RGB 출처 SHA.
 - [지도/그래프 마지막 프레임](figures/final-graph.jpg), [영상 처음·중간·끝 검수](figures/video-check.jpg). `49001/wrist-map-graph-4x-v2.mp4`: 기존 실패 녹화 위 그래프 진단, 새 물리 영상 아님. 3,151프레임/20fps/157.55초, 전체 디코드 및 시각 검수. 최초 v1 영상도 보존(지도 점이 자막에 겹쳐 v2에서 표시 영역만 수정). 성공 사례가 없어 성공 영상은 만들지 않았다.
 - 감독 중단 뒤 Codex/자식 셸/Python NI=0 확인, 이후 모든 zsh에 `setopt NO_BG_NICE`. 물리·timing 측정0, agent_lock 미취득, 다른 프로세스 조작0.

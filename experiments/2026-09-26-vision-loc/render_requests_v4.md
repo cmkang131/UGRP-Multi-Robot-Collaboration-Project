@@ -25,10 +25,10 @@ full raw/reported covariance와 적용 관측 시각을 기록하도록 worker�
 
 ```sh
 export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1
-export UGRP_V3_SOURCE=<home>/projects/ugrp-wt/kiro-vision-loc-v3src
-PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
-VIS=<home>/projects/ugrp-wt/codex-vision-loc-v4/experiments/2026-09-26-vision-loc
-OUT=<home>/projects/ugrp-wt/codex-vision-loc-v4/outputs/vision-loc-v4/render
+export UGRP_V3_SOURCE=/Users/changmin/projects/ugrp-wt/kiro-vision-loc-v3src
+PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+VIS=/Users/changmin/projects/ugrp-wt/codex-vision-loc-v4/experiments/2026-09-26-vision-loc
+OUT=/Users/changmin/projects/ugrp-wt/codex-vision-loc-v4/outputs/vision-loc-v4/render
 EPISODES=vl4-test-s1002,vl4-test-s1008,vl4-test-s1009,vl4-test-s1010,vl4-test-s1011,vl4-test-s1015,vl4-test-s1021,vl4-test-s1023
 # EPISODES는 위 primary 8회 그대로 정식 등록 시 고정한다.
 # prereg_v4.json / episodes_v4.json은 아직 없으므로 현재 실행 불가.

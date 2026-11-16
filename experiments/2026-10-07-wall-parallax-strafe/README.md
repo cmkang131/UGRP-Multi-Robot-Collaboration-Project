@@ -40,7 +40,7 @@ t=11,12,13,14 s에 반대 방향 4펄스 → 정지; 총 18 s, RGB 10 Hz, 평가
 `agent_lock status=null` 확인 후 자신 PID로 acquire→`ugrp_session`/등록 workflow에서
 한 번에 한 run만 실행→finally close/release. 실제 코드는 시험·commit·push 후 실행한다.
 총 예산 2회×18 SIM s(+각 reset≤5 s), raw≤100 MiB, 예기치 않은 장기 실행은 기록·중단.
-raw는 `<home>/projects/ugrp/outputs/wall-parallax-strafe-v1/` 새 경로, 원본 보존.
+raw는 `/Users/changmin/projects/ugrp/outputs/wall-parallax-strafe-v1/` 새 경로, 원본 보존.
 디스크 확인 후 시작, ENOSPC=HOST_ERROR. wall 시간은 운영 기록이며 속도 비교 아님.
 
 ### 평가 및 변경 없는 관문

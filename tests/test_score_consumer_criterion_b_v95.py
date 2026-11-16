@@ -15,7 +15,7 @@ from harness import zone_final_pair_new_starts as v
 from scripts import score_consumer_criterion_b_v95 as s
 from scripts import validate_consumer_criterion_b as frozen
 
-V88 = Path('<home>/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001/'
+V88 = Path('/Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001/'
            'calibration-unloaded/zone_wide_two_doors_final_v3')
 T0, START_UNIX = 1.3, 1_800_000_000.0
 

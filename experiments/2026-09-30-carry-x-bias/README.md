@@ -17,7 +17,7 @@
 
 ## 자료와 방법
 
-- 분석에 쓴 raw는 모두 `<home>/projects/ugrp/outputs/` 아래 기존 실행이다. 사본을 만들지 않았고 `results/raw_inputs.json`에 각 `cases.jsonl`의 sha256을 적었다.
+- 분석에 쓴 raw는 모두 `/Users/changmin/projects/ugrp/outputs/` 아래 기존 실행이다. 사본을 만들지 않았고 `results/raw_inputs.json`에 각 `cases.jsonl`의 sha256을 적었다.
   - 연쇄: `door-relax-envelope-77fde5f6-chK1gP2`(seed 911, 912 각 10건), `door-relax-envelope-fdd35cee-chK1gP1/chK1g/chK0g/chBase`.
   - 단일 구간: `pair-stage-probes-3f6ca985-ghR2`(+`ghR2L7`), `pair-stage-probes-495c1173-ghR`, `pair-stage-probes-f0716773-ghB/ghC/ghD`, `door-relax-envelope-fdd35cee-envK1gL0/L1`, `pair-stage-probes-ece01311-fcal`, `pair-stage-probes-7cecaf9b-fcal2`. 합쳐 25개 raw.
 - 정답(GT, 시뮬레이터 좌표)은 **오프라인 채점에만** 썼다. 보정 후보는 제어기가 실제로 아는 양(자기 명령 이력, 단계, 정적 지도)만으로 만들어진다: 이득 계수 하나(kappa)다.
@@ -143,7 +143,7 @@ L0 끝(`fuse`/`replace` 공통, 시작 오차가 재파지 이전이라 판독 �
 
 ## 6. 재현 방법
 
-경로는 이 폴더 기준이다. Python은 `<home>/projects/ugrp/.venv-sim-worker-mac/bin/python`, 파생 자료는 `<home>/projects/ugrp/outputs/carry-x-bias-20260930/`에 둔다(1 MiB 초과).
+경로는 이 폴더 기준이다. Python은 `/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python`, 파생 자료는 `/Users/changmin/projects/ugrp/outputs/carry-x-bias-20260930/`에 둔다(1 MiB 초과).
 
 ```
 cd experiments/2026-09-30-carry-x-bias/analysis
