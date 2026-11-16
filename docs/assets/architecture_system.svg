@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 860" width="1280" height="860" role="img" aria-label="전체 구조: 실험 조건(과제, 팀 구조 T0 T1 T2, 로봇 3대와 T2 메시지 통로)이 계획층에 자기 주문과 능력을 준다. 계획층은 로봇마다 LLM 하나로, 자기 방 이름, 본 상자, 자기 주문, 받은 메시지, 자기 능력을 받아 상자, 표식, 문, 내려놓기, 기다리기 가운데 하나를 고르고 행동에 메시지를 덧붙인다. 행동 선택은 실행층이 받아 ACT 로 집기와 들기를, 코드로 접근, 운반, 문 통과, 내려놓기를 하고 로봇 사이 공통 규칙을 지킨 뒤 바퀴와 관절 명령을 내보내며 진행을 계획층에 보고한다. 감지는 자기 카메라의 관측을 계획층과 실행층에, 천장 카메라의 모든 로봇 위치와 방향을 실행층에만 준다. 채점은 옆에서 선택과 결과를 읽고, 정답 좌표는 어느 층에도 가지 않는다" font-family="'Noto Sans CJK KR','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',Helvetica,Arial,sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 860" width="1280" height="860" role="img" aria-label="전체 구조: 실험 조건(과제, 팀 구조 T0 T1 T2, 로봇 3대와 T2 메시지 통로)이 계획층에 자기 주문과 능력을 준다. 계획층은 로봇마다 LLM 하나로, 자기 방 이름, 본 상자, 자기 주문, 받은 메시지, 자기 능력을 받아 상자, 표식, 문, 내려놓기, 기다리기 가운데 하나를 고르고 행동에 메시지를 덧붙인다. 행동 선택은 실행층이 받아 ACT 로 집기와 들기를, 코드로 접근, 운반, 문 통과, 내려놓기를 하고 로봇 사이 공통 규칙을 지킨 뒤 바퀴와 관절 명령을 내보내며 진행을 계획층에 보고한다. 감지는 자기 카메라의 관측을 계획층과 실행층에, 천장 카메라의 모든 로봇 위치와 방향을 실행층에만 준다. 채점은 옆에서 실행 결과를 읽어 주문 달성률을 내고, 정답 좌표는 어느 층에도 가지 않는다" font-family="'Noto Sans CJK KR','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',Helvetica,Arial,sans-serif">
   <title>전체 구조</title>
   <defs>
     <style>
@@ -40,7 +40,7 @@
   <text x="52" y="119">내려놓으면 그 로봇의 실행이 끝난다</text>
   <text x="52" y="138">주문은 팀 전체의 것이다</text>
   <text x="52" y="157">주문에 없는 상자를 옮기면 감점</text>
-  <text class="ts" x="52" y="182">할 일이 없으면 끝내도 된다</text>
+  <text class="ts" x="52" y="182">자기 주문을 못 해도 최선의 추측으로 돕는다</text>
 
   <rect class="box" x="302" y="56" width="280" height="148" rx="2"/>
   <text class="tm" x="314" y="78">팀 구조 (메시지 통로)</text>
@@ -227,11 +227,11 @@
   <text x="1072" y="85">(상자와 표식의 실제 위치,</text>
   <text x="1072" y="104">접촉력)은 채점에만 쓴다</text>
   <text class="tm" x="1072" y="130">어느 층에도 주지 않는다</text>
-  <text class="ts" x="1072" y="160">읽는 것: 로봇들의 마지막</text>
-  <text class="ts" x="1072" y="177">선택, 메시지 수, 놓인 상자</text>
+  <text class="ts" x="1072" y="160">읽는 것: 놓인 상자, 메시지</text>
+  <text class="ts" x="1072" y="177">수, 로봇들의 마지막 선택</text>
   <text class="ts" x="1072" y="194">(실행이 끝난 뒤)</text>
-  <text class="ts" x="1072" y="222">내는 것: 계획 덮임 C,</text>
-  <text class="ts" x="1072" y="239">메시지 벌점 점수 SP</text>
+  <text class="ts" x="1072" y="222">내는 것: 주문 달성률 R,</text>
+  <text class="ts" x="1072" y="239">R_SP, 성공 S (원인용 C)</text>
   <path class="lg" d="M984 262 H1058" marker-end="url(#g)"/>
   <text class="ts" x="1021" y="236" text-anchor="middle">마지막 선택</text>
   <text class="ts" x="1021" y="251" text-anchor="middle">메시지 수</text>
