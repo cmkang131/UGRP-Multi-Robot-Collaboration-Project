@@ -5,7 +5,7 @@ import numpy as np
 
 ROOT=Path(__file__).resolve().parents[1]
 PLAN=ROOT/'experiments/2026-10-06-s2-realism/load-wall-criteria.json'
-TEMPLATE=Path('<home>/projects/ugrp/outputs/s2-stiff-cal-20261007/start/setup_bundle.json')
+TEMPLATE=Path('/Users/changmin/projects/ugrp/outputs/s2-stiff-cal-20261007/start/setup_bundle.json')
 TIMES=(0.,.95,1.90,2.85,3.80,6.35)
 ACTION=dict(kind='mecanum',forward=0.,left=.65,turn=0.,duration_s=.65)
 

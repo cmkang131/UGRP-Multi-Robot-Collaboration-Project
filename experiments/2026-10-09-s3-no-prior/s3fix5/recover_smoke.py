@@ -106,4 +106,4 @@ def replay(raw, out, accelerated=False, *, measure=True):
 
 
 if __name__=="__main__":
-    replay(Path("<home>/projects/ugrp/outputs/s3-odometry-4c9eb3aa-s14201-v150"),Path("<home>/projects/ugrp/outputs/s3fix5-20261009/smoke-recovery"),False,measure=False)
+    replay(Path("/Users/changmin/projects/ugrp/outputs/s3-odometry-4c9eb3aa-s14201-v150"),Path("/Users/changmin/projects/ugrp/outputs/s3fix5-20261009/smoke-recovery"),False,measure=False)

@@ -94,7 +94,7 @@ ack=None 및 통신 조건의 추가 거절을 반영한 뒤 다시 실행했다
 [압축 추적](review7-exit-traces.json.gz)은 고정 mtime과 소스 SHA-256을 보존한다.
 과거 검토 4/5/6 기록과 동결 v64 파일은 덮어쓰지 않았다.
 
-기존 `<home>/projects/ugrp/.venv-sim-worker-mac`을 재사용했다.
+기존 `/Users/changmin/projects/ugrp/.venv-sim-worker-mac`을 재사용했다.
 모든 pytest는 `OMP_NUM_THREADS=1`, `--basetemp=./.pytest_tmp`로 실행하며 매 실행 후
 `.pytest_tmp`를 제거한다. 실행 wrapper는 socket connect/connect_ex와 MuJoCo import를
 차단한다. 관련 검사에 필요한 sparse gzip 3개는 HEAD blob·기존 SHA를 확인하여 일시
@@ -106,10 +106,10 @@ ack=None 및 통신 조건의 추가 거절을 반영한 뒤 다시 실행했다
 실행:
 
 ```sh
-OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-27-zone-study-multiturn/run_review7_tests.py --scope ci
-OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-27-zone-study-multiturn/run_review7_tests.py --scope related
-OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-27-zone-study-multiturn/audit_review7.py
-OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-27-zone-study-multiturn/audit_review7_before.py
+OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-27-zone-study-multiturn/run_review7_tests.py --scope ci
+OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-27-zone-study-multiturn/run_review7_tests.py --scope related
+OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-27-zone-study-multiturn/audit_review7.py
+OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-27-zone-study-multiturn/audit_review7_before.py
 ```
 
 `git fetch origin`은 공용 `.git`의 FETCH_HEAD 쓰기 제한, `gh pr list`는 네트워크 제한으로

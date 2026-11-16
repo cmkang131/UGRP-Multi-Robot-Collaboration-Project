@@ -2,7 +2,7 @@
 =================================== FAILURES ===================================
 _ test_pid_reuse_at_last_membership_lookup_never_signals_other_job[after_last_lookup-2] _
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_pid_reuse_at_last_members2')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_pid_reuse_at_last_members2')
 signum = <Signals.SIGINT: 2>, reuse = 'after_last_lookup'
 
     @pytest.mark.parametrize('signum', [signal.SIGINT, signal.SIGTERM])
@@ -95,7 +95,7 @@ tests/test_sim_speed_review6.py:97: AssertionError
 sim_slots: slot 0/1 after 0 s (0 running before)
 _ test_pid_reuse_at_last_membership_lookup_never_signals_other_job[after_last_lookup-15] _
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_pid_reuse_at_last_members3')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_pid_reuse_at_last_members3')
 signum = <Signals.SIGTERM: 15>, reuse = 'after_last_lookup'
 
     @pytest.mark.parametrize('signum', [signal.SIGINT, signal.SIGTERM])

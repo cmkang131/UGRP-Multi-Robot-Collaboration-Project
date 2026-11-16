@@ -15,7 +15,7 @@ from scipy.spatial.transform import Rotation
 
 ROOT=Path(__file__).resolve().parents[3]
 EXP=Path(__file__).resolve().parents[1]
-OUT=Path('<home>/projects/ugrp/outputs/camera-pose-projection-v1')
+OUT=Path('/Users/changmin/projects/ugrp/outputs/camera-pose-projection-v1')
 sys.path[:0]=[str(ROOT),str(ROOT/'experiments/2026-10-05-ego-wall-map-probe/code')]
 import v3_confidence_replay as old
 sys.path.insert(0,str(ROOT/'experiments/2026-10-07-wall-floor-boundary/code'))

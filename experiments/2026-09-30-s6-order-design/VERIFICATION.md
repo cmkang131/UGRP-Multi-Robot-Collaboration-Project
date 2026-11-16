@@ -19,7 +19,7 @@
 명령:
 
 ```sh
-PYTHONPATH=. <home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
+PYTHONPATH=. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
   experiments/2026-09-30-s6-order-design/audit.py \
   --output experiments/2026-09-30-s6-order-design/data/static.json
 ```

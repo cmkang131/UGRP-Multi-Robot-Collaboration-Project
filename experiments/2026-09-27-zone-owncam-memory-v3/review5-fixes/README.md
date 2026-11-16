@@ -1,7 +1,7 @@
 # PR #234 5차 리뷰 수정
 
 기준 HEAD `2fadd08a0a49d94af21f54275f60e07645fb6677`, 브랜치 `codex/zone-owncam-memory-v3`.
-제공된 `/private/tmp/claude-501/-<home>-projects-ugrp/ecd247bf-a1a7-45d6-9190-dad34be56468/scratchpad/codex-234-review5.md`의 P1 두 건과 coordinator의 ON/OFF 안전 조건 통일 결정을 반영했다. 단위·저장 입력 재생 검사이며 새 물리 실행이나 코호트 결과가 아니다. 커밋·push·PR 수정·병합은 하지 않았다.
+제공된 `/private/tmp/claude-501/-Users-changmin-projects-ugrp/ecd247bf-a1a7-45d6-9190-dad34be56468/scratchpad/codex-234-review5.md`의 P1 두 건과 coordinator의 ON/OFF 안전 조건 통일 결정을 반영했다. 단위·저장 입력 재생 검사이며 새 물리 실행이나 코호트 결과가 아니다. 커밋·push·PR 수정·병합은 하지 않았다.
 
 ## 변경과 비교 범위
 
@@ -37,7 +37,7 @@
 
 ## 재현과 저장 입력
 
-기존 환경 `<home>/projects/ugrp/.venv-sim-worker-mac/bin/python`을 재사용했다. pytest마다 `OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1`과 `--basetemp=./.pytest_tmp`를 사용했다. 기존 wrapper의 OpenCV `setNumThreads(0)`으로 GCD 병렬 영역을 끄고 실제 thread 수 1을 확인했다. runner 테스트의 thread cap은 `mock.patch.dict`로 고정한다. 마지막에 `.pytest_tmp`를 삭제했다.
+기존 환경 `/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python`을 재사용했다. pytest마다 `OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1`과 `--basetemp=./.pytest_tmp`를 사용했다. 기존 wrapper의 OpenCV `setNumThreads(0)`으로 GCD 병렬 영역을 끄고 실제 thread 수 1을 확인했다. runner 테스트의 thread cap은 `mock.patch.dict`로 고정한다. 마지막에 `.pytest_tmp`를 삭제했다.
 
 - 새 회귀: `review-fixes/run_review_tests.py -q -s --basetemp=./.pytest_tmp tests/test_owncam_memory_v3_review5.py`.
 - 수정 전: `review5-fixes/reproduce_baseline.py`. `git show 2fadd08a:<path>`로 세 모듈을 메모리에만 로딩한다. exit 1과 8 failed가 기대값이다. 소스/checkout/index는 바꾸지 않는다. 테스트 추가 후 deselected 수는 달라질 수 있다.

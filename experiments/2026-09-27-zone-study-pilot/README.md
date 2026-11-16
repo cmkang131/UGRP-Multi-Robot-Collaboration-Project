@@ -98,18 +98,18 @@ run별 토큰 합계는 preflight-01 10,622, preflight-02-v63 43,313, cohort-01-
 
 ## TensorBoard
 
-스냅샷은 `<home>/projects/ugrp/outputs/tensorboard/0927-zone-study-pilot/`이다. run은 9개(`<파일럿 run>/<condition>`)이고 scalar는 115개다. [`build_records.py`](build_records.py)가 기존 `scripts/zone_study_report.write_events`로 만들었으며, 이 함수는 기존 run 덮어쓰기를 거부한다.
+스냅샷은 `/Users/changmin/projects/ugrp/outputs/tensorboard/0927-zone-study-pilot/`이다. run은 9개(`<파일럿 run>/<condition>`)이고 scalar는 115개다. [`build_records.py`](build_records.py)가 기존 `scripts/zone_study_report.write_events`로 만들었으며, 이 함수는 기존 run 덮어쓰기를 거부한다.
 
 - 고정 카드: `evaluation/accepted_calls`(정상 채택 수, 배송 성공 아님), `result/release_sim_s`, `result/commands`, `result/model_calls`, `result/model_response_s_mean`, `result/tokens_total`, `result/reserved_tokens`. 응답 시각이 없는 preflight-01에는 응답 s scalar를 만들지 않았다(0으로 채우지 않음).
 - HParams: `condition`, `stage`, `bundle`, `model_effective`.
 - 검증: EventAccumulator로 115/115 일치를 확인했다. 기존 공유 서버(PID 9291/9293, `--logdir outputs/tensorboard`, 재시작하지 않음)의 `/data/plugin/scalars/scalars`에서도 115/115 일치했다. `session_groups`는 9개 세션과 4개 HParams를 반환했다. 브라우저에서 열어 카드 값을 눈으로 확인하지는 않았다. 공유 logdir의 병합 HParams 표는 다른 스냅샷의 열을 보여 주므로 Time Series를 쓴다.
 - 링크: <http://127.0.0.1:6006/?pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22evaluation%2Faccepted_calls%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Frelease_sim_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fcommands%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_response_s_mean%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Ftokens_total%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Freserved_tokens%22%7D%5D&smoothing=0&runFilter=%5E0927-zone-study-pilot%2F#timeseries>
 
-재생성(원본 읽기 전용, 기존 스냅샷이 있으면 거부): `<home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-27-zone-study-pilot/build_records.py --tb --verify`
+재생성(원본 읽기 전용, 기존 스냅샷이 있으면 거부): `/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-27-zone-study-pilot/build_records.py --tb --verify`
 
 ## 원본 위치와 해시
 
-raw는 로컬 전용이며 원격 백업이 아니다. 위치는 `<home>/projects/ugrp/outputs/zone-study-adapter-pilot-r10/`이다. 매니페스트·trial·대조·telemetry·부하 기록·`budget.sqlite` 등 28개 파일의 SHA-256은 [`sha256.json`](sha256.json)에 있다. 주요 값:
+raw는 로컬 전용이며 원격 백업이 아니다. 위치는 `/Users/changmin/projects/ugrp/outputs/zone-study-adapter-pilot-r10/`이다. 매니페스트·trial·대조·telemetry·부하 기록·`budget.sqlite` 등 28개 파일의 SHA-256은 [`sha256.json`](sha256.json)에 있다. 주요 값:
 
 | 파일 | SHA-256 |
 |---|---|

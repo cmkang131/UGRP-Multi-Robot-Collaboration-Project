@@ -7,7 +7,7 @@ import cv2
 import numpy as np
 ROOT=Path(__file__).resolve().parents[3]
 EXP=Path(__file__).resolve().parents[1]
-RAW=Path('<home>/projects/ugrp/outputs/servo-stiffness-v1')
+RAW=Path('/Users/changmin/projects/ugrp/outputs/servo-stiffness-v1')
 sys.path.insert(0,str(ROOT/'experiments/2026-10-07-wall-parallax/code'))
 # This file is also named replay.py; load the frozen module under another name.
 import importlib.util

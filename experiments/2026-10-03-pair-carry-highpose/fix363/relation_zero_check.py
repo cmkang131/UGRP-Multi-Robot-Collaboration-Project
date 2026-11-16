@@ -19,7 +19,7 @@ sys.path.insert(0, str(HERE.parents[2]))
 from harness import zone_pair_highpose_grip as grip  # noqa: E402
 from harness import owncam_pair_hold_v3 as hv3  # noqa: E402
 
-RAW = Path('<home>/projects/ugrp/outputs/pr363-render-frames-20261003')
+RAW = Path('/Users/changmin/projects/ugrp/outputs/pr363-render-frames-20261003')
 
 
 def sha(path):

@@ -16,7 +16,7 @@ import subprocess
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
-RAW_ROOT = Path('<home>/projects/ugrp/outputs')
+RAW_ROOT = Path('/Users/changmin/projects/ugrp/outputs')
 BRANCH = 'claude/v7-roller-approx'
 LOCK_OWNER = 'codex'  # authorized handover; preserve the existing branch and history
 PROFILE = 'masterpi_drive_friction_v7'

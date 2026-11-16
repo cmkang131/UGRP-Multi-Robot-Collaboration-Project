@@ -1,6 +1,6 @@
 # Independent delay-cohort evidence review
 
-Scope: read-only review of the complete 16-run cohort at `<home>/projects/ugrp/outputs/short-transport-delay-20260913-v1`, frozen source `1d904c255b9ff551b103e6de98ba22bd7692d86f`. I inspected every run's recorded result/audit through the cohort report, then directly viewed the last top RGB, both last own RGB images, and an extracted final observer frame for each of the four visual failures. Referee state is diagnostic output only. This review does not establish continuity between sampled ticks.
+Scope: read-only review of the complete 16-run cohort at `/Users/changmin/projects/ugrp/outputs/short-transport-delay-20260913-v1`, frozen source `1d904c255b9ff551b103e6de98ba22bd7692d86f`. I inspected every run's recorded result/audit through the cohort report, then directly viewed the last top RGB, both last own RGB images, and an extracted final observer frame for each of the four visual failures. Referee state is diagnostic output only. This review does not establish continuity between sampled ticks.
 
 ## Result and cause
 

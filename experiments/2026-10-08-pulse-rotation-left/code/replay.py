@@ -14,8 +14,8 @@ from harness.self_pulse_rotation import OPTION
 from scripts.run_active_wall_nav2 import install_profile,dump
 
 EXP=Path(__file__).resolve().parents[1]
-RAW=Path('<home>/projects/ugrp/outputs/active-frontier-audit-v1/new-seed')
-OUT=Path('<home>/projects/ugrp/outputs/pulse-rotation-left-v1')
+RAW=Path('/Users/changmin/projects/ugrp/outputs/active-frontier-audit-v1/new-seed')
+OUT=Path('/Users/changmin/projects/ugrp/outputs/pulse-rotation-left-v1')
 def load(p):return json.loads(p.read_text())
 def rows(p):return [json.loads(s) for s in p.read_text().splitlines()]
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()

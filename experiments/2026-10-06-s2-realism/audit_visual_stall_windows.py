@@ -1,7 +1,7 @@
 import sys,json,pathlib,copy,hashlib,collections,cv2,numpy as np
-sys.path.insert(0,'<home>/projects/ugrp-wt/drive-friction')
+sys.path.insert(0,'/Users/changmin/projects/ugrp-wt/drive-friction')
 from harness.zone_solo_cyan_visual_fix import Runtime,Previous,flow_pair,FLOW
-ROOT=pathlib.Path('<home>/projects/ugrp/outputs');WORK=ROOT/'s2-visual-fix-20261007'
+ROOT=pathlib.Path('/Users/changmin/projects/ugrp/outputs');WORK=ROOT/'s2-visual-fix-20261007'
 # Use the actual monitor methods on a recorded-input-only object. The inherited
 # controller/provider calls are suppressed; commands come exclusively from raw.
 Previous.on_command=lambda *a:None

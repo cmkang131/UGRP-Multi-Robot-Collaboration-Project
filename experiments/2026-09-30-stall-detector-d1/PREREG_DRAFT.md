@@ -200,7 +200,7 @@ Wilson 하한은 `p=x/n`, `z=1.959963984540054`일 때
 실행 전 여유 **≥24 GiB**, 항상 ≥10 GiB 유지. 측정치는 `scripts/disk_report.py`로 확인한다.
 예산 도달/ENOSPC는 **HOST_ERROR**로 중단하고 미완료·재시도·전체 실패를 기록한다.
 유효 프레임이 이미 있는 케이스를 결과 실패 때문에 재시도하지 않는다. raw를 지워 예산을 맞추지 않는다.
-raw는 `<home>/projects/ugrp/outputs/stall-detector-d1-<freeze-sha8>-<cohort>/`에 새로 저장하고
+raw는 `/Users/changmin/projects/ugrp/outputs/stall-detector-d1-<freeze-sha8>-<cohort>/`에 새로 저장하고
 시각/자기 명령/모든 프레임·평가·환경·해시를 보존한다. Git에는 작은 표·manifest·해시만 보존한다.
 기존 raw/snapshot은 덮어쓰지 않고 Drive는 쓰지 않는다. 새 실험 결과를 보고할 때는 `docs/tensorboard.md`에
 따라 공용 TensorBoard의 새 snapshot과 실패·대조를 함께 로딩/검증한다. 이번 단위 테스트는 새 코호트 결과가 아니다.

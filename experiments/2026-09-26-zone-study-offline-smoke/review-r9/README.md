@@ -49,10 +49,10 @@ R8에서 확인된 sandbox `ps` 권한 제한 때문에 `test_parent_exit_cleans
 이번 확장 검사에서 제외했으며, 통과했다고 보고하지 않는다.
 
 ```sh
-OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
+OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
   tests/test_zone_study_review_r9.py tests/test_zone_study_review_r8.py -q \
   --basetemp=.tmp/r9/final-focused
-OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
+OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
   tests/test_zone_study*.py tests/test_zone_event_scheduler.py tests/test_zone_sim_cost.py \
   tests/test_simulation_workflow_manager.py tests/test_gemini*.py -q \
   -k 'not test_parent_exit_cleans_background_child' --basetemp=.tmp/r9/final-regression

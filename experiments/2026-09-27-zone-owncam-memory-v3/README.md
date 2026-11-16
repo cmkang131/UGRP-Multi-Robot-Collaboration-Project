@@ -41,7 +41,7 @@ v2 핵심/runner 및 과거 실험 기록의 SHA-256은 `v2_preservation.json`�
 
 ## 검증
 
-Python: `<home>/projects/ugrp/.venv-sim-worker-mac/bin/python`.
+Python: `/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python`.
 `OMP_NUM_THREADS=1`, `OPENBLAS_NUM_THREADS=1`, `VECLIB_MAXIMUM_THREADS=1`, `MKL_NUM_THREADS=1`, `PYTHONDONTWRITEBYTECODE=1`.
 MuJoCo 없이 `unittest`로 검사했고, 새 제어기 import에 MuJoCo를 차단한 검사도 포함한다.
 전체 `scripts/run_ci_tests.py`/원격 CI를 실행했다는 뜻은 아니다.

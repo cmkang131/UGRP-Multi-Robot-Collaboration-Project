@@ -11,12 +11,12 @@ import numpy as np
 ROOT=Path(__file__).resolve().parents[3]
 EXP=Path(__file__).resolve().parents[1]
 TEXTURE=ROOT/'experiments/2026-10-07-wall-parallax-texture'
-RAW=Path('<home>/projects/ugrp/outputs/wall-parallax-baseline-v1')
+RAW=Path('/Users/changmin/projects/ugrp/outputs/wall-parallax-baseline-v1')
 sys.path[:0]=[str(ROOT),str(ROOT/'experiments/2026-10-07-wall-parallax-texture/code')]
 import replay_texture as source
 frozen,c=source.frozen,source.c
 from harness import wall_parallax as geometry
-BASE=Path('<home>/projects/ugrp/outputs/wall-parallax-texture-v1/replay/parallax_v1')
+BASE=Path('/Users/changmin/projects/ugrp/outputs/wall-parallax-texture-v1/replay/parallax_v1')
 CASES=('tape-north','tape-south')
 MODES=('eval_gt_translation_only','eval_gt_length_only')
 

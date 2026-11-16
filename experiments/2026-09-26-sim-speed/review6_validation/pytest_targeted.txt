@@ -3,7 +3,7 @@
 =================================== FAILURES ===================================
 _ test_real_detached_descendant_is_not_signalled_and_wrapper_releases[setsid] __
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_real_detached_descendant_0')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_real_detached_descendant_0')
 detach = 'setsid'
 
     @pytest.mark.parametrize('detach', ['setsid', 'setpgid'])
@@ -55,14 +55,14 @@ detach = 'setsid'
 >           assert not received.exists() and not done.exists()
 E           AssertionError: assert (not False and not True)
 E            +  where False = exists()
-E            +    where exists = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_real_detached_descendant_0/received').exists
+E            +    where exists = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_real_detached_descendant_0/received').exists
 E            +  and   True = exists()
-E            +    where exists = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_real_detached_descendant_0/done').exists
+E            +    where exists = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_real_detached_descendant_0/done').exists
 
 tests/test_sim_speed_review6.py:193: AssertionError
 _ test_real_detached_descendant_is_not_signalled_and_wrapper_releases[setpgid] _
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_real_detached_descendant_1')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_real_detached_descendant_1')
 detach = 'setpgid'
 
     @pytest.mark.parametrize('detach', ['setsid', 'setpgid'])
@@ -114,9 +114,9 @@ detach = 'setpgid'
 >           assert not received.exists() and not done.exists()
 E           AssertionError: assert (not False and not True)
 E            +  where False = exists()
-E            +    where exists = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_real_detached_descendant_1/received').exists
+E            +    where exists = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_real_detached_descendant_1/received').exists
 E            +  and   True = exists()
-E            +    where exists = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_real_detached_descendant_1/done').exists
+E            +    where exists = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_real_detached_descendant_1/done').exists
 
 tests/test_sim_speed_review6.py:193: AssertionError
 ____________ test_interrupt_owned_descendant_after_leader_exited[2] ____________
@@ -358,7 +358,7 @@ scripts/sim_slots.py:784: RuntimeError
 
 During handling of the above exception, another exception occurred:
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_interrupt_owned_descendan0')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_interrupt_owned_descendan0')
 signum = <Signals.SIGINT: 2>
 
     @pytest.mark.parametrize('signum', [signal.SIGINT, signal.SIGTERM])
@@ -675,7 +675,7 @@ scripts/sim_slots.py:784: RuntimeError
 
 During handling of the above exception, another exception occurred:
 
-tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_interrupt_owned_descendan1')
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_interrupt_owned_descendan1')
 signum = <Signals.SIGTERM: 15>
 
     @pytest.mark.parametrize('signum', [signal.SIGINT, signal.SIGTERM])

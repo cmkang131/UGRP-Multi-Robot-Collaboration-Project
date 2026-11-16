@@ -51,7 +51,7 @@ s1042/1043 개발 → 설정/소스 동결 commit → s1044–1047 확인 재생
 모두 통과 시에만 RBPF100+positive_depth+pose_graph+wall_confidence 재생/지도 그림을 갱신한다.
 §17·§19/positive-depth 기준 불변. 온라인 VP 실패 그림/조건 표는 지도 갱신과 구분한다.
 
-raw `<home>/projects/ugrp/outputs/online-camera-pitch-v1/`; 원본·미추적4파일 보존.
+raw `/Users/changmin/projects/ugrp/outputs/online-camera-pitch-v1/`; 원본·미추적4파일 보존.
 입력/소스/예측/결과 hash 보존, ENOSPC=HOST_ERROR. 의존성 설치/venv 변경 없음
 (기존 OpenCV5에 원문이 실제 사용하는 LSD가 있음; contrib API 사용 없음).
 시험 통과 후 commit/push, Codex trailer, DRAFT 유지·병합 없음. TensorBoard 기존 면제/Drive 미사용 유지.

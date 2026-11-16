@@ -7,10 +7,10 @@ import sys
 import time
 import uuid
 
-root = Path('<home>/projects/ugrp-wt/cap-t08a-beam-plan')
+root = Path('/Users/changmin/projects/ugrp-wt/cap-t08a-beam-plan')
 sys.path.insert(0, str(root))
 from scripts import agent_lock
-out = Path('<home>/projects/ugrp/outputs/beam-initial-pose-contract') / ('tests-' + time.strftime('%Y%m%d-%H%M%S') + '-' + uuid.uuid4().hex[:6])
+out = Path('/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract') / ('tests-' + time.strftime('%Y%m%d-%H%M%S') + '-' + uuid.uuid4().hex[:6])
 out.mkdir(parents=True)
 print('raw:', out, flush=True)
 started = time.monotonic()

@@ -8,7 +8,7 @@ import hashlib
 import numpy as np
 ROOT=Path(__file__).resolve().parents[3]
 EXP=Path(__file__).resolve().parents[1]
-RAW=Path('<home>/projects/ugrp/outputs/active-wall-map-v1')
+RAW=Path('/Users/changmin/projects/ugrp/outputs/active-wall-map-v1')
 sys.path.insert(0,str(ROOT))
 from scripts.run_active_wall_map import dump
 from harness.active_camera import pitch

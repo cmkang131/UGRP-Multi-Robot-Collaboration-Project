@@ -45,7 +45,7 @@ allowed = commands_clear(static_map, issued_servo, commands,
 
 ## 검사 결과
 
-Python `<home>/projects/ugrp/.venv-sim-worker-mac/bin/python`.
+Python `/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python`.
 `OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1`,
 OpenCV GCD는 기존 wrapper의 `setNumThreads(0)` 및 `getNumThreads()==1`, pytest main process 1개.
 모든 pytest는 `--basetemp=./.pytest_tmp`를 사용했다.

@@ -74,7 +74,7 @@ def main():
             source_sha=b['source_sha'], execution_bundle_id=b['execution_bundle_id'], options=b['options'])))
         return
     check_source(args.expected_registration_sha)
-    primary = Path('<home>/projects/ugrp/outputs').resolve()
+    primary = Path('/Users/changmin/projects/ugrp/outputs').resolve()
     expected = primary / f"s2-realism-{b['source_sha'][:8]}-s{args.seed}-v133-reproduction"
     if args.output != expected or args.output.exists():
         raise ValueError('one new preregistered primary output per seed required')

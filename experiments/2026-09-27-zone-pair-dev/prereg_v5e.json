@@ -370,7 +370,7 @@
     }
   },
   "commands": {
-    "interpreter": "<home>/projects/ugrp/.venv-sim-worker-mac/bin/python",
+    "interpreter": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
     "prepare": [
       "OMP_NUM_THREADS=2 PYTHONDONTWRITEBYTECODE=1 \"$PAIR_PY\" scripts/run_zone_pair_dev.py --prereg experiments/2026-09-27-zone-pair-dev/prereg_v5e.json --run-id dev11 --output /tmp/zone-pair-dev11-v5e-prepare-NEW",
       "OMP_NUM_THREADS=2 PYTHONDONTWRITEBYTECODE=1 \"$PAIR_PY\" scripts/run_zone_pair_dev.py --prereg experiments/2026-09-27-zone-pair-dev/prereg_v5e.json --run-id dev12 --output /tmp/zone-pair-dev12-v5e-prepare-NEW"
@@ -379,7 +379,7 @@
       "dev11",
       "dev12"
     ],
-    "raw_root_template": "<home>/projects/ugrp/outputs/zone-pair-dev-v5e-$PAIR_SHA",
+    "raw_root_template": "/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v5e-$PAIR_SHA",
     "prerequisites": "Coordinator owner=claude only; follow grasp_v5.md and the existing lock/cleanup procedure. Check disk and lock; commit reviewed code; verify clean branch and freeze full SHA; acquire exclusive lock owned by live driver PID; never reuse output paths.",
     "owner": "claude"
   },

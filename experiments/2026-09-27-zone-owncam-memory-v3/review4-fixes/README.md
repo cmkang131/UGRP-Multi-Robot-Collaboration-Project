@@ -27,7 +27,7 @@ P2 실패 2개는 실제 0.40 m 정적 벽 지도·자기 추정 `(2.00, −0.50
 
 ## 실행 방법
 
-기존 환경 `<home>/projects/ugrp/.venv-sim-worker-mac/bin/python`을 사용했다.
+기존 환경 `/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python`을 사용했다.
 모든 pytest 프로세스는 `OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1`로 시작했고 `--basetemp=./.pytest_tmp`를 사용했다. OpenCV GCD는 `setNumThreads(0)`으로 병렬 영역을 끄고 `getNumThreads()==1`을 확인했다. 종료 후 `.pytest_tmp`를 삭제했다.
 
 - `review-fixes/run_review_tests.py -q --basetemp=./.pytest_tmp tests/test_owncam_memory_v3_review4.py`: 새 테스트.

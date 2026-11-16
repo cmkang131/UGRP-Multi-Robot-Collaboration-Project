@@ -49,7 +49,7 @@ source·driver·plan·명령 해시와 72개 case 설정을 연결한다.
 pytest/분석기를 실행했다. 실행 시간은 성능 비교 자료가 아니다.
 
 전체 17코호트 재분류 JSON과 697개 입력 해시 목록은
-`<home>/projects/ugrp/outputs/v6h-classifier-run-manifest-20261001/`에 보존한다.
+`/Users/changmin/projects/ugrp/outputs/v6h-classifier-run-manifest-20261001/`에 보존한다.
 이 디렉터리에는 작은 로그·집계·해시만 복사했으며 `artifact_index.json`으로 연결한다.
 로컬 raw의 원격 백업을 주장하지 않는다.
 

@@ -10,7 +10,7 @@ from harness.public_navigation_unknown import UnknownCostmap
 from scripts.run_active_wall_rotleft import dump
 
 def main():
-    src=Path('<home>/projects/ugrp/outputs/frontier-duration-v1/exhaustion-audit-v2')
+    src=Path('/Users/changmin/projects/ugrp/outputs/frontier-duration-v1/exhaustion-audit-v2')
     seal=json.loads((src/'seal.json').read_text())
     for name in ('costmap.npz','state.json','replay.json'):
         assert hashlib.sha256((src/name).read_bytes()).hexdigest()==seal[name]

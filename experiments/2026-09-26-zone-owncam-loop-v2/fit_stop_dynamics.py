@@ -20,7 +20,7 @@ from pathlib import Path
 
 import numpy as np
 
-RAW = Path('<home>/projects/ugrp/outputs/owncam-loop-20260925')
+RAW = Path('/Users/changmin/projects/ugrp/outputs/owncam-loop-20260925')
 DT = .01
 
 

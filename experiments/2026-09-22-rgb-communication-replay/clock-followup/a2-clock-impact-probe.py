@@ -160,7 +160,7 @@ with tempfile.TemporaryDirectory(prefix="ugrp-a2-writer-") as directory:
             "hash_stable_after_process_exit": True,
             "completion_known": bool(rows), "final_log_sha256": final_hash})
 
-raw = Path("<home>/.codex/worktrees/cf5f/ugrp/outputs/rgb-communication-colab-bfe478f/recovered/result/runs")
+raw = Path("/Users/changmin/.codex/worktrees/cf5f/ugrp/outputs/rgb-communication-colab-bfe478f/recovered/result/runs")
 for kind in ("solo", "joint"):
     run = raw/(kind+"-physical-replay")
     before = {name: digest(run/name) for name in ("runtime.jsonl", "evaluator.json", "result.json")}

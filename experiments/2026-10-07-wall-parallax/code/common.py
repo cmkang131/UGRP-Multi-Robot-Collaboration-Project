@@ -6,14 +6,14 @@ import sys
 
 EXP=Path(__file__).resolve().parents[1]
 ROOT=EXP.parents[1]
-OUT=Path('<home>/projects/ugrp/outputs/wall-parallax-v1')
+OUT=Path('/Users/changmin/projects/ugrp/outputs/wall-parallax-v1')
 sys.path[:0]=[str(ROOT),str(ROOT/'experiments/2026-10-05-ego-wall-map-probe/code')]
 import v3_confidence_replay as old
 from harness.self_map_prob import V7CommandOdometry
 
 EPISODES={**old.EPISODES,
-    's1050':Path('<home>/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place'),
-    's1051':Path('<home>/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place')}
+    's1050':Path('/Users/changmin/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place'),
+    's1051':Path('/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place')}
 
 
 def read(path):return json.loads(Path(path).read_text())

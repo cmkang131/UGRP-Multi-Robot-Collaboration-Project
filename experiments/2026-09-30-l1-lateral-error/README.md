@@ -269,7 +269,7 @@ wall 시간·디스크·로봇 명령 수는 실행 전 확정하지 않는다. 
 새 clone에서는 커밋된 CSV로 통계 재계산이 가능하다. raw 재추출은 원본이 있어야 한다.
 
 ```sh
-PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
+PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
 E=experiments/2026-09-30-l1-lateral-error
 # 기존 원본 읽기만; frozen 목록 밖의 새 실행은 합산하지 않음
 OPENBLAS_NUM_THREADS=1 "$PY" "$E/extract.py"

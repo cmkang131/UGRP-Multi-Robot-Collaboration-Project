@@ -82,7 +82,7 @@ def build():
                               'policy': 'b-v6h1', 'pf_track': True, 'contact_track': True,
                               'render_profile': 'floor_light_v1', 'workers': 4, 'omp_threads': 1,
                               'case_timeout_s': 1500.,
-                              'raw_root': '<home>/projects/ugrp/outputs',
+                              'raw_root': '/Users/changmin/projects/ugrp/outputs',
                               'enospc': 'HOST_ERROR', 'minimum_free_gib': 10}},
             'runs': runs,
             'changed_sealed_sources': source_changes(predecessor['v6_contract']['source_sha256'], closure['source_sha256']),

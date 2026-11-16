@@ -4,8 +4,8 @@ Run from the repository root at this PR's checkout. Keep simulation dependencies
 
 ```sh
 EXP=experiments/2026-09-13-rgb-short-transport
-SIM_PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
-MJ_PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/mjpython
+SIM_PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+MJ_PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/mjpython
 python3 "$EXP/restore_evidence.py" outputs/short-transport-restored-NEW
 python3 -m zipfile -e experiments/2026-09-10-rgb-varied-start/models.zip outputs/short-transport-prior-models-NEW
 ```

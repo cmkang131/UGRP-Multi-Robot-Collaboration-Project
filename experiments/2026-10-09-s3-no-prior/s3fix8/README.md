@@ -4,7 +4,7 @@
 
 ## 범위와 판정 (새 비교 결과 열람 전)
 
-- v152 원본: `<home>/projects/ugrp/outputs/s3-recovery-981baa95-s14201-v152`, source `981baa95e77aa78e5ffd6bc87c172cbb97aea7ed`. 원본을 덮어쓰지 않는다.
+- v152 원본: `/Users/changmin/projects/ugrp/outputs/s3-recovery-981baa95-s14201-v152`, source `981baa95e77aa78e5ffd6bc87c172cbb97aea7ed`. 원본을 덮어쓰지 않는다.
 - 저장 파일에는 전체 qpos/qvel checkpoint가 없다. 기록된 차체/화물 자세와 발행 서보로 **재구성한 정지 장면**이며 정확한 물리 재시작이라고 부르지 않는다. 초기화 GT는 setup_only에만, 제어에는 자기 RGB·자기 발행 명령만 전달한다. 재구성 최초 영상과 원본 영상을 비교해 차이를 남긴다.
 - r1/r2의 첫 공통 RGB 정렬 시점 532.1초를 pair probe 시작 장면으로 한다. 공동 집기는 실제 상대의 GO가 필요하므로 둘을 같은 장면에서 실행하되 로봇별 결과를 분리한다. 한 probe는 최대60 SIM초, 다른 두 로봇 프로세스와 동시에 돌리지 않는다.
 - r3는 v152에서 정렬에 도달하지 않았다. 저장 장면의 cyan과 자기 검출을 이용한 별도 단계 초기화가 필요하며, 합성 접근 완료와 실제 v152 도달을 구분한다. 자기 RGB 정렬→hover→하강→닫기까지만 검증하고 도착/운반 성공으로 합산하지 않는다.
@@ -118,7 +118,7 @@ r3는 B/N 모두 자기 RGB로 일찍 보고 hover→가려진 하강→닫기�
 
 - 최종 실행 소스 `9a57581fead861fb27c1b7fe7260eb6d6c0f7337`, 변경 시험 `tests/test_s3_alignment_probe.py` **9PASS/32.10초** 후 커밋·push했다. 실제 모터/카메라 포트의 발행 자세 일치와 기존 결함 거부·phase 재개·기본off 항등·합법 pulse를 포함한다. 앞선 카탈로그 포함26PASS는 이전 소스의 별도 범위다. CI는 기다리지 않고 PR416은 병합하지 않는다.
 - 번들 **zone-s3-alignment-probe-v153 / workflow7.46.0**. main+열린PR11개 최댓값 조사/예약은 [기록](bundle-reservation.json)에 있다. 카탈로그는 조각 파일이고 원래 JSON은 변경하지 않았다. 옛 준비 실행의7.45.0 메타데이터는 원본 그대로 보존하며 새 유효 비교는7.46.0이다.
-- 원본 루트 `<home>/projects/ugrp/outputs/s3fix8-20261010`; 최종4회 파일8204개 SHA 모두 일치. 각 `delivery/<run>/report.json`과 `frames/`에 전체 판정·표, `delivery/views/<run>/execution.mp4`에 자기RGB3개4배속 영상이 있다. [대표 pair N](http://127.0.0.1:6007/video/e651192d4a5db9718601)은15.0초/300프레임/20fps, SHA `6284ec734a5792b855d7c83073c0e160cf8e09880f7c0d54333c9aa81ef7e43b`; [cyan N](http://127.0.0.1:6007/video/2fb124db811c57050f89)도 별도 보존한다. raw 로컬 보관을 원격 백업이라 부르지 않는다.
+- 원본 루트 `/Users/changmin/projects/ugrp/outputs/s3fix8-20261010`; 최종4회 파일8204개 SHA 모두 일치. 각 `delivery/<run>/report.json`과 `frames/`에 전체 판정·표, `delivery/views/<run>/execution.mp4`에 자기RGB3개4배속 영상이 있다. [대표 pair N](http://127.0.0.1:6007/video/e651192d4a5db9718601)은15.0초/300프레임/20fps, SHA `6284ec734a5792b855d7c83073c0e160cf8e09880f7c0d54333c9aa81ef7e43b`; [cyan N](http://127.0.0.1:6007/video/2fb124db811c57050f89)도 별도 보존한다. raw 로컬 보관을 원격 백업이라 부르지 않는다.
 - TensorBoard는 기본 checkout의 새 `1010-s3fix8-probes`(4), `1010-s3fix8-preparation`(8), `1010-s3fix8-population`(2)로 분리했다. 기존 snapshot 불변, 실제 이벤트194개 수치 대조 일치,4영상 manifest/HTTP 등록 확인. Chrome 강에서 probe4개/재생2개·핀8/5·HParams case/policy/seed/source_sha4열을 확인했고 대표15초 영상을 실제 재생했다. HParams는 전역4439그룹이며 condition열이 없어 B/N은 run 이름으로 구분하는 표시 한계가 있다. [필터·핀·서버·UI 검증](tensorboard-verification.json). 모델 호출0, 응답시간은 해당없음이며 없는 태그를 만들지 않았다. `result/commands`는 이 단계 뷰에서 활성 이동 명령 수다.
 - speedctrl2 순서 뒤 연구 잠금을 잡아 직렬 실행했고 자기 실행·후처리 종료 후 반환했다. 공통 speedctrl2 소스는 수정하지 않았다. [순서 반환](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/424#issuecomment-6094372137).
 

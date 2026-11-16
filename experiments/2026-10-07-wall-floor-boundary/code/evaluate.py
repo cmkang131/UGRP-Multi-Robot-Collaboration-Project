@@ -15,7 +15,7 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[3]
 EXP = ROOT/'experiments/2026-10-07-wall-floor-boundary'
-OUT = Path('<home>/projects/ugrp/outputs/wall-floor-boundary-v1')
+OUT = Path('/Users/changmin/projects/ugrp/outputs/wall-floor-boundary-v1')
 sys.path[:0] = [str(ROOT), str(ROOT/'experiments/2026-10-05-ego-wall-map-probe/code')]
 import v3_confidence_replay as old
 

@@ -1035,7 +1035,7 @@
       "run": "act15-n8-91519-686cccb6",
       "simulation_created": false,
       "category": "Untracked representative preview briefly staged before final submission; source-clean guard correctly refused. Moved preview to ignored output; no policy/source/seed change.",
-      "original_log": "<home>/projects/ugrp-wt/act-train/outputs/act15-ops/act15-n8-91519-686cccb6-preflight-refused.log"
+      "original_log": "/Users/changmin/projects/ugrp-wt/act-train/outputs/act15-ops/act15-n8-91519-686cccb6-preflight-refused.log"
     }
   },
   "auxiliary_dense_TE": {
@@ -1277,9 +1277,9 @@
       "act15-n8-91518-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/act15-1535c8a3/plans/91518.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91518-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
       "act15-n8-91519-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/act15-1535c8a3/plans/91519.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91519-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8"
     },
-    "rejection_table": "<home>/projects/ugrp-wt/act-train/outputs/act15-ops/act15-dense-pilot-funnel.json",
-    "queue": "<home>/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-act15-final-n8-686cccb6.json",
-    "run_wrapper": "python3 scripts/remote_run.py --host gcp1 --detach --class dev --pr 504 --per-run-mb 26 <home>/projects/ugrp-wt/act-train RUN_NAME -- bash -c \"cd FROZEN_SOURCE && exec <commands[RUN_NAME]>\""
+    "rejection_table": "/Users/changmin/projects/ugrp-wt/act-train/outputs/act15-ops/act15-dense-pilot-funnel.json",
+    "queue": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-act15-final-n8-686cccb6.json",
+    "run_wrapper": "python3 scripts/remote_run.py --host gcp1 --detach --class dev --pr 504 --per-run-mb 26 /Users/changmin/projects/ugrp-wt/act-train RUN_NAME -- bash -c \"cd FROZEN_SOURCE && exec <commands[RUN_NAME]>\""
   },
   "speed_limit_observation": {
     "reference_wall_sim": 3.5,

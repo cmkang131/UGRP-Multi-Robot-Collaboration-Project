@@ -3,7 +3,7 @@ from pathlib import Path
 import importlib.util,json,sys,hashlib
 ROOT=Path(__file__).resolve().parents[3];sys.path.insert(0,str(ROOT))
 EXP=Path(__file__).resolve().parents[1]
-RAW=Path('<home>/projects/ugrp/outputs/navfn-start-recovery-v1');EP=RAW/'new-seed'
+RAW=Path('/Users/changmin/projects/ugrp/outputs/navfn-start-recovery-v1');EP=RAW/'new-seed'
 from scripts.run_active_wall_rotleft import dump
 
 def load(p):return json.loads(p.read_text())

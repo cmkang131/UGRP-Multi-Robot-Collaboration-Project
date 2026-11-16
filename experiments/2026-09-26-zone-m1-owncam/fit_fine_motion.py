@@ -16,7 +16,7 @@ from pathlib import Path
 import numpy as np
 
 RUN = Path(sys.argv[1] if len(sys.argv) > 1 else
-           '<home>/projects/ugrp/outputs/m1-owncam-20260926/dev-a1/m1dev-s91')
+           '/Users/changmin/projects/ugrp/outputs/m1-owncam-20260926/dev-a1/m1dev-s91')
 OUT = Path(__file__).with_name('fine_motion_fit_dev.json')
 
 

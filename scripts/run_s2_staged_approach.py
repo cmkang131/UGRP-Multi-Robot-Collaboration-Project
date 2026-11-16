@@ -25,7 +25,7 @@ def main():
     b=contract.bundle(a.expected_source_sha,a.seed,look_before_move=a.look_before_move,final_approach=a.final_approach,proofs=proofs)
     if not a.execute:print(json.dumps(dict(execution_started=False,bundle=b['execution_bundle_id'])));return
     check_source(a.expected_source_sha);contract.require_execution(b)
-    root=Path('<home>/projects/ugrp/outputs').resolve()
+    root=Path('/Users/changmin/projects/ugrp/outputs').resolve()
     if not a.output.is_absolute() or not a.output.resolve().is_relative_to(root) or a.output.exists():raise ValueError('new primary output required')
     from scripts import agent_lock
     from harness.zone_pair_highpose_exact_speedups import install

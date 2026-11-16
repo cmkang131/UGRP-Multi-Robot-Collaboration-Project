@@ -9,7 +9,7 @@ from harness.zone_solo_cyan_contract_v106 import MAP_ID
 from harness.zone_solo_cyan_v106 import hp
 
 HERE=Path(__file__).resolve().parent
-OUT=Path('<home>/projects/ugrp/outputs/s2-ground-vo-20261007')
+OUT=Path('/Users/changmin/projects/ugrp/outputs/s2-ground-vo-20261007')
 def main():
     criteria=json.loads((HERE/'ground-vo-criteria.json').read_text())
     raw=Path(criteria['recovery_raw']);s=json.loads((raw/'student_record.json').read_text())

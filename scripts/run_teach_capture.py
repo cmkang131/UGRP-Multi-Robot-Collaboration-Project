@@ -6,7 +6,7 @@ from harness.own_teach_capture import attach,OPTION
 
 ROOT=old.ROOT
 EXP=ROOT/'experiments/2026-10-09-teach-capture'
-RAW=Path('<home>/projects/ugrp/outputs/teach-capture-v1')
+RAW=Path('/Users/changmin/projects/ugrp/outputs/teach-capture-v1')
 SEEDS=old.SEEDS
 
 

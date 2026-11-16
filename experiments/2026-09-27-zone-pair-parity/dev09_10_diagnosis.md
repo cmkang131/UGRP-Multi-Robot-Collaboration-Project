@@ -6,7 +6,7 @@
 
 ## 출처와 범위
 
-- 원본: `<home>/projects/ugrp/outputs/zone-pair-dev-v5b-3ea2edc08e5addafaf3cedc934c463ad8e1635c8/{dev09,dev10}`. 읽기 전용.
+- 원본: `/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v5b-3ea2edc08e5addafaf3cedc934c463ad8e1635c8/{dev09,dev10}`. 읽기 전용.
 - 실행 SHA: `3ea2edc08e5addafaf3cedc934c463ad8e1635c8`, 원본 manifest의 `source_dirty=false`. 분석 checkout: `6d1125a531377726ddc2a47d2e616ba937a15b89`.
 - [#221 최신 코멘트](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/221#issuecomment-5857067742)를 확인했다. 방향인 빔 상대 추정은 평가하되, 코멘트의 “재관측해도 태그로 고정하지 못함”은 아래 근거로 세분해야 한다. 코멘트를 수정하거나 게시하지 않았다.
 - #240은 조회 시 OPEN/DRAFT, head가 위 실행 SHA와 같았다. [조회 기록](beam_frame_sources.json). CLI `git fetch`는 공유 FETCH_HEAD 쓰기 제한, `gh`는 네트워크 제한으로 실패해 연결 GitHub 읽기 도구로 확인했다. primary main은 `ba0eb4f547996af880de65003442882c5326c71d`; 동기화·병합하지 않았다.

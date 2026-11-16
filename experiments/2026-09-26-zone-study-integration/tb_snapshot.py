@@ -5,9 +5,9 @@ four trial records, then adds one Text card per run with the pose-provider label
 ``collection.json`` and re-reads every event file to check the scalar values.
 
     python experiments/2026-09-26-zone-study-integration/tb_snapshot.py \
-        --runs <home>/projects/ugrp/outputs/zone-study-integration-20260926/smoke-45999d9c \
-        --snapshot <home>/projects/ugrp/outputs/tensorboard/0926-zone-study-integration-tags-temporary \
-        --report <home>/projects/ugrp/outputs/zone-study-integration-20260926/smoke-45999d9c-report
+        --runs /Users/changmin/projects/ugrp/outputs/zone-study-integration-20260926/smoke-45999d9c \
+        --snapshot /Users/changmin/projects/ugrp/outputs/tensorboard/0926-zone-study-integration-tags-temporary \
+        --report /Users/changmin/projects/ugrp/outputs/zone-study-integration-20260926/smoke-45999d9c-report
 """
 from __future__ import annotations
 

@@ -13,7 +13,7 @@ import subprocess
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
-RAW = Path('<home>/projects/ugrp/outputs/v6h1-acceptance-3c4fe30e-claude-20260930')
+RAW = Path('/Users/changmin/projects/ugrp/outputs/v6h1-acceptance-3c4fe30e-claude-20260930')
 AUDIT = HERE / 'review_299c_validation/recorder_audit.json'
 SPEC = importlib.util.spec_from_file_location('contract_classifier', HERE / 'classify_placements.py')
 cp = importlib.util.module_from_spec(SPEC)

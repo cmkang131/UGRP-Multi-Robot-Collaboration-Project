@@ -1,7 +1,7 @@
 ## V95_PRE_COLLECTION_COMMITMENT — v95 held-out 수집 전 고정 (수집 시작 전 게시)
 
 - 사전검사(precheck, 렌더링 없음·수집 아님) 소스 SHA: `12c1e58c3ee129d5a635fe5f300145566656489a`
-- 사전검사 폴더: `<home>/projects/ugrp/outputs/heldout-v95-precheck-20261003T085307Z` (로컬 보관, 원격 백업 아님)
+- 사전검사 폴더: `/Users/changmin/projects/ugrp/outputs/heldout-v95-precheck-20261003T085307Z` (로컬 보관, 원격 백업 아님)
 - 상태: `PRECHECK_PASS`, 지도 2개 × 로봇 2대, 기준 B 판정 없음(null)
 - 수집 SHA는 이 글 뒤의 브랜치 head다. 실행기는 binding.json(실행 소스·번들·일정·검증기 해시)이 아래 값과 같을 때만 수집한다.
 - 고정(변경 금지): 기준 B `74c312b5…`, r4 `fa7d3aa2…`, r5 yaw `978727fc…`, 회전 부록 `6129f144…`.
@@ -42,9 +42,9 @@
 
 ```bash
 # 이 글의 comment id를 <ID>에 넣는다. 다른 claude SIM 슬롯이 물리 coordinator를 잡고 있으면 V95_COORDINATOR_PID=<그 PID>도 준다.
-cd <home>/projects/ugrp-wt/critb-heldout-v94 && git switch codex/critb-heldout-new-starts && git pull --ff-only
+cd /Users/changmin/projects/ugrp-wt/critb-heldout-v94 && git switch codex/critb-heldout-new-starts && git pull --ff-only
 V95_SOURCE_SHA=$(git rev-parse HEAD) \
-V95_PRECHECK_DIR=<home>/projects/ugrp/outputs/heldout-v95-precheck-20261003T085307Z \
+V95_PRECHECK_DIR=/Users/changmin/projects/ugrp/outputs/heldout-v95-precheck-20261003T085307Z \
 V95_COMMITMENT_COMMENT=<ID> \
 bash experiments/2026-10-03-critb-heldout-v95/collect.sh
 ```

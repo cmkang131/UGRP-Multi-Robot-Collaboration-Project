@@ -30,7 +30,7 @@ sys.path.insert(0, str(HERE))
 import hold_reference as grip  # noqa: E402
 from harness import zone_pair_highpose as pose  # noqa: E402
 
-OUT = Path('<home>/projects/ugrp/outputs')
+OUT = Path('/Users/changmin/projects/ugrp/outputs')
 ROOTS = {911: OUT/'pr363-render-frames-20261003', 912: OUT/'pr363-render-frames-seed912-20261003',
          913: OUT/'pr363-render-frames-seed913-20261003'}
 HIGH = {'3': 896, '4': 2035, '5': 1894, '6': 1500}

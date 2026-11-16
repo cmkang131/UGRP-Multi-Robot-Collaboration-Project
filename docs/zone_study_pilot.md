@@ -249,7 +249,7 @@ R8/R9 소스로 이미 봉인한 budget은 R10 소스와 맞지 않아 실행을
 먼저 오프라인 회귀를 실행한다(`--basetemp`는 이 worktree 내부 경로).
 
 ```sh
-OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
+OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
   tests/test_zone_pilot_proxy_log.py tests/test_zone_pilot_source_migration.py \
   tests/test_zone_study_review_r10.py tests/test_zone_study_review_r9.py tests/test_zone_study_review_r8.py \
   --basetemp=./.pytest_tmp -q
@@ -257,8 +257,8 @@ rm -rf ./.pytest_tmp
 ```
 
 ```sh
-PYTHON=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
-PILOT_ROOT=<home>/projects/ugrp/outputs/zone-study-adapter-pilot-r10
+PYTHON=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+PILOT_ROOT=/Users/changmin/projects/ugrp/outputs/zone-study-adapter-pilot-r10
 OMP_NUM_THREADS=1 "$PYTHON" -m scripts.run_zone_study_pilot --output "$PILOT_ROOT/dry-01"
 OMP_NUM_THREADS=1 "$PYTHON" -m scripts.run_zone_study_pilot --init-budget \
   --budget-file "$PILOT_ROOT/budget.sqlite" --output "$PILOT_ROOT/init-01"

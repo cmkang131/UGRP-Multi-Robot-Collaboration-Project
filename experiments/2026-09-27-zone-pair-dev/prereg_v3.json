@@ -376,7 +376,7 @@
     }
   },
   "commands": {
-    "interpreter": "<home>/projects/ugrp/.venv-sim-worker-mac/bin/python",
+    "interpreter": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
     "prepare": [
       "OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 \"$PAIR_PY\" scripts/run_zone_pair_dev.py --prereg experiments/2026-09-27-zone-pair-dev/prereg_v3.json --run-id dev05 --output /tmp/zone-pair-dev05-prepare-NEW",
       "OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 \"$PAIR_PY\" scripts/run_zone_pair_dev.py --prereg experiments/2026-09-27-zone-pair-dev/prereg_v3.json --run-id dev06 --output /tmp/zone-pair-dev06-prepare-NEW"
@@ -386,7 +386,7 @@
       "dev05",
       "dev06"
     ],
-    "raw_root_template": "<home>/projects/ugrp/outputs/zone-pair-dev-v3-$PAIR_SHA",
+    "raw_root_template": "/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v3-$PAIR_SHA",
     "prerequisites": "Coordinator only; follow README dock v3 section and the existing lock/cleanup procedure. Check disk and lock; commit reviewed code; verify clean branch and freeze full SHA; acquire exclusive lock owned by live driver PID; never reuse output paths."
   }
 }

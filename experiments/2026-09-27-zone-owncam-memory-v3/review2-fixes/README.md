@@ -33,7 +33,7 @@ v3 runner 소스 해시에 새 슬롯 절차 파일을 추가했다. 기존 v3�
 
 ## 테스트
 
-Python `<home>/projects/ugrp/.venv-sim-worker-mac/bin/python`.
+Python `/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python`.
 `OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1` 및
 OpenCV GCD `setNumThreads(0)`/`getNumThreads()==1`. 모든 pytest는 `--basetemp=./.pytest_tmp`.
 

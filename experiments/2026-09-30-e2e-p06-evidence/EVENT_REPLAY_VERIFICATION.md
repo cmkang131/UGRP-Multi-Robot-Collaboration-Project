@@ -25,17 +25,17 @@
 
 ## 실행 방법과 보존
 
-기존 Python 3.12.13 환경 `<home>/projects/ugrp/.venv-sim-worker-mac/bin/python`을
+기존 Python 3.12.13 환경 `/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python`을
 재사용했다. 별도 환경·host lock 없이 실행했다(#328). `redesign_test_driver.py`가 MuJoCo,
 torch, 물리 worker import를 차단하고 스레드를 1개로 제한한다. 모든 합성 JSON/event는
 OS 임시 폴더에만 만든다. 로컬 로그·JUnit은
-`<home>/projects/ugrp/outputs/p06-event-replay/`에 보존한다.
+`/Users/changmin/projects/ugrp/outputs/p06-event-replay/`에 보존한다.
 소스·로그 해시와 집계는 `event_replay_verification.json`에 기록한다.
 
 ```sh
-PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
-$PY experiments/2026-09-30-e2e-p06-evidence/redesign_test_driver.py -k 'not 12000' --tb=short --junitxml=<home>/projects/ugrp/outputs/p06-event-replay/related-final.xml
-$PY experiments/2026-09-30-e2e-p06-evidence/redesign_test_driver.py -k 12000 --tb=short --junitxml=<home>/projects/ugrp/outputs/p06-event-replay/generated-first.xml
+PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+$PY experiments/2026-09-30-e2e-p06-evidence/redesign_test_driver.py -k 'not 12000' --tb=short --junitxml=/Users/changmin/projects/ugrp/outputs/p06-event-replay/related-final.xml
+$PY experiments/2026-09-30-e2e-p06-evidence/redesign_test_driver.py -k 12000 --tb=short --junitxml=/Users/changmin/projects/ugrp/outputs/p06-event-replay/generated-first.xml
 $PY experiments/2026-09-30-e2e-p06-evidence/event_replay_mutations.py <변이명> --tb=short
 ```
 

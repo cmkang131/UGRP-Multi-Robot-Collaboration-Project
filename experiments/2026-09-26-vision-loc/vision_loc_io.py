@@ -18,7 +18,7 @@ import numpy as np
 import vision_loc as vl
 
 HERE = Path(__file__).resolve().parent
-PRIMARY_OUT = Path('<home>/projects/ugrp/outputs/vision-loc-20260926')
+PRIMARY_OUT = Path('/Users/changmin/projects/ugrp/outputs/vision-loc-20260926')
 RENDER_ROOT = Path(os.environ.get('VL_RENDER_ROOT', PRIMARY_OUT/'render'))
 MAP_FILE = HERE/'maps'/'zone_wide_door_walls_v3_notags.json'
 

@@ -16,7 +16,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-RAW = Path('<home>/projects/ugrp/outputs')
+RAW = Path('/Users/changmin/projects/ugrp/outputs')
 SAMPLES = ROOT / 'experiments/2026-09-29-pair-v6e-carry/hR2_samples.json'
 
 

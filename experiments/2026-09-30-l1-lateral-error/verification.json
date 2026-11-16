@@ -4,7 +4,7 @@
     {
       "name": "synthetic_unit_tests",
       "argv": [
-        "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
         "-m",
         "unittest",
         "tests.test_carry_lateral_error_model",
@@ -16,7 +16,7 @@
     {
       "name": "raw_inputs_unchanged",
       "argv": [
-        "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
         "experiments/2026-09-30-l1-lateral-error/extract.py",
         "--verify-only"
       ],
@@ -26,7 +26,7 @@
     {
       "name": "ci_shard_enumeration",
       "argv": [
-        "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
         "scripts/run_ci_tests.py",
         "--shard-count",
         "8",

@@ -1,6 +1,6 @@
 {
   "schema": "ugrp.action_act_refinement_summary.v3",
-  "design": "<home>/projects/ugrp/outputs/act-action-training-20260924/refinement-evaluation-design.json",
+  "design": "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/refinement-evaluation-design.json",
   "raw_root": "outputs/dispatch-action-act-refinement-20260924",
   "qualification_order": [
     "near-a/reference-rgb-v27",
@@ -504,14 +504,14 @@
   },
   "timing_exclusions": {
     "near-b/refined-rgb": {
-      "path": "<home>/projects/ugrp/outputs/act-action-training-20260924/audits/refinement-near-b-refined-rgb-timing-exclusion.json",
+      "path": "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/audits/refinement-near-b-refined-rgb-timing-exclusion.json",
       "sha256": "e62906413933611cd1a390f1daaa385899dfb33e9f5ecfcf9cec74d181e5e238",
       "recorded_utc": "2026-09-24T12:35:04.360984+00:00",
       "reason": "Preserve planned and started physical outcome; exclude wall-time comparison due external CPU testing. No fabricated replacement.",
       "observed_foreign_process": {
         "pid": 70997,
         "ppid": 70988,
-        "cwd": "<home>/projects/ugrp-worktrees/fine-gain-schedule",
+        "cwd": "/Users/changmin/projects/ugrp-worktrees/fine-gain-schedule",
         "owner": "separate Claude task, not this Codex task",
         "scope": "pytest camera/dispatch/RGB/workflow plus tests/ and test_fine_gain_schedule.py",
         "observed_cpu_percent": [
@@ -524,7 +524,7 @@
   },
   "act_model_prerequisite": {
     "status": "failed_no_exported_readback_model",
-    "amendment": "<home>/projects/ugrp/outputs/act-action-training-20260924/refinement-act-prerequisite-amendment-v2.json",
+    "amendment": "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/refinement-act-prerequisite-amendment-v2.json",
     "amendment_sha256": "19a15eb96b3e08bc459b260446517bbc667bb6a1f07e99af066e5ed5aba15d08",
     "training_complete": false,
     "finalizer_complete": false,
@@ -538,7 +538,7 @@
   },
   "budget_and_launch_closure": {
     "schema": "ugrp.action_act_refinement_budget_snapshot.v1",
-    "design": "<home>/projects/ugrp/outputs/act-action-training-20260924/refinement-evaluation-design.json",
+    "design": "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/refinement-evaluation-design.json",
     "raw_root": "outputs/dispatch-action-act-refinement-20260924",
     "trial_order": [
       "original-diagnostic-1/refined-rgb",
@@ -567,7 +567,7 @@
         "physical_success": true,
         "protocol_complete": true,
         "failed_component": null,
-        "manager_manifest": "<home>/.codex/worktrees/action-act-refinement/ugrp/outputs/simulation-runs/20260924-203400-dispatch-b630b2dd/manifest.json",
+        "manager_manifest": "/Users/changmin/.codex/worktrees/action-act-refinement/ugrp/outputs/simulation-runs/20260924-203400-dispatch-b630b2dd/manifest.json",
         "not_run_receipt": null,
         "not_run_reason": null,
         "invariants": {
@@ -594,7 +594,7 @@
         "physical_success": true,
         "protocol_complete": true,
         "failed_component": null,
-        "manager_manifest": "<home>/.codex/worktrees/action-act-refinement/ugrp/outputs/simulation-runs/20260924-203746-dispatch-2186b77d/manifest.json",
+        "manager_manifest": "/Users/changmin/.codex/worktrees/action-act-refinement/ugrp/outputs/simulation-runs/20260924-203746-dispatch-2186b77d/manifest.json",
         "not_run_receipt": null,
         "not_run_reason": null,
         "invariants": {
@@ -621,7 +621,7 @@
         "physical_success": false,
         "protocol_complete": false,
         "failed_component": "solo_box",
-        "manager_manifest": "<home>/.codex/worktrees/dispatch-action-act/ugrp/outputs/simulation-runs/20260924-211027-dispatch-91923c6c/manifest.json",
+        "manager_manifest": "/Users/changmin/.codex/worktrees/dispatch-action-act/ugrp/outputs/simulation-runs/20260924-211027-dispatch-91923c6c/manifest.json",
         "not_run_receipt": null,
         "not_run_reason": null,
         "invariants": {
@@ -648,7 +648,7 @@
         "physical_success": true,
         "protocol_complete": true,
         "failed_component": null,
-        "manager_manifest": "<home>/.codex/worktrees/action-act-refinement/ugrp/outputs/simulation-runs/20260924-211701-dispatch-3093fd07/manifest.json",
+        "manager_manifest": "/Users/changmin/.codex/worktrees/action-act-refinement/ugrp/outputs/simulation-runs/20260924-211701-dispatch-3093fd07/manifest.json",
         "not_run_receipt": null,
         "not_run_reason": null,
         "invariants": {
@@ -676,7 +676,7 @@
         "protocol_complete": null,
         "failed_component": null,
         "manager_manifest": null,
-        "not_run_receipt": "<home>/projects/ugrp/outputs/act-action-training-20260924/audits/refinement-near-a-refined-act-not-run.json",
+        "not_run_receipt": "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/audits/refinement-near-a-refined-act-not-run.json",
         "not_run_reason": "exported/readback second ACT model unavailable after failed finalization",
         "invariants": null
       },
@@ -693,7 +693,7 @@
         "physical_success": true,
         "protocol_complete": true,
         "failed_component": null,
-        "manager_manifest": "<home>/.codex/worktrees/dispatch-action-act/ugrp/outputs/simulation-runs/20260924-212057-dispatch-e68f95d4/manifest.json",
+        "manager_manifest": "/Users/changmin/.codex/worktrees/dispatch-action-act/ugrp/outputs/simulation-runs/20260924-212057-dispatch-e68f95d4/manifest.json",
         "not_run_receipt": null,
         "not_run_reason": null,
         "invariants": {
@@ -720,7 +720,7 @@
         "physical_success": true,
         "protocol_complete": true,
         "failed_component": null,
-        "manager_manifest": "<home>/.codex/worktrees/action-act-refinement/ugrp/outputs/simulation-runs/20260924-213001-dispatch-df12905d/manifest.json",
+        "manager_manifest": "/Users/changmin/.codex/worktrees/action-act-refinement/ugrp/outputs/simulation-runs/20260924-213001-dispatch-df12905d/manifest.json",
         "not_run_receipt": null,
         "not_run_reason": null,
         "invariants": {
@@ -748,7 +748,7 @@
         "protocol_complete": null,
         "failed_component": null,
         "manager_manifest": null,
-        "not_run_receipt": "<home>/projects/ugrp/outputs/act-action-training-20260924/audits/refinement-near-b-refined-act-not-run.json",
+        "not_run_receipt": "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/audits/refinement-near-b-refined-act-not-run.json",
         "not_run_reason": "exported/readback second ACT model unavailable after failed finalization",
         "invariants": null
       },
@@ -765,7 +765,7 @@
         "physical_success": false,
         "protocol_complete": false,
         "failed_component": "solo_box",
-        "manager_manifest": "<home>/.codex/worktrees/dispatch-action-act/ugrp/outputs/simulation-runs/20260924-214558-dispatch-790cc398/manifest.json",
+        "manager_manifest": "/Users/changmin/.codex/worktrees/dispatch-action-act/ugrp/outputs/simulation-runs/20260924-214558-dispatch-790cc398/manifest.json",
         "not_run_receipt": null,
         "not_run_reason": null,
         "invariants": {
@@ -792,7 +792,7 @@
         "physical_success": true,
         "protocol_complete": true,
         "failed_component": null,
-        "manager_manifest": "<home>/.codex/worktrees/action-act-refinement/ugrp/outputs/simulation-runs/20260924-214925-dispatch-92da7ac9/manifest.json",
+        "manager_manifest": "/Users/changmin/.codex/worktrees/action-act-refinement/ugrp/outputs/simulation-runs/20260924-214925-dispatch-92da7ac9/manifest.json",
         "not_run_receipt": null,
         "not_run_reason": null,
         "invariants": {
@@ -820,7 +820,7 @@
         "protocol_complete": null,
         "failed_component": null,
         "manager_manifest": null,
-        "not_run_receipt": "<home>/projects/ugrp/outputs/act-action-training-20260924/audits/refinement-near-c-refined-act-not-run.json",
+        "not_run_receipt": "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/audits/refinement-near-c-refined-act-not-run.json",
         "not_run_reason": "exported/readback second ACT model unavailable after failed finalization",
         "invariants": null
       }
@@ -856,7 +856,7 @@
       }
     },
     "next_trial_gate": null,
-    "amendment": "<home>/projects/ugrp/outputs/act-action-training-20260924/refinement-act-prerequisite-amendment-v2.json",
+    "amendment": "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/refinement-act-prerequisite-amendment-v2.json",
     "amendment_sha256": "19a15eb96b3e08bc459b260446517bbc667bb6a1f07e99af066e5ed5aba15d08",
     "scope": "All 11 planned slots retained. ACT prerequisite skips have no process wall or outcome and consume zero qualification physics budget. Sums use finalized launcher process_wall_s, not successful-only result wall time. A reserved or unfinished launch blocks further trials; ordinary task failure with finalized evidence does not."
   },

@@ -9,7 +9,7 @@ import numpy as np
 
 EXP=Path(__file__).resolve().parents[1]
 ROOT=EXP.parents[1]
-OUT=Path('<home>/projects/ugrp/outputs/s2-projection-comparison-v1')
+OUT=Path('/Users/changmin/projects/ugrp/outputs/s2-projection-comparison-v1')
 sys.path[:0]=[str(ROOT),str(ROOT/'experiments/2026-10-07-camera-pose-projection/code'),str(Path(__file__).parent)]
 import audit as a
 from evaluate_fk import gate, CRITERIA

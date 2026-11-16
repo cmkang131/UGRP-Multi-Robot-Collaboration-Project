@@ -1,13 +1,13 @@
 import sys,json,math,pathlib
 import cv2,numpy as np
-sys.path.insert(0,'<home>/projects/ugrp-wt/drive-friction')
+sys.path.insert(0,'/Users/changmin/projects/ugrp-wt/drive-friction')
 from harness import zone_solo_cyan_contract_v106 as c, zone_solo_cyan_camera_v3 as v3, vision_loc_protocol as vp
 from harness.vision_pose_source_final import measured_column_model
 from harness.opencv_wall_observation import observations
 src=v3.build_provider(c.hp.resolve(c.MAP_ID)[0],c.ROOT/c.CALIBRATION,c.CALIBRATION_SHA,1046);inner=src.provider;pf=inner.loc._pf;vl=vp.load_vis3()[0]
 allrows=[]
 for seed,sha in [(1045,'f0bb26e7'),(1046,'e619ee57')]:
- run=pathlib.Path(f'<home>/projects/ugrp/outputs/s2-realism-{sha}-s{seed}-P1-2-place')
+ run=pathlib.Path(f'/Users/changmin/projects/ugrp/outputs/s2-realism-{sha}-s{seed}-P1-2-place')
  def lines(f):return [json.loads(l) for l in (run/f).read_text().splitlines()]
  frames=lines('robots/r3/frames.jsonl');tr=lines('eval_only/trajectory.jsonl');cams=lines('eval_only/camera-pose.jsonl')
  st=json.loads((run/'student_record.json').read_text())
@@ -25,4 +25,4 @@ for seed,sha in [(1045,'f0bb26e7'),(1046,'e619ee57')]:
    prob=vl.interval_prob(exp[None,:],ob.b_kind,ob.b_lo,ob.b_hi,pf.measurement['sigma_px'])[0,valid]
    row[key]=dict(residual_median_px=float(np.median(diff)) if len(diff) else None,residual_abs_median_px=float(np.median(abs(diff))) if len(diff) else None,inlier_fraction=float(np.mean(prob>pf.measurement['outlier_prob']/(1-pf.measurement['outlier_prob']))) if len(diff) else None,observed_median_row=float(np.median(ob.b_lo[valid])) if valid.any() else None,expected_median_row=float(np.median(exp[valid])) if valid.any() else None)
   allrows.append(row);print(seed,t,row['columns'],row['nom_pitch_deg'],row['actual_pitch_deg'],row['nominal'],row['actual_eval'],flush=True)
-pathlib.Path('<home>/projects/ugrp/outputs/s2-visual-fix-20261007/geometry-audit.json').write_text(json.dumps(allrows,indent=2)+'\n');src.close()
+pathlib.Path('/Users/changmin/projects/ugrp/outputs/s2-visual-fix-20261007/geometry-audit.json').write_text(json.dumps(allrows,indent=2)+'\n');src.close()

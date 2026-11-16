@@ -35,7 +35,7 @@
 
 ## 재현
 
-기존 `<home>/projects/ugrp/.venv-sim-worker-mac/bin/python`을 사용했다. 모든 pytest 실행에 `OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1`을 설정하고 `--basetemp=./.pytest_tmp`를 전달했다. 새 테스트의 thread cap은 `mock.patch.dict`로 고정·복원한다. 기존 wrapper가 OpenCV `setNumThreads(0)`으로 병렬 영역을 끄고 실제 thread 수 1을 확인한다.
+기존 `/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python`을 사용했다. 모든 pytest 실행에 `OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1`을 설정하고 `--basetemp=./.pytest_tmp`를 전달했다. 새 테스트의 thread cap은 `mock.patch.dict`로 고정·복원한다. 기존 wrapper가 OpenCV `setNumThreads(0)`으로 병렬 영역을 끄고 실제 thread 수 1을 확인한다.
 
 - 새 회귀: 위 환경/Python으로 `experiments/2026-09-27-zone-owncam-memory-v3/review-fixes/run_review_tests.py -q -s --basetemp=./.pytest_tmp tests/test_owncam_memory_v3_review6.py`.
 - 원본 반례: 같은 환경/Python으로 이 폴더의 `reproduce_baseline.py`. `git show 7400c426:harness/owncam_safety_v3.py`를 메모리에만 로딩하며 checkout/index를 바꾸지 않는다. exit 1과 두 실패가 기대값이다.

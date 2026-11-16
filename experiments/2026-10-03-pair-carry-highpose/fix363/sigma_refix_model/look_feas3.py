@@ -16,7 +16,7 @@ ranking artifact depends on it, the dock list does not)."""
 import sys, json, math, tempfile
 from pathlib import Path
 from types import SimpleNamespace
-WT = Path('<home>/projects/ugrp-wt/carry-ckpt'); sys.path.insert(0, str(WT))
+WT = Path('/Users/changmin/projects/ugrp-wt/carry-ckpt'); sys.path.insert(0, str(WT))
 import numpy as np
 from _pytest.monkeypatch import MonkeyPatch
 from tests import highpose_relook_synthetic as syn
@@ -28,7 +28,7 @@ from harness.zone_own_guards import OwnPose
 from harness.owncam_drive import LOOK_P20
 from scripts.study_owncam_pair_beam import ROLES
 
-PLAN = json.load(open('<home>/projects/ugrp/outputs/v98-dev-probe-align_to_carry-6727751b/before_door/student_record.json'))['pair'][0]['plan']
+PLAN = json.load(open('/Users/changmin/projects/ugrp/outputs/v98-dev-probe-align_to_carry-6727751b/before_door/student_record.json'))['pair'][0]['plan']
 route = PLAN['route']; L = .4732
 SIG0 = (.05, .05, math.radians(1.7))       # DR spread entering the look (dr_route: 42-66 mm, 1.4-1.9 deg); std_xy 70.7 mm
 LOOK = {1: 2000, **LOOK_P20}

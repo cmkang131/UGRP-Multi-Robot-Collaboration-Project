@@ -81,7 +81,7 @@ main/열린 PR의 최대 번호를 다시 검사하고, 최소 v65 이상을 사
 준비만 확인(물리·모델 호출 없음, 출력은 매번 새 경로):
 
 ```sh
-PAIR_PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
+PAIR_PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
 OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 "$PAIR_PY" scripts/run_zone_pair_dev.py \
   --prereg experiments/2026-09-27-zone-pair-dev/prereg_v4.json \
   --run-id dev07 --output /tmp/zone-pair-dev07-prepare-NEW
@@ -95,12 +95,12 @@ OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 "$PAIR_PY" scripts/run_zone_pair_dev
 ```sh
 bash <<'PAIR_DEV_V4'
 set -euo pipefail
-PAIR_PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
+PAIR_PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
 PAIR_OWNER=claude
 PAIR_BRANCH=$(git branch --show-current)
 PAIR_SHA=$(git rev-parse HEAD)
 PAIR_PREREG=experiments/2026-09-27-zone-pair-dev/prereg_v4.json
-PAIR_ROOT="<home>/projects/ugrp/outputs/zone-pair-dev-v4-$PAIR_SHA"
+PAIR_ROOT="/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v4-$PAIR_SHA"
 test "$PAIR_BRANCH" != main
 test -z "$(git status --porcelain)"
 "$PAIR_PY" scripts/disk_report.py

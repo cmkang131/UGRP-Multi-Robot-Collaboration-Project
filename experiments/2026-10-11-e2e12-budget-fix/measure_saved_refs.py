@@ -4,7 +4,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
 from harness.e2e_own_inputs import rgb_ref
-source=Path('<home>/projects/ugrp/outputs/azure-runs/e2e11-b-s61001-r2/raw/robots/r1/frames.jsonl.zst')
+source=Path('/Users/changmin/projects/ugrp/outputs/azure-runs/e2e11-b-s61001-r2/raw/robots/r1/frames.jsonl.zst')
 frames=[json.loads(x) for x in subprocess.check_output(['zstd','-dc',str(source)]).splitlines()]
 origin=frames[0]['sim_time']
 refs=[dict(robot_id='r1',frame_id=f['frame_id'],t_sim=round(f['sim_time']-origin,8),sha256=f['sha256']) for f in frames]

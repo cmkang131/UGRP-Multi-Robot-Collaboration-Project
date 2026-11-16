@@ -64,7 +64,7 @@ MuJoCo step·실제 모델 요청·물리 실행은 수행하지 않았다. Tens
 ```sh
 OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 \
 PYTHONPATH="$PWD/experiments/2026-09-27-zone-pair-dev/merge-main-v65:$PWD" \
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p no_physics \
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p no_physics \
   tests/test_zone_pair_*.py tests/test_zone_start_dock.py tests/test_zone_study_*.py \
   tests/test_simulation_workflow_manager.py --basetemp=./.pytest_tmp
 ```

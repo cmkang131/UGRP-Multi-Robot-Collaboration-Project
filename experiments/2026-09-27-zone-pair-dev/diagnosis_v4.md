@@ -14,7 +14,7 @@ dev06은 **loaded yaw σ가 3°를 초과**해 중단됐다. 위치 σ 5 cm 초�
   scene `zone_wide_door_tags_v2_dock_v3`, dock x=−0.65 m, 기존 tags_v2/벽 0.10 m.
 - `cargo_noslip_v1`, `noslip_iterations=10`, timestep 0.00025 s, weld OFF.
   두 manifest에서 applied 일치, source/input 변경 없음. 주요 분석 소스 12개도 frozen execution manifest 해시와 일치했다.
-- 원본: `<home>/projects/ugrp/outputs/zone-pair-dev-v3-4a17e7d47616056db85f35933327c6b63581853d/{dev05,dev06}`.
+- 원본: `/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v3-4a17e7d47616056db85f35933327c6b63581853d/{dev05,dev06}`.
   **읽기만 했다.** dev05 8,381개 + dev06 8,545개 artifact 해시 전부 일치.
 - `events.jsonl`, `status.jsonl`, `commands.jsonl`, `pair_records.json`, `robots.json`, 실제 입력 JSON/JPEG,
   `eval_only/{trace.jsonl,contacts.json,result.json,overview.mp4,video_frames.jsonl}`을 대조했다.

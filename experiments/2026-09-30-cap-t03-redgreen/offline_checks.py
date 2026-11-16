@@ -9,7 +9,7 @@ import tempfile
 
 
 ROOT = Path(__file__).resolve().parents[2]
-RAW = Path('<home>/projects/ugrp/outputs/cap-t03-redgreen')
+RAW = Path('/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen')
 RAW.mkdir(parents=True, exist_ok=True)
 out = Path(tempfile.mkdtemp(prefix='offline-', dir=RAW))
 env = dict(os.environ, PYTHONPATH=f'{Path(__file__).parent}:{ROOT}',

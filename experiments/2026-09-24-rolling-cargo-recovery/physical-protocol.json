@@ -4,9 +4,9 @@
   "question": "Can the opt-in bounded carrier relink restore physically successful camera-only cargo recovery while the existing rolling approach improves matched full-mission completion time?",
   "claim_scope": "Local open-map nearby-pose RGB controller package only; no isolated relink causal attribution, map generalization, statistical confirmation, or communication-efficacy claim.",
   "comparison": {
-    "reference_checkout": "<home>/.codex/worktrees/action-act-refinement/ugrp",
+    "reference_checkout": "/Users/changmin/.codex/worktrees/action-act-refinement/ugrp",
     "reference_source_sha": "931d910998a94361342c372ec2675c475daa625f",
-    "candidate_checkout": "<home>/.codex/worktrees/rolling-cargo-recovery/ugrp",
+    "candidate_checkout": "/Users/changmin/.codex/worktrees/rolling-cargo-recovery/ugrp",
     "candidate_source_sha": "freeze_after_clean_commit",
     "candidate_flags": [
       "--rolling-visual-servo",
@@ -14,7 +14,7 @@
     ],
     "reference_flags": [],
     "same_runtime_for_both": "standard scripts/open_simulation.command dispatch managed adapter; native realtime 1x",
-    "same_models_root": "<home>/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-transfer-t4/models",
+    "same_models_root": "/Users/changmin/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-transfer-t4/models",
     "same_models_tree_sha256": "081841147e698c560dc122c633bf71169ecca0ddfee9936f06801efb59d2361c",
     "plan_replay": "experiments/2026-09-22-parallel-transport/independent-plan.json",
     "plan_replay_sha256": "1ab2499252427839d21eec7f474fe3c5a74c2a2c4cdeddb7ac338782a3c898c7",
@@ -118,7 +118,7 @@
       "host_guard_file_sha256"
     ],
     "host_guard_source_sha": "08c39e1e76a60f1c4db6a1f92dd2833cf766362f",
-    "host_guard_module": "<home>/.codex/worktrees/act-route-coverage/ugrp/scripts/run_act_route_teachers.py",
+    "host_guard_module": "/Users/changmin/.codex/worktrees/act-route-coverage/ugrp/scripts/run_act_route_teachers.py",
     "rule": "Root creates immutable freeze only after candidate v40 source and bundle are committed and clean. Helper verifies all pins before each launch and again after. Any source or helper change requires a new frozen candidate/cohort."
   },
   "host_ownership": {
@@ -127,7 +127,7 @@
     "after": "An infrastructure abort blocks the next scheduled trial. Never signal, stop, inspect UI of, or modify a foreign owner."
   },
   "audit_contract": {
-    "path_template": "<home>/projects/ugrp/outputs/act-action-training-20260924/audits/cargo-recovery-{trial_slug}.json",
+    "path_template": "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/audits/cargo-recovery-{trial_slug}.json",
     "schema": "ugrp.cargo_recovery_postrun_audit.v1",
     "required_hash_links": [
       "raw_result_sha256",
@@ -174,7 +174,7 @@
     "cohort_boundary": "Do not pool synchronized Claude runs or other cohorts with these native v40 paired trials."
   },
   "output": {
-    "raw_root": "<home>/projects/ugrp/outputs/dispatch-cargo-recovery-20260924",
+    "raw_root": "/Users/changmin/projects/ugrp/outputs/dispatch-cargo-recovery-20260924",
     "every_trial": "raw result/video, pair/solo RGB decisions, issued commands, manager manifest, immutable launch record, per-run audit receipt and source/config/model hashes",
     "diagnostic": "diagnostics excluded from qualification speed median",
     "tensorboard": "new native snapshot after completed evidence, including failures; preserve existing originals/snapshots"

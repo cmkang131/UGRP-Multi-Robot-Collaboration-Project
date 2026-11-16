@@ -3,7 +3,7 @@ from pathlib import Path
 import json,hashlib,subprocess,sys
 import cv2
 import numpy as np
-ROOT=Path('<home>/projects/ugrp-wt/ego-wall-map');sys.path.insert(0,str(ROOT))
+ROOT=Path('/Users/changmin/projects/ugrp-wt/ego-wall-map');sys.path.insert(0,str(ROOT))
 from harness.self_odom_grid import transform
 from scripts.run_goal_route_motion_audit import RAW,EXP
 from scripts.run_active_wall_rotleft import dump

@@ -7,8 +7,8 @@ from scripts.fit_s2_pulse_calibration import training, interpolate
 from harness.zone_s2_realism_contract_v122 import PULSE_MODEL
 from harness.zone_solo_cyan_pulse_cal import response
 
-RAW=Path('<home>/projects/ugrp/outputs/pulse-rotation-audit-v1/measurement')
-OLD=Path('<home>/projects/ugrp/outputs/s2-pulse-cal-20261007/offline/pulses.jsonl')
+RAW=Path('/Users/changmin/projects/ugrp/outputs/pulse-rotation-audit-v1/measurement')
+OLD=Path('/Users/changmin/projects/ugrp/outputs/s2-pulse-cal-20261007/offline/pulses.jsonl')
 
 
 def read(p): return json.loads(Path(p).read_text())

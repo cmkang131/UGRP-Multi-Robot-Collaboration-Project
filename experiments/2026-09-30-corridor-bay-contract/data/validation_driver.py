@@ -11,7 +11,7 @@ import subprocess
 import sys
 import time
 
-ROOT = Path('<home>/projects/ugrp-wt/cap-t10a-corridor')
+ROOT = Path('/Users/changmin/projects/ugrp-wt/cap-t10a-corridor')
 sys.path.insert(0, str(ROOT))
 from scripts.agent_lock import DEFAULT_ROOT, acquire, release, status
 

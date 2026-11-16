@@ -31,7 +31,7 @@
 
 ## 검사 재현
 
-Python `<home>/projects/ugrp/.venv-sim-worker-mac/bin/python`,
+Python `/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python`,
 `OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1`.
 OpenCV 5.0.0의 GCD 빌드는 이 환경변수와 양수 `setNumThreads(1)`로 제한되지 않았다. 최종 실행기는 `cv2.setNumThreads(0)`으로 병렬 영역을 끄고 `getNumThreads()==1`을 검사한다. 모든 pytest 호출에 `--basetemp=./.pytest_tmp`를 사용했고 병렬 worker는 사용하지 않았다. MuJoCo·물리·학습 프로세스를 시작하지 않았다.
 

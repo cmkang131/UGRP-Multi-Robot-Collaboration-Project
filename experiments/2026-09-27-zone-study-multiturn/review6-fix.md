@@ -1,7 +1,7 @@
 # PR #245 검토 6 구조 수정 — 2026-09-28
 
 기준 HEAD `9fb47846b4bbb35be5692345843aadd896b6e3eb`, 브랜치
-`codex/zone-study-multiturn`, 작업 경로 `<home>/projects/ugrp-wt/codex-multiturn`.
+`codex/zone-study-multiturn`, 작업 경로 `/Users/changmin/projects/ugrp-wt/codex-multiturn`.
 사용자가 지정한 검토 5·6 원문을 읽고 수정했다. 실제 모델 호출·MuJoCo 물리 step·
 커밋·push·병합은 모두 0회다. 단위 검사만 잠금 없이 실행했다.
 
@@ -84,7 +84,7 @@ active/claimed 사건, censored 및 종료 사유를 차등 비교한다.
 [압축 추적](review6-exit-traces.json.gz)은 고정 mtime으로 재현 가능하게 저장했고,
 과거 review4/review5 원본·종료 표는 수정하지 않았다.
 
-기존 `<home>/projects/ugrp/.venv-sim-worker-mac`을 재사용했다.
+기존 `/Users/changmin/projects/ugrp/.venv-sim-worker-mac`을 재사용했다.
 모든 pytest는 `OMP_NUM_THREADS=1`과 `--basetemp=./.pytest_tmp`를 사용한다.
 전체 검사에서는 socket connect/connect_ex와 MuJoCo import도 차단했다.
 누락 sparse gzip fixture 3개는 HEAD blob에서 해시 검증 후 임시 복원하고, 검사 뒤
@@ -115,7 +115,7 @@ AST·CI YAML·새 모듈 등록·종료 표 재읽기/해시·`git diff --check`
 재현(프로젝트 root, 기존 환경):
 
 ```sh
-OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-27-zone-study-multiturn/run_review6_tests.py
-OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-27-zone-study-multiturn/audit_review6.py
-OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-27-zone-study-multiturn/audit_review6_before.py
+OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-27-zone-study-multiturn/run_review6_tests.py
+OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-27-zone-study-multiturn/audit_review6.py
+OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-27-zone-study-multiturn/audit_review6_before.py
 ```

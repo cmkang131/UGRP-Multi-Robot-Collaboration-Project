@@ -20,7 +20,7 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
-OUT = Path('<home>/projects/ugrp/outputs')
+OUT = Path('/Users/changmin/projects/ugrp/outputs')
 ASSEMBLER = subprocess.check_output(['git', 'rev-parse', 'd00208ba'], cwd=ROOT, text=True).strip()
 RAW = {
     'unloaded': OUT/'final-pair-v88-cal-747d2b9f-20261001/calibration-unloaded',

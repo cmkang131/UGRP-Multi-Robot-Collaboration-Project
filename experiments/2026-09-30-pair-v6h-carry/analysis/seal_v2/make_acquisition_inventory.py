@@ -1,8 +1,8 @@
 """Pre-unblinding acquisition inventory for the b-v6h1 blinded raw.
 Records path, size, sha256, mtime for every file; prints only aggregate numbers (no names, no content)."""
 import hashlib, json, os, sys, time
-RAW = '<home>/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930'
-OUT = '<home>/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930-inventory'
+RAW = '/Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930'
+OUT = '/Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930-inventory'
 os.makedirs(OUT, exist_ok=False)
 end_unix = json.load(open(os.path.join(RAW, 'manifest.json')))['end_unix']
 rows, total, late = [], 0, 0

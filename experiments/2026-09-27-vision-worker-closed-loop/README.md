@@ -39,7 +39,7 @@ PR #233의 태그 없는 비전 위치 추정 학생(VIS3, 오프라인 게이�
 
 ## 원본 위치 (로컬 전용, 원격 백업 아님)
 
-`<home>/projects/ugrp/outputs/vision-worker-closed-loop-20260927/` (106 MB: `drive.sh`, `load.txt`, `run.log`, `vl3-dev-s942/`)
+`/Users/changmin/projects/ugrp/outputs/vision-worker-closed-loop-20260927/` (106 MB: `drive.sh`, `load.txt`, `run.log`, `vl3-dev-s942/`)
 
 | 파일 | sha256 |
 |---|---|
@@ -53,7 +53,7 @@ PR #233의 태그 없는 비전 위치 추정 학생(VIS3, 오프라인 게이�
 
 ## TensorBoard (dev closed-loop check, 연구 결과 아님)
 
-스냅샷 `<home>/projects/ugrp/outputs/tensorboard/0927-vision-worker-dev` (로컬 전용). `build_tensorboard.py`(`51ecb857`에서 생성)는 저장소 `Writer`(`scripts/tensorboard_tools/export.py`)와 VIS3 채점기의 `pct`·`near_door`(`experiments/2026-09-26-vision-loc/vision_loc_score.py`)를 재사용하는 접착 코드다. 기존 폴더는 덮어쓰지 않는다.
+스냅샷 `/Users/changmin/projects/ugrp/outputs/tensorboard/0927-vision-worker-dev` (로컬 전용). `build_tensorboard.py`(`51ecb857`에서 생성)는 저장소 `Writer`(`scripts/tensorboard_tools/export.py`)와 VIS3 채점기의 `pct`·`near_door`(`experiments/2026-09-26-vision-loc/vision_loc_score.py`)를 재사용하는 접착 코드다. 기존 폴더는 덮어쓰지 않는다.
 
 - `vw-s942-closed`: 위치 오차(전체·VIS3 문 상자 `door_zone`·README 반경 0.5 m `near_door_r050`), σ 대 실제 오차(`sigma/*`, `localization/err_over_sigma`), 문 통과, 배송(`evaluation/reported_success`=m1_success 0), SIM·wall 시간, 명령 수, worker 호출·추론 ms. 시계열 step = SIM 시각 × 100. 백분위는 VIS3와 같은 numpy 선형 방식이어서 위 표(정렬 색인 방식)와 소수 넷째 자리가 조금 다르다(문 0.5 m p90 8.83 vs 8.87 cm).
 - `vis3-dev-a1`, `vis3-test-vision`: VIS3 **오프라인 재생** 기준선(pooled, 같은 설정 a1_open `87f94b34`). 위치 오차만 있고 문·배송·SIM·ms는 없다.

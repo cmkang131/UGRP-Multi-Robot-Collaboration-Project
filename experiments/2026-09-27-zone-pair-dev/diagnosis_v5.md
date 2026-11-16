@@ -11,9 +11,9 @@ dev07을 자세 불확실성 실패로 합산하거나 임계값 완화로 두 �
 ## 범위·고정 조건
 
 - 주 실행 소스/분석 HEAD: `8effc2cee5c3534d553adb75a0d82b49097e5286`, [prereg_v4.json](prereg_v4.json).
-  원본 `<home>/projects/ugrp/outputs/zone-pair-dev-v4-8effc2cee5c3534d553adb75a0d82b49097e5286/{dev07,dev08}`는 읽기만 했다.
+  원본 `/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v4-8effc2cee5c3534d553adb75a0d82b49097e5286/{dev07,dev08}`는 읽기만 했다.
 - 비교 dev05/dev06은 `4a17e7d47616056db85f35933327c6b63581853d`, prereg_v3다.
-  원본은 `<home>/projects/ugrp/outputs/zone-pair-dev-v3-4a17e7d47616056db85f35933327c6b63581853d/{dev05,dev06}`.
+  원본은 `/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v3-4a17e7d47616056db85f35933327c6b63581853d/{dev05,dev06}`.
   [진단 v4](diagnosis_v4.md)를 보존하고 사용한 로그·프레임·평가 trace를 다시 읽었다.
 - 요청의 `dev05–08`은 실행 ID로 **4회**, 정상 시도 2회와 carry-GO 후 abort 진단 2회다.
   서로 다른 소스/사전등록이며 연구 성공률이나 통신 효과로 합산하지 않는다.

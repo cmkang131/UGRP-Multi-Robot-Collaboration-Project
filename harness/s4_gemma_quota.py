@@ -12,7 +12,7 @@ from pathlib import Path
 import time
 from zoneinfo import ZoneInfo
 
-ROOT = Path('<home>/projects/ugrp/outputs/gemma-quota-v1')
+ROOT = Path('/Users/changmin/projects/ugrp/outputs/gemma-quota-v1')
 LIMITS = dict(tpm=16000, rpm=30, rpd=14400, headroom=.1)
 TPM, RPM, RPD = 14400, 27, 12960
 PACIFIC = ZoneInfo('America/Los_Angeles')

@@ -6,8 +6,8 @@ set -euo pipefail
 ATTEMPT=$1; COND=$2; EP=$3; SPLIT=$4; FROZEN=${5:-}
 HERE=$(cd "$(dirname "$0")" && pwd)
 WT=$(cd "$HERE/../.." && pwd)
-PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
-ROOT_OUT=${ROOT_OUT:-<home>/projects/ugrp/outputs/owncam-memory-20260926}
+PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+ROOT_OUT=${ROOT_OUT:-/Users/changmin/projects/ugrp/outputs/owncam-memory-20260926}
 export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1
 mkdir -p "$ROOT_OUT/logs"
 FREE=$(df -g "$ROOT_OUT" | awk 'NR==2 {print $4}')

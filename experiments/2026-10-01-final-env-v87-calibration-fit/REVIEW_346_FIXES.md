@@ -35,7 +35,7 @@
 기존 v89 raw의 새 CLI 출력은 `TRAINING_SMOKE`, 세 축/전체 null, 종료 코드 2이며
 저장된 r4의 모든 축 수치와 판정이 정확히 같다. 재적합하지 않았다.
 
-로컬 로그는 `<home>/projects/ugrp/outputs/pr346-review-fixes-20261001/`에 보존한다.
+로컬 로그는 `/Users/changmin/projects/ugrp/outputs/pr346-review-fixes-20261001/`에 보존한다.
 원본 raw를 수정하거나 원격 백업한 것이 아니다. 새 실험·학습·평가 코호트가 없고 기존 보고서의
 채점 회귀만 확인했으므로 TensorBoard를 중복 변환하거나 새 snapshot으로 등록하지 않았다.
 기존 [r3/r4 TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1001-v89-consumer-%28r3%7Cr4-final%29%2F#timeseries)는

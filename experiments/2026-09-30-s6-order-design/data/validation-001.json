@@ -31,7 +31,7 @@
     ]
   },
   "command": [
-    "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
     "-c",
     "import sys; sys.path.insert(0, 'experiments/2026-09-30-s6-order-design'); import audit; audit.enable_static_guard(); import pytest; raise SystemExit(pytest.main(['-q','experiments/2026-09-30-s6-order-design/test_audit.py','tests/test_zone_scenario_feasibility.py']))"
   ],

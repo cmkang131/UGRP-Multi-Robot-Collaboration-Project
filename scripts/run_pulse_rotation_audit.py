@@ -9,7 +9,7 @@ from scripts.run_wall_servo_stiffness import arm
 from scripts.run_wall_parallax_strafe import sha
 
 ROOT = Path(__file__).resolve().parents[1]
-RAW = Path('<home>/projects/ugrp/outputs/pulse-rotation-audit-v1')
+RAW = Path('/Users/changmin/projects/ugrp/outputs/pulse-rotation-audit-v1')
 
 
 def schedule():

@@ -1,6 +1,6 @@
 """Shared helpers for issue #366 VO feasibility (offline, recorded frames only)."""
 import sys, json, math
-sys.path.insert(0, "<home>/projects/ugrp")
+sys.path.insert(0, "/Users/changmin/projects/ugrp")
 import numpy as np, cv2
 from harness.visual_arm import camera_extrinsics
 from sim.masterpi_camera_profile import CAMERA_FISHEYE_D, scaled_camera_matrix
@@ -10,11 +10,11 @@ D = np.asarray(CAMERA_FISHEYE_D, np.float64).reshape(4, 1)
 TILE = 16.0 / 14 / 2  # floor plane 8 m half-size, texrepeat 14, 2x2 checker -> 0.5714 m
 
 SEQS = {
-    "v88_r1": ("<home>/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001/calibration-unloaded/zone_wide_two_doors_final_v3", "r1"),
-    "v92_r1": ("<home>/projects/ugrp/outputs/final-pair-v92-loaded-257953ec-20261003/zone_wide_two_doors_final_v3", "r1"),
-    "v92_r2": ("<home>/projects/ugrp/outputs/final-pair-v92-loaded-257953ec-20261003/zone_wide_two_doors_final_v3", "r2"),
+    "v88_r1": ("/Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001/calibration-unloaded/zone_wide_two_doors_final_v3", "r1"),
+    "v92_r1": ("/Users/changmin/projects/ugrp/outputs/final-pair-v92-loaded-257953ec-20261003/zone_wide_two_doors_final_v3", "r1"),
+    "v92_r2": ("/Users/changmin/projects/ugrp/outputs/final-pair-v92-loaded-257953ec-20261003/zone_wide_two_doors_final_v3", "r2"),
     # older single-robot own-camera driving test run (door-tag map zone_wide_door_tags_v2, darker floor)
-    "m1_s101": ("<home>/projects/ugrp/outputs/m1-owncam-20260926/test/m1test-s101", "r1"),
+    "m1_s101": ("/Users/changmin/projects/ugrp/outputs/m1-owncam-20260926/test/m1test-s101", "r1"),
 }
 
 _ext_cache = {}

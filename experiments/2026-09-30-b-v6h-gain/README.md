@@ -198,7 +198,7 @@ PR #285 코멘트의 P1-1…P2-7을 문서와 분석 스크립트에만 반영�
 
 ### 원본과 해시 (로컬, 원격 백업 아님)
 
-| 태그 | 디렉터리 (`<home>/projects/ugrp/outputs/`) | `cases.jsonl` sha256 앞 16자 | 크기 | 부하(시작→끝) |
+| 태그 | 디렉터리 (`/Users/changmin/projects/ugrp/outputs/`) | `cases.jsonl` sha256 앞 16자 | 크기 | 부하(시작→끝) |
 |---|---|---|---|---|
 | tX1 | `b-v6h-gain-f5d83fdb-tX1` | c355d1ceff773e5d | 364 MB | 20.7→66.4 (예전 기록) |
 | tX1b | `b-v6h-gain-5bfd95f0-tX1b` | 5619275fecf09295 | 55 MB | 20.4→22.8 |
@@ -233,7 +233,7 @@ sB(`1ddfeedebff7d1ab`)와 rB(`7338e9a1191a383d`)는 위쪽 원본 표에 있다.
 
 ## 원본과 재현
 
-원본(로컬, 원격 백업 아님)은 기본 체크아웃 `<home>/projects/ugrp/outputs/`에 있다. 케이스별 `cases.jsonl` sha256(앞 16자)과 크기, 1분 부하 평균(시작→끝). 모두 종료 코드 0, 모델 호출 0, weld OFF.
+원본(로컬, 원격 백업 아님)은 기본 체크아웃 `/Users/changmin/projects/ugrp/outputs/`에 있다. 케이스별 `cases.jsonl` sha256(앞 16자)과 크기, 1분 부하 평균(시작→끝). 모두 종료 코드 0, 모델 호출 0, weld OFF.
 
 | 태그 | 소스 SHA | 디렉터리 | `cases.jsonl` sha256(앞 16자) | 크기 | 부하(시작→끝) |
 |---|---|---|---|---|---|

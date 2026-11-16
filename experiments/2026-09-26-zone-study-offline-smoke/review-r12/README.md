@@ -28,18 +28,18 @@ wire 이전 대기 기록·timeout 분리, 서로 다른 대기량의 SIM trace/
 pytest는 모두 아래 옵션을 사용했다. 테스트 임시 디렉터리는 종료 뒤 삭제했다.
 
 ```sh
-OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
+OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
   --basetemp=./.pytest_tmp -q \
   tests/test_zone_pilot_proxy_log.py tests/test_zone_pilot_source_migration.py \
   tests/test_zone_study_review_r8.py tests/test_zone_study_review_r9.py \
   tests/test_rgb_execution_bundle.py
-OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
+OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
   --basetemp=./.pytest_tmp -q tests/test_zone_study_review_r10.py
 ```
 
 ## 실제 preflight-01 읽기 전용 대조
 
-원본: `<home>/projects/ugrp/outputs/zone-study-adapter-pilot-r10/`.
+원본: `/Users/changmin/projects/ugrp/outputs/zone-study-adapter-pilot-r10/`.
 `PilotBudget(..., read_only=True)`로 원본 DB를 열고 설치 프록시 로그도 읽기만 했다.
 복사 DB나 fixture로 원본 검증을 대신하지 않았다.
 

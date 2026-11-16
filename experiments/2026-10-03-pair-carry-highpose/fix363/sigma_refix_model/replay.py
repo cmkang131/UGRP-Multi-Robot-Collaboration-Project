@@ -9,10 +9,10 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-WT = Path('<home>/projects/ugrp-wt/carry-ckpt')
+WT = Path('/Users/changmin/projects/ugrp-wt/carry-ckpt')
 sys.path.insert(0, str(WT))
-OUT = Path('<home>/projects/ugrp/outputs')
-CAL = '<home>/projects/ugrp/outputs/v92-dev-pilot-c0zero-20261003T104043Z/result/calibration_dev_pilot.json'
+OUT = Path('/Users/changmin/projects/ugrp/outputs')
+CAL = '/Users/changmin/projects/ugrp/outputs/v92-dev-pilot-c0zero-20261003T104043Z/result/calibration_dev_pilot.json'
 CAL_SHA = '398372ae6b9b0fef7344d7f29146ce75b309d334b3ce31af527bc071c0e582f5'
 
 RUNS = {

@@ -15,7 +15,7 @@ from harness.self_pulse_odom import profile_key, response
 from harness.self_map_prob import wrap
 from harness.active_wall_mapping import compose, inverse
 EXP=ROOT/'experiments/2026-10-09-goal-route-motion-audit'
-BASE=Path('<home>/projects/ugrp/outputs/goal-route-preflight-v1')
+BASE=Path('/Users/changmin/projects/ugrp/outputs/goal-route-preflight-v1')
 
 
 def rows(p):

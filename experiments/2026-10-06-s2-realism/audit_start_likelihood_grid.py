@@ -14,7 +14,7 @@ from harness.zone_solo_cyan_augmented_start import Runtime
 from harness.zone_solo_cyan_likelihood_field import Field,likelihood,PARAMS
 from harness import vision_loc_protocol as vp
 ROOT=Path(__file__).resolve().parents[2]
-RAW=Path('<home>/projects/ugrp/outputs/s2-stiff-cal-20261007/start')
+RAW=Path('/Users/changmin/projects/ugrp/outputs/s2-stiff-cal-20261007/start')
 read=lambda p:json.loads(p.read_text())
 rows=lambda p:[json.loads(x) for x in p.read_text().splitlines()]
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()

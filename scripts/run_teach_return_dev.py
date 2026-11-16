@@ -6,7 +6,7 @@ from scripts import run_own_map_return_repeat as old
 
 ROOT=old.ROOT
 EXP=ROOT/'experiments/2026-10-09-teach-return-dev'
-RAW=Path('<home>/projects/ugrp/outputs/teach-return-dev-v1')
+RAW=Path('/Users/changmin/projects/ugrp/outputs/teach-return-dev-v1')
 SEEDS=(54001,54002,54003,54004)
 S2_ACQUIRED=1791526528.198967
 

@@ -4,7 +4,7 @@
 
 - 검토 대상: `65ce28cf7da3c8c33de97a03b19cd1665b45f831`, `origin/codex/calib-fit-v87`.
 - 검토 브랜치: `codex/review-346`, 시작 main `2c45b137c480eecff3dac871277cf48914dd5cf4`.
-- 원본: `<home>/projects/ugrp/outputs/calib-motion-v89-eaeaaff0-20261001`, `<home>/projects/ugrp/outputs/final-env-v87-04eb11c6-20261001/calibration-unloaded`.
+- 원본: `/Users/changmin/projects/ugrp/outputs/calib-motion-v89-eaeaaff0-20261001`, `/Users/changmin/projects/ugrp/outputs/final-env-v87-04eb11c6-20261001/calibration-unloaded`.
 - `git archive` 사본에서 실행했다. 물리·렌더·모델 실행 0회. 제어기·`.github/workflows` 변경 없음. 원본은 읽기만 했다.
 
 **수정할 사항**
@@ -72,11 +72,11 @@
 ```sh
 review_root=$(mktemp -d /private/tmp/review346.XXXXXX)
 git archive 65ce28cf7da3c8c33de97a03b19cd1665b45f831 | tar -x -C "$review_root"
-UGRP_REVIEW_346_ROOT="$review_root" GIT_DIR=<home>/projects/ugrp/.git \
+UGRP_REVIEW_346_ROOT="$review_root" GIT_DIR=/Users/changmin/projects/ugrp/.git \
   PYTHONDONTWRITEBYTECODE=1 /opt/anaconda3/bin/python3 -m pytest \
   -q -p no:cacheprovider tests/test_review_346.py -rx
 ```
 
-원본 재계산 코드·요약·JUnit·반례 관측은 로컬 `<home>/projects/ugrp/outputs/review-346-65ce28cf/`에 보존한다. 코드 `recompute.py`는 `REVIEW_346_TARGET`으로 위 아카이브를 받아 읽는다. 원본 raw의 원격 백업을 뜻하지 않는다. 기존 [TensorBoard r3/r4](http://127.0.0.1:6006/?runFilter=%5E1001-v89-consumer-%28r3%7Cr4-final%29%2F#timeseries)는 참고 링크이며 이번 검토에서 화면 확인·새 snapshot 생성은 하지 않았다. 재계산을 새 실험으로 중복 등록하지 않았다.
+원본 재계산 코드·요약·JUnit·반례 관측은 로컬 `/Users/changmin/projects/ugrp/outputs/review-346-65ce28cf/`에 보존한다. 코드 `recompute.py`는 `REVIEW_346_TARGET`으로 위 아카이브를 받아 읽는다. 원본 raw의 원격 백업을 뜻하지 않는다. 기존 [TensorBoard r3/r4](http://127.0.0.1:6006/?runFilter=%5E1001-v89-consumer-%28r3%7Cr4-final%29%2F#timeseries)는 참고 링크이며 이번 검토에서 화면 확인·새 snapshot 생성은 하지 않았다. 재계산을 새 실험으로 중복 등록하지 않았다.
 
 이번 검토가 만든 `/private/tmp/review346.uTxPwi` 아카이브와 그 안의 합성 raw는 종료 전에 삭제·부재 확인했다. 원본 수집 자료는 보존했다. 검토 기록만 커밋·push하고 PR #346에 한 번 보고하며, 이 판정으로 PR을 병합하지 않는다.

@@ -11,7 +11,7 @@ from harness.goal_route_heading import OPTION as HEADING_HOST
 
 ROOT=base.ROOT
 EXP=ROOT/'experiments/2026-10-09-goal-route-continuous'
-RAW=Path('<home>/projects/ugrp/outputs/goal-route-continuous-v1')
+RAW=Path('/Users/changmin/projects/ugrp/outputs/goal-route-continuous-v1')
 SEEDS=tuple(range(55001,55010))
 
 

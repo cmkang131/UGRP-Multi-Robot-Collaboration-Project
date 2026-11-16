@@ -8,7 +8,7 @@ from harness.own_traversal_reconnection import ReconnectedGraph,PartialReturn
 SPEC=importlib.util.spec_from_file_location('egomap51_offline',ROOT/'experiments/2026-10-09-own-traversal-return/code/offline.py')
 legacy=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(legacy)
 EXP=Path(__file__).resolve().parents[1]
-RAW=Path('<home>/projects/ugrp/outputs/traversal-reconnection-v1')
+RAW=Path('/Users/changmin/projects/ugrp/outputs/traversal-reconnection-v1')
 
 
 class ProgressGraph(ReconnectedGraph):

@@ -49,7 +49,7 @@
 ## 재현 명령과 출처
 
 ```sh
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_openrouter_upstream.py tests/test_model_endpoint_watch.py tests/test_s4_live_stage.py
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_openrouter_upstream.py tests/test_model_endpoint_watch.py tests/test_s4_live_stage.py
 python3 scripts/install_model_endpoint_watch.py
 python3 scripts/model_endpoint_watch.py
 # 유료 호출: 이 작업에서는 이미 3회를 수행했으므로 다시 실행하지 않는다.

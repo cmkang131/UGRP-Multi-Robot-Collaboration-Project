@@ -99,7 +99,7 @@
 - 테스트: `.venv-sim-worker-mac/bin/python -m pytest tests/test_owncam_memory.py tests/test_simulation_workflow_manager.py tests/test_m1_owncam.py tests/test_owncam_localizer.py` → 107 passed(360 subtests). 기억 핵심 태그 비의존(`test_memory_core_is_tag_free`), 태그 없는 지도에서 동작, 목록 해시가 태그와 무관, 동결 M1 파일 해시 불변을 검사한다.
 - test 실행: `test_queue_used.sh`(seed마다 두 조건 동시) → `launch_episode.sh` → `scripts/run_m1_owncam_memory.py --split test --frozen frozen_source.json`. 러너가 깨끗한 트리·동결 SHA 이후 변경 없음·파일 해시 일치를 확인하고 시작했다. 12회 모두 `result.json`이 있다(인프라 실패 0, 재실행 0).
 - TensorBoard: 스냅샷 `outputs/tensorboard/0926-zone-owncam-memory`(16 run, 변환 실패 0, `collection.json` sha256 `cd6928e7…`). EventAccumulator 128값이 `results.json`과 같다(`tensorboard_verify.json`). 공용 서버(PID 9291, 재시작 안 함)가 16 run을 읽는다. `outputs/tensorboard-view.json`에 `zone_owncam_memory_20260926` 키만 추가했다.
-- 원본: `<home>/projects/ugrp/outputs/owncam-memory-20260926/{dev-a1,dev-a2,test-a1,logs}`(로컬만, 원격 백업 아님). 파일 해시는 `raw_index.json`에 있다.
+- 원본: `/Users/changmin/projects/ugrp/outputs/owncam-memory-20260926/{dev-a1,dev-a2,test-a1,logs}`(로컬만, 원격 백업 아님). 파일 해시는 `raw_index.json`에 있다.
 - 기록 파일: `results.json`(sha256 `fb1cc073…`), `raw_index.json`(`87360e0c…`), `frozen_source.json`(`277149c9…`).
 
 ## 참고 자료

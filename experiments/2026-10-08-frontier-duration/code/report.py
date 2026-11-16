@@ -4,7 +4,7 @@ import argparse,hashlib,importlib.util,json,sys
 import numpy as np
 ROOT=Path(__file__).resolve().parents[3];sys.path.insert(0,str(ROOT))
 EXP=Path(__file__).resolve().parents[1]
-RAW=Path('<home>/projects/ugrp/outputs/frontier-duration-v1')
+RAW=Path('/Users/changmin/projects/ugrp/outputs/frontier-duration-v1')
 from scripts.run_active_wall_rotleft import dump
 from harness.self_odom_grid import transform
 from timeline import select_snapshots
@@ -70,9 +70,9 @@ def condition(name):
 def summary():
     allrows=[]
     old=[('egomap34',ROOT/'experiments/2026-10-08-wall-segment-dev/results/new-seed.json',
-          Path('<home>/projects/ugrp/outputs/wall-segment-dev-v1/new-seed')),
+          Path('/Users/changmin/projects/ugrp/outputs/wall-segment-dev-v1/new-seed')),
          ('egomap45',ROOT/'experiments/2026-10-08-frontier-visibility/results/new-seed.json',
-          Path('<home>/projects/ugrp/outputs/frontier-visibility-v1/new-seed'))]
+          Path('/Users/changmin/projects/ugrp/outputs/frontier-visibility-v1/new-seed'))]
     extra=module('egomap45_reporting',ROOT/'experiments/2026-10-08-frontier-visibility/code/report.py')
     for label,file,ep in old:
         allrows.append(dict(condition=label,budget_s=180,seed=load(ep/'bundle.json')['task']['seed'],n=1,

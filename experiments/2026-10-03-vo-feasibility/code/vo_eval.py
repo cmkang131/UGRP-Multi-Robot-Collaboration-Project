@@ -6,7 +6,7 @@ GT pose (eval_only/*/pose.jsonl) is used ONLY afterwards to label and score pair
 import csv, sys, time
 from vocommon import *
 
-OUT = "<home>/projects/ugrp/outputs/vo-feasibility-20261003"
+OUT = "/Users/changmin/projects/ugrp/outputs/vo-feasibility-20261003"
 RNG = np.random.default_rng(0)
 ORB = cv2.ORB_create(nfeatures=1500, fastThreshold=12)
 FAST = cv2.FastFeatureDetector_create(threshold=20, nonmaxSuppression=True)

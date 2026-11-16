@@ -18,14 +18,14 @@
       "condition": "prob",
       "case": "s911-r1",
       "command": [
-        "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
-        "<home>/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/own_map_prob_replay.py",
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/own_map_prob_replay.py",
         "--case",
         "s911-r1",
         "--condition",
         "prob",
         "--output",
-        "<home>/projects/ugrp-wt/ego-wall-map/outputs/self-map-prob-rbpf-v1"
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-prob-rbpf-v1"
       ],
       "exit_code": 0,
       "started_unix": 1791296776.335912,
@@ -37,14 +37,14 @@
       "condition": "prob",
       "case": "s911-r2",
       "command": [
-        "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
-        "<home>/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/own_map_prob_replay.py",
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/own_map_prob_replay.py",
         "--case",
         "s911-r2",
         "--condition",
         "prob",
         "--output",
-        "<home>/projects/ugrp-wt/ego-wall-map/outputs/self-map-prob-rbpf-v1"
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-prob-rbpf-v1"
       ],
       "exit_code": 0,
       "started_unix": 1791296778.7815738,
@@ -56,20 +56,20 @@
       "condition": "rbpf30",
       "case": "s911-r1",
       "command": [
-        "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
-        "<home>/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/own_map_prob_replay.py",
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/own_map_prob_replay.py",
         "--case",
         "s911-r1",
         "--condition",
         "rbpf30",
         "--output",
-        "<home>/projects/ugrp-wt/ego-wall-map/outputs/self-map-prob-rbpf-v1"
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-prob-rbpf-v1"
       ],
       "exit_code": 1,
       "started_unix": 1791296782.839784,
       "process_wall_s": 12.338738918304443,
       "stdout": "",
-      "stderr": "Traceback (most recent call last):\n  File \"<home>/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/own_map_prob_replay.py\", line 154, in <module>\n    run_case(args.case, args.condition, args.baseline, args.output)\n  File \"<home>/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/own_map_prob_replay.py\", line 102, in run_case\n    base.dump(target/'final_particles.json',\n  File \"<home>/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/odom_grid_replay.py\", line 40, in dump\n    Path(path).write_text(json.dumps(value, indent=2, allow_nan=False)+'\\n')\n                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/__init__.py\", line 238, in dumps\n    **kw).encode(obj)\n          ^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py\", line 202, in encode\n    chunks = list(chunks)\n             ^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py\", line 430, in _iterencode\n    yield from _iterencode_list(o, _current_indent_level)\n  File \"/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py\", line 326, in _iterencode_list\n    yield from chunks\n  File \"/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py\", line 406, in _iterencode_dict\n    yield from chunks\n  File \"/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py\", line 326, in _iterencode_list\n    yield from chunks\n  File \"/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py\", line 326, in _iterencode_list\n    yield from chunks\n  File \"/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py\", line 439, in _iterencode\n    o = _default(o)\n        ^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py\", line 180, in default\n    raise TypeError(f'Object of type {o.__class__.__name__} '\nTypeError: Object of type int64 is not JSON serializable\n"
+      "stderr": "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/own_map_prob_replay.py\", line 154, in <module>\n    run_case(args.case, args.condition, args.baseline, args.output)\n  File \"/Users/changmin/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/own_map_prob_replay.py\", line 102, in run_case\n    base.dump(target/'final_particles.json',\n  File \"/Users/changmin/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/odom_grid_replay.py\", line 40, in dump\n    Path(path).write_text(json.dumps(value, indent=2, allow_nan=False)+'\\n')\n                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/__init__.py\", line 238, in dumps\n    **kw).encode(obj)\n          ^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py\", line 202, in encode\n    chunks = list(chunks)\n             ^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py\", line 430, in _iterencode\n    yield from _iterencode_list(o, _current_indent_level)\n  File \"/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py\", line 326, in _iterencode_list\n    yield from chunks\n  File \"/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py\", line 406, in _iterencode_dict\n    yield from chunks\n  File \"/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py\", line 326, in _iterencode_list\n    yield from chunks\n  File \"/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py\", line 326, in _iterencode_list\n    yield from chunks\n  File \"/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py\", line 439, in _iterencode\n    o = _default(o)\n        ^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py\", line 180, in default\n    raise TypeError(f'Object of type {o.__class__.__name__} '\nTypeError: Object of type int64 is not JSON serializable\n"
     }
   ]
 }

@@ -216,7 +216,7 @@ raw는 primary `outputs/`의 실행별 새 경로에 저장한다. 관측·발�
 network connect, schematic 렌더를 차단한다. 출력 파일은 이미 있으면 거절한다.
 
 ```sh
-PYTHONPATH=. <home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
+PYTHONPATH=. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
   experiments/2026-09-30-s6-order-design/audit.py --output /tmp/t11-static-NEW.json
 ```
 

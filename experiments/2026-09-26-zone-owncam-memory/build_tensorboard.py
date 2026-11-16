@@ -19,7 +19,7 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-PRIMARY = Path('<home>/projects/ugrp')
+PRIMARY = Path('/Users/changmin/projects/ugrp')
 TB = PRIMARY/'outputs'/'tensorboard'
 VIEW_ROOT = PRIMARY/'outputs'/'owncam-memory-20260926'/'tensorboard-view'
 PY = PRIMARY/'.venv-sim-worker-mac'/'bin'/'python'

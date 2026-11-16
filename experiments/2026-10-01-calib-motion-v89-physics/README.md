@@ -7,7 +7,7 @@ Refs #342 #346 #347. 진단 수집이며 보정값 채택, P03, loaded/fine, 학
 - 실행 번들 zone-final-environment-v89, workflow `zone-final-environment-floor-light-v2-check` 2.21.0,
   check `calibration-motion-v2`, seed 911, 지도 `zone_wide_two_doors_final_v3`, 로봇 r1 무하중.
 - 고정 소스: PR #347 branch `codex/calib-measure-v2`, SHA `eaeaaff05553ea02c649b4db9ff82470fe6372b5`.
-  worktree `<home>/projects/ugrp-wt/phys-v89-motion`, branch `claude/phys-v89-motion`(잠금 branch와 동일),
+  worktree `/Users/changmin/projects/ugrp-wt/phys-v89-motion`, branch `claude/phys-v89-motion`(잠금 branch와 동일),
   HEAD=SHA, 깨끗한 트리, `source_unchanged=true`.
 - 명령: [run_v89.sh](run_v89.sh) (핸드오프와 같은 subshell·`set -euo pipefail`·trap release,
   `ugrp_session.py run measurement-v89`). 정적 계획 확인(`--check` / `workflow plan`)은 먼저 통과.
@@ -34,8 +34,8 @@ Refs #342 #346 #347. 진단 수집이며 보정값 채택, P03, loaded/fine, 학
 - 자기 RGB 3대 x 47장(초기/5초마다/끝). r1 #23, r2 #0, r3 #46을 직접 확인: 640x480, 바닥은 밝은 회색 체커로
   floor_light 적용, 상자·벽·문 보임. r2/r3 화면의 푸른 바닥은 지도 구역 색으로 보이며 r1 화면 가장자리에도 푸른 구역이 보인다.
 - `artifacts.sha256.json` 159개 파일 해시 재계산 일치(불일치 0).
-- 원본: `<home>/projects/ugrp/outputs/calib-motion-v89-eaeaaff0-20261001` (25 MB, 보존, 수정 안 함).
-  실행 기록: `<home>/projects/ugrp-wt/phys-v89-motion/outputs/simulation-runs/20261001-060016-zone-final-environment-floor-light-v2-check-f9dca762/manifest.json`
+- 원본: `/Users/changmin/projects/ugrp/outputs/calib-motion-v89-eaeaaff0-20261001` (25 MB, 보존, 수정 안 함).
+  실행 기록: `/Users/changmin/projects/ugrp-wt/phys-v89-motion/outputs/simulation-runs/20261001-060016-zone-final-environment-floor-light-v2-check-f9dca762/manifest.json`
   (sha256 `b8b2bb7fa77239dae30b0abbe989a3ed03e7f7ddbfb13f8f548b312dfb450f08`, 이 worktree는 retire하지 않고 보존).
   raw 해시 목록 [raw_sha256_manifest.tsv.gz](raw_sha256_manifest.tsv.gz)(162개 파일). 1 MiB 넘는 파일
   (`pose.jsonl`, `contacts.jsonl`)과 PNG는 커밋하지 않았다. 원격 백업이 아니다.

@@ -52,7 +52,7 @@ GPU GL draw/readback은 빨랐지만 이 호스트·부하에서는 물리 계�
 
 ## 영상 검토
 
-gcp1에서 저장 상태를 복원해 개요+r1+r2(유휴)를 나란히 렌더했다. 0–43.4 SIM초 전체를 2 Hz·87프레임의 두 프레임 띠로 직접 읽었다. 4배속 MP4는 ffprobe로 10.875초·59,761 bytes 확인했다. Mac 화면 앱은 열지 않았다. 로컬 회수 위치는 `<home>/projects/ugrp/outputs/e2e18-admin/playback/simalt1/`이다.
+gcp1에서 저장 상태를 복원해 개요+r1+r2(유휴)를 나란히 렌더했다. 0–43.4 SIM초 전체를 2 Hz·87프레임의 두 프레임 띠로 직접 읽었다. 4배속 MP4는 ffprobe로 10.875초·59,761 bytes 확인했다. Mac 화면 앱은 열지 않았다. 로컬 회수 위치는 `/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/simalt1/`이다.
 
 시각 순서: 0–0.5초 팔 접기, 0.6–7.8초 접근(자기 화면에서 상자가 잠시 나갔다 다시 들어옴), 7.9–10.3초 정렬(상자가 아래쪽에서 커짐), 10.4초 이후 팔 동작 동안 자기 화면은 주로 바닥이고 대상이 보이지 않음, 33.3초부터 후진, 35.4–41.2초 주위 벽·문 방향을 둘러봄, 41.3초부터 완료 상태다. 이것을 집게 접촉/들기 성공의 시각 판정으로 확대하지 않았다.
 
@@ -93,6 +93,6 @@ C의 실행 명령과 오류는 `l4-results.json`의 C0/C1 원본 경로에 있�
 ## 참고 자료
 
 - [사용자 결정 · #523 댓글6192850947](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/523#issuecomment-6192850947)
-- 로컬 조사: `<home>/projects/ugrp/outputs/e2e18-admin/research/simalt.md` §1·2·1.3·6, [GCP 실행 규칙](../../docs/gcp_simulation.md)
+- 로컬 조사: `/Users/changmin/projects/ugrp/outputs/e2e18-admin/research/simalt.md` §1·2·1.3·6, [GCP 실행 규칙](../../docs/gcp_simulation.md)
 - [고정 개발 MJWarp io.py](https://github.com/google-deepmind/mujoco_warp/blob/57b4692f4d3cdf4d27d916b4b8c4759ba36e9148/mujoco_warp/_src/io.py), [noslip solver](https://github.com/google-deepmind/mujoco_warp/blob/57b4692f4d3cdf4d27d916b4b8c4759ba36e9148/mujoco_warp/_src/solver.py), [pyproject](https://github.com/google-deepmind/mujoco_warp/blob/57b4692f4d3cdf4d27d916b4b8c4759ba36e9148/pyproject.toml). 고정 HTTPS 원문과 설치 io.py SHA256 `d496e51ac392731fd1b20d0cc53c573b38dcf38924dbcd04a2d5f85ffeb84310` 대조.
 - [MuJoCo 시각화](https://mujoco.readthedocs.io/en/latest/programming/visualization.html), [GCP accelerator VM 공식 가격](https://cloud.google.com/products/compute/pricing/accelerator-optimized). 2026-10-15 HTTPS 원문 서울 행 $0.907714004/h 확인. gcp1의 과거 제3자 가격으로 비용 채택 관문을 대신하지 않았다.

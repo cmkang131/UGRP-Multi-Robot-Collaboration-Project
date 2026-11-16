@@ -181,36 +181,36 @@ R 조건 6개 시행은 설계상 전지적 참조 상한이며 추가 입력(�
 
 | 파일 | SHA-256 |
 |---|---|
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/leader_ko-s1_normal_mixed-s601.json` | `dbed8214cd394e423477cd60f12b2d24281ddbeaba16569ee56fa0c0fd752396` |
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/leader_ko-s2_unmapped_blockage-s611.json` | `733b567241160fc9d00d04189f39001d9970c7e155fde4c2ce0070072774a0c3` |
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/leader_ko-s3_late_rendezvous-s621.json` | `90eab49e17584b12a0881115cf79139188bd18cb154883613f0de9cde99133e1` |
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/leader_ko-s4_narrow_door_standoff-s631.json` | `0dc855e27ffc0afdc406a654c941dbb4babd5bcfb0c4a8582e9b840863a6dc6a` |
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/leader_ko-s5_moved_dropped_item-s641.json` | `e5a86edd68a794dc1da2fd385027b6efe4129a3b47340120d8b7cd5c3e62cd91` |
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/leader_ko-s6_novel_relation-s651.json` | `8654394d9c32ebda1ed4de8ba342a5b318ebb87ec9d76886fa3f31930e31e2da` |
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/no_comm-s1_normal_mixed-s601.json` | `050f75d25a79f14482393b9951a201699921a25b98a8cf9618958b57dc7709ff` |
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/no_comm-s2_unmapped_blockage-s611.json` | `18bd78af82726eeb6f6abf356311d3fcd4f939cb83e32fcbacd8b082ca93e6d8` |
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/no_comm-s3_late_rendezvous-s621.json` | `7062fec575bb955648a3285d527a57f15a84c3cff12f4135b5d399f06b77e5b7` |
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/no_comm-s4_narrow_door_standoff-s631.json` | `7642d236137139f50a2c0cadc88247bdc2aa9f9ab576e4b050d6d8472a21f5f8` |
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/no_comm-s5_moved_dropped_item-s641.json` | `27082404d310a23a2b43783b3fbf0057b90ba32962290575eafe9e9e8973bbe2` |
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/no_comm-s6_novel_relation-s651.json` | `ed10b390e887af2a899740e7bb18c30f2dca4d09a86b43640e894a28d0fe891c` |
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/peer_ko-s1_normal_mixed-s601.json` | `fa2d0561640280b34eb4eff0bb1361d20b438fa3da7675f171cad67a059d61e3` |
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/peer_ko-s2_unmapped_blockage-s611.json` | `d91f3e08973903bae17a9b86164966a901cde039cfcc2750a912ec87667c7f5a` |
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/peer_ko-s3_late_rendezvous-s621.json` | `809fb3d8a3e92cadad165534cf93a1fb2ca8399185e7e3fb3f9d1b94d46513ad` |
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/peer_ko-s4_narrow_door_standoff-s631.json` | `7fcfe07bc931b598d0c47d3a757f371ec15a6193572d6fdaf5759fd18e4a5830` |
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/peer_ko-s5_moved_dropped_item-s641.json` | `6b4de35eb8af5f705523b458ca9599fb6616d25314a387425226b210d0bdb9e3` |
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/peer_ko-s6_novel_relation-s651.json` | `e5b71ac3649aae1de8cd8e4e82f9e0fd50682da3feab70b67f30e3070a6ad84b` |
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/reference_R-s1_normal_mixed-s601.json` | `756d28e7e33b859735c6cc869a18f278fa607cec1ccbd75d5a78761509f2390b` |
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/reference_R-s2_unmapped_blockage-s611.json` | `5e0878098323121ae02a7d904a0fbc422b0a99ee6521a707a20d08677a28d52f` |
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/reference_R-s3_late_rendezvous-s621.json` | `246ba4d4ad1b7c0dbed01672dd60a05369c9508343e1a81ed98967115e898816` |
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/reference_R-s4_narrow_door_standoff-s631.json` | `cecae541222754b16bbc0ab8d0f4288ab4b8a6783d2603fec438c1e03a3fe3f4` |
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/reference_R-s5_moved_dropped_item-s641.json` | `11fd4e80eaeff5426b93ce993831362f2eef04b816a3bf41fd8b5f043ef5a59b` |
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/reference_R-s6_novel_relation-s651.json` | `8dafdaa113b66f00a040ee9ab634508eeee40e85abb5d46561a20caf36796f7a` |
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/structured-s1_normal_mixed-s601.json` | `aad9262698e8ba317ea84547f28df47439b9943c2d3227bfacc83d6314482607` |
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/structured-s2_unmapped_blockage-s611.json` | `62c6d9ba7def740735bbfc65b8414fe78bee4bf8afefaeb7671cc3e8335bd3a6` |
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/structured-s3_late_rendezvous-s621.json` | `f9012f4c752801cacb918ee6c146e66245fabed1937495b2e4c7640b56c38e09` |
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/structured-s4_narrow_door_standoff-s631.json` | `862337e2367d737c53989acccd95abc219ea048eda131f712d94a1d51881e12e` |
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/structured-s5_moved_dropped_item-s641.json` | `bdcd8d44209909bb7bde09b148b1df5995c4400cd34d721a6a8a05900f60dc80` |
-| `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/structured-s6_novel_relation-s651.json` | `8b4ece94300793af0a47c357fd036907ada893c254f4f65663a02e82c34793ef` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/leader_ko-s1_normal_mixed-s601.json` | `dbed8214cd394e423477cd60f12b2d24281ddbeaba16569ee56fa0c0fd752396` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/leader_ko-s2_unmapped_blockage-s611.json` | `733b567241160fc9d00d04189f39001d9970c7e155fde4c2ce0070072774a0c3` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/leader_ko-s3_late_rendezvous-s621.json` | `90eab49e17584b12a0881115cf79139188bd18cb154883613f0de9cde99133e1` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/leader_ko-s4_narrow_door_standoff-s631.json` | `0dc855e27ffc0afdc406a654c941dbb4babd5bcfb0c4a8582e9b840863a6dc6a` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/leader_ko-s5_moved_dropped_item-s641.json` | `e5a86edd68a794dc1da2fd385027b6efe4129a3b47340120d8b7cd5c3e62cd91` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/leader_ko-s6_novel_relation-s651.json` | `8654394d9c32ebda1ed4de8ba342a5b318ebb87ec9d76886fa3f31930e31e2da` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/no_comm-s1_normal_mixed-s601.json` | `050f75d25a79f14482393b9951a201699921a25b98a8cf9618958b57dc7709ff` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/no_comm-s2_unmapped_blockage-s611.json` | `18bd78af82726eeb6f6abf356311d3fcd4f939cb83e32fcbacd8b082ca93e6d8` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/no_comm-s3_late_rendezvous-s621.json` | `7062fec575bb955648a3285d527a57f15a84c3cff12f4135b5d399f06b77e5b7` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/no_comm-s4_narrow_door_standoff-s631.json` | `7642d236137139f50a2c0cadc88247bdc2aa9f9ab576e4b050d6d8472a21f5f8` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/no_comm-s5_moved_dropped_item-s641.json` | `27082404d310a23a2b43783b3fbf0057b90ba32962290575eafe9e9e8973bbe2` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/no_comm-s6_novel_relation-s651.json` | `ed10b390e887af2a899740e7bb18c30f2dca4d09a86b43640e894a28d0fe891c` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/peer_ko-s1_normal_mixed-s601.json` | `fa2d0561640280b34eb4eff0bb1361d20b438fa3da7675f171cad67a059d61e3` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/peer_ko-s2_unmapped_blockage-s611.json` | `d91f3e08973903bae17a9b86164966a901cde039cfcc2750a912ec87667c7f5a` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/peer_ko-s3_late_rendezvous-s621.json` | `809fb3d8a3e92cadad165534cf93a1fb2ca8399185e7e3fb3f9d1b94d46513ad` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/peer_ko-s4_narrow_door_standoff-s631.json` | `7fcfe07bc931b598d0c47d3a757f371ec15a6193572d6fdaf5759fd18e4a5830` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/peer_ko-s5_moved_dropped_item-s641.json` | `6b4de35eb8af5f705523b458ca9599fb6616d25314a387425226b210d0bdb9e3` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/peer_ko-s6_novel_relation-s651.json` | `e5b71ac3649aae1de8cd8e4e82f9e0fd50682da3feab70b67f30e3070a6ad84b` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/reference_R-s1_normal_mixed-s601.json` | `756d28e7e33b859735c6cc869a18f278fa607cec1ccbd75d5a78761509f2390b` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/reference_R-s2_unmapped_blockage-s611.json` | `5e0878098323121ae02a7d904a0fbc422b0a99ee6521a707a20d08677a28d52f` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/reference_R-s3_late_rendezvous-s621.json` | `246ba4d4ad1b7c0dbed01672dd60a05369c9508343e1a81ed98967115e898816` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/reference_R-s4_narrow_door_standoff-s631.json` | `cecae541222754b16bbc0ab8d0f4288ab4b8a6783d2603fec438c1e03a3fe3f4` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/reference_R-s5_moved_dropped_item-s641.json` | `11fd4e80eaeff5426b93ce993831362f2eef04b816a3bf41fd8b5f043ef5a59b` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/reference_R-s6_novel_relation-s651.json` | `8dafdaa113b66f00a040ee9ab634508eeee40e85abb5d46561a20caf36796f7a` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/structured-s1_normal_mixed-s601.json` | `aad9262698e8ba317ea84547f28df47439b9943c2d3227bfacc83d6314482607` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/structured-s2_unmapped_blockage-s611.json` | `62c6d9ba7def740735bbfc65b8414fe78bee4bf8afefaeb7671cc3e8335bd3a6` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/structured-s3_late_rendezvous-s621.json` | `f9012f4c752801cacb918ee6c146e66245fabed1937495b2e4c7640b56c38e09` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/structured-s4_narrow_door_standoff-s631.json` | `862337e2367d737c53989acccd95abc219ea048eda131f712d94a1d51881e12e` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/structured-s5_moved_dropped_item-s641.json` | `bdcd8d44209909bb7bde09b148b1df5995c4400cd34d721a6a8a05900f60dc80` |
+| `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records/structured-s6_novel_relation-s651.json` | `8b4ece94300793af0a47c357fd036907ada893c254f4f65663a02e82c34793ef` |
 
 ## 6. 남은 검증
 

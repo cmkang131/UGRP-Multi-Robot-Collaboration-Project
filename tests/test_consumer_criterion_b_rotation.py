@@ -126,7 +126,7 @@ def test_yaw_training_profile_preserves_frozen_translation_and_null_admission():
 
 
 @pytest.mark.parametrize('path', ['/not-training/raw',
-    '<home>/projects/ugrp/outputs/final-pair-v91-heldout-DO-NOT-OPEN/calibration-unloaded'])
+    '/Users/changmin/projects/ugrp/outputs/final-pair-v91-heldout-DO-NOT-OPEN/calibration-unloaded'])
 def test_nontraining_paths_are_rejected_before_any_filesystem_read(monkeypatch, path):
     def forbidden(*args, **kwargs):
         pytest.fail('must reject path before read/resolve/glob')

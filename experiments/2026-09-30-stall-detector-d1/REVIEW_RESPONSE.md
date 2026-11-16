@@ -28,7 +28,7 @@
 
 ```sh
 OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 \
-  <home>/projects/ugrp/.venv-sim-worker-mac/bin/python - <<'PY'
+  /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python - <<'PY'
 import os, sys
 from scripts.run_ci_tests import local_lock_root, run_locked
 cmd = [sys.executable, '-m', 'pytest', '-q',

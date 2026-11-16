@@ -1,6 +1,6 @@
 # Independent varied-start cohort review
 
-Scope: read-only review of all results, input audits, and grasp reports in `<home>/projects/ugrp/outputs/short-transport-varied-20260913-v1`, plus direct inspection of every failed first-carry top/r1-own RGB and selected observer-video frames from failed `heldout-01` and successful `heldout-02`. Frozen source: `1d904c255b9ff551b103e6de98ba22bd7692d86f`. Referee fields and observer video are evaluation evidence, not student inputs.
+Scope: read-only review of all results, input audits, and grasp reports in `/Users/changmin/projects/ugrp/outputs/short-transport-varied-20260913-v1`, plus direct inspection of every failed first-carry top/r1-own RGB and selected observer-video frames from failed `heldout-01` and successful `heldout-02`. Frozen source: `1d904c255b9ff551b103e6de98ba22bd7692d86f`. Referee fields and observer video are evaluation evidence, not student inputs.
 
 ## Ten-run result
 

@@ -1,6 +1,6 @@
 from pathlib import Path
 import json,urllib.request
-base=Path('<home>/projects/ugrp/outputs/s4grip2-offline');rawroot=Path('<home>/projects/ugrp/outputs/oracle-runs');plan=json.loads(Path('experiments/2026-10-06-s4-llm/s4grip2/batch-plan.json').read_text());pairs=0;weldrows=0;labelcheck=0;mismatches=[]
+base=Path('/Users/changmin/projects/ugrp/outputs/s4grip2-offline');rawroot=Path('/Users/changmin/projects/ugrp/outputs/oracle-runs');plan=json.loads(Path('experiments/2026-10-06-s4-llm/s4grip2/batch-plan.json').read_text());pairs=0;weldrows=0;labelcheck=0;mismatches=[]
 for job in plan['runs']:
  rid=job['robot_id']
  for c in job['cases']:

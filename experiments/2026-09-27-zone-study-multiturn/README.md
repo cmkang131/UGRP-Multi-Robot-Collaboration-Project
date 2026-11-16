@@ -41,7 +41,7 @@ outstanding 1개, 로봇별 호출 30회·HTTP 30회, 시행 HTTP 90회였다. �
 [remote-audit.json](remote-audit.json)에 SHA와 blob을 보존했다.
 
 원격 RGB 최대 v63, integration 최대 v64였다. #240 로컬 작업
-`<home>/projects/ugrp-wt/codex-pair-grasp/harness/zone_study_integration.py`의
+`/Users/changmin/projects/ugrp-wt/codex-pair-grasp/harness/zone_study_integration.py`의
 미push `v65-pair-close`도 읽고 **`zone-study-integration-v66-multiturn`**을 선택했다.
 #240의 pair v5 변경을 합치지 않았고 이 후보는 기존 pair v4를 쓴다.
 동시 작업의 번호 충돌 가능성은 push/병합 전에 다시 확인해야 한다.
@@ -61,7 +61,7 @@ runtime closure는 171개 파일이다. 미커밋 후보 해시이며 실행 소
 모든 pytest는 `OMP_NUM_THREADS=1 --basetemp=./.pytest_tmp`를 사용했고 종료 후 해당 디렉터리를 지웠다.
 
 ```sh
-OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
+OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
   tests/test_zone_study_multiturn.py tests/test_zone_study_integration.py \
   tests/test_zone_study_integration_pair.py tests/test_zone_study_source_pinning.py \
   tests/test_zone_study_integration_seams.py tests/test_zone_study_pair_delay.py \
@@ -120,7 +120,7 @@ busy 대조에서 채널 조건은 7회→5회로 줄었다. idle 대조는 8회
 실패 1건의 전액 예약을 유지했다. DB·state hash와 조회 범위는
 [budget-readonly.json](budget-readonly.json)에 있다. 실제 DB 쓰기·정산·이관은 하지 않았다.
 
-DB identity는 `source_root=<home>/projects/ugrp-wt/kiro-study-core`,
+DB identity는 `source_root=/Users/changmin/projects/ugrp-wt/kiro-study-core`,
 `pipeline=AdapterTrial`이며 현재 migration은 이 두 필드 변경을 허용하지 않는다.
 기존 어댑터 점검 명령과 새 다회 driver 실행을 동일한 것으로 취급하지 않는다.
 

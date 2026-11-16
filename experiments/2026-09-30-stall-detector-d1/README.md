@@ -50,7 +50,7 @@ INSUFFICIENT_COVERAGE다. 주 `(0.4,2)`/보조 `(0.5,3)`와 전체 12조합을 �
 
 ```sh
 OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 \
-  <home>/projects/ugrp/.venv-sim-worker-mac/bin/python - <<'PY'
+  /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python - <<'PY'
 import os
 import sys
 from scripts.run_ci_tests import local_lock_root, run_locked
