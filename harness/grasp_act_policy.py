@@ -11,6 +11,7 @@ import numpy as np
 from harness import grasp_act_contract as c
 from harness.grasp_act_data import (IMAGE_HW, MODEL_IMAGE_HW, IMAGE_KEYS, assert_tensor_keys,
                                     image_array, history_image, sha256, write_json)
+from harness.seg_frontend_v1 import FRONTEND as SEG_FRONTEND, apply_frontend
 
 UPSTREAM_SHA = '89236ea0f4f81a81ca566081e20dd1ff5f823cbe'
 
@@ -44,7 +45,7 @@ def make_policy(*, pretrained=False, device='cpu'):
     return policy.to(device)
 
 
-def observation_batch(observation, jpegs, stats, *, blank=False):
+def observation_batch(observation, jpegs, stats, *, blank=False, image_frontend=None):
     c.validate_observation(observation)
     if len(jpegs) != c.RGB_HISTORY:
         raise ValueError('exact own RGB history required')
@@ -53,6 +54,8 @@ def observation_batch(observation, jpegs, stats, *, blank=False):
         if hashlib.sha256(jpeg).hexdigest() != ref['sha256']:
             raise ValueError('inference RGB hash mismatch')
         frames.append(image_array(jpeg))
+    if image_frontend is not None:
+        frames = [apply_frontend(f, observation['object_kind'], image_frontend) for f in frames]
     batch = {IMAGE_KEYS[0]: history_image(frames, blank=blank)}
     batch['observation.state'] = ((np.asarray(c.context(observation), np.float32) -
         np.asarray(stats['state_mean'], np.float32)) / np.asarray(stats['state_std'], np.float32))
@@ -60,10 +63,12 @@ def observation_batch(observation, jpegs, stats, *, blank=False):
     return batch
 
 
-def save_actor(policy, output, stats, provenance, *, blank=False, done_mode='legacy_l1'):
+def save_actor(policy, output, stats, provenance, *, blank=False, done_mode='legacy_l1', image_frontend=None):
     from harness.grasp_act_loss import DONE_MODES
     if done_mode not in DONE_MODES:
         raise ValueError('unknown completion output mode')
+    if image_frontend not in (None, SEG_FRONTEND):
+        raise ValueError('unknown image frontend')
     import draccus
     from safetensors.torch import save_file
     output = Path(output)
@@ -77,14 +82,18 @@ def save_actor(policy, output, stats, provenance, *, blank=False, done_mode='leg
         'image_hw': list(IMAGE_HW), 'model_image_hw': list(MODEL_IMAGE_HW),
         'history_layout': '2x2_row_major_oldest_to_newest',
         'image_keys': list(IMAGE_KEYS), 'blank_images': blank,
-        'stats': stats, 'provenance': provenance})
+        'stats': stats, 'provenance': provenance,
+        **({'image_frontend': image_frontend} if image_frontend is not None else {})})
     write_json(output / 'SHA256.json', {p.name: sha256(p) for p in output.iterdir()})
 
 
 class GraspActor:
-    def __init__(self, policy, stats, *, blank=False, device='cpu', done_mode='legacy_l1'):
+    def __init__(self, policy, stats, *, blank=False, device='cpu', done_mode='legacy_l1', image_frontend=None):
         self.policy, self.stats, self.blank, self.device = policy.eval(), stats, blank, device
         self.done_mode = done_mode
+        if image_frontend not in (None, SEG_FRONTEND):
+            raise ValueError('unknown image frontend')
+        self.image_frontend = image_frontend
 
     def decode_predictions(self, values):
         values = np.asarray(values)
@@ -97,7 +106,8 @@ class GraspActor:
 
     def predict(self, observation, jpegs):
         import torch
-        batch = observation_batch(observation, jpegs, self.stats, blank=self.blank)
+        batch = observation_batch(observation, jpegs, self.stats, blank=self.blank,
+                                  image_frontend=self.image_frontend)
         batch = {k: torch.from_numpy(v.copy()).unsqueeze(0).to(self.device) for k, v in batch.items()}
         with torch.inference_mode():
             values = self.policy.predict_action_chunk(batch)[0].cpu().numpy()
@@ -127,6 +137,9 @@ class GraspActor:
                 or meta['history_layout'] != '2x2_row_major_oldest_to_newest'
                 or meta['image_keys'] != list(IMAGE_KEYS)):
             raise ValueError('checkpoint adapter mismatch')
+        if 'image_frontend' in meta and meta['image_frontend'] != SEG_FRONTEND:
+            raise ValueError('checkpoint image frontend mismatch')
+        frontend = meta.get('image_frontend')
         policy = make_policy(device=device)
         saved = json.loads((root / 'config.json').read_text())
         actual = json.loads(json.dumps(draccus.encode(policy.config)))
@@ -135,7 +148,8 @@ class GraspActor:
         if saved != actual:
             raise ValueError('checkpoint differs from audited ACT configuration')
         policy.load_state_dict(load_file(str(root / 'model.safetensors')), strict=True)
-        return cls(policy, meta['stats'], blank=meta['blank_images'], device=device, done_mode=done_mode)
+        return cls(policy, meta['stats'], blank=meta['blank_images'], device=device, done_mode=done_mode,
+                   image_frontend=frontend)
 
 
 class ChunkExecutor:

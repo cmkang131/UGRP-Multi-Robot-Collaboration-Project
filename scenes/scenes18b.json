@@ -1,0 +1,1936 @@
+{
+ "schema": "task18.scene_selection.v1",
+ "status": "analytical_candidates_not_experimental_results",
+ "units": {
+  "position": "m",
+  "yaw": "rad",
+  "time": "s"
+ },
+ "arena": {
+  "x": [
+   -1.05,
+   5.4
+  ],
+  "y": [
+   -3.15,
+   1.45
+  ],
+  "partition_x": 2.2,
+  "door": {
+   "x": 2.2,
+   "y": 0.05,
+   "width": 0.5,
+   "capacity": 1
+  },
+  "box_size": 0.04,
+  "signs": {
+   "11": [
+    5.37,
+    0.4
+   ],
+   "12": [
+    5.37,
+    -2.1
+   ],
+   "13": [
+    3.4,
+    -3.12
+   ]
+  },
+  "drop_centres": {
+   "11": [
+    5.07,
+    0.4
+   ],
+   "12": [
+    5.07,
+    -2.1
+   ],
+   "13": [
+    3.4,
+    -2.82
+   ]
+  }
+ },
+ "knowledge_contract": {
+  "knows_references": "Order IDs only; absence of an order is not knowledge of its nonexistence. Each entry specifies the complete count for that order, not an additional copy.",
+  "coordinates": "Evaluator-only spawn definitions. Never supply world coordinates, box IDs, all-box lists, or oracle assignments to the LLM. Describe observed boxes with local visual references.",
+  "survey_assumption": "For selection arithmetic, each robot's own 12-second survey detects all source boxes and estimates their distance ranking. This is an explicit visibility hypothesis, not shared perception or a verified renderer result.",
+  "visibility_verified": false,
+  "start_distance_interpretation": "Each robot is 0.6..1.1 m from its nearest source box, not from every box. The latter would conflict with deliberately distant targets."
+ },
+ "model": {
+  "deadline_s": 900,
+  "survey_s": 12,
+  "pickup_at_0_8m_s": 58,
+  "pickup_formula": "58*d/0.8 for initial pickup; d is Euclidean start-to-box distance, analytical proxy only",
+  "carry_s": 110,
+  "place_s": 10,
+  "return_s": 88,
+  "repeat_pickup_s": 58,
+  "door_slot_s": 8,
+  "door_offset_from_carry_start_s": 40,
+  "door_rule": "The 8-second exclusive interval is included in 110-second carry. FCFS, ties r1 first; queue delay shifts the remaining carry and release. Return occupies an 8-second slot starting 32 seconds into its 88 seconds; no return/outbound overlap occurs in these selected schedules.",
+  "message_s": 2,
+  "oracle_messages": 0,
+  "upper_definition": "Performance upper bound: maximize capped correct demand, then minimize full-demand makespan in this declared model. Not a measured physical minimum.",
+  "baseline_definition": "A fixed local T0 policy, not a universal mathematical lower bound. Scan for 12s. If no known orders, abstain until deadline. Otherwise select lowest-ID unfinished known order, then nearest observed matching box (ties visual left-to-right); mark own delivery only. If another known order remains, return for 88s and survey for 12s; take next visible matching box for 58s, or stop if none remains. Never collect already-delivered boxes from the destination room. No shared completion feedback, no inference from another robot's route.",
+  "count_rule": "Sum min(required count, correctly delivered count) independently for each colour/sign pair; surplus deliveries score zero. Wrong deliveries do not subtract points.",
+  "time_rule": "policy_active_end_s excludes idle uninformed robots; full_completion_s is null if demand remains unmet at 900s. Capped completion is then 900, not active termination.",
+  "selection_rule": "Reject iff correct counts equal AND (baseline capped completion - oracle completion)/oracle completion < 0.20.",
+  "minimality_certificate": "Two-order scenes: each initial pickup is at least 58s, so earliest door entry is110 and second door entry118 (exit126); finishing second delivery requires80s after entry (72s after exit), giving198s. One-near-box-per-robot attains198. Any serial two-delivery plan needs at least12+58+110+10+88+12+58+110+10=468s, hence cannot win. Single-order decoy scenes: enumerate both robots; robot r2 is nearest to the required-colour target and minimizes12+72.5*d+110+10 with no competing traffic. Nonordered boxes cannot improve completion.",
+  "calculation_only": true,
+  "physical_motion_and_T0_T1_T2": "\ud655\uc778 \uc548 \ub428"
+ },
+ "calculated_completion_by_scene_s": {
+  "X01": {
+   "oracle": 198,
+   "baseline": 296.169779407
+  },
+  "X02": {
+   "oracle": 198,
+   "baseline": 302.923486643
+  },
+  "X03": {
+   "oracle": 198,
+   "baseline": 309.718148705
+  },
+  "X04": {
+   "oracle": 198,
+   "baseline": 316.549037097
+  },
+  "X05": {
+   "oracle": 198,
+   "baseline": 323.41210429
+  },
+  "L01": {
+   "oracle": 198,
+   "baseline": 468
+  },
+  "L02": {
+   "oracle": 198,
+   "baseline": 468
+  },
+  "L03": {
+   "oracle": 198,
+   "baseline": 468
+  },
+  "L04": {
+   "oracle": 198,
+   "baseline": 468
+  },
+  "L05": {
+   "oracle": 198,
+   "baseline": 468
+  },
+  "D01": {
+   "oracle": 196.845971347,
+   "baseline": 279.871565894
+  },
+  "D02": {
+   "oracle": 200.107566577,
+   "baseline": 276.318711971
+  },
+  "D03": {
+   "oracle": 203.404219063,
+   "baseline": 272.769536832
+  },
+  "D04": {
+   "oracle": 206.731289464,
+   "baseline": 269.224325923
+  },
+  "D05": {
+   "oracle": 210.084889703,
+   "baseline": 265.683394631
+  },
+  "C01": {
+   "oracle": 198,
+   "baseline": null,
+   "baseline_capped": 900
+  },
+  "C02": {
+   "oracle": 198,
+   "baseline": null,
+   "baseline_capped": 900
+  },
+  "C03": {
+   "oracle": 198,
+   "baseline": null,
+   "baseline_capped": 900
+  },
+  "C04": {
+   "oracle": 198,
+   "baseline": null,
+   "baseline_capped": 900
+  },
+  "C05": {
+   "oracle": 198,
+   "baseline": null,
+   "baseline_capped": 900
+  }
+ },
+ "drop_slots": "For repeated deliveries to one sign, use +/-0.06m tangential offset around its drop centre, arrival order negative then positive. These are evaluator layout definitions, not LLM world-coordinate inputs. No time correction for this small offset in the surrogate.",
+ "scenes": [
+  {
+   "id": "X01",
+   "type": "knowledge_distance_crossed",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 0.2,
+     "y": 0.4
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 0.2,
+     "y": -1.6
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1,
+     "y": 0.4,
+     "yaw": 3.141592653589793
+    },
+    {
+     "rid": "r2",
+     "x": 1,
+     "y": -1.6,
+     "yaw": 3.141592653589793
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o2"
+    ],
+    "r2": [
+     "o1"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o2"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o1"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "baseline_correct": 2,
+    "oracle_completion_s": 198,
+    "baseline_formula": "140+72.5*sqrt(0.64+2.0^2)"
+   }
+  },
+  {
+   "id": "X02",
+   "type": "knowledge_distance_crossed",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 0.2,
+     "y": 0.4
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 0.2,
+     "y": -1.7
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1,
+     "y": 0.4,
+     "yaw": 3.141592653589793
+    },
+    {
+     "rid": "r2",
+     "x": 1,
+     "y": -1.7,
+     "yaw": 3.141592653589793
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o2"
+    ],
+    "r2": [
+     "o1"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o2"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o1"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "baseline_correct": 2,
+    "oracle_completion_s": 198,
+    "baseline_formula": "140+72.5*sqrt(0.64+2.1^2)"
+   }
+  },
+  {
+   "id": "X03",
+   "type": "knowledge_distance_crossed",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.2,
+     "y": 0.4
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 0.2,
+     "y": -1.8
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1,
+     "y": 0.4,
+     "yaw": 3.141592653589793
+    },
+    {
+     "rid": "r2",
+     "x": 1,
+     "y": -1.8,
+     "yaw": 3.141592653589793
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o2"
+    ],
+    "r2": [
+     "o1"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o2"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o1"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "baseline_correct": 2,
+    "oracle_completion_s": 198,
+    "baseline_formula": "140+72.5*sqrt(0.64+2.2^2)"
+   }
+  },
+  {
+   "id": "X04",
+   "type": "knowledge_distance_crossed",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.2,
+     "y": 0.4
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 0.2,
+     "y": -1.9
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1,
+     "y": 0.4,
+     "yaw": 3.141592653589793
+    },
+    {
+     "rid": "r2",
+     "x": 1,
+     "y": -1.9,
+     "yaw": 3.141592653589793
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o2"
+    ],
+    "r2": [
+     "o1"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o2"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o1"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "baseline_correct": 2,
+    "oracle_completion_s": 198,
+    "baseline_formula": "140+72.5*sqrt(0.64+2.3^2)"
+   }
+  },
+  {
+   "id": "X05",
+   "type": "knowledge_distance_crossed",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 0.2,
+     "y": 0.4
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 0.2,
+     "y": -2
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1,
+     "y": 0.4,
+     "yaw": 3.141592653589793
+    },
+    {
+     "rid": "r2",
+     "x": 1,
+     "y": -2,
+     "yaw": 3.141592653589793
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o2"
+    ],
+    "r2": [
+     "o1"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o2"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o1"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "baseline_correct": 2,
+    "oracle_completion_s": 198,
+    "baseline_formula": "140+72.5*sqrt(0.64+2.4^2)"
+   }
+  },
+  {
+   "id": "L01",
+   "type": "orders_concentrated",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 0.2,
+     "y": 0.4
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 0.2,
+     "y": -1.6
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1,
+     "y": 0.4,
+     "yaw": 3.141592653589793
+    },
+    {
+     "rid": "r2",
+     "x": 1,
+     "y": -1.6,
+     "yaw": 3.141592653589793
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1",
+     "o2"
+    ],
+    "r2": []
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o2"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ],
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r2": []
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "baseline_correct": 2,
+    "oracle_completion_s": 198,
+    "baseline_completion_s": 468,
+    "baseline_active_end_s": 468
+   }
+  },
+  {
+   "id": "L02",
+   "type": "orders_concentrated",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.2,
+     "y": 0.4
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 0.2,
+     "y": -1.7
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1,
+     "y": 0.4,
+     "yaw": 3.141592653589793
+    },
+    {
+     "rid": "r2",
+     "x": 1,
+     "y": -1.7,
+     "yaw": 3.141592653589793
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [],
+    "r2": [
+     "o1",
+     "o2"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ],
+     [
+      "a",
+      "o2"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "baseline_correct": 2,
+    "oracle_completion_s": 198,
+    "baseline_completion_s": 468,
+    "baseline_active_end_s": 468
+   }
+  },
+  {
+   "id": "L03",
+   "type": "orders_concentrated",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.2,
+     "y": 0.4
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 0.2,
+     "y": -1.8
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1,
+     "y": 0.4,
+     "yaw": 3.141592653589793
+    },
+    {
+     "rid": "r2",
+     "x": 1,
+     "y": -1.8,
+     "yaw": 3.141592653589793
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1",
+     "o2"
+    ],
+    "r2": []
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o2"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ],
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r2": []
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "baseline_correct": 2,
+    "oracle_completion_s": 198,
+    "baseline_completion_s": 468,
+    "baseline_active_end_s": 468
+   }
+  },
+  {
+   "id": "L04",
+   "type": "orders_concentrated",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 0.2,
+     "y": 0.4
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 0.2,
+     "y": -1.9
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1,
+     "y": 0.4,
+     "yaw": 3.141592653589793
+    },
+    {
+     "rid": "r2",
+     "x": 1,
+     "y": -1.9,
+     "yaw": 3.141592653589793
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [],
+    "r2": [
+     "o1",
+     "o2"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ],
+     [
+      "a",
+      "o2"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "baseline_correct": 2,
+    "oracle_completion_s": 198,
+    "baseline_completion_s": 468,
+    "baseline_active_end_s": 468
+   }
+  },
+  {
+   "id": "L05",
+   "type": "orders_concentrated",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 0.2,
+     "y": 0.4
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 0.2,
+     "y": -2
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1,
+     "y": 0.4,
+     "yaw": 3.141592653589793
+    },
+    {
+     "rid": "r2",
+     "x": 1,
+     "y": -2,
+     "yaw": 3.141592653589793
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1",
+     "o2"
+    ],
+    "r2": []
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o2"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ],
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r2": []
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "baseline_correct": 2,
+    "oracle_completion_s": 198,
+    "baseline_completion_s": 468,
+    "baseline_active_end_s": 468
+   }
+  },
+  {
+   "id": "D01",
+   "type": "decoy_boxes",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.2,
+     "y": -2.4
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 0.2,
+     "y": 0.4
+    },
+    {
+     "id": "c",
+     "colour": "red",
+     "x": 1.4,
+     "y": -0.4
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1,
+     "y": -2.4,
+     "yaw": 2.2515,
+     "yaw_designed": 3.141592653589793
+    },
+    {
+     "rid": "r2",
+     "x": 1,
+     "y": 0.4,
+     "yaw": -2.1293,
+     "yaw_designed": 3.141592653589793
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1"
+    ],
+    "r2": []
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [],
+    "r2": [
+     [
+      "c",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "c",
+      "o1"
+     ]
+    ],
+    "r2": []
+   },
+   "estimate": {
+    "oracle_correct": 1,
+    "baseline_correct": 1,
+    "oracle_formula": "132+72.5*sqrt(0.16+0.8^2)",
+    "baseline_formula": "132+72.5*sqrt(0.16+2.0^2)"
+   }
+  },
+  {
+   "id": "D02",
+   "type": "decoy_boxes",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.2,
+     "y": -2.4
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 0.2,
+     "y": 0.4
+    },
+    {
+     "id": "c",
+     "colour": "red",
+     "x": 1.4,
+     "y": -0.45
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1,
+     "y": -2.4,
+     "yaw": 2.2515,
+     "yaw_designed": 3.141592653589793
+    },
+    {
+     "rid": "r2",
+     "x": 1,
+     "y": 0.4,
+     "yaw": -2.1293,
+     "yaw_designed": 3.141592653589793
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1"
+    ],
+    "r2": []
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [],
+    "r2": [
+     [
+      "c",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "c",
+      "o1"
+     ]
+    ],
+    "r2": []
+   },
+   "estimate": {
+    "oracle_correct": 1,
+    "baseline_correct": 1,
+    "oracle_formula": "132+72.5*sqrt(0.16+0.85^2)",
+    "baseline_formula": "132+72.5*sqrt(0.16+1.95^2)"
+   }
+  },
+  {
+   "id": "D03",
+   "type": "decoy_boxes",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.2,
+     "y": -2.4
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 0.2,
+     "y": 0.4
+    },
+    {
+     "id": "c",
+     "colour": "red",
+     "x": 1.4,
+     "y": -0.5
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1,
+     "y": -2.4,
+     "yaw": 2.2515,
+     "yaw_designed": 3.141592653589793
+    },
+    {
+     "rid": "r2",
+     "x": 1,
+     "y": 0.4,
+     "yaw": -2.1468,
+     "yaw_designed": 3.141592653589793
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1"
+    ],
+    "r2": []
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [],
+    "r2": [
+     [
+      "c",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "c",
+      "o1"
+     ]
+    ],
+    "r2": []
+   },
+   "estimate": {
+    "oracle_correct": 1,
+    "baseline_correct": 1,
+    "oracle_formula": "132+72.5*sqrt(0.16+0.9^2)",
+    "baseline_formula": "132+72.5*sqrt(0.16+1.9^2)"
+   }
+  },
+  {
+   "id": "D04",
+   "type": "decoy_boxes",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 0.2,
+     "y": -2.4
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 0.2,
+     "y": 0.4
+    },
+    {
+     "id": "c",
+     "colour": "blue",
+     "x": 1.4,
+     "y": -0.55
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1,
+     "y": -2.4,
+     "yaw": 2.2515,
+     "yaw_designed": 3.141592653589793
+    },
+    {
+     "rid": "r2",
+     "x": 1,
+     "y": 0.4,
+     "yaw": -2.1642,
+     "yaw_designed": 3.141592653589793
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1"
+    ],
+    "r2": []
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [],
+    "r2": [
+     [
+      "c",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "c",
+      "o1"
+     ]
+    ],
+    "r2": []
+   },
+   "estimate": {
+    "oracle_correct": 1,
+    "baseline_correct": 1,
+    "oracle_formula": "132+72.5*sqrt(0.16+0.95^2)",
+    "baseline_formula": "132+72.5*sqrt(0.16+1.85^2)"
+   }
+  },
+  {
+   "id": "D05",
+   "type": "decoy_boxes",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 0.2,
+     "y": -2.4
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 0.2,
+     "y": 0.4
+    },
+    {
+     "id": "c",
+     "colour": "blue",
+     "x": 1.4,
+     "y": -0.6
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1,
+     "y": -2.4,
+     "yaw": 2.2515,
+     "yaw_designed": 3.141592653589793
+    },
+    {
+     "rid": "r2",
+     "x": 1,
+     "y": 0.4,
+     "yaw": -2.1642,
+     "yaw_designed": 3.141592653589793
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1"
+    ],
+    "r2": []
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [],
+    "r2": [
+     [
+      "c",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "c",
+      "o1"
+     ]
+    ],
+    "r2": []
+   },
+   "estimate": {
+    "oracle_correct": 1,
+    "baseline_correct": 1,
+    "oracle_formula": "132+72.5*sqrt(0.16+1.0^2)",
+    "baseline_formula": "132+72.5*sqrt(0.16+1.8^2)"
+   }
+  },
+  {
+   "id": "C01",
+   "type": "same_colour_competition",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.2,
+     "y": 0.4
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 0.2,
+     "y": -1.6
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1,
+     "y": 0.4,
+     "yaw": 3.141592653589793
+    },
+    {
+     "rid": "r2",
+     "x": 1,
+     "y": -1.6,
+     "yaw": 3.141592653589793
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1",
+     "o2"
+    ],
+    "r2": [
+     "o1"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "baseline_correct": 1,
+    "oracle_completion_s": 198,
+    "baseline_completion_s": null,
+    "baseline_capped_completion_s": 900,
+    "baseline_active_end_s": 290
+   }
+  },
+  {
+   "id": "C02",
+   "type": "same_colour_competition",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 0.2,
+     "y": 0.4
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 0.2,
+     "y": -1.7
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1,
+     "y": 0.4,
+     "yaw": 3.141592653589793
+    },
+    {
+     "rid": "r2",
+     "x": 1,
+     "y": -1.7,
+     "yaw": 3.141592653589793
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1",
+     "o2"
+    ],
+    "r2": [
+     "o1"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "baseline_correct": 1,
+    "oracle_completion_s": 198,
+    "baseline_completion_s": null,
+    "baseline_capped_completion_s": 900,
+    "baseline_active_end_s": 290
+   }
+  },
+  {
+   "id": "C03",
+   "type": "same_colour_competition",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.2,
+     "y": 0.4
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 0.2,
+     "y": -1.8
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1,
+     "y": 0.4,
+     "yaw": 3.141592653589793
+    },
+    {
+     "rid": "r2",
+     "x": 1,
+     "y": -1.8,
+     "yaw": 3.141592653589793
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 11
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1",
+     "o2"
+    ],
+    "r2": [
+     "o1"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "baseline_correct": 1,
+    "oracle_completion_s": 198,
+    "baseline_completion_s": null,
+    "baseline_capped_completion_s": 900,
+    "baseline_active_end_s": 290
+   }
+  },
+  {
+   "id": "C04",
+   "type": "same_colour_competition",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 0.2,
+     "y": 0.4
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 0.2,
+     "y": -1.9
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1,
+     "y": 0.4,
+     "yaw": 3.141592653589793
+    },
+    {
+     "rid": "r2",
+     "x": 1,
+     "y": -1.9,
+     "yaw": 3.141592653589793
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1",
+     "o2"
+    ],
+    "r2": [
+     "o1"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "baseline_correct": 1,
+    "oracle_completion_s": 198,
+    "baseline_completion_s": null,
+    "baseline_capped_completion_s": 900,
+    "baseline_active_end_s": 290
+   }
+  },
+  {
+   "id": "C05",
+   "type": "same_colour_competition",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.2,
+     "y": 0.4
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 0.2,
+     "y": -2
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1,
+     "y": 0.4,
+     "yaw": 3.141592653589793
+    },
+    {
+     "rid": "r2",
+     "x": 1,
+     "y": -2,
+     "yaw": 3.141592653589793
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 11
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1",
+     "o2"
+    ],
+    "r2": [
+     "o1"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "baseline_correct": 1,
+    "oracle_completion_s": 198,
+    "baseline_completion_s": null,
+    "baseline_capped_completion_s": 900,
+    "baseline_active_end_s": 290
+   }
+  }
+ ],
+ "rejected_candidates": [
+  {
+   "id": "R01",
+   "basis": "X01 geometry, r1 knows o1 and r2 knows o2",
+   "oracle_s": 198,
+   "baseline_s": 198,
+   "oracle_correct": 2,
+   "baseline_correct": 2,
+   "reason": "0% gap, same count: local orders already specify optimal allocation"
+  },
+  {
+   "id": "R02",
+   "basis": "C01 geometry, r1 knows only o1 and r2 knows only o2",
+   "oracle_s": 198,
+   "baseline_s": 198,
+   "oracle_correct": 2,
+   "baseline_correct": 2,
+   "reason": "0% gap, same count: same colour alone does not require agreement"
+  }
+ ],
+ "note": "scenes18b: robots whose boxes lay beyond 80 deg of the start heading were turned toward the boxes (camera pan covers about +-90 deg); yaw_designed keeps the original"
+}

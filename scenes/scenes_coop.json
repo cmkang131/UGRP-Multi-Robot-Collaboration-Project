@@ -1,0 +1,2223 @@
+{
+ "schema": "coop_scenes.v2",
+ "status": "analytical_candidates_not_experimental_results",
+ "scope": "K2 10, K3 4, L3 3. C3 and S2 (order constraint) dropped on the main session decision after the external review.",
+ "units": {
+  "position": "m",
+  "yaw": "rad",
+  "time": "s"
+ },
+ "arena": {
+  "x": [
+   -1.05,
+   5.4
+  ],
+  "y": [
+   -3.15,
+   1.45
+  ],
+  "partition_x": 2.2,
+  "door": {
+   "x": 2.2,
+   "y": 0.05,
+   "width": 0.5,
+   "capacity": 1
+  },
+  "box_size": 0.04,
+  "signs": {
+   "11": [
+    5.37,
+    0.4
+   ],
+   "12": [
+    5.37,
+    -2.1
+   ],
+   "13": [
+    3.4,
+    -3.12
+   ]
+  },
+  "drop_centres": {
+   "11": [
+    5.07,
+    0.4
+   ],
+   "12": [
+    5.07,
+    -2.1
+   ],
+   "13": [
+    3.4,
+    -2.82
+   ]
+  }
+ },
+ "knowledge_contract": {
+  "knows_references": "Order IDs only (complete order: colour, count, sign). A robot does not learn that an order it lacks does not exist.",
+  "can_grasp": "Optional {rid: [colours]}: the robot can only grasp those colours. A robot knows its own capability, not the others.",
+  "coordinates": "Evaluator-only. Never give world coordinates, box IDs or oracle plans to the LLM.",
+  "one_carry": "Each robot carries at most one box per run. Demand never exceeds the number of robots.",
+  "one_order_per_sign": "Every scene has distinct signs per order (the second robot may not see a sign behind the first).",
+  "constraints": "Always empty (order constraints dropped).",
+  "visibility_verified": false
+ },
+ "model": {
+  "deadline_s": 900.0,
+  "survey_s": 12.0,
+  "pick_s": "robot-box distance d: 58*d/0.8 after the survey (58 s at 0.8 m)",
+  "carry_s": "clamp(22.4*(|box-door|+|door-drop|), 100, 120); door entry at the box-door share of the carry",
+  "drop_centres": {
+   "11": [
+    5.07,
+    0.4
+   ],
+   "12": [
+    5.07,
+    -2.1
+   ],
+   "13": [
+    3.4,
+    -2.82
+   ]
+  },
+  "setdown_s": 10.0,
+  "door_slot_s": 8.0,
+  "door": "one robot at a time, FCFS, ties by rid; queue delay shifts the rest of the carry",
+  "message_s": 2.0,
+  "rank_wait_s": "r_k waits 4*(k-1) s before choosing a destination (coordinated runs only)",
+  "coop_ready_s": "rank wait + 2 s per message round (1 round: information; 2 rounds: information + claims when two boxes share a colour)",
+  "count_rule": "sum over orders of min(count, boxes of that colour set down at that sign); wrong boxes score 0, never subtract"
+ },
+ "baseline_rules": {
+  "U": "primary T0: a robot that knows an order of a colour it can grasp takes the nearest box of the colour of its lowest-ID such order and sets it down at that sign; otherwise it takes the nearest box it can grasp and picks 11/12/13 uniformly. Differs from DESIGN-18 T0 (abstains without an order); guessing costs nothing under the count rule, so this favours T0.",
+  "S": "stricter test: like U, but a robot without a usable order excludes the signs of orders it knows, and a robot with several usable orders of one colour picks one uniformly.",
+  "expectation": "exact enumeration of all joint random choices, not 1/3 per robot",
+  "conflicts": "two robots choosing the same box is a design error (checker fails)"
+ },
+ "scenes": [
+  {
+   "id": "K201",
+   "type": "capability_2",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": -0.15,
+     "y": -1.3
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 0.9,
+     "y": -2.55
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": -0.4,
+     "y": -2.2,
+     "yaw": 0.5184
+    },
+    {
+     "rid": "r2",
+     "x": 1.6,
+     "y": -2.7,
+     "yaw": 2.6987
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o2"
+    ],
+    "r2": [
+     "o1"
+    ]
+   },
+   "can_grasp": {
+    "r1": [
+     "red"
+    ],
+    "r2": [
+     "blue"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o2"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "rand"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "rand"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "oracle_completion_s": 209.7,
+    "coop_completion_s": 209.7,
+    "message_rounds": 1,
+    "baseline_correct": 0.6667,
+    "baseline_S_correct": 1.0,
+    "baseline_p_full": 0.1111,
+    "baseline_p_full_S": 0.25,
+    "baseline_capped_completion_s": 823.3,
+    "baseline_active_end_s": 209.8
+   },
+   "info_flow": [
+    "r1 needs o1 from r2",
+    "r2 needs o2 from r1"
+   ]
+  },
+  {
+   "id": "K202",
+   "type": "capability_2",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": -0.35,
+     "y": 0.6
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 0.45,
+     "y": -1.05
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 0.95,
+     "y": -1.65,
+     "yaw": 2.1801
+    },
+    {
+     "rid": "r2",
+     "x": -0.6,
+     "y": -0.3,
+     "yaw": 0.3398
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o2"
+    ],
+    "r2": [
+     "o1"
+    ]
+   },
+   "can_grasp": {
+    "r1": [
+     "blue"
+    ],
+    "r2": [
+     "red"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "b",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o2"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "rand"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "rand"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "oracle_completion_s": 209.7,
+    "coop_completion_s": 209.7,
+    "message_rounds": 1,
+    "baseline_correct": 0.6667,
+    "baseline_S_correct": 1.0,
+    "baseline_p_full": 0.1111,
+    "baseline_p_full_S": 0.25,
+    "baseline_capped_completion_s": 823.3,
+    "baseline_active_end_s": 209.7
+   },
+   "info_flow": [
+    "r1 needs o1 from r2",
+    "r2 needs o2 from r1"
+   ]
+  },
+  {
+   "id": "K203",
+   "type": "capability_2",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 0.65,
+     "y": 0.0
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 0.35,
+     "y": -1.3
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1.15,
+     "y": -0.7,
+     "yaw": 2.9881
+    },
+    {
+     "rid": "r2",
+     "x": 0.1,
+     "y": -0.75,
+     "yaw": -0.1031
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1"
+    ],
+    "r2": [
+     "o2"
+    ]
+   },
+   "can_grasp": {
+    "r1": [
+     "blue"
+    ],
+    "r2": [
+     "red"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "rand"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "rand"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "oracle_completion_s": 214.5,
+    "coop_completion_s": 214.5,
+    "message_rounds": 1,
+    "baseline_correct": 0.6667,
+    "baseline_S_correct": 1.0,
+    "baseline_p_full": 0.1111,
+    "baseline_p_full_S": 0.25,
+    "baseline_capped_completion_s": 823.8,
+    "baseline_active_end_s": 213.2
+   },
+   "info_flow": [
+    "r1 needs o2 from r2",
+    "r2 needs o1 from r1"
+   ]
+  },
+  {
+   "id": "K204",
+   "type": "capability_2",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": -0.1,
+     "y": 0.1
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": -0.1,
+     "y": -0.95
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 0.55,
+     "y": 0.8,
+     "yaw": -2.1228
+    },
+    {
+     "rid": "r2",
+     "x": 0.65,
+     "y": -1.15,
+     "yaw": 2.4961
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1"
+    ],
+    "r2": [
+     "o2"
+    ]
+   },
+   "can_grasp": {
+    "r1": [
+     "red"
+    ],
+    "r2": [
+     "blue"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "rand"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "rand"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "oracle_completion_s": 211.3,
+    "coop_completion_s": 211.3,
+    "message_rounds": 1,
+    "baseline_correct": 0.6667,
+    "baseline_S_correct": 1.0,
+    "baseline_p_full": 0.1111,
+    "baseline_p_full_S": 0.25,
+    "baseline_capped_completion_s": 823.5,
+    "baseline_active_end_s": 210.6
+   },
+   "info_flow": [
+    "r1 needs o2 from r2",
+    "r2 needs o1 from r1"
+   ]
+  },
+  {
+   "id": "K205",
+   "type": "capability_2",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 0.3,
+     "y": -2.3
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": -0.35,
+     "y": -1.45
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1.3,
+     "y": -2.55,
+     "yaw": 2.7251
+    },
+    {
+     "rid": "r2",
+     "x": -0.5,
+     "y": -2.35,
+     "yaw": 0.734
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o2"
+    ],
+    "r2": [
+     "o1"
+    ]
+   },
+   "can_grasp": {
+    "r1": [
+     "red"
+    ],
+    "r2": [
+     "blue"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o2"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "rand"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "rand"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "oracle_completion_s": 216.7,
+    "coop_completion_s": 216.7,
+    "message_rounds": 1,
+    "baseline_correct": 0.6667,
+    "baseline_S_correct": 1.0,
+    "baseline_p_full": 0.1111,
+    "baseline_p_full_S": 0.25,
+    "baseline_capped_completion_s": 824.1,
+    "baseline_active_end_s": 217.8
+   },
+   "info_flow": [
+    "r1 needs o1 from r2",
+    "r2 needs o2 from r1"
+   ]
+  },
+  {
+   "id": "K206",
+   "type": "capability_2",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.25,
+     "y": -1.75
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": -0.4,
+     "y": -0.95
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": -0.65,
+     "y": -1.6,
+     "yaw": 0.5192
+    },
+    {
+     "rid": "r2",
+     "x": 0.45,
+     "y": -1.15,
+     "yaw": -2.6326
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 11
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1"
+    ],
+    "r2": [
+     "o2"
+    ]
+   },
+   "can_grasp": {
+    "r1": [
+     "blue"
+    ],
+    "r2": [
+     "red"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "rand"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "rand"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "oracle_completion_s": 208.3,
+    "coop_completion_s": 208.3,
+    "message_rounds": 1,
+    "baseline_correct": 0.6667,
+    "baseline_S_correct": 1.0,
+    "baseline_p_full": 0.1111,
+    "baseline_p_full_S": 0.25,
+    "baseline_capped_completion_s": 823.1,
+    "baseline_active_end_s": 211.9
+   },
+   "info_flow": [
+    "r1 needs o2 from r2",
+    "r2 needs o1 from r1"
+   ]
+  },
+  {
+   "id": "K207",
+   "type": "capability_2",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 0.9,
+     "y": -2.05
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": -0.5,
+     "y": -1.1
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1.6,
+     "y": -1.75,
+     "yaw": -3.0892
+    },
+    {
+     "rid": "r2",
+     "x": 0.3,
+     "y": -0.9,
+     "yaw": -1.9933
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1",
+     "o2"
+    ],
+    "r2": []
+   },
+   "can_grasp": {
+    "r1": [
+     "red"
+    ],
+    "r2": [
+     "blue"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o2"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "rand"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "oracle_completion_s": 201.8,
+    "coop_completion_s": 201.8,
+    "message_rounds": 1,
+    "baseline_correct": 1.3333,
+    "baseline_S_correct": 1.3333,
+    "baseline_p_full": 0.3333,
+    "baseline_p_full_S": 0.3333,
+    "baseline_capped_completion_s": 667.3,
+    "baseline_active_end_s": 201.8
+   },
+   "info_flow": [
+    "r2 needs o2 from r1"
+   ]
+  },
+  {
+   "id": "K208",
+   "type": "capability_2",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.75,
+     "y": -0.45
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": -0.4,
+     "y": -0.2
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 0.15,
+     "y": 0.1,
+     "yaw": -1.6921
+    },
+    {
+     "rid": "r2",
+     "x": 0.2,
+     "y": -0.7,
+     "yaw": 1.4367
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1",
+     "o2"
+    ],
+    "r2": []
+   },
+   "can_grasp": {
+    "r1": [
+     "blue"
+    ],
+    "r2": [
+     "red"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "rand"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "oracle_completion_s": 198.6,
+    "coop_completion_s": 198.6,
+    "message_rounds": 1,
+    "baseline_correct": 1.3333,
+    "baseline_S_correct": 1.3333,
+    "baseline_p_full": 0.3333,
+    "baseline_p_full_S": 0.3333,
+    "baseline_capped_completion_s": 666.2,
+    "baseline_active_end_s": 198.6
+   },
+   "info_flow": [
+    "r2 needs o1 from r1"
+   ]
+  },
+  {
+   "id": "K209",
+   "type": "capability_2",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.25,
+     "y": -0.35
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 1.15,
+     "y": 1.05
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 0.4,
+     "y": 1.0,
+     "yaw": -0.8074
+    },
+    {
+     "rid": "r2",
+     "x": 0.45,
+     "y": -1.0,
+     "yaw": 1.5555
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [],
+    "r2": [
+     "o1",
+     "o2"
+    ]
+   },
+   "can_grasp": {
+    "r1": [
+     "red"
+    ],
+    "r2": [
+     "blue"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "rand"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o1"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "oracle_completion_s": 189.3,
+    "coop_completion_s": 189.3,
+    "message_rounds": 1,
+    "baseline_correct": 1.3333,
+    "baseline_S_correct": 1.3333,
+    "baseline_p_full": 0.3333,
+    "baseline_p_full_S": 0.3333,
+    "baseline_capped_completion_s": 663.1,
+    "baseline_active_end_s": 187.8
+   },
+   "info_flow": [
+    "r1 needs o2 from r2"
+   ]
+  },
+  {
+   "id": "K210",
+   "type": "capability_2",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 1.15,
+     "y": 0.3
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 1.2,
+     "y": -1.25
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 0.9,
+     "y": -2.2,
+     "yaw": 1.368
+    },
+    {
+     "rid": "r2",
+     "x": 0.25,
+     "y": 0.25,
+     "yaw": -0.4754
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    }
+   ],
+   "knows": {
+    "r1": [],
+    "r2": [
+     "o1",
+     "o2"
+    ]
+   },
+   "can_grasp": {
+    "r1": [
+     "blue"
+    ],
+    "r2": [
+     "red"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "b",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o2"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "rand"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o2"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "oracle_completion_s": 200.6,
+    "coop_completion_s": 200.6,
+    "message_rounds": 1,
+    "baseline_correct": 1.3333,
+    "baseline_S_correct": 1.3333,
+    "baseline_p_full": 0.3333,
+    "baseline_p_full_S": 0.3333,
+    "baseline_capped_completion_s": 666.9,
+    "baseline_active_end_s": 202.6
+   },
+   "info_flow": [
+    "r1 needs o1 from r2"
+   ]
+  },
+  {
+   "id": "K301",
+   "type": "capability_3",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": -0.45,
+     "y": 0.25
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": -0.25,
+     "y": -1.2
+    },
+    {
+     "id": "c",
+     "colour": "red",
+     "x": 0.6,
+     "y": -2.2
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 0.15,
+     "y": 0.6,
+     "yaw": -2.0125
+    },
+    {
+     "rid": "r2",
+     "x": 1.45,
+     "y": -2.6,
+     "yaw": 2.4303
+    },
+    {
+     "rid": "r3",
+     "x": -0.4,
+     "y": -1.9,
+     "yaw": 0.6513
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o3",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o3"
+    ],
+    "r2": [],
+    "r3": [
+     "o1",
+     "o2"
+    ]
+   },
+   "can_grasp": {
+    "r1": [
+     "red"
+    ],
+    "r2": [
+     "red"
+    ],
+    "r3": [
+     "blue"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "c",
+      "o2"
+     ]
+    ],
+    "r3": [
+     [
+      "b",
+      "o3"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "rand"
+     ]
+    ],
+    "r2": [
+     [
+      "c",
+      "rand"
+     ]
+    ],
+    "r3": [
+     [
+      "b",
+      "rand"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 210.1,
+    "coop_completion_s": 210.1,
+    "message_rounds": 2,
+    "baseline_correct": 1.4444,
+    "baseline_S_correct": 2.3333,
+    "baseline_p_full": 0.0741,
+    "baseline_p_full_S": 0.3333,
+    "baseline_capped_completion_s": 848.9,
+    "baseline_active_end_s": 210.5
+   },
+   "info_flow": [
+    "r1 needs o1 from r3",
+    "r2 needs o2 from r3",
+    "r3 needs o3 from r1"
+   ]
+  },
+  {
+   "id": "K302",
+   "type": "capability_3",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.6,
+     "y": -2.15
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 1.1,
+     "y": -1.4
+    },
+    {
+     "id": "c",
+     "colour": "blue",
+     "x": 1.1,
+     "y": 0.6
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": -0.05,
+     "y": -2.25,
+     "yaw": 0.67
+    },
+    {
+     "rid": "r2",
+     "x": 1.25,
+     "y": -2.15,
+     "yaw": 2.3834
+    },
+    {
+     "rid": "r3",
+     "x": 0.45,
+     "y": 0.45,
+     "yaw": -0.6432
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o3",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [],
+    "r2": [
+     "o1",
+     "o2"
+    ],
+    "r3": [
+     "o3"
+    ]
+   },
+   "can_grasp": {
+    "r1": [
+     "blue"
+    ],
+    "r2": [
+     "red"
+    ],
+    "r3": [
+     "blue"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o3"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "rand"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "rand"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "rand"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 189.7,
+    "coop_completion_s": 189.7,
+    "message_rounds": 2,
+    "baseline_correct": 1.4444,
+    "baseline_S_correct": 2.3333,
+    "baseline_p_full": 0.0741,
+    "baseline_p_full_S": 0.3333,
+    "baseline_capped_completion_s": 847.6,
+    "baseline_active_end_s": 193.5
+   },
+   "info_flow": [
+    "r1 needs o2 from r2",
+    "r2 needs o3 from r3",
+    "r3 needs o1 from r2"
+   ]
+  },
+  {
+   "id": "K303",
+   "type": "capability_3",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 1.0,
+     "y": -0.7
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 0.9,
+     "y": -1.7
+    },
+    {
+     "id": "c",
+     "colour": "red",
+     "x": 0.15,
+     "y": -2.35
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1.0,
+     "y": 0.35,
+     "yaw": -1.7233
+    },
+    {
+     "rid": "r2",
+     "x": 1.35,
+     "y": -2.15,
+     "yaw": 2.5572
+    },
+    {
+     "rid": "r3",
+     "x": 0.8,
+     "y": -2.75,
+     "yaw": 2.0317
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o3",
+     "colour": "blue",
+     "count": 1,
+     "sign": 11
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1",
+     "o2"
+    ],
+    "r2": [
+     "o3"
+    ],
+    "r3": []
+   },
+   "can_grasp": {
+    "r1": [
+     "blue"
+    ],
+    "r2": [
+     "red"
+    ],
+    "r3": [
+     "red"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o3"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "rand"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "rand"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "rand"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 198.5,
+    "coop_completion_s": 198.5,
+    "message_rounds": 2,
+    "baseline_correct": 1.4444,
+    "baseline_S_correct": 2.3333,
+    "baseline_p_full": 0.0741,
+    "baseline_p_full_S": 0.3333,
+    "baseline_capped_completion_s": 848.2,
+    "baseline_active_end_s": 203.4
+   },
+   "info_flow": [
+    "r1 needs o3 from r2",
+    "r2 needs o2 from r1",
+    "r3 needs o1 from r1"
+   ]
+  },
+  {
+   "id": "K304",
+   "type": "capability_3",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 1.15,
+     "y": -1.25
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 0.9,
+     "y": 0.6
+    },
+    {
+     "id": "c",
+     "colour": "blue",
+     "x": -0.2,
+     "y": -1.8
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1.65,
+     "y": -1.8,
+     "yaw": 2.5076
+    },
+    {
+     "rid": "r2",
+     "x": 1.75,
+     "y": 0.15,
+     "yaw": -2.8021
+    },
+    {
+     "rid": "r3",
+     "x": 0.05,
+     "y": -2.7,
+     "yaw": 1.3818
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o3",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [],
+    "r2": [
+     "o3"
+    ],
+    "r3": [
+     "o1",
+     "o2"
+    ]
+   },
+   "can_grasp": {
+    "r1": [
+     "red",
+     "blue"
+    ],
+    "r2": [
+     "red"
+    ],
+    "r3": [
+     "blue"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "o3"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "rand"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "rand"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "rand"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 209.7,
+    "coop_completion_s": 209.7,
+    "message_rounds": 2,
+    "baseline_correct": 1.4444,
+    "baseline_S_correct": 2.3333,
+    "baseline_p_full": 0.0741,
+    "baseline_p_full_S": 0.3333,
+    "baseline_capped_completion_s": 848.9,
+    "baseline_active_end_s": 209.7
+   },
+   "info_flow": [
+    "r1 needs o2 from r3",
+    "r2 needs o1 from r3",
+    "r3 needs o3 from r2"
+   ]
+  },
+  {
+   "id": "L301",
+   "type": "orders_concentrated_3",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 1.1,
+     "y": -2.05
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 1.2,
+     "y": -0.75
+    },
+    {
+     "id": "c",
+     "colour": "red",
+     "x": 0.25,
+     "y": -1.45
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 0.6,
+     "y": -2.55,
+     "yaw": 1.3321
+    },
+    {
+     "rid": "r2",
+     "x": 1.75,
+     "y": -1.2,
+     "yaw": -3.0255
+    },
+    {
+     "rid": "r3",
+     "x": -0.6,
+     "y": -1.65,
+     "yaw": 0.1163
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o3",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1",
+     "o2",
+     "o3"
+    ],
+    "r2": [],
+    "r3": []
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o3"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "rand"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "rand"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 205.2,
+    "coop_completion_s": 205.2,
+    "message_rounds": 2,
+    "baseline_correct": 1.6667,
+    "baseline_S_correct": 1.6667,
+    "baseline_p_full": 0.1111,
+    "baseline_p_full_S": 0.1111,
+    "baseline_capped_completion_s": 822.8,
+    "baseline_active_end_s": 205.3
+   },
+   "info_flow": [
+    "r2 needs o2 from r1",
+    "r3 needs o3 from r1"
+   ]
+  },
+  {
+   "id": "L302",
+   "type": "orders_concentrated_3",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 0.65,
+     "y": 0.45
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 1.0,
+     "y": -1.75
+    },
+    {
+     "id": "c",
+     "colour": "blue",
+     "x": 0.0,
+     "y": -1.15
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": -0.25,
+     "y": 0.25,
+     "yaw": -0.5877
+    },
+    {
+     "rid": "r2",
+     "x": 0.3,
+     "y": -2.15,
+     "yaw": 1.1907
+    },
+    {
+     "rid": "r3",
+     "x": -0.6,
+     "y": -0.55,
+     "yaw": -0.0553
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o3",
+     "colour": "blue",
+     "count": 1,
+     "sign": 11
+    }
+   ],
+   "knows": {
+    "r1": [],
+    "r2": [
+     "o1",
+     "o2",
+     "o3"
+    ],
+    "r3": []
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "o3"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "rand"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "rand"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 207.5,
+    "coop_completion_s": 207.5,
+    "message_rounds": 2,
+    "baseline_correct": 1.6667,
+    "baseline_S_correct": 1.6667,
+    "baseline_p_full": 0.1111,
+    "baseline_p_full_S": 0.1111,
+    "baseline_capped_completion_s": 823.1,
+    "baseline_active_end_s": 208.8
+   },
+   "info_flow": [
+    "r1 needs o2 from r2",
+    "r3 needs o3 from r2"
+   ]
+  },
+  {
+   "id": "L303",
+   "type": "orders_concentrated_3",
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": -0.45,
+     "y": -0.95
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 0.9,
+     "y": -1.3
+    },
+    {
+     "id": "c",
+     "colour": "blue",
+     "x": 0.4,
+     "y": -0.25
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": -0.1,
+     "y": -1.6,
+     "yaw": 1.1781
+    },
+    {
+     "rid": "r2",
+     "x": 1.2,
+     "y": -2.15,
+     "yaw": 2.2114
+    },
+    {
+     "rid": "r3",
+     "x": -0.45,
+     "y": 0.2,
+     "yaw": -1.0288
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o3",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    }
+   ],
+   "knows": {
+    "r1": [],
+    "r2": [],
+    "r3": [
+     "o1",
+     "o2",
+     "o3"
+    ]
+   },
+   "constraints": [],
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o3"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "rand"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "rand"
+     ]
+    ],
+    "r3": [
+     [
+      "c",
+      "o1"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 3,
+    "oracle_completion_s": 216.9,
+    "coop_completion_s": 216.9,
+    "message_rounds": 2,
+    "baseline_correct": 2.1111,
+    "baseline_S_correct": 2.1111,
+    "baseline_p_full": 0.2222,
+    "baseline_p_full_S": 0.2222,
+    "baseline_capped_completion_s": 748.2,
+    "baseline_active_end_s": 219.1
+   },
+   "info_flow": [
+    "r1 needs o3 from r3",
+    "r2 needs o2 from r3"
+   ]
+  }
+ ],
+ "rejected_candidates": [
+  {
+   "id": "K2x1",
+   "type": "capability_2",
+   "why": "capability alone is not enough: both robots know both orders and each can act on its own colour",
+   "oracle_correct": 2,
+   "baseline_U_correct": 2.0,
+   "baseline_S_correct": 2.0,
+   "gap_U": 0.0,
+   "gap_S": 0.0,
+   "knows": {
+    "r1": [
+     "o1",
+     "o2"
+    ],
+    "r2": [
+     "o1",
+     "o2"
+    ]
+   },
+   "can_grasp": {
+    "r1": [
+     "red"
+    ],
+    "r2": [
+     "blue"
+    ]
+   },
+   "check_errors": [
+    "K2: knows sizes [2, 2] are neither variant A (1,1) nor B (2,0)",
+    "gap too small: U 0.00, S 0.00 (< 0.5 box)"
+   ]
+  },
+  {
+   "id": "K3x1",
+   "type": "capability_3",
+   "why": "one order per robot (no elimination) but r2 knows a red order it can grasp, so it needs no fact",
+   "oracle_correct": 3,
+   "baseline_U_correct": 1.667,
+   "baseline_S_correct": 2.0,
+   "gap_U": 1.333,
+   "gap_S": 1.0,
+   "knows": {
+    "r1": [
+     "o3"
+    ],
+    "r2": [
+     "o1"
+    ],
+    "r3": [
+     "o2"
+    ]
+   },
+   "can_grasp": {
+    "r1": [
+     "red"
+    ],
+    "r2": [
+     "red"
+    ],
+    "r3": [
+     "blue"
+    ]
+   },
+   "check_errors": [
+    "K3: every robot must be blind to its own sign (blind: ['r1', 'r3'])"
+   ]
+  },
+  {
+   "id": "L3x1",
+   "type": "orders_concentrated_3",
+   "why": "two robots know all orders and both take the lowest-ID box colour",
+   "oracle_correct": 3,
+   "baseline_U_correct": null,
+   "baseline_S_correct": null,
+   "gap_U": null,
+   "gap_S": null,
+   "knows": {
+    "r1": [
+     "o1",
+     "o2",
+     "o3"
+    ],
+    "r2": [
+     "o1",
+     "o2",
+     "o3"
+    ],
+    "r3": []
+   },
+   "can_grasp": null,
+   "check_errors": [
+    "two robots choose the same box under the baseline (design must avoid)",
+    "L3 needs 3 robots, 3 orders, knows sizes {3,0,0}, no capability limit (sizes [3, 3, 0])"
+   ]
+  }
+ ],
+ "note": "yaw = bisector of the bearings to the extreme boxes, so every box lies within 70 deg of the heading for every robot (strictest reading: all boxes, not only graspable ones). Coordinates sampled with fixed seeds on a 0.05 m grid under the geometry rules."
+}

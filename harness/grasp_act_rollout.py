@@ -87,17 +87,118 @@ class LiftScore:
                 'max_stable_lift_s': self.max_stable_s, 'criteria': self.CRITERIA}
 
 
+class GraspTransitionRule:
+    """Rule-based grasp completion from own issued commands only. DEFAULT OFF.
+
+    The shipped actor's learned done head never fires (raw done max 0.0033
+    against the 0.65 decode threshold), so the grasp -> release transition
+    never opens. This rule replaces that transition trigger with something
+    the robot can observe by itself: the wheels are still and the commanded
+    arm posture matches the posture the teacher held when it ended the grasp.
+
+    Inputs are ONLY the own issued command row and the clock. Contact force,
+    tilt, clearance, ground truth and weld are never read here: they belong
+    to the evaluation-only path (SoloScore) and may not steer a phase.
+
+    Every constant below is justified by ONE recorded teacher episode (seed
+    86100, export dev-smoke-only-86100). One episode is not a distribution;
+    these numbers are a first rule to be re-measured, not a tuned threshold.
+    """
+
+    # End posture of the teacher's grasp skill: the PWM the teacher had
+    # issued in the row where it ended the grasp (phase 'hold',
+    # terminal_reason 'command_sequence_complete'), servos 1,3,4,5,6 =
+    # 1500, 835, 1925, 2176, 1510.
+    END_PWM = {'1': 1500, '3': 835, '4': 1925, '5': 2176, '6': 1510}
+    # Mean absolute PWM error per servo that still counts as the end
+    # posture. 100 is the tolerance of the offline predicate check on the
+    # same episode: the still-open gripper state sat 116.0 away (rejected)
+    # while the held end posture stayed within 89.8 (accepted), so the
+    # rule's acceptance band has margin on both sides of that episode.
+    TOLERANCE_PWM = 100
+    # Consecutive issued rows that must show the end posture. The teacher
+    # itself held that identical posture for 45 rows (4.5 s at the 0.1 s
+    # command period) before it ended the grasp, and that episode's done
+    # label is anchored 45 rows back from the identical-posture run. The
+    # rule therefore requires the robot to hold the end posture for the
+    # same 4.5 s before it may call the grasp complete.
+    HOLD_ROWS = 45
+
+    def __init__(self, *, end_pwm=None, tolerance_pwm=None, hold_rows=None):
+        self.end_pwm = dict(self.END_PWM if end_pwm is None else end_pwm)
+        self.tolerance_pwm = self.TOLERANCE_PWM if tolerance_pwm is None else tolerance_pwm
+        self.hold_rows = self.HOLD_ROWS if hold_rows is None else hold_rows
+        self.hold = 0
+        self.fired = False
+        self.fire_t = None
+
+    def distance(self, pwm):
+        """Mean absolute error per servo against the end posture."""
+        return sum(abs(pwm[s] - self.end_pwm[s]) for s in self.end_pwm) / len(self.end_pwm)
+
+    def observe(self, now, issued):
+        """Feed one own issued command row. True when the grasp completes.
+
+        The counter resets on any moving wheel and on any posture outside
+        the tolerance, so only an unbroken run of HOLD_ROWS rows counts.
+        """
+        if self.fired:
+            return False
+        if not all(abs(w) < 1e-9 for w in issued['wheels']):
+            self.hold = 0
+            return False
+        if self.distance(issued['pwm']) > self.tolerance_pwm:
+            self.hold = 0
+            return False
+        self.hold += 1
+        if self.hold >= self.hold_rows:
+            self.fired = True
+            self.fire_t = now
+            return True
+        return False
+
+
 class SoloSequence:
-    """Instruction schedule driven only by student done and simulation clock."""
+    """Instruction schedule driven only by student done and simulation clock.
+
+    With `grasp_rule` the grasp skill may also complete through the
+    own-issued-command rule (GraspTransitionRule). The rule reads only the
+    robot's own issued commands and the clock; it never reads contact force,
+    tilt, clearance, ground truth or weld. The release skill keeps its
+    learned-done completion: the rule never applies to it.
+    """
     SETTLE_S = 3.1
 
-    def __init__(self, with_release=False):
+    def __init__(self, with_release=False, *, grasp_rule=False):
         self.with_release, self.skill = with_release, 'grasp'
         self.done_times = {}
+        # Completion cause per skill: 'done' (learned done bit) or 'rule'
+        # (the own-issued-command rule). A skill that never completed has no
+        # entry, so a rule completion is distinguishable from a learned one.
+        self.done_causes = {}
+        # None keeps the pre-rule path exactly as it was.
+        self.rule = GraspTransitionRule() if grasp_rule else None
 
-    def update(self, now, done):
+    def update(self, now, done, issued=None):
+        # With the rule OFF (the default) the statements below are exactly the
+        # pre-rule ones: same order, same conditions, same results.
+        if self.rule is None:
+            if done:
+                self.done_times.setdefault(self.skill, now)
+            end = self.done_times.get(self.skill)
+            if end is None or now - end < self.SETTLE_S - 1e-8:
+                return False
+            if self.skill == 'grasp' and self.with_release:
+                self.skill = 'release'
+                return False
+            return True
         if done:
             self.done_times.setdefault(self.skill, now)
+            self.done_causes.setdefault(self.skill, 'done')
+        if (self.skill == 'grasp' and 'grasp' not in self.done_times
+                and issued is not None and self.rule.observe(now, issued)):
+            self.done_times.setdefault('grasp', now)
+            self.done_causes.setdefault('grasp', 'rule')
         end = self.done_times.get(self.skill)
         if end is None or now - end < self.SETTLE_S - 1e-8:
             return False

@@ -1,0 +1,2403 @@
+{
+ "schema": "scenes_v2.random.v1",
+ "status": "analytical_candidates_not_experimental_results",
+ "seed": 2026111501,
+ "stream_version": "random-scene-v2",
+ "n_slots": 20,
+ "max_attempts_per_slot": 1000,
+ "units": {
+  "position": "m",
+  "yaw": "rad",
+  "time": "s"
+ },
+ "arena": {
+  "x": [
+   -1.05,
+   5.4
+  ],
+  "y": [
+   -3.15,
+   1.45
+  ],
+  "partition_x": 2.2,
+  "door": {
+   "x": 2.2,
+   "y": 0.05,
+   "width": 0.5,
+   "capacity": 1
+  },
+  "box_size": 0.04,
+  "signs": {
+   "11": [
+    5.37,
+    0.4
+   ],
+   "12": [
+    5.37,
+    -2.1
+   ],
+   "13": [
+    3.4,
+    -3.12
+   ]
+  },
+  "drop_centres": {
+   "11": [
+    5.07,
+    0.4
+   ],
+   "12": [
+    5.07,
+    -2.1
+   ],
+   "13": [
+    3.4,
+    -2.82
+   ]
+  }
+ },
+ "rules": {
+  "robots": 2,
+  "one_carry_per_robot": true,
+  "order_count": 1,
+  "one_order_per_sign": true,
+  "unordered_move_is_error": true,
+  "idle_robot_may_finish": true,
+  "dev_exposed_excluded": [
+   "X01",
+   "L01",
+   "C01",
+   "D01",
+   "X02"
+  ]
+ },
+ "selection": "NONE: no scene is filtered, replaced or tuned by oracle/baseline/gap; only the geometry rules reject attempts.",
+ "deviations_from_proposal": [
+  "20 slots instead of 10 (RND2-01..20)",
+  "order signs drawn without replacement: no count=2 order, never two boxes for one sign",
+  "wall margin 0.40 m for boxes AND robots; boxes >= 0.6 m apart; robots >= 0.6 m apart (proposal: 0.04 / 0.40)",
+  "yaw = bisector of bearings to all boxes (not random) and every box within 70 deg; line of sight not blocked by the other robot",
+  "A/B -> r1/r2 by a seeded stratified plan (exactly 10 swapped, 10 not) instead of an independent coin per scene",
+  "continuous coordinates rounded to 0.01 m"
+ ],
+ "knowledge_contract": {
+  "knows_references": "Order IDs only; lists are in presentation order (random per robot).",
+  "coordinates": "Evaluator-only. Never give world coordinates, box IDs, all-box lists, oracle or baseline to the LLM.",
+  "visibility_verified": false
+ },
+ "model": {
+  "deadline_s": 900.0,
+  "survey_s": 12.0,
+  "pickup_at_0_8m_s": 58.0,
+  "pickup_formula": "58*d/0.8 after the 12 s survey; d = start-to-box distance (analytical proxy only, DESIGN-18)",
+  "carry_s": 110.0,
+  "place_s": 10.0,
+  "door_slot_s": 8.0,
+  "door_offset_from_carry_start_s": 40.0,
+  "door_rule": "The 8 s exclusive slot is inside the 110 s carry; FCFS, ties r1; queue delay shifts the rest of the carry and the set-down.",
+  "message_s": 2.0,
+  "oracle_messages": 0,
+  "one_carry_per_robot": true,
+  "note": "No second carry in v2 (no return/repeat pickup); DESIGN-18 return_s and repeat_pickup_s do not apply.",
+  "count_rule": "Sum over orders of min(count, boxes of that colour set down at that sign); unmatched deliveries are errors (unordered move).",
+  "upper_definition": "Omniscient plan: maximise correct boxes, then minimise completion, then prefer plans where each robot carries an order it knows. Not a measured minimum.",
+  "time_rule": "Unmet demand counts 900 s in *_capped_completion_s; baseline_active_end_s is the end of the last acting robot."
+ },
+ "baseline_rules": {
+  "B": "No messages. A robot that knows >=1 order picks one of its known orders, takes the nearest box of that colour and sets it down at that order's sign (one carry only). A robot that knows no order does nothing.",
+  "primary": "baseline_correct and all baseline_* time fields: the pick among known orders is UNIFORM (position-free expectation, exact enumeration of all joint choices). This is the gap filter.",
+  "first_listed": "baseline_plan and baseline_first_listed_*: the pick is knows[rid][0] (DESIGN-18 lowest-ID rule; lists are in ID order). Diagnostic only: with first-listed balance it equals the oracle in half of the C scenes.",
+  "guess": "baseline_guess_*: like primary, but a robot with no order takes its nearest box (any colour) and a uniformly random sign. Wrong boxes cost no points under the count rule but count as errors (unordered move).",
+  "conflict": "Two robots choosing the same box: earlier arrival keeps it; the other re-surveys 12 s at that box and takes the nearest box nobody chose (same colour if informed), or nothing.",
+  "time_model": "DESIGN-18: survey 12 s, pick 58*d/0.8 s, carry 110 s (door entry +40 s, 8 s slot, FCFS, ties r1), set-down 10 s; unmet demand counts 900 s in *_capped_completion_s."
+ },
+ "missing": [],
+ "scenes": [
+  {
+   "id": "RND2-01",
+   "type": "random",
+   "type_code": "RND",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.45,
+     "y": -0.81
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 0.79,
+     "y": 0.21
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 0.54,
+     "y": -1.9,
+     "yaw": 1.553
+    },
+    {
+     "rid": "r2",
+     "x": -0.12,
+     "y": 0.51,
+     "yaw": -0.7408
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1"
+    ],
+    "r2": [
+     "o1"
+    ]
+   },
+   "constraints": [],
+   "gen": {
+    "n_boxes": 2,
+    "total_demand": 1,
+    "attempts": 20,
+    "swapped_AB": false
+   },
+   "oracle_plan": {
+    "r1": [],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 1,
+    "oracle_completion_s": 201.4677,
+    "oracle_errors": 0,
+    "baseline_correct": 1.0,
+    "baseline_p_full": 1.0,
+    "baseline_capped_completion_s": 201.4677,
+    "baseline_active_end_s": 201.4677,
+    "baseline_errors": 0.0,
+    "baseline_conflict_p": 1.0,
+    "baseline_first_listed_correct": 1.0,
+    "baseline_first_listed_completion_s": 201.4677,
+    "baseline_guess_correct": 1.0,
+    "baseline_guess_errors": 0.0,
+    "baseline_guess_capped_completion_s": 201.4677,
+    "gap": 0.0,
+    "gap_guess": 0.0,
+    "time_gap_capped_s": 0.0
+   },
+   "balance": {
+    "holder": "both",
+    "decision_robot": null,
+    "correct_is_first_order": null,
+    "correct_sign": null,
+    "correct_is_first_menu": null,
+    "correct_is_lower_known_sign": null
+   }
+  },
+  {
+   "id": "RND2-02",
+   "type": "random",
+   "type_code": "RND",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 0.76,
+     "y": -2.47
+    },
+    {
+     "id": "c",
+     "colour": "red",
+     "x": 1.32,
+     "y": 1.02
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 0.91,
+     "y": -1.69
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 0.02,
+     "y": -2.31,
+     "yaw": 0.4928
+    },
+    {
+     "rid": "r2",
+     "x": 0.08,
+     "y": -1.26,
+     "yaw": 0.0069
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [],
+    "r2": [
+     "o1"
+    ]
+   },
+   "constraints": [],
+   "gen": {
+    "n_boxes": 3,
+    "total_demand": 1,
+    "attempts": 24,
+    "swapped_AB": true
+   },
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": []
+   },
+   "baseline_plan": {
+    "r1": [],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 1,
+    "oracle_completion_s": 186.8897,
+    "oracle_errors": 0,
+    "baseline_correct": 1.0,
+    "baseline_p_full": 1.0,
+    "baseline_capped_completion_s": 199.771,
+    "baseline_active_end_s": 199.771,
+    "baseline_errors": 0.0,
+    "baseline_conflict_p": 0.0,
+    "baseline_first_listed_correct": 1.0,
+    "baseline_first_listed_completion_s": 199.771,
+    "baseline_guess_correct": 1.0,
+    "baseline_guess_errors": 1.0,
+    "baseline_guess_capped_completion_s": 195.4773,
+    "gap": 0.0,
+    "gap_guess": 0.0,
+    "time_gap_capped_s": 12.8813
+   },
+   "balance": {
+    "holder": "r2",
+    "decision_robot": null,
+    "correct_is_first_order": null,
+    "correct_sign": null,
+    "correct_is_first_menu": null,
+    "correct_is_lower_known_sign": null
+   }
+  },
+  {
+   "id": "RND2-03",
+   "type": "random",
+   "type_code": "RND",
+   "control": false,
+   "boxes": [
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": -0.28,
+     "y": 0.05
+    },
+    {
+     "id": "a",
+     "colour": "red",
+     "x": -0.35,
+     "y": -0.78
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": -0.09,
+     "y": -1.68,
+     "yaw": 1.7661
+    },
+    {
+     "rid": "r2",
+     "x": 0.43,
+     "y": 0.71,
+     "yaw": -2.2229
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1"
+    ],
+    "r2": [
+     "o1"
+    ]
+   },
+   "constraints": [],
+   "gen": {
+    "n_boxes": 2,
+    "total_demand": 1,
+    "attempts": 2,
+    "swapped_AB": true
+   },
+   "oracle_plan": {
+    "r1": [],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 1,
+    "oracle_completion_s": 202.2801,
+    "oracle_errors": 0,
+    "baseline_correct": 1.0,
+    "baseline_p_full": 1.0,
+    "baseline_capped_completion_s": 202.2801,
+    "baseline_active_end_s": 202.2801,
+    "baseline_errors": 0.0,
+    "baseline_conflict_p": 1.0,
+    "baseline_first_listed_correct": 1.0,
+    "baseline_first_listed_completion_s": 202.2801,
+    "baseline_guess_correct": 1.0,
+    "baseline_guess_errors": 0.0,
+    "baseline_guess_capped_completion_s": 202.2801,
+    "gap": 0.0,
+    "gap_guess": 0.0,
+    "time_gap_capped_s": 0.0
+   },
+   "balance": {
+    "holder": "both",
+    "decision_robot": null,
+    "correct_is_first_order": null,
+    "correct_sign": null,
+    "correct_is_first_menu": null,
+    "correct_is_lower_known_sign": null
+   }
+  },
+  {
+   "id": "RND2-04",
+   "type": "random",
+   "type_code": "RND",
+   "control": false,
+   "boxes": [
+    {
+     "id": "b",
+     "colour": "red",
+     "x": -0.35,
+     "y": -0.74
+    },
+    {
+     "id": "c",
+     "colour": "blue",
+     "x": 0.7,
+     "y": 0.92
+    },
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.73,
+     "y": -1.88
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1.41,
+     "y": -2.13,
+     "yaw": 2.2944
+    },
+    {
+     "rid": "r2",
+     "x": 1.48,
+     "y": 0.2,
+     "yaw": -2.9019
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1"
+    ],
+    "r2": [
+     "o1"
+    ]
+   },
+   "constraints": [],
+   "gen": {
+    "n_boxes": 3,
+    "total_demand": 1,
+    "attempts": 24,
+    "swapped_AB": true
+   },
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": []
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "c",
+      "o1"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 1,
+    "oracle_completion_s": 184.5262,
+    "oracle_errors": 0,
+    "baseline_correct": 1.0,
+    "baseline_p_full": 1.0,
+    "baseline_capped_completion_s": 184.5262,
+    "baseline_active_end_s": 208.9594,
+    "baseline_errors": 1.0,
+    "baseline_conflict_p": 0.0,
+    "baseline_first_listed_correct": 1.0,
+    "baseline_first_listed_completion_s": 184.5262,
+    "baseline_guess_correct": 1.0,
+    "baseline_guess_errors": 1.0,
+    "baseline_guess_capped_completion_s": 184.5262,
+    "gap": 0.0,
+    "gap_guess": 0.0,
+    "time_gap_capped_s": 0.0
+   },
+   "balance": {
+    "holder": "both",
+    "decision_robot": null,
+    "correct_is_first_order": null,
+    "correct_sign": null,
+    "correct_is_first_menu": null,
+    "correct_is_lower_known_sign": null
+   }
+  },
+  {
+   "id": "RND2-05",
+   "type": "random",
+   "type_code": "RND",
+   "control": false,
+   "boxes": [
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 0.57,
+     "y": -2.14
+    },
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": -0.35,
+     "y": -0.88
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 0.92,
+     "y": -1.6,
+     "yaw": -2.9016
+    },
+    {
+     "rid": "r2",
+     "x": -0.4,
+     "y": -1.99,
+     "yaw": 0.6862
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1"
+    ],
+    "r2": [
+     "o1"
+    ]
+   },
+   "constraints": [],
+   "gen": {
+    "n_boxes": 2,
+    "total_demand": 1,
+    "attempts": 4,
+    "swapped_AB": true
+   },
+   "oracle_plan": {
+    "r1": [
+     [
+      "b",
+      "o1"
+     ]
+    ],
+    "r2": []
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 1,
+    "oracle_completion_s": 178.6542,
+    "oracle_errors": 0,
+    "baseline_correct": 1.0,
+    "baseline_p_full": 1.0,
+    "baseline_capped_completion_s": 178.6542,
+    "baseline_active_end_s": 328.2702,
+    "baseline_errors": 1.0,
+    "baseline_conflict_p": 1.0,
+    "baseline_first_listed_correct": 1.0,
+    "baseline_first_listed_completion_s": 178.6542,
+    "baseline_guess_correct": 1.0,
+    "baseline_guess_errors": 1.0,
+    "baseline_guess_capped_completion_s": 178.6542,
+    "gap": 0.0,
+    "gap_guess": 0.0,
+    "time_gap_capped_s": 0.0
+   },
+   "balance": {
+    "holder": "both",
+    "decision_robot": null,
+    "correct_is_first_order": null,
+    "correct_sign": null,
+    "correct_is_first_menu": null,
+    "correct_is_lower_known_sign": null
+   }
+  },
+  {
+   "id": "RND2-06",
+   "type": "random",
+   "type_code": "RND",
+   "control": false,
+   "boxes": [
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 0.98,
+     "y": -1.73
+    },
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 1.44,
+     "y": -1.33
+    },
+    {
+     "id": "c",
+     "colour": "red",
+     "x": 1.21,
+     "y": 0.96
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 0.37,
+     "y": -1.01,
+     "yaw": 0.1499
+    },
+    {
+     "rid": "r2",
+     "x": 1.49,
+     "y": -2.07,
+     "yaw": 2.0959
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1"
+    ],
+    "r2": [
+     "o1"
+    ]
+   },
+   "constraints": [],
+   "gen": {
+    "n_boxes": 3,
+    "total_demand": 1,
+    "attempts": 98,
+    "swapped_AB": false
+   },
+   "oracle_plan": {
+    "r1": [],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 1,
+    "oracle_completion_s": 176.4384,
+    "oracle_errors": 0,
+    "baseline_correct": 1.0,
+    "baseline_p_full": 1.0,
+    "baseline_capped_completion_s": 176.4384,
+    "baseline_active_end_s": 256.6108,
+    "baseline_errors": 1.0,
+    "baseline_conflict_p": 1.0,
+    "baseline_first_listed_correct": 1.0,
+    "baseline_first_listed_completion_s": 176.4384,
+    "baseline_guess_correct": 1.0,
+    "baseline_guess_errors": 1.0,
+    "baseline_guess_capped_completion_s": 176.4384,
+    "gap": 0.0,
+    "gap_guess": 0.0,
+    "time_gap_capped_s": 0.0
+   },
+   "balance": {
+    "holder": "both",
+    "decision_robot": null,
+    "correct_is_first_order": null,
+    "correct_sign": null,
+    "correct_is_first_menu": null,
+    "correct_is_lower_known_sign": null
+   }
+  },
+  {
+   "id": "RND2-07",
+   "type": "random",
+   "type_code": "RND",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 0.13,
+     "y": 0.17
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 1.41,
+     "y": 0.31
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": -0.64,
+     "y": 0.47,
+     "yaw": -0.2247
+    },
+    {
+     "rid": "r2",
+     "x": -0.19,
+     "y": -0.62,
+     "yaw": 0.8562
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1",
+     "o2"
+    ],
+    "r2": [
+     "o2"
+    ]
+   },
+   "constraints": [],
+   "gen": {
+    "n_boxes": 2,
+    "total_demand": 2,
+    "attempts": 11,
+    "swapped_AB": false
+   },
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o2"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "oracle_completion_s": 266.172,
+    "oracle_errors": 0,
+    "baseline_correct": 1.5,
+    "baseline_p_full": 0.5,
+    "baseline_capped_completion_s": 590.5385,
+    "baseline_active_end_s": 236.4947,
+    "baseline_errors": 0.0,
+    "baseline_conflict_p": 0.5,
+    "baseline_first_listed_correct": 2.0,
+    "baseline_first_listed_completion_s": 281.077,
+    "baseline_guess_correct": 1.5,
+    "baseline_guess_errors": 0.0,
+    "baseline_guess_capped_completion_s": 590.5385,
+    "gap": 0.5,
+    "gap_guess": 0.5,
+    "time_gap_capped_s": 324.3665
+   },
+   "balance": {
+    "holder": "r1",
+    "decision_robot": "r1",
+    "correct_is_first_order": false,
+    "correct_sign": 11,
+    "correct_is_first_menu": true,
+    "correct_is_lower_known_sign": true
+   }
+  },
+  {
+   "id": "RND2-08",
+   "type": "random",
+   "type_code": "RND",
+   "control": false,
+   "boxes": [
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 0.68,
+     "y": -1.14
+    },
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 1.02,
+     "y": 0.66
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1.57,
+     "y": 1.04,
+     "yaw": -2.2477
+    },
+    {
+     "rid": "r2",
+     "x": 1.18,
+     "y": -1.97,
+     "yaw": 1.8723
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [],
+    "r2": [
+     "o1"
+    ]
+   },
+   "constraints": [],
+   "gen": {
+    "n_boxes": 2,
+    "total_demand": 1,
+    "attempts": 28,
+    "swapped_AB": true
+   },
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": []
+   },
+   "baseline_plan": {
+    "r1": [],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 1,
+    "oracle_completion_s": 180.4667,
+    "oracle_errors": 0,
+    "baseline_correct": 1.0,
+    "baseline_p_full": 1.0,
+    "baseline_capped_completion_s": 202.2502,
+    "baseline_active_end_s": 202.2502,
+    "baseline_errors": 0.0,
+    "baseline_conflict_p": 0.0,
+    "baseline_first_listed_correct": 1.0,
+    "baseline_first_listed_completion_s": 202.2502,
+    "baseline_guess_correct": 1.0,
+    "baseline_guess_errors": 1.0,
+    "baseline_guess_capped_completion_s": 194.989,
+    "gap": 0.0,
+    "gap_guess": 0.0,
+    "time_gap_capped_s": 21.7835
+   },
+   "balance": {
+    "holder": "r2",
+    "decision_robot": null,
+    "correct_is_first_order": null,
+    "correct_sign": null,
+    "correct_is_first_menu": null,
+    "correct_is_lower_known_sign": null
+   }
+  },
+  {
+   "id": "RND2-09",
+   "type": "random",
+   "type_code": "RND",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": -0.49,
+     "y": 0.17
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 0.73,
+     "y": -2.03
+    },
+    {
+     "id": "c",
+     "colour": "red",
+     "x": 0.33,
+     "y": 0.99
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1.32,
+     "y": 0.85,
+     "yaw": -2.5275
+    },
+    {
+     "rid": "r2",
+     "x": -0.25,
+     "y": -1.79,
+     "yaw": 0.7262
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o2"
+    ],
+    "r2": [
+     "o1"
+    ]
+   },
+   "constraints": [],
+   "gen": {
+    "n_boxes": 3,
+    "total_demand": 2,
+    "attempts": 24,
+    "swapped_AB": false
+   },
+   "oracle_plan": {
+    "r1": [
+     [
+      "c",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "c",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "oracle_completion_s": 212.4891,
+    "oracle_errors": 0,
+    "baseline_correct": 2.0,
+    "baseline_p_full": 1.0,
+    "baseline_capped_completion_s": 212.4891,
+    "baseline_active_end_s": 212.4891,
+    "baseline_errors": 0.0,
+    "baseline_conflict_p": 0.0,
+    "baseline_first_listed_correct": 2.0,
+    "baseline_first_listed_completion_s": 212.4891,
+    "baseline_guess_correct": 2.0,
+    "baseline_guess_errors": 0.0,
+    "baseline_guess_capped_completion_s": 212.4891,
+    "gap": 0.0,
+    "gap_guess": 0.0,
+    "time_gap_capped_s": 0.0
+   },
+   "balance": {
+    "holder": "both",
+    "decision_robot": null,
+    "correct_is_first_order": null,
+    "correct_sign": null,
+    "correct_is_first_menu": null,
+    "correct_is_lower_known_sign": null
+   }
+  },
+  {
+   "id": "RND2-10",
+   "type": "random",
+   "type_code": "RND",
+   "control": false,
+   "boxes": [
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 1.34,
+     "y": 0.62
+    },
+    {
+     "id": "c",
+     "colour": "blue",
+     "x": 0.72,
+     "y": -1.2
+    },
+    {
+     "id": "a",
+     "colour": "red",
+     "x": -0.29,
+     "y": -1.58
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 0.24,
+     "y": -2.1,
+     "yaw": 1.7233
+    },
+    {
+     "rid": "r2",
+     "x": 1.72,
+     "y": -1.32,
+     "yaw": 2.5172
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1"
+    ],
+    "r2": [
+     "o1"
+    ]
+   },
+   "constraints": [],
+   "gen": {
+    "n_boxes": 3,
+    "total_demand": 1,
+    "attempts": 31,
+    "swapped_AB": false
+   },
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": []
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 1,
+    "oracle_completion_s": 185.8309,
+    "oracle_errors": 0,
+    "baseline_correct": 1.0,
+    "baseline_p_full": 1.0,
+    "baseline_capped_completion_s": 185.8309,
+    "baseline_active_end_s": 275.3228,
+    "baseline_errors": 1.0,
+    "baseline_conflict_p": 0.0,
+    "baseline_first_listed_correct": 1.0,
+    "baseline_first_listed_completion_s": 185.8309,
+    "baseline_guess_correct": 1.0,
+    "baseline_guess_errors": 1.0,
+    "baseline_guess_capped_completion_s": 185.8309,
+    "gap": 0.0,
+    "gap_guess": 0.0,
+    "time_gap_capped_s": 0.0
+   },
+   "balance": {
+    "holder": "both",
+    "decision_robot": null,
+    "correct_is_first_order": null,
+    "correct_sign": null,
+    "correct_is_first_menu": null,
+    "correct_is_lower_known_sign": null
+   }
+  },
+  {
+   "id": "RND2-11",
+   "type": "random",
+   "type_code": "RND",
+   "control": false,
+   "boxes": [
+    {
+     "id": "c",
+     "colour": "red",
+     "x": 0.22,
+     "y": -0.55
+    },
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 1.34,
+     "y": 0.64
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 1.25,
+     "y": -1.49
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 0.32,
+     "y": 0.35,
+     "yaw": -0.7022
+    },
+    {
+     "rid": "r2",
+     "x": 0.47,
+     "y": -2.09,
+     "yaw": 1.1937
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1",
+     "o2"
+    ],
+    "r2": [
+     "o2"
+    ]
+   },
+   "constraints": [],
+   "gen": {
+    "n_boxes": 3,
+    "total_demand": 2,
+    "attempts": 13,
+    "swapped_AB": false
+   },
+   "oracle_plan": {
+    "r1": [
+     [
+      "c",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o2"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "c",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o2"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "oracle_completion_s": 205.6515,
+    "oracle_errors": 0,
+    "baseline_correct": 1.5,
+    "baseline_p_full": 0.5,
+    "baseline_capped_completion_s": 552.8258,
+    "baseline_active_end_s": 205.6515,
+    "baseline_errors": 0.5,
+    "baseline_conflict_p": 0.0,
+    "baseline_first_listed_correct": 2.0,
+    "baseline_first_listed_completion_s": 205.6515,
+    "baseline_guess_correct": 1.5,
+    "baseline_guess_errors": 0.5,
+    "baseline_guess_capped_completion_s": 552.8258,
+    "gap": 0.5,
+    "gap_guess": 0.5,
+    "time_gap_capped_s": 347.1742
+   },
+   "balance": {
+    "holder": "r1",
+    "decision_robot": "r1",
+    "correct_is_first_order": true,
+    "correct_sign": 11,
+    "correct_is_first_menu": true,
+    "correct_is_lower_known_sign": true
+   }
+  },
+  {
+   "id": "RND2-12",
+   "type": "random",
+   "type_code": "RND",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.74,
+     "y": -1.96
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 0.6,
+     "y": -0.08
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 0.05,
+     "y": -0.58,
+     "yaw": -0.1847
+    },
+    {
+     "rid": "r2",
+     "x": 1.41,
+     "y": -1.92,
+     "yaw": 2.5934
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 11
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o2",
+     "o1"
+    ],
+    "r2": [
+     "o1"
+    ]
+   },
+   "constraints": [],
+   "gen": {
+    "n_boxes": 2,
+    "total_demand": 2,
+    "attempts": 2,
+    "swapped_AB": false
+   },
+   "oracle_plan": {
+    "r1": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o1"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "oracle_completion_s": 188.6615,
+    "oracle_errors": 0,
+    "baseline_correct": 1.5,
+    "baseline_p_full": 0.5,
+    "baseline_capped_completion_s": 544.3307,
+    "baseline_active_end_s": 188.6615,
+    "baseline_errors": 0.5,
+    "baseline_conflict_p": 0.0,
+    "baseline_first_listed_correct": 2.0,
+    "baseline_first_listed_completion_s": 188.6615,
+    "baseline_guess_correct": 1.5,
+    "baseline_guess_errors": 0.5,
+    "baseline_guess_capped_completion_s": 544.3307,
+    "gap": 0.5,
+    "gap_guess": 0.5,
+    "time_gap_capped_s": 355.6693
+   },
+   "balance": {
+    "holder": "r1",
+    "decision_robot": "r1",
+    "correct_is_first_order": true,
+    "correct_sign": 11,
+    "correct_is_first_menu": true,
+    "correct_is_lower_known_sign": true
+   }
+  },
+  {
+   "id": "RND2-13",
+   "type": "random",
+   "type_code": "RND",
+   "control": false,
+   "boxes": [
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 1.43,
+     "y": 0.57
+    },
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": -0.32,
+     "y": -0.16
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 0.44,
+     "y": 1.0,
+     "yaw": -1.2803
+    },
+    {
+     "rid": "r2",
+     "x": -0.56,
+     "y": -1.15,
+     "yaw": 1.0229
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [],
+    "r2": [
+     "o1"
+    ]
+   },
+   "constraints": [],
+   "gen": {
+    "n_boxes": 2,
+    "total_demand": 1,
+    "attempts": 22,
+    "swapped_AB": false
+   },
+   "oracle_plan": {
+    "r1": [
+     [
+      "b",
+      "o1"
+     ]
+    ],
+    "r2": []
+   },
+   "baseline_plan": {
+    "r1": [],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 1,
+    "oracle_completion_s": 210.253,
+    "oracle_errors": 0,
+    "baseline_correct": 1.0,
+    "baseline_p_full": 1.0,
+    "baseline_capped_completion_s": 322.6971,
+    "baseline_active_end_s": 322.6971,
+    "baseline_errors": 0.0,
+    "baseline_conflict_p": 0.0,
+    "baseline_first_listed_correct": 1.0,
+    "baseline_first_listed_completion_s": 322.6971,
+    "baseline_guess_correct": 0.3333,
+    "baseline_guess_errors": 0.6667,
+    "baseline_guess_capped_completion_s": 670.0843,
+    "gap": 0.0,
+    "gap_guess": 0.6667,
+    "time_gap_capped_s": 112.4441
+   },
+   "balance": {
+    "holder": "r2",
+    "decision_robot": null,
+    "correct_is_first_order": null,
+    "correct_sign": null,
+    "correct_is_first_menu": null,
+    "correct_is_lower_known_sign": null
+   }
+  },
+  {
+   "id": "RND2-14",
+   "type": "random",
+   "type_code": "RND",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 1.26,
+     "y": -2.62
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": -0.36,
+     "y": -0.02
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1.73,
+     "y": -1.65,
+     "yaw": -2.913
+    },
+    {
+     "rid": "r2",
+     "x": -0.56,
+     "y": 0.63,
+     "yaw": -1.1663
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 11
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1",
+     "o2"
+    ],
+    "r2": [
+     "o2"
+    ]
+   },
+   "constraints": [],
+   "gen": {
+    "n_boxes": 2,
+    "total_demand": 2,
+    "attempts": 24,
+    "swapped_AB": true
+   },
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o2"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "oracle_completion_s": 210.1454,
+    "oracle_errors": 0,
+    "baseline_correct": 1.5,
+    "baseline_p_full": 0.5,
+    "baseline_capped_completion_s": 651.0277,
+    "baseline_active_end_s": 306.1004,
+    "baseline_errors": 0.0,
+    "baseline_conflict_p": 0.5,
+    "baseline_first_listed_correct": 2.0,
+    "baseline_first_listed_completion_s": 402.0554,
+    "baseline_guess_correct": 1.5,
+    "baseline_guess_errors": 0.0,
+    "baseline_guess_capped_completion_s": 651.0277,
+    "gap": 0.5,
+    "gap_guess": 0.5,
+    "time_gap_capped_s": 440.8823
+   },
+   "balance": {
+    "holder": "r1",
+    "decision_robot": "r1",
+    "correct_is_first_order": false,
+    "correct_sign": 11,
+    "correct_is_first_menu": true,
+    "correct_is_lower_known_sign": true
+   }
+  },
+  {
+   "id": "RND2-15",
+   "type": "random",
+   "type_code": "RND",
+   "control": false,
+   "boxes": [
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 0.33,
+     "y": -0.39
+    },
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": -0.38,
+     "y": -1.82
+    },
+    {
+     "id": "c",
+     "colour": "blue",
+     "x": 0.37,
+     "y": 0.76
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": -0.59,
+     "y": -0.19,
+     "yaw": -0.3313
+    },
+    {
+     "rid": "r2",
+     "x": -0.33,
+     "y": -2.44,
+     "yaw": 1.4553
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1",
+     "o2"
+    ],
+    "r2": [
+     "o1"
+    ]
+   },
+   "constraints": [],
+   "gen": {
+    "n_boxes": 3,
+    "total_demand": 2,
+    "attempts": 2,
+    "swapped_AB": false
+   },
+   "oracle_plan": {
+    "r1": [
+     [
+      "b",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o2"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "oracle_completion_s": 200.2579,
+    "oracle_errors": 0,
+    "baseline_correct": 1.5,
+    "baseline_p_full": 0.5,
+    "baseline_capped_completion_s": 594.0689,
+    "baseline_active_end_s": 244.1978,
+    "baseline_errors": 0.0,
+    "baseline_conflict_p": 0.5,
+    "baseline_first_listed_correct": 1.0,
+    "baseline_first_listed_completion_s": null,
+    "baseline_guess_correct": 1.5,
+    "baseline_guess_errors": 0.0,
+    "baseline_guess_capped_completion_s": 594.0689,
+    "gap": 0.5,
+    "gap_guess": 0.5,
+    "time_gap_capped_s": 393.811
+   },
+   "balance": {
+    "holder": "r1",
+    "decision_robot": "r1",
+    "correct_is_first_order": true,
+    "correct_sign": 13,
+    "correct_is_first_menu": false,
+    "correct_is_lower_known_sign": false
+   }
+  },
+  {
+   "id": "RND2-16",
+   "type": "random",
+   "type_code": "RND",
+   "control": false,
+   "boxes": [
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 1.51,
+     "y": -1.48
+    },
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.99,
+     "y": 0.04
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 0.04,
+     "y": 0.16,
+     "yaw": -0.4828
+    },
+    {
+     "rid": "r2",
+     "x": 0.76,
+     "y": 0.98,
+     "yaw": -1.3029
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 11
+    }
+   ],
+   "knows": {
+    "r1": [],
+    "r2": [
+     "o1",
+     "o2"
+    ]
+   },
+   "constraints": [],
+   "gen": {
+    "n_boxes": 2,
+    "total_demand": 2,
+    "attempts": 13,
+    "swapped_AB": true
+   },
+   "oracle_plan": {
+    "r1": [
+     [
+      "b",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o2"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [],
+    "r2": [
+     [
+      "a",
+      "o1"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "oracle_completion_s": 291.6729,
+    "oracle_errors": 0,
+    "baseline_correct": 1.0,
+    "baseline_p_full": 0.0,
+    "baseline_capped_completion_s": 900.0,
+    "baseline_active_end_s": 202.1604,
+    "baseline_errors": 0.0,
+    "baseline_conflict_p": 0.0,
+    "baseline_first_listed_correct": 1.0,
+    "baseline_first_listed_completion_s": null,
+    "baseline_guess_correct": 1.3333,
+    "baseline_guess_errors": 0.6667,
+    "baseline_guess_capped_completion_s": 710.2102,
+    "gap": 1.0,
+    "gap_guess": 0.6667,
+    "time_gap_capped_s": 608.3271
+   },
+   "balance": {
+    "holder": "r2",
+    "decision_robot": "r2",
+    "correct_is_first_order": false,
+    "correct_sign": 11,
+    "correct_is_first_menu": true,
+    "correct_is_lower_known_sign": true
+   }
+  },
+  {
+   "id": "RND2-17",
+   "type": "random",
+   "type_code": "RND",
+   "control": false,
+   "boxes": [
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": 0.15,
+     "y": -0.81
+    },
+    {
+     "id": "a",
+     "colour": "red",
+     "x": -0.11,
+     "y": -2.65
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": -0.56,
+     "y": -1.67,
+     "yaw": -0.1298
+    },
+    {
+     "rid": "r2",
+     "x": 0.97,
+     "y": -0.33,
+     "yaw": -2.3092
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o2",
+     "o1"
+    ],
+    "r2": [
+     "o1",
+     "o2"
+    ]
+   },
+   "constraints": [],
+   "gen": {
+    "n_boxes": 2,
+    "total_demand": 2,
+    "attempts": 15,
+    "swapped_AB": true
+   },
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o2"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o1"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "oracle_completion_s": 210.1824,
+    "oracle_errors": 0,
+    "baseline_correct": 1.5,
+    "baseline_p_full": 0.5,
+    "baseline_capped_completion_s": 581.9286,
+    "baseline_active_end_s": 234.6958,
+    "baseline_errors": 0.0,
+    "baseline_conflict_p": 0.5,
+    "baseline_first_listed_correct": 2.0,
+    "baseline_first_listed_completion_s": 317.532,
+    "baseline_guess_correct": 1.5,
+    "baseline_guess_errors": 0.0,
+    "baseline_guess_capped_completion_s": 581.9286,
+    "gap": 0.5,
+    "gap_guess": 0.5,
+    "time_gap_capped_s": 371.7462
+   },
+   "balance": {
+    "holder": "both",
+    "decision_robot": null,
+    "correct_is_first_order": null,
+    "correct_sign": null,
+    "correct_is_first_menu": null,
+    "correct_is_lower_known_sign": null
+   }
+  },
+  {
+   "id": "RND2-18",
+   "type": "random",
+   "type_code": "RND",
+   "control": false,
+   "boxes": [
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 0.19,
+     "y": -1.19
+    },
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 1.72,
+     "y": -0.79
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 0.22,
+     "y": -1.87,
+     "yaw": 1.1195
+    },
+    {
+     "rid": "r2",
+     "x": 0.44,
+     "y": -0.57,
+     "yaw": -1.0621
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o2",
+     "o1"
+    ],
+    "r2": [
+     "o2"
+    ]
+   },
+   "constraints": [],
+   "gen": {
+    "n_boxes": 2,
+    "total_demand": 2,
+    "attempts": 17,
+    "swapped_AB": true
+   },
+   "oracle_plan": {
+    "r1": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o2"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "oracle_completion_s": 226.1607,
+    "oracle_errors": 0,
+    "baseline_correct": 1.5,
+    "baseline_p_full": 0.5,
+    "baseline_capped_completion_s": 583.0027,
+    "baseline_active_end_s": 223.236,
+    "baseline_errors": 0.0,
+    "baseline_conflict_p": 0.5,
+    "baseline_first_listed_correct": 1.0,
+    "baseline_first_listed_completion_s": null,
+    "baseline_guess_correct": 1.5,
+    "baseline_guess_errors": 0.0,
+    "baseline_guess_capped_completion_s": 583.0027,
+    "gap": 0.5,
+    "gap_guess": 0.5,
+    "time_gap_capped_s": 356.842
+   },
+   "balance": {
+    "holder": "r1",
+    "decision_robot": "r1",
+    "correct_is_first_order": true,
+    "correct_sign": 13,
+    "correct_is_first_menu": false,
+    "correct_is_lower_known_sign": false
+   }
+  },
+  {
+   "id": "RND2-19",
+   "type": "random",
+   "type_code": "RND",
+   "control": false,
+   "boxes": [
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 1.55,
+     "y": -0.84
+    },
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 0.23,
+     "y": -0.57
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1.74,
+     "y": -0.25,
+     "yaw": -2.4076
+    },
+    {
+     "rid": "r2",
+     "x": -0.38,
+     "y": 0.14,
+     "yaw": -0.6654
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o2",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1"
+    ],
+    "r2": [
+     "o1",
+     "o2"
+    ]
+   },
+   "constraints": [],
+   "gen": {
+    "n_boxes": 2,
+    "total_demand": 2,
+    "attempts": 13,
+    "swapped_AB": false
+   },
+   "oracle_plan": {
+    "r1": [
+     [
+      "b",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o2"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "b",
+      "o1"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o1"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "oracle_completion_s": 199.864,
+    "oracle_errors": 0,
+    "baseline_correct": 1.5,
+    "baseline_p_full": 0.5,
+    "baseline_capped_completion_s": 549.932,
+    "baseline_active_end_s": 199.864,
+    "baseline_errors": 0.5,
+    "baseline_conflict_p": 0.0,
+    "baseline_first_listed_correct": 1.0,
+    "baseline_first_listed_completion_s": null,
+    "baseline_guess_correct": 1.5,
+    "baseline_guess_errors": 0.5,
+    "baseline_guess_capped_completion_s": 549.932,
+    "gap": 0.5,
+    "gap_guess": 0.5,
+    "time_gap_capped_s": 350.068
+   },
+   "balance": {
+    "holder": "r2",
+    "decision_robot": "r2",
+    "correct_is_first_order": false,
+    "correct_sign": 13,
+    "correct_is_first_menu": false,
+    "correct_is_lower_known_sign": false
+   }
+  },
+  {
+   "id": "RND2-20",
+   "type": "random",
+   "type_code": "RND",
+   "control": false,
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "blue",
+     "x": 0.59,
+     "y": -1.39
+    },
+    {
+     "id": "b",
+     "colour": "blue",
+     "x": -0.62,
+     "y": -1.6
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1.4,
+     "y": -1.95,
+     "yaw": 2.7534
+    },
+    {
+     "rid": "r2",
+     "x": 1.11,
+     "y": -0.77,
+     "yaw": -2.4815
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o2",
+     "o1"
+    ],
+    "r2": [
+     "o1"
+    ]
+   },
+   "constraints": [],
+   "gen": {
+    "n_boxes": 2,
+    "total_demand": 2,
+    "attempts": 20,
+    "swapped_AB": true
+   },
+   "oracle_plan": {
+    "r1": [
+     [
+      "a",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "b",
+      "o1"
+     ]
+    ]
+   },
+   "baseline_plan": {
+    "r1": [
+     [
+      "a",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o1"
+     ]
+    ]
+   },
+   "estimate": {
+    "oracle_correct": 2,
+    "oracle_completion_s": 271.1131,
+    "oracle_errors": 0,
+    "baseline_correct": 1.5,
+    "baseline_p_full": 0.5,
+    "baseline_capped_completion_s": 602.2148,
+    "baseline_active_end_s": 304.4296,
+    "baseline_errors": 0.5,
+    "baseline_conflict_p": 1.0,
+    "baseline_first_listed_correct": 2.0,
+    "baseline_first_listed_completion_s": 304.4296,
+    "baseline_guess_correct": 1.5,
+    "baseline_guess_errors": 0.5,
+    "baseline_guess_capped_completion_s": 602.2148,
+    "gap": 0.5,
+    "gap_guess": 0.5,
+    "time_gap_capped_s": 331.1017
+   },
+   "balance": {
+    "holder": "r1",
+    "decision_robot": "r1",
+    "correct_is_first_order": true,
+    "correct_sign": 13,
+    "correct_is_first_menu": false,
+    "correct_is_lower_known_sign": false
+   }
+  }
+ ]
+}

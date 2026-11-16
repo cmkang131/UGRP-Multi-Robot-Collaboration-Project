@@ -19,6 +19,7 @@ from PIL import Image
 
 from harness import grasp_act_contract as c
 from harness.json_encoding import dumps
+from harness.seg_frontend_v1 import FRONTEND as SEG_FRONTEND, apply_frontend
 
 DATA_SCHEMA = 'ugrp.grasp_act.dataset.v1'
 DONE_LABELS = ('teacher_v1', 'last_local_row_v1')
@@ -363,8 +364,11 @@ def convert(runs_root, protocol, output, *, seeds=None):
 
 class GraspDataset:
     """Map-style torch-compatible loader; IDs and truth are never returned."""
-    def __init__(self, root, split, *, blank=False):
+    def __init__(self, root, split, *, blank=False, image_frontend=None):
         self.root, self.blank = Path(root), blank
+        if image_frontend not in (None, SEG_FRONTEND):
+            raise ValueError('unknown image frontend')
+        self.image_frontend = image_frontend
         self.manifest = json.loads((self.root / 'manifest.json').read_text())
         if self.manifest['schema'] != DATA_SCHEMA or not self.manifest['complete']:
             raise ValueError('only complete audited datasets may train/evaluate')
@@ -389,6 +393,12 @@ class GraspDataset:
             if set(data) != {'state', 'action', 'action_is_pad', 'image_index'}:
                 raise ValueError('tensor shard whitelist mismatch')
             data['images'] = np.load(folder / 'images.npy', mmap_mode='r', allow_pickle=False)
+            if image_frontend is not None:
+                # object_kind is read only for the colour front end; it is never a tensor input.
+                samples = json.loads((folder / 'samples.json').read_text())
+                if len(samples) != len(data['state']) or any(s['object_kind'] not in ('red', 'cyan') for s in samples):
+                    raise ValueError('seg5 needs red or cyan object_kind for every row')
+                data['object_kind'] = [s['object_kind'] for s in samples]
             j = len(self.shards)
             self.index.extend((j, i) for i in range(len(data['state'])))
             self.shards.append(data)
@@ -401,8 +411,10 @@ class GraspDataset:
     def __getitem__(self, index):
         j, i = self.index[index]
         s, stats = self.shards[j], self.stats
-        batch = {IMAGE_KEYS[0]: history_image([s['images'][frame] for frame in s['image_index'][i]],
-                                            blank=self.blank)}
+        frames = [s['images'][frame] for frame in s['image_index'][i]]
+        if self.image_frontend is not None:
+            frames = [apply_frontend(f, s['object_kind'][i], self.image_frontend) for f in frames]
+        batch = {IMAGE_KEYS[0]: history_image(frames, blank=self.blank)}
         batch['observation.state'] = ((s['state'][i] - np.asarray(stats['state_mean'], np.float32)) /
                                       np.asarray(stats['state_std'], np.float32))
         batch['action'] = ((s['action'][i] - np.asarray(stats['action_mean'], np.float32)) /
