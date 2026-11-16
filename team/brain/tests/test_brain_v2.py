@@ -24,8 +24,8 @@ from brain.llm import RealLLM  # noqa: E402
 
 GOAL = brain_server.GOAL
 RULE_1 = "Orders are for the whole team; a count is the team total, not per robot."
-RULE_2 = ("Moving a box that no order asks for counts as an error; "
-          "if there is nothing useful for you to do, you may finish.")
+RULE_2 = ("Moving a box that no order asks for counts as an error. Other robots may hold orders you do not know, "
+          "so do not stop just because you cannot do your own order")
 FACTS = [{"table": "orders", "id": "o1", "value": {"box": "blue", "zone": "sign12"}, "seen": 0},
          {"table": "bogus", "id": "x", "value": {"a": 1}},
          {"table": "boxes", "id": "b1"},

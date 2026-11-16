@@ -14,7 +14,9 @@ GOAL = ("Transport each box to the zone named in its order. Orders were given to
         "may not know every order. In this task each robot makes one carry: it carries one box, and once that box is set down its run ends. Only one robot at a time fits through the "
         "door between the box room and the zone room. "
         "Orders are for the whole team; a count is the team total, not per robot. "
-        "Moving a box that no order asks for counts as an error; if there is nothing useful for you to do, you may finish.")
+        "Moving a box that no order asks for counts as an error. Other robots may hold orders you do not know, so do not stop "
+        "just because you cannot do your own order: use what you know and see to make your best guess about which box "
+        "and zone help the team. Finish only if no box you can grasp could plausibly be wanted.")
 
 
 def run_ceiling(per_robot, n_robots):
