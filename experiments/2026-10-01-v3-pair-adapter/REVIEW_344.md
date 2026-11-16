@@ -191,7 +191,7 @@ PR 본문의 주장은 이 구현 커밋 안의 `independent_review` 요약과 �
 | 봉인/공통 소스 보존 | 17개 파일×main/#342/후보 hash 일치, `.github/workflows` diff 없음 |
 | 대상 PR CI | 조회 시 normal CI 33개 check 모두 SUCCESS. 위 새 반례를 해소하지 않음 |
 
-실행은 기존 `/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python`을 재사용했다.
+실행은 기존 `<home>/projects/ugrp/.venv-sim-worker-mac/bin/python`을 재사용했다.
 테스트에서는 native engine·torch·network·실제 worker를 차단했다. 별도 환경·서버·잠금은 만들지 않았다.
 archive의 역사 blob 조회 검사를 위해 scratch 내부 Git의 object alternates를 기존 저장소의 객체에 연결하고
 HEAD/index를 대상 SHA로 설정했다. 원래 저장소·대상 branch 소스는 수정하지 않았다.
@@ -199,7 +199,7 @@ HEAD/index를 대상 SHA로 설정했다. 원래 저장소·대상 branch 소스
 ```bash
 REVIEW_TMP=$(mktemp -d /private/tmp/ugrp-review-344.XXXXXX)
 git archive 45c4ebc43daa96542cf298cea6f69964e501ec4a | tar -x -C "$REVIEW_TMP"
-REVIEW_344_ROOT="$REVIEW_TMP" /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
+REVIEW_344_ROOT="$REVIEW_TMP" <home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
   -m pytest -q tests/test_review_344.py -rxX
 # 자신이 만든 위 scratch만, 검사 종료 뒤 제거한다.
 ```

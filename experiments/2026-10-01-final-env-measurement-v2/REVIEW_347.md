@@ -130,7 +130,7 @@ plateau 부재·격자 경계·체계적 잔차면 기각한다는 기존 제한
 
 - 관련 오프라인 테스트: **112개 통과 + 27 subtests 통과**. 신규 measurement 파일 자체는 33개 통과.
 - 첫 묶음은 110 통과/3 실패였다. 압축 해제본에 Git 이력이 없어 실패한 provider 의존성 2개는
-  `GIT_DIR=/Users/changmin/projects/ugrp/.git`로 역사적 fixture 조회만 연결한 재실행에서 통과했다.
+  `GIT_DIR=<home>/projects/ugrp/.git`로 역사적 fixture 조회만 연결한 재실행에서 통과했다.
 - 남은 1개 `WorkflowManagerTests::test_parent_exit_cleans_background_child`는 sandbox의 `ps` 금지로
   검증 불가다. PR 회귀라고 분류하지 않는다. 초기 실패 JUnit도 보존했다.
 - 리뷰 검사: **2 passed, 6 strict xfailed**. xfail은 위 세 지적의 재현이며 안전성 통과 수가 아니다.
@@ -143,7 +143,7 @@ plateau 부재·격자 경계·체계적 잔차면 기각한다는 기존 제한
 
 ```sh
 UGRP_REVIEW_347_ROOT=/absolute/archive/root \
-  /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_review_347.py -rx
+  <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_review_347.py -rx
 ```
 
 외부 자료는 방법·모델 의미만 확인했다. PR의 수치는 위 독립 계산으로 검증했다.

@@ -3,8 +3,8 @@
 # with the plan stop rules 1-4 and the 40 CPU-h budget (rule 6) applied between stages.
 # CPU time = user+sys of each run_units_v6.sh invocation's children (/usr/bin/time -p).
 set -euo pipefail
-WT=/Users/changmin/projects/ugrp-wt/claude-vis6-replay
-PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+WT=<home>/projects/ugrp-wt/claude-vis6-replay
+PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 VIS=$WT/experiments/2026-09-26-vision-loc
 P=$WT/experiments/2026-09-28-vis6-recipe1
 OUT=$1

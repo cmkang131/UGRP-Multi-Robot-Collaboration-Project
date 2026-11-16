@@ -6,15 +6,15 @@
 # If another same-owner non-timing physics coordinator is already live, SIM slots must share ITS pid: set
 # V102_COORD_PID=<that pid> (it must outlive every worker); the default is this shell's PID.
 set -eu
-cd /Users/changmin/projects/ugrp-wt/calib-unloaded-gain
-PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+cd <home>/projects/ugrp-wt/calib-unloaded-gain
+PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 FINAL_SHA="${V102_SOURCE_SHA:?Set the exact 40-character SHA}"
 STAMP="${V102_STAMP:?Set a UTC stamp such as 20261005T0330Z}"
 MAXPAR="${V102_MAXPAR:-2}"
 COORD_PID="${V102_COORD_PID:-$$}"
 RUNS="${V102_RUNS:-latA latB fwdA fwdB}"
 BRANCH=claude/calib-loaded-gain
-OUT=/Users/changmin/projects/ugrp/outputs/calib-loaded-gain-v102-${FINAL_SHA:0:8}-${STAMP}
+OUT=<home>/projects/ugrp/outputs/calib-loaded-gain-v102-${FINAL_SHA:0:8}-${STAMP}
 test "${#FINAL_SHA}" -eq 40
 test "$(git rev-parse HEAD)" = "$FINAL_SHA"
 test "$(git branch --show-current)" = "$BRANCH"

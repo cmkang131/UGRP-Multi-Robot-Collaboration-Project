@@ -15,7 +15,7 @@ from harness import zone_pair_highpose_frame_gate as gate
 from harness.zone_pair_highpose_exact_speedups import install
 from scripts.run_s2_unknown_start import runtime_factory
 
-ROOT = Path('/Users/changmin/projects/ugrp/outputs')
+ROOT = Path('<home>/projects/ugrp/outputs')
 RAW = ROOT/'s2-realism-329eb4b6-s1060-v139-unknown-start'
 HERE = Path(__file__).resolve().parent
 

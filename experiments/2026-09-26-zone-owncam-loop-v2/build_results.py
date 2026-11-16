@@ -10,7 +10,7 @@ import json
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-RAW = Path('/Users/changmin/projects/ugrp/outputs/owncam-loop-v2-20260926')
+RAW = Path('<home>/projects/ugrp/outputs/owncam-loop-v2-20260926')
 ATTEMPTS = {
     'dev-a1': 'v2 dev (97ee2b0, frozen source): stop-lag motion, loaded camera correction + azimuth scale, loaded look hysteresis',
     'test': 'v2 test split, once, frozen source 97ee2b0 (records-only head b3edddf), NEW seeds 61-66',

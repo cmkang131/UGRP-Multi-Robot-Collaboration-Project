@@ -98,7 +98,7 @@ settle 0.6초, 다음 control tick 0.1초보다 큰 여유다. 이 값은 자기
 212개 dev07 발행 명령과 154개 dev08 자기 보고를 담는다(전체 약 249 KB).
 JPEG는 크기 변경·재인코딩 없이 바이트 그대로 복사했다. 원본은 다음 경로에서 읽기만 했다.
 
-`/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v4-8effc2cee5c3534d553adb75a0d82b49097e5286/{dev07,dev08}`
+`<home>/projects/ugrp/outputs/zone-pair-dev-v4-8effc2cee5c3534d553adb75a0d82b49097e5286/{dev07,dev08}`
 
 manifest의 `source_input`, `source_input_sha256`, 영상 sha256, `sources`가 원본을 연결한다.
 새 테스트에는 eval_only를 복사하지 않았다. dev08 재생은 저장 추정/입력에 대한 **트리거 시점 검사**이며
@@ -113,7 +113,7 @@ manifest의 `source_input`, `source_input_sha256`, 영상 sha256, `sources`가 �
 준비만 확인(물리·모델 호출 없음, 출력은 매번 새 경로):
 
 ```sh
-PAIR_PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+PAIR_PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 "$PAIR_PY" scripts/run_zone_pair_dev.py \
   --prereg experiments/2026-09-27-zone-pair-dev/prereg_v5c.json \
   --run-id dev11 --output /tmp/zone-pair-dev11-v5c-prepare-NEW
@@ -127,12 +127,12 @@ OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 "$PAIR_PY" scripts/run_zone_pair_dev
 ```sh
 bash <<'PAIR_DEV_V5C'
 set -euo pipefail
-PAIR_PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+PAIR_PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 PAIR_OWNER=claude
 PAIR_BRANCH=$(git branch --show-current)
 PAIR_SHA=$(git rev-parse HEAD)
 PAIR_PREREG=experiments/2026-09-27-zone-pair-dev/prereg_v5c.json
-PAIR_ROOT="/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v5c-$PAIR_SHA"
+PAIR_ROOT="<home>/projects/ugrp/outputs/zone-pair-dev-v5c-$PAIR_SHA"
 test "$PAIR_BRANCH" != main
 test -z "$(git status --porcelain)"
 "$PAIR_PY" scripts/disk_report.py

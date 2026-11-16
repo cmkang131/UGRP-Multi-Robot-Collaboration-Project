@@ -2,7 +2,7 @@
   "agent_lock": "잡지 않음(물리·학습·wall 시간 비교 없음)",
   "branch": "kiro/zone-study-core",
   "code_sha": "9484173871ea9971784561e5ed759d5fbddc7e3a",
-  "command": "OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 PYTHONPATH=. python3 scripts/ugrp_session.py run kiro-zone-study-smoke-v6 -- /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/run_zone_study_offline_smoke.py --output /Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6",
+  "command": "OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 PYTHONPATH=. python3 scripts/ugrp_session.py run kiro-zone-study-smoke-v6 -- <home>/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/run_zone_study_offline_smoke.py --output <home>/projects/ugrp/outputs/zone-study-offline-smoke-v6",
   "driver": "scripts/run_zone_study_offline_smoke.py",
   "exit_code": 0,
   "head_at_start": "9484173871ea9971784561e5ed759d5fbddc7e3a dirty=0",
@@ -41,7 +41,7 @@
   },
   "record_version": "v6",
   "report_run": {
-    "command": "OMP_NUM_THREADS=1 ... PYTHONPATH=. python3 scripts/ugrp_session.py run kiro-zone-study-report-v6 -- /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/zone_study_report.py /Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records --output /Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6-report --tb-events /Users/changmin/projects/ugrp/outputs/tensorboard/0927-zone-study-offline-smoke-v6",
+    "command": "OMP_NUM_THREADS=1 ... PYTHONPATH=. python3 scripts/ugrp_session.py run kiro-zone-study-report-v6 -- <home>/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/zone_study_report.py <home>/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records --output <home>/projects/ugrp/outputs/zone-study-offline-smoke-v6-report --tb-events <home>/projects/ugrp/outputs/tensorboard/0927-zone-study-offline-smoke-v6",
     "exit_code": 0,
     "load_average": {
       "after": [
@@ -67,5 +67,5 @@
     "start": "2026-09-27T08:41:15+0900"
   },
   "why_new_version_ko": "실행 번들 ID(zone_study_offline_v3)와 호출 기록 provenance(model_settings_sha256)가 바뀌고 trial record에 send_ledger 절이 생겼다. SIM trace·요청 입력은 v5와 같지만 기록 바이트가 다르므로 v5를 덮어쓰지 않고 새 버전으로 남긴다.",
-  "worktree": "/Users/changmin/projects/ugrp-wt/kiro-study-core (HEAD 94841738, clean: git status --porcelain 0 lines)"
+  "worktree": "<home>/projects/ugrp-wt/kiro-study-core (HEAD 94841738, clean: git status --porcelain 0 lines)"
 }

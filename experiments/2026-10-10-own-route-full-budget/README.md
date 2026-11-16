@@ -85,7 +85,7 @@ B 최근접 거리는 GT 사각형 경계까지의 거리(내부0), 평가 전�
 
 ### 저장·검증
 
-원본: `/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap64-batch` (서버 원본도 보존), 스모크는 같은 상위의 `egomap64-smoke`. 물리/재생은 Mac0, 모델0. 결과 JSON·해시·TensorBoard 확인은 아래와 `results/`에 보존한다.
+원본: `<home>/projects/ugrp/outputs/oracle-runs/egomap64-batch` (서버 원본도 보존), 스모크는 같은 상위의 `egomap64-smoke`. 물리/재생은 Mac0, 모델0. 결과 JSON·해시·TensorBoard 확인은 아래와 `results/`에 보존한다.
 
 - 로컬 관련3파일 **38시험 통과**. 기본 off에서 기존runner의 합성 입력 raw bytes동일. 동결1257모듈/6체크포인트 SHA검사 통과.
 - 실측 첫60초: 목표가 같은5seed×2조건×300프레임=**3000/3000프레임 bytes동일**. 63004는 명시한 상자→B 과제전환으로0/600동일, 숨기거나 제외하지 않는다.

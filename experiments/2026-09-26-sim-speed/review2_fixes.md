@@ -18,7 +18,7 @@
 
 ## 검증
 
-Python은 `/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python`을 사용했다. 모든 pytest에 `OMP_NUM_THREADS=1`, `PYTHONDONTWRITEBYTECODE=1`, worktree 안의 `TMPDIR` 및 `--basetemp`를 지정했다. 모든 슬롯 테스트는 임시 root를 사용한다. CLI 입장 테스트의 census는 독립 fixture로 한정하고 실제 flock·자식 프로세스 수명을 확인했다.
+Python은 `<home>/projects/ugrp/.venv-sim-worker-mac/bin/python`을 사용했다. 모든 pytest에 `OMP_NUM_THREADS=1`, `PYTHONDONTWRITEBYTECODE=1`, worktree 안의 `TMPDIR` 및 `--basetemp`를 지정했다. 모든 슬롯 테스트는 임시 root를 사용한다. CLI 입장 테스트의 census는 독립 fixture로 한정하고 실제 flock·자식 프로세스 수명을 확인했다.
 
 - 수정 전 핵심 회귀: **26 failed** (`tmp/round2-tests/red.txt`). 입력 파일·Linux proc fixture·실제 상속 FD 및 잠금 대기 반례로 원래 결함을 재현했다.
 - 확장 회귀: 원본 소스의 읽기 전용 복사본을 별도 모듈로 로드해 새 API/경계도 확인했다 (`red-final.txt`, 별도 CLI 반례 `red-background2.txt`). 복사본만 사용했으며 `.git`은 쓰지 않았다.
@@ -30,7 +30,7 @@ Python은 `/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python`을 사
 
 ```sh
 OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 TMPDIR="$PWD/tmp/test-env" \
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
   tests/test_sim_speed_tools.py tests/test_sim_slots.py tests/test_sim_speed_review2.py \
   tests/test_sim_speed_runtime.py::RealCensusTests \
   --basetemp="$PWD/tmp/round2-tests/final"

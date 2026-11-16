@@ -5,7 +5,7 @@
 **이 PR은 #356이 먼저 main에 병합되는 데 의존한다.** #360의 동결 부록·r5를 그대로 읽는다.
 시작 시 `origin/main=db37ee4a`를 확인하고 `git merge origin/main`은 already up to date였다.
 
-이번 구현자는 실제 `/Users/changmin/projects/ugrp/outputs/final-pair-v91-heldout-*`의
+이번 구현자는 실제 `<home>/projects/ugrp/outputs/final-pair-v91-heldout-*`의
 파일을 **열람·해시·채점하지 않았다.** plan/bundle/result의 허용된 신원 필드도 읽을 필요가
 없었으며, 테스트는 임시 폴더에 직접 만든 합성 raw만 사용했다. 물리·렌더·모델 호출은 0회다.
 실제 held-out 채점은 이 PR의 독립 검토 뒤 코디네이터가 한 번 수행한다.
@@ -92,8 +92,8 @@ yaw 수치도 동결 evaluator의 직접 호출과 직렬화 바이트가 같다
 
 ```sh
 python3 -m scripts.validate_consumer_criterion_b_v91 \
-  --raw /Users/changmin/projects/ugrp/outputs/final-pair-v91-heldout-04043e27-20261003/zone_wide_corridor_final_v3 \
-  --raw /Users/changmin/projects/ugrp/outputs/final-pair-v91-heldout-04043e27-20261003/zone_wide_door_geometry_v3 \
+  --raw <home>/projects/ugrp/outputs/final-pair-v91-heldout-04043e27-20261003/zone_wide_corridor_final_v3 \
+  --raw <home>/projects/ugrp/outputs/final-pair-v91-heldout-04043e27-20261003/zone_wide_door_geometry_v3 \
   --rotation-addendum --refetch-commitment \
   --output /absolute/path/outside-raw/criterion_B_v91_with_yaw_NEW.json
 ```

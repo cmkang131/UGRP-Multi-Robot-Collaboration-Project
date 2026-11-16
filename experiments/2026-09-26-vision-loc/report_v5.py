@@ -76,7 +76,7 @@ def main():
         'source_sha256':{str(out/'metrics.json'):vio.sha_file(out/'metrics.json'),str(c.PLAN):vio.sha_file(c.PLAN),
                          str(Path(__file__).resolve()):vio.sha_file(Path(__file__))},
         'videos':[],'scope':'completed dev-only shadow evaluation; no new video'})
-    shared=Path('/Users/changmin/projects/ugrp/outputs/tensorboard')
+    shared=Path('<home>/projects/ugrp/outputs/tensorboard')
     url='http://127.0.0.1:6006/?'+urllib.parse.urlencode({'runFilter':'^0927-vis5-dev/',
         'pinnedCards':json.dumps([{'plugin':'scalars','tag':tag} for tag in pins]),'smoothing':'0'})+'#timeseries'
     c.save(out/'tensorboard-view.json',{'active_logdir':str(shared),'local_snapshot':str(snapshot),

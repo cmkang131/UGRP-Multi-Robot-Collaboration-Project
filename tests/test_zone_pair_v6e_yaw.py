@@ -239,7 +239,7 @@ def test_pose_source_applies_the_increment_only_with_the_flag():
 
 # ------------------------------------------------------------ recorded-frame replay
 FIT_ROWS = json.loads((EXP/'carry_pair_fit_rows.json').read_text()) if (EXP/'carry_pair_fit_rows.json').exists() else []
-OUTPUTS = Path('/Users/changmin/projects/ugrp/outputs')
+OUTPUTS = Path('<home>/projects/ugrp/outputs')
 
 
 def test_committed_replay_rows_reproduce_the_relative_yaw_correlation_and_residual():

@@ -10,9 +10,9 @@ from harness.self_wall_segments import build_segment_map
 from harness.self_odom_grid import transform,ray_cells
 from scripts.run_active_wall_nav2 import dump
 EXP=Path(__file__).resolve().parents[1]
-OUT=Path('/Users/changmin/projects/ugrp/outputs/wall-segment-dev-v1')
-PRIOR=Path('/Users/changmin/projects/ugrp/outputs/pulse-rotation-left-v1')
-RAW=Path('/Users/changmin/projects/ugrp/outputs/active-frontier-audit-v1/new-seed')
+OUT=Path('<home>/projects/ugrp/outputs/wall-segment-dev-v1')
+PRIOR=Path('<home>/projects/ugrp/outputs/pulse-rotation-left-v1')
+RAW=Path('<home>/projects/ugrp/outputs/active-frontier-audit-v1/new-seed')
 def load(p):return json.loads(p.read_text())
 def rows(p):return [json.loads(s) for s in p.read_text().splitlines()]
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()

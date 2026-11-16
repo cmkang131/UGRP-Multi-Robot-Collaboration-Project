@@ -48,7 +48,7 @@ v1/v2/prob/RBPF/graph/confidence와 카메라 보정은 변경하지 않는다. 
 오프라인 RGB/로그 분석만 예정, 새 물리/렌더/모델 호출 없음. 새 물리가 필요하면 별도 사전 등록·agent_lock·
 ugrp_session·한 번에 하나·freeze금지를 따른다. 이번에 관측 부족을 이유로 자동 새 실행을 시작하지 않는다.
 시험은 변경 모듈1–3개·off golden. 통과 뒤에만 커밋, 모든 메시지에 Codex trailer.
-raw는 `/Users/changmin/projects/ugrp/outputs/wall-floor-boundary-v1/`, 기존 원본은 읽기 전용.
+raw는 `<home>/projects/ugrp/outputs/wall-floor-boundary-v1/`, 기존 원본은 읽기 전용.
 1 MiB 이하 표/그림/manifest만 실험에 남긴다. ENOSPC=HOST_ERROR, 같은 원인 두 번 막히면 중단.
 PR #405 DRAFT 유지·병합 없음, 다른 worktree 수정 없음. TensorBoard는 기존 사용자 결정대로 생략한다.
 
@@ -143,7 +143,7 @@ metric P/R은 둘 다0%였다. 문헌 기본법이 이 장면에서 실패했다
 - 새 예측12파일(기존6+새6) hash와 freeze4파일 hash 검증. 자기 입력 allowlist와 출력 접점의 양의 깊이/4 m를
   전체 검증했다. 관련 시험2개를 기존 CI 목록에 추가했으며 원격 CI는 push 뒤 별도 상태다.
 - [raw manifest](results/raw-manifest.json)에 경로·bytes·SHA256. raw는 primary checkout의
-  `/Users/changmin/projects/ugrp/outputs/wall-floor-boundary-v1/`에만 있다. Git에는 작은 결과/그림을 보존하며
+  `<home>/projects/ugrp/outputs/wall-floor-boundary-v1/`에만 있다. Git에는 작은 결과/그림을 보존하며
   raw의 원격 백업 완료로 표현하지 않는다. 기존 원본·이전 결과·미추적 파일은 그대로 보존했다.
 - MuJoCo 실행·렌더·모델 호출·새 venv/라이브러리 설치·timing 측정 모두0회. 잠금은 만들지 않았다.
   TensorBoard/Drive는 기존 사용자 결정대로 생략. PR #405 DRAFT 유지, 병합 없음.

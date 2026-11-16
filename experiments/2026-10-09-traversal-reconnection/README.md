@@ -2,7 +2,7 @@
 
 ## 사전등록 (결과 전)
 
-감독 승인: egomap51의 47성분·B 경로0/4를 복구 양끝/장소 재인식으로 연결한다. 문·벽 검출기·모션·기존 도착 수치 동결. 기존 seed49001–49006 **동일6녹화의 개발 재생**, 확증 자료 아님. 옵션 `return_policy=traversal_graph_reconnect_v1` 기본off; `traversal_graph_v1` 보존. raw는 `/Users/changmin/projects/ugrp/outputs/traversal-reconnection-v1/`. 모델0, 관문 전 물리0, timing 측정0/잠금 미취득, NI=0·NO_BG_NICE.
+감독 승인: egomap51의 47성분·B 경로0/4를 복구 양끝/장소 재인식으로 연결한다. 문·벽 검출기·모션·기존 도착 수치 동결. 기존 seed49001–49006 **동일6녹화의 개발 재생**, 확증 자료 아님. 옵션 `return_policy=traversal_graph_reconnect_v1` 기본off; `traversal_graph_v1` 보존. raw는 `<home>/projects/ugrp/outputs/traversal-reconnection-v1/`. 모델0, 관문 전 물리0, timing 측정0/잠금 미취득, NI=0·NO_BG_NICE.
 
 ### 변경하는 조건
 
@@ -98,7 +98,7 @@
 - 변경 모듈 시험26개 통과: `test_own_traversal_reconnection.py`, `test_own_traversal_graph.py`, `test_self_map_return_repeat.py`. 기존 off trace/입자/RNG 바이트 동일, old v1 보존, 직접/캐시 정합 JSON 동일, 복구 실패 미연결·k후보·부분 회전1회/시간상한·prefix 누설 차단 확인.
 - 구현 경로: `harness/own_traversal_reconnection.py`의 `observe/_node`:39–82 복구 보존, `pair_match/connect`:84–108 기존 CSM+cache, `match`:114–126 k후보, `PartialReturn`:129–163 부분 회전. `harness/own_traversal_graph.py`에는 새 옵션 dispatch만 추가했다. 외부 라이브러리 추가0, 검출·동작모델·수락 수치 변경0.
 - 재현: `code/offline.py predict --seed 49001`(각6건, 기존 prediction 덮어쓰기 금지) → 모든 예측 봉인 → `score --seed ...` → `gate` → `code/diagnose.py`. 원본/예측 해시와 코드 freeze는 `freeze.json`, `results/*.json`, raw의 `seal.json`에 기록.
-- 실패 영상: `/Users/changmin/projects/ugrp/outputs/traversal-reconnection-v1/49001/wrist-map-graph-4x.mp4`. eg49의 기존 손목 RGB+자기 지도/경로 위에 eg52 노드·녹색 수락 연결을 덧그린 **오프라인 설명 영상**이다. 새 물리 실패 재실행도 아니며 성공 영상은 성공 사례가 없어 만들지 않았다. 전체 decode 및 첫/중간/마지막 화면 확인, SHA는 `results/video.json`.
+- 실패 영상: `<home>/projects/ugrp/outputs/traversal-reconnection-v1/49001/wrist-map-graph-4x.mp4`. eg49의 기존 손목 RGB+자기 지도/경로 위에 eg52 노드·녹색 수락 연결을 덧그린 **오프라인 설명 영상**이다. 새 물리 실패 재실행도 아니며 성공 영상은 성공 사례가 없어 만들지 않았다. 전체 decode 및 첫/중간/마지막 화면 확인, SHA는 `results/video.json`.
 
 ![봉인 그래프/원 녹화 실패](figures/final-graph.jpg)
 

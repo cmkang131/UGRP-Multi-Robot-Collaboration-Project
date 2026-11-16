@@ -170,15 +170,15 @@
 | 통신 조건·입력 | `experiments/2026-09-28-main-study-prereg-draft/PREREG_DRAFT.md`, `docs/zone_study_scenarios.md` |
 | 초음파 | `docs/ultrasonic_range_sensor.md` |
 | 이번 산출물 | `experiments/2026-09-29-carry-relocalization-design/`: `wall_height_check.{py,json}`, `sigma_budget.{py,json}`, `render_views.py`, `observer_poses.json`, `observer_geometry.{py,json}`, `observer_montage.jpg`, `render_hashes.tsv`, `geom_min.py` |
-| 렌더 원본(로컬) | `/Users/changmin/projects/ugrp/outputs/carry-relocalization-design-20260929/renders/`(56장 + `render_manifest.json`) |
-| 시간 원본(로컬) | `/Users/changmin/projects/ugrp/outputs/pair-stage-probes-*/cases.jsonl`, `.../pair-stage-probes-ece01311-fcal/cases/`, `.../zone-m2-pair-kiro-20260926/stage2c-ca44f66/` |
+| 렌더 원본(로컬) | `<home>/projects/ugrp/outputs/carry-relocalization-design-20260929/renders/`(56장 + `render_manifest.json`) |
+| 시간 원본(로컬) | `<home>/projects/ugrp/outputs/pair-stage-probes-*/cases.jsonl`, `.../pair-stage-probes-ece01311-fcal/cases/`, `.../zone-m2-pair-kiro-20260926/stage2c-ca44f66/` |
 
 ## 10. 재현
 
 ```
-PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 D=experiments/2026-09-29-carry-relocalization-design
-C=/Users/changmin/projects/ugrp/outputs/pair-stage-probes-ece01311-fcal/cases
+C=<home>/projects/ugrp/outputs/pair-stage-probes-ece01311-fcal/cases
 $PY $D/wall_height_check.py $C $D/wall_height_check.json
 python3 $D/sigma_budget.py $D/sigma_budget.json
 $PY $D/render_views.py $C <out_dir> --legs 0 1 2 3 4 5 6

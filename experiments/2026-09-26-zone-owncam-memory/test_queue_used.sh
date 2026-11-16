@@ -1,8 +1,8 @@
 #!/bin/bash
 # Test 161-166, once per condition, both conditions of a seed concurrently (prereg stop_rule.test).
-WT=/Users/changmin/projects/ugrp-wt/kiro-owncam-memory
+WT=<home>/projects/ugrp-wt/kiro-owncam-memory
 E=$WT/experiments/2026-09-26-zone-owncam-memory
-O=/Users/changmin/projects/ugrp/outputs/owncam-memory-20260926
+O=<home>/projects/ugrp/outputs/owncam-memory-20260926
 for s in 161 162 163 164 165 166; do
   FREE=$(df -g "$O" | awk 'NR==2 {print $4}')
   if [ "$FREE" -lt 30 ]; then echo "$(date '+%F %T') STOP: ${FREE} GiB free before s$s" >> $O/logs/test-a1-queue.log; exit 3; fi

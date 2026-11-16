@@ -23,7 +23,7 @@ M2 성공 **49회 / 로봇 trace 98개**, 공통 실행기 실패 **dev03–08 6
 
 **grasp v4/v5와 executor v5/v6는 번호 체계가 다르다.** 위 SHA를 기준으로 읽는다. M2 stage1은 `3fdf011…`, stage2b 및 Kiro 완료분은 `ed15489…`, stage2c는 `ca44f66…`이다. 나머지 dev 성공은 각 결과의 source SHA로 분리했다. ON/OFF·test/dev·버전을 합쳐 성공률을 새로 계산하지 않는다. stage1 8/8과 stage2b 4/5는 기존 코호트 판정이며 이번 49회는 저장된 성공 실행 전체의 목록이다.
 
-원본 루트는 `/Users/changmin/projects/ugrp/outputs/zone-m2-pair-20260926/`, `zone-m2-pair-kiro-20260926/`, `zone-pair-dev-v2-*`, `zone-pair-dev-v3-*`, `zone-pair-dev-v4-*`다. 완료된 `zone-pair-dev-v5-*` 결과는 점검 시 없었다. dev09/10을 완료로 세거나 기다리는 자동 작업을 만들지 않았다.
+원본 루트는 `<home>/projects/ugrp/outputs/zone-m2-pair-20260926/`, `zone-m2-pair-kiro-20260926/`, `zone-pair-dev-v2-*`, `zone-pair-dev-v3-*`, `zone-pair-dev-v4-*`다. 완료된 `zone-pair-dev-v5-*` 결과는 점검 시 없었다. dev09/10을 완료로 세거나 기다리는 자동 작업을 만들지 않았다.
 
 ## 구조 차분표
 
@@ -119,7 +119,7 @@ S에서는 98/98 로봇 trace에 yaw 3° 초과로 manipulation gate 거부가 �
 기존 Mac 환경을 재사용한다. 새 환경·서버·실험 프로세스는 시작하지 않는다. Python import 단계에서 `mujoco`, `torch`, `tensorflow`를 차단하며 모델 로드도 하지 않는다. OpenCV 태그 기하/PF/정적 FK 계산만 수행한다.
 
 ```sh
-PAIR_PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+PAIR_PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 PAIR_DIR=experiments/2026-09-27-zone-pair-parity
 export OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1
 "$PAIR_PY" "$PAIR_DIR/replay.py" --mode dev --output "$PAIR_DIR/dev-main.json"

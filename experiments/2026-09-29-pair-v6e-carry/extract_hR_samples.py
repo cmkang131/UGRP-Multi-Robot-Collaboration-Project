@@ -8,7 +8,7 @@ Output: hR_samples.json (read by harness.pair_stage_probe.hr_rows / run_pair_sta
 """
 import json
 from pathlib import Path
-OUT = Path('/Users/changmin/projects/ugrp/outputs')
+OUT = Path('<home>/projects/ugrp/outputs')
 RAWS = ['4714263a-v6d-final-bound-e2e', 'b534a9b5-v6c-grasp-grid']
 samples = []
 for raw in RAWS:

@@ -202,10 +202,10 @@ python3 experiments/2026-09-30-process-review/analyze.py --out /tmp/ugrp-process
 python3 experiments/2026-09-30-process-review/git_metrics.py --out /tmp/ugrp-process-git-NEW
 
 # 로컬 raw가 있는 경우에만 선택 manifest 메타데이터를 확인한다.
-python3 experiments/2026-09-30-process-review/git_metrics.py --out /tmp/ugrp-process-git-local-NEW --local-outputs /Users/changmin/projects/ugrp/outputs
+python3 experiments/2026-09-30-process-review/git_metrics.py --out /tmp/ugrp-process-git-local-NEW --local-outputs <home>/projects/ugrp/outputs
 
 # 선택 사항: 허용된 로컬 로그의 집계. 본문은 내보내지 않는다.
-python3 experiments/2026-09-30-process-review/transcript_metrics.py --root /Users/changmin/.claude/projects/-Users-changmin-projects-ugrp --end 2026-09-30T09:49:03.434086+00:00 --out /tmp/ugrp-process-transcript-NEW.json
+python3 experiments/2026-09-30-process-review/transcript_metrics.py --root <home>/.claude/projects/-<home>-projects-ugrp --end 2026-09-30T09:49:03.434086+00:00 --out /tmp/ugrp-process-transcript-NEW.json
 ```
 
 Git 객체는 snapshot SHA와 #292 HEAD를 포함해야 한다. 오래된 PR ref가 로컬에 없으면 해당 PR ref를 fetch한 뒤 실행한다. git 기반 표는 고정 SHA에서 읽으므로 작업 트리 변경에 영향받지 않는다. 로컬 manifest와 비공개 세션 로그는 새 clone에 없을 수 있다. 그 두 보조 자료의 재수집 제한을 GitHub/git 측정의 재현성과 구분한다.

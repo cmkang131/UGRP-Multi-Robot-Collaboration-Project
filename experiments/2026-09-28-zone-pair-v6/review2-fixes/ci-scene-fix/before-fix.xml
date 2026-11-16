@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="1.063" timestamp="2026-09-28T08:55:40.812785+09:00" hostname="gangchangmin-ui-MacBookAir.local"><testcase classname="tests.test_zone_pair_v5" name="test_v5_prepare_copies_frozen_registration_without_physics_or_models[current_source_fixture-dev09]" time="0.367"><failure message="TypeError: 'tuple' object does not support item assignment">tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-pair-beamrel/.pytest_tmp/test_v5_prepare_copies_frozen_0')
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="1.063" timestamp="2026-09-28T08:55:40.812785+09:00" hostname="<mac-host>"><testcase classname="tests.test_zone_pair_v5" name="test_v5_prepare_copies_frozen_registration_without_physics_or_models[current_source_fixture-dev09]" time="0.367"><failure message="TypeError: 'tuple' object does not support item assignment">tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-pair-beamrel/.pytest_tmp/test_v5_prepare_copies_frozen_0')
 run = 'dev09', registration_kind = 'current_source_fixture'
 
     @pytest.mark.parametrize('run', ['dev09', 'dev10'])
@@ -64,7 +64,7 @@ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
      ^^^^^^^^^
 E    TypeError: 'tuple' object does not support item assignment
 
-/private/tmp/v6-ci-platform-repro.py:14: TypeError</failure></testcase><testcase classname="tests.test_zone_pair_v5" name="test_v5_prepare_copies_frozen_registration_without_physics_or_models[current_source_fixture-dev10]" time="0.241"><failure message="TypeError: 'tuple' object does not support item assignment">tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-pair-beamrel/.pytest_tmp/test_v5_prepare_copies_frozen_1')
+/private/tmp/v6-ci-platform-repro.py:14: TypeError</failure></testcase><testcase classname="tests.test_zone_pair_v5" name="test_v5_prepare_copies_frozen_registration_without_physics_or_models[current_source_fixture-dev10]" time="0.241"><failure message="TypeError: 'tuple' object does not support item assignment">tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-pair-beamrel/.pytest_tmp/test_v5_prepare_copies_frozen_1')
 run = 'dev10', registration_kind = 'current_source_fixture'
 
     @pytest.mark.parametrize('run', ['dev09', 'dev10'])

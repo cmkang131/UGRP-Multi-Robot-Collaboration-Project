@@ -56,7 +56,7 @@ GT는 예측 봉인 후 평가에만. 전체891프레임(미학습 포함) 관�
 테이프 FP와 체크/테두리 실패 예시는 평가용 RGB/기하 분류로 기록. 상위 예시와 고정
 시간6분위 예시를 구분하고, 예시를 보고 옵션·문턱·참조영역을 바꾸지 않는다.
 
-raw `/Users/changmin/projects/ugrp/outputs/ulrich-floor-contact-v1`.
+raw `<home>/projects/ugrp/outputs/ulrich-floor-contact-v1`.
 소스/설정 커밋 후 실행, 관련1–3시험 통과 후에만 커밋·push. 감독 파일 단계마다 cat.
 ENOSPC=HOST_ERROR, 원본/raw 삭제0, 다른 프로세스 변경0, 유료/원격 계산0.
 
@@ -167,6 +167,6 @@ held score 재실행0; 그림은 저장된 예측으로만 만들었다.
 원본111개 삽입 시각의 off 관측 동일, paired off grid bytes는 egomap37과 동일,
 원본 grid/pose/카메라·RGB sha·미추적4파일 불변. 모델/물리/렌더/잠금0.
 [검증·분모](results/verification.json), [원본 목록·해시](results/raw-manifest.json).
-raw는 `/Users/changmin/projects/ugrp/outputs/ulrich-floor-contact-v1`에 로컬 보존한다.
+raw는 `<home>/projects/ugrp/outputs/ulrich-floor-contact-v1`에 로컬 보존한다.
 원격 raw 백업이 아니며 그림은 각1MiB/실험5MiB 미만. PR405 DRAFT, 병합0.
 기본off 유지, 실패 뒤 다른 후보 추가·문턱 재선택·물리 적용은 하지 않았다.

@@ -1,6 +1,6 @@
 """Yaw-direction analysis, step 1: per case and robot table of yaw change vs the registered loaded-plant prediction.
 
-Offline only. Reads recorded raw (read-only) under /Users/changmin/projects/ugrp/outputs/pair-stage-probes-*; no physics
+Offline only. Reads recorded raw (read-only) under <home>/projects/ugrp/outputs/pair-stage-probes-*; no physics
 is run, no source file is changed. GT yaw (``eval_only/trace.jsonl``) is used ONLY as the analysis target; whether a
 later model may use a column is decided in ``yaw_direction_models.py`` (columns named ``know_*`` are quantities the
 controller has or could measure; ``gt_*`` and placement identity are leaks).
@@ -23,7 +23,7 @@ import numpy as np
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
-OUT = Path('/Users/changmin/projects/ugrp/outputs')
+OUT = Path('<home>/projects/ugrp/outputs')
 CAL = json.load(open(ROOT/'experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json'))['params']
 MP = CAL['motion_loaded']
 GAIN = np.asarray(MP['gain'], float)

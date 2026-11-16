@@ -2,7 +2,7 @@
 """Offline-only RGB sweep-topology probe; reads saved images/results, writes /tmp only."""
 import cv2, numpy as np, json, math
 from pathlib import Path
-ROOT=Path('/Users/changmin/projects/ugrp/outputs')
+ROOT=Path('<home>/projects/ugrp/outputs')
 CASES=[('v13',218,219),('v13',302,303),('v14',695,696),('v14',990,991)]
 
 def beam_geom(call,w,h):

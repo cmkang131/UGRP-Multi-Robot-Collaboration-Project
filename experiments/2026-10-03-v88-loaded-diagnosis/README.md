@@ -15,18 +15,18 @@
 | fine | `outputs/final-pair-v88-cal-747d2b9f-20261001-r6/calibration-fine` |
 | loaded | `outputs/final-pair-v88-cal-747d2b9f-20261001-r8/calibration-loaded` |
 | 기존 조립 결과 | `outputs/final-pair-v88-measured-dryrun-20261003-035426/{calibration,fit_report,input_manifest}.json` |
-| 이번 전체 로컬 분석 | `/Users/changmin/projects/ugrp/outputs/v88-loaded-diagnosis-20261003` |
+| 이번 전체 로컬 분석 | `<home>/projects/ugrp/outputs/v88-loaded-diagnosis-20261003` |
 
-위 `outputs/`의 기준 경로는 `/Users/changmin/projects/ugrp`다. 세 원본 수집의 전체 파일 목록·해시를 PR #358 입출력 모듈로 감사하고, 마지막에 **11,175개 입력 파일의 불변성**을 다시 확인했다. 세 감사 모두 PASS, 하중 분류도 기존 결과와 같았다. 원본을 수정하지 않았다. 원본 목록 해시는 [motion.json](motion.json)의 `raw`, 기준·과거 적합·dry-run 해시는 [reference_hashes.json](reference_hashes.json)에 있다.
+위 `outputs/`의 기준 경로는 `<home>/projects/ugrp`다. 세 원본 수집의 전체 파일 목록·해시를 PR #358 입출력 모듈로 감사하고, 마지막에 **11,175개 입력 파일의 불변성**을 다시 확인했다. 세 감사 모두 PASS, 하중 분류도 기존 결과와 같았다. 원본을 수정하지 않았다. 원본 목록 해시는 [motion.json](motion.json)의 `raw`, 기준·과거 적합·dry-run 해시는 [reference_hashes.json](reference_hashes.json)에 있다.
 
 읽지 않은 범위: `outputs/final-pair-v91-heldout-*` 전체. 이를 포함하는 검색·채점·조정은 하지 않았다. 기존 v6e/v6g의 훈련 적합값과 문서에 이미 실린 비교표만 사용했다. 새 물리 실행, 렌더링, 모델 호출은 없다. 기록된 관절 위치로 한 기구학 계산과 시선 교차 계산은 오프라인 진단이며 학생 입력·실행 보정이 아니다. `.github/workflows`, 동결 기준, 번들, 워크플로, 제어기는 변경하지 않았다.
 
 재현 명령(각 출력은 **새 경로**여야 한다):
 
 ```sh
-PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 DIAG=experiments/2026-10-03-v88-loaded-diagnosis
-OUT=/Users/changmin/projects/ugrp/outputs/v88-loaded-diagnosis-NEW
+OUT=<home>/projects/ugrp/outputs/v88-loaded-diagnosis-NEW
 PYTHONDONTWRITEBYTECODE=1 OPENBLAS_NUM_THREADS=1 "$PY" "$DIAG/diagnose.py" "$OUT"
 PYTHONDONTWRITEBYTECODE=1 "$PY" "$DIAG/inspect_geometry.py" "$OUT/geometry.json"
 PYTHONDONTWRITEBYTECODE=1 "$PY" "$DIAG/inspect_rejections.py" "$OUT/rejections.json"

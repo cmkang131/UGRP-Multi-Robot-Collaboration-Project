@@ -10,7 +10,7 @@ from scripts.run_wall_servo_stiffness import arm
 
 ROOT=old.ROOT
 EXP=ROOT/'experiments/2026-10-08-wall-segment-dev'
-RAW=Path('/Users/changmin/projects/ugrp/outputs/wall-segment-dev-v1')
+RAW=Path('<home>/projects/ugrp/outputs/wall-segment-dev-v1')
 
 
 def dump(path,value):

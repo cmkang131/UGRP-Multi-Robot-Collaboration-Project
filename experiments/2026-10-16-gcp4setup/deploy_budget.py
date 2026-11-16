@@ -6,7 +6,7 @@ from ops import ROOT, PROJECT, cloud
 reference = ROOT.parent / '2026-10-16-gcp3setup/evidence'
 number = json.loads((ROOT/'evidence/project.json').read_text())['projectNumber']
 billing = json.loads((ROOT/'evidence/billing.json').read_text())
-assert billing['billingEnabled'] and billing['billingAccountName'] == 'billingAccounts/01C770-8A2F1F-63BA5F'
+assert billing['billingEnabled'] and billing['billingAccountName'] == 'billingAccounts/<billing-account-2>'
 assert json.loads((ROOT/'evidence/instances-before.json').read_text()) == []
 # Only fresh gcp4 resources are changed; no cross-project API calls are allowed by ops.cloud.
 for name in ['enable-services','topic-create','sa-create','stopper-compute-retry','stopper-eventarc',

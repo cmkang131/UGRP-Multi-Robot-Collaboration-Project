@@ -1,7 +1,7 @@
 # S3 door_1 예약·양보 (DRAFT, 오프라인 구현)
 
 기준: PR #394 `e4b72aaffb0d756560397b7f0a30995da12da89f`.
-작업: `codex/s3-door-yield`, 전용 `/Users/changmin/projects/ugrp-wt/s3-door`.
+작업: `codex/s3-door-yield`, 전용 `<home>/projects/ugrp-wt/s3-door`.
 **시뮬레이션·MuJoCo compile/reset/step/render·실제 모델 호출 금지, 병합 금지.**
 다른 작업의 잠금·프로세스·worktree·PR·raw는 수정하지 않는다. worktree 관리 도구의 상한 예외는 새 전용 worktree 생성/기존 작업 보존 요청을 사유로 기록했다.
 
@@ -42,8 +42,8 @@ CLEAR는 자기 작업이 끝난 뒤에만 가능하므로 이 단방향 일회 
 
 ```sh
 # 계획 확인만. 실제 실행은 이번 작업에서 금지.
-PYTHONPATH=. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.sim_cli workflow plan zone-s3-door-yield-v108 -- \
-  --expected-source-sha <검증한-40자리-SHA> --output /Users/changmin/projects/ugrp/outputs/s3-door-PLAN --seed 601
+PYTHONPATH=. <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.sim_cli workflow plan zone-s3-door-yield-v108 -- \
+  --expected-source-sha <검증한-40자리-SHA> --output <home>/projects/ugrp/outputs/s3-door-PLAN --seed 601
 # 같은 옵션을 기존 runner에 직접 넘길 수도 있다(기본은 off).
 # python -m scripts.run_s3_host ... --door-yield s3-door-yield-v1
 ```
@@ -69,5 +69,5 @@ PYTHONPATH=. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m sc
 - OFF: #394 실행기 원문을 `tests/fixtures/s3_runner_e4b72aaf.py`에 SHA-256으로 고정. 정상 종료·horizon·같은 tick 실패의 실제 호스트 루프를 가짜 backend에서 실행해 발행 명령/모든 저장 파일을 바이트 비교했다. 생략/명시 off 계획 출력도 동결 실행기와 같다. 물리 입력이나 성공 궤적 재생 검증은 아니다.
 - ON: 동시 요청 6순열, 짝 한 대만 종료 시 예약 유지, stale/NaN/큰 불확실성/문 안 위치, 중복·누락·과거/잘못된 신호, 실패 시 전체 hold, 세 조건 동등성, producer 대기, 최종 대기 시간, 새 bundle 변조 거절/관리 경로/기록 저장 확인.
 - 구문·`git diff --check`·workflow ID 중복 없음·기존 CI glob의 새 시험 포함 확인. 기존 host/계약/pair/solo/physics host 5파일은 #394와 바이트 동일하다.
-- [검증 목록·소스 해시](offline_validation.json). 원본 로그/JUnit/보존 파일 해시는 `/Users/changmin/projects/ugrp/outputs/s3-door-offline-20261006/`에 보존한다.
+- [검증 목록·소스 해시](offline_validation.json). 원본 로그/JUnit/보존 파일 해시는 `<home>/projects/ugrp/outputs/s3-door-offline-20261006/`에 보존한다.
 - 시뮬레이션·MuJoCo·모델 호출 0. 실제 양보/통과·위치 오차·대기 비용·운반 성공과 #397 최종 채택은 미검증. DRAFT/병합 금지 유지.

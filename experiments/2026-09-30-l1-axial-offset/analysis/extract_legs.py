@@ -7,7 +7,7 @@ everything the L1-axial-offset diagnosis needs: the placement and the order shee
 controller input), the fitted first-order-lag plant of every forward leg and the PF estimates at the leg boundaries.
 
 Usage: extract_legs.py [--out results/leg_table.json]
-Raw stays in /Users/changmin/projects/ugrp/outputs (read only).
+Raw stays in <home>/projects/ugrp/outputs (read only).
 """
 import argparse
 import hashlib
@@ -18,7 +18,7 @@ from pathlib import Path
 import numpy as np
 from scipy.optimize import least_squares
 
-RAW = Path('/Users/changmin/projects/ugrp/outputs')
+RAW = Path('<home>/projects/ugrp/outputs')
 COHORTS = {          # label -> (raw dir, note)
     'cA': ('b-v6h-gain-69c2a99a-cA', 'fixed base sheet, k1g+p2f'),
     'cB': ('b-v6h-gain-69c2a99a-cB', 'fixed base sheet, k1g+p2f+gain'),

@@ -1,7 +1,7 @@
 from pathlib import Path
 import hashlib,json
-BASE=Path('/Users/changmin/projects/ugrp/outputs')
-EXP=Path('/Users/changmin/projects/ugrp-wt/ego-wall-map/experiments/2026-10-11-egomap72-fresh')
+BASE=Path('<home>/projects/ugrp/outputs')
+EXP=Path('<home>/projects/ugrp-wt/ego-wall-map/experiments/2026-10-11-egomap72-fresh')
 NAMES=['egomap72-fresh-92f52205','egomap72-retry-92f52205','egomap72-b-return-29c0c169']
 
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()

@@ -19,7 +19,7 @@
 | 전원·디스크 | AC 전원(`pmset`), 여유 104 GiB |
 | 시간·CPU | 17:19–21:52Z(4.5 h 벽시계). 계획 부분 **10.54 CPU-h**(user+sys, `/usr/bin/time`), 보충 0.91 CPU-h. 예산 40 CPU-h 이내 |
 | 부하 | 단위 시작·끝 1분 부하 433회 기록: 최소 8.2, 중앙 26.0, 최대 92.2(다른 작업 포함). [`results/load.txt`](results/load.txt) |
-| raw | `/Users/changmin/projects/ugrp/outputs/vis6-recipe1-20260929/`(875 파일, 378 MB, 로컬만). 파일별 sha256: [`results/raw_manifest.json`](results/raw_manifest.json) |
+| raw | `<home>/projects/ugrp/outputs/vis6-recipe1-20260929/`(875 파일, 378 MB, 로컬만). 파일별 sha256: [`results/raw_manifest.json`](results/raw_manifest.json) |
 | 실행 단위 | 계획 199 + 보충 15 = 214 단위, 실패 0 |
 
 ### P0 재현 — 통과
@@ -113,7 +113,7 @@ F가 열리지 않아 계획상 validation 채점은 없다. 태그 없는 위�
 
 ### TensorBoard
 
-- 스냅샷 `/Users/changmin/projects/ugrp/outputs/tensorboard/0929-vis6-replay`(run 12개: 후보 11개 fit + T0 validation 보충, `collection.json` sha256 `f2e91db4…`). 파생 뷰 생성기 [`build_tb_views.py`](build_tb_views.py), 변환은 `scripts/export_offline_audit.py`.
+- 스냅샷 `<home>/projects/ugrp/outputs/tensorboard/0929-vis6-replay`(run 12개: 후보 11개 fit + T0 validation 보충, `collection.json` sha256 `f2e91db4…`). 파생 뷰 생성기 [`build_tb_views.py`](build_tb_views.py), 변환은 `scripts/export_offline_audit.py`.
 - 검증: EventAccumulator로 다시 읽어 스칼라 468개를 원본 metrics JSON과 대조, 불일치 0([`results/tensorboard_verification.json`](results/tensorboard_verification.json)). 공용 서버(PID 9293, 재시작 안 함)의 `/data/runs`가 새 run 12개를 보여 주고, 스칼라 API 값이 원본과 같다.
 - 대시보드: `outputs/tensorboard-view.json`의 `vis6_replay_20260929` URL(고정 카드 8개: 포함률, >3σ, 소실, 문 p90·횡 p99·yaw p90, 사건 프레임, 검출기 recall). 브라우저에서 "Pinned 8 cards"를 확인했다. 서버 run이 500개를 넘어 새 run은 기본 선택 해제 상태이므로 `0929-vis6-replay` run을 직접 선택한다. HParams 열은 `policy, case, split, seed, outcome`을 다시 적용한다. 성공률·명령 수·모델 호출·응답 시간 태그는 오프라인 재생이라 없다.
 
@@ -208,11 +208,11 @@ VIS5 PF(`vision_pf_v5.py`) 위에 VIS6 하위 클래스를 얹는다. 세 구성
 
 ```sh
 # 이 PR의 커밋에 고정된 worktree에서 실행한다(기본 체크아웃에서 돌리지 않는다).
-WT=/Users/changmin/projects/ugrp-wt/claude-vis6
-PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+WT=<home>/projects/ugrp-wt/claude-vis6
+PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 VIS=$WT/experiments/2026-09-26-vision-loc
 P=$WT/experiments/2026-09-28-vis6-recipe1
-OUT=/Users/changmin/projects/ugrp/outputs/vis6-recipe1-$(date +%Y%m%d)   # 새 경로. 기존 산출물에 덧쓰지 않는다
+OUT=<home>/projects/ugrp/outputs/vis6-recipe1-$(date +%Y%m%d)   # 새 경로. 기존 산출물에 덧쓰지 않는다
 FIT="vl-dev-s909 vl-dev-s910 vl-dev-s911 vl3-dev-s941 vl3-dev-s942 vl3-dev-s943"
 VAL="vl3-dev-s945 vl3-dev-s946 vl3-dev-s947"
 RUN="python3 $WT/scripts/ugrp_session.py run vis6"

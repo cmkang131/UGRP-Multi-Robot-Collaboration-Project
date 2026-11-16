@@ -198,7 +198,7 @@ dy=-12/0mm는 상승하고 **dy=+12mm는 접촉 후 상승 실패**했다. 포�
 **다음 제안:** 비대칭 포착 중심을 확인하고, 차체 정지 후 팔로 잔여 오차를 줄이는 표준 접근을
 별도 사전 등록해 짧게 검증한다. 이번 자료로 선택한 설정을 확증 자료로 재사용하지 않는다.
 
-**원본:** `/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix14-diagnostics-r1` (원격 `~/ugrp-sim/runs/s3fix14-diagnostics-r1/`도 보존).
+**원본:** `<home>/projects/ugrp/outputs/oracle-runs/s3fix14-diagnostics-r1` (원격 `~/ugrp-sim/runs/s3fix14-diagnostics-r1/`도 보존).
 전체 파일·sha256 대조는[retrieval.json](retrieval.json), 상세 수치는[diagnostic-summary.json](diagnostic-summary.json).
 새 렌더 없이 저장 자기 RGB로 만든 명목r1/r2/r3 4배속 영상은 각`delivery/r*/execution.mp4`에 있다.
 최종 관련 로컬 시험8개 통과(진단7개 + 카탈로그 계획1개). Mac 물리·렌더·재생0, 모델 호출0, CI 대기·병합0.

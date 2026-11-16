@@ -8,7 +8,7 @@ import sys
 sys.dont_write_bytecode=True
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[3]
-REF=Path('/Users/changmin/projects/ugrp-wt/ownmap-s2')
+REF=Path('<home>/projects/ugrp-wt/ownmap-s2')
 sys.path.insert(0,str(REF))
 import argparse,base64,copy,hashlib,json,subprocess
 from unittest.mock import patch
@@ -16,7 +16,7 @@ import cv2,numpy as np
 from scripts import replay_ownmap_s2 as old
 from harness import vision_pose_source_highpose as high
 from harness import zone_solo_cyan_v106 as navigation
-RAW=Path('/Users/changmin/projects/ugrp/outputs/goal-route-p0-v1')
+RAW=Path('<home>/projects/ugrp/outputs/goal-route-p0-v1')
 
 
 def build(bundle,geometry):

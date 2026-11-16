@@ -66,7 +66,7 @@ A 결과에 따라 B 설정을 바꾸거나 취소하지 않으며, 정상 실�
 원문/코드는 [egomap45 출처](../2026-10-08-frontier-visibility/REFERENCES.md)와
 [egomap34 고정 구성](../2026-10-08-wall-segment-dev/README.md)을 그대로 재사용한다.
 새 방법 조사·튜닝·라이브러리 설치 없음. TensorBoard 생략 유지, PR405 DRAFT/병합 금지.
-raw: `/Users/changmin/projects/ugrp/outputs/frontier-duration-v1/{A,B}/new-seed`.
+raw: `<home>/projects/ugrp/outputs/frontier-duration-v1/{A,B}/new-seed`.
 
 ## 결과 — 조건별 n=1, 합산 없음
 

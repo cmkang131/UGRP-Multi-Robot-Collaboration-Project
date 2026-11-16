@@ -8,7 +8,7 @@ sys.path.insert(0,str(ROOT))
 from harness.active_wall_mapping import ActiveMapper
 from harness.active_wall_vision import observe
 from scripts.run_active_wall_map import dump
-raw=Path('/Users/changmin/projects/ugrp/outputs/servo-stiffness-v1/stiff-explore')
+raw=Path('<home>/projects/ugrp/outputs/servo-stiffness-v1/stiff-explore')
 frame=json.loads((raw/'robots/r3/frames.jsonl').read_text().splitlines()[50])
 rgb=np.asarray(Image.open(raw/frame['path']).convert('RGB'))
 servo={int(k):v for k,v in frame['commanded_servo'].items()}

@@ -28,7 +28,7 @@ DEFAULT = [
 
 if __name__ == '__main__':
     os.chdir(ROOT)
-    raw = Path('/Users/changmin/projects/ugrp/outputs/t07-r3-roles')
+    raw = Path('<home>/projects/ugrp/outputs/t07-r3-roles')
     raw.mkdir(parents=True, exist_ok=True)
     out = Path(tempfile.mkdtemp(prefix='offline-', dir=raw))
     env = dict(os.environ, OMP_NUM_THREADS='1', OPENBLAS_NUM_THREADS='1', VECLIB_MAXIMUM_THREADS='1',

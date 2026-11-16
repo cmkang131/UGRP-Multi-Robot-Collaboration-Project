@@ -19,7 +19,7 @@ from harness.zone_solo_cyan_augmented_start import Runtime
 from harness.zone_solo_cyan_likelihood_field import Field, likelihood
 
 ROOT = Path(__file__).resolve().parents[2]
-RAW = Path('/Users/changmin/projects/ugrp/outputs/s2-stiff-cal-20261007')
+RAW = Path('<home>/projects/ugrp/outputs/s2-stiff-cal-20261007')
 
 
 def read(path):

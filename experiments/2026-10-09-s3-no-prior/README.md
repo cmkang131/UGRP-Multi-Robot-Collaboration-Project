@@ -87,14 +87,14 @@ s2v59·선행 속도 측정의 잠금 해제 뒤 PID 31519, nice=0으로 자기 
 
 ### 원본 보존·오프라인 복구
 
-원본: `/Users/changmin/projects/ugrp/outputs/s3-no-prior-6c657124-s14201-v142`.
-파생 복구: `/Users/changmin/projects/ugrp/outputs/s3-v142-recovery-6c657124-20261009`.
+원본: `<home>/projects/ugrp/outputs/s3-no-prior-6c657124-s14201-v142`.
+파생 복구: `<home>/projects/ugrp/outputs/s3-v142-recovery-6c657124-20261009`.
 [결과](summary.json), [재생 검증](replay-verification.json), [파일 해시](postrun-artifacts.json).
 원본 2561개 파일 SHA-256을 재확인했다. 저장된 자기 JPEG/발행 명령만 같은 소스에 재생해 각 846프레임·3356명령이 모두 일치했다. GT는 재생 제어기에 입력하지 않고 복구 후 정확성 평가에만 썼다. 이 재생은 MuJoCo 생성/step/렌더 없는 오프라인 계산이며 새 simulation이 아니다. 위치·문 지표는 **원본 학생 기록이 아닌 명령 일치 재생에서 복구한 값**이다.
 
-대표 4배속 영상: `/Users/changmin/projects/ugrp/outputs/s3-v142-recovery-6c657124-20261009/s14201-mixed-4x/execution.mp4`.
+대표 4배속 영상: `<home>/projects/ugrp/outputs/s3-v142-recovery-6c657124-20261009/s14201-mixed-4x/execution.mp4`.
 [영상 검증](video-verification.json): 212프레임/20fps, 자기 카메라 3개, 원본 4프레임 간격, 전 프레임 재디코딩 통과. 마지막 3초 정착에는 촬영이 없으므로 영상에 포함하지 않는다.
-TensorBoard snapshot: `/Users/changmin/projects/ugrp/outputs/tensorboard/1009-s3-v142`.
+TensorBoard snapshot: `<home>/projects/ugrp/outputs/tensorboard/1009-s3-v142`.
 `outputs/tensorboard-view.json`의 `s3_no_prior_v142_20261009`에 해당 실행·핀·영상 링크를 추가했다. 다른 실행은 수정하지 않았다.
 
 ### 선행 S2 최종 재점검과 후속 판단

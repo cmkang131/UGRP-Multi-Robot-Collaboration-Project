@@ -191,7 +191,7 @@ for key in ('frame_id', 'frame_sha256', 'captured_at_s'):
 ```
 
 재현 driver·stdout·JUnit·변형별 JSON·원격 PR 스냅샷·merge-tree 결과는
-`/Users/changmin/projects/ugrp/outputs/review-e2e-batch-e-20260930/`에 보존했다.
+`<home>/projects/ugrp/outputs/review-e2e-batch-e-20260930/`에 보존했다.
 `review-e-counterexamples.py`와 `review-e-statistics.py`가 구체적인 실행 입력/절차다.
 로컬 산출물 무결성 식별값:
 

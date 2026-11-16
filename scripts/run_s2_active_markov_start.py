@@ -3,7 +3,7 @@ import argparse,copy,hashlib,json,os,time
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
-TEMPLATE=Path('/Users/changmin/projects/ugrp/outputs/s2-stiff-cal-20261007/start/setup_bundle.json')
+TEMPLATE=Path('<home>/projects/ugrp/outputs/s2-stiff-cal-20261007/start/setup_bundle.json')
 PLAN=ROOT/'experiments/2026-10-06-s2-realism/active-markov-criteria.json'
 
 

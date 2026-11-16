@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import cv2
 
 EXP=e.EXP
-RAW=Path('/Users/changmin/projects/ugrp/outputs/online-camera-pitch-v1-complete')
+RAW=Path('<home>/projects/ugrp/outputs/online-camera-pitch-v1-complete')
 
 
 def fmt(v,d=3):

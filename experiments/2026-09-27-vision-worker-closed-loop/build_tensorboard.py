@@ -29,7 +29,7 @@ VIS3 = ROOT / 'experiments' / '2026-09-26-vision-loc'
 sys.path[:0] = [str(ROOT), str(VIS3)]
 
 LABEL = 'dev closed-loop check, 연구 결과 아님'
-RAW = Path('/Users/changmin/projects/ugrp/outputs/vision-worker-closed-loop-20260927/vl3-dev-s942')
+RAW = Path('<home>/projects/ugrp/outputs/vision-worker-closed-loop-20260927/vl3-dev-s942')
 KEYS = ('pos_p50_m', 'pos_p90_m', 'pos_p99_m', 'yaw_p90_deg')      # shared with the VIS3 runs
 NEAR_R_M = 0.5                                                  # README's near-door radius (door centre)
 HP_METRICS = ['summary/all/pos_p90_m', 'summary/door_zone/pos_p90_m', 'summary/near_door_r050/pos_p90_m',
@@ -194,7 +194,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split('\n')[0])
     ap.add_argument('--raw', type=Path, default=RAW)
     ap.add_argument('--results', type=Path, default=VIS3 / 'results' / 'results_v3.json')
-    ap.add_argument('--logdir', type=Path, default=Path('/Users/changmin/projects/ugrp/outputs/tensorboard'))
+    ap.add_argument('--logdir', type=Path, default=Path('<home>/projects/ugrp/outputs/tensorboard'))
     ap.add_argument('--snapshot', default='0927-vision-worker-dev')
     ap.add_argument('--source-sha', default='')
     ap.add_argument('--verify', action='store_true')

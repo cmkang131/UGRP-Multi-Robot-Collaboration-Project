@@ -11,7 +11,7 @@
   실제 InputAudit 객체를 붙잡아 finally에서 terminal result와 감사를 원자적으로 저장한다.
   기존 except writer 오류·부분 원장도 검사했고, 미생성 감사는 0으로 꾸미지 않는다.
   작업 밖 운영 도구는 수정하지 않았다:
-  `/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act9-ec0bd628-ops/stop_owned.py`
+  `<home>/projects/ugrp/outputs/e2e18-admin/gcp-reports/act9-ec0bd628-ops/stop_owned.py`
   (act10-567dc120-ops에도 같은 이름의 도구가 있다).
 - 회전 계수 **0.6790684337506349**는 act8의 근거리·비파지·순수 제자리 회전 **12틱**만으로
   절편 없는 최소제곱으로 맞췄다. act9/10은 계수 계산에서 제외했다. 사용자 검토의 233틱과
@@ -52,12 +52,12 @@ training_rgb OFF, 승인/준비/제출/실행/자동 승격 false, 행별 approv
 
 ```sh
 export PYTHONDONTWRITEBYTECODE=1
-ACT_PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+ACT_PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 $ACT_PY -m pytest -q tests/test_grasp_act_act{11,10,9,8,7,6}.py tests/test_grasp_act_data.py
-$ACT_PY -m scripts.audit_grasp_act_act11 --runs-root /Users/changmin/projects/ugrp/outputs/gcp1-runs --output /tmp/act11-fresh-replay
-$ACT_PY -m scripts.queue_grasp_act_act11 --prepare --dependency-root /Users/changmin/projects/ugrp-wt/solo-teacher --evidence /tmp/act11-fresh-replay/summary.json --output-dir /Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue
+$ACT_PY -m scripts.audit_grasp_act_act11 --runs-root <home>/projects/ugrp/outputs/gcp1-runs --output /tmp/act11-fresh-replay
+$ACT_PY -m scripts.queue_grasp_act_act11 --prepare --dependency-root <home>/projects/ugrp-wt/solo-teacher --evidence /tmp/act11-fresh-replay/summary.json --output-dir <home>/projects/ugrp/outputs/e2e18-admin/vm3-queue
 # prepare 변경을 커밋한 clean worktree에서만 실행하며, 기존 큐는 덮어쓰지 않는다.
-$ACT_PY -m scripts.queue_grasp_act_act11 --output-dir /Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue
+$ACT_PY -m scripts.queue_grasp_act_act11 --output-dir <home>/projects/ugrp/outputs/e2e18-admin/vm3-queue
 ```
 
 ## 참고 자료

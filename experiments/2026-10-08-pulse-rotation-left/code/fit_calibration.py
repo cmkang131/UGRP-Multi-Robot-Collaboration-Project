@@ -7,7 +7,7 @@ import json
 ROOT=Path(__file__).resolve().parents[3]
 EXP=Path(__file__).resolve().parents[1]
 OLD=ROOT/'experiments/2026-10-08-pulse-rotation-audit'
-RAW=Path('/Users/changmin/projects/ugrp/outputs/pulse-rotation-audit-v1/measurement')
+RAW=Path('<home>/projects/ugrp/outputs/pulse-rotation-audit-v1/measurement')
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def load(p):return json.loads(p.read_text())
 def dump(p,d):

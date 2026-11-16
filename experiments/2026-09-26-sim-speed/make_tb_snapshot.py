@@ -5,8 +5,8 @@ Reads the raw sim_profile / pair_prof outputs read-only and writes one run per s
 (no agent lock). ``speed/equivalent`` is 1 only when the named equivalence report says identical.
 
     .venv-sim-worker-mac/bin/python experiments/2026-09-26-sim-speed/make_tb_snapshot.py \
-        --raw /Users/changmin/projects/ugrp/outputs/sim-speed-20260926 \
-        --output /Users/changmin/projects/ugrp/outputs/tensorboard/0926-sim-speed
+        --raw <home>/projects/ugrp/outputs/sim-speed-20260926 \
+        --output <home>/projects/ugrp/outputs/tensorboard/0926-sim-speed
 """
 from __future__ import annotations
 

@@ -18,7 +18,7 @@ Same grid, cases, workers and result layout as ``scripts/run_pair_stage_probes.p
   drivers whose outputs are combined afterwards (``combine_grid.py``).
 
   plan only:  python3 experiments/2026-09-29-pair-v6d-align/run_cells.py --stage align ... --output <dir>
-  physical:   ... --execute --output /Users/changmin/projects/ugrp/outputs/<name>
+  physical:   ... --execute --output <home>/projects/ugrp/outputs/<name>
 """
 from __future__ import annotations
 

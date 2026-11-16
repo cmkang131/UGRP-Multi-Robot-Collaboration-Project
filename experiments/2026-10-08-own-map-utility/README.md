@@ -14,7 +14,7 @@
   switchable 구성과 원본 `grid.json`·64스캔을 바꾸지 않는다. 검출기 옵션은off.
   영역 P/R63.58/76.03%, 전체 덮임64.74%,381점유칸은 기존 값으로 별도 보존한다.
 - 물리·렌더·모델·다른 로봇 지도·지도 합치기·잠금0. TensorBoard 생략 유지.
-  raw는 `/Users/changmin/projects/ugrp/outputs/own-map-utility-v1`에 보존한다.
+  raw는 `<home>/projects/ugrp/outputs/own-map-utility-v1`에 보존한다.
   ENOSPC=HOST_ERROR, 원본 삭제/덮어쓰기0. 결과 후 설정·문턱 변경0.
 
 ### A. F 인터페이스

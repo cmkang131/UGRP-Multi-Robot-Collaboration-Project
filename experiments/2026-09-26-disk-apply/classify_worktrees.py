@@ -86,7 +86,7 @@ def newest_mtime(path: Path) -> tuple[float, str]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n", 1)[0])
-    parser.add_argument("--primary", type=Path, default=Path("/Users/changmin/projects/ugrp"))
+    parser.add_argument("--primary", type=Path, default=Path("<home>/projects/ugrp"))
     parser.add_argument("--base", default="origin/main")
     parser.add_argument("--out", type=Path)
     args = parser.parse_args()

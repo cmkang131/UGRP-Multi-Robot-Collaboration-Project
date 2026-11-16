@@ -5,7 +5,7 @@ from scripts import run_active_wall_rotleft as base
 from harness.active_frontier_cycle import make_mapper,OPTION
 ROOT=base.ROOT
 EXP=ROOT/'experiments/2026-10-08-frontier-duration'
-RAW=Path('/Users/changmin/projects/ugrp/outputs/frontier-duration-v1')
+RAW=Path('<home>/projects/ugrp/outputs/frontier-duration-v1')
 SEED=46001
 CONDITIONS=('A','B')
 

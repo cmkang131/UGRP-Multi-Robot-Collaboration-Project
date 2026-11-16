@@ -2,7 +2,7 @@
 
 2026-10-08 사용자 요청. egomap23 동일 녹화 DEV 오프라인만, 물리·모델·잠금0.
 기본 옵션/기존 결과 보존, 결과 후 문턱·모션 모델 변경0. TensorBoard 생략 유지.
-raw `/Users/changmin/projects/ugrp/outputs/rbpf-turn-audit-v1/`, ENOSPC=HOST_ERROR.
+raw `<home>/projects/ugrp/outputs/rbpf-turn-audit-v1/`, ENOSPC=HOST_ERROR.
 단계 사이 supervisor 확인. GitHub500이면 로컬 커밋으로 진행하고 종료 시 정상 push 재시도.
 
 ## 수정 전 발견 / 대조

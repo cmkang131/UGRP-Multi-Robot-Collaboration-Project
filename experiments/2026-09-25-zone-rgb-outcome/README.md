@@ -154,7 +154,7 @@
 - `harness/zone_rgb_outcome.py`: `job_outcome`, `sightings`, `point_visibility`, `own_near`, `job_spec`/`slot_target`/`landing_target`, `receipt`, `commit`
 - `scripts/eval_zone_rgb_outcome.py`: `render` / `synth` / `score` / `validate`. 작업 흐름 `zone-rgb-outcome-eval`로 등록했다(오프라인, 렌더만).
 - `tests/test_zone_rgb_outcome.py` 17개(CI 목록에 추가). 그린 TOP 영상으로 각 규칙, 같은 색 오인 확정 금지, 다른 색 거부, 구역 내 모호성, commit 정책, 영수증 문구, 모듈 입력 순수성(토큰·인자), 정적 지도에 물건 자세 없음, 번들 closure 밖, 화물 detector 부재 시 오류를 확인한다.
-- 원본 출력: `/Users/changmin/projects/ugrp/outputs/zone-rgb-outcome-20260925/`(571 MB, 로컬에만 있고 원격 백업 아님)
+- 원본 출력: `<home>/projects/ugrp/outputs/zone-rgb-outcome-20260925/`(571 MB, 로컬에만 있고 원격 백업 아님)
   - `{dev,test,synth-dev,synth-test}/<run>/<job>/{frames,inputs.json,eval-labels.json}`
   - `score-*.json`, `frames-manifest.json`, `synth-manifest.json`, `replay-validation.json`
   - 해시와 요약은 [results.json](results.json)에 있다.
@@ -279,8 +279,8 @@ Codex 적대적 검토(PR #170 코멘트)와 코디네이터 확인에 따라 �
 - 러너 폐루프 연결은 하지 않았다. 2026-09-25 결정으로 로봇 입력용으로는 연결하지 않는다.
 - 부하 평균: 공용 호스트라 1분 부하가 최대 90까지 올랐다. 녹화별 부하는 `results-v2.json`의 `recordings`와 `load_log`에 있다. 동시 실행은 2개 이하였고, 코디네이터 요청 뒤 새 실행은 단일 스레드 환경변수로 띄웠다.
 - 원본(로컬 전용, 원격 백업 아님):
-  - `/Users/changmin/projects/ugrp/outputs/zone-rgb-outcome-runs-20260925/` (녹화)
-  - `/Users/changmin/projects/ugrp/outputs/zone-rgb-outcome-v2-20260925/` (추적·정답·점수·합성·동등성, 실패·폐기한 시도 포함)
+  - `<home>/projects/ugrp/outputs/zone-rgb-outcome-runs-20260925/` (녹화)
+  - `<home>/projects/ugrp/outputs/zone-rgb-outcome-v2-20260925/` (추적·정답·점수·합성·동등성, 실패·폐기한 시도 포함)
 
 ### 러너 연결 제안 v2 (2026-09-25 결정 이전 작성, 기록용)
 

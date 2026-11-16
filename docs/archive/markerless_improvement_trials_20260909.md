@@ -6,11 +6,11 @@
 
 | 시드 | 결과 | 모델 호출 | 입력 토큰 | SIM초 | 근거 |
 |---|---|---:|---:|---:|---|
-| 42 | 성공 | 18 | 82,023 | 195.950 | [영상](/Users/changmin/projects/ugrp/outputs/markerless-improvement-20260909/n7/solo-42/motion-1x.mp4) · [검증](/Users/changmin/projects/ugrp/outputs/markerless-improvement-20260909/n7/solo-42/verification.json) |
-| 43 | 성공 | 16 | 73,175 | 129.754 | [영상](/Users/changmin/projects/ugrp/outputs/markerless-improvement-20260909/n7/solo-43/motion-1x.mp4) · [검증](/Users/changmin/projects/ugrp/outputs/markerless-improvement-20260909/n7/solo-43/verification.json) |
-| 44 | 성공 | 15 | 68,011 | 177.836 | [영상](/Users/changmin/projects/ugrp/outputs/markerless-improvement-20260909/n7/solo-44/motion-1x.mp4) · [검증](/Users/changmin/projects/ugrp/outputs/markerless-improvement-20260909/n7/solo-44/verification.json) |
-| 45 | 성공 | 21 | 98,676 | 217.378 | [영상](/Users/changmin/projects/ugrp/outputs/markerless-improvement-20260909/n7/solo-45/motion-1x.mp4) · [검증](/Users/changmin/projects/ugrp/outputs/markerless-improvement-20260909/n7/solo-45/verification.json) |
-| 46 | 성공 | 18 | 83,325 | 138.534 | [영상](/Users/changmin/projects/ugrp/outputs/markerless-improvement-20260909/n7/solo-46/motion-1x.mp4) · [검증](/Users/changmin/projects/ugrp/outputs/markerless-improvement-20260909/n7/solo-46/verification.json) |
+| 42 | 성공 | 18 | 82,023 | 195.950 | [영상](<home>/projects/ugrp/outputs/markerless-improvement-20260909/n7/solo-42/motion-1x.mp4) · [검증](<home>/projects/ugrp/outputs/markerless-improvement-20260909/n7/solo-42/verification.json) |
+| 43 | 성공 | 16 | 73,175 | 129.754 | [영상](<home>/projects/ugrp/outputs/markerless-improvement-20260909/n7/solo-43/motion-1x.mp4) · [검증](<home>/projects/ugrp/outputs/markerless-improvement-20260909/n7/solo-43/verification.json) |
+| 44 | 성공 | 15 | 68,011 | 177.836 | [영상](<home>/projects/ugrp/outputs/markerless-improvement-20260909/n7/solo-44/motion-1x.mp4) · [검증](<home>/projects/ugrp/outputs/markerless-improvement-20260909/n7/solo-44/verification.json) |
+| 45 | 성공 | 21 | 98,676 | 217.378 | [영상](<home>/projects/ugrp/outputs/markerless-improvement-20260909/n7/solo-45/motion-1x.mp4) · [검증](<home>/projects/ugrp/outputs/markerless-improvement-20260909/n7/solo-45/verification.json) |
+| 46 | 성공 | 18 | 83,325 | 138.534 | [영상](<home>/projects/ugrp/outputs/markerless-improvement-20260909/n7/solo-46/motion-1x.mp4) · [검증](<home>/projects/ugrp/outputs/markerless-improvement-20260909/n7/solo-46/verification.json) |
 
 모두 접근→집기→모델 판단에 따른 장애물 우회·운반→목적지 안 방출→시각 확인→완료까지 수행했다. 상자 들어올리기, 구역 내부 배치, 정지, 부착 제약 없음, 시각 방출 확인, 호출·입력·시간 예산 검사를 모두 통과했다.
 
@@ -51,8 +51,8 @@
 
 ## 저장 자료
 
-- [전체 시행착오 원기록](/Users/changmin/projects/ugrp/outputs/markerless-improvement-20260909/trial-notes-detailed.md), [각 실제 실행 결과](/Users/changmin/projects/ugrp/outputs/markerless-improvement-20260909/trial-outcomes.json)
-- [N7 고정 소스 목록](/Users/changmin/projects/ugrp/outputs/markerless-improvement-20260909/n7-source-manifest.json), [종료 후 일치 확인](/Users/changmin/projects/ugrp/outputs/markerless-improvement-20260909/n7-source-verification.json)
-- [작업 소스·테스트·영상 fixture 묶음](/Users/changmin/projects/ugrp/outputs/markerless-improvement-20260909/candidate-source.zip), [M4 기준 변경 패치](/Users/changmin/projects/ugrp/outputs/markerless-improvement-20260909/candidate-from-m4.patch)
+- [전체 시행착오 원기록](<home>/projects/ugrp/outputs/markerless-improvement-20260909/trial-notes-detailed.md), [각 실제 실행 결과](<home>/projects/ugrp/outputs/markerless-improvement-20260909/trial-outcomes.json)
+- [N7 고정 소스 목록](<home>/projects/ugrp/outputs/markerless-improvement-20260909/n7-source-manifest.json), [종료 후 일치 확인](<home>/projects/ugrp/outputs/markerless-improvement-20260909/n7-source-verification.json)
+- [작업 소스·테스트·영상 fixture 묶음](<home>/projects/ugrp/outputs/markerless-improvement-20260909/candidate-source.zip), [M4 기준 변경 패치](<home>/projects/ugrp/outputs/markerless-improvement-20260909/candidate-from-m4.patch)
 - 패치는 저장된 M4 작업 기준에 대한 변경이며 깨끗한 Git HEAD 기준 패치가 아니다. 기존의 다른 미커밋 변경은 보존했다. 영상·대용량 실행 로그는 각 로컬 실행 폴더에 별도로 남겼다.
-- 프로젝트 지침에 따라 로컬에 저장했다. 실험 프로세스 정리 결과는 [정리 기록](/Users/changmin/projects/ugrp/outputs/markerless-improvement-20260909/process-cleanup.json)에 기록한다.
+- 프로젝트 지침에 따라 로컬에 저장했다. 실험 프로세스 정리 결과는 [정리 기록](<home>/projects/ugrp/outputs/markerless-improvement-20260909/process-cleanup.json)에 기록한다.

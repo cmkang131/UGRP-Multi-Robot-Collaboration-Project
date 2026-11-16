@@ -56,7 +56,7 @@ def plot(root):
 def publish(root):
     from scripts.tensorboard_tools.offline_audit import convert
     result=read(root/'result.json');assert len(result['comparisons'])==9
-    name='1008-s2-sensor-consistency-v56';snapshot=Path('/Users/changmin/projects/ugrp/outputs/tensorboard')/name
+    name='1008-s2-sensor-consistency-v56';snapshot=Path('<home>/projects/ugrp/outputs/tensorboard')/name
     if snapshot.exists():raise FileExistsError(snapshot)
     snapshot.mkdir();sources=[];manifests=[]
     for comparison in result['comparisons']:
@@ -88,7 +88,7 @@ def publish(root):
         plot=dict(path=str(root/'s1060-feature-consistency.png'),sha256=sha(root/'s1060-feature-consistency.png')),
         source_hash=sha(root/'result.json'),dashboard_ui='pending',scalar_verification='pending')
     (root/'delivery.json').write_text(json.dumps(delivery,indent=2)+'\n')
-    shared=Path('/Users/changmin/projects/ugrp/outputs/tensorboard-view.json')
+    shared=Path('<home>/projects/ugrp/outputs/tensorboard-view.json')
     view=read(shared)  # reread immediately before modifying our key only
     view['s2_sensor_consistency_v56_20261008']=dict(snapshot=str(snapshot),url=url,pinned_metrics=pins,
         default_runs=[name+'/s1060-off',name+'/s1060-on'],hparams_visible_columns=['seed'],scope='offline9 off/on; no physics')

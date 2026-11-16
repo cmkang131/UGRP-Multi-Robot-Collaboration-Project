@@ -71,7 +71,7 @@ Batch F 이후에는 `harness.zone_pair_role_host.OwnCamTeamHost`와
 
 ## 원본·분모·TensorBoard
 
-각 셀은 primary `/Users/changmin/projects/ugrp/outputs/t07-r3-roles/<새-cohort>/<cell>/`
+각 셀은 primary `<home>/projects/ugrp/outputs/t07-r3-roles/<새-cohort>/<cell>/`
 새 경로에 저장한다. 존재하면 실행을 거부한다. 재시도는 새 run ID이며 실패 원본을
 덮지 않는다. source/config/input/role/controller 해시, 실효 모델·provider·환경,
 정확한 spawn, 원본 자기 RGB/명령/enum/고수준 요청·ack·job ID, eval-only 자료,

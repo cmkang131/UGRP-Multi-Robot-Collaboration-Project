@@ -54,7 +54,7 @@ packet에 이미 기록된 `base_source_sha`는
 
 ```sh
 OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 \
-  /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
+  <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
   tests/test_rgb_communication_provider_budget.py tests/test_rgb_execution_bundle.py \
   tests/test_zone_study_review_r9.py tests/test_zone_study_review_r10.py \
   tests/test_gemini_transport_policy.py tests/test_gemini_reasoning_effort.py \

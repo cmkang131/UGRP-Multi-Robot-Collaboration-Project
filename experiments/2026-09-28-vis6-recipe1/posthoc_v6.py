@@ -10,7 +10,7 @@ of the dev renders. GT is used only for scoring/labelling here, never fed back t
   4. boundary-row disparity: median |delta row| of the cached wall-floor boundary (obs-w6) between consecutive
      settled same-arm frames, for GT-stuck-but-commanded pairs vs GT-moving pairs (feasibility hint only)
 
-  python3 posthoc_v6.py --root /Users/changmin/projects/ugrp/outputs/vis6-recipe1-20260929 --output posthoc.json
+  python3 posthoc_v6.py --root <home>/projects/ugrp/outputs/vis6-recipe1-20260929 --output posthoc.json
 """
 from __future__ import annotations
 
@@ -26,7 +26,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent/'2026-09-26-vision-loc'))
 import vis6_metrics as vm6  # noqa: E402
 
-PRIMARY = Path('/Users/changmin/projects/ugrp/outputs')
+PRIMARY = Path('<home>/projects/ugrp/outputs')
 RENDER = PRIMARY/'vision-loc-20260926'/'render'
 OBS = PRIMARY/'vision-loc-20260926'/'r3'/'obs-w6'
 FIT = ['vl-dev-s909', 'vl-dev-s910', 'vl-dev-s911', 'vl3-dev-s941', 'vl3-dev-s942', 'vl3-dev-s943']

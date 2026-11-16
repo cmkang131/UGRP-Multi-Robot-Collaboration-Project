@@ -96,7 +96,7 @@ JΣJᵀ를 계산한다. confidence는0.1m cell 양자화 분산에 대한 역�
   [검증 기록](results/verification.json). 소스 동결 후 threshold/검출기 변경 없음.
 - MuJoCo·물리·렌더·모델 호출0, 지도 재생0. 자신이 시작한 관리 session 모두 종료.
   기록 HOST_ERROR2건은 원본을 보존하고 반복 RGB 계산 없이 metadata/score만 복구했다.
-- raw59파일79,073,161bytes를 `/Users/changmin/projects/ugrp/outputs/wall-parallax-v1/`에 보존,
+- raw59파일79,073,161bytes를 `<home>/projects/ugrp/outputs/wall-parallax-v1/`에 보존,
   [전체 SHA256](results/raw-manifest.json). 원격에는 소스/표/그림/해시만 보존하며 raw 원격 백업은 아니다.
   실행 중 filesystem 가용 약46GiB, 실험 그림1개는1MiB 미만이다.
 - 다른 worktree·PR #406 수정0, 사용자 미추적4파일 그대로, PR #405 DRAFT·병합 없음.

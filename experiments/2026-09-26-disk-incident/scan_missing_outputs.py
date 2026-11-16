@@ -10,7 +10,7 @@ and data deleted by earlier approved cleanups also appear here.
 
 Usage:
     python3 experiments/2026-09-26-disk-incident/scan_missing_outputs.py \
-        --repo /Users/changmin/projects/ugrp --output /tmp/missing.json
+        --repo <home>/projects/ugrp --output /tmp/missing.json
 """
 
 from __future__ import annotations

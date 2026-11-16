@@ -32,8 +32,8 @@
     "plan_sha256": "1ab2499252427839d21eec7f474fe3c5a74c2a2c4cdeddb7ac338782a3c898c7",
     "contact_profile": "local_contact_fine",
     "weld": false,
-    "grasp_model_dir": "/Users/changmin/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-transfer-t4/models/grasp",
-    "stage_model_dir": "/Users/changmin/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-transfer-t4/models/varied",
+    "grasp_model_dir": "<home>/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-transfer-t4/models/grasp",
+    "stage_model_dir": "<home>/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-transfer-t4/models/varied",
     "reference_top": "tests/fixtures/camera_goal_transport/reference-top.jpg",
     "route_overlap": "--auto-route-overlap --overlap-start grasp; verify selected independent open routes and shared apron exclusion in each result",
     "camera_and_actor_boundary": "Original own fixed RGB and common fixed TOP RGB, authored static map and own issued commands. No referee coordinates/contact/joints used by control.",
@@ -46,17 +46,17 @@
   },
   "cli_contract": {
     "entry": "bash scripts/open_simulation.command dispatch",
-    "fallback_direct_entry": "PYTHONPATH=. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.run_dispatch_e2e",
+    "fallback_direct_entry": "PYTHONPATH=. <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.run_dispatch_e2e",
     "common_flags": [
       "--variant", "open", "--seed", "11",
       "--required-dock", "dock_a", "--plan-replay", "experiments/2026-09-22-parallel-transport/independent-plan.json",
-      "--grasp-model-dir", "/Users/changmin/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-transfer-t4/models/grasp",
-      "--stage-model-dir", "/Users/changmin/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-transfer-t4/models/varied",
+      "--grasp-model-dir", "<home>/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-transfer-t4/models/grasp",
+      "--stage-model-dir", "<home>/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-transfer-t4/models/varied",
       "--contact-profile", "local_contact_fine", "--realtime-control", "--viewer",
       "--realtime-factor", "1", "--auto-route-overlap", "--overlap-start", "grasp",
       "--efficient-capture", "--video-fps", "10", "--reference-top", "tests/fixtures/camera_goal_transport/reference-top.jpg"
     ],
-    "per_trial_flags": "Supply a fresh --output, the case's three --spawn-offset numbers, and the arm's --max-wall-s. ACT adds --carry-act-model MODEL_DIR --carry-act-python /Users/changmin/Project-Runtimes/ugrp/.venv-reference-act/bin/python --carry-act-stop-mode rgb_guarded; RGB omits all ACT flags. The dispatch launcher inserts --executor skills itself and forwards unrecognized options to run_dispatch_e2e.",
+    "per_trial_flags": "Supply a fresh --output, the case's three --spawn-offset numbers, and the arm's --max-wall-s. ACT adds --carry-act-model MODEL_DIR --carry-act-python <home>/Project-Runtimes/ugrp/.venv-reference-act/bin/python --carry-act-stop-mode rgb_guarded; RGB omits all ACT flags. The dispatch launcher inserts --executor skills itself and forwards unrecognized options to run_dispatch_e2e.",
     "unsupported_flags": "At design checkout 41a906c, --episode-config and --carry-policy are not CLI inputs. carry_policy is an output result field. New CLI support is not assumed."
   },
   "case_selection": {
@@ -76,7 +76,7 @@
   "arms": [
     {"id": "reference-rgb-v26", "source_sha": "41a906cfa28ead87b150fd7b0c494ee0cfe58a83", "controller": "Frozen v26 RGB action algorithm; run in an isolated clean checkout with the exact same common flags", "max_wall_s": 350},
     {"id": "candidate-rgb", "source_sha": "to_be_frozen_by_integration_owner", "controller": "Revised RGB action algorithm with ACT omitted; same candidate source as candidate-act", "max_wall_s": 350},
-    {"id": "candidate-act", "source_sha": "same_as_candidate-rgb", "controller": "New 128px/history4 ACT checkpoint for beam loaded motion, RGB independent stop admission; not pure ACT and not RGB final refinement", "max_wall_s": 1000, "additional_flags": ["--carry-act-model", "TO_BE_FROZEN_ACT_MODEL_DIR", "--carry-act-python", "/Users/changmin/Project-Runtimes/ugrp/.venv-reference-act/bin/python", "--carry-act-stop-mode", "rgb_guarded"]}
+    {"id": "candidate-act", "source_sha": "same_as_candidate-rgb", "controller": "New 128px/history4 ACT checkpoint for beam loaded motion, RGB independent stop admission; not pure ACT and not RGB final refinement", "max_wall_s": 1000, "additional_flags": ["--carry-act-model", "TO_BE_FROZEN_ACT_MODEL_DIR", "--carry-act-python", "<home>/Project-Runtimes/ugrp/.venv-reference-act/bin/python", "--carry-act-stop-mode", "rgb_guarded"]}
   ],
   "finite_first_study": {
     "trial_order": ["holdout-a/reference-rgb-v26", "holdout-a/candidate-rgb", "holdout-a/candidate-act", "holdout-b/reference-rgb-v26", "holdout-b/candidate-rgb", "holdout-b/candidate-act"],

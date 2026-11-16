@@ -17,7 +17,7 @@ from harness.vision_pose_source_final import measured_column_model
 from harness.opencv_wall_observation import observations
 from harness.zone_pair_highpose_contract import own_image_gates
 
-RAW=Path('/Users/changmin/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place')
+RAW=Path('<home>/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place')
 
 
 def summary(v):

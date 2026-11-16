@@ -22,7 +22,7 @@
 - 도착은 eg43/49 그대로 resolved5연속+추정B거리≤.20m(+traversal B노드 국소화); GT 차체 중심이 실제 B 안이어야 채점 성공. GT는 실행 후 별도 평가만, 도착 선언/경로/정합에 금지. 접촉/실제 물리 실패와 기존60분HOST상한 유지. ENOSPC=HOST_ERROR, 실행된 슬롯 재시도0. 시작 전 잠금 거부는 미시작으로 기록하고 대기.
 - 표: 도착/실행수(eg49 0/6과 별도 조건), B연결, 첫정합, uncertain엣지/노드, 회전시간비(실제 발행 회전 명령 지속시간/유효 명령시간; explore/return 분리), 벽/로봇 접촉episode, 귀환소요, 종료오차/σ. 탐색 명령 byte동일 오프라인 시험으로 추가 회전0 확인; 물리 동역학 차이로 비율이 달라지면 그대로 보고.
 - 한 번에 한 물리, agent_lock null일 때만 acquire·ugrp_session·dev_light·NI0/NO_BG_NICE. s2v58/hardmaps 사용 중이면 대기. 처음2회 최대2시간+대기, 통과 시 추가 최대4시간. raw6GiB 예산/여유10GiB 확인. 벽 검출/문턱 재튜닝·freeze·모델·유료/원격 자원0. PR405 DRAFT, #406/다른worktree수정0.
-- raw `/Users/changmin/projects/ugrp/outputs/teach-capture-v1/seed<seed>`, 성과/실패와 미실행 사유 모두 기록. 등록 순서 첫 완료 실행을4배속 손목RGB|자기지도/teach그래프로 저장(성공/실패 명시). 성공 만들기 위한 추가 실행0. TensorBoard 생략 유지.
+- raw `<home>/projects/ugrp/outputs/teach-capture-v1/seed<seed>`, 성과/실패와 미실행 사유 모두 기록. 등록 순서 첫 완료 실행을4배속 손목RGB|자기지도/teach그래프로 저장(성공/실패 명시). 성공 만들기 위한 추가 실행0. TensorBoard 생략 유지.
 
 ## 49001 실행 어댑터 오류 — 재실행하지 않음
 
@@ -66,4 +66,4 @@
 
 선택지는 (1) **권고:** 수정된 실제 귀환 전환 경로를 저장 자료로 먼저 확인한 뒤 새 사전등록으로2회 DEV, (2) 이번360초 teach 자료만 사용해 국소 정합 가능 범위를 오프라인 평가(도착 증거 아님), (3) 추가 실행을 보류하고 eg49 기준선을 유지하는 것이다. 단순 되짚기 경로34.7m와270초 예산의 적합성도 다음 설계에서 확인해야 하며 이번 예산은 바꾸지 않았다.
 
-`code/analysis.py`는 봉인 후 eg49와 같은 평가기를 사용하며, `code/movie.py`는 봉인된 실제 기록에만 그림을 덧씌운다. JSON 수치/판정/원장 SHA/오류/비교 출력은 `results/`에 보존했다. raw는 `/Users/changmin/projects/ugrp/outputs/teach-capture-v1/`; PR405 DRAFT 유지,원본/다른worktree/#406 수정·삭제0. TensorBoard 생략 유지.
+`code/analysis.py`는 봉인 후 eg49와 같은 평가기를 사용하며, `code/movie.py`는 봉인된 실제 기록에만 그림을 덧씌운다. JSON 수치/판정/원장 SHA/오류/비교 출력은 `results/`에 보존했다. raw는 `<home>/projects/ugrp/outputs/teach-capture-v1/`; PR405 DRAFT 유지,원본/다른worktree/#406 수정·삭제0. TensorBoard 생략 유지.

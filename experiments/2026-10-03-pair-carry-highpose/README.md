@@ -1277,7 +1277,7 @@ seed 911, before_door, DEV_PILOT(FUNCTIONAL_DEV, 승격 불가), floor_light_v1,
   맞춤(RANSAC, 중앙값 기반 맞춤 등)이다. 또 기울기→상대 yaw 비율(`slope_to_yaw_ratio`)은 v6e 낮은 운반 자세의 기록에서 정한
   값이므로, HIGH 자세에 그대로 맞는지도 따로 확인해야 한다.
 - TensorBoard: `outputs/tensorboard/1004f-v98-dev-probe-align-to-carry-d5ca2ec3`(기준선 `1004d…/raise_high_align-ace`), 보기 설정 키
-  `v98_dev_probe_align_to_carry_d5ca2ec3_20261004`. raw는 `/Users/changmin/projects/ugrp/outputs/v98-dev-probe-align_to_carry-d5ca2ec3`
+  `v98_dev_probe_align_to_carry_d5ca2ec3_20261004`. raw는 `<home>/projects/ugrp/outputs/v98-dev-probe-align_to_carry-d5ca2ec3`
   (로컬 보관, 원격 백업 아님).
 - raise_high(처음부터)는 위치 추정 과신 수정이 들어온 뒤 다시 돌린다(조정자 결정, guard는 그대로).
 
@@ -1308,7 +1308,7 @@ DEV_PILOT `398372ae…82f5`, floor_light_v1, weld OFF, 모델 호출 0, SIM 슬�
   대기다. 시작 빔 높이 0.115 m는 시험 준비(정답 표시 `TEST_SETUP_GT`)이며 결과가 아니다.
 - 두 로봇의 위치 추정기 `localizer_stats.updates`가 0인 것도 그대로다(별도 진단 중).
 - TensorBoard: `outputs/tensorboard/1004e-v98-dev-probes-0865a788`(기준선 `1004c…/raise_high-335`, `1004d…/raise_high_align-ace`),
-  보기 설정 키 `v98_dev_probes_0865a788_20261004`. raw는 `/Users/changmin/projects/ugrp/outputs/v98-dev-probe-<검사>-0865a788`
+  보기 설정 키 `v98_dev_probes_0865a788_20261004`. raw는 `<home>/projects/ugrp/outputs/v98-dev-probe-<검사>-0865a788`
   (로컬 보관, 원격 백업 아님).
 
 ### 짝 guard 거부 기록과 시작 상태 완화 (v98 전용, 다른 작업자 diff, 조정자 결정 2026-10-04)
@@ -1362,7 +1362,7 @@ DEV_PILOT `398372ae…82f5`, floor_light_v1, weld OFF, 모델 호출 0, SIM 슬�
   별도 진단 작업이 보고 있다. 여기서는 판단하지 않는다.
 - TensorBoard: `outputs/tensorboard/1004d-v98-dev-probes-ace8b257`(기준선 `1004c…/raise_high_align-335`),
   보기 설정 키 `v98_dev_probes_ace8b257_20261004`(고정 카드 8개 링크 포함). raw는
-  `/Users/changmin/projects/ugrp/outputs/v98-dev-probe-raise_high_align-ace8b257`(로컬 보관, 원격 백업 아님).
+  `<home>/projects/ugrp/outputs/v98-dev-probe-raise_high_align-ace8b257`(로컬 보관, 원격 백업 아님).
 
 ### 둘러보기 수정 뒤 폐루프 단계 검사 (`3358372e`, 2026-10-04)
 
@@ -1380,7 +1380,7 @@ DEV_PILOT `398372ae…82f5`, floor_light_v1, weld OFF, 모델 호출 0, SIM 슬�
   - 바닥 파지 자세(서보 3/4/5 = 1269/2052/2494)의 자기 영상(frame 1057)에는 빔 색 점이 **0개**였다(필요 60). 영상 전체가 바닥이고, `close_grip_view`도 빔 비율 0이었다.
   - 그래서 `beam_track.estimate`는 "보이는 조각 일치 검사"에서 None을 냈다. 직전 standoff 영상(frame 1011)에서는 9911점이 보였다.
   - 즉 `preclose_check`는 바닥 파지 자세에서 구조적으로 통과할 수 없다(카메라 기하, 문턱 문제 아님). 지시대로 고치지 않았다. 조사와 v98 전용 설계("보일 때 확인 후 자기 명령으로 마지막 접근")는 조정자가 다른 작업자에게 맡겼다. `PAIR_COLLISION_GUARD` 진단(막은 명령 기록 포함)은 Track A가 맡는다.
-- 닫기에 도달하지 못해 P03 3×300은 시작하지 않았다. TensorBoard: `outputs/tensorboard/1004c-v98-dev-probes-3358372e`(기준선 7623c4dc raise_high), 보기 설정 키 `v98_dev_probes_3358372e_20261004`. raw는 `/Users/changmin/projects/ugrp/outputs/v98-dev-probe-<검사>-3358372e`(로컬 보관)이다.
+- 닫기에 도달하지 못해 P03 3×300은 시작하지 않았다. TensorBoard: `outputs/tensorboard/1004c-v98-dev-probes-3358372e`(기준선 7623c4dc raise_high), 보기 설정 키 `v98_dev_probes_3358372e_20261004`. raw는 `<home>/projects/ugrp/outputs/v98-dev-probe-<검사>-3358372e`(로컬 보관)이다.
 
 ### r2 늦은 둘러보기 수정 (Track A, v98 전용, 조정자 승인 2026-10-04)
 
@@ -1407,7 +1407,7 @@ DEV_PILOT `398372ae…82f5`, floor_light_v1, weld OFF, 모델 호출 0, SIM 슬�
 - **적재 상태 수정은 동작했다.** 7623c4dc의 `UNMEASURED_V3_CAMERA_POSTURE unloaded` 실패가 없어졌다.
 - **HIGH 진입도 바닥 진입과 같은 이유로 입장에서 구조적으로 막힌다.** 시작 사전분포 std 0.15 m를 쓰고, 빔을 든 팔을 움직이지 않으려고 둘러보기를 생략한다. HIGH 자세에서는 벽이 보이지 않아 측정 갱신이 0이다. 입장 문턱(std ≤ 0.05)을 완화하지 않는 한 넘을 수 없다. 어떻게 진입할지는 조정자가 정한다. 예를 들어 HIGH 진입도 폐기하고 `raise_high_align` 연속 실행으로 대신할 수 있다. 문턱은 바꾸지 않았다.
 - 닫기에 도달한 검사가 없어 `preclose_beam_guard`·`beam_track.estimate` 기록은 아직 없다.
-- TensorBoard: `outputs/tensorboard/1004b-v98-dev-probes-b37c9270`(2개 실행, 기준선은 같은 검사의 7623c4dc 실행), 보기 설정 키 `v98_dev_probes_b37c9270_20261004`. raw는 `/Users/changmin/projects/ugrp/outputs/v98-dev-probe-<검사>-b37c9270`(로컬 보관, 원격 백업 아님)이다.
+- TensorBoard: `outputs/tensorboard/1004b-v98-dev-probes-b37c9270`(2개 실행, 기준선은 같은 검사의 7623c4dc 실행), 보기 설정 키 `v98_dev_probes_b37c9270_20261004`. raw는 `<home>/projects/ugrp/outputs/v98-dev-probe-<검사>-b37c9270`(로컬 보관, 원격 백업 아님)이다.
 
 ### v98 DEV 단계 검사 결과 (`7623c4dc`, 2026-10-04)
 
@@ -1423,7 +1423,7 @@ DEV_PILOT `398372ae…82f5`, floor_light_v1, weld OFF, 모델 호출 0, SIM 슬�
 
 - **관측기 수정의 폐루프 효과:** 접근을 포함한 실행에서 r1 측정 갱신이 0에서 139로 늘었고, 두 로봇 모두 둘러보기 결과가 LOOKED_POSE_UNCERTAIN에서 LOOKED로 바뀌었다. 새 막힘은 r2 둘러보기의 늦은 시작이다(Track A 영역이라 손대지 않았다).
 - **정적 진입 검사는 구조적으로 막혀 있다.** 시작 사전분포 정의, 둘러보기 생략, 입장 완화 금지를 함께 지키면 입장 문턱(std ≤ 0.05)을 넘을 수 없다. HIGH 진입은 적재 상태도 넣어야 한다. 어느 쪽으로 바꿀지는 조정자가 정한다.
-- 차단 실패가 있어 P03 3×300은 시작하지 않았다. TensorBoard는 `outputs/tensorboard/1004-v98-dev-probes`(5개 실행, 기준선 v96 raise_high)에 넣었다. raw 위치는 `/Users/changmin/projects/ugrp/outputs/v98-dev-probe-<검사>-7623c4dc`(로컬 보관, 원격 백업 아님)이고 파생 뷰는 `outputs/v98-dev-probe-tbviews-1004/gen_views.py`다.
+- 차단 실패가 있어 P03 3×300은 시작하지 않았다. TensorBoard는 `outputs/tensorboard/1004-v98-dev-probes`(5개 실행, 기준선 v96 raise_high)에 넣었다. raw 위치는 `<home>/projects/ugrp/outputs/v98-dev-probe-<검사>-7623c4dc`(로컬 보관, 원격 백업 아님)이고 파생 뷰는 `outputs/v98-dev-probe-tbviews-1004/gen_views.py`다.
 
 ### 단계 검사 설계 수정 (조정자 결정 2026-10-04, 시험 준비만)
 
@@ -1452,7 +1452,7 @@ DEV_PILOT `398372ae…82f5`, floor_light_v1, weld OFF, 모델 호출 0, SIM 슬�
 - **DEV_PILOT:** v92 조립이 PARTIAL이라 MEASURED_SIM 승인이 비어 있다. 코디네이터 결정으로 정확한 sha256 하나만
   받는 DEV_PILOT 입장 경로를 추가했다(`--admission dev-pilot`). 결과·체크포인트 기록에 `FUNCTIONAL_DEV`,
   전용 코호트·TensorBoard 코호트, `promotable:false`가 붙고 확증 진입(`starts.qualify_run`)이 거부한다.
-- **기록 위치:** 렌더 영상 raw `/Users/changmin/projects/ugrp/outputs/pr363-render-frames-20261003`,
+- **기록 위치:** 렌더 영상 raw `<home>/projects/ugrp/outputs/pr363-render-frames-20261003`,
   `...-seed912-20261003`, `...-seed913-20261003`(로컬 보관, 원격 백업 아님). 1차 진단 스크립트
   (`fix363/headless_grip_monitor.py`)는 기록된 SHA에서만 재현된다(`check_source`로 고정, 이후 감시 API 변경).
 
@@ -1522,8 +1522,8 @@ JPEG·집게 가림 없음)을 v96 판단 코드에 자기 발행 PWM과 함께 
   실제 렌더 RGB로 정상/지연/집게 열림을 다시 검증해야 한다.
 
 (1차 당시) 번들은 `runnable:false`이고 실측 보정 승인도 비어 있어 실제 실행은 막혀 있었다. 2차에서는 감시를 기록 전용으로 바꿔 이 검사가 진행을 막지 않는다.
-raw: `/Users/changmin/projects/ugrp/outputs/pr363-fix-grip-monitor-20261003`,
-`/Users/changmin/projects/ugrp/outputs/pr363-fix-projection-check-20261003` (로컬 보관, 원격 백업 아님).
+raw: `<home>/projects/ugrp/outputs/pr363-fix-grip-monitor-20261003`,
+`<home>/projects/ugrp/outputs/pr363-fix-projection-check-20261003` (로컬 보관, 원격 백업 아님).
 
 
 ## 변경과 입력 경계
@@ -1604,10 +1604,10 @@ D5 호환 완료가 아니다. 실제 보정 파일·기준 B″·조립기 승�
 계획 확인(물리·렌더 시작 없음):
 
 ```bash
-PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 FINAL_SHA=$(git rev-parse HEAD)
 "$PY" -m scripts.run_pair_highpose --check p03 --expected-source-sha "$FINAL_SHA" \
-  --output /Users/changmin/projects/ugrp/outputs/pair-highpose-P03-NEW
+  --output <home>/projects/ugrp/outputs/pair-highpose-P03-NEW
 ```
 
 실측 보정 뒤 코디네이터는 자기 worktree의 고정 SHA·깨끗한 tree·10 GiB 여유·소유 잠금을
@@ -1649,7 +1649,7 @@ zone-final-pair-highpose-v96 -- --check p03 --expected-source-sha "$FINAL_SHA"
 `lifted`는 빔 바닥≥10 mm·네 집게 접촉·외부 지지 없음·weld 없음의 평가 전용 판정이다.
 기하 가시성은 RGB 검출 성공이 아니다. 이 결과는 운반 base 주행·자기 RGB 학생·v92 보정·
 P03 인수를 포함하지 않는다. raw manifest의 모든 파일 hash를 대조했으며 원본 위치는
-`/Users/changmin/projects/ugrp/outputs/pair-highpose-offline-20261003/headless-a19e232a`다.
+`<home>/projects/ugrp/outputs/pair-highpose-offline-20261003/headless-a19e232a`다.
 원본은 로컬 보관이며 원격 백업으로 표현하지 않는다.
 
 첫 관리 세션은 샌드박스 `/bin/ps` 거부로 물리 시작 전에 종료되었다. 별도 자식/렌더가 없는

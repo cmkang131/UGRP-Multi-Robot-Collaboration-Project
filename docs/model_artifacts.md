@@ -48,7 +48,7 @@ python3 -m scripts.sim_cli models verify act-action-first-study-seed24-20260924
 
 ## 실제 ACT 로딩
 
-ACT의 선택 의존성은 [requirements-reference-act.txt](../requirements-reference-act.txt)에 고정돼 있다. 기존 ACT 환경이 있으면 재사용한다. 새 팀원의 설치는 [Ubuntu 안내](ubuntu_quickstart.md)의 환경 분리를 따른다. Mac의 기존 환경은 `/Users/changmin/Project-Runtimes/ugrp/.venv-reference-act`다.
+ACT의 선택 의존성은 [requirements-reference-act.txt](../requirements-reference-act.txt)에 고정돼 있다. 기존 ACT 환경이 있으면 재사용한다. 새 팀원의 설치는 [Ubuntu 안내](ubuntu_quickstart.md)의 환경 분리를 따른다. Mac의 기존 환경은 `<home>/Project-Runtimes/ugrp/.venv-reference-act`다.
 
 ACT 환경의 Python으로 다음 명령을 실행하면 가중치·설정·adapter를 실제로 로딩하고 `ready: true`를 반환한 뒤 종료한다.
 

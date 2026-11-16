@@ -13,7 +13,7 @@
   "commands": {
     "related_tests": {
       "command": [
-        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
         "-m",
         "pytest",
         "-q",
@@ -32,7 +32,7 @@
     },
     "old_regressions": {
       "command": [
-        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
         "-m",
         "pytest",
         "-q",
@@ -60,10 +60,10 @@
     },
     "published_counts": {
       "command": [
-        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
-        "/Users/changmin/projects/ugrp-wt/v6h-fixcls/experiments/2026-09-30-pair-v6h-carry/analysis/revalidate_published.py",
+        "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "<home>/projects/ugrp-wt/v6h-fixcls/experiments/2026-09-30-pair-v6h-carry/analysis/revalidate_published.py",
         "--output",
-        "/Users/changmin/projects/ugrp/outputs/v6h-classifier-redesign-20260930/validation-final/published"
+        "<home>/projects/ugrp/outputs/v6h-classifier-redesign-20260930/validation-final/published"
       ],
       "exit_code": 0
     },
@@ -76,7 +76,7 @@
       "exit_code": 0
     }
   },
-  "executable": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+  "executable": "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
   "old_regression_nodeids": [
     "tests/test_v6h_classify_placements.py::test_observed_criterion_48_of_60_and_safety_veto_even_for_auxiliary_seed",
     "tests/test_v6h_classify_placements.py::test_truncated_or_unordered_trace_is_rejected[one_row]",

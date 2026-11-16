@@ -5,7 +5,7 @@ import hashlib, json
 from pathlib import Path
 
 OUT = Path(__file__).resolve().parent
-SRC = Path('/Users/changmin/projects/ugrp/outputs/criterion-b-v95-score-20261003T170731Z/criterion_B_v95.json')
+SRC = Path('<home>/projects/ugrp/outputs/criterion-b-v95-score-20261003T170731Z/criterion_B_v95.json')
 SRC_SHA = '998bc3d4c32eeae1dae4225c4dbade458dd13c0562a0a21bf3613bfc6052a368'
 SCORER = 'f64016dd'  # scripts/score_consumer_criterion_b_v95.py sha256 prefix
 CHECKOUT = 'b4cd1336'

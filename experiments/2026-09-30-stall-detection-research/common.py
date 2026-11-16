@@ -9,7 +9,7 @@ from pathlib import Path
 
 import numpy as np
 
-OUT = Path('/Users/changmin/projects/ugrp/outputs')
+OUT = Path('<home>/projects/ugrp/outputs')
 
 
 def load_case(case_dir):

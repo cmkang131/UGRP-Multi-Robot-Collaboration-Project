@@ -6,8 +6,8 @@ import cv2
 import numpy as np
 ROOT=Path(__file__).resolve().parents[3];sys.path.insert(0,str(ROOT))
 EXP=Path(__file__).resolve().parents[1]
-RAW=Path('/Users/changmin/projects/ugrp/outputs/own-traversal-return-v1')
-BASE=Path('/Users/changmin/projects/ugrp/outputs/own-map-return-repeat-v1')
+RAW=Path('<home>/projects/ugrp/outputs/own-traversal-return-v1')
+BASE=Path('<home>/projects/ugrp/outputs/own-map-return-repeat-v1')
 from harness.own_traversal_graph import TraversalGraph,TraversalReturn,own_sample
 from harness.self_pose_graph import compose,wrap
 from harness.public_navigation.costmap import HALF

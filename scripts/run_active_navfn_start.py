@@ -6,7 +6,7 @@ from scripts.run_frontier_duration import bundle as old_bundle
 from harness.active_navfn_start import make_mapper,OPTION,CYCLE
 ROOT=base.ROOT
 EXP=ROOT/'experiments/2026-10-08-navfn-start-recovery'
-RAW=Path('/Users/changmin/projects/ugrp/outputs/navfn-start-recovery-v1')
+RAW=Path('<home>/projects/ugrp/outputs/navfn-start-recovery-v1')
 
 def bundle(source):
     b=old_bundle('B',source)

@@ -183,7 +183,7 @@ M2 VO는 98 trace 중 46개에 `vo_pose` 사건이 있다. 모든 M2 성공을 V
 
 - 분석 완료: dev03–08 6개 원본 및 M2 성공 49개 목록/명령/이벤트, 223 파일 SHA, phase별 시간, 직접 자기 σ 대비 사후 오차, synthetic PF noise 시간격자 확인. 새 detector 전체 재생/새 모델 fit/실제 checkpoint 영상/운반 검증은 하지 않았다.
 - 기존 입력·stop lag·full-beam geometry·loaded 중단 계약 회귀: **73 passed, 92 subtests passed**. 물리/model import 차단, `OMP_NUM_THREADS=1`, `--basetemp=./.pytest_tmp`, bytecode/cache OFF로 실행했고 `.pytest_tmp` 삭제 확인. 이 수치는 **현재 코드의 관련 회귀**이며 설계 후보 구현/전체 CI 통과가 아니다.
-- TensorBoard 새 임시 snapshot **3 run 변환, scalar 수치와 HParams의 EventAccumulator 실제 재로딩 확인**. [전달 기록](loaded_stage_tensorboard.json)에 위치·event SHA를 적었다. shared viewing root `/Users/changmin/projects/ugrp/outputs/tensorboard`는 쓰기 허용 범위 밖이고, 이번 native Chrome 조회는 `cgWindowNotFound`로 실패했다. 따라서 공유 게시·핀·HParams GUI 확인은 미완료다. [기존 대시보드](http://127.0.0.1:6006)에 이번 진단이 보인다는 주장은 하지 않는다. 새 물리 영상도 없고 viewer/서버를 시작하지 않았다.
+- TensorBoard 새 임시 snapshot **3 run 변환, scalar 수치와 HParams의 EventAccumulator 실제 재로딩 확인**. [전달 기록](loaded_stage_tensorboard.json)에 위치·event SHA를 적었다. shared viewing root `<home>/projects/ugrp/outputs/tensorboard`는 쓰기 허용 범위 밖이고, 이번 native Chrome 조회는 `cgWindowNotFound`로 실패했다. 따라서 공유 게시·핀·HParams GUI 확인은 미완료다. [기존 대시보드](http://127.0.0.1:6006)에 이번 진단이 보인다는 주장은 하지 않는다. 새 물리 영상도 없고 viewer/서버를 시작하지 않았다.
 - `git fetch origin`은 공유 FETCH_HEAD 쓰기 제한, `gh`는 네트워크 제한으로 실패했고 연결 GitHub GET 도구로 이슈·PR 최신 상태를 확인했다. primary main은 시작 시 `ba0eb4f547996af880de65003442882c5326c71d`; 이번에는 병합/primary 갱신을 수행하지 않았다.
 - 다음 구현의 선행조건: #240 병합과 dev09/10 검토, calibration coverage 및 static checkpoint feasibility, peer 기하 공유 없는 protocol 검토, source/bundle/seed/자원·raw 위치 동결. **설계 문서 작성은 완료, 구현·물리 dev는 미실행/준비 미완료**다.
 
@@ -191,7 +191,7 @@ M2 VO는 98 trace 중 46개에 `vo_pose` 사건이 있다. 모든 M2 성공을 V
 
 ```sh
 export OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1
-PAIR_PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+PAIR_PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 PAIR_DIR=experiments/2026-09-27-zone-pair-parity
 "$PAIR_PY" "$PAIR_DIR/loaded_stage_analysis.py"
 "$PAIR_PY" "$PAIR_DIR/loaded_stage_tensorboard.py"

@@ -5,7 +5,7 @@ ROOT=Path(__file__).resolve().parents[3];sys.path.insert(0,str(ROOT))
 from scripts.run_goal_route_preflight import RAW,EXP,SEEDS
 from scripts.agent_lock import status,DEFAULT_ROOT
 from harness.cohort_host_error_guard import HostErrorGuard
-SUPERVISOR=Path('/private/tmp/claude-501/-Users-changmin/2eb0ff27-da4f-4484-8131-64ef091df6ae/scratchpad/supervisor-ego.md')
+SUPERVISOR=Path('/private/tmp/claude-501/-<home>/2eb0ff27-da4f-4484-8131-64ef091df6ae/scratchpad/supervisor-ego.md')
 
 
 def run_slots(seeds,execute,report):

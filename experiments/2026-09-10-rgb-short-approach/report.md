@@ -45,6 +45,6 @@
 
 최종 모든 40회와 수정 파일럿 3회는 같은 source에서 재감사해 모두 통과했다. 총 48회 기록에서 접근 판단 3,458개와 파지 판단 1,440개를 검증했다. 이전 source의 학생 파일럿 3회와 비교군 보정 2회는 해당 source에서 완료한 감사 기록을 보존한다. [full-audit.json](full-audit.json)에 구분한다. [검증 영상 프레임](validation-video-review.jpg), [개발 단계 영상](development-video-review.jpg), [교사 영상](teacher-video-review.jpg)을 함께 저장한다.
 
-각*-raw-manifest.json은 모든 raw 파일의 위치·크기·SHA256과 어느 ZIP에 포함됐는지 기록한다. ZIP에는 모든 결과/평가/모델, 전체 교사 학습 RGB, 개발 파일럿 RGB, 최종 대표 case RGB를 보관한다. 각 ZIP은 압축 해제 읽기 검증을 했다. 원본 MP4와 생략한 최종 회차 RGB는 `/Users/changmin/projects/ugrp/outputs/rgb-approach-*`에 로컬 보관하며 원격 백업이 아니다. 여러 shard로 나눈 학습 ZIP은 같은 빈 폴더에 모두 풀면 trainer 입력 구조를 복원한다. 최종 모델 ZIP은 별도의 빈 폴더에 푼다. source SHA checkout과 부모 PR31의 grasp model을 사용해 protocol/cases 및 저장된 cohort command대로 재현한다.
+각*-raw-manifest.json은 모든 raw 파일의 위치·크기·SHA256과 어느 ZIP에 포함됐는지 기록한다. ZIP에는 모든 결과/평가/모델, 전체 교사 학습 RGB, 개발 파일럿 RGB, 최종 대표 case RGB를 보관한다. 각 ZIP은 압축 해제 읽기 검증을 했다. 원본 MP4와 생략한 최종 회차 RGB는 `<home>/projects/ugrp/outputs/rgb-approach-*`에 로컬 보관하며 원격 백업이 아니다. 여러 shard로 나눈 학습 ZIP은 같은 빈 폴더에 모두 풀면 trainer 입력 구조를 복원한다. 최종 모델 ZIP은 별도의 빈 폴더에 푼다. source SHA checkout과 부모 PR31의 grasp model을 사용해 protocol/cases 및 저장된 cohort command대로 재현한다.
 
 PR32: https://github.com/kcm0127-dotcom/ugrp/pull/32 . 부모 PR31 위에 쌓인 작업 브랜치이며 명시적인 병합 승인 전에는 main에 병합하지 않는다. 프로젝트 예외에 따라 Google Drive를 사용하지 않는다.

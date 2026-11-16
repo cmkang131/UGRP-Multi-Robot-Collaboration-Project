@@ -5,8 +5,8 @@ import argparse,copy,hashlib,importlib.util,json,math,subprocess,sys
 import numpy as np
 ROOT=Path(__file__).resolve().parents[3];sys.path.insert(0,str(ROOT))
 EXP=Path(__file__).resolve().parents[1]
-RAW=Path('/Users/changmin/projects/ugrp/outputs/own-door-navigation-v1')
-BASE=Path('/Users/changmin/projects/ugrp/outputs')
+RAW=Path('<home>/projects/ugrp/outputs/own-door-navigation-v1')
+BASE=Path('<home>/projects/ugrp/outputs')
 COHORT={'46A':BASE/'frontier-duration-v1/A/new-seed','46B':BASE/'frontier-duration-v1/B/new-seed',
     '47':BASE/'navfn-start-recovery-v1/new-seed',**{str(s):BASE/f'own-map-return-repeat-v1/seed{s}' for s in range(49001,49007)}}
 from harness.own_door_memory import DoorMemory,geometry,same

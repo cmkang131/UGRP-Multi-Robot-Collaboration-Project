@@ -6,7 +6,7 @@ ROOT=Path(__file__).resolve().parents[3]
 sys.path.insert(0,str(ROOT))
 from harness.self_pulse_odom import PulseOdometry,MODEL_SHA256
 from harness.self_odom_grid import transform
-RAW=Path('/Users/changmin/projects/ugrp/outputs/active-wall-map-v1')
+RAW=Path('<home>/projects/ugrp/outputs/active-wall-map-v1')
 def rows(p):return [json.loads(x) for x in p.read_text().splitlines()]
 def motion_only(case):
  p=RAW/case;commands=sorted(rows(p/'robots/r3/commands.jsonl'),key=lambda x:x['t'])

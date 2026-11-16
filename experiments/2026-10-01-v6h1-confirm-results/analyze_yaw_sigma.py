@@ -16,8 +16,8 @@ import subprocess
 from collections import Counter
 from pathlib import Path
 
-RAW = Path('/Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930')
-SEALED = Path('/Users/changmin/projects/ugrp/outputs/v6h1-sealed-analysis-v2-20261001')
+RAW = Path('<home>/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930')
+SEALED = Path('<home>/projects/ugrp/outputs/v6h1-sealed-analysis-v2-20261001')
 EXEC = '4c6b439f3f7c9a147c901f8b260a1e214d4eb396'
 SEAL = '5be4330eca9b23d2cbde3657dcbb215ee1923b25'
 PREFIX = 'experiments/2026-09-30-pair-v6h-carry/analysis/'

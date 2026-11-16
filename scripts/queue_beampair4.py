@@ -23,7 +23,7 @@ def build(source, evidence, table):
         r['command']=[v.replace(old,r['name']).replace('peer_rendezvous_v1','peer_rendezvous_v2') for v in r['command']]
         idx=r['command'].index('--per-run-mb')+1;r['command'][idx]='256'
         r['command'] += ['--approach-repair','beampair_approach_v2','--failure-tail']
-        r['command'][1]='/Users/changmin/projects/ugrp-wt/gcp-sim-host/scripts/remote_run.py'
+        r['command'][1]='<home>/projects/ugrp-wt/gcp-sim-host/scripts/remote_run.py'
         r['command'][r['command'].index('--host')+1]='gcp2'
     q['runs'].sort(key=lambda r:(0 if r['seed']==8318620 else 1 if r['seed']==8318626 else 2,r['episode']))
     for p in ('harness/beampair_approach.py','harness/beampair_host.py','harness/failure_rgb_tail.py','scripts/review_beampair3.py',

@@ -51,8 +51,8 @@ PR #144, 실행 번들 `rgb-standard-dispatch-v45`. 계획 협상에 주는 입�
 
 ## 기록과 재현
 
-- 원본(로컬): `/Users/changmin/projects/ugrp/outputs/plan-guidance-20260925/`. 실행별 폴더, `cohort.jsonl`(시작 전후 부하 평균·wall), 로그가 있다.
-- 참고 실행 원본: `/Users/changmin/projects/ugrp-worktrees/post-run-replay/outputs/simulation-runs/20260925-000852-dispatch-ee5eac42/artifacts`.
+- 원본(로컬): `<home>/projects/ugrp/outputs/plan-guidance-20260925/`. 실행별 폴더, `cohort.jsonl`(시작 전후 부하 평균·wall), 로그가 있다.
+- 참고 실행 원본: `<home>/projects/ugrp-worktrees/post-run-replay/outputs/simulation-runs/20260925-000852-dispatch-ee5eac42/artifacts`.
 - 집계: `results.json`(`analyze.py`로 생성. 실행별 계획·제안 이력·대기·중첩·result SHA-256 포함).
 - 소스: legacy-1은 `f76913d`, 나머지 14회는 `6e9b405`에서 돌렸다. 두 커밋의 차이는 `experiments/.../analyze.py` 추가뿐이고, 실행 번들 소스 해시는 같다.
 - 첫 시도에서는 legacy-1 이후 분석 스크립트를 커밋하지 않은 채 두어 작업 트리가 dirty해졌다. 그 뒤 14회는 실행기의 "commit and freeze source" 검사로 시작 전에 거절됐다. 로그는 `refused-dirty-tree-attempt/`에 보존했고, 커밋 뒤 다시 실행했다.

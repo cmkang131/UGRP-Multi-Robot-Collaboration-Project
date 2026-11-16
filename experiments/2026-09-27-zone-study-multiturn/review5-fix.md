@@ -1,7 +1,7 @@
 # PR #245 검토 5 P1 세 건 수정 — 2026-09-28
 
 기준 HEAD는 `8d25d30aabe2c759e86c79d6089b37508f658ade`다. 사용자가 지정한
-`/private/tmp/claude-501/-Users-changmin-projects-ugrp/ecd247bf-a1a7-45d6-9190-dad34be56468/scratchpad/codex-245-review5.md`
+`/private/tmp/claude-501/-<home>-projects-ugrp/ecd247bf-a1a7-45d6-9190-dad34be56468/scratchpad/codex-245-review5.md`
 를 먼저 읽었다. 변경은 `codex/zone-study-multiturn` worktree에 미커밋으로 남긴다.
 실제 모델 호출·MuJoCo 물리 step·커밋·push·병합은 모두 0회다.
 
@@ -59,7 +59,7 @@ P2(#240/v65 합성)와 실제 다회 파일럿은 이번 수정의 검증 범위
 
 ## 검사 환경과 기록
 
-기존 `/Users/changmin/projects/ugrp/.venv-sim-worker-mac`을 사용했다.
+기존 `<home>/projects/ugrp/.venv-sim-worker-mac`을 사용했다.
 pytest에는 모두 `OMP_NUM_THREADS=1`, `--basetemp=./.pytest_tmp`를 적용했다.
 전체 관련 검사는 `tests/test_zone_study*.py`, `test_zone_event_scheduler.py`,
 `test_zone_sim_cost.py`를 선택하고 socket 연결과 실제 MuJoCo import를 차단했다.

@@ -17,6 +17,6 @@
 
 한계: 직선 +X 50cm,seed11의2조건만 검증. 회전/다른 방향/장애물 회피/내려놓기/장시간 유지/실물은 미검증. 성공률은 최종2/2이며 이전 실패2건을 별도 보존. raw영상과로그는 로컬만 보관; 원격은 manifest/summary/hashes/source. main병합은 명시적 사용자승인 대기.
 
-원본: /Users/changmin/projects/ugrp/outputs/transport-grasp-20260909-{initial,slow}
+원본: <home>/projects/ugrp/outputs/transport-grasp-20260909-{initial,slow}
 
 재현: `.venv-sim-worker-mac/bin/python scripts/ugrp_session.py run transport-check -- .venv-sim-worker-mac/bin/python scripts/probe_dual_grasp_sync.py --out-dir outputs/NEW-transport --seed 11 --fps 12 --no-weld --side-grasp --approach-distance 0.6 --transport-distance 0.5`

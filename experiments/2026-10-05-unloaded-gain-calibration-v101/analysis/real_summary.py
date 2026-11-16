@@ -7,8 +7,8 @@ import glob, os, re, sys
 import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from analyze_pf import load_truth, load_replay, score_frames
-D = '/Users/changmin/projects/ugrp/outputs/pf-gaincal-v101-20261005/replay'
-RAW = '/Users/changmin/projects/ugrp/outputs/v98-dev-probe-dock_approach-1236c63d/zone_wide_door_geometry_v3'
+D = '<home>/projects/ugrp/outputs/pf-gaincal-v101-20261005/replay'
+RAW = '<home>/projects/ugrp/outputs/v98-dev-probe-dock_approach-1236c63d/zone_wide_door_geometry_v3'
 wins = [(20, 36), (36, 46), (46.5, 52), (52, 58), (58, 66)]
 names = {'base': 'HEAD as is', 'ctrlC': 'C only', 'CR1': 'C+R1', 'I': 'C+R1+R2'}
 print('cells: median |err| mm / median NEES2 per window; sigma_x mm mean 36-46 s -> 58-66 s; injections events/particles (total | before 46.4 s); expansion rows / relocalization rows')

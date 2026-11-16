@@ -15,8 +15,8 @@ from harness.active_wall_mapping import OPTIONS
 from harness.rbpf_motion_gate import install as motion_install, OPTION as MOTION
 from harness.rbpf_rejection import install, OPTION
 from harness.self_odom_grid import transform
-RAW = Path('/Users/changmin/projects/ugrp/outputs/rbpf-motion-gate-v1/baseline')
-OUT = Path('/Users/changmin/projects/ugrp/outputs/rbpf-rejection-v1')
+RAW = Path('<home>/projects/ugrp/outputs/rbpf-motion-gate-v1/baseline')
+OUT = Path('<home>/projects/ugrp/outputs/rbpf-rejection-v1')
 
 
 def load(p): return json.loads(p.read_text())

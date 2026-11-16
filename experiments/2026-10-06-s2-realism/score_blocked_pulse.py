@@ -24,7 +24,7 @@ def main(out):
             carry_updates=len(fixes),max_gap_s=float(max(np.diff([lo,*fixes,hi]))),stationary_max_m=max(initial),
             off_max_difference=r['baseline_max_delta']))
     bundle=json.loads((raw/'bundle.json').read_text());profiles=bundle['pulse_calibration']['profiles']
-    pulses=json.loads(Path('/Users/changmin/projects/ugrp/outputs/s2-load-height-20261007/drift-decomposition.json').read_text())['rows']
+    pulses=json.loads(Path('<home>/projects/ugrp/outputs/s2-load-height-20261007/drift-decomposition.json').read_text())['rows']
     progress={round(r['t'],6):r for r in replay['candidate']['visual_progress']['rows']}
     six={107.35,108.30,109.25,110.20,111.15,113.70};motion=[]
     for p in pulses:

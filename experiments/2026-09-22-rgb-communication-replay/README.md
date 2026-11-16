@@ -64,18 +64,18 @@ PID 9291은 보존했으므로 기본 대시보드는 유지된다. 두 직접 �
 읽기 전용 companion을 다시 켠 동안만 열린다(새 실험을 실행하지 않음).
 
 ```sh
-cd /Users/changmin/.codex/worktrees/cf5f/ugrp
+cd <home>/.codex/worktrees/cf5f/ugrp
 python3 scripts/ugrp_session.py run d2-replay-media-review -- \
-  /Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python -c \
-  'from scripts.tensorboard_tools.media import make_server; make_server("/Users/changmin/projects/ugrp/outputs/tensorboard",6007).serve_forever()'
+  <home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python -c \
+  'from scripts.tensorboard_tools.media import make_server; make_server("<home>/projects/ugrp/outputs/tensorboard",6007).serve_forever()'
 # 열람 종료 후 별도 터미널:
 python3 scripts/ugrp_session.py stop d2-replay-media-review
 ```
 
 ## 보존 위치·남은 조건
 
-원본 root: `/Users/changmin/.codex/worktrees/cf5f/ugrp/outputs/rgb-communication-colab-bfe478f`.
-capsule root: `/Users/changmin/.codex/worktrees/cf5f/ugrp/outputs/study-inputs`.
+원본 root: `<home>/.codex/worktrees/cf5f/ugrp/outputs/rgb-communication-colab-bfe478f`.
+capsule root: `<home>/.codex/worktrees/cf5f/ugrp/outputs/study-inputs`.
 원본 archive SHA256: `c708440c3ec2aa95076449c97b142c8b5e6c02d0ad71692917970a5749459ab7`.
 입력 archive SHA256: `87c8ab7245a20cc1559331f52cc1a83e1fd2799b2e3ad51cc231b73e7051f8a1`.
 [원본 파일 inventory](raw-artifact-hashes.json), [제출/회수/종료](submission.json), [변경하지 않은 전체 report](original-report.json)를 저장했다. raw 영상·로그·모델은 로컬 보관이며 이 해시/요약을 원격 raw 백업으로 표현하지 않는다. Google Drive는 사용하지 않았다.

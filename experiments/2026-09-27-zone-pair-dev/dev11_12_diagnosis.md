@@ -1,7 +1,7 @@
 # dev11/dev12 정지 대기 P1 진단 — v5h
 
-기준 실행 소스: `c38f94e6c551d8c0fa9993945ff4df087754672e`. 원본 위치: `/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v5g-c38f94e6c551d8c0fa9993945ff4df087754672e`.
-입력 진단 문서: `/private/tmp/claude-501/-Users-changmin-projects-ugrp/ecd247bf-a1a7-45d6-9190-dad34be56468/scratchpad/codex-dev11-12-diag.md`.
+기준 실행 소스: `c38f94e6c551d8c0fa9993945ff4df087754672e`. 원본 위치: `<home>/projects/ugrp/outputs/zone-pair-dev-v5g-c38f94e6c551d8c0fa9993945ff4df087754672e`.
+입력 진단 문서: `/private/tmp/claude-501/-<home>-projects-ugrp/ecd247bf-a1a7-45d6-9190-dad34be56468/scratchpad/codex-dev11-12-diag.md`.
 진단 문서 SHA-256: `2cad49a79e3973c4bab74c028426fd4c492f768df1ef04ef63d2055d9a06a603`.
 
 ## 원인과 재현

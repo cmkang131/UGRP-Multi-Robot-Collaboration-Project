@@ -5,9 +5,9 @@ import json, os, sys
 import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from analyze_pf import load_truth, load_replay, score_frames
-D = '/Users/changmin/projects/ugrp/outputs/pf-loadedgain-v102-20261005'
+D = '<home>/projects/ugrp/outputs/pf-loadedgain-v102-20261005'
 REPLAY = os.environ.get('REPLAY_DIR', f'{D}/replay7194')
-RAW = '/Users/changmin/projects/ugrp/outputs/v98-dev-probe-align_to_carry-fcc5215f/zone_wide_door_geometry_v3'
+RAW = '<home>/projects/ugrp/outputs/v98-dev-probe-align_to_carry-fcc5215f/zone_wide_door_geometry_v3'
 WINS = [(20, 60), (60, 90), (90, 140), (140, 210), (210, 260), (260, 330), (330, 360), (360, 430)]
 SEEDS = (0, 101, 102, 103, 104)
 res, out = {}, {}

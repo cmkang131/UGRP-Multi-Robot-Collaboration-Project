@@ -4,7 +4,7 @@ import importlib.util,json
 ROOT=Path(__file__).resolve().parents[3]
 spec=importlib.util.spec_from_file_location('egomap22_metrics',ROOT/'experiments/2026-10-07-active-wall-map/code/score.py')
 m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
-m.RAW=Path('/Users/changmin/projects/ugrp/outputs/rbpf-motion-gate-v1')
+m.RAW=Path('<home>/projects/ugrp/outputs/rbpf-motion-gate-v1')
 m.EXP=Path(__file__).resolve().parents[1]
 def prediction(case,partial=False):
  ep=m.RAW/case;m.verify(ep);return ep

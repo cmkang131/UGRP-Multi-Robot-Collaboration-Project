@@ -1,7 +1,7 @@
 import json,pathlib,hashlib,urllib.request,urllib.parse,math
 from scripts.tensorboard_tools.export import convert
 from tensorboard.backend.event_processing.event_accumulator import EventAccumulator
-BASE=pathlib.Path('/Users/changmin/projects/ugrp/outputs'); DEST=BASE/'s2-heading-v145-diagnosis';TB=BASE/'tensorboard/1009-heading-diagnosis'
+BASE=pathlib.Path('<home>/projects/ugrp/outputs'); DEST=BASE/'s2-heading-v145-diagnosis';TB=BASE/'tensorboard/1009-heading-diagnosis'
 SRC=pathlib.Path('experiments/2026-10-09-s2-heading/default-on').resolve()
 assert not TB.exists() and not DEST.exists()
 DEST.mkdir(); det=json.loads((SRC/'s1068-detections.json').read_text()); ev=json.loads((SRC/'s1068-pose-evaluation.json').read_text())['rows']

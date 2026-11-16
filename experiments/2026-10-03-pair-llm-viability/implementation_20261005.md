@@ -14,7 +14,7 @@
   최대 번호는 #376의 보정 경로 v101(1.0.0), 최대 workflow 버전은 #371의 3.12.0이다.
   이미 예약된 `zone-pair-llm-v100` / `3.12.0`과 충돌하는 다른 등록은 없고 v100 실행 기록도 없으므로 유지한다.
   v97·v99 은퇴 등록 파일은 바이트 그대로 보존한다.
-- 시험 명령은 `nice -n 10 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest ...`를
+- 시험 명령은 `nice -n 10 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest ...`를
   한 번에 한 묶음 사용한다. 이 실행 환경은 `setpriority: Operation not permitted`를 출력했다.
   우선순위가 10으로 변경됐다고 주장하지 않는다.
 - 첫 넓은 묶음은 호스트 부하 평균 144에서 685.49초 동안 **170 passed**까지 진행한 뒤
@@ -137,7 +137,7 @@ status의 프롬프트/새 행동 검증/둘러보기 실행 2개/번들/조건 
 live의 입력 경로 분리 1개. 재검사 명령(동시 실행 없음):
 
 ```sh
-nice -n 10 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q --tb=short tests/test_pair_llm_case.py::test_every_arm_has_the_same_case_cap_and_a_larger_one_is_refused tests/test_pair_llm_case.py::test_cli_plans_without_running_and_refuses_missing_calibration_and_unfrozen_source tests/test_pair_llm_status.py::test_high_runtime_refuses_a_model_look_while_its_own_bounded_recovery_is_running
+nice -n 10 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q --tb=short tests/test_pair_llm_case.py::test_every_arm_has_the_same_case_cap_and_a_larger_one_is_refused tests/test_pair_llm_case.py::test_cli_plans_without_running_and_refuses_missing_calibration_and_unfrozen_source tests/test_pair_llm_status.py::test_high_runtime_refuses_a_model_look_while_its_own_bounded_recovery_is_running
 ```
 
 최종 소스 대조: #363 `14ba8b5e` 대비 봉인 `zone_event_scheduler.py`, `zone_study_decisions.py`,
@@ -236,15 +236,15 @@ peer_nl은 여기에 `--peer-token-measurements <JSON>`을 더한다. JSON은
 제품 코드를 고정한 하나의 전체 묶음 결과다. pytest는 동시 실행하지 않았다.
 
 ```sh
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p no:cacheprovider --tb=short \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p no:cacheprovider --tb=short \
   tests/test_pair_llm_*.py tests/test_highpose_refix_hooks.py \
   tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_catalog_has_registered_workflows_and_distinct_adapters \
   tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_every_catalog_workflow_has_a_read_only_explicit_plan \
   tests/test_ci_fast_path.py \
   tests/test_zone_study_llm_driver.py::test_no_cap_never_blocks_and_cap_stops_only_at_the_registered_value \
   tests/test_zone_study_llm_driver.py::test_unknown_usage_is_charged_the_registered_amount_not_zero \
-  /Users/changmin/projects/ugrp/outputs/review-371-impl-20261005/test_review_probes.py::test_real_hook_timestamp_accepts_a_ten_second_window \
-  /Users/changmin/projects/ugrp/outputs/review-371-impl-20261005/test_review_probes.py::test_cli_rejects_cohort_cap_different_from_registered_value
+  <home>/projects/ugrp/outputs/review-371-impl-20261005/test_review_probes.py::test_real_hook_timestamp_accepts_a_ten_second_window \
+  <home>/projects/ugrp/outputs/review-371-impl-20261005/test_review_probes.py::test_cli_rejects_cohort_cap_different_from_registered_value
 ```
 
 최종 로그: `outputs/fix-371-20261005/related-full-2.log`.

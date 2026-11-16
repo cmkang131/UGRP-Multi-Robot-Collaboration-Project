@@ -2,12 +2,12 @@
 import json, math, sys
 import numpy as np, pandas as pd
 
-OUT = "/Users/changmin/projects/ugrp/outputs/vo-feasibility-20261003"
+OUT = "<home>/projects/ugrp/outputs/vo-feasibility-20261003"
 SEQ_ROOT = {
-    "v88_r1": ("/Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001/calibration-unloaded/zone_wide_two_doors_final_v3", "r1"),
-    "v92_r1": ("/Users/changmin/projects/ugrp/outputs/final-pair-v92-loaded-257953ec-20261003/zone_wide_two_doors_final_v3", "r1"),
-    "v92_r2": ("/Users/changmin/projects/ugrp/outputs/final-pair-v92-loaded-257953ec-20261003/zone_wide_two_doors_final_v3", "r2"),
-    "m1_s101": ("/Users/changmin/projects/ugrp/outputs/m1-owncam-20260926/test/m1test-s101", "r1"),
+    "v88_r1": ("<home>/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001/calibration-unloaded/zone_wide_two_doors_final_v3", "r1"),
+    "v92_r1": ("<home>/projects/ugrp/outputs/final-pair-v92-loaded-257953ec-20261003/zone_wide_two_doors_final_v3", "r1"),
+    "v92_r2": ("<home>/projects/ugrp/outputs/final-pair-v92-loaded-257953ec-20261003/zone_wide_two_doors_final_v3", "r2"),
+    "m1_s101": ("<home>/projects/ugrp/outputs/m1-owncam-20260926/test/m1test-s101", "r1"),
 }
 
 def classify(p):

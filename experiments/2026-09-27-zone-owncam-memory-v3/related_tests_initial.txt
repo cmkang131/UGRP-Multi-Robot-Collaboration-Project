@@ -125,7 +125,7 @@ test_worker_plan_redacts_entire_url_query (tests.test_simulation_workflow_manage
 ERROR: test_every_catalog_workflow_has_a_read_only_explicit_plan (tests.test_simulation_workflow_manager.WorkflowManagerTests.test_every_catalog_workflow_has_a_read_only_explicit_plan)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/Users/changmin/projects/ugrp-wt/codex-memory-v3/tests/test_simulation_workflow_manager.py", line 239, in test_every_catalog_workflow_has_a_read_only_explicit_plan
+  File "<home>/projects/ugrp-wt/codex-memory-v3/tests/test_simulation_workflow_manager.py", line 239, in test_every_catalog_workflow_has_a_read_only_explicit_plan
     plans = {row["id"]: wm.plan(PROJECT, row["id"], samples[row["id"]]) for row in data["workflows"]}
                                                     ~~~~~~~^^^^^^^^^^^
 KeyError: 'zone-m1-owncam-memory-v3-run'
@@ -134,7 +134,7 @@ KeyError: 'zone-m1-owncam-memory-v3-run'
 ERROR: test_parent_exit_cleans_background_child (tests.test_simulation_workflow_manager.WorkflowManagerTests.test_parent_exit_cleans_background_child)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/Users/changmin/projects/ugrp-wt/codex-memory-v3/tests/test_simulation_workflow_manager.py", line 107, in test_parent_exit_cleans_background_child
+  File "<home>/projects/ugrp-wt/codex-memory-v3/tests/test_simulation_workflow_manager.py", line 107, in test_parent_exit_cleans_background_child
     result = subprocess.run(["ps", "-o", "stat=", "-p", str(pid)], text=True, capture_output=True)
              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 548, in run
@@ -150,7 +150,7 @@ PermissionError: [Errno 1] Operation not permitted: 'ps'
 FAIL: test_catalog_has_thirty_selectable_workflows_and_distinct_adapters (tests.test_simulation_workflow_manager.WorkflowManagerTests.test_catalog_has_thirty_selectable_workflows_and_distinct_adapters)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/Users/changmin/projects/ugrp-wt/codex-memory-v3/tests/test_simulation_workflow_manager.py", line 188, in test_catalog_has_thirty_selectable_workflows_and_distinct_adapters
+  File "<home>/projects/ugrp-wt/codex-memory-v3/tests/test_simulation_workflow_manager.py", line 188, in test_catalog_has_thirty_selectable_workflows_and_distinct_adapters
     self.assertEqual(len(data["workflows"]), 33)
 AssertionError: 34 != 33
 

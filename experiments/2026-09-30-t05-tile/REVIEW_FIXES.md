@@ -38,7 +38,7 @@ beam PR 범위에 남긴다.
 생성하거나 실제 주행하지 않았으며, 호출자에게 속한 로봇 ID를 붙인 모의
 이력 전달만 확인했다. native dispatch 연결 완료를 뜻하지 않는다.
 
-실행은 기존 `/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python`과
+실행은 기존 `<home>/projects/ugrp/.venv-sim-worker-mac/bin/python`과
 `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1`, `OPENBLAS_NUM_THREADS=1`, `OMP_NUM_THREADS=1`을
 사용했다. 이 폴더의 `offline_guard.py`를 pytest plugin으로 적용해 MuJoCo·
 모델 SDK import와 네트워크 연결을 차단했다. pytest를 직접 실행했으며
@@ -63,7 +63,7 @@ beam PR 범위에 남긴다.
 export PYTHONPATH=.:experiments/2026-09-30-t05-tile
 export PYTEST_PLUGINS=offline_guard PYTEST_DISABLE_PLUGIN_AUTOLOAD=1
 export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1
-PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 "$PY" -m pytest -q tests/test_zone_own_executor_tile.py \
   tests/test_zone_own_executor_tile_review_h.py
 "$PY" -m pytest -q tests/test_zone_pair_registered_source.py \
@@ -84,7 +84,7 @@ PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
 봉인·지도·시나리오·raw는 수정하지 않았다. 새 bundle/workflow ID는 없다.
 
 원본 로그와 JUnit은 로컬
-`/Users/changmin/projects/ugrp/outputs/t05-tile/review-fixes-20261001/`에 보존한다.
+`<home>/projects/ugrp/outputs/t05-tile/review-fixes-20261001/`에 보존한다.
 원격 raw 백업이나 로봇 성공률 자료가 아니다. 수정 전 두 반례의 실패와
 중간 106건 통과 기록도 남긴다. 변이용 임시 사본은 실행 후 제거되며,
 `/private/tmp`에 별도 checkout 추출 폴더는 만들지 않았다. Drive는 사용하지 않는다.

@@ -539,9 +539,9 @@
       "tests": "355",
       "time": "275.087",
       "timestamp": "2026-10-01T07:06:43.110522+09:00",
-      "hostname": "gangchangmin-ui-MacBookAir.local"
+      "hostname": "<mac-host>"
     },
-    "command": "GIT_DIR=/Users/changmin/projects/ugrp/.git PYTHONDONTWRITEBYTECODE=1 OPENBLAS_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python offline.py -q -p no:cacheprovider tests/test_zone_final_pair_v3.py tests/test_zone_final_pair_review_fixes.py tests/test_review_344.py tests/test_zone_final_environment_runnable.py tests/test_zone_final_environment_floor_light.py tests/test_zone_pair_registered_source.py tests/test_zone_study_source_pinning.py tests/test_zone_pair_executor.py tests/test_zone_pair_grasp.py tests/test_pair_passage_plan.py tests/test_simulation_workflow_manager.py tests/test_vision_loc_p03_source_pinning.py -k \"not test_parent_exit_cleans_background_child\"",
+    "command": "GIT_DIR=<home>/projects/ugrp/.git PYTHONDONTWRITEBYTECODE=1 OPENBLAS_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python offline.py -q -p no:cacheprovider tests/test_zone_final_pair_v3.py tests/test_zone_final_pair_review_fixes.py tests/test_review_344.py tests/test_zone_final_environment_runnable.py tests/test_zone_final_environment_floor_light.py tests/test_zone_pair_registered_source.py tests/test_zone_study_source_pinning.py tests/test_zone_pair_executor.py tests/test_zone_pair_grasp.py tests/test_pair_passage_plan.py tests/test_simulation_workflow_manager.py tests/test_vision_loc_p03_source_pinning.py -k \"not test_parent_exit_cleans_background_child\"",
     "offline_guard": "import sys, socket\nsys.path.insert(0, '/private/tmp/ugrp-review344b.kUVKSz')\ndef forbidden(*a, **kw):\n    raise RuntimeError('review forbids native physics/render/network/model')\nsocket.socket.connect=forbidden\nfor name in ('mujoco','torch','torchvision','sim.multi_masterpi_production'):\n    sys.modules[name]=None\nfrom harness.vision_loc_client import VisionWorkerClient\nVisionWorkerClient.__init__=forbidden\nimport pytest\nraise SystemExit(pytest.main(sys.argv[1:]))\n",
     "deselected_reason": "Existing sandbox ps limitation; native/process test not reclassified as implementation failure"
   },
@@ -555,9 +555,9 @@
       "tests": "19",
       "time": "16.708",
       "timestamp": "2026-10-01T07:15:54.668259+09:00",
-      "hostname": "gangchangmin-ui-MacBookAir.local"
+      "hostname": "<mac-host>"
     },
-    "command": "REVIEW_344B_ROOT=<candidate archive> PYTHONDONTWRITEBYTECODE=1 OPENBLAS_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p no:cacheprovider tests/test_review_344b.py -rx"
+    "command": "REVIEW_344B_ROOT=<candidate archive> PYTHONDONTWRITEBYTECODE=1 OPENBLAS_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p no:cacheprovider tests/test_review_344b.py -rx"
   },
   "mutations": {
     "count": 7,
@@ -592,7 +592,7 @@
         "tests": "3",
         "time": "7.867",
         "timestamp": "2026-10-01T07:12:27.987503+09:00",
-        "hostname": "gangchangmin-ui-MacBookAir.local"
+        "hostname": "<mac-host>"
       },
       "result": "3 expected assertion failures"
     },
@@ -613,7 +613,7 @@
         "tests": "2",
         "time": "0.822",
         "timestamp": "2026-10-01T07:14:31.340363+09:00",
-        "hostname": "gangchangmin-ui-MacBookAir.local"
+        "hostname": "<mac-host>"
       },
       "result": "2 expected assertion failures"
     }
@@ -1305,7 +1305,7 @@
       }
     ]
   },
-  "local_log_directory": "/Users/changmin/projects/ugrp/outputs/review-344b-b7bc885a-20261001",
+  "local_log_directory": "<home>/projects/ugrp/outputs/review-344b-b7bc885a-20261001",
   "local_log_qualification": "Local log preservation, not remote backup; substantive results are in this committed evidence file",
   "log_sha256": {
     "counterexamples.txt": "0ae38435de1a74a0aeda45ff0651226dd562495790666a40b6a40030849175db",

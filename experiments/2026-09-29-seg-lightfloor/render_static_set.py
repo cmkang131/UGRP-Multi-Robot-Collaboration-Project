@@ -32,7 +32,7 @@ import render_checkpoints as rc  # noqa: E402  (B1 static renderer; import only:
 import floors  # noqa: E402
 
 MAP_FILE = ROOT / 'maps' / 'zones' / 'zone_wide_door_geometry_v2.json'
-VL_TRAIN_EPISODES = Path('/Users/changmin/projects/ugrp/outputs/vision-loc-20260926/render')
+VL_TRAIN_EPISODES = Path('<home>/projects/ugrp/outputs/vision-loc-20260926/render')
 CLEAR_M = 0.24                       # robot centre clearance to any wall rectangle
 EXCL_POS_M, EXCL_YAW = 0.30, math.radians(30.)   # keep training poses away from the B1 evaluation stations
 N_TRAIN_LOOKS = 24

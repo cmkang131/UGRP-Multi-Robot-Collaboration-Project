@@ -53,7 +53,7 @@ import time
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-V3_ROOT = Path(os.environ.get('UGRP_V3_SOURCE', '/Users/changmin/projects/ugrp-wt/kiro-vision-loc-v3src'))
+V3_ROOT = Path(os.environ.get('UGRP_V3_SOURCE', '<home>/projects/ugrp-wt/kiro-vision-loc-v3src'))
 sys.path.insert(0, str(V3_ROOT))
 sys.path.insert(0, str(HERE))
 

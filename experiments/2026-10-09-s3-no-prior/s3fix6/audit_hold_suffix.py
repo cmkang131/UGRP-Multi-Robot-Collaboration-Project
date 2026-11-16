@@ -7,7 +7,7 @@ import argparse,hashlib,json,math
 from pathlib import Path
 import numpy as np
 from harness.pf_observation_consistency import OPTIONS
-RAW=Path('/Users/changmin/projects/ugrp/outputs')
+RAW=Path('<home>/projects/ugrp/outputs')
 def rows(p):return [json.loads(x) for x in p.read_text().splitlines()]
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def audit(base):

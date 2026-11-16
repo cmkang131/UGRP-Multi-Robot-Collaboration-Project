@@ -3,7 +3,7 @@ import argparse,hashlib,json,math
 from pathlib import Path
 import numpy as np
 from harness.pf_observation_consistency import OPTIONS
-RAW=Path('/Users/changmin/projects/ugrp/outputs')
+RAW=Path('<home>/projects/ugrp/outputs')
 S3={'v149':RAW/'s3-sweep-b73ce193-s14201-v149','v150':RAW/'s3-odometry-4c9eb3aa-s14201-v150'}
 
 def read(p):return json.loads(p.read_text())

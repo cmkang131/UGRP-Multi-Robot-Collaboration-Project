@@ -31,7 +31,7 @@ import numpy as np  # noqa: E402
 
 SCHEMA = 'ugrp.zone_env_v3.static_checks.v1'
 X = Path(__file__).resolve().parent
-DEFAULT_OUT = Path('/Users/changmin/projects/ugrp/outputs/zone-env-v3-20260926/static')
+DEFAULT_OUT = Path('<home>/projects/ugrp/outputs/zone-env-v3-20260926/static')
 GOAL, EXTRA = {'A': {'cyan': 1}}, {'red': 2, 'green': 1}
 SEED = 700                       # setup seed of the static-check scene (box layout only)
 V3 = 'zone_wide_door_tags_v3'

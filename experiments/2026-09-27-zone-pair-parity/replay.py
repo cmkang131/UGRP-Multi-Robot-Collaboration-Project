@@ -23,7 +23,7 @@ from types import SimpleNamespace as NS
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = Path(__file__).resolve().parent
-RAW = Path('/Users/changmin/projects/ugrp/outputs')
+RAW = Path('<home>/projects/ugrp/outputs')
 MAIN = '97f91cb040bf382973ce84b24b1ca8399e64a6fb'
 V4 = '3790372dfdd8e9de894bad7414657461bc8ba91d'
 V5 = '3839555dc0de0880f74a40c831044e2b5be2d2d7'

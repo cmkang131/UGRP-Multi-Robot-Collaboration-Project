@@ -91,7 +91,7 @@ fault flag/접촉/held 정답/심판 알림을 주지 않는다. 첫 close까지
 
 ## 원본·TensorBoard 인수
 
-각 시도 raw는 `/Users/changmin/projects/ugrp/outputs/t05-tile/<후보SHA>/<새시도ID>/`에
+각 시도 raw는 `<home>/projects/ugrp/outputs/t05-tile/<후보SHA>/<새시도ID>/`에
 배타적으로 생성한다. own JPEG/텍스트/명령 전부, 명령·관측 주기, 단계·실패 로그,
 SIM초(staging 포함), eval_only, 환경/설정/source closure, 정상·실패 영상,
 파일별 SHA-256 manifest를 보존한다. 새 모델 호출 예산 0이며 호출수/비용은 실제

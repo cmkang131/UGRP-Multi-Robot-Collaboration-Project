@@ -167,8 +167,8 @@ landmark 거부, partial bbox 경계 금지, 273개 pose의 기존 likelihood �
 시뮬레이션 smoke는 프로젝트 검사이며 본 오프라인 비교의 물리 결과가 아니다.
 원격 CI 상태/최종 전달 해시는 `delivery.json`에 분리한다.
 
-- 최종 replay 원본: `/Users/changmin/projects/ugrp/outputs/ownmaps2a-20261009-r3`. 14개 prediction의 소스·입력·프레임·출력 SHA256 보존.
-- 평가 원본: `/Users/changmin/projects/ugrp/outputs/ownmaps2a-20261009-r3-evaluation`. 전체 pose series·단서별 oracle은 이 로컬 경로에 있다.
+- 최종 replay 원본: `<home>/projects/ugrp/outputs/ownmaps2a-20261009-r3`. 14개 prediction의 소스·입력·프레임·출력 SHA256 보존.
+- 평가 원본: `<home>/projects/ugrp/outputs/ownmaps2a-20261009-r3-evaluation`. 전체 pose series·단서별 oracle은 이 로컬 경로에 있다.
 - 이전 r1(입력 목록 정정 중단)·r2(speedup 생성자 HOST_ERROR 및 부분 재생)는 삭제하지 않았다.
   최종 r3는 전 조건을 고정 소스로 새로 실행했다. 인프라 수정이며 결과 기반 튜닝이 아니다.
 - [TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1009-ownmaps2a-r3%2F&smoothing=0&pinnedCards=%5B%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fcorrect_convergence%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fpost_rmse_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fnees_fraction%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Funflagged25cm_count%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fwall_s%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fcommands%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fmodel_calls%22%7D%5D#timeseries): 새 native snapshot `1009-ownmaps2a-r3`, 기준/자기 14 run.

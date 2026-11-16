@@ -1,7 +1,7 @@
 # OpenCV 벽 관측기 열별 진단과 부분 고정(partial fix) 판정 (2026-10-05)
 
 상태: DEV 오프라인 분석(시뮬레이션·렌더·모델 호출 없음). 확증 아님. 기본 off 플래그 후보 한 개.
-기준 SHA: 9018369c(#383 라이트 모드) 위 브랜치 `claude/llm-eye`. 원본 결과: `/Users/changmin/projects/ugrp/outputs/llm-eye-20261005/`.
+기준 SHA: 9018369c(#383 라이트 모드) 위 브랜치 `claude/llm-eye`. 원본 결과: `<home>/projects/ugrp/outputs/llm-eye-20261005/`.
 
 ## 1. 질문과 결론
 

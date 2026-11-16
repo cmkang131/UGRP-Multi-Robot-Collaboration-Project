@@ -20,7 +20,7 @@
 - 이 작업의 원격 실행에는 외부 모델 호출이 없다. 실제 청구액은 확인 전 null이며 무료 실행 또는 비용 0으로 단정하지 않는다.
 
 로컬 원본/상태 위치:
-`/Users/changmin/.codex/worktrees/act-cloud-resume/ugrp/outputs/cloud-resume/`
+`<home>/.codex/worktrees/act-cloud-resume/ugrp/outputs/cloud-resume/`
 및 `outputs/kaggle-jev-rule-20260921/`.
 
 `collection-status.json`은 수집 상태, `continuation.json`은 단계 상태다. 완료 ZIP은 분할 회수 후 ZIP/내부 모든 파일의 해시와 source SHA를 확인한다. 회수·해시 확인은 과제 성공이나 모델 성능 감사와 다르다. 새 물리 코호트가 끝난 뒤 엄격 성공·접근 실패·거짓 완료·시간·명령 수·추론 지연과 입력/영상 감사를 수행해야 한다. 선택된 조건의 새 오프셋 확인도 아직 실행하지 않았다.

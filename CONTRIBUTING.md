@@ -152,7 +152,7 @@ PYTHONPATH=. .venv-sim-worker-mac/bin/python scripts/verify_gemini_budget_run.py
 PR이 GitHub에서 병합되어도 이미 열려 있는 로컬 폴더의 파일은 자동 변경되지 않는다. 병합한 작업에서 이 단계까지 완료한다. 별도 작업 worktree는 그대로 두고 기본 체크아웃만 대상으로 한다.
 
 1. GitHub에서 해당 PR의 MERGED 상태와 병합 SHA를 확인한다.
-2. 기본 경로와 origin이 맞는지 확인한다. 이 Mac은 `/Users/changmin/projects/ugrp`이며, 다른 호스트의 경로는 프로젝트 설정과 `git worktree list`에서 확인한다.
+2. 기본 경로와 origin이 맞는지 확인한다. 이 Mac은 `<home>/projects/ugrp`이며, 다른 호스트의 경로는 프로젝트 설정과 `git worktree list`에서 확인한다.
 3. 기본 경로의 AGENTS.md를 다시 읽고 main 브랜치·깨끗한 작업 트리(미추적 파일 포함)·실험 및 소스 고정 작업 부재를 확인한다. 실행 여부가 불명확하면 갱신을 미룬다.
 4. 다음을 **기본 체크아웃에서** 실행한다. 각 단계가 실패하면 중단한다.
 

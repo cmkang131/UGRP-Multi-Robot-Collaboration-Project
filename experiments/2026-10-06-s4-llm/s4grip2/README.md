@@ -123,8 +123,8 @@ partial12프레임은 별도이며 정확도 분모에 합치지 않았다. 후�
 
 ## 자료·라벨 감사
 
-원본: `/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-{r1,r2,r3}-{hold,loss}-r1/`.
-파생 평가: `/Users/changmin/projects/ugrp/outputs/s4grip2-offline/{explore,confirm}/`.
+원본: `<home>/projects/ugrp/outputs/oracle-runs/s4grip2-{r1,r2,r3}-{hold,loss}-r1/`.
+파생 평가: `<home>/projects/ugrp/outputs/s4grip2-offline/{explore,confirm}/`.
 자기 RGB 1,464개 및 해시, 평가용 접촉/라벨, held-start integration state, setup/고정 tape/외란 로그 보존.
 [회수 확인](raw-verification.json): manifest가 열거한2,124개 파일·63,427,202바이트 SHA-256 일치.
 [경계 감사](boundary-verification.json): 유지/외란12쌍의 **발행 명령 로그 바이트 동일**, weld OFF5,328표본.
@@ -164,8 +164,8 @@ HParams case/outcome/policy/source_sha + model_calls 표시 확인(전역4,606�
 
 재현(물리 없이):
 ```sh
-python3 -m scripts.evaluate_s4_grip_dataset --raw-root /Users/changmin/projects/ugrp/outputs/oracle-runs --split explore --output <new-explore-dir>
-python3 -m scripts.evaluate_s4_grip_dataset --raw-root /Users/changmin/projects/ugrp/outputs/oracle-runs --split confirm --output <new-confirm-dir>
+python3 -m scripts.evaluate_s4_grip_dataset --raw-root <home>/projects/ugrp/outputs/oracle-runs --split explore --output <new-explore-dir>
+python3 -m scripts.evaluate_s4_grip_dataset --raw-root <home>/projects/ugrp/outputs/oracle-runs --split confirm --output <new-confirm-dir>
 ```
 원본과 파생 뷰는 로컬/Oracle 보존이고 Git에는 작은 기록·해시·분석기만 보존한다. raw 전체의 GitHub 백업을 뜻하지 않는다.
 PR #425 초안을 유지하며 병합은 감독이 결정한다.

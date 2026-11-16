@@ -70,8 +70,8 @@ GT 기준은 개발 가설이다. raw 지표를 함께 저장하므로 다른 �
 |---|---|
 | 2·3단계 격자 | 소스 `2aa03454` (clean, `source_changed=false`), 76 cases, 4 worker × `OMP_NUM_THREADS=2`, 총 wall 3716 s (62 분) |
 | 4·5단계 확인 | 소스 `4237b182` (clean), nominal 1 case씩, 2 worker, 81 s |
-| raw | `/Users/changmin/projects/ugrp/outputs/pair-stage-probes-2aa03454-grid1/` (622 MiB, 29,745 파일) |
-| raw 4·5단계 | `/Users/changmin/projects/ugrp/outputs/pair-stage-probes-4237b182-s45/` (8.2 MiB) |
+| raw | `<home>/projects/ugrp/outputs/pair-stage-probes-2aa03454-grid1/` (622 MiB, 29,745 파일) |
+| raw 4·5단계 | `<home>/projects/ugrp/outputs/pair-stage-probes-4237b182-s45/` (8.2 MiB) |
 | 공통 실행 기록 | `sim_cli workflow run pair-stage-probes`, `*-managed/manifest.json` |
 | 잠금 | `agent_lock` owner claude. 격자 동안 보유했고 끝난 뒤 해제했다 |
 | 부하 | 부하 평균 시작 34 → 끝 56. 도중 최대 90이며 다른 작업이 원인이다. SIM 시간 동기 모드다. wall은 참고값이다 |
@@ -136,14 +136,14 @@ GT 기준은 개발 가설이다. raw 지표를 함께 저장하므로 다른 �
 
 ### 사전 smoke (소스 커밋 전, 기록용)
 
-- `/Users/changmin/projects/ugrp/outputs/pair-stage-probes-smoke-precommit-20260928/` (32 MiB, `artifacts.sha256.txt` sha256 `6ac9d5a0…`).
+- `<home>/projects/ugrp/outputs/pair-stage-probes-smoke-precommit-20260928/` (32 MiB, `artifacts.sha256.txt` sha256 `6ac9d5a0…`).
 - 커밋 전 코드로 돌렸다. 결과 근거로 쓰지 않는다. 하네스 디버깅 기록이다.
   - 정렬 nominal 103 s 실패 재현, 파지 nominal 통과.
   - 운반·내려놓기 첫 시도는 teacher staging의 포트 시계 역행으로 HOST_ERROR였다. 두 번째 시도는 PF 확산으로 admission `SELF_UNCERTAIN` 거부였다. 둘 다 고친 뒤 위 결과를 얻었다.
 
 ### TensorBoard
 
-- 스냅샷: `/Users/changmin/projects/ugrp/outputs/tensorboard/0928-pair-stage-probes`
+- 스냅샷: `<home>/projects/ugrp/outputs/tensorboard/0928-pair-stage-probes`
   - run 83개: 경우별 78개 + 그룹 집계 `ALL-*` 5개. `collection.json` sha256 `c5fdb727…`.
   - 변환기 `scripts/export_offline_audit.py`, 파생 뷰 빌더 `scripts/build_pair_stage_probe_views.py`.
   - 파생 뷰 `outputs/pair-stage-probes-tbviews-0928` (index sha256 `dfc84ea2…`).
@@ -201,7 +201,7 @@ v6 E2E 코호트(#259)가 파지 전에 끝나 닿지 못한 v6 정책(b-only, a
 
 ### TensorBoard (v6)
 
-- 스냅샷: `/Users/changmin/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6`, run 256개(경우별 241 + 그룹 집계 `ALL-*` 15). `collection.json` sha256 `c1ab7705…`. 비교용 v5h grid1 기준선 76건을 함께 넣었다.
+- 스냅샷: `<home>/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6`, run 256개(경우별 241 + 그룹 집계 `ALL-*` 15). `collection.json` sha256 `c1ab7705…`. 비교용 v5h grid1 기준선 76건을 함께 넣었다.
 - 파생 뷰 `outputs/pair-stage-probes-tbviews-0929-v6` (index sha256 `56586f02…`), 빌더 `scripts/build_pair_stage_probe_views.py`, 변환기 `scripts/export_offline_audit.py`.
 - 검증 1: EventAccumulator로 241개 경우의 `offline/stage_pass`와 `gate/stop_grip_x_err_m/*`, 집계 15개의 `offline/pass_rate`를 raw와 비교했다. 불일치 0건이다.
 - 검증 2: 공용 서버(PID 9291, 다른 작업 소유, 재시작하지 않음)가 256 run을 제공한다. `ALL-B-al-t-78332709-diagC` pass_rate 0.526(=10/19), `B-gl-bd-ex-4mm-s911` stage_pass 1.
@@ -353,7 +353,7 @@ v6 E2E 코호트(#259)가 파지 전에 끝나 닿지 못한 v6 정책(b-only, a
 | s45 `cases.jsonl` (= [cases_s45.jsonl](cases_s45.jsonl)) | `ad680f828bf1246f56a7d75fe9b20f3dbd6c99620cdaf25445d2030f5aaa4f83` |
 | TensorBoard `collection.json` | `c5fdb727f82aed5868f273943e45e1cc330d580678a6b83e1cc0b56444e37d7c` |
 
-v6 정책 probe raw (모두 `/Users/changmin/projects/ugrp/outputs/` 아래, 로컬 전용):
+v6 정책 probe raw (모두 `<home>/projects/ugrp/outputs/` 아래, 로컬 전용):
 
 | raw | 파일 수 · 크기 | `artifacts.sha256.json` | `cases.jsonl` (저장소 사본) |
 |---|---|---|---|

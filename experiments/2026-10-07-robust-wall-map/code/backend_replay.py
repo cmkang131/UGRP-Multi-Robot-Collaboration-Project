@@ -8,8 +8,8 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[3]
 EXP = Path(__file__).resolve().parents[1]
-SOURCE = Path('/Users/changmin/projects/ugrp/outputs/arena-wall-map-v1')
-RAW = Path('/Users/changmin/projects/ugrp/outputs/robust-wall-map-v1')
+SOURCE = Path('<home>/projects/ugrp/outputs/arena-wall-map-v1')
+RAW = Path('<home>/projects/ugrp/outputs/robust-wall-map-v1')
 sys.path.insert(0, str(ROOT))
 from harness.self_loop_rejection import refine_cached_graph
 from harness.self_pose_graph import rebuild

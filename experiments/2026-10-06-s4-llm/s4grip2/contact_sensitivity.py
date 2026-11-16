@@ -1,7 +1,7 @@
 from pathlib import Path
 import json
 from scripts.evaluate_s4_grip_dataset import score
-base=Path('/Users/changmin/projects/ugrp/outputs/s4grip2-offline');changed=[]
+base=Path('<home>/projects/ugrp/outputs/s4grip2-offline');changed=[]
 for split in ('explore','confirm'):
  for e in json.loads((base/split/'report.json').read_text())['episodes']:
   raw=Path(e['raw']);rid=e['robot_id'];prefix='cargo_'+('cyan_1' if rid=='r3' else 'beam_1')+'_'

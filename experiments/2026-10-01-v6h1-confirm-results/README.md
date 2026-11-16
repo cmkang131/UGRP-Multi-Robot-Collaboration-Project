@@ -41,22 +41,22 @@
 개봉(읽기 전용; 분석 재실행 아님, 여기서는 그 산출물만 읽었다). 조정자가 실제로 실행한 명령 원문(2026-10-01 08:07 KST, 종료 코드 0)은 다음과 같다. 사전 검사 `--verify`·`--verify-seal --seal-revision v2`는 모두 종료 코드 0, REGISTRATION_PLAN의 12개 테스트 파일은 480개 통과·6개 오류였고, 6개 오류는 `GIT_WORK_TREE`를 export한 상태에서 테스트 fixture의 `git clone --shared`가 실패한 것이며 변수를 해제하고 다시 돌리면 6개 모두 통과했다.
 
 ```
-cd /Users/changmin/projects/ugrp-wt/unblind-v6h1-s2        # 분리 HEAD 5be4330e, 깨끗한 작업 트리
-export GIT_WORK_TREE=/Users/changmin/projects/ugrp-wt/unblind-v6h1-s2
-V6H_PYTHON=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+cd <home>/projects/ugrp-wt/unblind-v6h1-s2        # 분리 HEAD 5be4330e, 깨끗한 작업 트리
+export GIT_WORK_TREE=<home>/projects/ugrp-wt/unblind-v6h1-s2
+V6H_PYTHON=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 V6H_SEAL_V2_COMMIT=5be4330eca9b23d2cbde3657dcbb215ee1923b25
 $V6H_PYTHON -m experiments.2026-09-30-pair-v6h-carry.analysis.apply_sealed_analysis \
   --seal-commit "$V6H_SEAL_V2_COMMIT" \
   --prereg experiments/2026-09-30-pair-v6h-carry/analysis/seal_v2/prereg_v6h.json \
-  --raw /Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930 \
-  --inventory /Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930-inventory/acquisition_inventory.json \
-  --output /Users/changmin/projects/ugrp/outputs/v6h1-sealed-analysis-v2-20261001
+  --raw <home>/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930 \
+  --inventory <home>/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930-inventory/acquisition_inventory.json \
+  --output <home>/projects/ugrp/outputs/v6h1-sealed-analysis-v2-20261001
 ``` 이 기록을 만든 명령(모두 읽기 전용):
 
 ```
 python3 experiments/2026-10-01-v6h1-confirm-results/tabulate.py            # per_case.csv, distributions.json
-python3 experiments/2026-10-01-v6h1-confirm-results/build_tb_views.py --output /Users/changmin/projects/ugrp/outputs/v6h1-unblind-results-tb-derived-20261001
-.venv-sim-worker-mac/bin/python scripts/export_offline_audit.py --source <파생 뷰 74개> --output /Users/changmin/projects/ugrp/outputs/tensorboard/1001-v6h1-confirm
+python3 experiments/2026-10-01-v6h1-confirm-results/build_tb_views.py --output <home>/projects/ugrp/outputs/v6h1-unblind-results-tb-derived-20261001
+.venv-sim-worker-mac/bin/python scripts/export_offline_audit.py --source <파생 뷰 74개> --output <home>/projects/ugrp/outputs/tensorboard/1001-v6h1-confirm
 python3 scripts/render_pair_probe_video.py --case <C49 s941 case 폴더> --label "b-v6h1 C49 s941 (PASS_CLEAN)" [--wrist] --dt 0.5 --fps 8 --output videos/…
 ```
 
@@ -163,7 +163,7 @@ raw `cases.jsonl`의 각 case에는 표준 단계 시험의 자체 판정 `passe
 
 ## TensorBoard
 
-- 새 스냅샷: `/Users/changmin/projects/ugrp/outputs/tensorboard/1001-v6h1-confirm` (run 74개: case 72 + 시드별 집계 `ALL-s941`, `ALL-s943`). 파생 뷰 입력: `outputs/v6h1-unblind-results-tb-derived-20261001/`(각 뷰가 case의 원본 `result.json` 또는 `sealed_analysis.json`을 경로+SHA-256으로 가리킨다).
+- 새 스냅샷: `<home>/projects/ugrp/outputs/tensorboard/1001-v6h1-confirm` (run 74개: case 72 + 시드별 집계 `ALL-s941`, `ALL-s943`). 파생 뷰 입력: `outputs/v6h1-unblind-results-tb-derived-20261001/`(각 뷰가 case의 원본 `result.json` 또는 `sealed_analysis.json`을 경로+SHA-256으로 가리킨다).
 - run 이름은 `1001-v6h1-confirm/C01-s941`처럼 짧게 썼다. 조건 열은 `confirm primary s941 chain L0->L1` / `confirm sensitivity s943 chain L0->L1`, 정책 `b-v6h1`, family `b_v6h1_confirm`.
 - 싣은 값: case별 `evaluation/reported_success`(=PASS_CLEAN), `result/sim_s`·`wall_s`·`commands`·`model_calls`(0), leg별 끝점 오차·σ·z²·NEES, 최대 기울기·관통·접촉, 집계의 성공 수·Wilson 구간·σ 포함 배치 수. 모델 응답 시간은 모델 호출이 0이라 없다(0으로 채우지 않음).
 - 비교 기준(`0930-b-v6h-axial-lag/ALL-*`, `0930-b-v6h-gain/ALL-sB·rB`)은 위 "이전 기록"의 탐색 코호트이며 같은 카드에 나란히 놓되 합산하지 않는다.

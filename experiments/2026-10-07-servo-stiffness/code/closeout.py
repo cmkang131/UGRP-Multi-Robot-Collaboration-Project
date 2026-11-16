@@ -9,7 +9,7 @@ import numpy as np
 
 EXP = Path(__file__).resolve().parents[1]
 ROOT = EXP.parents[1]
-RAW = Path('/Users/changmin/projects/ugrp/outputs/servo-stiffness-v1')
+RAW = Path('<home>/projects/ugrp/outputs/servo-stiffness-v1')
 sys.path.insert(0, str(Path(__file__).parent))
 import replay as r
 

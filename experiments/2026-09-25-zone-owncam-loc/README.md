@@ -93,7 +93,7 @@ look 모드만 선택(carry_level 제외):
 - 함께 돌린 기존 테스트: `test_simulation_workflow_manager`(카탈로그 29), `test_zone_hard_routes`, `test_zone_dispatch`, `test_visual_arm_sim`. 합계 72 통과.
 
 ## 원본 (로컬 전용, gitignore, 원격 백업 없음)
-- `/Users/changmin/projects/ugrp/outputs/owncam-loc-20260925/raw/<episode>/` (18개).
+- `<home>/projects/ugrp/outputs/owncam-loc-20260925/raw/<episode>/` (18개).
   - `inputs/`: 프레임 JPEG, 명령, 프레임 목록.
   - `eval_only/`: 정답 궤적과 프레임 정답.
   - `derived/`: 검출, 추정.

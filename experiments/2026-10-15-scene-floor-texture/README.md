@@ -46,9 +46,9 @@ XML은 `compiler.texturedir="sim/assets/floor_light_textured_v1"`와 파일명�
 기존 `.venv-sim-worker-mac`의 Python 3.12 / OpenCV 5.0.0 / NumPy 2.5.2 / Pillow 12.3.0을 사용했다. 새 환경을 만들지 않았다. 각 JSON은 64 KiB 미만으로 나누었다.
 
 ```sh
-PYTHONPATH=. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
+PYTHONPATH=. <home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
   scripts/generate_scene_textures.py --output /tmp/floortex-NEW
-PYTHONPATH=. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
+PYTHONPATH=. <home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
   scripts/audit_scene_textures.py --output experiments/2026-10-15-scene-floor-texture/offline-audit.json
 ```
 
@@ -64,7 +64,7 @@ PYTHONPATH=. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
 
 ## GCP 진단 계획 (미승인·미실행)
 
-`make_scene_texture_plan.py --source-sha <확정 40자리 SHA> --output <새 파일>`이 모든 `approved`·`ready*`·`execute`·`enabled`를 false로 작성한다. 로컬 대기열 이름은 `/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-floortex-<SHA8>.json`이다. 자동 제출 명령/감시는 없다.
+`make_scene_texture_plan.py --source-sha <확정 40자리 SHA> --output <새 파일>`이 모든 `approved`·`ready*`·`execute`·`enabled`를 false로 작성한다. 로컬 대기열 이름은 `<home>/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-floortex-<SHA8>.json`이다. 자동 제출 명령/감시는 없다.
 
 1. 소비자 PR가 프로필 선택과 실제 audit 연결을 끝내고 새 소스/번들을 고정한다. GCP 프로젝트 `<project-id-gcp1>`만 사용하고 같은 머신 종류에서 두 팔을 잰다. 예산 정지, VM 8h 상한/20분 유휴 정지, 512 MiB 자료 예산과 여유 공간을 확인한다.
 2. 네 지도(두 문/복도/H1/H2) 각각 고정 6시점에서 기존 프로필·새 프로필의 자기 카메라 640×480 총 48장을 얻는다. 물리 step0, 모델 호출0, 실제 카메라/FOV/로봇/물체/색 유지. setup 자세만 사용하고 위치 정답을 제어기에 주지 않는다. PNG·런타임 JPEG/sha, 컴파일된 물리 배열 동등성, 면 방향/줄무늬/이음매/축척을 확인한다.

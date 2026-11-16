@@ -70,7 +70,7 @@ v61 바이트와 RGB 물리·카메라·명령 설정을 보존했다. v62는
 실행 명령:
 
 ```sh
-OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
+OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
   tests/test_zone_study*.py tests/test_zone_event_scheduler.py tests/test_zone_sim_cost.py \
   tests/test_gemini_transport_policy.py tests/test_gemini_reasoning_effort.py \
   tests/test_rgb_execution_bundle.py tests/test_simulation_workflow_manager.py \

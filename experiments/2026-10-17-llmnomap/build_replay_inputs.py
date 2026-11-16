@@ -19,7 +19,7 @@ import subprocess
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-SOURCE = Path('/Users/changmin/projects/ugrp-wt/e2e18-planner/outputs/'
+SOURCE = Path('<home>/projects/ugrp-wt/e2e18-planner/outputs/'
               'task-planner-ling-vl-main-20261013/off-calls.jsonl.zst')
 N = 40
 

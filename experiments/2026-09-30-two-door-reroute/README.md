@@ -91,9 +91,9 @@ baseline은 T09a·passage·모델 기하·상태 채널·메시지 protocol·CI 
 아래 봉인 회귀를 함께 실행한다.
 
 ```sh
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
   experiments/2026-09-30-two-door-reroute/run_checks.py \
-  --output /Users/changmin/projects/ugrp/outputs/2026-09-30-two-door-reroute/NEW-baseline
+  --output <home>/projects/ugrp/outputs/2026-09-30-two-door-reroute/NEW-baseline
 ```
 
 필수 회귀: `tests/test_zone_pair_registered_source.py`,
@@ -199,7 +199,7 @@ T09a가 경로를 거절하거나 T06이 미지원이면 해당 셀은 실행 �
   role→robot assignment 해시는 controller 해시와 별도 필드로 남긴다.
 - 공용 잠금과 디스크 여유를 확인하고 자기 worktree에서 `ugrp_session.py`와
   표준 `sim_cli` 경로로 실행한다. 실패마다 새 raw 디렉터리, ENOSPC는 HOST_ERROR.
-- raw는 `/Users/changmin/projects/ugrp/outputs/<NEW-run-id>`에 보존한다.
+- raw는 `<home>/projects/ugrp/outputs/<NEW-run-id>`에 보존한다.
   시작·이벤트 실제 효과·관측·발행 명령·취소·판단·실패 원인을 시간순 기록한다.
 
 S-B/P-B에서 45초를 아는 것은 평가/장면뿐이다. 실제 장애물 생성/물리 효과와

@@ -1,8 +1,8 @@
 import json,sys,importlib.util,numpy as np
-sys.path.insert(0,'/Users/changmin/projects/ugrp-wt/phys-v89-motion')
+sys.path.insert(0,'<home>/projects/ugrp-wt/phys-v89-motion')
 from scripts.check_measurement_v2_identifiability import response
-R='/Users/changmin/projects/ugrp/outputs/calib-motion-v89-eaeaaff0-20261001/zone_wide_two_doors_final_v3/'
-cfg=json.load(open('/Users/changmin/projects/ugrp-wt/phys-v89-motion/configs/final_environment_measurement_v2.json'))
+R='<home>/projects/ugrp/outputs/calib-motion-v89-eaeaaff0-20261001/zone_wide_two_doors_final_v3/'
+cfg=json.load(open('<home>/projects/ugrp-wt/phys-v89-motion/configs/final_environment_measurement_v2.json'))
 pose=[json.loads(l) for l in open(R+'eval_only/r1/pose.jsonl')]
 P=np.array([p['base_position_m'] for p in pose]); Rm=np.array([p['base_rotation'] for p in pose])
 T=np.array([p['t'] for p in pose])

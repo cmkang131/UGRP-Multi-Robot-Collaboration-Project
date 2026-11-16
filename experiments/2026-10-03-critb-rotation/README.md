@@ -20,7 +20,7 @@ v91은 이미 수집됐으므로 이번 공개를 수집 전 등록이라고 표
 
 - v89: r4의 `input_manifest_r4.json`에 있는 네 파일을 실제 해시와 대조했다.
   turn 명령이 0개라 회전 적합에 들어간 창도 0개다. 전진·측면은 다시 적합하지 않았다.
-- v88: `/Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001/calibration-unloaded`
+- v88: `<home>/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001/calibration-unloaded`
   중 `zone_wide_two_doors_final_v3`의 r1 무하중 자료만 썼다. 수집 소스는
   `747d2b9f1eb43e21804ccef58fff4db241d1a844`다. 상대 SIM 시각 242–326초에
   ±0.01/±0.02/±0.03 계단(step) 6개와 각 정지 구간(coast), ±0.02 의사난수 이진 명령(PRBS)
@@ -107,7 +107,7 @@ yaw 파라미터 복원, r4 목적함수 동등성, 공분산 검산, 최소 잡
 
 ```sh
 python3 -m scripts.fit_consumer_criterion_b_rotation \
-  --output /Users/changmin/projects/ugrp/outputs/critb-rotation-NEW
+  --output <home>/projects/ugrp/outputs/critb-rotation-NEW
 python3 -m pytest -q tests/test_consumer_criterion_b_rotation.py \
   tests/test_consumer_criterion_b.py tests/test_unloaded_consumer.py \
   tests/test_unloaded_hammerstein.py tests/test_review_346.py

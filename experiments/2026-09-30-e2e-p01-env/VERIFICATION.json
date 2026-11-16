@@ -248,8 +248,8 @@
       "base_bytes_equal": true
     }
   },
-  "test_driver": "import sys,time\nsys.path.insert(0, '/Users/changmin/projects/ugrp-wt/e2e-p01-env')\nfrom scripts import run_ci_tests\nfrom scripts import agent_lock\nrun_ci_tests.TEST_PATTERNS = (\n 'tests/test_zone_environment_registry.py',\n 'tests/test_zone_final_env.py',\n 'tests/test_zone_study_scenarios.py',\n 'tests/test_zone_study_integration_seams.py',\n 'tests/test_zone_study_source_pinning.py',\n)\nroot=run_ci_tests.local_lock_root()\ndeadline=time.monotonic()+900\nprint('Waiting for the shared lock; no bypass or forced release (15 minute cap).', flush=True)\nwhile time.monotonic() < deadline:\n    if root is None or agent_lock.status(root) is None:\n        code=run_ci_tests.main(['--junitxml', '/Users/changmin/projects/ugrp/outputs/e2e-p01-env/static-tests-v3.xml'])\n        if code != 3:\n            raise SystemExit(code)\n    time.sleep(3)\nprint('Shared lock wait cap reached; no tests spawned.', flush=True)\nraise SystemExit(3)\n",
-  "command": "OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python /private/tmp/run-p01-tests-v3.py",
+  "test_driver": "import sys,time\nsys.path.insert(0, '<home>/projects/ugrp-wt/e2e-p01-env')\nfrom scripts import run_ci_tests\nfrom scripts import agent_lock\nrun_ci_tests.TEST_PATTERNS = (\n 'tests/test_zone_environment_registry.py',\n 'tests/test_zone_final_env.py',\n 'tests/test_zone_study_scenarios.py',\n 'tests/test_zone_study_integration_seams.py',\n 'tests/test_zone_study_source_pinning.py',\n)\nroot=run_ci_tests.local_lock_root()\ndeadline=time.monotonic()+900\nprint('Waiting for the shared lock; no bypass or forced release (15 minute cap).', flush=True)\nwhile time.monotonic() < deadline:\n    if root is None or agent_lock.status(root) is None:\n        code=run_ci_tests.main(['--junitxml', '<home>/projects/ugrp/outputs/e2e-p01-env/static-tests-v3.xml'])\n        if code != 3:\n            raise SystemExit(code)\n    time.sleep(3)\nprint('Shared lock wait cap reached; no tests spawned.', flush=True)\nraise SystemExit(3)\n",
+  "command": "OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python /private/tmp/run-p01-tests-v3.py",
   "tests": {
     "modules": 5,
     "passed": 278,
@@ -265,7 +265,7 @@
       "tests": "278",
       "time": "56.150",
       "timestamp": "2026-09-30T20:17:29.941916+09:00",
-      "hostname": "gangchangmin-ui-MacBookAir.local"
+      "hostname": "<mac-host>"
     },
     "runner_exit_code": 0,
     "lock_bypassed": false,
@@ -292,27 +292,27 @@
   ],
   "raw_local_only": {
     "static-tests-v2.log": {
-      "path": "/Users/changmin/projects/ugrp/outputs/e2e-p01-env/static-tests-v2.log",
+      "path": "<home>/projects/ugrp/outputs/e2e-p01-env/static-tests-v2.log",
       "sha256": "0501559f18acb6f92d2065c97236a8a0c467fc3af783cfde032744c26386a264",
       "bytes": 337
     },
     "static-tests-v3.log": {
-      "path": "/Users/changmin/projects/ugrp/outputs/e2e-p01-env/static-tests-v3.log",
+      "path": "<home>/projects/ugrp/outputs/e2e-p01-env/static-tests-v3.log",
       "sha256": "0366fc2b46beac061ddb706e97a22b618004ea4840ab3fb6dc7e3174af8419d2",
       "bytes": 803
     },
     "static-tests-v3.xml": {
-      "path": "/Users/changmin/projects/ugrp/outputs/e2e-p01-env/static-tests-v3.xml",
+      "path": "<home>/projects/ugrp/outputs/e2e-p01-env/static-tests-v3.xml",
       "sha256": "2d683a8f52a37035062e8d62e464310941205c1857735b738f43596602ee8d1a",
       "bytes": 54863
     },
     "static-tests.log": {
-      "path": "/Users/changmin/projects/ugrp/outputs/e2e-p01-env/static-tests.log",
+      "path": "<home>/projects/ugrp/outputs/e2e-p01-env/static-tests.log",
       "sha256": "2b3cff1e2710af1da5d34efcfa1c017e38ff973c4841257319042517e8e7fe8f",
       "bytes": 3841
     },
     "static-tests.xml": {
-      "path": "/Users/changmin/projects/ugrp/outputs/e2e-p01-env/static-tests.xml",
+      "path": "<home>/projects/ugrp/outputs/e2e-p01-env/static-tests.xml",
       "sha256": "b99ec19a218b33d3edfa7a5de856fbd1100b02e39ba909fe00d0cbded534bc02",
       "bytes": 56659
     }

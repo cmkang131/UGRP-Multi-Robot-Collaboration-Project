@@ -16,8 +16,8 @@
 
 ```sh
 python3 -m scripts.assemble_final_pair_calibration \
-  --raw-root /Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001 \
-  --output /Users/changmin/projects/ugrp/outputs/final-pair-v88-measured-NEW
+  --raw-root <home>/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001 \
+  --output <home>/projects/ugrp/outputs/final-pair-v88-measured-NEW
 ```
 
 새 출력 경로만 허용한다. 입력 안/입력을 포함하는 출력, 기존 출력은 거부한다.

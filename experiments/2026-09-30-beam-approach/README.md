@@ -86,12 +86,12 @@ import와 network connect를 차단한다. pytest용 fake/합성 JPEG만 쓰며 
 ```sh
 PYTHONPATH=.:experiments/2026-09-30-beam-approach \
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 \
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -p offline_guard \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -p offline_guard \
   tests/test_pair_navigation_beam_approach.py tests/test_pair_navigation_beam_initial_pose_plan.py \
   tests/test_zone_pair_registered_source.py tests/test_zone_study_source_pinning.py \
   tests/test_pair_owncam_approach.py tests/test_pair_passage_plan.py -q
 
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
   experiments/2026-09-30-beam-approach/mutation_check.py /absolute/NEW-output
 ```
 

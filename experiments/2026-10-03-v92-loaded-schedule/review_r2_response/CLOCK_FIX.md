@@ -2,7 +2,7 @@
 
 The initial `07c497410fb469b10f9899a1df9a1c742ac097ef` headless run stopped at
 610.7000000099933 recorded SIM seconds with `inexact SIM advance`.
-Raw: `/Users/changmin/projects/ugrp/outputs/v92-headless-check-20261003T071802Z/raw`.
+Raw: `<home>/projects/ugrp/outputs/v92-headless-check-20261003T071802Z/raw`.
 It is a failed/incomplete exploratory pre-check, not a collection. The completed
 motion prefix alone has 288/288 supported cells (minimum 137 complete windows);
 this does not substitute for a completed full schedule.

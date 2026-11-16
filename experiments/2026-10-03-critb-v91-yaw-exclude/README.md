@@ -6,7 +6,7 @@
 ## 결정론적 중복 발견
 
 2026-10-03 코디네이터가 한 번 채점한
-`/Users/changmin/projects/ugrp/outputs/criterion-b-v91-score-20261003/criterion_B_v91_with_yaw.json`은
+`<home>/projects/ugrp/outputs/criterion-b-v91-score-20261003/criterion_B_v91_with_yaw.json`은
 종료 코드 2였다. 코디네이터 보고에 따르면 forward/left는 PASS였지만 yaw는
 `rotation training/prior pose, map or sample interval ineligible`로 전체가 중단됐다.
 이 구현자는 그 결과 파일을 열거나 실제 v91 자료를 다시 채점하지 않았다.

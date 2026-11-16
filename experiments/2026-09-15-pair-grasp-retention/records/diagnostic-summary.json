@@ -18,7 +18,7 @@
       "platform": "macOS-27.0-arm64-arm-64bit",
       "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]"
     },
-    "raw_directory": "/Users/changmin/projects/ugrp-worktrees/pair-grasp-retention/outputs/retention-diagnosis-20260915/baseline",
+    "raw_directory": "<home>/projects/ugrp-worktrees/pair-grasp-retention/outputs/retention-diagnosis-20260915/baseline",
     "group": "retention-diagnosis-20260915",
     "name": "baseline",
     "evaluation": {
@@ -44,7 +44,7 @@
   },
   {
     "source_sha": "dd54bf666cf4a0701b1a8b17ee7b4f5e7442aad8",
-    "error": "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_grasp_endurance.py\", line 87, in run\n    if not all(d['ready'] for d in decisions.values()):raise RuntimeError('RGB endurance stopped: '+str({r:d.get('error') for r,d in decisions.items()}))\n                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: RGB endurance stopped: {'r1': 'own-camera beam silhouette changed or disappeared', 'r3': None}\n",
+    "error": "Traceback (most recent call last):\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_grasp_endurance.py\", line 87, in run\n    if not all(d['ready'] for d in decisions.values()):raise RuntimeError('RGB endurance stopped: '+str({r:d.get('error') for r,d in decisions.items()}))\n                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: RGB endurance stopped: {'r1': 'own-camera beam silhouette changed or disappeared', 'r3': None}\n",
     "mode": "stationary",
     "duration_s": 30,
     "wall_seconds": 62.551791750011034,
@@ -61,7 +61,7 @@
       "platform": "macOS-27.0-arm64-arm-64bit",
       "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]"
     },
-    "raw_directory": "/Users/changmin/projects/ugrp-worktrees/pair-grasp-retention/outputs/retention-diagnosis-20260915/noslip1",
+    "raw_directory": "<home>/projects/ugrp-worktrees/pair-grasp-retention/outputs/retention-diagnosis-20260915/noslip1",
     "group": "retention-diagnosis-20260915",
     "name": "noslip1",
     "evaluation": {
@@ -87,7 +87,7 @@
   },
   {
     "source_sha": "dd54bf666cf4a0701b1a8b17ee7b4f5e7442aad8",
-    "error": "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_grasp_endurance.py\", line 76, in run\n    scene.hold_spacing(8.);scene.finish_spacing();report['endurance_start_s']=scene.time()\n                           ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_navigation.py\", line 106, in finish_spacing\n    raise RuntimeError('grasp spacing did not visually settle before departure')\nRuntimeError: grasp spacing did not visually settle before departure\n",
+    "error": "Traceback (most recent call last):\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_grasp_endurance.py\", line 76, in run\n    scene.hold_spacing(8.);scene.finish_spacing();report['endurance_start_s']=scene.time()\n                           ^^^^^^^^^^^^^^^^^^^^^^\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_navigation.py\", line 106, in finish_spacing\n    raise RuntimeError('grasp spacing did not visually settle before departure')\nRuntimeError: grasp spacing did not visually settle before departure\n",
     "mode": "stationary",
     "duration_s": 30,
     "wall_seconds": 20.73013816701132,
@@ -104,7 +104,7 @@
       "platform": "macOS-27.0-arm64-arm-64bit",
       "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]"
     },
-    "raw_directory": "/Users/changmin/projects/ugrp-worktrees/pair-grasp-retention/outputs/retention-diagnosis-20260915/noslip3",
+    "raw_directory": "<home>/projects/ugrp-worktrees/pair-grasp-retention/outputs/retention-diagnosis-20260915/noslip3",
     "group": "retention-diagnosis-20260915",
     "name": "noslip3",
     "evaluation": {
@@ -129,7 +129,7 @@
   },
   {
     "source_sha": "dd54bf666cf4a0701b1a8b17ee7b4f5e7442aad8",
-    "error": "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_grasp_endurance.py\", line 76, in run\n    scene.hold_spacing(8.);scene.finish_spacing();report['endurance_start_s']=scene.time()\n    ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_navigation.py\", line 100, in hold_spacing\n    self.spacing_frame()\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_navigation.py\", line 90, in spacing_frame\n    raise RuntimeError('grasp spacing stopped: '+json.dumps({r:d.get('error') for r,d in decisions.items()}))\nRuntimeError: grasp spacing stopped: {\"r1\": \"visual grasp formation exceeded recovery envelope\", \"r3\": \"visual grasp formation exceeded recovery envelope\"}\n",
+    "error": "Traceback (most recent call last):\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_grasp_endurance.py\", line 76, in run\n    scene.hold_spacing(8.);scene.finish_spacing();report['endurance_start_s']=scene.time()\n    ^^^^^^^^^^^^^^^^^^^^^^\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_navigation.py\", line 100, in hold_spacing\n    self.spacing_frame()\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_navigation.py\", line 90, in spacing_frame\n    raise RuntimeError('grasp spacing stopped: '+json.dumps({r:d.get('error') for r,d in decisions.items()}))\nRuntimeError: grasp spacing stopped: {\"r1\": \"visual grasp formation exceeded recovery envelope\", \"r3\": \"visual grasp formation exceeded recovery envelope\"}\n",
     "mode": "stationary",
     "duration_s": 30,
     "wall_seconds": 27.860070750000887,
@@ -146,7 +146,7 @@
       "platform": "macOS-27.0-arm64-arm-64bit",
       "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]"
     },
-    "raw_directory": "/Users/changmin/projects/ugrp-worktrees/pair-grasp-retention/outputs/retention-diagnosis-20260915/noslip3-tracked",
+    "raw_directory": "<home>/projects/ugrp-worktrees/pair-grasp-retention/outputs/retention-diagnosis-20260915/noslip3-tracked",
     "group": "retention-diagnosis-20260915",
     "name": "noslip3-tracked",
     "evaluation": {
@@ -171,7 +171,7 @@
   },
   {
     "source_sha": "95724937fb319c83b20422d443ed5b27f3a3cd04",
-    "error": "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_grasp_endurance.py\", line 76, in run\n    scene.hold_spacing(8.);scene.finish_spacing();report['endurance_start_s']=scene.time()\n    ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_navigation.py\", line 104, in hold_spacing\n    self.spacing_frame()\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_navigation.py\", line 94, in spacing_frame\n    raise RuntimeError('grasp spacing stopped: '+json.dumps({r:d.get('error') for r,d in decisions.items()}))\nRuntimeError: grasp spacing stopped: {\"r1\": \"visual grasp formation exceeded recovery envelope\", \"r3\": \"visual grasp formation exceeded recovery envelope\"}\n",
+    "error": "Traceback (most recent call last):\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_grasp_endurance.py\", line 76, in run\n    scene.hold_spacing(8.);scene.finish_spacing();report['endurance_start_s']=scene.time()\n    ^^^^^^^^^^^^^^^^^^^^^^\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_navigation.py\", line 104, in hold_spacing\n    self.spacing_frame()\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_navigation.py\", line 94, in spacing_frame\n    raise RuntimeError('grasp spacing stopped: '+json.dumps({r:d.get('error') for r,d in decisions.items()}))\nRuntimeError: grasp spacing stopped: {\"r1\": \"visual grasp formation exceeded recovery envelope\", \"r3\": \"visual grasp formation exceeded recovery envelope\"}\n",
     "mode": "stationary",
     "duration_s": 30,
     "wall_seconds": 15.86209974999656,
@@ -188,7 +188,7 @@
       "platform": "macOS-27.0-arm64-arm-64bit",
       "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]"
     },
-    "raw_directory": "/Users/changmin/projects/ugrp-worktrees/pair-grasp-retention/outputs/retention-local-contact-20260915/exact",
+    "raw_directory": "<home>/projects/ugrp-worktrees/pair-grasp-retention/outputs/retention-local-contact-20260915/exact",
     "group": "retention-local-contact-20260915",
     "name": "exact",
     "evaluation": {
@@ -213,7 +213,7 @@
   },
   {
     "source_sha": "95724937fb319c83b20422d443ed5b27f3a3cd04",
-    "error": "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_grasp_endurance.py\", line 75, in run\n    scene.finish_grasp(predict_student,gm,after_close=scene.anchor_spacing,hold=scene.hold_spacing,close_pulse=1600)\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-retention/scripts/camera_approach_scene.py\", line 276, in finish_grasp\n    after_close()\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_navigation.py\", line 100, in anchor_spacing\n    self.spacing_frame(execute=False)\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_navigation.py\", line 94, in spacing_frame\n    raise RuntimeError('grasp spacing stopped: '+json.dumps({r:d.get('error') for r,d in decisions.items()}))\nRuntimeError: grasp spacing stopped: {\"r1\": \"initial own-camera beam silhouette unsupported\", \"r3\": \"initial own-camera beam silhouette unsupported\"}\n",
+    "error": "Traceback (most recent call last):\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_grasp_endurance.py\", line 75, in run\n    scene.finish_grasp(predict_student,gm,after_close=scene.anchor_spacing,hold=scene.hold_spacing,close_pulse=1600)\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-retention/scripts/camera_approach_scene.py\", line 276, in finish_grasp\n    after_close()\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_navigation.py\", line 100, in anchor_spacing\n    self.spacing_frame(execute=False)\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_navigation.py\", line 94, in spacing_frame\n    raise RuntimeError('grasp spacing stopped: '+json.dumps({r:d.get('error') for r,d in decisions.items()}))\nRuntimeError: grasp spacing stopped: {\"r1\": \"initial own-camera beam silhouette unsupported\", \"r3\": \"initial own-camera beam silhouette unsupported\"}\n",
     "mode": "stationary",
     "duration_s": 30,
     "wall_seconds": 5.052041165996343,
@@ -230,7 +230,7 @@
       "platform": "macOS-27.0-arm64-arm-64bit",
       "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]"
     },
-    "raw_directory": "/Users/changmin/projects/ugrp-worktrees/pair-grasp-retention/outputs/retention-local-contact-20260915/exact-local",
+    "raw_directory": "<home>/projects/ugrp-worktrees/pair-grasp-retention/outputs/retention-local-contact-20260915/exact-local",
     "group": "retention-local-contact-20260915",
     "name": "exact-local",
     "evaluation": {
@@ -247,7 +247,7 @@
   },
   {
     "source_sha": "95724937fb319c83b20422d443ed5b27f3a3cd04",
-    "error": "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_grasp_endurance.py\", line 75, in run\n    scene.finish_grasp(predict_student,gm,after_close=scene.anchor_spacing,hold=scene.hold_spacing,close_pulse=1600)\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-retention/scripts/camera_approach_scene.py\", line 276, in finish_grasp\n    after_close()\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_navigation.py\", line 100, in anchor_spacing\n    self.spacing_frame(execute=False)\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_navigation.py\", line 94, in spacing_frame\n    raise RuntimeError('grasp spacing stopped: '+json.dumps({r:d.get('error') for r,d in decisions.items()}))\nRuntimeError: grasp spacing stopped: {\"r1\": \"initial own-camera beam silhouette unsupported\", \"r3\": \"initial own-camera beam silhouette unsupported\"}\n",
+    "error": "Traceback (most recent call last):\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_grasp_endurance.py\", line 75, in run\n    scene.finish_grasp(predict_student,gm,after_close=scene.anchor_spacing,hold=scene.hold_spacing,close_pulse=1600)\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-retention/scripts/camera_approach_scene.py\", line 276, in finish_grasp\n    after_close()\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_navigation.py\", line 100, in anchor_spacing\n    self.spacing_frame(execute=False)\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_navigation.py\", line 94, in spacing_frame\n    raise RuntimeError('grasp spacing stopped: '+json.dumps({r:d.get('error') for r,d in decisions.items()}))\nRuntimeError: grasp spacing stopped: {\"r1\": \"initial own-camera beam silhouette unsupported\", \"r3\": \"initial own-camera beam silhouette unsupported\"}\n",
     "mode": "stationary",
     "duration_s": 30,
     "wall_seconds": 5.748694749985589,
@@ -264,7 +264,7 @@
       "platform": "macOS-27.0-arm64-arm-64bit",
       "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]"
     },
-    "raw_directory": "/Users/changmin/projects/ugrp-worktrees/pair-grasp-retention/outputs/retention-local-contact-20260915/local-1ms",
+    "raw_directory": "<home>/projects/ugrp-worktrees/pair-grasp-retention/outputs/retention-local-contact-20260915/local-1ms",
     "group": "retention-local-contact-20260915",
     "name": "local-1ms",
     "evaluation": {
@@ -298,7 +298,7 @@
       "platform": "macOS-27.0-arm64-arm-64bit",
       "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]"
     },
-    "raw_directory": "/Users/changmin/projects/ugrp-worktrees/pair-grasp-retention/outputs/retention-bounded-control-20260915/local-025ms",
+    "raw_directory": "<home>/projects/ugrp-worktrees/pair-grasp-retention/outputs/retention-bounded-control-20260915/local-025ms",
     "group": "retention-bounded-control-20260915",
     "name": "local-025ms",
     "evaluation": {
@@ -324,7 +324,7 @@
   },
   {
     "source_sha": "10b106eb1418cf2511f8718eefaae83c1183b79c",
-    "error": "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_grasp_endurance.py\", line 87, in run\n    if not all(d['ready'] for d in decisions.values()):raise RuntimeError('RGB endurance stopped: '+str({r:d.get('error') for r,d in decisions.items()}))\n                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: RGB endurance stopped: {'r1': 'own-camera beam silhouette changed or disappeared', 'r3': None}\n",
+    "error": "Traceback (most recent call last):\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_grasp_endurance.py\", line 87, in run\n    if not all(d['ready'] for d in decisions.values()):raise RuntimeError('RGB endurance stopped: '+str({r:d.get('error') for r,d in decisions.items()}))\n                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: RGB endurance stopped: {'r1': 'own-camera beam silhouette changed or disappeared', 'r3': None}\n",
     "mode": "stationary",
     "duration_s": 30,
     "wall_seconds": 51.498529625008814,
@@ -341,7 +341,7 @@
       "platform": "macOS-27.0-arm64-arm-64bit",
       "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]"
     },
-    "raw_directory": "/Users/changmin/projects/ugrp-worktrees/pair-grasp-retention/outputs/retention-bounded-control-20260915/noslip1-effort",
+    "raw_directory": "<home>/projects/ugrp-worktrees/pair-grasp-retention/outputs/retention-bounded-control-20260915/noslip1-effort",
     "group": "retention-bounded-control-20260915",
     "name": "noslip1-effort",
     "evaluation": {
@@ -367,7 +367,7 @@
   },
   {
     "source_sha": "10b106eb1418cf2511f8718eefaae83c1183b79c",
-    "error": "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_grasp_endurance.py\", line 87, in run\n    if not all(d['ready'] for d in decisions.values()):raise RuntimeError('RGB endurance stopped: '+str({r:d.get('error') for r,d in decisions.items()}))\n                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: RGB endurance stopped: {'r1': 'own-camera beam silhouette changed or disappeared', 'r3': None}\n",
+    "error": "Traceback (most recent call last):\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-retention/scripts/run_pair_grasp_endurance.py\", line 87, in run\n    if not all(d['ready'] for d in decisions.values()):raise RuntimeError('RGB endurance stopped: '+str({r:d.get('error') for r,d in decisions.items()}))\n                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: RGB endurance stopped: {'r1': 'own-camera beam silhouette changed or disappeared', 'r3': None}\n",
     "mode": "stationary",
     "duration_s": 30,
     "wall_seconds": 49.6229450830142,
@@ -384,7 +384,7 @@
       "platform": "macOS-27.0-arm64-arm-64bit",
       "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]"
     },
-    "raw_directory": "/Users/changmin/projects/ugrp-worktrees/pair-grasp-retention/outputs/retention-bounded-control-20260915/noslip1-integral",
+    "raw_directory": "<home>/projects/ugrp-worktrees/pair-grasp-retention/outputs/retention-bounded-control-20260915/noslip1-integral",
     "group": "retention-bounded-control-20260915",
     "name": "noslip1-integral",
     "evaluation": {

@@ -31,7 +31,7 @@
     "approval_scope": "Existing dev conditions retain their original approval status; this draft creates no new research-condition approval.",
     "environment": {
       "host_scope": "same Mac, M1 runner; freeze actual host/CPU/OS before execution",
-      "python": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+      "python": "<home>/projects/ugrp/.venv-sim-worker-mac/bin/python",
       "freeze_versions": ["Python", "MuJoCo", "NumPy", "BLAS", "OpenCV", "Pillow", "renderer/driver"],
       "OMP_NUM_THREADS": "1",
       "OPENBLAS_NUM_THREADS": "1",
@@ -52,7 +52,7 @@
     "sim_limit_s": 720,
     "termination": "Normal mission terminal condition or the unchanged runner SIM limit; never a 120-second or grasp/lift prefix stop.",
     "locks": "Acquire the project exclusive agent_lock for the entire measurement cohort, plus shared sim_slots reservations; never stop other owners. All work runs from the frozen worktree.",
-    "raw_root": "/Users/changmin/projects/ugrp/outputs/sim-speed-default-check-NEW-COHORT",
+    "raw_root": "<home>/projects/ugrp/outputs/sim-speed-default-check-NEW-COHORT",
     "budget_proposal_requires_registration": {
       "wall_minutes_per_attempt": 30,
       "maximum_attempts_including_replacement": 9,

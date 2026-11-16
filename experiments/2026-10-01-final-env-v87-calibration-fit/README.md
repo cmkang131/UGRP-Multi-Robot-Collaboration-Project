@@ -313,8 +313,8 @@ PRBS 부호는 수집 전에 다음 31칩으로 고정한다(+는 +.02, −는 �
 
 ```sh
 python3 -m scripts.fit_unloaded_consumer \
-  --raw /Users/changmin/projects/ugrp/outputs/calib-motion-v89-eaeaaff0-20261001 \
-  --output /Users/changmin/projects/ugrp/outputs/v89-consumer-r3-NEW
+  --raw <home>/projects/ugrp/outputs/calib-motion-v89-eaeaaff0-20261001 \
+  --output <home>/projects/ugrp/outputs/v89-consumer-r3-NEW
 python3 -m pytest -q tests/test_unloaded_consumer.py tests/test_unloaded_hammerstein.py \
   tests/test_final_environment_unloaded_fit.py
 ```
@@ -408,9 +408,9 @@ v89 raw 전체와 사용한 v87 회전 원본, 계획·선행 진단·명령 경
 
 ```sh
 python3 -m scripts.fit_unloaded_hammerstein \
-  --raw /Users/changmin/projects/ugrp/outputs/calib-motion-v89-eaeaaff0-20261001 \
-  --v87-raw /Users/changmin/projects/ugrp/outputs/final-env-v87-04eb11c6-20261001/calibration-unloaded \
-  --output /Users/changmin/projects/ugrp/outputs/v89-hammerstein-fit-NEW --bootstrap 100
+  --raw <home>/projects/ugrp/outputs/calib-motion-v89-eaeaaff0-20261001 \
+  --v87-raw <home>/projects/ugrp/outputs/final-env-v87-04eb11c6-20261001/calibration-unloaded \
+  --output <home>/projects/ugrp/outputs/v89-hammerstein-fit-NEW --bootstrap 100
 ```
 
 ### 검증·TensorBoard
@@ -445,7 +445,7 @@ loaded/fine은 수집 전이다. 전진·측면의 이득과 지연도 이 짧�
 ## 자료와 재사용
 
 수집 소스: `04eb11c6a001f2a7d2ab916765d59b3661c06efe`, `masterpi_v3`, `floor_light_v1`, seed 911.
-원본: `/Users/changmin/projects/ugrp/outputs/final-env-v87-04eb11c6-20261001/calibration-unloaded`.
+원본: `<home>/projects/ugrp/outputs/final-env-v87-04eb11c6-20261001/calibration-unloaded`.
 3지도 × 120 SIM초, 지도마다 r1 명령 145개(초기 1 포함), r2/r3 각 1개,
 로봇당 601개 프레임/GT 행이다. PNG 5,409개의 해시·640×480 헤더와 명령/프레임/GT 시각을 대조했다.
 원본 전체 5,465파일과 사용한 저장소 파일 12개의 SHA-256·크기는 [input_manifest.tsv](input_manifest.tsv)에 있다.
@@ -551,10 +551,10 @@ carry_empty 1.76e-8 rad/PWM. pan 2030의 pooled 예측 yaw는 약 **0.000464°**
   기존 서버/실험은 건드리지 않았으며 추가 서버를 시작하지 않았다.
 
 ```sh
-PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 "$PY" -m scripts.fit_final_environment_unloaded \
-  --raw /Users/changmin/projects/ugrp/outputs/final-env-v87-04eb11c6-20261001/calibration-unloaded \
-  --output /Users/changmin/projects/ugrp/outputs/final-env-v87-unloaded-fit-NEW
+  --raw <home>/projects/ugrp/outputs/final-env-v87-04eb11c6-20261001/calibration-unloaded \
+  --output <home>/projects/ugrp/outputs/final-env-v87-unloaded-fit-NEW
 "$PY" -m pytest -q tests/test_final_environment_unloaded_fit.py \
   tests/test_zone_final_environment_floor_light.py tests/test_zone_final_environment_runnable.py
 ```

@@ -21,7 +21,7 @@ tags_temporary 조작 진단이며 연구 결과가 아니다. weld OFF, 모델 
 | 사전등록 | `prereg_v6.json` REGISTERED, `registration_sha256=379ffe42…68fa` ([등록 기록](registration.json)) |
 | 승인 | [#221 코멘트 5866466067](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/221#issuecomment-5866466067). 관리자 세션이 사용자 위임에 따라 승인. 드라이버가 실행마다 실시간 조회로 확인(`github_authorization.author=cmkang131`) |
 | 잠금 | `agent_lock` owner claude, 드라이버 PID에 묶음, 종료 뒤 해제 확인 |
-| raw | `/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v6-3c26acddec066adcd9164e6d2a6f51c1261c5f66/` (327 MiB, 로컬 전용·원격 백업 아님) |
+| raw | `<home>/projects/ugrp/outputs/zone-pair-dev-v6-3c26acddec066adcd9164e6d2a6f51c1261c5f66/` (327 MiB, 로컬 전용·원격 백업 아님) |
 | 동시 실행 | 1개씩 순차. 승인 envelope가 worktree의 prereg 한 파일에 run_id 하나씩만 들어가기 때문이다 |
 
 ### DRAFT→REGISTERED 전환 (과학 내용 불변)
@@ -155,9 +155,9 @@ SIM 시간은 시뮬레이터 시각 1.3 s 시작 기준 종료 시각이다. "�
 
 ## TensorBoard
 
-- 새 snapshot: `/Users/changmin/projects/ugrp/outputs/tensorboard/0928-zone-pair-v6-dev/v5h-v6`. v6 6회 + 기준선 dev13·dev14(v5h 동결, 이전에 미변환)다. 파생 뷰는 `outputs/zone-pair-v6-dev-tb-view-20260928/`(result.json + 영상 hardlink)다.
+- 새 snapshot: `<home>/projects/ugrp/outputs/tensorboard/0928-zone-pair-v6-dev/v5h-v6`. v6 6회 + 기준선 dev13·dev14(v5h 동결, 이전에 미변환)다. 파생 뷰는 `outputs/zone-pair-v6-dev-tb-view-20260928/`(result.json + 영상 hardlink)다.
 - EventAccumulator로 8개 run의 scalar 5종(success·sim_s·wall_s·commands·model_calls)을 다시 읽었다. 원자료와 일치한다 ([검증](tensorboard_validation.json)).
-- 공용 viewer(PID 9293/9291, 다른 작업 소유)는 재시작하지 않았다. logdir `/Users/changmin/projects/ugrp/outputs/tensorboard`에서 새 run 8개가 보이고, 고정 링크의 값을 확인했다.
+- 공용 viewer(PID 9293/9291, 다른 작업 소유)는 재시작하지 않았다. logdir `<home>/projects/ugrp/outputs/tensorboard`에서 새 run 8개가 보이고, 고정 링크의 값을 확인했다.
 - `outputs/tensorboard-view.json`에는 `zone_pair_v6_dev_20260928` 키만 추가했다.
 - 남은 확인:
   - 미디어 서버(:6009)는 이번 영상 id에 404를 준다. 등록 목록이 서버 시작 때 만들어진 것으로 보인다. 소유자가 재시작해야 한다.

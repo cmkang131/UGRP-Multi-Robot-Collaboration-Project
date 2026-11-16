@@ -136,7 +136,7 @@ detected-clear는99.744→99.599%이며 학습/인식 정확도 지표로 승계
 
 ### 기록·영상·TensorBoard
 
-원본은 `/Users/changmin/projects/ugrp/outputs/s2-heading-b60acdca-s<seed>-v143`에 보존했다.
+원본은 `<home>/projects/ugrp/outputs/s2-heading-b60acdca-s<seed>-v143`에 보존했다.
 각 결과의 원본 SHA-256은 `result-s<seed>.json`의 provenance에 있다. 로컬 raw는 원격 백업이 아니다.
 1065의 첫 호출은 simspeed2의 살아 있는 잠금으로 **물리 시작 전 거부**됐다. 감독에게 PR420으로
 알리고 기다린 뒤 같은SHA로 미실행1065만 실행했다. 이 거부를4번째 물리 시도로 세지 않는다.

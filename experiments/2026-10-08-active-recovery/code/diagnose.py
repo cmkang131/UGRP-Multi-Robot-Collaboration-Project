@@ -4,8 +4,8 @@ import sys,json,hashlib,math
 import numpy as np
 ROOT=Path(__file__).resolve().parents[3];sys.path.insert(0,str(ROOT))
 EXP=Path(__file__).resolve().parents[1]
-RAW=Path('/Users/changmin/projects/ugrp/outputs/rbpf-wide-confirm-v1/new-seed')
-OUT=Path('/Users/changmin/projects/ugrp/outputs/active-recovery-v1/diagnostic-off')
+RAW=Path('<home>/projects/ugrp/outputs/rbpf-wide-confirm-v1/new-seed')
+OUT=Path('<home>/projects/ugrp/outputs/active-recovery-v1/diagnostic-off')
 from harness.active_wall_mapping import ActiveMapper
 from harness.active_camera import SEARCH
 from harness.public_navigation_unknown import from_observed_grid,UnknownCostmap

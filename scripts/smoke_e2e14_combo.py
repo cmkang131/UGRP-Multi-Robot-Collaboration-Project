@@ -105,7 +105,7 @@ def replay(raw, images, rid, b, seed_offset, limit):
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument('--outputs', type=Path, default=Path('/Users/changmin/projects/ugrp/outputs'))
+    p.add_argument('--outputs', type=Path, default=Path('<home>/projects/ugrp/outputs'))
     p.add_argument('--limit', type=int, default=0, help='saved frames per robot (0 = all)')
     p.add_argument('--summary-out', type=Path, required=True)
     a = p.parse_args()

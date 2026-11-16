@@ -98,7 +98,7 @@ non-string scope의 `Counter` 키와 실패 trace의 non-string phase 집합이 
 **수정 전 validation-04 결과: 9개 모듈 277 passed / 0 failed / 0 skipped(317.60초), 그중 새 계약 검사 38개.**
 검사 전후 소스·fixture 19개 파일의 SHA-256이 일치한다.
 [VERIFICATION.json](VERIFICATION.json)에 모듈별 수, 실패 이력, 환경, 소스·raw의 전체 해시를 기록했다.
-raw는 `/Users/changmin/projects/ugrp/outputs/p04-chain-contract-20260930/`의 로컬 보관이며
+raw는 `<home>/projects/ugrp/outputs/p04-chain-contract-20260930/`의 로컬 보관이며
 원격 백업이 아니다. 실제 물리/시뮬레이션 step·렌더·모델 호출은 0회다.
 이 통과는 합성 전이·오프라인 계약 검증이며 실제 운반 성공을 뜻하지 않는다.
 
@@ -107,8 +107,8 @@ raw는 `/Users/changmin/projects/ugrp/outputs/p04-chain-contract-20260930/`의 �
 선별한 9개 파일의 중복/누락과 환경 정리를 기존 runner와 동일하게 적용했다.
 
 ```sh
-P04_TRACE_DIR=/Users/changmin/projects/ugrp/outputs/p04-chain-contract-NEW \
-PYTEST_ADDOPTS=-x /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python - <<'PY'
+P04_TRACE_DIR=<home>/projects/ugrp/outputs/p04-chain-contract-NEW \
+PYTEST_ADDOPTS=-x <home>/projects/ugrp/.venv-sim-worker-mac/bin/python - <<'PY'
 import os
 from scripts import run_ci_tests as r
 r.TEST_PATTERNS = (

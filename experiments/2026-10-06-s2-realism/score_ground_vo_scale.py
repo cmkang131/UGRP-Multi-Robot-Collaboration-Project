@@ -4,7 +4,7 @@ from pathlib import Path
 from types import SimpleNamespace as NS
 import numpy as np
 from harness.zone_solo_cyan_progress_noise import ground,rigid
-OUT=Path('/Users/changmin/projects/ugrp/outputs/s2-ground-vo-20261007')
+OUT=Path('<home>/projects/ugrp/outputs/s2-ground-vo-20261007')
 def main():
     r=json.loads((OUT/'replay-candidate-allposes.json').read_text());raw=Path(r['source_raw'])
     read=lambda p:[json.loads(x) for x in (raw/p).read_text().splitlines()]

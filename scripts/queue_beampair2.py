@@ -25,7 +25,7 @@ def build(source,evidence,table,*,expected_bursts=None):
     episodes=json.loads(frozen)['episodes']
     if len(episodes)!=40 or len({e['seed'] for e in episodes})!=40:raise ValueError('distinct frozen40 required')
     first=next(i for i,e in enumerate(episodes) if e['seed']==8318604)
-    pinned=f'/Users/changmin/projects/ugrp-wt/beam-pair-gate-{source[:8]}'
+    pinned=f'<home>/projects/ugrp-wt/beam-pair-gate-{source[:8]}'
     paths=list(q['source_hashes'])+['harness/grasp_act_peer_rendezvous.py']
     hashes={p:hashlib.sha256(subprocess.check_output(['git','show',source+':'+p],cwd=ROOT)).hexdigest() for p in paths}
     runs=[]

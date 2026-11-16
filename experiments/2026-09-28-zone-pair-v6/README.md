@@ -37,7 +37,7 @@ main/열린 PR 7개 SHA와 로컬 origin 참조를 모두 대조했다. PR 코�
 
 ```sh
 OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 \
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/run_zone_pair_dev.py \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/run_zone_pair_dev.py \
   --prereg experiments/2026-09-28-zone-pair-v6/prereg_v6.json \
   --run-id v6-s911-ab --pair-policy a+b --output /private/tmp/zone-pair-v6-prepare-NEW
 ```
@@ -51,9 +51,9 @@ ENOSPC=HOST_ERROR, `execution_source_sha`·승인 null이다. `tags_temporary` �
 
 ```sh
 OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 \
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/replay_zone_pair_v6.py \
-  --raw-root /Users/changmin/projects/ugrp/outputs \
-  --m2-index /Users/changmin/projects/ugrp-wt/codex-pair-parity/experiments/2026-09-27-zone-pair-parity/m2-input-contracts.json \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/replay_zone_pair_v6.py \
+  --raw-root <home>/projects/ugrp/outputs \
+  --m2-index <home>/projects/ugrp-wt/codex-pair-parity/experiments/2026-09-27-zone-pair-parity/m2-input-contracts.json \
   --output /private/tmp/zone-pair-v6-replay-NEW.json
 ```
 

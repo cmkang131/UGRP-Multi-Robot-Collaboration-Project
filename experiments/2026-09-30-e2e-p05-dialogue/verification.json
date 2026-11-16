@@ -6,7 +6,7 @@
   "starting_main_sha": "d17ca4345affef8cf027e121cf1f3197b36c23e0",
   "tested_code_commit": "8d01d02ca231181d95cc1706c026fe4e65f14e7b",
   "branch": "codex/dialogue-ledger-wire",
-  "worktree": "/Users/changmin/projects/ugrp-wt/e2e-p05-dialogue",
+  "worktree": "<home>/projects/ugrp-wt/e2e-p05-dialogue",
   "result": {
     "tests": 656,
     "passed": 656,
@@ -29,7 +29,7 @@
   },
   "invocation": {
     "command": [
-      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
       "-m",
       "pytest",
       "-q",
@@ -45,14 +45,14 @@
       "tests/test_zone_study_source_pinning.py",
       "tests/test_gemini_reasoning_effort.py",
       "--basetemp",
-      "/Users/changmin/projects/ugrp/outputs/e2e-p05-dialogue/regressions-icl2cruy/raw",
+      "<home>/projects/ugrp/outputs/e2e-p05-dialogue/regressions-icl2cruy/raw",
       "--junitxml",
-      "/Users/changmin/projects/ugrp/outputs/e2e-p05-dialogue/regressions-icl2cruy/junit.xml"
+      "<home>/projects/ugrp/outputs/e2e-p05-dialogue/regressions-icl2cruy/junit.xml"
     ],
-    "cwd": "/Users/changmin/projects/ugrp-wt/e2e-p05-dialogue",
+    "cwd": "<home>/projects/ugrp-wt/e2e-p05-dialogue",
     "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
     "platform": "macOS-27.2-arm64-arm-64bit",
-    "shared_lock_root": "/Users/changmin/projects/ugrp/outputs/agent-locks",
+    "shared_lock_root": "<home>/projects/ugrp/outputs/agent-locks",
     "source_sha256": {
       "harness/zone_study_llm_driver.py": "ac2758f9dd4cfb7c3059698f9eb2a76c5c76f55f4c469877e95f6d5f3eb60054",
       "harness/zone_study_integration.py": "de47e507ce6f97967d73301c8e7ba1f760550c6f38877f3b6abb54d16bc7093f",
@@ -73,15 +73,15 @@
   },
   "lock": {
     "method": "scripts.run_ci_tests.run_locked",
-    "shared_root": "/Users/changmin/projects/ugrp/outputs/agent-locks",
+    "shared_root": "<home>/projects/ugrp/outputs/agent-locks",
     "run_locked_exit_code": 0,
     "cleanup": "wrapper returned after owned test process group cleanup and lock release; other tasks untouched"
   },
   "raw": {
-    "root": "/Users/changmin/projects/ugrp/outputs/e2e-p05-dialogue/regressions-icl2cruy",
+    "root": "<home>/projects/ugrp/outputs/e2e-p05-dialogue/regressions-icl2cruy",
     "remote_backup": false,
     "preserved": true,
-    "file_manifest": "/Users/changmin/projects/ugrp/outputs/e2e-p05-dialogue/regressions-icl2cruy/raw_manifest.json",
+    "file_manifest": "<home>/projects/ugrp/outputs/e2e-p05-dialogue/regressions-icl2cruy/raw_manifest.json",
     "file_manifest_sha256": "af618b46d575c59d89ccc6f9b93d5fcc1e96eead9d0033e210708dedb5fa605c",
     "file_count": 3548,
     "total_bytes": 88972457,
@@ -117,11 +117,11 @@
   },
   "preserved_counterexamples": [
     {
-      "root": "/Users/changmin/projects/ugrp/outputs/e2e-p05-dialogue/check-et73pr5q",
+      "root": "<home>/projects/ugrp/outputs/e2e-p05-dialogue/check-et73pr5q",
       "scope": "pre-fix HTTP 429: automatic new-call resend, 6 POSTs instead of 3"
     },
     {
-      "root": "/Users/changmin/projects/ugrp/outputs/e2e-p05-dialogue/regressions-ysxi0fte",
+      "root": "<home>/projects/ugrp/outputs/e2e-p05-dialogue/regressions-ysxi0fte",
       "passed": 651,
       "failed": 5,
       "scope": "four missing-provider-usage known/unknown mismatches; one test helper omitted pre-next-step health check"

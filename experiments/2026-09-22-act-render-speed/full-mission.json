@@ -2,8 +2,8 @@
   "source_sha": "074f1ec640661508c37bbb9289fe2b9ea814a420",
   "complete": true,
   "command": [
-    "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/mjpython",
-    "/Users/changmin/.codex/worktrees/act-render-speed/ugrp/scripts/run_dispatch_e2e.py",
+    "<home>/projects/ugrp/.venv-sim-worker-mac/bin/mjpython",
+    "<home>/.codex/worktrees/act-render-speed/ugrp/scripts/run_dispatch_e2e.py",
     "--executor",
     "skills",
     "--variant",
@@ -13,13 +13,13 @@
     "--required-dock",
     "dock_a",
     "--plan-replay",
-    "/Users/changmin/.codex/worktrees/act-entry-repair/ugrp/outputs/entry-diagnosis/assets/verified-data/data/episodes/train-0/committed-plan.json",
+    "<home>/.codex/worktrees/act-entry-repair/ugrp/outputs/entry-diagnosis/assets/verified-data/data/episodes/train-0/committed-plan.json",
     "--grasp-model-dir",
-    "/Users/changmin/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-transfer-t4/models/grasp",
+    "<home>/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-transfer-t4/models/grasp",
     "--stage-model-dir",
-    "/Users/changmin/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-transfer-t4/models/varied",
+    "<home>/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-transfer-t4/models/varied",
     "--output",
-    "/Users/changmin/.codex/worktrees/act-render-speed/ugrp/outputs/render-speed/reference-efficient-v1",
+    "<home>/.codex/worktrees/act-render-speed/ugrp/outputs/render-speed/reference-efficient-v1",
     "--max-wall-s",
     "2400",
     "--carry-max-steps",
@@ -31,14 +31,14 @@
     "0.004",
     "0.0",
     "--carry-act-model",
-    "/Users/changmin/projects/ugrp-worktrees/act-pair-carry/outputs/experiment-v2/model-20260918/act",
+    "<home>/projects/ugrp-worktrees/act-pair-carry/outputs/experiment-v2/model-20260918/act",
     "--carry-act-python",
-    "/Users/changmin/Project-Runtimes/ugrp/.venv-reference-act/bin/python",
+    "<home>/Project-Runtimes/ugrp/.venv-reference-act/bin/python",
     "--efficient-capture"
   ],
   "alignment": {
-    "reference": "/Users/changmin/.codex/worktrees/act-entry-repair/ugrp/outputs/entry-diagnosis/revalidation-v1/ACT-original-seed18/open-minus",
-    "source": "/Users/changmin/.codex/worktrees/act-render-speed/ugrp/outputs/render-speed/reference-efficient-v1",
+    "reference": "<home>/.codex/worktrees/act-entry-repair/ugrp/outputs/entry-diagnosis/revalidation-v1/ACT-original-seed18/open-minus",
+    "source": "<home>/.codex/worktrees/act-render-speed/ugrp/outputs/render-speed/reference-efficient-v1",
     "success": true,
     "before_rounds": 104,
     "after_rounds": 104,
@@ -51,8 +51,8 @@
     "passed": true
   },
   "capture_equivalence": {
-    "baseline": "/Users/changmin/.codex/worktrees/act-entry-repair/ugrp/outputs/entry-diagnosis/revalidation-v1/ACT-original-seed18/open-minus",
-    "optimized": "/Users/changmin/.codex/worktrees/act-render-speed/ugrp/outputs/render-speed/reference-efficient-v1",
+    "baseline": "<home>/.codex/worktrees/act-entry-repair/ugrp/outputs/entry-diagnosis/revalidation-v1/ACT-original-seed18/open-minus",
+    "optimized": "<home>/.codex/worktrees/act-render-speed/ugrp/outputs/render-speed/reference-efficient-v1",
     "all_common_images_identical": true,
     "common_images": 2177,
     "unexpected_added_images": [],
@@ -63,7 +63,7 @@
     "passed": true
   },
   "omitted_unused_images": 628,
-  "raw": "/Users/changmin/.codex/worktrees/act-render-speed/ugrp/outputs/render-speed/reference-efficient-v1",
+  "raw": "<home>/.codex/worktrees/act-render-speed/ugrp/outputs/render-speed/reference-efficient-v1",
   "raw_files": {
     "result.json": {
       "sha256": "1eda121f617e7f007b0f48be9aaf8158372ca3dfe1fd7fabd7d78da9a4d204c3",
@@ -95,12 +95,12 @@
     }
   },
   "tensorboard": {
-    "snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/0922-ACT\ubc30\uc18d\uc2e4\ud589/open-minus-ACT128\uc6d0\ubcf83\uc7a5",
+    "snapshot": "<home>/projects/ugrp/outputs/tensorboard/0922-ACT\ubc30\uc18d\uc2e4\ud589/open-minus-ACT128\uc6d0\ubcf83\uc7a5",
     "manifest_sha256": "4897fa5bfba1699be0f45593ac70813576d8e8cedacd7d8a440596949594756c",
     "videos": [
       {
         "id": "481497cf2bd470248f49",
-        "path": "/Users/changmin/.codex/worktrees/act-render-speed/ugrp/outputs/render-speed/reference-efficient-v1/execution.mp4",
+        "path": "<home>/.codex/worktrees/act-render-speed/ugrp/outputs/render-speed/reference-efficient-v1/execution.mp4",
         "size": 1053326,
         "mtime_ns": 1790006705625691453
       }
@@ -111,8 +111,8 @@
     "reported_success": true,
     "source_sha": "074f1ec640661508c37bbb9289fe2b9ea814a420",
     "alignment": {
-      "reference": "/Users/changmin/.codex/worktrees/act-entry-repair/ugrp/outputs/entry-diagnosis/revalidation-v1/ACT-original-seed18/open-minus",
-      "source": "/Users/changmin/.codex/worktrees/act-render-speed/ugrp/outputs/render-speed/reference-efficient-v1",
+      "reference": "<home>/.codex/worktrees/act-entry-repair/ugrp/outputs/entry-diagnosis/revalidation-v1/ACT-original-seed18/open-minus",
+      "source": "<home>/.codex/worktrees/act-render-speed/ugrp/outputs/render-speed/reference-efficient-v1",
       "success": true,
       "before_rounds": 104,
       "after_rounds": 104,
@@ -125,8 +125,8 @@
       "passed": true
     },
     "capture_audit": {
-      "baseline": "/Users/changmin/.codex/worktrees/act-entry-repair/ugrp/outputs/entry-diagnosis/revalidation-v1/ACT-original-seed18/open-minus",
-      "optimized": "/Users/changmin/.codex/worktrees/act-render-speed/ugrp/outputs/render-speed/reference-efficient-v1",
+      "baseline": "<home>/.codex/worktrees/act-entry-repair/ugrp/outputs/entry-diagnosis/revalidation-v1/ACT-original-seed18/open-minus",
+      "optimized": "<home>/.codex/worktrees/act-render-speed/ugrp/outputs/render-speed/reference-efficient-v1",
       "all_common_images_identical": true,
       "common_images": 2177,
       "unexpected_added_images": [],

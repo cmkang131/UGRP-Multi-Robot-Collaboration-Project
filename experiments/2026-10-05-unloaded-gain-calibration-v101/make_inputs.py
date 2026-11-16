@@ -11,7 +11,7 @@ from pathlib import Path
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[2]
-PROBE = Path('/Users/changmin/projects/ugrp/outputs/v98-dev-probe-raise_high-1f7fb800/zone_wide_door_geometry_v3')
+PROBE = Path('<home>/projects/ugrp/outputs/v98-dev-probe-raise_high-1f7fb800/zone_wide_door_geometry_v3')
 OUT = ROOT / 'configs/final_environment_gain_calibration_v101_inputs.json'
 LEVELS = {'forward': [0.03, 0.06, 0.09, 0.12], 'left': [0.02, 0.04, 0.06, 0.08], 'turn': [0.02, 0.05, 0.08, 0.10]}
 AXES = ('forward', 'left', 'turn')

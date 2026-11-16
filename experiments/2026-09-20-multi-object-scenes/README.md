@@ -64,7 +64,7 @@ v3 검토 후 최종 v4의 실제 RGB 48개가 바이트 단위로 동일함을 
 
 ## 저장과 재현
 
-로컬 원본은 `/Users/changmin/projects/ugrp/outputs/multi-object-preview-20260920-v1/`부터
+로컬 원본은 `<home>/projects/ugrp/outputs/multi-object-preview-20260920-v1/`부터
 `multi-object-preview-20260920-v4/`까지다. 장면 XML과 setup을 함께 사용해야 실제 초기화를
 재현할 수 있다. XML 단독 로딩은 런타임 로봇 배치/팔 초기화를 재현하지 않는다.
 [manifest](manifest.json)는 source map → mission → static map → setup → scene XML을 연결한다.

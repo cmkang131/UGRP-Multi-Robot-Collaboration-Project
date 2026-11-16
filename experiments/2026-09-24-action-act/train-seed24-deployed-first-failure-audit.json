@@ -2,7 +2,7 @@
   "scope": "second ACT managed training and bounded selected-checkpoint cache failure diagnosis",
   "source_sha": "931d910998a94361342c372ec2675c475daa625f",
   "source_clean_at_run": true,
-  "dataset_path": "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/data/combined-dataset.json",
+  "dataset_path": "<home>/projects/ugrp/outputs/act-action-training-20260924/data/combined-dataset.json",
   "dataset_sha256": "9cd42d3b6859fcb1526dab7ee675ba4349cf6fd32537d1c955a696e1e3197a57",
   "training": {
     "updates_completed": 8000,
@@ -52,7 +52,7 @@
     }
   },
   "failing_probe": {
-    "id": "/Users/changmin/projects/ugrp/outputs/simulation-realtime-20260924-faster/native-v25-full:r3:113",
+    "id": "<home>/projects/ugrp/outputs/simulation-realtime-20260924-faster/native-v25-full:r3:113",
     "row_index": 2933,
     "mismatched_indices": [
       [
@@ -121,8 +121,8 @@
     },
     "history_inputs": [
       {
-        "id": "/Users/changmin/projects/ugrp/outputs/simulation-realtime-20260924-faster/native-v25-full:r3:110",
-        "root": "/Users/changmin/projects/ugrp/outputs/simulation-realtime-20260924-faster/native-v25-full",
+        "id": "<home>/projects/ugrp/outputs/simulation-realtime-20260924-faster/native-v25-full:r3:110",
+        "root": "<home>/projects/ugrp/outputs/simulation-realtime-20260924-faster/native-v25-full",
         "images": {
           "own": {
             "path": "rgb/pair-335-carry-r1.jpg",
@@ -152,8 +152,8 @@
         "target_done": false
       },
       {
-        "id": "/Users/changmin/projects/ugrp/outputs/simulation-realtime-20260924-faster/native-v25-full:r3:111",
-        "root": "/Users/changmin/projects/ugrp/outputs/simulation-realtime-20260924-faster/native-v25-full",
+        "id": "<home>/projects/ugrp/outputs/simulation-realtime-20260924-faster/native-v25-full:r3:111",
+        "root": "<home>/projects/ugrp/outputs/simulation-realtime-20260924-faster/native-v25-full",
         "images": {
           "own": {
             "path": "rgb/pair-336-carry-r1.jpg",
@@ -183,8 +183,8 @@
         "target_done": false
       },
       {
-        "id": "/Users/changmin/projects/ugrp/outputs/simulation-realtime-20260924-faster/native-v25-full:r3:112",
-        "root": "/Users/changmin/projects/ugrp/outputs/simulation-realtime-20260924-faster/native-v25-full",
+        "id": "<home>/projects/ugrp/outputs/simulation-realtime-20260924-faster/native-v25-full:r3:112",
+        "root": "<home>/projects/ugrp/outputs/simulation-realtime-20260924-faster/native-v25-full",
         "images": {
           "own": {
             "path": "rgb/pair-337-carry-r1.jpg",
@@ -214,8 +214,8 @@
         "target_done": false
       },
       {
-        "id": "/Users/changmin/projects/ugrp/outputs/simulation-realtime-20260924-faster/native-v25-full:r3:113",
-        "root": "/Users/changmin/projects/ugrp/outputs/simulation-realtime-20260924-faster/native-v25-full",
+        "id": "<home>/projects/ugrp/outputs/simulation-realtime-20260924-faster/native-v25-full:r3:113",
+        "root": "<home>/projects/ugrp/outputs/simulation-realtime-20260924-faster/native-v25-full",
         "images": {
           "own": {
             "path": "rgb/pair-338-carry-r1.jpg",
@@ -262,7 +262,7 @@
     "manifest_json_sha256": "aa90d237e0c772eff7a87797e76542cf92764b929375fa8d0c74f0c6cae0fedb"
   },
   "diagnosis": {
-    "path": "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/cache-failure-diagnosis.json",
+    "path": "<home>/projects/ugrp/outputs/act-action-training-20260924/cache-failure-diagnosis.json",
     "sha256": "2677146f6e56fabf6d09d131bb57b065a90dd973f72595b336c67353cb42e7ff"
   },
   "interpretation": "The selected checkpoint has no exported/readback model and has not passed development termination eligibility. The observed verification failure is in unused later chunk done dimensions due to B32-vs-B4 frozen-CNN float32 drift on bounded probes; the deployed first action did not cross done threshold on these probes. Physical success is untested."

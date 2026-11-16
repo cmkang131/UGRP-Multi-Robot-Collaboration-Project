@@ -1,6 +1,6 @@
 # 저장 상태 영상 직접 검토
 
-원본/재구성은 gcp2 L4 `/home/ugrp/ugrp-sim/runs/simalt3/`에서만 만들었다. Mac은 `/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/simalt3/`의 프레임 띠를 파일로 읽었다. 화면 앱/브라우저/QuickTime 실행 0. MP4 확인은 원격 ffprobe다. C3.12 렌더로 두 엔진의 저장 상태를 같은 카메라에 복원한 것이며 MJWarp renderer parity 영상은 아니다. 축소 장면에 r2가 없어 해당 패널은 `r2 absent` 검정으로 표시했다.
+원본/재구성은 gcp2 L4 `/home/ugrp/ugrp-sim/runs/simalt3/`에서만 만들었다. Mac은 `<home>/projects/ugrp/outputs/e2e18-admin/playback/simalt3/`의 프레임 띠를 파일로 읽었다. 화면 앱/브라우저/QuickTime 실행 0. MP4 확인은 원격 ffprobe다. C3.12 렌더로 두 엔진의 저장 상태를 같은 카메라에 복원한 것이며 MJWarp renderer parity 영상은 아니다. 축소 장면에 r2가 없어 해당 패널은 `r2 absent` 검정으로 표시했다.
 
 | 검토 대상 | 전체 2Hz 직접 본 표본 | 10Hz 직접 본 표본 | 4배속 MP4 ffprobe |
 |---|---|---|---|

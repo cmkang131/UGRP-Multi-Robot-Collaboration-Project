@@ -26,7 +26,7 @@ seed31001 (`outputs/active-frontier-audit-v1/new-seed`)과 seed32002
 
 진단 후 지배 원인에 맞는 표준 방법 하나를 조사하고 옵션/상수/관문을 여기 추가 커밋한 뒤
 off/on 결과를 개봉한다. 구현 기본off bytes 동일, 기존 옵션·pose·추정기는 보존한다.
-raw는 `/Users/changmin/projects/ugrp/outputs/wall-cell-attribution-v1`.
+raw는 `<home>/projects/ugrp/outputs/wall-cell-attribution-v1`.
 관련 시험만 초록 후 커밋·push, PR405 DRAFT, TensorBoard 생략 유지.
 
 ## 진단 결과와 다음 비교 사전 등록

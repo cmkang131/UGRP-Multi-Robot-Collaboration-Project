@@ -21,6 +21,6 @@
 
 이1회실패는 현재2개현재영상/raw서보정책의 실패이며,좌표 없는 시각파지 자체의 불가능성을 뜻하지 않음. 이전좌표기반성공으로 대체하지 않음. 다음검증방향은 영상에서 손가락/물체관계가 관측가능한지와 시각적인 팔조절을 분리해 확인하는 것.
 
-원본 /Users/changmin/projects/ugrp/outputs/camera-grasp-20260909-first. raw영상/전체요청은 로컬보관,원격에는코드/평가/요약/대표실제입력/원본해시. main병합은 사용자명시승인대기.
+원본 <home>/projects/ugrp/outputs/camera-grasp-20260909-first. raw영상/전체요청은 로컬보관,원격에는코드/평가/요약/대표실제입력/원본해시. main병합은 사용자명시승인대기.
 
 재현: `.venv-sim-worker-mac/bin/python scripts/ugrp_session.py run camera-grasp -- .venv-sim-worker-mac/bin/python scripts/run_camera_pair_transport.py --out-dir outputs/NEW-camera-grasp --rounds 30 --task grasp`

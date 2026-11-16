@@ -1,7 +1,7 @@
 {
   "schema": "ugrp.beamact4.rejection_table.v1",
   "scope": "prior beamdiag evidence plus unexecuted candidate plan",
-  "source": "/Users/changmin/projects/ugrp-wt/beamact3c/experiments/2026-10-16-beamact4/prior-rejection-table.json",
+  "source": "<home>/projects/ugrp-wt/beamact3c/experiments/2026-10-16-beamact4/prior-rejection-table.json",
   "source_sha256": "7bf962fe2393e7ebe70b6153f70d8a8ce46eb431ea0dfc8b0e74c326246788a7",
   "original_source_root": "/home/ugrp/ugrp-sim/ops-reviews/beamdiag/v1",
   "original_reproduce": "env OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/analysis-tools/beamdiag/analyze.py && /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/analysis-tools/beamdiag/summarize.py",
@@ -168,7 +168,7 @@
       "status": "NOT_MEASURED"
     }
   ],
-  "reproduce": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_beamact2.py tests/test_beamact4.py tests/test_beamact4_policy.py",
+  "reproduce": "<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_beamact2.py tests/test_beamact4.py tests/test_beamact4_policy.py",
   "related_specifications": [
     "handoff-spec.md",
     "teacher-spec.md"

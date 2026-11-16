@@ -22,7 +22,7 @@ S4 모델의 오탐률도, 배포된 이탈 정지의 성능도 아니다.
 ## 고정 입력·라벨
 
 [inventory.json](inventory.json)은 로컬
-`/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix10*`부터 `s3fix15*`까지
+`<home>/projects/ugrp/outputs/oracle-runs/s3fix10*`부터 `s3fix15*`까지
 접촉 로그가 있는 279개 하위 raw의 경로·SHA·설정·로그 해시를 고정했다.
 그 중 cyan 작업 92개를 제외한 빔 작업 187개를 검사한다.
 진행 중일 수 있는 s3fix16과 다른 작업의 새 파일은 자동 추가하지 않는다.
@@ -138,14 +138,14 @@ capture/command 동시각 순서, 로그 공백, 중복 시각 거부를 검사�
 이는 분석 실패이며 새 SIM 실행 또는 SIM 실패가 아니다.
 
 ```sh
-P=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+P=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 $P -m pytest -q tests/test_s4_grip_raw.py
 $P -m scripts.evaluate_s4_grip_raw \
   --manifest experiments/2026-10-06-s4-llm/s4grip/inventory.json \
-  --output /Users/changmin/projects/ugrp/outputs/s4grip-offline/replay-NEW
+  --output <home>/projects/ugrp/outputs/s4grip-offline/replay-NEW
 $P experiments/2026-10-06-s4-llm/s4grip/summarize.py \
-  /Users/changmin/projects/ugrp/outputs/s4grip-offline/replay-NEW \
-  --output /Users/changmin/projects/ugrp/outputs/s4grip-offline/report-NEW.json
+  <home>/projects/ugrp/outputs/s4grip-offline/replay-NEW \
+  --output <home>/projects/ugrp/outputs/s4grip-offline/report-NEW.json
 ```
 
 `replay-NEW`는 존재하지 않는 경로여야 한다. 출력은 평가 자료이며 제어 입력으로 사용 금지.

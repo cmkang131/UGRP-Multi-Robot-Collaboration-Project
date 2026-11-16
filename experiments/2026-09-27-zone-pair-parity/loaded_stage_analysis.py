@@ -16,7 +16,7 @@ import sys
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-RAW = Path('/Users/changmin/projects/ugrp/outputs')
+RAW = Path('<home>/projects/ugrp/outputs')
 sys.path.insert(0, str(ROOT))
 BLOCKED = {'mujoco', 'torch', 'tensorflow', 'requests', 'httpx'}
 class Boundary(importlib.abc.MetaPathFinder):

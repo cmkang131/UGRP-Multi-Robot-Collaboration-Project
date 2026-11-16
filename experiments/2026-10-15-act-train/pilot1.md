@@ -9,7 +9,7 @@
 기존 `7caf9944` smoke는 운영 워커·조정자 보고상 완료했다. 변환50 에피소드/17,851행,
 train45·보류5, 입력 감사0/0, grasp done50/50·release done0/50이다. 300 step에82.415초,
 loss2.82619, 가중치 재로딩 통과, 보류5의 grasp done 검출0/40이다(중복 horizon 분모).
-원본 보고는 `/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act-smoke-7caf9944.json`,
+원본 보고는 `<home>/projects/ugrp/outputs/e2e18-admin/gcp-reports/act-smoke-7caf9944.json`,
 SHA-256 `bc93bb38946030fe644af52c4bd100155048706ad9f15d595dba37af43ff85f0`.
 현재 로컬 파일은 `parse_constant`로 비표준 수를 거부해도 읽혀 119행 오류를 재현하지 못했다.
 원본은 보존했다. [준비·검증 기록](main-eval-preparation-summary.json)에 범위를 남겼다.
@@ -132,7 +132,7 @@ NaN/±Infinity를 `null`로 바꾼 사본을 만든 뒤 `allow_nan=False`로 원
 
 ```sh
 python3 -m scripts.queue_grasp_act_pilot --mode main-eval \
-  --output-dir /Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue
+  --output-dir <home>/projects/ugrp/outputs/e2e18-admin/vm3-queue
 ```
 
 커밋한 깨끗한 소스에서 `20261015-act-train-<SHA8>.json`을 새로 만든다. 이전 `7caf9944`

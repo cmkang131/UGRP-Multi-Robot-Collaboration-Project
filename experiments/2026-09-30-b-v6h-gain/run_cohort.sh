@@ -5,7 +5,7 @@
 set -u
 TAG="$1"; DOOR="$2"; PROG="$3"; GAIN="$4"; shift 4
 WT="$(cd "$(dirname "$0")/../.." && pwd)"
-PRIMARY=/Users/changmin/projects/ugrp
+PRIMARY=<home>/projects/ugrp
 PY="$PRIMARY/.venv-sim-worker-mac/bin/python"
 SHA="$(git -C "$WT" rev-parse --short=8 HEAD)"
 OUT="$PRIMARY/outputs/b-v6h-gain-$SHA-$TAG"

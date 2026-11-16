@@ -13,7 +13,7 @@
 - v1(`42b9025a`, 2026-10-04): 조정자가 설계를 승인하고 결정 (a)~(d)를 정했다.
 - v2(2026-10-05): 독립 검토(Claude, `outputs/review-371-setdown-design-20261005/report.md`, 대상 `42b9025a`)의 P0 2건·P1 7건 반영.
 - **v3(이 문서, 2026-10-05):** 조정자의 내려놓기·재고정 v3 기준 결정 5개와 내려놓기 설계 담당의 연결점(hook) 기록
-  (`/Users/changmin/projects/ugrp-wt/carry-ckpt/experiments/2026-10-03-pair-carry-highpose/fix363/sigma_refix_v98_note_ko.md`,
+  (`<home>/projects/ugrp-wt/carry-ckpt/experiments/2026-10-03-pair-carry-highpose/fix363/sigma_refix_v98_note_ko.md`,
   7b·7c절, 미커밋 작업 트리 상태)을 반영했다. 그 기록의 코드는 아직 #363 head에 없고 저자의 `aa449796`/`a54a26ab` 위에 얹히는 제안이다.
   코드 구현은 여전히 #363 새 SHA 뒤다.
 - **v3.1(2026-10-05, 같은 날):** 조정자 결정 4건((e6)~(e9))을 반영했다: 창 범위 수신 깨움 승인(**편차** 명시), 판단 창을 모든 조건에서 열고 **10 SIM초**로 확정(8초 대체),

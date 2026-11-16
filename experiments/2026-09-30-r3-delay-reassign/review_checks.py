@@ -16,7 +16,7 @@ import tempfile
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[2]
-RAW = Path('/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay')
+RAW = Path('<home>/projects/ugrp/outputs/cap-t12-r3-delay')
 GUARD = Path('experiments/2026-09-30-t07-r3-roles')
 T12 = ['tests/test_zone_pair_rendezvous.py', 'tests/test_zone_pair_rendezvous_t07.py']
 CORE = T12 + ['tests/test_zone_pair_role_exchange.py', 'tests/test_zone_pair_executor.py',

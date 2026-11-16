@@ -31,9 +31,9 @@ from harness import owncam_pair_beam_v2 as v2                   # noqa: E402
 from harness import owncam_pair_beam_v6d as v6d                 # noqa: E402
 from harness.owncam_view import base_rays                       # noqa: E402
 
-RUNS = ['/Users/changmin/projects/ugrp/outputs/pair-stage-probes-052e3eba-v6d-venv-align-0',
-        '/Users/changmin/projects/ugrp/outputs/pair-stage-probes-052e3eba-v6d-venv-align-1']
-RAW_OUT = '/Users/changmin/projects/ugrp/outputs/pair-stage-probes-052e3eba-v6d-hue-mask-check.json'
+RUNS = ['<home>/projects/ugrp/outputs/pair-stage-probes-052e3eba-v6d-venv-align-0',
+        '<home>/projects/ugrp/outputs/pair-stage-probes-052e3eba-v6d-venv-align-1']
+RAW_OUT = '<home>/projects/ugrp/outputs/pair-stage-probes-052e3eba-v6d-hue-mask-check.json'
 BEAM_HALF_LEN, BEAM_HALF_W, MARGIN = 0.30, 0.025, 0.06
 OUTSIDE_MIN_PX = 10                       # a frame "has non-beam pixels" when at least this many added pixels are outside
 

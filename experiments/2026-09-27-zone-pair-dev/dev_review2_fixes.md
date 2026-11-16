@@ -2,7 +2,7 @@
 
 기준: PR #235, `codex/zone-pair-executor`, HEAD
 `a2c1db7ef0a1b70d9e24fc737b388f26fd88d886`.
-리뷰: `/private/tmp/claude-501/-Users-changmin-projects-ugrp/ecd247bf-a1a7-45d6-9190-dad34be56468/scratchpad/codex-pair-dev-review2.md`.
+리뷰: `/private/tmp/claude-501/-<home>-projects-ugrp/ecd247bf-a1a7-45d6-9190-dad34be56468/scratchpad/codex-pair-dev-review2.md`.
 이번 기록은 미커밋 로컬 수정과 비물리 회귀 검사이며 연구·물리 실행 결과가 아니다.
 
 ## 원인과 수정
@@ -60,7 +60,7 @@
 
 ```sh
 OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 \
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
   tests/test_zone_pair_dev.py --basetemp=./.pytest_tmp
 ```
 

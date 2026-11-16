@@ -9,7 +9,7 @@ for case in protocol['cases']:
     assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==sha
     assert not subprocess.check_output(['git','status','--porcelain'],text=True).strip()
     dest=out/case['id']
-    cmd=['/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/mjpython','scripts/run_dispatch_e2e.py','--executor','skills','--variant',case['variant'],'--seed',str(case['seed']),'--required-dock',case['required_dock'],'--grasp-model-dir',protocol['grasp_model_dir'],'--stage-model-dir',protocol['stage_model_dir'],'--output',str(dest),'--max-wall-s',str(protocol['max_wall_s']),'--max-input-tokens',str(protocol['max_input_tokens'])]
+    cmd=['<home>/projects/ugrp/.venv-sim-worker-mac/bin/mjpython','scripts/run_dispatch_e2e.py','--executor','skills','--variant',case['variant'],'--seed',str(case['seed']),'--required-dock',case['required_dock'],'--grasp-model-dir',protocol['grasp_model_dir'],'--stage-model-dir',protocol['stage_model_dir'],'--output',str(dest),'--max-wall-s',str(protocol['max_wall_s']),'--max-input-tokens',str(protocol['max_input_tokens'])]
     row={'case':case,'source_sha':sha,'command':cmd,'started_unix':time.time()}
     rows.append(row)
     (out/'cohort.json').write_text(json.dumps(rows,indent=2))

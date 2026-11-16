@@ -40,7 +40,7 @@ Refs #363. 조정자 결정(2026-10-05): 잡음으로 계통 오차를 덮지 �
 - 소스 SHA `341ce3b9aeda6aca38fac57c6d5030b9c458760d`(깨끗한 커밋, 실행 중 고정, 모든 실행 `source_unchanged: true`).
   스모크 실행 하나(heldP2)는 같은 SHA·같은 코드로 먼저 돌렸고 별도 출력 이름이다. 정식 5개는 한 조정자 PID 66460 아래 같은 출력 루트에 있다.
 - 원본(기본 체크아웃 `outputs/`, 커밋하지 않음 — pose 1.1 MB·명령 120 KB급 파일):
-  `/Users/changmin/projects/ugrp/outputs/calib-gain-v101-341ce3b9-20261005T0350Z/`(정식 5개), `.../calib-gain-v101-341ce3b9-20261005T0340Z/`(스모크 heldP2),
+  `<home>/projects/ugrp/outputs/calib-gain-v101-341ce3b9-20261005T0350Z/`(정식 5개), `.../calib-gain-v101-341ce3b9-20261005T0340Z/`(스모크 heldP2),
   `.../calib-gain-v101-raw-all-20261005/`(둘을 한 폴더로 묶은 심볼릭 링크 트리, 적합기 입력). 파일별 sha256은 [runs/](runs/)의 `artifacts.sha256.json`.
 - 디스크: 시작 전 여유 공간 ≥ 10 GiB를 실행기가 확인(수집 시점 여유 약 101 GiB).
 
@@ -200,7 +200,7 @@ Refs #363. 조정자 결정(2026-10-05): 잡음으로 계통 오차를 덮지 �
 
 - 실행 기록: [runs/](runs/)(run별 `case_result.json`, `run_result.json`, `plan.json`, `artifacts.sha256.json`; `coordinator_main.txt`, `coordinator_smoke_heldP2.txt`).
 - 산출물: [products/](products/). 적용용 diff: [diffs/](diffs/)(sha256은 [diffs/SHA256SUMS](diffs/SHA256SUMS)).
-- 재생 분석 도구·요약: [analysis/](analysis/). 재생 원본(.jsonl)은 기본 체크아웃 `/Users/changmin/projects/ugrp/outputs/pf-gaincal-v101-20261005/replay/`(커밋하지 않음, sha256 목록 [analysis/replay_files.sha256](analysis/replay_files.sha256)).
+- 재생 분석 도구·요약: [analysis/](analysis/). 재생 원본(.jsonl)은 기본 체크아웃 `<home>/projects/ugrp/outputs/pf-gaincal-v101-20261005/replay/`(커밋하지 않음, sha256 목록 [analysis/replay_files.sha256](analysis/replay_files.sha256)).
 - 시험: [analysis/tests_*.txt](analysis/).
 
 ## 10. 참고 자료 (U = 원문 미확인)

@@ -106,7 +106,7 @@ RGB로 보정하며 발행 명령을 실제 위치로 취급하지 않는다. �
   명령과 관측 구분, 오래된 보고·다른 계획 거부, 위조 입력 해시·평가 판정 등을 포함한다.
 - 실제 영상의 시작·중간·끝과 비교 진단을 확인했다. 정확한 추출 시각과 검토 범위는
   [visual-review.md](visual-review.md), [선택 프레임 목록](media/selected-frames.json)을 따른다.
-- 원본은 `/Users/changmin/projects/ugrp-worktrees/pair-loaded-navigation/outputs/pair-navigation/`에
+- 원본은 `<home>/projects/ugrp-worktrees/pair-loaded-navigation/outputs/pair-navigation/`에
   로컬 보관한다. [raw-manifest.json](raw-manifest.json)과 압축 JSONL
   [전체 파일 해시](raw-hashes.jsonl.gz)는 모든 19회 원본과 검토 산출물 위치·크기·SHA256을 연결한다.
   **원본 RGB·전체 영상·로그는 원격 백업하지 않았다.** GitHub에 포함하는 영상은 약 1.1 MB
@@ -146,8 +146,8 @@ Mac에서는 기존 환경의 python과 mjpython을 사용한다. Ubuntu에서�
 설치한 `.venv-dev/bin/python`으로 바꾼다. 출력 이름은 매번 새 이름을 사용한다.
 
 ```sh
-TASK_PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
-TASK_SIM=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/mjpython
+TASK_PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
+TASK_SIM=<home>/projects/ugrp/.venv-sim-worker-mac/bin/mjpython
 run_case() {
   "$TASK_PY" scripts/ugrp_session.py run "pair-$1" -- "$TASK_SIM" scripts/run_pair_navigation.py \
     --map "experiments/2026-09-14-pair-navigation/maps/$2.json" \

@@ -14,7 +14,7 @@
 
 ## 수행한 검사
 
-기존 환경 `/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python`을 재사용했다(Python 3.12.13, NumPy 2.5.2). 모든 검사에 `OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1`을 적용했고 pytest는 `PYTHONPATH=.` 및 `-p no:cacheprovider`를 사용했다. 물리 잠금은 다른 작업이 보유하고 있어 아래 저장 기록·수식/정적 검사만 직접 실행했다. worker·물리 step·모델 호출은 없다.
+기존 환경 `<home>/projects/ugrp/.venv-sim-worker-mac/bin/python`을 재사용했다(Python 3.12.13, NumPy 2.5.2). 모든 검사에 `OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1`을 적용했고 pytest는 `PYTHONPATH=.` 및 `-p no:cacheprovider`를 사용했다. 물리 잠금은 다른 작업이 보유하고 있어 아래 저장 기록·수식/정적 검사만 직접 실행했다. worker·물리 step·모델 호출은 없다.
 
 ```sh
 python -m pytest -q -p no:cacheprovider tests/test_v6h_classify_placements.py

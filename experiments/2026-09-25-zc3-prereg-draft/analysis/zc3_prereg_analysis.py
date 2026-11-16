@@ -4,7 +4,7 @@
 Reads only recorded raw files (no SIM, no LLM). Outputs are deterministic given the inputs:
 
     .venv-sim-worker-mac/bin/python experiments/2026-09-25-zc3-prereg-draft/analysis/zc3_prereg_analysis.py \
-        --outputs-root /Users/changmin/projects/ugrp/outputs
+        --outputs-root <home>/projects/ugrp/outputs
 
 Writes (next to this file, and budget.json one level up):
     measured_runs.json   per-run table + per-cell summaries + SHA-256 of every input file read
@@ -614,7 +614,7 @@ def budget(primary, gates, cells, contrasts, seeds):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument('--outputs-root', type=Path, default=Path('/Users/changmin/projects/ugrp/outputs'))
+    ap.add_argument('--outputs-root', type=Path, default=Path('<home>/projects/ugrp/outputs'))
     args = ap.parse_args()
     primary, gates, supp, hashes, mismatches = collect(args.outputs_root)
     cells = cell_summary(primary)

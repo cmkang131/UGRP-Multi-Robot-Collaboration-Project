@@ -6,7 +6,7 @@
 set -euo pipefail
 kind=$1; prereg=$2; ep=$3; out=$4; shift 4
 ROOT=$(cd "$(dirname "$0")/../.." && pwd)
-PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 free=$(df -g /System/Volumes/Data | tail -1 | awk '{print $4}')
 mkdir -p "$out"
 if [ "$free" -lt 30 ]; then

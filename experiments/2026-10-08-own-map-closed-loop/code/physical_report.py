@@ -5,7 +5,7 @@ import argparse,hashlib,importlib.util,json,math,subprocess,sys
 import numpy as np
 ROOT=Path(__file__).resolve().parents[3];sys.path.insert(0,str(ROOT))
 EXP=Path(__file__).resolve().parents[1]
-RAW=Path('/Users/changmin/projects/ugrp/outputs/own-map-closed-loop-v1')
+RAW=Path('<home>/projects/ugrp/outputs/own-map-closed-loop-v1')
 EP=RAW/'new-seed'
 from scripts.run_active_wall_rotleft import dump
 from harness.self_odom_grid import transform

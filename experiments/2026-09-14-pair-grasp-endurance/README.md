@@ -53,7 +53,7 @@ MuJoCo 공식 문서의 [지속적 미끄러짐 설명](https://mujoco.readthedo
 
 ## 재현과 남은 작업
 
-모델 원본은 `/Users/changmin/projects/ugrp-worktrees/pair-loaded-navigation/outputs/pair-navigation/runtime/models/grasp`에 있다. Git clone만으로 이 모델 원본이 내려오는 것은 아니다. 모델 파일 해시는 각 result 기록에 있다. Mac에서는 다음을 프로젝트 루트에서 실행한다. PATH 변수는 환경별 실제 위치를 지정한다.
+모델 원본은 `<home>/projects/ugrp-worktrees/pair-loaded-navigation/outputs/pair-navigation/runtime/models/grasp`에 있다. Git clone만으로 이 모델 원본이 내려오는 것은 아니다. 모델 파일 해시는 각 result 기록에 있다. Mac에서는 다음을 프로젝트 루트에서 실행한다. PATH 변수는 환경별 실제 위치를 지정한다.
 
 ```sh
 python3 scripts/ugrp_session.py run grasp-endurance -- \

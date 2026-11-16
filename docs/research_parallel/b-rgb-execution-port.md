@@ -134,7 +134,7 @@ high-level action 제출 수를 구분한다.
 이번 배치의 오프라인 검사는 외부 모델·MuJoCo·렌더링·학습 없이 다음 명령으로 끝난다.
 
 ```sh
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
   tests/test_rgb_execution_port.py
 ```
 

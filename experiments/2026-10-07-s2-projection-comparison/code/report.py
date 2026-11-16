@@ -13,7 +13,7 @@ def main():
     c.s2_path.verify_sources()
     frozen=c.a.load(c.EXP/'freeze.json')
     assert frozen['hashes']==c.hashes()
-    complete=Path('/Users/changmin/projects/ugrp/outputs/s2-projection-comparison-v1-complete')
+    complete=Path('<home>/projects/ugrp/outputs/s2-projection-comparison-v1-complete')
     cases=[c.a.load(complete/f's{s}/result.json') for s in range(1042,1048)]
     for r in cases:
         assert c.a.digest(complete/r['case']/'own-predictions.json')==r['prediction_sha256']
@@ -44,7 +44,7 @@ def main():
         columns_405=c.a.COLS.tolist(),columns_s1050_audit=c.np.linspace(8,631,96).astype(int).tolist(),
         intrinsics_equal=bool(c.np.array_equal(table['intrinsics_K'],c.a.old.mp.K))))
     inventory=[]
-    for root in [complete,Path('/Users/changmin/projects/ugrp/outputs/s2-projection-comparison-v1')]:
+    for root in [complete,Path('<home>/projects/ugrp/outputs/s2-projection-comparison-v1')]:
         for p in sorted(root.rglob('*')):
             if p.is_file():inventory.append(dict(path=str(p),bytes=p.stat().st_size,sha256=c.a.digest(p)))
     c.a.write(c.EXP/'results/raw-manifest.json',dict(files=inventory,count=len(inventory),bytes=sum(v['bytes'] for v in inventory)))

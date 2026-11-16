@@ -5,8 +5,8 @@ from pathlib import Path
 import numpy as np
 ROOT=Path(__file__).resolve().parents[3];sys.path.insert(0,str(ROOT))
 EXP=Path(__file__).resolve().parents[1]
-RAW=Path('/Users/changmin/projects/ugrp/outputs/rbpf-motion-gate-v1/baseline')
-OUT=Path('/Users/changmin/projects/ugrp/outputs/rbpf-insertion-v1')
+RAW=Path('<home>/projects/ugrp/outputs/rbpf-motion-gate-v1/baseline')
+OUT=Path('<home>/projects/ugrp/outputs/rbpf-insertion-v1')
 from harness.self_odom_grid import transform
 from harness.active_wall_vision import modules
 BINS=['0–1','1–2','2–3','3–4','>4']

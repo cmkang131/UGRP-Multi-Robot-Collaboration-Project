@@ -31,7 +31,7 @@ S4의 `S3Link`는 `OwnLink`의 다음 계약을 맞춘다.
 세 번 모두 아래 세 파일을 끝까지 실행했다. `--maxfail` 옵션 없음.
 
 ```sh
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
   tests/test_pair_llm_s4_host.py tests/test_pair_llm_s4_routing.py \
   tests/test_pair_llm_decisions.py -q --junitxml=<각 새 출력 경로>/pytest.xml
 ```

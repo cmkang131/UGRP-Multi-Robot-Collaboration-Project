@@ -79,7 +79,7 @@ can E2E CLI가 생긴 것은 아니다.** 코디네이터는 새 opt-in 어댑�
   부풀리지 않는다. SIM cap·HOST_ERROR(ENOSPC 포함)·입력 불능·지원 밖을 구분한다.
 - 각 셀의 SIM초(준비 포함), 명령 수, 관측 수, holding/방출 판정, 실패 원인, 접촉/파지/착지 평가,
   모델 호출 0 및 비용 0을 기록한다. wall 시간은 측정 전 환산하지 않는다.
-- raw는 `/Users/changmin/projects/ugrp/outputs/cap-t04-can/<candidate-sha>/<cell>-<unique-id>/`에
+- raw는 `<home>/projects/ugrp/outputs/cap-t04-can/<candidate-sha>/<cell>-<unique-id>/`에
   새로 보존한다. 자기 RGB JPEG·해시·전체 명령·provider 입력/상태·환경·실행/role assignment 해시,
   별도 심판 trace·결과·영상과 전체 SHA-256 manifest를 저장한다. 실패 파일을 덮어쓰지 않는다.
 - `docs/tensorboard.md`에 따라 새 결과(실패 포함)를 primary `outputs/tensorboard`의 새 snapshot으로

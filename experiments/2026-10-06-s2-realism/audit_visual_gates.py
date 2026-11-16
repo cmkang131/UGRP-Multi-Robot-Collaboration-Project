@@ -1,8 +1,8 @@
 import sys,json,pathlib,collections,hashlib,numpy as np,cv2
-sys.path.insert(0,'/Users/changmin/projects/ugrp-wt/drive-friction')
+sys.path.insert(0,'<home>/projects/ugrp-wt/drive-friction')
 from harness.zone_solo_cyan_visual_fix import flow_pair,FLOW
 from harness.zone_solo_cyan_pulse_cal import profile_key
-ROOT=pathlib.Path('/Users/changmin/projects/ugrp/outputs');OUT=ROOT/'s2-visual-fix-20261007'
+ROOT=pathlib.Path('<home>/projects/ugrp/outputs');OUT=ROOT/'s2-visual-fix-20261007'
 model=json.loads(pathlib.Path('configs/s2_motion_v7_pulse_cal_v1.json').read_text())
 summary={};flows=[]
 for seed,stem in [(1022,'s2-graduation-fae1fc4a-s1022-P1-2-place'),(1045,'s2-realism-f0bb26e7-s1045-P1-2-place'),(1046,'s2-realism-e619ee57-s1046-P1-2-place')]:

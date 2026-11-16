@@ -50,7 +50,7 @@ PR422 `6ffa74df`를 그대로 merge(`21a43d28`), 공통 selector만 달라졌다
 - 판정은 egomap56/58 그대로: B 도착 T1 3/3,T2≥5/6; 거짓0; 벽/로봇 접촉 총≤1; GT 경로±1m 영역 커버≥.70/P≥.70/RMSE≤.20m; 지나온 경로/GT최단≤2; 경기장밖≥.5m 점유0; 단서≥1. 각각270초 구간 예산과 상자·B·시작 귀환을 별도 보고. **벽 품질·도착 관문을 바꾸지 않는다.**
 - reported posterior 거리·명령 DR·GT 거리 세 열과, 프레임 >3σ 분모·끝오차/σ·구간별 SIM·270초 실패를 기록한다. 실패도 포함. 동일 HOST_ERROR 연속2회면 나머지는 NOT_RUN으로 차단, 추가 재실행0.
 - 사전XML9/9 → S3 최신 스모크 terminal+잠금반환 확인 → agent_lock하 순차,ugrp_session,nice0. 예산 예상2–6h(최악HOST9h),디스크10GiB 미만 시작거부/ENOSPC HOST. 코드SHA 고정,CI 기다리지 않음. 매회 README 즉시 추가. 결과 후 재튜닝0.
-- 표준 workflow `goal-route-motion-audit-dev`, raw `/Users/changmin/projects/ugrp/outputs/goal-route-motion-audit-v1`. 이전 자산을 복제 생성하지 않고 지도 원천 P1 자산을 재사용. merge 시 sparse PNG 제외를 발견하여 **HEAD의 기존 추적 자산**만 다시 펼쳤으며 바이트/물리 변화0.
+- 표준 workflow `goal-route-motion-audit-dev`, raw `<home>/projects/ugrp/outputs/goal-route-motion-audit-v1`. 이전 자산을 복제 생성하지 않고 지도 원천 P1 자산을 재사용. merge 시 sparse PNG 제외를 발견하여 **HEAD의 기존 추적 자산**만 다시 펼쳤으며 바이트/물리 변화0.
 
 ## 출처·검증 범위
 
@@ -108,6 +108,6 @@ PR422 `6ffa74df`를 그대로 merge(`21a43d28`), 공통 selector만 달라졌다
 
 ## 검증·보관·남은 문제
 
-실행 소스 `5b330946`(merge `21a43d28`, PR422 원본 `6ffa74df`), 변경 모듈42시험 통과. 최종 기록 단계에서 동결522파일 해시 불변과 원본7,377파일(최종2회3,973 + 별도2회3,404)의 전체 SHA-256 일치를 확인했다. 관리세션2개 종료·자기 잠금 반환도 확인했다. 결과 기록만 추가하며 CI 대기·문턱 변경·추가 물리0. 상세 표/연속성 사유는 `results/final-summary.json`, `results/execution-continuation.json`; raw는 `/Users/changmin/projects/ugrp/outputs/goal-route-motion-audit-v1`에 로컬 보존한다(원격 raw 백업 아님).
+실행 소스 `5b330946`(merge `21a43d28`, PR422 원본 `6ffa74df`), 변경 모듈42시험 통과. 최종 기록 단계에서 동결522파일 해시 불변과 원본7,377파일(최종2회3,973 + 별도2회3,404)의 전체 SHA-256 일치를 확인했다. 관리세션2개 종료·자기 잠금 반환도 확인했다. 결과 기록만 추가하며 CI 대기·문턱 변경·추가 물리0. 상세 표/연속성 사유는 `results/final-summary.json`, `results/execution-continuation.json`; raw는 `<home>/projects/ugrp/outputs/goal-route-motion-audit-v1`에 로컬 보존한다(원격 raw 백업 아님).
 
 다음 후보는 발행 명령의 전진 이득 축소가 아니라 회전XY 모델 편차와 RBPF posterior 점프를 분리하는 것이다. 회전XY 공통 수정은 S3 작업을 따르고 이 브랜치에서 중복 재적합하지 않는다. B 도착과 상자+귀환 성공은 구분하며, 현재 귀환 쓸모는 검증되지 않았다.

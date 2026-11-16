@@ -1,11 +1,11 @@
 import sys,json,pathlib,hashlib,base64,copy,time
 import numpy as np,cv2
-sys.path.insert(0,'/Users/changmin/projects/ugrp-wt/drive-friction')
+sys.path.insert(0,'<home>/projects/ugrp-wt/drive-friction')
 from harness import zone_s2_realism_contract_v122 as c,zone_pair_highpose_frame_gate as gate
 from harness.zone_solo_cyan_visual_fix import Runtime
 from harness.zone_pair_highpose_exact_speedups import install
-work=pathlib.Path('/Users/changmin/projects/ugrp/outputs/s2-visual-fix-20261007')
-run=pathlib.Path('/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-s1046-P1-2-place')
+work=pathlib.Path('<home>/projects/ugrp/outputs/s2-visual-fix-20261007')
+run=pathlib.Path('<home>/projects/ugrp/outputs/s2-realism-e619ee57-s1046-P1-2-place')
 option=sys.argv[1];_,undo=install('v98-exact-v6')
 b=c.bundle('a'*40,seed=1046,**c.NEW_OPTIONS)
 kwargs={k:v for k,v in b['options'].items() if k not in ('drive_profile','stagnation_watch','idle_robot_contacts','dev_grasp_policy','eval_camera_trace')}

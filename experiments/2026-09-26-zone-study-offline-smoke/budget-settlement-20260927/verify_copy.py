@@ -19,7 +19,7 @@ from harness.rgb_execution_bundle import source_closure, load_bundle, RUNNABLE_I
 from scripts.run_zone_study_pilot import write_new
 
 
-SOURCE = Path('/Users/changmin/projects/ugrp/outputs/zone-study-adapter-pilot-r10/budget.sqlite')
+SOURCE = Path('<home>/projects/ugrp/outputs/zone-study-adapter-pilot-r10/budget.sqlite')
 OUT = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else Path(__file__).resolve().parent
 
 

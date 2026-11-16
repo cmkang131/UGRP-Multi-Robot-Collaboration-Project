@@ -26,7 +26,7 @@ in place, once, for a HOST_ERROR before the first model request. Tests exercise
 the driver over a fake wire, without a model call or physical run.
 
     python scripts/run_zone_study_integration.py --prereg experiments/2026-09-26-zone-study-integration/prereg.json \
-        --episode smoke-i700 --condition no_comm --output /Users/changmin/projects/ugrp/outputs/zone-study-integration
+        --episode smoke-i700 --condition no_comm --output <home>/projects/ugrp/outputs/zone-study-integration
     python scripts/run_zone_study_integration.py --prereg ... --episode smoke-i700 --bundle   # print the run bundle only
     python scripts/run_zone_study_integration.py --prereg <main prereg> --episode ... --condition peer_ko \
         --output ... --llm --proxy-pid <running proxy PID>        # real model calls (prereg llm_driver block)

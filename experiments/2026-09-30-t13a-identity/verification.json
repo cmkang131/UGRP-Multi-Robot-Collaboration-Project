@@ -21,7 +21,7 @@
   "environment": {
     "python": "3.12.13",
     "pytest": "9.1.1",
-    "executable": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "executable": "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
     "threads": {
       "OMP_NUM_THREADS": 1,
       "OPENBLAS_NUM_THREADS": 1,
@@ -32,7 +32,7 @@
   "local_test": {
     "lock": "scripts.run_ci_tests.run_locked(command, env, local_lock_root())",
     "command": [
-      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
       "-m",
       "pytest",
       "-q",
@@ -40,9 +40,9 @@
       "tests/test_zone_study_inputs.py",
       "tests/test_zone_study_contract.py",
       "tests/test_ci_sharding.py",
-      "--junitxml=/Users/changmin/projects/ugrp/outputs/t13a-identity-offline-20260930/pytest-01.xml"
+      "--junitxml=<home>/projects/ugrp/outputs/t13a-identity-offline-20260930/pytest-01.xml"
     ],
-    "junit_path": "/Users/changmin/projects/ugrp/outputs/t13a-identity-offline-20260930/pytest-01.xml",
+    "junit_path": "<home>/projects/ugrp/outputs/t13a-identity-offline-20260930/pytest-01.xml",
     "junit_sha256": "01d2917dfb8bf495f799d16e9f535a45504574467c6318c2cb2b2bd5acbaaa1c",
     "tests": 235,
     "failures": 0,

@@ -1,6 +1,6 @@
 # P02 — 청록 상자와 공동 봉을 한 실행에 연결
 
-UGRP 작업이다. `/Users/changmin/projects/ugrp`에서 배정된 자기 worktree/codex 브랜치만 쓰고 AGENTS.md·CONTRIBUTING.md·README.md·docs/current_status.md를 먼저 읽는다. fetch와 열린 PR로 중복을 확인한다. [READINESS S04/S13](../READINESS.md)의 기준은 main `a8094cc14e098a55483f53a3c49bf6a0b116043d`이며 최신 상태를 다시 확인한다.
+UGRP 작업이다. `<home>/projects/ugrp`에서 배정된 자기 worktree/codex 브랜치만 쓰고 AGENTS.md·CONTRIBUTING.md·README.md·docs/current_status.md를 먼저 읽는다. fetch와 열린 PR로 중복을 확인한다. [READINESS S04/S13](../READINESS.md)의 기준은 main `a8094cc14e098a55483f53a3c49bf6a0b116043d`이며 최신 상태를 다시 확인한다.
 
 **범위:** 새 dev scenario의 cyan1개+long_beam1개,3로봇을 하나의 host에 준비하고 독립 robot API가 같은 주문/개체를 끝까지 가리키게 만드는 계약과 가짜 포트 검사를 구현한다. 물리/시뮬레이션/렌더/모든 모델 호출 금지. 기존 s1–s6를 단순한 임무로 덮어쓰지 않는다. 이것은 전체6시나리오 지원이 아니다.
 

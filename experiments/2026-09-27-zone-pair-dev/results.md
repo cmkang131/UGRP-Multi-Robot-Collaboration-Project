@@ -49,7 +49,7 @@ pair 기록이 비어 있어 경로 대조에서 먼저 예외가 난 것이다.
 
 ## 원본 (로컬 전용, 원격 백업 아님)
 
-루트 `/Users/changmin/projects/ugrp/outputs/zone-pair-dev-521e5567e4a1d1b0614b86b8bf355e994edca890/`
+루트 `<home>/projects/ugrp/outputs/zone-pair-dev-521e5567e4a1d1b0614b86b8bf355e994edca890/`
 
 | 파일 | SHA256 |
 |---|---|
@@ -68,7 +68,7 @@ pair 기록이 비어 있어 경로 대조에서 먼저 예외가 난 것이다.
 
 ## TensorBoard
 
-새 snapshot `/Users/changmin/projects/ugrp/outputs/tensorboard/0927-zone-pair-dev` (run 1개,
+새 snapshot `<home>/projects/ugrp/outputs/tensorboard/0927-zone-pair-dev` (run 1개,
 원본 해시를 담은 파생 보기 `tb-view/dev01/result.json`에서 변환). 기존 서버(PID 9293, logdir
 `outputs/tensorboard`, 다른 작업 소유)를 재시작하지 않고 run 등록과 값(success 0, SIM 1.3, wall 1.41,
 commands 6, model_calls 0)을 EventAccumulator·서버 API·브라우저 화면에서 확인했다. 영상 없음.
@@ -132,7 +132,7 @@ commands 6, model_calls 0)을 EventAccumulator·서버 API·브라우저 화면�
 
 ## 원본 (로컬 전용, 원격 백업 아님)
 
-루트 `/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v2-9f28cbf030442a701a666899c02ebb4374e3e3e2/`
+루트 `<home>/projects/ugrp/outputs/zone-pair-dev-v2-9f28cbf030442a701a666899c02ebb4374e3e3e2/`
 (dev03 26 MB, dev04 25 MB; 각 `artifacts.sha256.json` 2,012개 파일 재계산 불일치 0).
 
 | 파일 | SHA256 |

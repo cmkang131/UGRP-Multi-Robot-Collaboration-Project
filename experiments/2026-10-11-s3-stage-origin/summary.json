@@ -123,7 +123,7 @@
   "storage": {
     "remote_root": "/home/ubuntu/ugrp-sim/runs",
     "filesystem": "ext4 /dev/sda1 persistent",
-    "local_root": "/Users/changmin/projects/ugrp/outputs/oracle-runs",
+    "local_root": "<home>/projects/ugrp/outputs/oracle-runs",
     "full_raw_retrieved": 26,
     "physical_attempts": 26,
     "files_sha256_verified": 80286,
@@ -134,7 +134,7 @@
     "raw_roots": {
       "twenty_remote": "/home/ubuntu/ugrp-sim/runs/s3fix21-batch-r2/cohort",
       "multi_remote": "/home/ubuntu/ugrp-sim/runs",
-      "all_local": "/Users/changmin/projects/ugrp/outputs/oracle-runs"
+      "all_local": "<home>/projects/ugrp/outputs/oracle-runs"
     }
   },
   "admission": {
@@ -165,7 +165,7 @@
       "n": 10,
       "all_bytes_identical": true,
       "scope": "v170 origin=off vs ce06/v167 integer=on; identical conditions/seeds on Oracle",
-      "receipt": "/Users/changmin/projects/ugrp/outputs/s3fix21-control-20261011/off-byte-verification.json"
+      "receipt": "<home>/projects/ugrp/outputs/s3fix21-control-20261011/off-byte-verification.json"
     },
     "CI_wait": false,
     "PR": 416,
@@ -236,7 +236,7 @@
     "exit_code": 1,
     "physical_runs_started": 0,
     "cause": "incorrect expected-source-sha argument; archive guard rejected before stage creation",
-    "local_raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix21-batch-r1",
+    "local_raw": "<home>/projects/ugrp/outputs/oracle-runs/s3fix21-batch-r1",
     "sha256": {
       "ENV": "0c787a2f1a16451d77fe503fb287c9fdb1cf6607298385eab364c69878cb261c",
       "log.txt": "ca2b2768c17d31d51b69470463293fa50cd7c6582596974679ad1014cc5167b5",
@@ -270,19 +270,19 @@
     "restore a calibrated inspect posture and settle before RGB look on every segment reentry; keep calibration error guard"
   ],
   "receipts": {
-    "/Users/changmin/projects/ugrp/outputs/s3fix21-control-20261011/local-tests.json": "98c0ec53db524a5fd7455a5912d8e59439ed2b7819e7fb09f852af50612fd527",
-    "/Users/changmin/projects/ugrp/outputs/s3fix21-control-20261011/cohort.json": "c1fd830648780ac55f61680ccd343b730ff51a59e31edfaf9306dd4daa66f4c9",
-    "/Users/changmin/projects/ugrp/outputs/s3fix21-control-20261011/off-byte-verification.json": "8b8889b71dd4c7db2d63529a63c4aa03af2b304aa74e9cf31be4eca248fee24d",
-    "/Users/changmin/projects/ugrp/outputs/s3fix21-control-20261011/retrieval.json": "b303c5c0299f8d4f0eccc6e9c09a56e97a7fa5afc7885639450e3a3ff7cd1df7",
-    "/Users/changmin/projects/ugrp/outputs/s3fix21-control-20261011/multi-first-multi-retrieval.json": "133a66929576d9c2620570fc9cdc1bf314bb929e5cf5817295a4fa19d695dde8",
-    "/Users/changmin/projects/ugrp/outputs/s3fix21-control-20261011/multi-retrieval.json": "73cecbb371dd808705808f61b7ef36af7be2f0688be549393263880f56a230b9",
-    "/Users/changmin/projects/ugrp/outputs/s3fix21-control-20261011/retry-source-verification.json": "fca38d2eb3ebae7cfdcf59f63b243345947156ea48324df1070a340d9e30809b",
-    "/Users/changmin/projects/ugrp/outputs/s3fix21-control-20261011/multi-first-multi-admission.json": "26dfc92a08b1cf9eca017e3e4e2cb9af25f6dc93e9912f145bc53e69fe0ce419",
-    "/Users/changmin/projects/ugrp/outputs/s3fix21-control-20261011/multi-admission.json": "4619f604518d378c3ad3dbada4e59166114bc3ea028bef5c543f639b1d4703b9",
-    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix21-eval-r1/summary.json": "630395f0cf5f838af238919d61bdedc773c4c725059b7765249d7af78fa024d3",
-    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix21-eval-r1/endpoint-decomposition.json": "2bea9a0317bd7b2209988b205561aa5108d8599e83dff4aff6aa3f0a992f5ff5",
-    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix21-multi-evaluation-r2/summary.json": "640c0976af4a14601bee2c47c92a968984d2bb24f9565c5e6679dae044ad921d",
-    "/Users/changmin/projects/ugrp/outputs/s3fix21-control-20261011/evaluate-multi.py": "5e1a485b59103e00fe2490cf7b1b760f838d26f8429b9a56e9f2cff8231b562f",
-    "/Users/changmin/projects/ugrp/outputs/s3fix21-control-20261011/submission-failure.json": "49f7619fa874022805d29c7dd67fab806470e26b800377b831950324113bb793"
+    "<home>/projects/ugrp/outputs/s3fix21-control-20261011/local-tests.json": "98c0ec53db524a5fd7455a5912d8e59439ed2b7819e7fb09f852af50612fd527",
+    "<home>/projects/ugrp/outputs/s3fix21-control-20261011/cohort.json": "c1fd830648780ac55f61680ccd343b730ff51a59e31edfaf9306dd4daa66f4c9",
+    "<home>/projects/ugrp/outputs/s3fix21-control-20261011/off-byte-verification.json": "8b8889b71dd4c7db2d63529a63c4aa03af2b304aa74e9cf31be4eca248fee24d",
+    "<home>/projects/ugrp/outputs/s3fix21-control-20261011/retrieval.json": "b303c5c0299f8d4f0eccc6e9c09a56e97a7fa5afc7885639450e3a3ff7cd1df7",
+    "<home>/projects/ugrp/outputs/s3fix21-control-20261011/multi-first-multi-retrieval.json": "133a66929576d9c2620570fc9cdc1bf314bb929e5cf5817295a4fa19d695dde8",
+    "<home>/projects/ugrp/outputs/s3fix21-control-20261011/multi-retrieval.json": "73cecbb371dd808705808f61b7ef36af7be2f0688be549393263880f56a230b9",
+    "<home>/projects/ugrp/outputs/s3fix21-control-20261011/retry-source-verification.json": "fca38d2eb3ebae7cfdcf59f63b243345947156ea48324df1070a340d9e30809b",
+    "<home>/projects/ugrp/outputs/s3fix21-control-20261011/multi-first-multi-admission.json": "26dfc92a08b1cf9eca017e3e4e2cb9af25f6dc93e9912f145bc53e69fe0ce419",
+    "<home>/projects/ugrp/outputs/s3fix21-control-20261011/multi-admission.json": "4619f604518d378c3ad3dbada4e59166114bc3ea028bef5c543f639b1d4703b9",
+    "<home>/projects/ugrp/outputs/oracle-runs/s3fix21-eval-r1/summary.json": "630395f0cf5f838af238919d61bdedc773c4c725059b7765249d7af78fa024d3",
+    "<home>/projects/ugrp/outputs/oracle-runs/s3fix21-eval-r1/endpoint-decomposition.json": "2bea9a0317bd7b2209988b205561aa5108d8599e83dff4aff6aa3f0a992f5ff5",
+    "<home>/projects/ugrp/outputs/oracle-runs/s3fix21-multi-evaluation-r2/summary.json": "640c0976af4a14601bee2c47c92a968984d2bb24f9565c5e6679dae044ad921d",
+    "<home>/projects/ugrp/outputs/s3fix21-control-20261011/evaluate-multi.py": "5e1a485b59103e00fe2490cf7b1b760f838d26f8429b9a56e9f2cff8231b562f",
+    "<home>/projects/ugrp/outputs/s3fix21-control-20261011/submission-failure.json": "49f7619fa874022805d29c7dd67fab806470e26b800377b831950324113bb793"
   }
 }

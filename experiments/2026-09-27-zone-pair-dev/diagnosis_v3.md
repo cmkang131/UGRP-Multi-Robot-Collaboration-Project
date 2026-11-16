@@ -7,7 +7,7 @@
 단, 검증 중 잘못 포함한 기존 테스트의 물리 초기화 사고는 아래에 따로 기록했다.
 
 원본(읽기 전용):
-`/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v2-9f28cbf030442a701a666899c02ebb4374e3e3e2/`.
+`<home>/projects/ugrp/outputs/zone-pair-dev-v2-9f28cbf030442a701a666899c02ebb4374e3e3e2/`.
 각 실행 `artifacts.sha256.json`의 **2,012개 파일, 합계 4,024개 해시가 일치**한다.
 기계 판독 근거: [diagnosis_v3.json](diagnosis_v3.json). 원본·입력·이벤트의 해시를 포함한다.
 
@@ -143,8 +143,8 @@ PR #235 open/draft, head c4dbfd49 및 관련 열린 PR 목록을 확인했다. �
 
 ```sh
 OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 \
-  /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.diagnose_zone_pair_dev \
-  --raw-root /Users/changmin/projects/ugrp/outputs/zone-pair-dev-v2-9f28cbf030442a701a666899c02ebb4374e3e3e2 \
+  <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.diagnose_zone_pair_dev \
+  --raw-root <home>/projects/ugrp/outputs/zone-pair-dev-v2-9f28cbf030442a701a666899c02ebb4374e3e3e2 \
   --output /tmp/pair-dev-diagnosis-NEW.json
 ```
 

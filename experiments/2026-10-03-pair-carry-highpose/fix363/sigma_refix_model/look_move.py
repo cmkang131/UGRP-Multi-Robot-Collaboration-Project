@@ -11,7 +11,7 @@ harness.zone_pair_highpose_refix.look_move_plan when present, so the model and t
 import sys, json, math, tempfile
 from pathlib import Path
 from types import SimpleNamespace
-WT = Path('/Users/changmin/projects/ugrp-wt/carry-ckpt'); sys.path.insert(0, str(WT))
+WT = Path('<home>/projects/ugrp-wt/carry-ckpt'); sys.path.insert(0, str(WT))
 import numpy as np
 from _pytest.monkeypatch import MonkeyPatch
 from tests import highpose_relook_synthetic as syn
@@ -23,7 +23,7 @@ from harness import zone_pair_highpose_refix as rf
 from scripts.study_owncam_pair_beam import ROLES
 import cv2
 
-PLAN = json.load(open('/Users/changmin/projects/ugrp/outputs/v98-dev-probe-align_to_carry-6727751b/before_door/student_record.json'))['pair'][0]['plan']
+PLAN = json.load(open('<home>/projects/ugrp/outputs/v98-dev-probe-align_to_carry-6727751b/before_door/student_record.json'))['pair'][0]['plan']
 route = PLAN['route']; L = .4732
 mpatch = MonkeyPatch(); tmp = Path(tempfile.mkdtemp(dir='.'))
 cal = syn.admitted_copy(tmp, mpatch)

@@ -10,7 +10,7 @@ from harness.grid_acceleration import install as scalar_grid
 
 ROOT=base.ROOT
 EXP=ROOT/'experiments/2026-10-08-own-map-return-repeat'
-RAW=Path('/Users/changmin/projects/ugrp/outputs/own-map-return-repeat-v1')
+RAW=Path('<home>/projects/ugrp/outputs/own-map-return-repeat-v1')
 SEEDS=tuple(range(49001,49007))
 
 

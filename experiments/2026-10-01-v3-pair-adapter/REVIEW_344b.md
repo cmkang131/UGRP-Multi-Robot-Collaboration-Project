@@ -107,7 +107,7 @@ loaded/fine/turn의 실제 모델 형태·하중 유효성·잔차·정지/holdo
 
 제외 1개는 이전부터 sandbox의 `ps` 권한으로 막힌 `test_parent_exit_cleans_background_child`다.
 실행한 suite에는 native/모델 import·소켓 연결 금지 guard를 적용했다. archive의 과거 Git fixture 조회에만
-`GIT_DIR=/Users/changmin/projects/ugrp/.git`를 연결했다. GitHub CI 상태와 로컬 검사는 증거에서 별도로 기록한다.
+`GIT_DIR=<home>/projects/ugrp/.git`를 연결했다. GitHub CI 상태와 로컬 검사는 증거에서 별도로 기록한다.
 검사 후 archive의 harness/sim/scripts/configs/tests **2,310파일**이 후보 Git blob과 그대로 일치했다.
 
 [검사·ref·수치·해시 기록](REVIEW_344b_EVIDENCE.json), [독립 검사](../../tests/test_review_344b.py).
@@ -120,6 +120,6 @@ loaded/fine/turn의 실제 모델 형태·하중 유효성·잔차·정지/holdo
 ```sh
 git archive b7bc885a27aa5ab242e9f3710a3cd7090efe9f3a | tar -x -C <empty-scratch>
 REVIEW_344B_ROOT=<empty-scratch> OPENBLAS_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 \
-  /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_review_344b.py -rx
+  <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_review_344b.py -rx
 # 종료 전에 자신이 만든 scratch를 삭제한다.
 ```

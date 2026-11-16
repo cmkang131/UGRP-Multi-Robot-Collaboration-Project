@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-OUT = Path('/Users/changmin/projects/ugrp/outputs/vision-loc-20260926')
+OUT = Path('<home>/projects/ugrp/outputs/vision-loc-20260926')
 KEYS = ('n', 'pos_p50_m', 'pos_p90_m', 'pos_p99_m', 'lat_abs_p99_m', 'yaw_p90_deg')
 GROUPS = ('all', 'door_loaded', 'loaded', 'unloaded')
 

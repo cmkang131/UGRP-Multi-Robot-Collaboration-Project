@@ -33,7 +33,7 @@ host lock 없이 **794 passed, 280 subtests passed**, 실패·오류·skip·xfai
   변이 검사를 반복하지 않았으며, 과거 결과를 이번 검사 수에 합산하지 않았다.
 
 명령·소스 및 raw 해시는 [verification.json](verification.json)에 있다.
-raw 로그/JUnit/manifest는 `/Users/changmin/projects/ugrp/outputs/2026-10-01-t09b-main-sync-01/`에
+raw 로그/JUnit/manifest는 `<home>/projects/ugrp/outputs/2026-10-01-t09b-main-sync-01/`에
 로컬 보관한다. `/private/tmp` 추출 디렉터리는 만들지 않았다.
 
 물리·렌더·모델 실행은 0회다. 새 실험·학습·평가 코호트가 없어 TensorBoard 변환은 없다.

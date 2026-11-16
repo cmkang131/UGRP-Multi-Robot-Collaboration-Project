@@ -45,7 +45,7 @@ def recorded(rid, servo, condition):
 
 def test_fixture_is_recorded_render_not_synthetic():
     assert MANIFEST['render'] is True and MANIFEST['controller'] is None
-    assert MANIFEST['source_root'].startswith('/Users/changmin/projects/ugrp/outputs/pr363-render-frames-')
+    assert MANIFEST['source_root'].startswith('<home>/projects/ugrp/outputs/pr363-render-frames-')
     conds = {(f['condition'], f['rid']) for f in MANIFEST['frames']}
     assert conds == {('nominal', 'r1'), ('nominal', 'r2'), ('raise_grip_loss', 'r2')}
     for f in MANIFEST['frames']:

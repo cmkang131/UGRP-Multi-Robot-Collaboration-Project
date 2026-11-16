@@ -1,6 +1,6 @@
 import json, math, bisect, os, collections
 import numpy as np
-BASE='/Users/changmin/projects/ugrp/outputs/pair-stage-probes-b5234b7a-v6c-align/cases/'
+BASE='<home>/projects/ugrp/outputs/pair-stage-probes-b5234b7a-v6c-align/cases/'
 def wrap(a): return (a+math.pi)%(2*math.pi)-math.pi
 def half(a):  # into (-pi/2, pi/2]
     a=wrap(a)

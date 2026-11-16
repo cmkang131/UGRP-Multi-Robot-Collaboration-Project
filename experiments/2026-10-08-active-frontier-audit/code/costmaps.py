@@ -5,8 +5,8 @@ import numpy as np
 from scipy.ndimage import label
 ROOT=Path(__file__).resolve().parents[3];sys.path.insert(0,str(ROOT))
 EXP=Path(__file__).resolve().parents[1]
-RAW=Path('/Users/changmin/projects/ugrp/outputs/active-frontier-audit-v1')
-EP=Path('/Users/changmin/projects/ugrp/outputs/active-recovery-v1/new-seed')
+RAW=Path('<home>/projects/ugrp/outputs/active-frontier-audit-v1')
+EP=Path('<home>/projects/ugrp/outputs/active-recovery-v1/new-seed')
 from harness.own_map_navigation import ObservedGrid
 from harness.public_navigation_raytrace import receive_rays
 from harness.public_navigation_unknown import clear_current_footprint,from_observed_grid,UnknownCostmap

@@ -1,6 +1,6 @@
 # Batch A 검증 기록
 
-기준 main: `c12796676802ab54cad2f0635e3e96e911691c76`. 실제 로그/JUnit/실행용 재현 코드는 `/Users/changmin/projects/ugrp/outputs/review-e2e-batch-a-20260930-76c6a8fe`에 로컬 보관한다. Git에는 이 기록과 코드 예시를 보존하며 raw 원격 백업이라고 부르지 않는다.
+기준 main: `c12796676802ab54cad2f0635e3e96e911691c76`. 실제 로그/JUnit/실행용 재현 코드는 `<home>/projects/ugrp/outputs/review-e2e-batch-a-20260930-76c6a8fe`에 로컬 보관한다. Git에는 이 기록과 코드 예시를 보존하며 raw 원격 백업이라고 부르지 않는다.
 
 ## 선별 pytest
 

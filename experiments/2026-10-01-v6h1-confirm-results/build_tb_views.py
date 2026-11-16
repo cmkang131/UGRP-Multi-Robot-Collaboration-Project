@@ -20,8 +20,8 @@ import json
 import math
 from pathlib import Path
 
-RAW = Path('/Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930')
-SEALED = Path('/Users/changmin/projects/ugrp/outputs/v6h1-sealed-analysis-v2-20261001')
+RAW = Path('<home>/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930')
+SEALED = Path('<home>/projects/ugrp/outputs/v6h1-sealed-analysis-v2-20261001')
 SCHEMA = 'ugrp.offline_audit_view.v1'
 DEF = ('registered classifier (seal v2 5be4330e) class PASS_CLEAN: chain L0 and L1 both pass every standard leg check incl. the '
        '10 cm end-point check, no wall-contact episode, no hard-limit; SIM stage probe from a teacher-made start pose, weld OFF, '

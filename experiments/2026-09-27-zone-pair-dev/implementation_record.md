@@ -36,7 +36,7 @@ GitHub 쓰기는 하지 않았다.
 ```sh
 OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 \
 NUMEXPR_NUM_THREADS=1 GIT_OPTIONAL_LOCKS=0 PYTHONDONTWRITEBYTECODE=1 \
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
   tests/test_zone_pair_dev.py \
   tests/test_zone_pair_review7.py tests/test_zone_pair_review6.py tests/test_zone_pair_review5.py \
   tests/test_zone_pair_review4.py tests/test_zone_pair_review3.py tests/test_zone_pair_review2.py \

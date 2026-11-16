@@ -17,7 +17,7 @@ import json
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-GRID = Path('/Users/changmin/projects/ugrp/outputs/vision-loc-20260926/r3/dev-grid')
+GRID = Path('<home>/projects/ugrp/outputs/vision-loc-20260926/r3/dev-grid')
 KEYS = ('n', 'pos_p50_m', 'pos_p90_m', 'pos_p99_m', 'lat_abs_p99_m', 'yaw_p90_deg')
 GROUPS = ('all', 'door_zone', 'door_loaded', 'loaded', 'unloaded')
 DIAGNOSTIC = ('a3_open_scale_stuck', 'a3b_open_scale_stuck_low', 'a3c_open_scale_stuck_low_dom',

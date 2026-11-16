@@ -17,7 +17,7 @@
   },
   "commands": {
     "verify": "python -m experiments.2026-09-30-pair-v6h-carry.build_prereg_v6h --verify-seal --seal-revision v2 --seal-commit \"$V6H_SEAL_V2_COMMIT\"",
-    "apply_after_review_and_unblinding": "python -m experiments.2026-09-30-pair-v6h-carry.analysis.apply_sealed_analysis --seal-commit \"$V6H_SEAL_V2_COMMIT\" --prereg experiments/2026-09-30-pair-v6h-carry/analysis/seal_v2/prereg_v6h.json --raw /Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930 --inventory /Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930-inventory/acquisition_inventory.json --output /Users/changmin/projects/ugrp/outputs/v6h1-sealed-analysis-v2-NEW"
+    "apply_after_review_and_unblinding": "python -m experiments.2026-09-30-pair-v6h-carry.analysis.apply_sealed_analysis --seal-commit \"$V6H_SEAL_V2_COMMIT\" --prereg experiments/2026-09-30-pair-v6h-carry/analysis/seal_v2/prereg_v6h.json --raw <home>/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930 --inventory <home>/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930-inventory/acquisition_inventory.json --output <home>/projects/ugrp/outputs/v6h1-sealed-analysis-v2-NEW"
   },
   "acquisition_inventory": {
     "metadata_commit": "0b77ae4b9a3500de29adad74c7ecd0439ccdf545",

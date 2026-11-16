@@ -83,7 +83,7 @@ v64 원본을 실행하면 4회다. 새 회귀도 이를 기준으로 한다. �
 전체 property 명령:
 
 ```sh
-OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
+OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
   tests/test_zone_study_multiturn_properties.py --basetemp=./.pytest_tmp -q
 ```
 

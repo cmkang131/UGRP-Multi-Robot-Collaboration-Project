@@ -5,7 +5,7 @@ synchronous SIM, weld OFF, cargo_noslip_v1 (pending user approval), --record-rep
 thread per run, at most two runs at a time; the 1-minute load average is recorded per run.
 
   python3 scripts/ugrp_session.py run kiro-teacher-fix-cohort -- \\
-      /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \\
+      <home>/projects/ugrp/.venv-sim-worker-mac/bin/python \\
       experiments/2026-09-26-zone-teacher-fix/run_cohort.py --output outputs/zone-teacher-fix-20260926
 """
 from __future__ import annotations

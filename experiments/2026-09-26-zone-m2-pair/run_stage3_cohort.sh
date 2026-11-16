@@ -4,7 +4,7 @@
 # usage: run_stage3_cohort.sh <frozen_worktree> <output_root>
 set -u
 WT=${1:?frozen worktree}; OUT=${2:?output root}
-PY=/Users/changmin/projects/ugrp/.venv-sim/bin/python
+PY=<home>/projects/ugrp/.venv-sim/bin/python
 export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1
 mkdir -p "$OUT"
 cd "$WT" || exit 1

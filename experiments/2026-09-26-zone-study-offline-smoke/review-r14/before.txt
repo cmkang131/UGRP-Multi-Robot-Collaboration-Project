@@ -2,8 +2,8 @@ FFFFFF                                                                   [100%]
 =================================== FAILURES ===================================
 ____________ test_cli_starts_after_settlement[synthetic-preflight] _____________
 
-cli_history = (<harness.zone_pilot_budget.PilotBudget object at 0x10bcc7ef0>, PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study...', 'finish_reason_source': 'proxy_response', 'json_fence_removed': False, 'normal_completion': True, ...}, ...}], ...})
-tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme0')
+cli_history = (<harness.zone_pilot_budget.PilotBudget object at 0x10bcc7ef0>, PosixPath('<home>/projects/ugrp-wt/kiro-study...', 'finish_reason_source': 'proxy_response', 'json_fence_removed': False, 'normal_completion': True, ...}, ...}], ...})
+tmp_path = PosixPath('<home>/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme0')
 monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10bced160>
 stage = 'preflight'
 
@@ -61,7 +61,7 @@ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
 self = <harness.zone_pilot_budget.PilotBudget object at 0x10c06b8f0>
 run_id = 'after-settlement-preflight', stage = 'preflight'
-record = {'output': '/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme0/after-settlement-preflight'}
+record = {'output': '<home>/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme0/after-settlement-preflight'}
 expected_state = '48a0f836014e1712e7d1b41213b01d3e7d59cd2f2e20e495565fed693f7fa3e1'
 
     def start_run(self, run_id, stage, record, *, expected_state=None):
@@ -75,11 +75,11 @@ E               RuntimeError: pilot state changed since reconciliation; retry pr
 
 harness/zone_pilot_budget.py:303: RuntimeError
 ---------------------------- Captured stdout setup -----------------------------
-{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme0/preflight/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 4, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["unresolved"], "reconciliation_complete": false}
+{"manifest": "<home>/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme0/preflight/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 4, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["unresolved"], "reconciliation_complete": false}
 ______________ test_cli_starts_after_settlement[synthetic-cohort] ______________
 
-cli_history = (<harness.zone_pilot_budget.PilotBudget object at 0x10c065ee0>, PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study...', 'finish_reason_source': 'proxy_response', 'json_fence_removed': False, 'normal_completion': True, ...}, ...}], ...})
-tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme1')
+cli_history = (<harness.zone_pilot_budget.PilotBudget object at 0x10c065ee0>, PosixPath('<home>/projects/ugrp-wt/kiro-study...', 'finish_reason_source': 'proxy_response', 'json_fence_removed': False, 'normal_completion': True, ...}, ...}], ...})
+tmp_path = PosixPath('<home>/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme1')
 monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10bced310>
 stage = 'cohort'
 
@@ -137,7 +137,7 @@ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
 self = <harness.zone_pilot_budget.PilotBudget object at 0x10c16c4d0>
 run_id = 'after-settlement-cohort', stage = 'cohort'
-record = {'output': '/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme1/after-settlement-cohort'}
+record = {'output': '<home>/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme1/after-settlement-cohort'}
 expected_state = '63e4b4dfc7ccc2acaeed5c6d60c884ed68927cd5f593942d1d6ff412675dbcb5'
 
     def start_run(self, run_id, stage, record, *, expected_state=None):
@@ -151,11 +151,11 @@ E               RuntimeError: pilot state changed since reconciliation; retry pr
 
 harness/zone_pilot_budget.py:303: RuntimeError
 ---------------------------- Captured stdout setup -----------------------------
-{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme1/preflight/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 4, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["unresolved"], "reconciliation_complete": false}
+{"manifest": "<home>/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme1/preflight/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 4, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["unresolved"], "reconciliation_complete": false}
 ________ test_cli_starts_after_settlement[synthetic-migrated_preflight] ________
 
-cli_history = (<harness.zone_pilot_budget.PilotBudget object at 0x10c1b9ac0>, PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study...', 'finish_reason_source': 'proxy_response', 'json_fence_removed': False, 'normal_completion': True, ...}, ...}], ...})
-tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme2')
+cli_history = (<harness.zone_pilot_budget.PilotBudget object at 0x10c1b9ac0>, PosixPath('<home>/projects/ugrp-wt/kiro-study...', 'finish_reason_source': 'proxy_response', 'json_fence_removed': False, 'normal_completion': True, ...}, ...}], ...})
+tmp_path = PosixPath('<home>/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme2')
 monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10c1b9a00>
 stage = 'preflight'
 
@@ -213,7 +213,7 @@ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
 self = <harness.zone_pilot_budget.PilotBudget object at 0x10c268c20>
 run_id = 'after-settlement-preflight', stage = 'preflight'
-record = {'output': '/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme2/after-settlement-preflight'}
+record = {'output': '<home>/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme2/after-settlement-preflight'}
 expected_state = 'e78392520b06039190a38cf4bcf51f922191dcc6aa2b1702487dfab76bc68c32'
 
     def start_run(self, run_id, stage, record, *, expected_state=None):
@@ -227,11 +227,11 @@ E               RuntimeError: pilot state changed since reconciliation; retry pr
 
 harness/zone_pilot_budget.py:303: RuntimeError
 ---------------------------- Captured stdout setup -----------------------------
-{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme2/preflight/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 4, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["unresolved"], "reconciliation_complete": false}
+{"manifest": "<home>/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme2/preflight/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 4, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["unresolved"], "reconciliation_complete": false}
 ___________ test_cli_starts_after_settlement[real_memory-preflight] ____________
 
-cli_history = (<test_zone_pilot_settlement.cli_history.<locals>.MemoryBudget object at 0x10c154bf0>, PosixPath('/Users/changmin/proj...p', 'finish_reason_source': 'proxy_response', 'json_fence_removed': True, 'normal_completion': True, ...}, ...}], ...})
-tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme3')
+cli_history = (<test_zone_pilot_settlement.cli_history.<locals>.MemoryBudget object at 0x10c154bf0>, PosixPath('<home>/proj...p', 'finish_reason_source': 'proxy_response', 'json_fence_removed': True, 'normal_completion': True, ...}, ...}], ...})
+tmp_path = PosixPath('<home>/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme3')
 monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10c154da0>
 stage = 'preflight'
 
@@ -289,7 +289,7 @@ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
 self = <test_zone_pilot_settlement.cli_history.<locals>.MemoryBudget object at 0x10c41bd40>
 run_id = 'after-settlement-preflight', stage = 'preflight'
-record = {'output': '/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme3/after-settlement-preflight'}
+record = {'output': '<home>/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme3/after-settlement-preflight'}
 expected_state = '64a05562984e6891c9b1d8aca3e5ebba52fee0ffe89cf291f3c81deb1ccfc2c7'
 
     def start_run(self, run_id, stage, record, *, expected_state=None):
@@ -306,8 +306,8 @@ harness/zone_pilot_budget.py:303: RuntimeError
 {"original_files_verified":65,"real_database_unchanged":{"bytes":229376,"mtime_ns":1790483471841786931,"sha256":"cc23aa281f44b7989627dd2059ea00b868b43bfec2d59c12cda0cf9042145158"}}
 _____________ test_cli_starts_after_settlement[real_memory-cohort] _____________
 
-cli_history = (<test_zone_pilot_settlement.cli_history.<locals>.MemoryBudget object at 0x10c1c86e0>, PosixPath('/Users/changmin/proj...p', 'finish_reason_source': 'proxy_response', 'json_fence_removed': True, 'normal_completion': True, ...}, ...}], ...})
-tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme4')
+cli_history = (<test_zone_pilot_settlement.cli_history.<locals>.MemoryBudget object at 0x10c1c86e0>, PosixPath('<home>/proj...p', 'finish_reason_source': 'proxy_response', 'json_fence_removed': True, 'normal_completion': True, ...}, ...}], ...})
+tmp_path = PosixPath('<home>/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme4')
 monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10c16fda0>
 stage = 'cohort'
 
@@ -365,7 +365,7 @@ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
 self = <test_zone_pilot_settlement.cli_history.<locals>.MemoryBudget object at 0x10cc018e0>
 run_id = 'after-settlement-cohort', stage = 'cohort'
-record = {'output': '/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme4/after-settlement-cohort'}
+record = {'output': '<home>/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme4/after-settlement-cohort'}
 expected_state = '64a05562984e6891c9b1d8aca3e5ebba52fee0ffe89cf291f3c81deb1ccfc2c7'
 
     def start_run(self, run_id, stage, record, *, expected_state=None):
@@ -382,8 +382,8 @@ harness/zone_pilot_budget.py:303: RuntimeError
 {"original_files_verified":65,"real_database_unchanged":{"bytes":229376,"mtime_ns":1790483471841786931,"sha256":"cc23aa281f44b7989627dd2059ea00b868b43bfec2d59c12cda0cf9042145158"}}
 _______ test_cli_starts_after_settlement[real_memory-migrated_preflight] _______
 
-cli_history = (<test_zone_pilot_settlement.cli_history.<locals>.MemoryBudget object at 0x10c2e3ad0>, PosixPath('/Users/changmin/proj...p', 'finish_reason_source': 'proxy_response', 'json_fence_removed': True, 'normal_completion': True, ...}, ...}], ...})
-tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme5')
+cli_history = (<test_zone_pilot_settlement.cli_history.<locals>.MemoryBudget object at 0x10c2e3ad0>, PosixPath('<home>/proj...p', 'finish_reason_source': 'proxy_response', 'json_fence_removed': True, 'normal_completion': True, ...}, ...}], ...})
+tmp_path = PosixPath('<home>/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme5')
 monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10c2e3bf0>
 stage = 'preflight'
 
@@ -441,7 +441,7 @@ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
 self = <test_zone_pilot_settlement.cli_history.<locals>.MemoryBudget object at 0x10c154ce0>
 run_id = 'after-settlement-preflight', stage = 'preflight'
-record = {'output': '/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme5/after-settlement-preflight'}
+record = {'output': '<home>/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme5/after-settlement-preflight'}
 expected_state = '64a05562984e6891c9b1d8aca3e5ebba52fee0ffe89cf291f3c81deb1ccfc2c7'
 
     def start_run(self, run_id, stage, record, *, expected_state=None):

@@ -5,12 +5,12 @@ import os
 import sys
 from pathlib import Path
 
-ROOT = Path('/Users/changmin/projects/ugrp-wt/s2-heading')
+ROOT = Path('<home>/projects/ugrp-wt/s2-heading')
 sys.path.insert(0, str(ROOT))
 from scripts.evaluate_s2_heading import score, video
 from scripts.tensorboard_tools.export import convert
 
-BASE = Path('/Users/changmin/projects/ugrp/outputs')
+BASE = Path('<home>/projects/ugrp/outputs')
 OUT = BASE / 's2-heading-b60acdca-cohort'
 TB = BASE / 'tensorboard/1009-s2-heading-dev'
 SEEDS = (1066, 1068, 1065)

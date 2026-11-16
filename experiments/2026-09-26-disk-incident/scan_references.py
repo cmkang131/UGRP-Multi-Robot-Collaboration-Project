@@ -9,7 +9,7 @@ files that remain recoverable from Git.
 
 Usage:
     python3 experiments/2026-09-26-disk-incident/scan_references.py \
-        --repo /Users/changmin/projects/ugrp --output /tmp/refs.json
+        --repo <home>/projects/ugrp --output /tmp/refs.json
 """
 
 from __future__ import annotations

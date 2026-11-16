@@ -16,7 +16,7 @@ Mac에서 실제 모델 15경로를 컴파일했으며 step/forward/render는 �
 재현 명령:
 
 ```sh
-PYTHONPATH=. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.check_noslip_defaults
+PYTHONPATH=. <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.check_noslip_defaults
 ```
 
 ## 참고 자료

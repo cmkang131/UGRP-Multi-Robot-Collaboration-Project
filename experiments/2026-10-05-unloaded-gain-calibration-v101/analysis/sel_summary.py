@@ -12,8 +12,8 @@ import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from analyze_pf import load_truth, load_replay, score_frames
 ap = argparse.ArgumentParser(); ap.add_argument('--tmax', type=float, default=60); ap.add_argument('--json', default=None); a = ap.parse_args()
-D = '/Users/changmin/projects/ugrp/outputs/pf-gaincal-v101-20261005/replay'
-RAW = '/Users/changmin/projects/ugrp/outputs/v98-dev-probe-raise_high-1f7fb800/zone_wide_door_geometry_v3'
+D = '<home>/projects/ugrp/outputs/pf-gaincal-v101-20261005/replay'
+RAW = '<home>/projects/ugrp/outputs/v98-dev-probe-raise_high-1f7fb800/zone_wide_door_geometry_v3'
 BOUND = 13.8; MEDIAN = 1.386
 WINS = [(10, 20), (20, 30), (30, 40), (40, 50), (50, 60)]
 SEL_WINS = [(30, 40), (40, 50), (50, 60)]

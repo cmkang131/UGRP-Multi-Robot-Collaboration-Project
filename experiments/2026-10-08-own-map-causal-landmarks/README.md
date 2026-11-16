@@ -7,7 +7,7 @@
 무효**이며 그대로 보존·병기한다. 종료 yaw 우위를 자기 지도의 장점으로 해석하지 않는다.
 이번 수정은 판정 완화가 아니라 입력의 인과성 수정이다. 검출기·지도 구성은 egomap34 고정.
 
-- 녹화: `/Users/changmin/projects/ugrp/outputs/wall-segment-dev-v1/new-seed`, seed32002.
+- 녹화: `<home>/projects/ugrp/outputs/wall-segment-dev-v1/new-seed`, seed32002.
   잃는 시점 경과60/90/120초(절대61.3/91.3/121.3), RNG41001/41002/41003 그대로.
 - **자기 지도:** `online-maps.jsonl` 중 t보다 엄격히 이른 마지막 행의 grid와 ledger.
   당시 저장된 상태를 그대로 사용한다. 최종 grid/graph를 잘라 재구성하지 않는다.
@@ -62,7 +62,7 @@ PR406 `codex/s2-realism` **6a9e93f1a463ed2e356b044487c6b025ad018b63**의
 
 ## 보존·실행 경계
 
-출력 `/Users/changmin/projects/ugrp/outputs/own-map-causal-landmarks-v1`.
+출력 `<home>/projects/ugrp/outputs/own-map-causal-landmarks-v1`.
 물리·렌더·모델·잠금0. 예측은 GT 파일/실시간 상태 읽기0, 평가만 출발 GT 변환 사용.
 F 구현은 유지, 상대 배열 전송/merge0. 새 출력만 추가, 원본/과거실패 보존.
 ENOSPC=HOST_ERROR. 바뀐 모듈 시험만, 초록 후 커밋·push, PR405 DRAFT/병합0.

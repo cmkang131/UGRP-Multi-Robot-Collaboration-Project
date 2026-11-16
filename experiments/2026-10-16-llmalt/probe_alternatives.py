@@ -25,13 +25,13 @@ from pathlib import Path
 
 EXP_DIR = Path(__file__).resolve().parent
 SRC_CALLS = Path(
-    "/Users/changmin/projects/ugrp-wt/e2e18-planner/outputs/task-planner-ling-vl-main-20261013/off-calls.jsonl"
+    "<home>/projects/ugrp-wt/e2e18-planner/outputs/task-planner-ling-vl-main-20261013/off-calls.jsonl"
 )
 STORED_GEMMA_ZST = Path(
-    "/Users/changmin/projects/ugrp-wt/e2e18-planner/outputs/task-planner-gemma-json-20261014/off-calls.jsonl.zst"
+    "<home>/projects/ugrp-wt/e2e18-planner/outputs/task-planner-gemma-json-20261014/off-calls.jsonl.zst"
 )
 IMG_PATH = Path(
-    "/Users/changmin/projects/ugrp-wt/e2e18-planner/outputs/task-planner-ling-vl-image/r80-r1-00000.jpg"
+    "<home>/projects/ugrp-wt/e2e18-planner/outputs/task-planner-ling-vl-image/r80-r1-00000.jpg"
 )
 
 N_CALLS = 40

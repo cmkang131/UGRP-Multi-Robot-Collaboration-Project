@@ -32,7 +32,7 @@ Refs #363. 브랜치 `claude/v98-checkpoint`(기준 `codex/pair-carry-highpose`)
      --calibration experiments/2026-10-05-unloaded-gain-calibration-v101/products/C/calibration_dev_pilot_unloaded_v101.json \
      --calibration-sha256 aba4ac586b2554844ad5b4b17efe968a4247278664ffb433f83f6785ca1769c4 \
      --expected-source-sha <SHA> --lock-owner claude --sim-slot <slot> \
-     --output /Users/changmin/projects/ugrp/outputs/<run> --execute
+     --output <home>/projects/ugrp/outputs/<run> --execute
    ```
 
    - `--after-carry-go-s 5`: 운반 barrier GO마다 5 SIM초 뒤 저장(운반 다리 안). `--every-s N`: N SIM초마다.
@@ -52,9 +52,9 @@ Refs #363. 브랜치 `claude/v98-checkpoint`(기준 `codex/pair-carry-highpose`)
 
    ```
    python -m scripts.dev_pair_checkpoint resume \
-     --checkpoint /Users/changmin/projects/ugrp/outputs/<run>/checkpoints/<file>.pkl.zlib \
+     --checkpoint <home>/projects/ugrp/outputs/<run>/checkpoints/<file>.pkl.zlib \
      --calibration experiments/2026-10-05-unloaded-gain-calibration-v101/products/C/calibration_dev_pilot_unloaded_v101.json \
-     --output /Users/changmin/projects/ugrp/outputs/<run>-resumed-<label> --lock-owner claude --sim-slot <slot> \
+     --output <home>/projects/ugrp/outputs/<run>-resumed-<label> --lock-owner claude --sim-slot <slot> \
      [--stop-at-sim-s <T+60>] [--allow-code-change]
    ```
 
@@ -98,7 +98,7 @@ Refs #363. 브랜치 `claude/v98-checkpoint`(기준 `codex/pair-carry-highpose`)
 
 결과: **아직 실행 안 함.** 2026-10-05 15시 무렵 기계 과부하(부하 평균 135–234, CPU 8개, 스왑 5.2/6 GiB)로 조정자가
 먼저 물리 동시 1개·#363 실행 우선, 이어서 사용자 지시로 시뮬레이션 전부 중단을 전달했다. 재개 지시 뒤
-`run_gate.sh /Users/changmin/projects/ugrp/outputs/v98-ckpt-gate-<SHA8>`
+`run_gate.sh <home>/projects/ugrp/outputs/v98-ckpt-gate-<SHA8>`
 로 실행한다. **게이트 통과 전에는 이 도구로 진단하지 않는다.**
 
 지금까지의 증거(게이트 아님):

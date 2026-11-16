@@ -81,7 +81,7 @@
 ```
 python -m scripts.run_pair_stage_probes --stage align grasp_lift --sources teacher --cells nominal \
   --nominal-seeds 911 912 913 --policies b-v6d --render-profile noshadow_v1 --workers 2 --execute \
-  --lock-owner claude --output /Users/changmin/projects/ugrp/outputs/render-profile-ab-20260929/noshadow-1-align-grasp
+  --lock-owner claude --output <home>/projects/ugrp/outputs/render-profile-ab-20260929/noshadow-1-align-grasp
 ```
 운반은 `--stage carry --legs 0`, 내려놓기는 `--stage setdown --legs end`를 따로 실행한다(`--legs`는 한 호출의 모든 단계에 걸린다).
 
@@ -214,7 +214,7 @@ python -m scripts.run_pair_stage_probes --stage align grasp_lift --sources teach
 
 ## 결과 위치·해시
 
-- raw(로컬): `/Users/changmin/projects/ugrp/outputs/render-profile-ab-20260929/`(약 479 MB, 28개 실행 폴더·`.time`·`driver.log`). 원격 백업이 아니다. 실행별 `cases.jsonl`·`artifacts.sha256.json`·`manifest.json`의 SHA-256은 [raw_sha256.json](raw_sha256.json)에 있다.
+- raw(로컬): `<home>/projects/ugrp/outputs/render-profile-ab-20260929/`(약 479 MB, 28개 실행 폴더·`.time`·`driver.log`). 원격 백업이 아니다. 실행별 `cases.jsonl`·`artifacts.sha256.json`·`manifest.json`의 SHA-256은 [raw_sha256.json](raw_sha256.json)에 있다.
 - 분석 산출물(이 폴더): [analysis-stage1.json](analysis-stage1.json)(단계 1 프레임 통계), [analysis-setdown-t6p05.json](analysis-setdown-t6p05.json)(setdown 같은 창), [analysis-repro.json](analysis-repro.json)(재실행 프레임 동일성), [stage0-compare.json](stage0-compare.json), [timing.json](timing.json), [build_tb_views.py](build_tb_views.py). 분석 스크립트: `scripts/analyze_render_profile_ab.py`(테스트 `tests/test_render_profile_ab_analysis.py`).
 - 실행 SHA `584ee39118aed683869b965709056c7008aa008d`(source_dirty false). 실행 시작 부하는 표와 `driver.log`에 있다. 잠금: 단계 0(A2), 단계 1·2(B), 추가 반복(C) 각각 `agent_lock`을 잡고 EXIT에서 해제했고 종료 뒤 `status`가 null이다.
 

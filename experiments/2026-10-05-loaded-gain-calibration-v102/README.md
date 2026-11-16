@@ -57,7 +57,7 @@ Refs #363. 조정자 요청(2026-10-05): #363 `align_to_carry`(fcc5215f)에서 �
   AGENTS의 번호 예약 규칙("실행 기록이 쓴 번들은 바이트 그대로 보존, 나중에 병합되는 쪽이 새 ID로 다시 등록")에 따라 **실행된 v102 기록과 소스(274a6206)는 이름을 바꾸지 않았다.** 조정자는 v103으로 옮기라고 안내했으나(실행 기록이 이미 v102로 남아 있어 이름만 바꿔도 과거 기록은
   바뀌지 않는다), 이 PR은 새 번들을 만들지 않으므로 번호를 더 가져가지 않았다. 권고: #363의 예약을 v103 이후로 한 줄 고친다. 반대로 이 쪽을 옮기라면 등록 workflow ID만 새 번호로 다시 등록하고 v102 기록은 은퇴 목록에 둔다(산출 파일의 해시가 바뀌므로 diff·재생·승인 sha를 다시 만들어야 한다).
 - 소스 SHA `274a6206cbfae194a318f5b0eb4e7495e3a7c89b`(깨끗한 커밋, 모든 실행 `source_unchanged: true`, 가드는 v91 중단 전용).
-- 원본(기본 체크아웃 `outputs/`, 커밋하지 않음): `/Users/changmin/projects/ugrp/outputs/calib-loaded-gain-v102-274a6206-20261005T0306Z/{latA,latB,fwdA,fwdB}`.
+- 원본(기본 체크아웃 `outputs/`, 커밋하지 않음): `<home>/projects/ugrp/outputs/calib-loaded-gain-v102-274a6206-20261005T0306Z/{latA,latB,fwdA,fwdB}`.
   파일별 sha256은 각 폴더의 `artifacts.sha256.json`, 적합 입력 해시는 `products/fit/fit.json`의 `raw_sha256`.
 
 | run | 축 | 시드 | 보 시작 (x, y, yaw) | SIM 길이(+reset 1.3 s) | 시작 부하(1분) | 끝 부하(1분) | 시작 시 동시 보유자 |

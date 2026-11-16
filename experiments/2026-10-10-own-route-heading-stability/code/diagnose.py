@@ -2,7 +2,7 @@
 import json,math,statistics
 from collections import Counter
 from pathlib import Path
-ROOT=Path('/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap64-batch/data')
+ROOT=Path('<home>/projects/ugrp/outputs/oracle-runs/egomap64-batch/data')
 OUT=Path(__file__).resolve().parents[1]/'results/diagnosis.json'
 def wrap(x):return math.atan2(math.sin(x),math.cos(x))
 def stats(xs):

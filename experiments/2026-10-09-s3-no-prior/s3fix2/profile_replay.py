@@ -106,7 +106,7 @@ if __name__=='__main__':
     held=agent_lock.acquire(agent_lock.DEFAULT_ROOT,owner='codex',branch='codex/s3-no-prior-smoke',
         purpose='S3 saved-input cProfile, physics 0',pid=os.getpid(),expected_minutes=10,timing_sensitive=True)
     try:
-        replay(Path('/Users/changmin/projects/ugrp/outputs/s3-continue-0a690821-s14201-v147'),a.output,a.accelerated)
+        replay(Path('<home>/projects/ugrp/outputs/s3-continue-0a690821-s14201-v147'),a.output,a.accelerated)
     finally:
         released=agent_lock.release(agent_lock.DEFAULT_ROOT,owner='codex')
         if a.output.exists(): (a.output/'lock.json').write_text(json.dumps(dict(acquired=held,released=released))+'\n')

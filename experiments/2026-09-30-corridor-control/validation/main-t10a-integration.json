@@ -21,7 +21,7 @@
   "schema": "ugrp.t10b_main_integration.v1",
   "scope": "offline only; no host lock; physics/render/model calls 0",
   "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
-  "raw_root": "/Users/changmin/projects/ugrp/outputs/2026-10-01-t10b-main-integration",
+  "raw_root": "<home>/projects/ugrp/outputs/2026-10-01-t10b-main-integration",
   "pytest_args": [
     "tests/test_zone_own_executor_corridor_control.py",
     "tests/test_zone_own_executor_corridor_contract.py",
@@ -31,7 +31,7 @@
     "tests/test_pair_passage_plan.py",
     "tests/test_zone_hard_routes.py",
     "tests/test_execution_dependency_contract.py",
-    "--junitxml=/Users/changmin/projects/ugrp/outputs/2026-10-01-t10b-main-integration/related-01/junit.xml"
+    "--junitxml=<home>/projects/ugrp/outputs/2026-10-01-t10b-main-integration/related-01/junit.xml"
   ],
   "passed": 295,
   "tests_by_file": {
@@ -187,16 +187,16 @@
   ],
   "review_test_selection": {
     "command": [
-      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
       "-m",
       "pytest",
       "-q",
       "-p",
       "no:cacheprovider",
-      "/Users/changmin/projects/ugrp/outputs/2026-10-01-t10b-main-integration/review-selection/test_review_e2e_batch_i.py",
+      "<home>/projects/ugrp/outputs/2026-10-01-t10b-main-integration/review-selection/test_review_e2e_batch_i.py",
       "-k",
       "test_t10b or test_corridor or pr331",
-      "--basetemp=/Users/changmin/projects/ugrp/outputs/2026-10-01-t10b-main-integration/review-selection/selection-tmp"
+      "--basetemp=<home>/projects/ugrp/outputs/2026-10-01-t10b-main-integration/review-selection/selection-tmp"
     ],
     "exit_code": 5,
     "qualification": "No #331 cases; initial broad -k matched parent directory name and incorrectly selected the two unrelated cases; their archive setup errors are not corridor product failures.",

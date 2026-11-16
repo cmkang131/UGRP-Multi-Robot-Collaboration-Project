@@ -12,7 +12,7 @@ from scripts import agent_lock
 
 HERE = Path(__file__).parent
 ROOT = HERE.parents[2]
-RAW = Path('/Users/changmin/projects/ugrp/outputs')
+RAW = Path('<home>/projects/ugrp/outputs')
 BRANCH = 'codex/s3-no-prior-smoke'
 CASES = [('55001', 'ownmap', RAW/'goal-route-motion-audit-v1/seed55001'),
          ('55002', 'ownmap', RAW/'goal-route-motion-audit-v1/seed55002'),

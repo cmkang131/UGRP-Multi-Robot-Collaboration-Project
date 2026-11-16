@@ -59,7 +59,7 @@
           "tests": "799",
           "time": "89.983",
           "timestamp": "2026-10-01T03:59:44.430774+09:00",
-          "hostname": "gangchangmin-ui-MacBookAir.local"
+          "hostname": "<mac-host>"
         }
       ],
       "exit_code": 0,
@@ -84,18 +84,18 @@
           "tests": "275",
           "time": "55.036",
           "timestamp": "2026-10-01T04:00:09.590987+09:00",
-          "hostname": "gangchangmin-ui-MacBookAir.local"
+          "hostname": "<mac-host>"
         }
       ],
       "exit_code": 0,
       "host_lock_acquired": false
     }
   ],
-  "raw_root": "/Users/changmin/projects/ugrp/outputs/2026-10-01-t09b-main-sync-01",
+  "raw_root": "<home>/projects/ugrp/outputs/2026-10-01-t09b-main-sync-01",
   "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
   "commands": [
-    "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-30-two-door-reroute/run_checks.py --mutation none --output /Users/changmin/projects/ugrp/outputs/2026-10-01-t09b-main-sync-01/baseline",
-    "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-30-two-door-route-interface/review_f314_1/verify.py --output /Users/changmin/projects/ugrp/outputs/2026-10-01-t09b-main-sync-01/related tests/test_zone_own_executor_corridor_contract.py tests/test_zone_own_executor_corridor_control.py tests/test_zone_team_jobs.py tests/test_zone_hard_routes.py tests/test_ci_sharding.py tests/test_ci_host_lock.py"
+    "<home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-30-two-door-reroute/run_checks.py --mutation none --output <home>/projects/ugrp/outputs/2026-10-01-t09b-main-sync-01/baseline",
+    "<home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-30-two-door-route-interface/review_f314_1/verify.py --output <home>/projects/ugrp/outputs/2026-10-01-t09b-main-sync-01/related tests/test_zone_own_executor_corridor_contract.py tests/test_zone_own_executor_corridor_control.py tests/test_zone_team_jobs.py tests/test_zone_hard_routes.py tests/test_ci_sharding.py tests/test_ci_host_lock.py"
   ],
   "reviewed_source_sha256": {
     "harness/zone_observed_door_reroute.py": "89620818ee98c1b6fa684993c750b60013c1015d683325f2603f8dae3449edab",

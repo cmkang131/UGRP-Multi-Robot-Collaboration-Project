@@ -1,6 +1,6 @@
 import json, math, collections, sys, os
 import numpy as np
-sys.path.insert(0,'/Users/changmin/projects/ugrp-wt/claude-v6d-align'); sys.path.insert(0,os.path.dirname(__file__))
+sys.path.insert(0,'<home>/projects/ugrp-wt/claude-v6d-align'); sys.path.insert(0,os.path.dirname(__file__))
 from hreplay import half
 rows=json.load(open(os.path.dirname(__file__)+'/fullreplay_v6d.json'))
 by=collections.defaultdict(list)

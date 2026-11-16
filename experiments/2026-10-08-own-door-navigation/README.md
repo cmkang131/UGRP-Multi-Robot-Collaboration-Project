@@ -37,7 +37,7 @@
   접촉·도착/6·귀환시간·회전시간비율·확인문P·B blacklist→frontier 횟수 보고.
   agent_lock/ugrp_session/dev_light, 한 번에 하나. 6회 예상3–6시간+잠금대기, 필요시 감독파일에 갱신.
   물리 이전엔 lock 불필요. ENOSPC=HOST_ERROR, 제외/재실행 없음. 실패 시 물리0·재튜닝0.
-- 결과 raw `/Users/changmin/projects/ugrp/outputs/own-door-navigation-v1/`; 성공/실패4배속영상은
+- 결과 raw `<home>/projects/ugrp/outputs/own-door-navigation-v1/`; 성공/실패4배속영상은
   실제 해당 결과가 있을 때만 만든다. offline overlay는 물리 성공 영상으로 표현하지 않는다.
 
 ## 참고 자료·원본 대비
@@ -200,7 +200,7 @@ GT 프레임 자세로 **평가 전용** 재배치해도 기하상 GT문에 맞�
   6조건 detector/어댑터 hash는 실행 전 freeze와 전부 일치. 관문 실패 후 코드·수치 변경0.
 - [문 후보4배속 영상 검증](results/video.json): 3,151프레임·20fps·157.55초,
   ffprobe/전체 decode·처음/중간/끝 이미지 확인. **기존49001 실패를 오프라인 표시**한 영상이다.
-  `/Users/changmin/projects/ugrp/outputs/own-door-navigation-v1/49001/wrist-map-doors-4x.mp4`
+  `<home>/projects/ugrp/outputs/own-door-navigation-v1/49001/wrist-map-doors-4x.mp4`
 - 성공/실패 새 물리 영상은 관문 미달로 없음. 성공 영상을 만들거나 기존 실패를 새 정책 결과로 바꾸지 않는다.
   raw는 로컬 보관이며 GitHub에는 코드·요약·작은 그림만 저장, 원격 raw 백업 아님.
 

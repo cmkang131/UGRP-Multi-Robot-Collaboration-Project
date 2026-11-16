@@ -79,7 +79,7 @@ ffprobe만 사용했고 Mac 화면 앱을 열지 않았다. 새 성공 원본은
 
 [새40회 큐](gate40-queue.json): 전체 source SHA·절대 rejection_table·해시,
 8318611·8318604 먼저, 최대16, 학습카메라off·held 숨김on·weld off.
-운영 사본: `/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-beampair3-e645b34b.json`.
+운영 사본: `<home>/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-beampair3-e645b34b.json`.
 `ready=false`, `approved=false`, `submitted=false`, `gate_measured_N=0`.
 조정자가 clean pin·계획16동시 첫30 속도/원본·예산/디스크·VM 상한을 확인한 뒤 활성화한다.
 VM 실제 상한은24시간으로 관측됐고 다른 작업 때문에 바꾸지 않았다. 본 명령은8시간 제한이다.

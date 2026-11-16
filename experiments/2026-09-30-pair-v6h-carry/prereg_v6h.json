@@ -603,7 +603,7 @@
       "workers": 4,
       "omp_threads": 1,
       "case_timeout_s": 1500.0,
-      "raw_root": "/Users/changmin/projects/ugrp/outputs",
+      "raw_root": "<home>/projects/ugrp/outputs",
       "enospc": "HOST_ERROR",
       "minimum_free_gib": 10
     }
@@ -14133,7 +14133,7 @@
     ],
     "commands": {
       "verify": "python -m experiments.2026-09-30-pair-v6h-carry.build_prereg_v6h --verify-seal --seal-commit \"$V6H_SEAL_COMMIT\"",
-      "apply_after_review_and_unblinding": "python -m experiments.2026-09-30-pair-v6h-carry.analysis.apply_sealed_analysis --seal-commit \"$V6H_SEAL_COMMIT\" --prereg experiments/2026-09-30-pair-v6h-carry/prereg_v6h.json --raw /Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930 --output /Users/changmin/projects/ugrp/outputs/v6h1-sealed-analysis-NEW"
+      "apply_after_review_and_unblinding": "python -m experiments.2026-09-30-pair-v6h-carry.analysis.apply_sealed_analysis --seal-commit \"$V6H_SEAL_COMMIT\" --prereg experiments/2026-09-30-pair-v6h-carry/prereg_v6h.json --raw <home>/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930 --output <home>/projects/ugrp/outputs/v6h1-sealed-analysis-NEW"
     },
     "main_merge": {
       "commit": "f5cd3a2b7754236a7b416cca1e1f9fe76fe8dd14",

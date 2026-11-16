@@ -154,7 +154,7 @@ private 비간섭 시험은 현재 정적 API/공개 projection에는 의미가 
 이 실패는 리뷰어의 추출 누락이며 PR 결함에 합산하지 않았다. 실패 출력도 보존했다.
 
 작은 로그·변이 실행기·SHA/명령/보존 검사·merge-tree 결과는 [review_e2e_batch_d](review_e2e_batch_d/)에 있다.
-JUnit·잠금·원본 출력은 `/Users/changmin/projects/ugrp/outputs/review-e2e-batch-d-20260930/`에 보존한다.
+JUnit·잠금·원본 출력은 `<home>/projects/ugrp/outputs/review-e2e-batch-d-20260930/`에 보존한다.
 Git에 올린 작은 기록과 로컬 raw/JUnit 보관을 구분한다. 이 검토에서 새 물리 결과나 TensorBoard snapshot은 만들지 않았다.
 Git의 `.txt` 사본은 줄 끝 공백만 정리했으며 원본 `.log`는 그대로 보존했다. 두 해시는 `verification.json`에 구분한다.
 

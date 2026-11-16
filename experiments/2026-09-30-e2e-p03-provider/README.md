@@ -8,7 +8,7 @@ P03 전용 후보 파일과 별도 provider ID로 옮겼다. 기존 등록·봉�
 상태: **DRAFT, 오프라인 계약 검사, 병합·봉인·실행 승인 없음.** Refs #216, #219, #223.
 감사 기준은 `a8094cc14e098a55483f53a3c49bf6a0b116043d`의 READINESS S02/S03(PR #298)이다.
 작업 시작 HEAD와 fetch 당시 origin/main은 `d17ca4345affef8cf027e121cf1f3197b36c23e0`이었다.
-배정 worktree `/Users/changmin/projects/ugrp-wt/e2e-p03-provider`, 브랜치 `codex/tagfree-provider-lifecycle`만 수정했다.
+배정 worktree `<home>/projects/ugrp-wt/e2e-p03-provider`, 브랜치 `codex/tagfree-provider-lifecycle`만 수정했다.
 검증 소스 SHA·전체 파일 해시·JUnit 결과는 `verification.json`에 기록한다.
 
 ## 확인한 문제와 변경
@@ -74,7 +74,7 @@ fake worker subprocess의 pipe/timeout/EOF/close 검사는 허용 범위이며 �
 같은 안전 경계로 재현하는 명령(잠금 점유 시 pytest 없이 종료 코드 3):
 
 ```sh
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
   experiments/2026-09-30-e2e-p03-provider/offline_checks.py --junitxml=<새 로컬 출력 경로>
 ```
 
@@ -83,7 +83,7 @@ fake worker subprocess의 pipe/timeout/EOF/close 검사는 허용 범위이며 �
 `verification.json`을 따른다. 최종 번들 미리보기 해시
 `347ad3a65095de31ea27be365649acab905d799025523e5f2cfe124990f3745e`는 미봉인/실행 불가 기록이다.
 원본 로컬 경로:
-`/Users/changmin/projects/ugrp/outputs/e2e-p03-provider-contract-20260930-194957/`.
+`<home>/projects/ugrp/outputs/e2e-p03-provider-contract-20260930-194957/`.
 새 학습/실험/평가 코호트가 아니므로 TensorBoard 변환·서버·화면은 만들지 않았다.
 물리·시뮬레이션·렌더·학습·비전 추론·LLM 호출은 전부 0회다. Drive 작업도 없다.
 기존 raw·모델·번들 bytes를 덮거나 삭제하지 않았다. 로컬 기록은 원격 raw 백업을 뜻하지 않는다.

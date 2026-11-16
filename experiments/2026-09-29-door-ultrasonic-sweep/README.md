@@ -157,7 +157,7 @@ W ≤ 20 cm는 문틀 양쪽을 다 넘지 못하고, yaw에 필요한 평평한
 - 소스: `scripts/door_ultrasonic_sweep.py`, 테스트 `tests/test_door_ultrasonic_sweep.py`(8개). 물리 step은 `mj_step*`를 실패 스텁으로 바꿔 0회임을 강제한다.
 - 실행 스크립트: `results/run_all.sh`(원본과 동일). 주요 명령은 `stationary`, `occlusion`, `side`, `sweep`, `sweep`(far), `ablate`, `report`, `manifest`이고 `yawbias`는 저장된 `sweep/echo_traces.npz`를 재분석한다.
 - 소스 SHA: 주 실행 56262f4c(작업 트리 깨끗), `yawbias` 323675f5.
-- 원본(로컬 보관): `/Users/changmin/projects/ugrp/outputs/door-ultrasonic-sweep-20260929-final/`(`MANIFEST.json`에 파일별 sha256). 이 폴더에는 원본 `sweep/echo_traces.npz`(sha256 `065c6dd3e2acb050984bf0feb7a8e1d5b25d9c9f45f6f45f2665f39f89d6cdce`, 938447 B)를 포함하나 커밋하지 않는다. `sweep_far/echo_traces.npz` sha256 `1622cfa8323dfb2ae3590817122696df2414d0181b77638910b5f4aeecf87687`.
+- 원본(로컬 보관): `<home>/projects/ugrp/outputs/door-ultrasonic-sweep-20260929-final/`(`MANIFEST.json`에 파일별 sha256). 이 폴더에는 원본 `sweep/echo_traces.npz`(sha256 `065c6dd3e2acb050984bf0feb7a8e1d5b25d9c9f45f6f45f2665f39f89d6cdce`, 938447 B)를 포함하나 커밋하지 않는다. `sweep_far/echo_traces.npz` sha256 `1622cfa8323dfb2ae3590817122696df2414d0181b77638910b5f4aeecf87687`.
 - 입력 해시: 정적 지도 `a8e378ba958499a80b479cc8ac01bf77f2b0a2870c37cd99c7f58579476f115b`, 장면 xml `b7fe1a41f0924f166c28071af0ccb72c33da011a45fb90dfb171a3ab7c39557a`. 잡음 시드 8(스윕)·12(절제), `sensor_seed`와 틱으로 색인. 부하 평균은 `run.log`에 기록. 이 원본 원격 백업은 아니다(로컬 보관).
 - 이전 시도(보존): `door-ultrasonic-sweep-dev1`(탐색용, yaw 게이트 1.5°), `door-ultrasonic-sweep-20260929`(첫 실행, 소스 3fa5da6c, 가림 분류 변경 전).
 

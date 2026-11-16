@@ -14,7 +14,7 @@ import argparse, copy, json, os, sys, time, importlib.util
 os.environ.setdefault('OMP_NUM_THREADS', '1')
 os.environ.setdefault('PYTHONDONTWRITEBYTECODE', '1')
 sys.dont_write_bytecode = True
-WT = os.environ.get('PF_REPLAY_WT', '/Users/changmin/projects/ugrp-wt/pair-carry-highpose')   # default: the #363 worktree (read only)
+WT = os.environ.get('PF_REPLAY_WT', '<home>/projects/ugrp-wt/pair-carry-highpose')   # default: the #363 worktree (read only)
 sys.path.insert(0, WT)
 os.chdir(WT)
 import numpy as np

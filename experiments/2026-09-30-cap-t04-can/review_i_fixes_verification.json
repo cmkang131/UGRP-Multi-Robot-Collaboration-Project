@@ -39,7 +39,7 @@
     }
   },
   "suite": {
-    "command": "PYTHONPATH=experiments/2026-09-30-cap-t04-can:. PYTHONDONTWRITEBYTECODE=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p offline_guard tests/test_zone_pair_registered_source.py tests/test_zone_study_source_pinning.py tests/test_zone_own_executor.py tests/test_zone_own_executor_boundaries.py tests/test_zone_own_executor_guards.py tests/test_zone_own_executor_can.py tests/test_zone_own_executor_can_sweep.py tests/test_review_e2e_batch_i.py tests/test_m1_owncam.py tests/test_zone_own_perception.py -k \"not test_team_host_feeds_each_executor_only_its_own_camera\" --junitxml=/Users/changmin/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/pytest.xml",
+    "command": "PYTHONPATH=experiments/2026-09-30-cap-t04-can:. PYTHONDONTWRITEBYTECODE=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p offline_guard tests/test_zone_pair_registered_source.py tests/test_zone_study_source_pinning.py tests/test_zone_own_executor.py tests/test_zone_own_executor_boundaries.py tests/test_zone_own_executor_guards.py tests/test_zone_own_executor_can.py tests/test_zone_own_executor_can_sweep.py tests/test_review_e2e_batch_i.py tests/test_m1_owncam.py tests/test_zone_own_perception.py -k \"not test_team_host_feeds_each_executor_only_its_own_camera\" --junitxml=<home>/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/pytest.xml",
     "exit_code": 0,
     "passed": 245,
     "deselected": 1,
@@ -53,7 +53,7 @@
       "tests": "352",
       "time": "211.818",
       "timestamp": "2026-10-01T02:07:24.397417+09:00",
-      "hostname": "gangchangmin-ui-MacBookAir.local"
+      "hostname": "<mac-host>"
     },
     "testcase_counts": {
       "tests.test_zone_pair_registered_source": 22,
@@ -78,7 +78,7 @@
     }
   },
   "ci_collection": {
-    "command": "PYTHONPATH=experiments/2026-09-30-cap-t04-can:. PYTHONDONTWRITEBYTECODE=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p offline_guard tests/test_ci_sharding.py",
+    "command": "PYTHONPATH=experiments/2026-09-30-cap-t04-can:. PYTHONDONTWRITEBYTECODE=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p offline_guard tests/test_ci_sharding.py",
     "exit_code": 0,
     "passed": 66
   },
@@ -93,7 +93,7 @@
         "test": "tests/test_zone_own_executor_can.py::test_cylinder_center_from_own_jpeg",
         "exit_code": 1,
         "killed_by_assertion": true,
-        "log": "/Users/changmin/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/remove_floor_perception.log",
+        "log": "<home>/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/remove_floor_perception.log",
         "log_sha256": "1cc18431d03f90b230fea309dcd7371effc1b3ec3bff696716701406db88c5fc"
       },
       {
@@ -101,7 +101,7 @@
         "test": "tests/test_zone_own_executor_can.py::test_ungrasped_and_empty_gripper_never_reach_holding_or_release",
         "exit_code": 1,
         "killed_by_assertion": true,
-        "log": "/Users/changmin/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/remove_lift_evidence_gate.log",
+        "log": "<home>/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/remove_lift_evidence_gate.log",
         "log_sha256": "f71e577f892895012f7cdc01993ca04adfe6ad693006aa6ce98ab2bb483e806a"
       },
       {
@@ -109,7 +109,7 @@
         "test": "tests/test_zone_own_executor_can.py::test_bad_release_views_cannot_turn_open_gripper_into_completion",
         "exit_code": 1,
         "killed_by_assertion": true,
-        "log": "/Users/changmin/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/remove_release_evidence_gate.log",
+        "log": "<home>/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/remove_release_evidence_gate.log",
         "log_sha256": "549e6b32b9d13c58510107f044f64ae16e486723c152e2c70165cf0317749b84"
       },
       {
@@ -117,7 +117,7 @@
         "test": "tests/test_zone_own_executor_can.py::test_input_and_pose_refusal[top]",
         "exit_code": 1,
         "killed_by_assertion": true,
-        "log": "/Users/changmin/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/remove_own_camera_boundary.log",
+        "log": "<home>/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/remove_own_camera_boundary.log",
         "log_sha256": "cd85329f0540eb42d7640fb376cc21ca7e285e6a0a75f195c9851832aa110bec"
       },
       {
@@ -125,7 +125,7 @@
         "test": "tests/test_review_e2e_batch_i.py::test_t04_issued_arm_increment_passes_the_same_static_sweep",
         "exit_code": 1,
         "killed_by_assertion": true,
-        "log": "/Users/changmin/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/restore_full_target_sweep_mismatch.log",
+        "log": "<home>/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/restore_full_target_sweep_mismatch.log",
         "log_sha256": "7e7710028aec2f7b1b2de623192a048f336e78f4168e21563c16b7d3af0a740a"
       },
       {
@@ -133,7 +133,7 @@
         "test": "tests/test_review_e2e_batch_i.py::test_t04_issued_arm_increment_passes_the_same_static_sweep",
         "exit_code": 1,
         "killed_by_assertion": true,
-        "log": "/Users/changmin/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/remove_arm_sweep_gate.log",
+        "log": "<home>/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/remove_arm_sweep_gate.log",
         "log_sha256": "ec1c273e3667122711fb0062134c0834235d6834f981a34c9fe7e3101e158062"
       },
       {
@@ -141,7 +141,7 @@
         "test": "tests/test_zone_own_executor_can_sweep.py::test_clear_endpoints_do_not_bypass_blocked_interior",
         "exit_code": 1,
         "killed_by_assertion": true,
-        "log": "/Users/changmin/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/check_arm_endpoint_only.log",
+        "log": "<home>/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/check_arm_endpoint_only.log",
         "log_sha256": "ae62c7775782804283a9dc58c4eb5d63078ec0d292851a33a278369de4727f76"
       }
     ]
@@ -353,21 +353,21 @@
     "scripts/run_ci_tests.py": "892689e0342a8fe3554c1bcd92c858430bdc5e44fd3bbbb5a2a515f27513c695"
   },
   "raw_artifacts_sha256": {
-    "/Users/changmin/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/baseline.log": "89cfd6e06d8cf91fff93fe4eba0554187337528262422caeb31ebe2747458b57",
-    "/Users/changmin/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/ci-sharding.log": "de4cfaaadaf4dce1486f7a7f0c535308af6b3c061e668ec4647cb4a3c0685398",
-    "/Users/changmin/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/fixed-counterexample.json": "04930e1b83c51e62b6206378888d0e52ead429ffca3522457138e491cee535dc",
-    "/Users/changmin/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/check_arm_endpoint_only.log": "ae62c7775782804283a9dc58c4eb5d63078ec0d292851a33a278369de4727f76",
-    "/Users/changmin/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/mutation.json": "d43ff039fbe1eb843a4ac034d3c6dc38b4ac234508b8ab97d4696cd680193610",
-    "/Users/changmin/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/remove_arm_sweep_gate.log": "ec1c273e3667122711fb0062134c0834235d6834f981a34c9fe7e3101e158062",
-    "/Users/changmin/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/remove_floor_perception.log": "1cc18431d03f90b230fea309dcd7371effc1b3ec3bff696716701406db88c5fc",
-    "/Users/changmin/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/remove_lift_evidence_gate.log": "f71e577f892895012f7cdc01993ca04adfe6ad693006aa6ce98ab2bb483e806a",
-    "/Users/changmin/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/remove_own_camera_boundary.log": "cd85329f0540eb42d7640fb376cc21ca7e285e6a0a75f195c9851832aa110bec",
-    "/Users/changmin/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/remove_release_evidence_gate.log": "549e6b32b9d13c58510107f044f64ae16e486723c152e2c70165cf0317749b84",
-    "/Users/changmin/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/restore_full_target_sweep_mismatch.log": "7e7710028aec2f7b1b2de623192a048f336e78f4168e21563c16b7d3af0a740a",
-    "/Users/changmin/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations.log": "d43ff039fbe1eb843a4ac034d3c6dc38b4ac234508b8ab97d4696cd680193610",
-    "/Users/changmin/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/protected.json": "629673f3863b097b2edf2ed9b9402978e51b454e643afe3820852d715e7e5e97",
-    "/Users/changmin/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/pytest.log": "4e0c4afc09a77c8caf6aa0974a00f83e231579d7399b4338c42e3c56f3ce3ae3",
-    "/Users/changmin/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/pytest.xml": "cc03e5a9212c5ab9d0290021f6d936493b3e11f0a95607b2b1641b6ce910edfb"
+    "<home>/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/baseline.log": "89cfd6e06d8cf91fff93fe4eba0554187337528262422caeb31ebe2747458b57",
+    "<home>/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/ci-sharding.log": "de4cfaaadaf4dce1486f7a7f0c535308af6b3c061e668ec4647cb4a3c0685398",
+    "<home>/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/fixed-counterexample.json": "04930e1b83c51e62b6206378888d0e52ead429ffca3522457138e491cee535dc",
+    "<home>/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/check_arm_endpoint_only.log": "ae62c7775782804283a9dc58c4eb5d63078ec0d292851a33a278369de4727f76",
+    "<home>/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/mutation.json": "d43ff039fbe1eb843a4ac034d3c6dc38b4ac234508b8ab97d4696cd680193610",
+    "<home>/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/remove_arm_sweep_gate.log": "ec1c273e3667122711fb0062134c0834235d6834f981a34c9fe7e3101e158062",
+    "<home>/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/remove_floor_perception.log": "1cc18431d03f90b230fea309dcd7371effc1b3ec3bff696716701406db88c5fc",
+    "<home>/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/remove_lift_evidence_gate.log": "f71e577f892895012f7cdc01993ca04adfe6ad693006aa6ce98ab2bb483e806a",
+    "<home>/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/remove_own_camera_boundary.log": "cd85329f0540eb42d7640fb376cc21ca7e285e6a0a75f195c9851832aa110bec",
+    "<home>/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/remove_release_evidence_gate.log": "549e6b32b9d13c58510107f044f64ae16e486723c152e2c70165cf0317749b84",
+    "<home>/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations/restore_full_target_sweep_mismatch.log": "7e7710028aec2f7b1b2de623192a048f336e78f4168e21563c16b7d3af0a740a",
+    "<home>/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/mutations.log": "d43ff039fbe1eb843a4ac034d3c6dc38b4ac234508b8ab97d4696cd680193610",
+    "<home>/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/protected.json": "629673f3863b097b2edf2ed9b9402978e51b454e643afe3820852d715e7e5e97",
+    "<home>/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/pytest.log": "4e0c4afc09a77c8caf6aa0974a00f83e231579d7399b4338c42e3c56f3ce3ae3",
+    "<home>/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/pytest.xml": "cc03e5a9212c5ab9d0290021f6d936493b3e11f0a95607b2b1641b6ce910edfb"
   },
   "control_inputs": "own JPEG, static map, own issued command history; no added input channel",
   "host_lock_used": false,

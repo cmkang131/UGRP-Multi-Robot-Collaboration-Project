@@ -58,7 +58,7 @@
 agent_lock status null→자신 PID acquire→ugrp_session/관리 workflow→release, 한 번에 하나.
 총≤190 SIM초·raw≤350MiB, 여유10GiB 필요. ENOSPC=HOST_ERROR/부분raw 보존,
 같은 원인 두 번이면 중단. 모델 호출0·freeze0. 실행 소스/명령/환경/원본 hash 저장.
-raw `/Users/changmin/projects/ugrp/outputs/servo-stiffness-v1/`, TensorBoard 생략 지시/Drive 예외 유지.
+raw `<home>/projects/ugrp/outputs/servo-stiffness-v1/`, TensorBoard 생략 지시/Drive 예외 유지.
 시험 후 commit/push·Codex trailer, PR405 DRAFT·병합/force/reset0·#406 수정0.
 
 ## S2에서 선택할 때 필요한 재보정 (이번에는 #406 변경 없음)

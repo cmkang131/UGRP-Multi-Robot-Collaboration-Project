@@ -45,7 +45,7 @@
 
 [summary.json](summary.json), [환경](environment.json), [실제 명령/시간/종료 코드](commands.json), [소스 해시](source-manifest.json)에 실행을 연결했다. 원본 결과·감사 19개를 gzip으로 저장하고 [records.json](records.json)에 원본 경로와 해시를 남겼다. gzip 해제한 바이트의 SHA-256을 검사할 수 있다.
 
-새 RGB·영상·로그 원본 1,769파일(92,552,676 bytes)의 [파일별 해시](raw-files.jsonl.gz)와 실제 보관 위치는 `/Users/changmin/projects/ugrp-worktrees/integrate-reviewed-stack/outputs/integration-review/runtime`이다. 원본 영상/RGB 전체는 로컬에만 있고 새 원격 백업을 만들지 않았다. 이 PR에는 압축 결과/감사와 검토용 정지 화면을 포함한다. 기존 55개 증거의 RGB ZIP은 원래 pair-carry 실험 폴더에 이미 포함돼 있다.
+새 RGB·영상·로그 원본 1,769파일(92,552,676 bytes)의 [파일별 해시](raw-files.jsonl.gz)와 실제 보관 위치는 `<home>/projects/ugrp-worktrees/integrate-reviewed-stack/outputs/integration-review/runtime`이다. 원본 영상/RGB 전체는 로컬에만 있고 새 원격 백업을 만들지 않았다. 이 PR에는 압축 결과/감사와 검토용 정지 화면을 포함한다. 기존 55개 증거의 RGB ZIP은 원래 pair-carry 실험 폴더에 이미 포함돼 있다.
 
 이번 검사는 기존 조건의 조합 회귀 검증이다. 새 물체/장면 일반화, 다양한 시작의 운반 6/10 한계 해결, 실물 로봇, 실제 LLM 협력 또는 실제 네트워크 지연 성공을 검증하지 않았다. 지도 주행과 운반은 별도 실행 경로다. 학생 모델은 현재 고정 장면에 제한된다.
 

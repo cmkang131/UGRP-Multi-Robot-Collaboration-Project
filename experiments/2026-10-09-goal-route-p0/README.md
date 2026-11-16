@@ -66,7 +66,7 @@ P0-4 첫 계산에서 지평선 양쪽으로 ±5° 구간을 잡으면 upward �
 
 ## P0 결과 (물리0,모델0,재튜닝0)
 
-설계/버그/사전등록 `239216bf`, 옵션 동결 `80bc4f22`, 재생기 `d9ec34d2`, pitch 수치버그 수정 `6e75104e`. 원시 예측/입력 해시는 `/Users/changmin/projects/ugrp/outputs/goal-route-p0-v1/`에, 채점은 `results/`에 저장했다. 다른 worktree 수정0.
+설계/버그/사전등록 `239216bf`, 옵션 동결 `80bc4f22`, 재생기 `d9ec34d2`, pitch 수치버그 수정 `6e75104e`. 원시 예측/입력 해시는 `<home>/projects/ugrp/outputs/goal-route-p0-v1/`에, 채점은 `results/`에 저장했다. 다른 worktree 수정0.
 
 ### P0-2 다른 경기장 대조군
 

@@ -55,7 +55,7 @@ PATH의 `python`만 기존 환경으로 지정하고 `OMP_NUM_THREADS=1`,
 실행 간 부하 평균과 정확한 명령은 `ci-shards.json`에 있다.
 
 ```sh
-export PATH="/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin:$PATH"
+export PATH="<home>/projects/ugrp/.venv-sim-worker-mac/bin:$PATH"
 export OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1
 # shard=0부터 15까지 아래 명령을 순차 실행하고 매번 임시 디렉터리를 정리한다.
 ```

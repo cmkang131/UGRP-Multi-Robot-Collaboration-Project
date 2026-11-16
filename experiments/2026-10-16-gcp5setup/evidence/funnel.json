@@ -10,7 +10,7 @@
       "reason_category": "none",
       "blocking_object": "not_applicable_infrastructure",
       "minimum_gap": "not_measured_infrastructure",
-      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/global-quota.json",
+      "raw": "<home>/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/global-quota.json",
       "reproduce": "gcloud compute project-info describe --account <account-1> --project <project-id-gcp5>"
     },
     {
@@ -21,7 +21,7 @@
       "reason_category": "none",
       "blocking_object": "not_applicable_infrastructure",
       "minimum_gap": "not_measured_infrastructure",
-      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/test-observations.json",
+      "raw": "<home>/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/test-observations.json",
       "reproduce": "Read test_budget.py; destructive replay requires a fresh named trial VM, never the finished setup"
     },
     {
@@ -32,7 +32,7 @@
       "reason_category": "none",
       "blocking_object": "not_applicable_infrastructure",
       "minimum_gap": "not_measured_infrastructure",
-      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/disks-after-test.json",
+      "raw": "<home>/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/disks-after-test.json",
       "reproduce": "gcloud compute disks list --filter=name=ugrp-budget-test-gcp5 --account <account-1> --project <project-id-gcp5>"
     },
     {
@@ -43,7 +43,7 @@
       "reason_category": "none",
       "blocking_object": "not_applicable_infrastructure",
       "minimum_gap": "not_measured_infrastructure",
-      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/smoke-result.json",
+      "raw": "<home>/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/smoke-result.json",
       "reproduce": "ssh gcp5 '/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python /home/ugrp/ugrp-sim/setup/smoke.py /home/ugrp/ugrp-sim/setup/NEW-result.json'"
     },
     {
@@ -54,7 +54,7 @@
       "reason_category": "none",
       "blocking_object": "not_applicable_infrastructure",
       "minimum_gap": "not_measured_infrastructure",
-      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/act-freeze.txt",
+      "raw": "<home>/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/act-freeze.txt",
       "reproduce": "Compare set(act-freeze.txt lines) with act-freeze-reference.txt"
     },
     {
@@ -65,7 +65,7 @@
       "reason_category": "none",
       "blocking_object": "not_applicable_infrastructure",
       "minimum_gap": "not_measured_infrastructure",
-      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/training-summary.json",
+      "raw": "<home>/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/training-summary.json",
       "reproduce": "ssh gcp5 '/home/ugrp/ugrp-rl1b-act-env/bin/python /home/ugrp/ugrp-sim/setup/training_smoke.py /home/ugrp/ugrp-sim/setup/beamact3-reference /home/ugrp/ugrp-sim/setup/training-smoke-NEW'"
     },
     {
@@ -76,7 +76,7 @@
       "reason_category": "none",
       "blocking_object": "not_applicable_infrastructure",
       "minimum_gap": "not_measured_infrastructure",
-      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/verification.json",
+      "raw": "<home>/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/verification.json",
       "reproduce": "python3 scripts/gcpctl.py status gcp5"
     }
   ],
@@ -89,7 +89,7 @@
       "reason_category": "none",
       "blocking_object": "not_applicable_infrastructure",
       "minimum_gap": "not_measured_infrastructure",
-      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/dataset-sha256.json",
+      "raw": "<home>/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/dataset-sha256.json",
       "reproduce": "Read transfer_dataset.py verification loop; compare all SHA256 without modifying source"
     },
     {
@@ -100,7 +100,7 @@
       "reason_category": "none",
       "blocking_object": "not_applicable_infrastructure",
       "minimum_gap": "not_measured_infrastructure",
-      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/dataset-sha256.json",
+      "raw": "<home>/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/dataset-sha256.json",
       "reproduce": "Read transfer_dataset.py verification loop; compare all SHA256 without modifying source"
     },
     {
@@ -111,7 +111,7 @@
       "reason_category": "none",
       "blocking_object": "not_applicable_infrastructure",
       "minimum_gap": "not_measured_infrastructure",
-      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/dataset-sha256.json",
+      "raw": "<home>/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/dataset-sha256.json",
       "reproduce": "Read transfer_dataset.py verification loop; compare all SHA256 without modifying source"
     }
   ],
@@ -124,7 +124,7 @@
       "reason_category": "none",
       "blocking_object": "not_applicable_infrastructure",
       "minimum_gap": "not_measured_infrastructure",
-      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/test-observations.json",
+      "raw": "<home>/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/test-observations.json",
       "reproduce": "Read test-observations.json and test-function-log.json"
     },
     {
@@ -135,7 +135,7 @@
       "reason_category": "none",
       "blocking_object": "not_applicable_infrastructure",
       "minimum_gap": "not_measured_infrastructure",
-      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/test-observations.json",
+      "raw": "<home>/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/test-observations.json",
       "reproduce": "Read test-observations.json and test-function-log.json"
     },
     {
@@ -146,7 +146,7 @@
       "reason_category": "none",
       "blocking_object": "not_applicable_infrastructure",
       "minimum_gap": "not_measured_infrastructure",
-      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/test-observations.json",
+      "raw": "<home>/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/test-observations.json",
       "reproduce": "Read test-observations.json and test-function-log.json"
     }
   ],
@@ -160,7 +160,7 @@
       "package": "torchcodec",
       "blocking_object": "not_applicable_infrastructure",
       "minimum_gap": "not_measured_infrastructure",
-      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/environment-rejection-table.json",
+      "raw": "<home>/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/environment-rejection-table.json",
       "reproduce": "Compare initial PyTorch-index selection and pin_act_codec.sh repair"
     }
   ],

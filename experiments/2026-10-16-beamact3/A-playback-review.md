@@ -20,4 +20,4 @@ gcp2에서 만든3배속 개요+r1+r2 영상과 ffprobe 기록, 전체2Hz 프레
 python experiments/2026-10-16-beamact2/playback.py --run /home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329000 --output NEW_DIR
 ```
 
-회수 미디어: `/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beamact3-A/`. 원본 SHA·퍼널은 `A-integrity.json`, `A-student-summary.json`, `A-rejection-table.json`을 따른다. 이 검토로 학습/제어/성공 기준을 바꾸지 않았다.
+회수 미디어: `<home>/projects/ugrp/outputs/e2e18-admin/playback/beamact3-A/`. 원본 SHA·퍼널은 `A-integrity.json`, `A-student-summary.json`, `A-rejection-table.json`을 따른다. 이 검토로 학습/제어/성공 기준을 바꾸지 않았다.

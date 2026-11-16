@@ -41,11 +41,11 @@
     "91100 dense first-seconds RGB history beyond t=0; only representative frames recovered"
   ],
   "tests": {
-    "command": "PYTHONPATH=. /Users/changmin/Project-Runtimes/ugrp/.venv-reference-act/bin/python -m pytest -q tests/test_grasp_act_policy.py tests/test_grasp_act_pilot.py tests/test_grasp_act_act4.py",
+    "command": "PYTHONPATH=. <home>/Project-Runtimes/ugrp/.venv-reference-act/bin/python -m pytest -q tests/test_grasp_act_policy.py tests/test_grasp_act_pilot.py tests/test_grasp_act_act4.py",
     "passed": 38,
     "failed": 0,
     "skipped": 0,
-    "junit_path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act4-offline-f609979c/tests-final.xml",
+    "junit_path": "<home>/projects/ugrp/outputs/e2e18-admin/act4-offline-f609979c/tests-final.xml",
     "junit_sha256": "be2eea7611ff721a793cdf7913f3e83fbe331bf848d498c141a67b9c04e7432e"
   },
   "changes": {
@@ -61,7 +61,7 @@
   },
   "queues": {
     "generator": "scripts/queue_grasp_act_act4.py",
-    "output_dir": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue",
+    "output_dir": "<home>/projects/ugrp/outputs/e2e18-admin/vm3-queue",
     "approved": false,
     "blocked_until_missing_measurements": true,
     "dart_recording_prepared": false
@@ -70,6 +70,6 @@
     "path": "act4-measurements.json",
     "sha256": "c4acbcaebe4c915fa45f67e97cc9f60a73e63cde2af9285d1704b7d0d1016260"
   },
-  "raw_root": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act4-offline-f609979c",
+  "raw_root": "<home>/projects/ugrp/outputs/e2e18-admin/act4-offline-f609979c",
   "gate_promotion_authorized_if_all_conditions_pass": false
 }

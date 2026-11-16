@@ -9,7 +9,7 @@ s['criteria_pass'].pop('nees');s['criteria_pass'].pop('unflagged');s['criteria_p
 s['look'].pop('goal_heading',None)
 s['end_state']=r.get('state') or (s['controller_states'][-1]['state'] if s['controller_states'] else None)
 s['failure_context']={'last_commands':r['commands'][-5:],'last_guard_checks':r['look_before_move']['checks'][-2:]}
-old=Path('/Users/changmin/projects/ugrp/outputs')/f's2-realism-88f5fbbb-s{s["seed"]}-v135-look-before-move/result.json'
+old=Path('<home>/projects/ugrp/outputs')/f's2-realism-88f5fbbb-s{s["seed"]}-v135-look-before-move/result.json'
 if old.exists():
  p=json.loads(old.read_text());s['time_delta_vs_v135_same_seed']={'sim_s':s['sim_s']-p['check_sim_s'],'wall_s':s['wall_s']-p['wall_s'],'scope':'failed previous run is not a completed-duration baseline'}
 (raw/'goal-heading-posthoc.json').write_text(json.dumps(s,indent=2)+'\n')

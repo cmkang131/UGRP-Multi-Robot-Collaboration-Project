@@ -7,7 +7,7 @@ from harness.e2e_rgb_vo import ground_pair
 from harness.active_wall_vision import observe
 from harness.active_camera import SEARCH
 from scripts.replay_e2e_speed4 import resize_compat,read_rows
-root=Path('outputs/e2e-speed4');inputroot=Path('/Users/changmin/projects/ugrp/outputs/e2e-speed/fetch-lite/e2e13-profile-s61001/raw')
+root=Path('outputs/e2e-speed4');inputroot=Path('<home>/projects/ugrp/outputs/e2e-speed/fetch-lite/e2e13-profile-s61001/raw')
 manifest=[];wall=[];pairs=[];markers=[]
 for rid in ('r1','r2','r3'):
  ledger={Path(f['path']).name:f for f in read_rows(inputroot/f'robots/{rid}/frames.jsonl')}

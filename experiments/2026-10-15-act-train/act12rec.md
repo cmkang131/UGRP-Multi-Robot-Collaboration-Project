@@ -5,7 +5,7 @@
 (SHA-256 `c5fc20e0dae610afd24f60960dab9b5b9f77ae057719274ae13e12734fa16565`),
 `recovery_active_search_v1`, `act8_yaw_gain_v1`(0.6790684337506349),
 GCP `<project-id-gcp1>`의 기존 gcp1 / n4-highcpu-64만 쓴다.
-관문 보고는 `/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act11-1fce1155.json`,
+관문 보고는 `<home>/projects/ugrp/outputs/e2e18-admin/gcp-reports/act11-1fce1155.json`,
 SHA-256 `23a982cac22d1655efdd9998dcacbec204876ce1ee5a2c6e471d193df22dc2a4`다.
 rotation-on 40/40 및 입력 감사 0/0을 기존 검사기로 원본에 다시 연결한다.
 Haiku 독립 재집계는 대기 중이다. 이 작업의 두 DEV 파일럿 권한만 별도 영수증으로 기록하며
@@ -77,7 +77,7 @@ GCP 바닥8GiB를 함께 계산한다. 파일럿 실측 뒤 보수적 실행당 
 접근 중 전 구간 가시를 주장하지 않는다. top 출력 파일은0개다.
 
 검토 이미지·모든 원본/회수 해시·입력 감사는
-`/Users/changmin/projects/ugrp/outputs/e2e18-admin/act12rec-1fce1155/`에 있다.
+`<home>/projects/ugrp/outputs/e2e18-admin/act12rec-1fce1155/`에 있다.
 원본은 `gcp1:/home/ugrp/ugrp-sim/runs/act12-record-{86820,86821}-1fce1155`,
 Mac lite는 `outputs/gcp1-runs/` 아래 같은 실행 이름이다. VM에서 전체 SHA256SUMS,
 Mac lite/선택 RGB의 각 해시를 확인했다. 원본 전체의 독립 백업은 아니다.
@@ -94,7 +94,7 @@ budget-stop ACTIVE, 최근 순비용 메시지0 KRW, 8h STOP·idle20분 유지.
 바닥20GiB를 충족한다. 실제 배치 활성화 전에는 다른 작업 잔여 쓰기와 여유를 다시 잰다.
 
 비활성 대기열:
-`/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-act12-record-da4727b6.json`
+`<home>/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-act12-record-da4727b6.json`
 (SHA-256 `3be895a07fc02a7b5b21670ecdfc9bc240060d7bcfb8965ab7d5a5dd4fb7d28c`).
 교사 SHA는1fce1155, 기록 wrapper는실제 실행한da4727b6로 각각 고정했다.
 파일럿2의 실제 argv를 그대로 보존하고 나머지48·예비10을 연결했다. max_parallel16,
@@ -108,13 +108,13 @@ Haiku 독립 재집계와 별도 bulk 관문 영수증 전에는 실행하지 �
 관련 오프라인 시험(단일 pytest 프로세스, 물리/렌더 없음):
 
 ```sh
-PYTHONDONTWRITEBYTECODE=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_grasp_act_act12_record.py tests/test_grasp_act_data.py
+PYTHONDONTWRITEBYTECODE=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_grasp_act_act12_record.py tests/test_grasp_act_data.py
 ```
 
 실제로 제출한 첫 파일럿 명령(같은 이름은 덮어쓰지 않고 거부한다):
 
 ```sh
-python3 scripts/remote_run.py --host gcp1 --detach --class dev --pr 504 --per-run-mb 256 /Users/changmin/projects/ugrp-wt/act-train act12-record-86820-1fce1155 -- bash -c 'cd /home/ugrp/ugrp-sim/src/1fce11554754d4609470e4fe4b172f9a583bc026 && exec /home/ugrp/ugrp-sim/src/1fce11554754d4609470e4fe4b172f9a583bc026/.venv-sim/bin/python /home/ugrp/ugrp-sim/src/da4727b69b71ccbeae68850a516ce010ac1c657b/scripts/run_grasp_act_act12_record.py --teacher-source /home/ugrp/ugrp-sim/src/1fce11554754d4609470e4fe4b172f9a583bc026 --own-review-only-v1 -- --plan /home/ugrp/ugrp-sim/act12rec-1fce1155/act12-record-plan.json --episode 0 --dependency-root /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --noise experiments/2026-10-15-act-train/act11-noise.json --recovery-mode recovery_active_search_v1 --rotation-calibration act8_yaw_gain_v1 --training-rgb --gate-receipt /home/ugrp/ugrp-sim/act12rec-1fce1155/pilot-gate-receipt.json --cap-s 90 --out /home/ugrp/ugrp-sim/runs/act12-record-86820-1fce1155/raw'
+python3 scripts/remote_run.py --host gcp1 --detach --class dev --pr 504 --per-run-mb 256 <home>/projects/ugrp-wt/act-train act12-record-86820-1fce1155 -- bash -c 'cd /home/ugrp/ugrp-sim/src/1fce11554754d4609470e4fe4b172f9a583bc026 && exec /home/ugrp/ugrp-sim/src/1fce11554754d4609470e4fe4b172f9a583bc026/.venv-sim/bin/python /home/ugrp/ugrp-sim/src/da4727b69b71ccbeae68850a516ce010ac1c657b/scripts/run_grasp_act_act12_record.py --teacher-source /home/ugrp/ugrp-sim/src/1fce11554754d4609470e4fe4b172f9a583bc026 --own-review-only-v1 -- --plan /home/ugrp/ugrp-sim/act12rec-1fce1155/act12-record-plan.json --episode 0 --dependency-root /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --noise experiments/2026-10-15-act-train/act11-noise.json --recovery-mode recovery_active_search_v1 --rotation-calibration act8_yaw_gain_v1 --training-rgb --gate-receipt /home/ugrp/ugrp-sim/act12rec-1fce1155/pilot-gate-receipt.json --cap-s 90 --out /home/ugrp/ugrp-sim/runs/act12-record-86820-1fce1155/raw'
 ```
 
 두 번째는 seed86821·episode1이다. 재실행에는 새 run 이름과 out을 일치시키고

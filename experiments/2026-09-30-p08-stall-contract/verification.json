@@ -45,21 +45,21 @@
         "name": "pytest",
         "returncode": 0,
         "command": [
-          "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+          "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
           "-m",
           "pytest",
           "-q",
           "tests/test_stall_observation_contract.py",
           "tests/test_zone_pair_status.py",
           "tests/test_ci_sharding.py",
-          "--junitxml=/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check11/junit.xml"
+          "--junitxml=<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check11/junit.xml"
         ]
       },
       {
         "name": "d1_review",
         "returncode": 0,
         "command": [
-          "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+          "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
           "experiments/2026-09-30-p08-stall-contract/review_d1.py"
         ]
       },
@@ -67,13 +67,13 @@
         "name": "fake_examples",
         "returncode": 0,
         "command": [
-          "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+          "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
           "experiments/2026-09-30-p08-stall-contract/fake_examples.py"
         ]
       }
     ],
     "first_test_attempt": {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check7",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check7",
       "passed": 121,
       "failed": 1,
       "cause": "substring import audit mistook an existing observation_contract config key for a runtime import",
@@ -223,182 +223,182 @@
   },
   "raw_artifacts": [
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check1/lock_refusal.json",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check1/lock_refusal.json",
       "bytes": 224,
       "sha256": "74ca9fdc6477f398b433e5f062f576132b33020c3d364af0443355557005a0b9"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check2/run_checks.py",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check2/run_checks.py",
       "bytes": 2762,
       "sha256": "871e71bbb725aa6463064be7644410b64e49d687bc10298295947670123445b6"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check3/run_checks.py",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check3/run_checks.py",
       "bytes": 2762,
       "sha256": "871e71bbb725aa6463064be7644410b64e49d687bc10298295947670123445b6"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check4/run_checks.py",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check4/run_checks.py",
       "bytes": 2762,
       "sha256": "871e71bbb725aa6463064be7644410b64e49d687bc10298295947670123445b6"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check5/run_checks.py",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check5/run_checks.py",
       "bytes": 2762,
       "sha256": "871e71bbb725aa6463064be7644410b64e49d687bc10298295947670123445b6"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check6/run_checks.py",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check6/run_checks.py",
       "bytes": 3001,
       "sha256": "f6dbb90150b7cd1a1d45621458c0b6e6dcee42133281f551a16eab4a93186f2f"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check6/wait_status.json",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check6/wait_status.json",
       "bytes": 467,
       "sha256": "d54d6223fbe7a6d5639273bd8d6eaa5991133f32f682b49f2155bfe0c27adf7d"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check7/commands.json",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check7/commands.json",
       "bytes": 872,
       "sha256": "75d007fdb144fddab681e54b344c211307731e7ff492ffa3630581b626216138"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check7/d1_review.stderr",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check7/d1_review.stderr",
       "bytes": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check7/d1_review.stdout",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check7/d1_review.stdout",
       "bytes": 1793,
       "sha256": "a2e9ae73ab1d76626e393da6ab1aac11174e8f6d456160b167e071ba7af7ba32"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check7/environment.json",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check7/environment.json",
       "bytes": 392,
       "sha256": "27fa6e4e938e331cba8ecc89605974b71af56fe1c44272d6eeba4e28cd10f3c4"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check7/fake_examples.stderr",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check7/fake_examples.stderr",
       "bytes": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check7/fake_examples.stdout",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check7/fake_examples.stdout",
       "bytes": 3530,
       "sha256": "2c374199db61a4124abfbc98f36d835020946266c625bf5125c773be6448f1eb"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check7/junit.xml",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check7/junit.xml",
       "bytes": 19286,
       "sha256": "2132e6f447aab3c2926995455569a850bb412de4f00c7c17903326e0c22d2762"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check7/lock_owned.json",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check7/lock_owned.json",
       "bytes": 306,
       "sha256": "369dc3df32b4d9df22773eaf4f6e683d20723b7075f4a696985842d97eefa6e9"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check7/pytest.stderr",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check7/pytest.stderr",
       "bytes": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check7/pytest.stdout",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check7/pytest.stdout",
       "bytes": 2157,
       "sha256": "5a9eefe34a400b5c5e6c767b06d3ad09457be47647c776d7a48c901dac4a16e9"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check7/run_checks.py",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check7/run_checks.py",
       "bytes": 3020,
       "sha256": "6df23f29afbd14f76d30663cf616ab291fb8b2a626da3eeddd4a8ca10a58dd70"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check8/run_checks.py",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check8/run_checks.py",
       "bytes": 3020,
       "sha256": "6df23f29afbd14f76d30663cf616ab291fb8b2a626da3eeddd4a8ca10a58dd70"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check8/wait_status.json",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check8/wait_status.json",
       "bytes": 474,
       "sha256": "7a693a7b892395e622e666c2f7a1509cd4df358d886209fc1b5d761083fab585"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check9/run_checks.py",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check9/run_checks.py",
       "bytes": 3020,
       "sha256": "6df23f29afbd14f76d30663cf616ab291fb8b2a626da3eeddd4a8ca10a58dd70"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check9/wait_status.json",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check9/wait_status.json",
       "bytes": 480,
       "sha256": "8407f73be679381a6e4ba4d4cf186cc550a8d0fdd3c22fc78919a47d07d8fbd3"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check10/run_checks.py",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check10/run_checks.py",
       "bytes": 3020,
       "sha256": "6df23f29afbd14f76d30663cf616ab291fb8b2a626da3eeddd4a8ca10a58dd70"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check10/wait_status.json",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check10/wait_status.json",
       "bytes": 459,
       "sha256": "b796a519f7e3bc5fbf1ee8b180540c09e01a4768f07071b6a22853e8103549e9"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check11/commands.json",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check11/commands.json",
       "bytes": 873,
       "sha256": "4ee2718bdbe7cacb31fde6d9eeed5651170e7125890d145bb6156251a77bceb5"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check11/d1_review.stderr",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check11/d1_review.stderr",
       "bytes": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check11/d1_review.stdout",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check11/d1_review.stdout",
       "bytes": 1793,
       "sha256": "a2e9ae73ab1d76626e393da6ab1aac11174e8f6d456160b167e071ba7af7ba32"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check11/environment.json",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check11/environment.json",
       "bytes": 394,
       "sha256": "d0e261ce0835fff0c3e35a6da223073808df3e95f8540facf91dacd3d10d42fc"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check11/fake_examples.stderr",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check11/fake_examples.stderr",
       "bytes": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check11/fake_examples.stdout",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check11/fake_examples.stdout",
       "bytes": 3530,
       "sha256": "2c374199db61a4124abfbc98f36d835020946266c625bf5125c773be6448f1eb"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check11/junit.xml",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check11/junit.xml",
       "bytes": 17086,
       "sha256": "01121ac89fe79d673da740fcde2d1e40aff86313c78eabd4f0be8f85f2d72e16"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check11/lock_owned.json",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check11/lock_owned.json",
       "bytes": 312,
       "sha256": "e690971d051267379e3ef2d30f42259c6b52d28a5f4bc7d815ec4d5bee758e1e"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check11/lock_released.json",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check11/lock_released.json",
       "bytes": 402,
       "sha256": "37f122e7e689a2897406e9b4002bfeaabed347005b04e715ff843daf898292d7"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check11/pytest.stderr",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check11/pytest.stderr",
       "bytes": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check11/pytest.stdout",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check11/pytest.stdout",
       "bytes": 180,
       "sha256": "2211e999564f9d6fcb6ff3356b1e6f2e2f147c1c00a48f12b089b31fc8e8bc20"
     },
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check11/run_checks.py",
+      "path": "<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check11/run_checks.py",
       "bytes": 3020,
       "sha256": "6df23f29afbd14f76d30663cf616ab291fb8b2a626da3eeddd4a8ca10a58dd70"
     }

@@ -8,8 +8,8 @@ from harness.active_wall_mapping import OPTIONS
 from harness.rbpf_motion_gate import install,OPTION
 from harness.self_odom_grid import transform
 from scripts.run_active_wall_map import dump
-RAW=Path('/Users/changmin/projects/ugrp/outputs/active-wall-map-v1')
-OUT=Path('/Users/changmin/projects/ugrp/outputs/rbpf-motion-gate-v1/offline')
+RAW=Path('<home>/projects/ugrp/outputs/active-wall-map-v1')
+OUT=Path('<home>/projects/ugrp/outputs/rbpf-motion-gate-v1/offline')
 def rows(p):return [json.loads(x) for x in p.read_text().splitlines()]
 def replay(case):
  ep=RAW/case;out=OUT/case;out.mkdir(parents=True,exist_ok=False)

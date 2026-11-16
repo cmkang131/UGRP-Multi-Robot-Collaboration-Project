@@ -35,7 +35,7 @@ dev03/dev04는 `not_run`, 실행 SHA는 코디네이터가 검토·커밋한 뒤
 
 ```sh
 OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 \
-  /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
+  <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
   tests/test_zone_pair_dev.py tests/test_zone_pair_executor.py \
   tests/test_zone_pair_review3.py tests/test_simulation_workflow_manager.py \
   --basetemp=./.pytest_tmp
@@ -62,7 +62,7 @@ MuJoCo import 차단 상태에서 확인했다. 두 manifest 모두 `prepared_no
 ## dev01 읽기 전용 회귀 확인과 보존
 
 원본 위치:
-`/Users/changmin/projects/ugrp/outputs/zone-pair-dev-521e5567e4a1d1b0614b86b8bf355e994edca890/dev01`.
+`<home>/projects/ugrp/outputs/zone-pair-dev-521e5567e4a1d1b0614b86b8bf355e994edca890/dev01`.
 원본 실행 SHA는 `521e5567…`이며 이번 수정 기준 HEAD와 구분한다.
 
 `artifacts.sha256.json`의 **14개 파일 크기·SHA256 불일치 0건**.

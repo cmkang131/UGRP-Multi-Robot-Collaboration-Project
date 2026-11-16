@@ -1,7 +1,7 @@
 {
   "schema": "ugrp.zone_study_integration_code_verification.v1",
   "date": "2026-09-27",
-  "worktree": "/Users/changmin/projects/ugrp-wt/kiro-study-integration",
+  "worktree": "<home>/projects/ugrp-wt/kiro-study-integration",
   "head": "844d9dfbca49c4c15693c8e84ab6be13d0c1253b",
   "merge_head": "3b86842cf745410021ab5c937e56b6ed74682f12",
   "git_index_modified": false,
@@ -77,8 +77,8 @@
     }
   ],
   "commands": {
-    "regression": "OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p no:cacheprovider --basetemp=/Users/changmin/projects/ugrp-wt/kiro-study-integration/tmp/pytest-core-r7-regression --junitxml=/Users/changmin/projects/ugrp-wt/kiro-study-integration/tmp/core-r7-regression.xml tests/test_zone_study*.py tests/test_zone_event_scheduler.py tests/test_zone_sim_cost.py tests/test_zone_own_executor.py tests/test_zone_own_perception.py tests/test_zone_own_perception_v2.py tests/test_simulation_workflow_manager.py -k 'not test_team_host_feeds_each_executor_only_its_own_camera'",
-    "executor-fix": "OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p no:cacheprovider --basetemp=/Users/changmin/projects/ugrp-wt/kiro-study-integration/tmp/pytest-core-r7-executor-fix --junitxml=/Users/changmin/projects/ugrp-wt/kiro-study-integration/tmp/core-r7-executor-fix.xml tests/test_zone_own_executor.py::test_action_record_adapter_matches_package_a_schema"
+    "regression": "OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p no:cacheprovider --basetemp=<home>/projects/ugrp-wt/kiro-study-integration/tmp/pytest-core-r7-regression --junitxml=<home>/projects/ugrp-wt/kiro-study-integration/tmp/core-r7-regression.xml tests/test_zone_study*.py tests/test_zone_event_scheduler.py tests/test_zone_sim_cost.py tests/test_zone_own_executor.py tests/test_zone_own_perception.py tests/test_zone_own_perception_v2.py tests/test_simulation_workflow_manager.py -k 'not test_team_host_feeds_each_executor_only_its_own_camera'",
+    "executor-fix": "OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p no:cacheprovider --basetemp=<home>/projects/ugrp-wt/kiro-study-integration/tmp/pytest-core-r7-executor-fix --junitxml=<home>/projects/ugrp-wt/kiro-study-integration/tmp/core-r7-executor-fix.xml tests/test_zone_own_executor.py::test_action_record_adapter_matches_package_a_schema"
   },
   "final_unique_test_status": {
     "passed": 952,

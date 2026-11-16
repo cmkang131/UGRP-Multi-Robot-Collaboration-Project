@@ -99,7 +99,7 @@ def test_unobserved_goal_and_dev_light_timeout_not_success(monkeypatch):
 def test_live_sensor_same_frozen_egomap42_measurement():
     # Real cached RGB check: no simulation/GT/native model constructed.
     import cv2
-    ep=Path('/Users/changmin/projects/ugrp/outputs/wall-segment-dev-v1/new-seed')
+    ep=Path('<home>/projects/ugrp/outputs/wall-segment-dev-v1/new-seed')
     if not ep.exists():pytest.skip('local raw RGB unavailable')
     frames=[json.loads(l) for l in (ep/'robots/r3/frames.jsonl').read_text().splitlines()]
     row=json.loads((Path(__file__).parent/'fixtures/own_map_tempering/golden.json').read_text())['sequence'][0]

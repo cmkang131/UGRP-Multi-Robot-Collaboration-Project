@@ -10,7 +10,7 @@ from pathlib import Path
 
 import numpy as np
 
-OUTPUTS = Path('/Users/changmin/projects/ugrp/outputs')
+OUTPUTS = Path('<home>/projects/ugrp/outputs')
 RUNS = {1051: 's2-realism-b2de2b30-s1051-landmark-full',
         1053: 's2-realism-027c567c-s1053-v133-reproduction',
         1054: 's2-realism-027c567c-s1054-v133-reproduction'}

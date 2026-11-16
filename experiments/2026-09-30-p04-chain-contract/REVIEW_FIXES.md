@@ -40,7 +40,7 @@
 기존 등록 JSON·봉인·controller/provider/runner 소스는 바꾸지 않았다.
 변경 코드는 등록 closure 밖의 선택형 출력 기록기와 그 검사다.
 원래 `VERIFICATION.json`, validation-01–04 및 독립 검토 raw는 덮어쓰지 않는다.
-새 raw는 `/Users/changmin/projects/ugrp/outputs/p04-chain-contract-20260930/review-fixes-01/`과
+새 raw는 `<home>/projects/ugrp/outputs/p04-chain-contract-20260930/review-fixes-01/`과
 `review-fixes-02/`에 로컬 보관한다. 원격 백업이 아니다.
 
 사용자 지시에 따라 README와 P04 과제문의 범위를 바로잡았다. 로컬 물리·렌더·실제 모델

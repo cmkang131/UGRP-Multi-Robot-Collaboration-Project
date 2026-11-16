@@ -10,7 +10,7 @@ sys.path.insert(0, str(__import__('pathlib').Path(__file__).resolve().parents[2]
 from harness import zone_solo_cyan_contract_v106 as contract
 from harness import zone_solo_cyan_v106 as runtime
 
-OUT = sys.argv[1] if len(sys.argv) > 1 else '/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-ee40923c-s911-P1-2-place'
+OUT = sys.argv[1] if len(sys.argv) > 1 else '<home>/projects/ugrp/outputs/solo-cyan-v106-ee40923c-s911-P1-2-place'
 rec = json.load(open(OUT + '/student_record.json'))
 truth = [json.loads(l) for l in open(OUT + '/eval_only/trajectory.jsonl')]
 tt = [r['t'] for r in truth]

@@ -19,7 +19,7 @@ import numpy as np
 from sim.final_pair_v3 import PhysicsBackend as Old, make_scene
 from sim.final_pair_fast import PhysicsBackend as New
 
-RAW_ROOT = Path('/Users/changmin/projects/ugrp/outputs')
+RAW_ROOT = Path('<home>/projects/ugrp/outputs')
 RAW_CASES = (
     RAW_ROOT / 'final-pair-v88-cal-747d2b9f-20261001/calibration-unloaded/zone_wide_two_doors_final_v3',
     RAW_ROOT / 'final-pair-v88-cal-747d2b9f-20261001-r6/calibration-fine/zone_wide_two_doors_final_v3',

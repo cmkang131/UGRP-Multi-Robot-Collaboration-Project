@@ -4,7 +4,7 @@ Refs #216, #221, #293. **DRAFT · 미봉인 · 제어기 미연결 · 병합 금
 
 요청 기준 main은 `a8094cc14e098a55483f53a3c49bf6a0b116043d`, 배정된
 `codex/stall-contract`의 실제 시작점은 그 후손 `d17ca4345affef8cf027e121cf1f3197b36c23e0`이다.
-작업 폴더는 `/Users/changmin/projects/ugrp-wt/e2e-p08-stall` 하나만 사용했다.
+작업 폴더는 `<home>/projects/ugrp-wt/e2e-p08-stall` 하나만 사용했다.
 #293 검토 head는 `d86cc82eedbe0c6693eaf808c54ce43387723f1d`다.
 
 **판정:** 관찰 기록과 가짜 중단 순서를 검토할 초안은 준비했다. D1의 실시간 연결·실제 정체 검출·물리 정지·복구는 미검증이다.
@@ -66,7 +66,7 @@ host가 peer의 사적 상태·RGB·D1 이유/점수/기준을 전달하거나 p
 CI 분할 66개. `review_d1.py`의 합성 반례와 `fake_examples.py`의 자기 로그/중단 trace 생성도 통과했다.
 첫 실행은 121 passed/1 failed였다. import 검사에서 기존 설정 문자열 `observation_contract`를 잘못
 잡았고, 실제 import AST와 실험 경로 참조를 검사하도록 고쳐 재실행했다. 최초 실패도 보존했다.
-최종 원본은 `/Users/changmin/projects/ugrp/outputs/p08-stall-contract-20260930-check11/`,
+최종 원본은 `<home>/projects/ugrp/outputs/p08-stall-contract-20260930-check11/`,
 최초 검사 실패는 같은 접두사의 `check7/`이다. 다른 대기 폴더는 잠금 거부/대기 종료이며 검사를 시작하지 않았다.
 
 공용 파일 변경은 `scripts/run_ci_tests.py`의 테스트 목록 **한 줄**뿐이다. 기존 controller/status/runner,

@@ -54,7 +54,7 @@
 ## 검증과 남은 일
 
 최종 명령·개수·소스 해시는 [검증 기록](core-r7-verification.json)에 저장한다.
-Python은 `/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python`,
+Python은 `<home>/projects/ugrp/.venv-sim-worker-mac/bin/python`,
 `OMP_NUM_THREADS=1`이고 `--basetemp`는 이 worktree의 `tmp/` 아래다.
 실제 MuJoCo를 생성하는 `test_team_host_feeds_each_executor_only_its_own_camera`는 명시적으로 제외한다.
 

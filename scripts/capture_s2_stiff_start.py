@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 import time
 
-RAW = Path('/Users/changmin/projects/ugrp/outputs/s2-realism-18e5e42e-s1052-P1-2-place')
+RAW = Path('<home>/projects/ugrp/outputs/s2-realism-18e5e42e-s1052-P1-2-place')
 
 
 def prefix():

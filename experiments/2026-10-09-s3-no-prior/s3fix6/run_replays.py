@@ -4,7 +4,7 @@ from pathlib import Path
 from scripts import agent_lock
 from harness.pf_observation_consistency import OPTIONS
 ROOT=Path(__file__).resolve().parents[3]
-RAW=Path('/Users/changmin/projects/ugrp/outputs')
+RAW=Path('<home>/projects/ugrp/outputs')
 HERE=Path(__file__).parent
 
 def main():

@@ -13,7 +13,7 @@ Mac 물리·렌더·학습과 원격 작업 실행은 0회다. 회수 자료를 
 
 ## 1. 회수 범위와 보류 5개 행동 오차
 
-운영 원본은 `/Users/changmin/projects/ugrp/outputs/e2e18-admin/act-main-f609979c-ops/`,
+운영 원본은 `<home>/projects/ugrp/outputs/e2e18-admin/act-main-f609979c-ops/`,
 중단 원장은 같은 상위 폴더의 `stop-act-main-f609979c-20261015.json`이다.
 50에피소드·17,851행(train45 / 16,018행, 보류5 / 1,833행)과 최종 loss 0.104448은
 [운영 기록](operations-f609979c.md)에 연결한다. 기존 HOST_ERROR와 실패·미제출 9건을
@@ -160,11 +160,11 @@ reset·done·유효0행, 보류 누락/중복 거부, 미승인 큐를 확인했
 JUnit과 원본 해시는 요약 JSON에 있다. 새 시험을 기존 CI 목록에도 등록했다.
 
 커밋 뒤 아래 생성기는 깨끗한 현재 SHA를 박아 **모든 단계 approved=false/enabled=false** 큐를
-`/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-act4-<SHA8>.json`에 쓴다.
+`<home>/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-act4-<SHA8>.json`에 쓴다.
 
 ```sh
 python3 -m scripts.queue_grasp_act_act4 \
-  --output-dir /Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue
+  --output-dir <home>/projects/ugrp/outputs/e2e18-admin/vm3-queue
 ```
 
 선행 조건: 보류1,833개 저장 예측 분석·전체50개 회복 census·91100 첫30초 필요한 RGB만 회수,

@@ -105,7 +105,7 @@ V가 대표값(%)이며 G, R은 참고다. "사례"는 서로 다른 stage probe
 
 ## 원본과 해시
 
-- `frames.jsonl.gz` 67,237행(기본 렌더 58,905 + `floor_light_v1` 8,332): `/Users/changmin/projects/ugrp/outputs/relocalization-audit-20260929/frames.jsonl.gz`, sha256 `09cb34c7941818c9eccae8effbbfce05e5dd336329736ad1c8cbcdc4f345e22a`
+- `frames.jsonl.gz` 67,237행(기본 렌더 58,905 + `floor_light_v1` 8,332): `<home>/projects/ugrp/outputs/relocalization-audit-20260929/frames.jsonl.gz`, sha256 `09cb34c7941818c9eccae8effbbfce05e5dd336329736ad1c8cbcdc4f345e22a`
 - `inventory.json`(사례 1195개 목록), sha256 `bf6aaff6818ff5d50b36cd456a55a13e08739594bbb55bf57047aca40acf6197`
 - 이 폴더: `summary.json`(단계 통계), `cand_points.json`(지도 예측), `requirements.json`(유도 수치). 영상·큰 파일은 넣지 않았다(각 1 MiB 미만).
 
@@ -113,7 +113,7 @@ V가 대표값(%)이며 G, R은 참고다. "사례"는 서로 다른 stage probe
 
 ```
 cd <worktree>
-PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 $PY experiments/2026-09-29-relocalization-audit/inventory.py <inventory.json>
 $PY experiments/2026-09-29-relocalization-audit/validate_rule.py <inventory.json>
 $PY experiments/2026-09-29-relocalization-audit/audit_run.py <inventory.json> <frames.jsonl.gz> --workers 4

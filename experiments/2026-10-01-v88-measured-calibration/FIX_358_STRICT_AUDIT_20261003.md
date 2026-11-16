@@ -32,11 +32,11 @@
 
 기존 완료 수집 세 개만 임시 symlink root로 묶었다. 입력은 아래 경로이며 원본 변경 없음이다.
 
-- unloaded: `/Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001/calibration-unloaded`
-- fine: `/Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001-r6/calibration-fine`
-- loaded: `/Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001-r8/calibration-loaded`
+- unloaded: `<home>/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001/calibration-unloaded`
+- fine: `<home>/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001-r6/calibration-fine`
+- loaded: `<home>/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001-r8/calibration-loaded`
 
-새 출력: `/Users/changmin/projects/ugrp/outputs/final-pair-v88-measured-fix358-20261003-140522`.
+새 출력: `<home>/projects/ugrp/outputs/final-pair-v88-measured-fix358-20261003-140522`.
 [정확한 argv/exit code](fix-358-evidence/assembly-command.json), [출력](fix-358-evidence/assembly.txt), [결과·비교·SHA256](fix-358-evidence/assembly-verification.json).
 
 **unloaded PASS / fine PASS / loaded PASS**, exit **2**, 상태 **PARTIAL**, 누락 **42개**.

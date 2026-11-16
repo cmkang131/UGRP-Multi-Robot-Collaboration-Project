@@ -73,7 +73,7 @@ def main():
             acquisition=c.read(ep/'result.json'),evaluation_sources={str(p):c.sha(p) for p in
                 [ep/'eval_only/trajectory.jsonl',ep/'eval_only/camera.jsonl',ep/'scene.xml']})
         traces[case]=dict(t=times-times[0],local=local,ts=ts-times[0],dr=dr)
-    real=Path('/Users/changmin/projects/ugrp/outputs/camera-review-20261006/search-v3/recovered/real_traces/20260902T145131Z-real-19bb30fd/skills/20260902T145421Z-pick-b5f9a960/frames/frame-000005.jpg')
+    real=Path('<home>/projects/ugrp/outputs/camera-review-20261006/search-v3/recovered/real_traces/20260902T145131Z-real-19bb30fd/skills/20260902T145421Z-pick-b5f9a960/frames/frame-000005.jpg')
     c.dump(EXP/'results/diagnosis.json',dict(cases=output,real_reference=dict(path=str(real),sha256=c.sha(real),
         comparability='Historical tabletop real RGB, not matched arena walls; no quantitative real-wall texture claim'),
         tuning=0,mapping_replays=0,decision='STOP_OWN_MAP_TRACK'))

@@ -3,7 +3,7 @@ import json,hashlib,sys
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]))
 from scripts.audit_camera_grasp_student import audit
 from scripts.run_camera_pair_transport import evaluate_grasp_samples
-base=Path('/Users/changmin/projects/ugrp/outputs');models=base/'grasp-student-model-20260910-v1'
+base=Path('<home>/projects/ugrp/outputs');models=base/'grasp-student-model-20260910-v1'
 for cohort in ['grasp-student-cohort-20260910-v1','grasp-student-stress-20260910-v1']:
  root=base/cohort;rows=[]
  for p in sorted(root.iterdir()):

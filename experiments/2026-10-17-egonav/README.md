@@ -157,7 +157,7 @@ world02의 4.431 m는 받아들인 목표의 오차가 아니라 **첫 거짓 �
   원점·정면 고정, 기억·불확실성 원이 상대 위치로 반대로 이동), 오른쪽 자기
   RGB, 아래 t·기억 개수·이벤트를 그려 10 fps(=10 Hz 트레이스, 1× SIM 속도)
   mp4로 만든다.
-* 산출물: Mac `/Users/changmin/projects/ugrp/outputs/egonav-mapbuild/`
+* 산출물: Mac `<home>/projects/ugrp/outputs/egonav-mapbuild/`
   (mp4·트레이스·메타). VM 원본은 `/home/ugrp/ugrp-sim/runs/egonav/mapbuild-01`.
 
 ### 실행 결과 (2026-10-17)
@@ -178,7 +178,7 @@ world02의 4.431 m는 받아들인 목표의 오차가 아니라 **첫 거짓 �
   mp4 sha256 `332be3d8901f45be33c9acb6319986b16cdf7ee51991479b3d94446f6f25c4f2`,
   트레이스 sha256 `e346e915227b1951bcf7bd8c7bc370dbd047ed9ce1ea4d2d274e0f125f2bd5c3`,
   빌더 sha256 `d30e4fc7a54a0e5a05cf410eb52665c773fbd6fdd48de79defe8a1b97301d4d5`.
-* Mac 산출물: `/Users/changmin/projects/ugrp/outputs/egonav-mapbuild/`
+* Mac 산출물: `<home>/projects/ugrp/outputs/egonav-mapbuild/`
   (`egonav-memory-replay-world02-15.8s.mp4`, `memory_trace-world02-spawn.jsonl`,
   `replay-meta.json`, `run-summary.json`, `preview/*.png`).
 * VM 원본: `/home/ugrp/ugrp-sim/runs/egonav/mapbuild-01`,
@@ -253,7 +253,7 @@ world02의 4.431 m는 받아들인 목표의 오차가 아니라 **첫 거짓 �
 
 ### 영상
 
-* `/Users/changmin/projects/ugrp/outputs/egonav-wallmem/egonav-wallmem-replay-world00-15.7s.mp4`
+* `<home>/projects/ugrp/outputs/egonav-wallmem/egonav-wallmem-replay-world00-15.7s.mp4`
   sha256 `78bd4be1f8dd937dff4db650e60e16bc1b7167f34752538a638a1ed1971d80a1`,
   947,731 B, 158프레임, 10 fps(1× SIM), 15.7 s. 왼쪽 자기 중심 기억 패널에서
   목표 표시는 주황, 벽 기억 12개는 초록(불확실성 원 포함), 이번 틱 스캔

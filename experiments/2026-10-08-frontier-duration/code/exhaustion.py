@@ -4,7 +4,7 @@ import ctypes,hashlib,json,sys,subprocess
 import numpy as np
 ROOT=Path(__file__).resolve().parents[3];sys.path.insert(0,str(ROOT))
 EXP=Path(__file__).resolve().parents[1]
-RAW=Path('/Users/changmin/projects/ugrp/outputs/frontier-duration-v1')
+RAW=Path('<home>/projects/ugrp/outputs/frontier-duration-v1')
 EP=RAW/'A/new-seed';OUT=RAW/'exhaustion-audit-v2'
 from harness.active_wall_recovery import RecoveryMapper
 from harness.active_camera import SEARCH

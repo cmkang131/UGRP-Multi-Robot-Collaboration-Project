@@ -201,7 +201,7 @@ TensorBoard 변환기(`scripts/build_pair_stage_probe_views.py`)도 함께 고�
 - 러너는 `OMP_NUM_THREADS=2`를 코드에 고정한다(worker당). 바꾸지 않았다.
 - 모든 raw의 manifest는 `state=completed`, `source_changed=False`다. 예외 하나(`7ded27cc-dxGate`)는 중단됐다(아래).
 
-| raw (`/Users/changmin/projects/ugrp/outputs/pair-stage-probes-` 뒤) | 소스 | 조건 | 계획 → staged | 통과 | wall | 부하 (시작 → 끝) |
+| raw (`<home>/projects/ugrp/outputs/pair-stage-probes-` 뒤) | 소스 | 조건 | 계획 → staged | 통과 | wall | 부하 (시작 → 끝) |
 |---|---|---|---|---:|---:|---|
 | `b604499d-carryL0` | b604499d (0.4.1) | 기준선, 운반 L0, 19셀 | 19 → 13 | 0 | 428.5 s | 18.3 → 45.5 |
 | `b604499d-carryL1367` | b604499d | 기준선, 운반 L1·L3·L6·L7, leg당 7셀 | 28 → 20 | 0 | 528.8 s | 45.5 → 23.7 |
@@ -230,7 +230,7 @@ TensorBoard 변환기(`scripts/build_pair_stage_probe_views.py`)도 함께 고�
 
 ## raw와 해시
 
-모든 raw는 `/Users/changmin/projects/ugrp/outputs/`에 있고 **로컬에만 보관한다**(원격 백업 아님). `cases.jsonl`과 `summary.json`은 이 폴더에 같은 바이트로 복사했다(`cases_<이름>.jsonl`, `summary_<이름>.json`, 합계 약 0.6 MB). 집계 출력은 [tabulate_all.txt](tabulate_all.txt) · [tabulate_all.json](tabulate_all.json)이고 [tabulate.py](tabulate.py)가 만든다. 오프라인 계산은 [retreat_clearance.py](retreat_clearance.py) · [.txt](retreat_clearance.txt).
+모든 raw는 `<home>/projects/ugrp/outputs/`에 있고 **로컬에만 보관한다**(원격 백업 아님). `cases.jsonl`과 `summary.json`은 이 폴더에 같은 바이트로 복사했다(`cases_<이름>.jsonl`, `summary_<이름>.json`, 합계 약 0.6 MB). 집계 출력은 [tabulate_all.txt](tabulate_all.txt) · [tabulate_all.json](tabulate_all.json)이고 [tabulate.py](tabulate.py)가 만든다. 오프라인 계산은 [retreat_clearance.py](retreat_clearance.py) · [.txt](retreat_clearance.txt).
 
 | raw | 파일 · 크기 | `artifacts.sha256.json` | `cases.jsonl` | `summary.json` |
 |---|---|---|---|---|
@@ -283,7 +283,7 @@ driver log sha256 (`outputs/pair-stage-probes-<sha8>-<이름>-driver.log`, 각 �
 
 ## TensorBoard
 
-- **스냅샷.** `/Users/changmin/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6c-carry`, run 224개(경우별 205 + 그룹 집계 `ALL-*` 19). `collection.json` sha256 `bae69c7c782b2d25f9ab0df97ff8929841827d83246491e14d6df5c3c61282e2`. 기존 스냅샷은 건드리지 않았다.
+- **스냅샷.** `<home>/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6c-carry`, run 224개(경우별 205 + 그룹 집계 `ALL-*` 19). `collection.json` sha256 `bae69c7c782b2d25f9ab0df97ff8929841827d83246491e14d6df5c3c61282e2`. 기존 스냅샷은 건드리지 않았다.
 - **파생 뷰.** `outputs/pair-stage-probes-tbviews-0929-v6c-carry`(index sha256 `bf37dd1ea3dba200025707b109bdbd87d54b7f37012b5791bed7cae7d8445a66`). 빌더 `scripts/build_pair_stage_probe_views.py`, 변환기 `scripts/tensorboard_tools/offline_audit.py`. 중단된 `dxGate`와 스모크 3건은 뷰에서 뺐고 19개 raw만 넣었다.
 - **검증 1.** EventAccumulator로 205개 경우 run과 19개 집계의 값(`offline/stage_pass`, `offline/pass_rate`, `result/sim_s`, `result/wall_s`, `result/commands` 등)을 원본 raw·뷰와 비교했다. 불일치 0건이다(`result/sim_s`·`result/wall_s`는 float32라 허용오차 1e-3·1e-2로 비교).
 - **검증 2.** 공용 서버(다른 작업 소유, 재시작하지 않음)의 `/data/runs`에 새 run 224개가 모두 있다(서버 전체 2052 run).

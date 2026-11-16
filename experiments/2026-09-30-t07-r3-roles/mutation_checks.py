@@ -149,7 +149,7 @@ def main():
             raise
         return 0
     from scripts.run_ci_tests import local_lock_root, run_locked
-    raw = Path('/Users/changmin/projects/ugrp/outputs/t07-r3-roles')
+    raw = Path('<home>/projects/ugrp/outputs/t07-r3-roles')
     output = raw / ('mutations-' + uuid.uuid4().hex[:12])
     command = [sys.executable, str(Path(__file__).resolve()), '--worker', str(output)]
     print(output, flush=True)

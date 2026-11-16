@@ -18,7 +18,7 @@
 
 ```sh
 OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 TMPDIR="$PWD/tmp/round4-tests/test-env" \
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
   tests/test_sim_speed_review4.py tests/test_sim_speed_review3.py \
   tests/test_sim_speed_review2.py tests/test_sim_speed_tools.py \
   tests/test_sim_slots.py tests/test_exact_speedups.py \
@@ -36,7 +36,7 @@ OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 TMPDIR="$PWD/tmp/round4-tests/test-e
 
 `scripts.sim_equivalence.compare(path, path)`를 원본 디렉터리에 직접 적용했다. 원본은 수정하지 않았다.
 
-| 원본 (`/Users/changmin/projects/ugrp/outputs/m1-owncam-20260926/dev-a8/`) | 수정 전 | 수정 후 | 확인한 JPEG |
+| 원본 (`<home>/projects/ugrp/outputs/m1-owncam-20260926/dev-a8/`) | 수정 전 | 수정 후 | 확인한 JPEG |
 |---|---|---|---:|
 | `m1dev-s93` | `insufficient_evidence` | `equivalent` | 2,080 |
 | `m1devdiag-s95` | `insufficient_evidence` | `equivalent` | 2,309 |

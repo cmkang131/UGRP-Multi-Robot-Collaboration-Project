@@ -110,7 +110,7 @@ if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--out',type=Path,required=True)
     p.add_argument('--case',choices=['r1']+[str(i) for i in range(1065,1071)],required=True)
     p.add_argument('--candidate',action='store_true');a=p.parse_args()
-    root=Path('/Users/changmin/projects/ugrp/outputs')
+    root=Path('<home>/projects/ugrp/outputs')
     if a.case=='r1':
         raw=root/'s3-host-heading-3daa830f-s14201-v146';rid='r1';seed=14201
     else:

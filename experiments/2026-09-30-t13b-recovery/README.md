@@ -67,13 +67,13 @@ no-op를 각각 제거하면 해당 assertion이 실패한다. 오류/수집 실
 기존 Mac Python 환경으로 다시 검사할 때:
 
 ```sh
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
   tests/test_zone_own_executor_recovery.py tests/test_zone_identity_jobs.py \
   tests/test_zone_study_inputs.py tests/test_zone_study_contract.py \
   tests/test_zone_pair_registered_source.py tests/test_zone_study_source_pinning.py
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
   scripts/check_zone_item_recovery_mutations.py \
-  --output /Users/changmin/projects/ugrp/outputs/t13b-mutations-NEW-ID
+  --output <home>/projects/ugrp/outputs/t13b-mutations-NEW-ID
 ```
 
 raw 로그·JUnit·mutation 원본은 primary `outputs/t13b-recovery-offline-20260930-r2/`에

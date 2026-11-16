@@ -17,5 +17,5 @@ def Runtime(*a,**kw):
     return result
 
 if __name__=='__main__':
-    bind(m.replay,Runtime=Runtime)(Path('/Users/changmin/projects/ugrp/outputs/s3-odometry-4c9eb3aa-s14201-v150'),
-        Path('/Users/changmin/projects/ugrp/outputs/s3fix6-20261010/first-invalid'),False,measure=False)
+    bind(m.replay,Runtime=Runtime)(Path('<home>/projects/ugrp/outputs/s3-odometry-4c9eb3aa-s14201-v150'),
+        Path('<home>/projects/ugrp/outputs/s3fix6-20261010/first-invalid'),False,measure=False)

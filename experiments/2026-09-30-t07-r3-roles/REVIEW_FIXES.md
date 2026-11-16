@@ -49,8 +49,8 @@ half extents는 `[.17, .17]`이다. end_neg의 상대 station/prestation x는
 ## 실행과 인계
 
 ```sh
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-30-t07-r3-roles/offline_checks.py
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-30-t07-r3-roles/mutation_checks.py
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-30-t07-r3-roles/offline_checks.py
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-30-t07-r3-roles/mutation_checks.py
 ```
 
 main #328의 최신 지침에 따라 오프라인 테스트의 공용 잠금은 선택 사항이다.

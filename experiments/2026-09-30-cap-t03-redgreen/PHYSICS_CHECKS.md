@@ -31,6 +31,6 @@
 
 ## 원본과 결과 인수
 
-primary `/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/physical-<새 실행 ID>/<cell>/`에 각 시도별 새 경로를 사용한다. 실패 후 같은 파일을 덮지 않는다. raw own JPEG·전체 모델 요청/응답(호출이 별도 승인된 경우)·발행 명령·관측·servo/단계 전이·staging 포함 SIM초·벽시계 시간·실패 원인·평가 전용 GT/접촉·성공률 분모를 분리 보존한다. controller/config hash와 role assignment hash를 별도 기록하고 raw 전체 해시를 manifest에 연결한다.
+primary `<home>/projects/ugrp/outputs/cap-t03-redgreen/physical-<새 실행 ID>/<cell>/`에 각 시도별 새 경로를 사용한다. 실패 후 같은 파일을 덮지 않는다. raw own JPEG·전체 모델 요청/응답(호출이 별도 승인된 경우)·발행 명령·관측·servo/단계 전이·staging 포함 SIM초·벽시계 시간·실패 원인·평가 전용 GT/접촉·성공률 분모를 분리 보존한다. controller/config hash와 role assignment hash를 별도 기록하고 raw 전체 해시를 manifest에 연결한다.
 
 실행 뒤 `docs/tensorboard.md`를 따라 **새** snapshot을 만든다. source path/hash 중복 여부, 실제 scalar readback(성공/시간/명령/모델 호출·응답 시간), 영상 등록, primary outputs/tensorboard logdir과 소유 viewer, pinned 링크/열/표시값을 검증한다. 기존 snapshot·raw·shared view의 다른 키는 보존한다. 구현 draft의 준비 판정과 물리 결과 판정을 따로 보고한다.

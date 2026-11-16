@@ -4,9 +4,9 @@
   "question": "Can bounded active-view recovery break repeated weak-RGB HOLD without losing full physical transport success or matched full-mission speed?",
   "claim_scope": "Local open-map nearby-pose RGB controller package only. Original spawn is observed development failure, not independent holdout. No isolated active-view causal effect, map generalization, statistical confirmation, or communication-efficacy claim.",
   "comparison": {
-    "reference_checkout": "/Users/changmin/.codex/worktrees/action-act-refinement/ugrp",
+    "reference_checkout": "<home>/.codex/worktrees/action-act-refinement/ugrp",
     "reference_source_sha": "931d910998a94361342c372ec2675c475daa625f",
-    "candidate_checkout": "/Users/changmin/.codex/worktrees/rolling-view-recovery/ugrp",
+    "candidate_checkout": "<home>/.codex/worktrees/rolling-view-recovery/ugrp",
     "candidate_source_sha": "freeze_after_clean_commit",
     "candidate_flags": [
       "--rolling-visual-servo",
@@ -15,7 +15,7 @@
     ],
     "reference_flags": [],
     "same_runtime_for_both": "standard scripts/open_simulation.command dispatch managed adapter; native realtime 1x; same 600-step solo RGB decision budget",
-    "same_models_root": "/Users/changmin/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-transfer-t4/models",
+    "same_models_root": "<home>/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-transfer-t4/models",
     "same_models_tree_sha256": "081841147e698c560dc122c633bf71169ecca0ddfee9936f06801efb59d2361c",
     "plan_replay": "experiments/2026-09-22-parallel-transport/independent-plan.json",
     "plan_replay_sha256": "1ab2499252427839d21eec7f474fe3c5a74c2a2c4cdeddb7ac338782a3c898c7",
@@ -142,7 +142,7 @@
       "audit_preflight_report_path"
     ],
     "host_guard_source_sha": "dddd67b5b76f91bd2273ae00b8f5275846015dcf",
-    "host_guard_module": "/Users/changmin/.codex/worktrees/act-teacher-load-policy/ugrp/scripts/run_act_route_teachers.py",
+    "host_guard_module": "<home>/.codex/worktrees/act-teacher-load-policy/ugrp/scripts/run_act_route_teachers.py",
     "rule": "Root creates immutable freeze only after candidate candidate source/uniquely numbered bundle, exact CLI interface, run helper and postrun auditor are committed or SHA-pinned and clean. No pending fields at launch. Helpers verify pins before and after every trial. Source/helper changes require a new cohort."
   },
   "host_ownership": {
@@ -151,7 +151,7 @@
     "after": "An infrastructure abort blocks the next scheduled trial. Never signal, stop, inspect UI of, or modify a foreign owner."
   },
   "audit_contract": {
-    "path_template": "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/audits/view-recovery-{trial_slug}.json",
+    "path_template": "<home>/projects/ugrp/outputs/act-action-training-20260924/audits/view-recovery-{trial_slug}.json",
     "schema": "ugrp.view_recovery_postrun_audit.v1",
     "required_hash_links": [
       "raw_result_sha256",
@@ -206,7 +206,7 @@
       "safe_abort": "A pose interrupted by the finite deadline or plan/permission loss may end without settled RGB only if its submitted/raw PWM/cancellation or completion, exact zero-wheel stop, known reason and no later drive are all recorded. The stop deadline is measured from the episode's first issued pose, not its last. Recovered-drive resumption still requires post-pose settled fresh own/TOP RGB.",
       "identity_scope": "Bounded cargo identity is audited against saved own/TOP RGB frame hashes, tracker receipt, and frozen source behavior. The post-run auditor does not independently resegment JPEG pixels."
     },
-    "preflight_report_path": "default /Users/changmin/projects/ugrp/outputs/act-action-training-20260924/view-recovery-audit-preflight.json; immutable numbered suffix allowed before freeze if a prior fixture report exists",
+    "preflight_report_path": "default <home>/projects/ugrp/outputs/act-action-training-20260924/view-recovery-audit-preflight.json; immutable numbered suffix allowed before freeze if a prior fixture report exists",
     "preflight_required_checks": [
       "nested_pair_rgb",
       "typed_carry_and_rolling_renewals",
@@ -244,7 +244,7 @@
     "cohort_boundary": "Do not pool v40 stopped diagnostic, synchronized Claude runs or other cohorts with native v43 paired trials."
   },
   "output": {
-    "raw_root": "/Users/changmin/projects/ugrp/outputs/dispatch-view-recovery-20260924",
+    "raw_root": "<home>/projects/ugrp/outputs/dispatch-view-recovery-20260924",
     "every_trial": "raw result/video, pair/solo RGB decisions, issued commands, manager manifest, immutable launch record, per-run audit receipt and source/config/model hashes",
     "diagnostic": "diagnostics excluded from qualification speed median",
     "tensorboard": "new native snapshot after completed evidence, including failures; preserve existing originals/snapshots"

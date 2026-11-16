@@ -1,7 +1,7 @@
 """Gate check and summary of the integration plumbing smoke (evaluation only, after the runs).
 
     python experiments/2026-09-26-zone-study-integration/build_results.py \
-        --runs /Users/changmin/projects/ugrp/outputs/zone-study-integration-20260926/smoke-45999d9c \
+        --runs <home>/projects/ugrp/outputs/zone-study-integration-20260926/smoke-45999d9c \
         --out experiments/2026-09-26-zone-study-integration/results.json
 """
 from __future__ import annotations

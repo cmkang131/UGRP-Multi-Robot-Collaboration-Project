@@ -35,7 +35,7 @@ v4까지 오프라인 루프는 행동마다 재질문 타이머를 **하나씩 
 
 ## TensorBoard (`tensorboard.json`)
 
-- 스냅샷: `/Users/changmin/projects/ugrp/outputs/tensorboard/0926-zone-study-offline-smoke-v5`. run은 35개(시행 30 `<condition>/<trial_id>` + 코호트 5)이고 scalar는 789개다. v4 스냅샷은 건드리지 않았다.
+- 스냅샷: `<home>/projects/ugrp/outputs/tensorboard/0926-zone-study-offline-smoke-v5`. run은 35개(시행 30 `<condition>/<trial_id>` + 코호트 5)이고 scalar는 789개다. v4 스냅샷은 건드리지 않았다.
 - 보기 키는 `zone_study_offline_smoke_v5_20260926` 하나만 `outputs/tensorboard-view.json`에 추가했다. 쓰기 직전에 파일을 다시 읽었고, 다른 키의 값과 순서가 같은지 확인했다. 필터 `^0926-zone-study-offline-smoke-v(4|5)/`는 v4 기준선을 함께 보여 준다. 고정 카드는 8개다: 성공, makespan, 호출 수, 사고·발화 SIM 비용, 토큰, 사용량 미상 호출, 발화.
 - **확인:** 기존 공용 서버(PID 9291, 다른 작업 소유, 재시작하지 않음)가 v5 run 35개를 목록에 올렸다. scalar 789개를 `scalars.json`과 대조했고 불일치는 0건이다. raw 시행 기록과 `result/model_calls`도 30/30 같다. 시행 run 30개에 고정 태그 8개가 모두 있다. 저장 링크를 headless Chrome으로 열어 v5 35개·v4 35개 run이 선택되고 고정 카드 8개가 표시되는 것을 확인하고 캡처했다(`outputs/zone-study-offline-smoke-v5-report/tensorboard-pinned-v5.png`). 캡처 도구는 PR #229의 `tb_capture.py`를 /tmp에 복사해 썼다.
 - **한계:** v4와 같다. 공용 logdir의 병합 HParams 실험은 다른 스냅샷의 9개 열만 보여 준다. 그래서 설정한 열(`condition`·`scenario`·`seed`·`leader_id`·`end_reason`·`tokens_complete`)을 고를 수 없다. v5 세션 35개는 session_groups API로 확인했다. 수치는 Time Series로 본다.
@@ -59,7 +59,7 @@ v1~v4와 같다. 이 결과는 언어 이해, 조건 간 우열, 물리 운반 �
 | `environment.json`, `sha256.json` | 실행기 환경과 실행기가 계산한 산출물 해시(raw 바이트 복사) |
 | `raw_index.json` | raw·보고서·스냅샷의 위치·해시와 이 폴더의 커밋 파일 해시 |
 
-raw 30건(요청 원문 포함)은 처음부터 기본 체크아웃의 `/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v5/`에 썼다. 보고서는 `…/outputs/zone-study-offline-smoke-v5-report/`에 있다. 로컬 보관이며 원격 백업이 아니다.
+raw 30건(요청 원문 포함)은 처음부터 기본 체크아웃의 `<home>/projects/ugrp/outputs/zone-study-offline-smoke-v5/`에 썼다. 보고서는 `…/outputs/zone-study-offline-smoke-v5-report/`에 있다. 로컬 보관이며 원격 백업이 아니다.
 
 ## 참고 자료
 

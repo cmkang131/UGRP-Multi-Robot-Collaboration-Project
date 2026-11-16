@@ -5,7 +5,7 @@
 ## 원본과 결과
 
 - ACT 학습 2개, ACT/교사 공동 운반 12개, Jev/규칙/Gemini 접근 9개, 다중 물건 1개: 총 24개 기록, 변환 실패/경고 0.
-- 위치: `/Users/changmin/projects/ugrp/outputs/tensorboard/20260921-review-v1`.
+- 위치: `<home>/projects/ugrp/outputs/tensorboard/20260921-review-v1`.
 - TensorBoard 2.21.0, Pillow 12.3.0, 기존 Mac Python 환경. `pip check` 통과. TensorFlow/PyTorch 추가 설치 없음.
 - 숫자 33,635개, 텍스트 7,274개, 이미지 364개. EventAccumulator로 전체 재열람. HParams 메타데이터를 포함한 tensor는 7,346개.
 - 읽은 원본 JSON·이미지 397건 SHA256을 변환 뒤 재검증해 일치. 전체 manifest 및 event 해시는 `validation.json`에 기록했다. 원본 동영상은 복사/재인코딩하지 않고 기존 파일로 연결했다.

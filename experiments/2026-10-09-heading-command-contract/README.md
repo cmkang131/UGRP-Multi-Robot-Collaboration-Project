@@ -44,7 +44,7 @@ native 물리·렌더·실제 모델 호출은 실행하지 않았다. main 자�
 새 후보 CI는 push 이후 확인하며 이 커밋 시점에는 대기다.
 
 원본 실패 로그, JUnit, 로컬 시험 로그, 확인한 참고 문서는
-`/Users/changmin/projects/ugrp-wt/pr422/outputs/pr422-merge-prep/`에 보존한다.
+`<home>/projects/ugrp-wt/pr422/outputs/pr422-merge-prep/`에 보존한다.
 파일 SHA와 원인별 요약은 [merge-preparation.json](merge-preparation.json)에 기록했다.
 
 참고 자료(2026-10-11 CLI로 원문 확인):

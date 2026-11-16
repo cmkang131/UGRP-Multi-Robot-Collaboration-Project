@@ -1,7 +1,7 @@
 from pathlib import Path
 import json,hashlib,urllib.request,urllib.parse
 from tensorboard.backend.event_processing.event_accumulator import EventAccumulator
-root=Path('/Users/changmin/projects/ugrp/outputs/s4grip2-offline');snap=Path('/Users/changmin/projects/ugrp/outputs/tensorboard/1010-s4grip2')
+root=Path('<home>/projects/ugrp/outputs/s4grip2-offline');snap=Path('<home>/projects/ugrp/outputs/tensorboard/1010-s4grip2')
 checked=[]
 for path in sorted((root/'views').iterdir()):
  expected=json.loads((path/'result.json').read_text())['offline_scalars'];run=snap/path.name
@@ -12,7 +12,7 @@ for path in sorted((root/'views').iterdir()):
   vals=json.load(urllib.request.urlopen(url));assert vals[-1][2]==expected[tag]
  checked.append(dict(run=path.name,scalar_tags=len(observed),values=observed))
 media=[]
-for p in Path('/Users/changmin/projects/ugrp/outputs/tensorboard/1010-s4grip2-media').glob('*/manifest.json'):
+for p in Path('<home>/projects/ugrp/outputs/tensorboard/1010-s4grip2-media').glob('*/manifest.json'):
  m=json.loads(p.read_text());assert m['complete']
  for v in m['videos']:
   url='http://127.0.0.1:6007/video/'+v['id']

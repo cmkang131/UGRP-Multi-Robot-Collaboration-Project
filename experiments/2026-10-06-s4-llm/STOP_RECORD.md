@@ -16,7 +16,7 @@
 ## 실행한 시험 (항상 한 프로세스, 변경 모듈의 파일 3개만)
 
 ```sh
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
   tests/test_pair_llm_s4_host.py tests/test_pair_llm_s4_routing.py \
   tests/test_pair_llm_decisions.py -q --maxfail=1
 ```

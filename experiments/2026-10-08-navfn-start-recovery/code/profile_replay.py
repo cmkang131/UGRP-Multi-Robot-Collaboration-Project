@@ -4,7 +4,7 @@ import sys,json,time,hashlib,cProfile,pstats,io,os,argparse,collections
 from contextlib import contextmanager
 ROOT=Path(__file__).resolve().parents[3];sys.path.insert(0,str(ROOT))
 EXP=Path(__file__).resolve().parents[1]
-RAW=Path('/Users/changmin/projects/ugrp/outputs/navfn-start-recovery-v1')
+RAW=Path('<home>/projects/ugrp/outputs/navfn-start-recovery-v1')
 EP=RAW/'new-seed'
 from scripts.run_active_navfn_start import actor
 from scripts.run_active_wall_rotleft import install_profile,dump

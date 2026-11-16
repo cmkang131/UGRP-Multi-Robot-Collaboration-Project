@@ -179,7 +179,7 @@ def verify(args):
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument('--results', type=Path, default=HERE/'results'/'results.json')
-    ap.add_argument('--logdir', type=Path, default=Path('/Users/changmin/projects/ugrp/outputs/tensorboard'))
+    ap.add_argument('--logdir', type=Path, default=Path('<home>/projects/ugrp/outputs/tensorboard'))
     ap.add_argument('--snapshot', default='0926-markerless-probe')
     ap.add_argument('--source-sha', default='')
     ap.add_argument('--verify', action='store_true')

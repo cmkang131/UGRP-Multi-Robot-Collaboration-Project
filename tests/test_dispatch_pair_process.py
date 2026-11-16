@@ -19,7 +19,7 @@ from scripts.dispatch_pair_skill import BoundPairSkill
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SAVED = Path('/Users/changmin/projects/ugrp/outputs/simulation-realtime-20260923/native-v17-repeat')
+SAVED = Path('<home>/projects/ugrp/outputs/simulation-realtime-20260923/native-v17-repeat')
 
 
 def _initialization(reference, anchor_top, anchor_own, bindings):

@@ -3,8 +3,8 @@ from pathlib import Path
 import sys,json,math
 import numpy as np
 ROOT=Path(__file__).resolve().parents[3];sys.path.insert(0,str(ROOT))
-EXP=Path(__file__).resolve().parents[1];OUT=Path('/Users/changmin/projects/ugrp/outputs/active-recovery-v1/diagnostic-off')
-RAW=Path('/Users/changmin/projects/ugrp/outputs/rbpf-wide-confirm-v1/new-seed')
+EXP=Path(__file__).resolve().parents[1];OUT=Path('<home>/projects/ugrp/outputs/active-recovery-v1/diagnostic-off')
+RAW=Path('<home>/projects/ugrp/outputs/rbpf-wide-confirm-v1/new-seed')
 from scripts.run_active_wall_wide import dump
 from harness.public_navigation_unknown import UnknownCostmap
 from harness.public_navigation_monitor import MonitorNavigator

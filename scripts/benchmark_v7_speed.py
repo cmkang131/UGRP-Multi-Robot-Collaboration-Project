@@ -304,7 +304,7 @@ def main():
     source_check(args.expected_source_sha)
     assert 0 < args.sim_seconds <= 30 and abs(args.sim_seconds*5-round(args.sim_seconds*5)) < 1e-8
     assert args.output.is_absolute() and not args.output.exists()
-    assert args.output.resolve().is_relative_to(Path('/Users/changmin/projects/ugrp/outputs'))
+    assert args.output.resolve().is_relative_to(Path('<home>/projects/ugrp/outputs'))
     suite = json.loads(args.suite.read_text())
     assert {r['kind'] for r in suite} == {'s2','s3','egomap'}
     if not args.execute:

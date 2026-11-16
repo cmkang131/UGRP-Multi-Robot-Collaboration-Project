@@ -5,18 +5,18 @@
   "claim_limit": "This is one combined data-and-numerical-path candidate, not an isolated causal test of the added demonstrations. Offline eligibility and physical carry success are separate outcomes.",
   "source_boundaries": {
     "teacher_and_physical_inference_source_sha": "931d910998a94361342c372ec2675c475daa625f",
-    "teacher_checkout": "/Users/changmin/.codex/worktrees/action-act-refinement/ugrp",
-    "third_training_checkout": "/Users/changmin/.codex/worktrees/act-route-coverage/ugrp",
+    "teacher_checkout": "<home>/.codex/worktrees/action-act-refinement/ugrp",
+    "third_training_checkout": "<home>/.codex/worktrees/act-route-coverage/ugrp",
     "third_training_source_sha": "fill_from_clean_commit_before_training",
     "future_execution_bundle_version": "v31 or later; v30 is reserved for a separate controller task",
-    "base_dataset": "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/data/combined-dataset.json",
+    "base_dataset": "<home>/projects/ugrp/outputs/act-action-training-20260924/data/combined-dataset.json",
     "base_dataset_sha256": "9cd42d3b6859fcb1526dab7ee675ba4349cf6fd32537d1c955a696e1e3197a57"
   },
   "teacher_collection": {
     "variant": "shared_crossing",
     "seed": 11,
     "required_dock": "dock_a",
-    "plan_replay": "/Users/changmin/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-adaptive-final19-20260918/F3/committed-plan.json",
+    "plan_replay": "<home>/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-adaptive-final19-20260918/F3/committed-plan.json",
     "plan_replay_sha256": "398b303eb826d120047deeb03e156c80250d392bb0e8354bec655e4a0175ca57",
     "plan": "beam r1/r3 south, box r2 south first; serial service island and rotating_carry",
     "reference_top_sha256": "35e990136a3410ea514e0445f92a6886b07e2a463e8c3ee0804dd6f3ae8d091c",
@@ -39,14 +39,14 @@
     "historical_budget_evidence": "Old-source F3/F4 successful wall 1268.46/1215.26 s with last issued SIM 291.56 s; frozen v28 perturbed south timing is unknown."
   },
   "teacher_managed_cli": {
-    "checkout": "/Users/changmin/.codex/worktrees/action-act-refinement/ugrp",
+    "checkout": "<home>/.codex/worktrees/action-act-refinement/ugrp",
     "entry": "bash scripts/open_simulation.command workflow run dispatch-skills",
     "manager_args_per_case": ["--record", "FRESH_MANAGED_RECORD", "--timeout", "EFFECTIVE_CAP_AT_MOST_1560", "--"],
     "fixed_trial_args": [
       "--variant", "shared_crossing", "--seed", "11", "--required-dock", "dock_a",
-      "--plan-replay", "/Users/changmin/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-adaptive-final19-20260918/F3/committed-plan.json",
-      "--grasp-model-dir", "/Users/changmin/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-transfer-t4/models/grasp",
-      "--stage-model-dir", "/Users/changmin/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-transfer-t4/models/varied",
+      "--plan-replay", "<home>/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-adaptive-final19-20260918/F3/committed-plan.json",
+      "--grasp-model-dir", "<home>/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-transfer-t4/models/grasp",
+      "--stage-model-dir", "<home>/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-transfer-t4/models/varied",
       "--contact-profile", "local_contact_fine", "--realtime-control", "--viewer",
       "--realtime-factor", "1", "--efficient-capture", "--video-fps", "10",
       "--reference-top", "tests/fixtures/camera_goal_transport/reference-top.jpg",
@@ -68,8 +68,8 @@
   },
   "dataset_construction_after_gate": {
     "new_train": [
-      "/Users/changmin/projects/ugrp/outputs/dispatch-action-act-refinement-20260924/original-diagnostic-1-refined-rgb",
-      "/Users/changmin/projects/ugrp/outputs/dispatch-action-act-refinement-20260924/original-diagnostic-2-refined-rgb",
+      "<home>/projects/ugrp/outputs/dispatch-action-act-refinement-20260924/original-diagnostic-1-refined-rgb",
+      "<home>/projects/ugrp/outputs/dispatch-action-act-refinement-20260924/original-diagnostic-2-refined-rgb",
       "south-train-a raw output",
       "south-train-b raw output"
     ],
@@ -97,7 +97,7 @@
     "maximum_managed_wall_s": 2400,
     "wall_cap_condition": "A bounded 128-row representative benchmark must forecast B4 cache creation, 17 B1 development selections, 8000 optimizer updates and all-row native verification with headroom under 2400 s. If final teacher counts materially increase the projected rows, recalculate before source freeze/run; report any budget conflict.",
     "preflight_timing_evidence": {
-      "record": "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/native-window-b1-evaluation-benchmark.json",
+      "record": "<home>/projects/ugrp/outputs/act-action-training-20260924/native-window-b1-evaluation-benchmark.json",
       "record_sha256": "a6442d80f50f27c8be13d14f80366da30d1d2b211711f6d9df19b50cb9f55582",
       "scope": "Saved F3 tail 128 rows, selected failed diagnostic weights, no optimizer or physics",
       "b4_cache_wall_s": 5.5367,
@@ -108,7 +108,7 @@
       "estimated_full_run_wall_s_at_7944_rows": 1793,
       "uncertainty": "Linear extrapolation from 128 rows cannot prove full-cache RSS or timing."
     },
-    "fixed_command": "UGRP_SIM_PYTHON=/Users/changmin/Project-Runtimes/ugrp/.venv-reference-act/bin/python OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 bash scripts/open_simulation.command workflow run act-input-training --record FRESH_RECORD --timeout 2400 -- --dataset FRESH_DATASET --size 128 --history 4 --steps 8000 --seed 20260924 --device cpu --termination-objective deployed_first_action --deployed-done-weight 1.0 --feature-cache-mode deployed_window --cpu-evaluation-batch-size 1",
+    "fixed_command": "UGRP_SIM_PYTHON=<home>/Project-Runtimes/ugrp/.venv-reference-act/bin/python OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 bash scripts/open_simulation.command workflow run act-input-training --record FRESH_RECORD --timeout 2400 -- --dataset FRESH_DATASET --size 128 --history 4 --steps 8000 --seed 20260924 --device cpu --termination-objective deployed_first_action --deployed-done-weight 1.0 --feature-cache-mode deployed_window --cpu-evaluation-batch-size 1",
     "selection": "At fixed steps 1 and each 500 through 8000, select using held-out five-episode development metrics only; zero premature and zero missed terminal episodes is eligibility. Retain the best failing checkpoint as diagnostic without selecting again after final verification.",
     "artifact_gate": "After fixed updates and selection, every train and development row must match native one-sample RGB inference on the entire 8x4 action chunk under original atol=rtol=1e-5, with every chunk done>=0.65 decision identical; save cache/native metrics and per-row predictions, read back saved model and inference memo. Any failure preserves incomplete artifact, not a deployable model.",
     "no_posthoc_change": "No threshold, objective weight, seed, selected step, data split, tolerance, or optimizer retuning; no automatic retry."

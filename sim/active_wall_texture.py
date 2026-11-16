@@ -56,5 +56,5 @@ def transform_xml(xml,*,wall_texture='off',assets=None):
     if wall_texture not in VALUES:
         raise ValueError('UNKNOWN_WALL_TEXTURE')
     # Reuse the byte-frozen noncolliding-plane placement and wall-geometry check.
-    directory=Path(assets) if assets else Path('/Users/changmin/projects/ugrp/outputs/active-wall-map-v1/prints')/wall_texture
+    directory=Path(assets) if assets else Path('<home>/projects/ugrp/outputs/active-wall-map-v1/prints')/wall_texture
     return old.transform_xml(xml,wall_texture='tape_v1',assets=directory)

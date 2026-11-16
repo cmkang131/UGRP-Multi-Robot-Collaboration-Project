@@ -24,11 +24,11 @@ v88이 채택한 #347/v89 계단·PRBS 설계를 그대로 사용하며, v89 원
 자기 worktree의 커밋 SHA를 고정하고 `RUN_ROOT`를 새로운 경로로 바꾼 뒤 지도별로 실행한다.
 
 ```bash
-cd /Users/changmin/projects/ugrp-wt/calib-heldout-maps
-PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+cd <home>/projects/ugrp-wt/calib-heldout-maps
+PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 FINAL_SHA=$(git rev-parse HEAD)
 FINAL_BRANCH=$(git branch --show-current)
-RUN_ROOT=/Users/changmin/projects/ugrp/outputs/final-pair-v90-heldout-NEW-COHORT
+RUN_ROOT=<home>/projects/ugrp/outputs/final-pair-v90-heldout-NEW-COHORT
 git status --short --untracked-files=all
 "$PY" scripts/disk_report.py
 "$PY" scripts/agent_lock.py status
@@ -70,10 +70,10 @@ trap - EXIT
 기존 `scripts.run_final_pair_v3`의 calibration 진입점은 두 문 지도 전용이다.
 
 ```bash
-cd /Users/changmin/projects/ugrp-wt/calib-heldout-maps
-PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+cd <home>/projects/ugrp-wt/calib-heldout-maps
+PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 FINAL_SHA=$(git rev-parse HEAD)
-RUN_ROOT=/Users/changmin/projects/ugrp/outputs/final-pair-v90-heldout-NEW-COHORT
+RUN_ROOT=<home>/projects/ugrp/outputs/final-pair-v90-heldout-NEW-COHORT
 "$PY" -m scripts.run_final_pair_heldout \
   --check calibration-unloaded --map-id zone_wide_corridor_final_v3 --seed 911 \
   --expected-source-sha "$FINAL_SHA" --output "$RUN_ROOT/zone_wide_corridor_final_v3"
@@ -235,11 +235,11 @@ profile했고 20 Hz에서 검증된 보정값으로 채택하지 않는다. 실�
 실행 중 GT 높이·기울기 또는 nominal wheel radius로 보정하지 않는다. 이전 frame 계약 파일은 거부한다.
 
 ```bash
-cd /Users/changmin/projects/ugrp-wt/integ-v3-pair-adapter
-PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+cd <home>/projects/ugrp-wt/integ-v3-pair-adapter
+PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 FINAL_SHA=$(git rev-parse HEAD)
 FINAL_BRANCH=$(git branch --show-current)
-RUN_ROOT=/Users/changmin/projects/ugrp/outputs/final-pair-v88-review344-NEW-COHORT
+RUN_ROOT=<home>/projects/ugrp/outputs/final-pair-v88-review344-NEW-COHORT
 git status --short --untracked-files=all
 "$PY" scripts/disk_report.py
 "$PY" scripts/agent_lock.py status
@@ -310,7 +310,7 @@ checkpoint는 lower→open→정지 재관측→RGB 재정렬→grasp→lift를 
 ```bash
 (
 set -euo pipefail
-CALIBRATION=/Users/changmin/projects/ugrp/outputs/REVIEWED-V88-CALIBRATION/measured.json
+CALIBRATION=<home>/projects/ugrp/outputs/REVIEWED-V88-CALIBRATION/measured.json
 CALIBRATION_SHA=$(shasum -a 256 "$CALIBRATION" | cut -d ' ' -f 1)
 "$PY" scripts/agent_lock.py acquire --owner codex --branch "$FINAL_BRANCH" \
   --purpose 'v88 P03 3 x 120 SIM s' --pid $$ --expected-minutes 90
@@ -385,11 +385,11 @@ P01은 기존 기본 색 상자 reset 구성이다. P02 혼합 주문·긴 빔 �
 이 작업의 샌드박스에서는 SIM/렌더/학습/실제 추론을 한 번도 실행하지 않았다.
 
 ```bash
-cd /Users/changmin/projects/ugrp-wt/integ-final-env-v86
-PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+cd <home>/projects/ugrp-wt/integ-final-env-v86
+PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 FINAL_SHA=$(git rev-parse HEAD)
 FINAL_BRANCH=$(git branch --show-current)
-RUN_ROOT=/Users/changmin/projects/ugrp/outputs/final-env-v87-NEW-COHORT
+RUN_ROOT=<home>/projects/ugrp/outputs/final-env-v87-NEW-COHORT
 git status --short --untracked-files=all
 "$PY" scripts/disk_report.py
 "$PY" scripts/agent_lock.py status
@@ -603,11 +603,11 @@ P01은 기존 기본 색 상자 reset 구성이다. P02 혼합 주문·긴 빔 �
 이 작업의 샌드박스에서는 SIM/렌더/학습/실제 추론을 한 번도 실행하지 않았다.
 
 ```bash
-cd /Users/changmin/projects/ugrp-wt/integ-final-env
-PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+cd <home>/projects/ugrp-wt/integ-final-env
+PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 FINAL_SHA=$(git rev-parse HEAD)
 FINAL_BRANCH=$(git branch --show-current)
-RUN_ROOT=/Users/changmin/projects/ugrp/outputs/final-env-v84-NEW-COHORT
+RUN_ROOT=<home>/projects/ugrp/outputs/final-env-v84-NEW-COHORT
 git status --short --untracked-files=all
 "$PY" scripts/disk_report.py
 "$PY" scripts/agent_lock.py status
@@ -784,11 +784,11 @@ plan/result의 host_start/end에는 loadavg·슬롯·physics 점유자를 보존
 ```bash
 bash <<'BASH'
 set -eu
-cd /Users/changmin/projects/ugrp-wt/calib-fast-guard
-PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+cd <home>/projects/ugrp-wt/calib-fast-guard
+PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 FINAL_SHA="${V91_SOURCE_SHA:?Set the exact 40-character source SHA from the final handoff}"
 FINAL_BRANCH=codex/calib-fast-guard
-RUN_ROOT=/Users/changmin/projects/ugrp/outputs/final-pair-v91-heldout-${FINAL_SHA:0:8}-20261003
+RUN_ROOT=<home>/projects/ugrp/outputs/final-pair-v91-heldout-${FINAL_SHA:0:8}-20261003
 SLOTS=""
 CORRIDOR_PID=""
 DOOR_PID=""

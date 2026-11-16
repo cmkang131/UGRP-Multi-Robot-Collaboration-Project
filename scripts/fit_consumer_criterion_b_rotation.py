@@ -23,8 +23,8 @@ from scripts import validate_consumer_criterion_b as b
 from scripts.fit_unloaded_hammerstein import require_disjoint_output, sha, write
 
 TRAINING_MAP = 'zone_wide_two_doors_final_v3'
-V89 = Path('/Users/changmin/projects/ugrp/outputs/calib-motion-v89-eaeaaff0-20261001') / TRAINING_MAP
-V88 = Path('/Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001/calibration-unloaded')
+V89 = Path('<home>/projects/ugrp/outputs/calib-motion-v89-eaeaaff0-20261001') / TRAINING_MAP
+V88 = Path('<home>/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001/calibration-unloaded')
 V88_SOURCE = '747d2b9f1eb43e21804ccef58fff4db241d1a844'
 R4_SHA = 'fa7d3aa2e791086a9e73280b2dd4122bff5186d82503b56e17d5be27ca9bf071'
 FOLDER = b.ROOT / 'experiments/2026-10-03-critb-rotation'

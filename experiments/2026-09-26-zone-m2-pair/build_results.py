@@ -21,8 +21,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-RAW = Path('/Users/changmin/projects/ugrp/outputs/zone-m2-pair-20260926')
-TB = Path('/Users/changmin/projects/ugrp/outputs/tensorboard')
+RAW = Path('<home>/projects/ugrp/outputs/zone-m2-pair-20260926')
+TB = Path('<home>/projects/ugrp/outputs/tensorboard')
 STAGES = {'stage1': tuple(range(711, 719)), 'stage3': tuple(range(721, 725)), 'stage2': tuple(range(811, 817)), 'stage2b': tuple(range(821, 827)),
           'stage2c': tuple(range(831, 837)), 'stage2b-completion': (826,)}
 ARMS = ('on', 'off')

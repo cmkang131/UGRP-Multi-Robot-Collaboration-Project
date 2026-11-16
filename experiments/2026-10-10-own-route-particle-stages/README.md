@@ -110,7 +110,7 @@ batch는 `egomap60-prep-60012-batch`(자기B 시작 상태 생성, 기존150초 
 
 - 변경 모듈2파일 **41시험 통과**(off proposal/RNG/export bytes, checkpoint 전체 제어기·native·센서·캐시, XML/배치, 고정8슬롯, raw 누락/변조 거부). Mac 물리/녹화재생0, 모델 호출0, 다른 프로세스 종료0.
 - 현재 준비+4단계 raw **2,930파일 SHA 일치**, 스모크118파일 및 이전 준비 후속1,538파일 별도 일치. 서버 중단 자료는 원본 상태 그대로 보존; 완료 manifest가 없는 중단 프레임을 완료 기록으로 봉인하지 않는다. [환경](results/environment.json), [스모크](results/smoke-checkpoint.json), [입장 이력](results/preparation-errors.json), [후속 준비](results/preparation-followups.json).
-- raw: `/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap60-*`; 계산/선택 원본은 `egomap60-postreboot-evaluation`. host=oracle-x86. Mac은 JSON 채점 결과 병합·해시 확인·표시만 했다. 원본은 서버에도 보존됐지만 별도 영구 백업으로 주장하지 않는다.
-- TensorBoard 새 snapshot: `/Users/changmin/projects/ugrp/outputs/tensorboard/1010-egomap60`,8뷰(완료4+미관측 차단4), 후보 비교와 차단을 분리한다. `outputs/egomap60-delivery/`에 파생 뷰·재제출 명령표를 보존한다. CI 대기/병합0, PR405 DRAFT 유지.
+- raw: `<home>/projects/ugrp/outputs/oracle-runs/egomap60-*`; 계산/선택 원본은 `egomap60-postreboot-evaluation`. host=oracle-x86. Mac은 JSON 채점 결과 병합·해시 확인·표시만 했다. 원본은 서버에도 보존됐지만 별도 영구 백업으로 주장하지 않는다.
+- TensorBoard 새 snapshot: `<home>/projects/ugrp/outputs/tensorboard/1010-egomap60`,8뷰(완료4+미관측 차단4), 후보 비교와 차단을 분리한다. `outputs/egomap60-delivery/`에 파생 뷰·재제출 명령표를 보존한다. CI 대기/병합0, PR405 DRAFT 유지.
 
 TensorBoard 검증: event8/8 로딩·float32 허용오차 내 원본 수치 일치, 차단4건의 미측정 오차를0으로 만들지 않음. Chrome 강 탭964002057에서8실행 선택·9핀, >3σ(.0166/.203/.203/.3877)·종료오차(.1452/.4375/.4375/.1636) 표시 확인. HParams case/policy/seed/source_sha 적용; HParams는 공용4482그룹 한계가 있어 실제 비교는 Time Series의 자기8실행 필터를 사용한다. [표시·원본 대조](results/tensorboard-check.json), [대시보드](http://127.0.0.1:6006/?runFilter=%5E1010-egomap60%2F#timeseries). 새 영상은 이번 요청 범위에 없어 생성0.

@@ -44,7 +44,7 @@ pycircstat/FilterPy 원문 코드를 열어 수식·라이선스 확인, 식 재
   Gaussian 근사다. 실제 오차/σ 검사를 유지하고 posterior 보정 완료라고 주장하지 않는다.
 - off는 기존 객체/메서드/출력 bytes 그대로. yaw on도 모션 평균/검출/graph/지도 임계값은 변경0.
 
-입력 `/Users/changmin/projects/ugrp/outputs/rbpf-motion-gate-v1/baseline/`의 own contacts/commands.
+입력 `<home>/projects/ugrp/outputs/rbpf-motion-gate-v1/baseline/`의 own contacts/commands.
 추정 결과를 저장·SHA 봉인한 뒤에만 GT를 읽는다. off는 egomap24 **on** 예측 bytes와 비교.
 동일891시각의 yaw 오차(전체 각도와 mod90 둘 다), 종료 XY 오차 e/σXY 및 e/(2σ),
 경로RMSE, 영역 P/R(분자·분모), 전체지도 지표, 실제 이동/footprint union/가시 벽 표본/삽입수를 보고한다.
@@ -83,7 +83,7 @@ GitHub가 두 번 연속 `remote rejected (Internal Server Error)`로 push를 �
 
 재개 시 남은 일: 이 로컬 커밋들의 정상 push 확인 → 동결 `code/replay.py on`1회 →
 `score` 평가(예측 봉인 후 GT) → 결과/그림 기록. off 디렉터리는 덮어쓰거나 재생하지 않는다.
-raw `/Users/changmin/projects/ugrp/outputs/rbpf-manhattan-v1/` 로컬 보존,
+raw `<home>/projects/ugrp/outputs/rbpf-manhattan-v1/` 로컬 보존,
 [해시](results/raw-manifest.json). 원격 백업/새 물리 성공으로 보고하지 않는다.
 
 

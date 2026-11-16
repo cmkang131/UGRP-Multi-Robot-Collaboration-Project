@@ -8,7 +8,7 @@ from scripts import run_wall_parallax_strafe as old
 
 ROOT=old.ROOT
 EXP=ROOT/'experiments/2026-10-07-servo-stiffness'
-RAW=Path('/Users/changmin/projects/ugrp/outputs/servo-stiffness-v1')
+RAW=Path('<home>/projects/ugrp/outputs/servo-stiffness-v1')
 write,sha=old.write,old.sha
 CASES=('static-off','static-on','stiff-north','stiff-south','stiff-explore')
 

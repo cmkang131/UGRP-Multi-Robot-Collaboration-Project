@@ -81,7 +81,7 @@
 
 저장 자기 RGB와 실제 발행 명령만 소스4c9eb3aa에 재생해 **12409명령 모두 JSON 동일**,6284성공프레임 뒤 원본 마지막315.5초에 같은 AttributeError를 재현했다. GT는 이 재생이 끝난 뒤 평가기에만 입력했다. 복구된 student record의 NaN은 원형 그대로 별도 파일에 보존하고, strict 파생 요약에서만 null과 필드 경로로 표현한다. 원본에 student_record를 추가하거나 manifest를 재봉인하지 않았다. [명령 일치](recovery-command-equality.json), [traceback](recovery-result.json), [결과 요약](smoke-summary.json).
 
-원본 `/Users/changmin/projects/ugrp/outputs/s3-odometry-4c9eb3aa-s14201-v150`의18887파일/450830386바이트 SHA를 전부 대조했다. 자기 카메라 기록 모두 S2 v3 마운트와 일치한다. [원본 검증](raw-verification.json), [4배속 영상](http://127.0.0.1:6007/video/7708c54a02eb3a0a2273), [영상 해시](video-verification.json). 영상1572프레임/20fps/78.6초,1920×480, 새 렌더0이며 브라우저 실제 로딩·Range206을 확인했다.
+원본 `<home>/projects/ugrp/outputs/s3-odometry-4c9eb3aa-s14201-v150`의18887파일/450830386바이트 SHA를 전부 대조했다. 자기 카메라 기록 모두 S2 v3 마운트와 일치한다. [원본 검증](raw-verification.json), [4배속 영상](http://127.0.0.1:6007/video/7708c54a02eb3a0a2273), [영상 해시](video-verification.json). 영상1572프레임/20fps/78.6초,1920×480, 새 렌더0이며 브라우저 실제 로딩·Range206을 확인했다.
 
 TensorBoard `1010-s3-v150-report`의31 scalar를 원본과 대조하고 v149와 별도 실행으로 표시했다. 성공0·wall1039.2589·SIM314.2·명령12409를 화면에서 확인하고, 핀9개·HParams case/policy/seed/source_sha를 적용했다. 원본 영상 등록은 보존된 `1010-s3-v150-result` manifest를 사용한다. 잘못된 오프라인 변환 진입점의 실패2개와 응답시간 태그 추가 전 snapshot도 덮어쓰지 않고 보존했다. 기존 다른 작업의 서버는 재시작하지 않았다. [화면/값 검증](tensorboard-verification.json), [대시보드 설정과 링크](tensorboard-link.json).
 

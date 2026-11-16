@@ -4,14 +4,14 @@
     {
       "mode": "stationary",
       "command": [
-        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/mjpython",
-        "/Users/changmin/projects/ugrp-worktrees/pair-grasp-endurance/scripts/run_pair_grasp_endurance.py",
+        "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/mjpython",
+        "<home>/projects/ugrp-worktrees/pair-grasp-endurance/scripts/run_pair_grasp_endurance.py",
         "--map",
-        "/Users/changmin/projects/ugrp-worktrees/pair-grasp-endurance/maps/pair_navigation/narrow-door.json",
+        "<home>/projects/ugrp-worktrees/pair-grasp-endurance/maps/pair_navigation/narrow-door.json",
         "--grasp-model-dir",
-        "/Users/changmin/projects/ugrp-worktrees/pair-loaded-navigation/outputs/pair-navigation/runtime/models/grasp",
+        "<home>/projects/ugrp-worktrees/pair-loaded-navigation/outputs/pair-navigation/runtime/models/grasp",
         "--out-dir",
-        "/Users/changmin/projects/ugrp-worktrees/pair-grasp-endurance/outputs/pair-endurance-integral-2026-09-14/stationary",
+        "<home>/projects/ugrp-worktrees/pair-grasp-endurance/outputs/pair-endurance-integral-2026-09-14/stationary",
         "--mode",
         "stationary",
         "--noslip-iterations",
@@ -24,7 +24,7 @@
       "returncode": 1,
       "wall_seconds": 21.744598499994026,
       "success": false,
-      "error": "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-endurance/scripts/run_pair_grasp_endurance.py\", line 76, in run\n    scene.hold_spacing(8.);scene.finish_spacing();report['endurance_start_s']=scene.time()\n                           ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-endurance/scripts/run_pair_navigation.py\", line 77, in finish_spacing\n    raise RuntimeError('grasp spacing did not visually settle before departure')\nRuntimeError: grasp spacing did not visually settle before departure\n",
+      "error": "Traceback (most recent call last):\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-endurance/scripts/run_pair_grasp_endurance.py\", line 76, in run\n    scene.hold_spacing(8.);scene.finish_spacing();report['endurance_start_s']=scene.time()\n                           ^^^^^^^^^^^^^^^^^^^^^^\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-endurance/scripts/run_pair_navigation.py\", line 77, in finish_spacing\n    raise RuntimeError('grasp spacing did not visually settle before departure')\nRuntimeError: grasp spacing did not visually settle before departure\n",
       "evaluation": {
         "grasp_stability": {
           "anchor_spacing_m": 0.6505627591444381,
@@ -48,14 +48,14 @@
     {
       "mode": "shuttle",
       "command": [
-        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/mjpython",
-        "/Users/changmin/projects/ugrp-worktrees/pair-grasp-endurance/scripts/run_pair_grasp_endurance.py",
+        "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/mjpython",
+        "<home>/projects/ugrp-worktrees/pair-grasp-endurance/scripts/run_pair_grasp_endurance.py",
         "--map",
-        "/Users/changmin/projects/ugrp-worktrees/pair-grasp-endurance/maps/pair_navigation/narrow-door.json",
+        "<home>/projects/ugrp-worktrees/pair-grasp-endurance/maps/pair_navigation/narrow-door.json",
         "--grasp-model-dir",
-        "/Users/changmin/projects/ugrp-worktrees/pair-loaded-navigation/outputs/pair-navigation/runtime/models/grasp",
+        "<home>/projects/ugrp-worktrees/pair-loaded-navigation/outputs/pair-navigation/runtime/models/grasp",
         "--out-dir",
-        "/Users/changmin/projects/ugrp-worktrees/pair-grasp-endurance/outputs/pair-endurance-integral-2026-09-14/shuttle",
+        "<home>/projects/ugrp-worktrees/pair-grasp-endurance/outputs/pair-endurance-integral-2026-09-14/shuttle",
         "--mode",
         "shuttle",
         "--noslip-iterations",
@@ -68,7 +68,7 @@
       "returncode": 1,
       "wall_seconds": 22.196229749999475,
       "success": false,
-      "error": "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-endurance/scripts/run_pair_grasp_endurance.py\", line 76, in run\n    scene.hold_spacing(8.);scene.finish_spacing();report['endurance_start_s']=scene.time()\n                           ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-endurance/scripts/run_pair_navigation.py\", line 77, in finish_spacing\n    raise RuntimeError('grasp spacing did not visually settle before departure')\nRuntimeError: grasp spacing did not visually settle before departure\n",
+      "error": "Traceback (most recent call last):\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-endurance/scripts/run_pair_grasp_endurance.py\", line 76, in run\n    scene.hold_spacing(8.);scene.finish_spacing();report['endurance_start_s']=scene.time()\n                           ^^^^^^^^^^^^^^^^^^^^^^\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-endurance/scripts/run_pair_navigation.py\", line 77, in finish_spacing\n    raise RuntimeError('grasp spacing did not visually settle before departure')\nRuntimeError: grasp spacing did not visually settle before departure\n",
       "evaluation": {
         "grasp_stability": {
           "anchor_spacing_m": 0.6505627591444381,

@@ -40,12 +40,12 @@ Refs #219 #365. 이 PR은 **채점 코드만** 추가한다. v95 수집 raw는 �
 # #219에 소유자가 아래 한 줄을 포함한 댓글을 올린 뒤, 시계 차이를 피하려고 1분쯤 지나서 실행한다:
 # V95_SCORING_ADAPTER_SHA256: <scripts/score_consumer_criterion_b_v95.py 의 sha256>
 cd <이 PR head worktree>
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.score_consumer_criterion_b_v95 \
-  --raw /Users/changmin/projects/ugrp/outputs/final-pair-v95-heldout-2fe14826-20261003T111306Z/zone_wide_door_geometry_v3 \
-  --raw /Users/changmin/projects/ugrp/outputs/final-pair-v95-heldout-2fe14826-20261003T111306Z/zone_wide_corridor_final_v3 \
-  --precheck /Users/changmin/projects/ugrp/outputs/heldout-v95-precheck-20261003T085307Z \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.score_consumer_criterion_b_v95 \
+  --raw <home>/projects/ugrp/outputs/final-pair-v95-heldout-2fe14826-20261003T111306Z/zone_wide_door_geometry_v3 \
+  --raw <home>/projects/ugrp/outputs/final-pair-v95-heldout-2fe14826-20261003T111306Z/zone_wide_corridor_final_v3 \
+  --precheck <home>/projects/ugrp/outputs/heldout-v95-precheck-20261003T085307Z \
   --adapter-comment <어댑터 해시 댓글 id> \
-  --output /Users/changmin/projects/ugrp/outputs/criterion-b-v95-score-<UTC>/criterion_B_v95.json
+  --output <home>/projects/ugrp/outputs/criterion-b-v95-score-<UTC>/criterion_B_v95.json
 ```
 
 종료 코드: 0 = 통과, 1 = 실패, 2 = 판정 없음(INELIGIBLE 또는 빈 칸).
@@ -94,7 +94,7 @@ steps 최악값은 모두 3.2초 예측 시간에서 나왔다. 전체 수치는
 - `sources_rehashed`: 271개 파일 모두 binding과 일치했다.
 - `scoring_checkout`: HEAD `b4cd1336d3b5a77785314b69dad64f42625fd73f`, `git status --porcelain`은 빈 목록이다.
 - 읽은 입력 파일 300개의 sha256은 결과 JSON의 `input_files`에 있다.
-- 산출물 경로: `/Users/changmin/projects/ugrp/outputs/criterion-b-v95-score-20261003T170731Z/`
+- 산출물 경로: `<home>/projects/ugrp/outputs/criterion-b-v95-score-20261003T170731Z/`
   - `criterion_B_v95.json` `998bc3d4c32eeae1dae4225c4dbade458dd13c0562a0a21bf3613bfc6052a368` (이 폴더에 같은 바이트로 복사)
   - `run_meta.txt` `36e80f7411ff4a4c40a354a6153b68fb06c1f2d267ed9f0eeb305e0347564c11`
   - `stdout.txt` `db31d066fce20cc5e2b55030c6d4e9cd9cd961014b27d4e8ec5d29528e71d46b`

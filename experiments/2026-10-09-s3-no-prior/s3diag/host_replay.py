@@ -5,8 +5,8 @@ from PIL import Image
 from harness import zone_s3_no_prior_contract as contract
 from harness.zone_s3_no_prior import Runtime, IntegratedTrial, ROBOTS
 from harness.zone_pair_highpose_exact_speedups import install
-RAW=pathlib.Path('/Users/changmin/projects/ugrp/outputs/s3-no-prior-6c657124-s14201-v142')
-OUT=pathlib.Path('/Users/changmin/projects/ugrp/outputs/s3diag-20261009/host-replay')
+RAW=pathlib.Path('<home>/projects/ugrp/outputs/s3-no-prior-6c657124-s14201-v142')
+OUT=pathlib.Path('<home>/projects/ugrp/outputs/s3diag-20261009/host-replay')
 
 def write(name,value):
  (OUT/name).write_text(json.dumps(value,indent=2,ensure_ascii=False)+'\n')

@@ -3,8 +3,8 @@ from pathlib import Path
 import argparse,cProfile,hashlib,io,json,os,pstats,sys,time
 ROOT=Path(__file__).resolve().parents[3];sys.path.insert(0,str(ROOT))
 EXP=Path(__file__).resolve().parents[1]
-RAW=Path('/Users/changmin/projects/ugrp/outputs/graph-runtime-v1')
-EP=Path('/Users/changmin/projects/ugrp/outputs/navfn-start-recovery-v1/new-seed')
+RAW=Path('<home>/projects/ugrp/outputs/graph-runtime-v1')
+EP=Path('<home>/projects/ugrp/outputs/navfn-start-recovery-v1/new-seed')
 from scripts.run_active_wall_rotleft import dump
 
 

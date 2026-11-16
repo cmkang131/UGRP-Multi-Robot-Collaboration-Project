@@ -37,7 +37,7 @@ gh run view --job 116369909906 --log-failed
 gh run view --job 116369909932 --log-failed
 git show 1788a95b --stat
 git show 84653e15 --stat
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
   tests/test_consumer_criterion_b_v91.py tests/test_zone_final_pair_loaded.py \
   --junitxml=outputs/scenv7fix/pytest.xml
 ```

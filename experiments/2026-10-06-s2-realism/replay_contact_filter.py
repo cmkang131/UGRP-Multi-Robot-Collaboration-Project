@@ -81,7 +81,7 @@ def replay(option,out):
     out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(result)+'\n')
     print(json.dumps(dict(option=option,complete=True,frames=len(poses),baseline_max_delta=max_delta,updates=amcl['updates'])),flush=True)
     if option=='off':
-        baseline=json.loads(Path('/Users/changmin/projects/ugrp/outputs/s2-observed-amcl-20261007/replay-nav2_observed_v1.json').read_text())
+        baseline=json.loads(Path('<home>/projects/ugrp/outputs/s2-observed-amcl-20261007/replay-nav2_observed_v1.json').read_text())
         assert poses==baseline['poses'] and amcl==baseline['amcl'] and mask==baseline['visibility'], 'audit changed replay'
         print('Audit noninterference: poses/amcl/visibility exact',flush=True)
 

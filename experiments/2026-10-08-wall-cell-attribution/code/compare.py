@@ -5,10 +5,10 @@ import argparse,hashlib,importlib.util,json,math,subprocess,sys
 import numpy as np
 ROOT=Path(__file__).resolve().parents[3]
 EXP=Path(__file__).resolve().parents[1]
-RAW=Path('/Users/changmin/projects/ugrp/outputs/wall-cell-attribution-v1')
+RAW=Path('<home>/projects/ugrp/outputs/wall-cell-attribution-v1')
 PREDICTIONS=RAW/'predictions'
-EPISODES={'31001':Path('/Users/changmin/projects/ugrp/outputs/active-frontier-audit-v1/new-seed'),
-          '32002':Path('/Users/changmin/projects/ugrp/outputs/wall-segment-dev-v1/new-seed')}
+EPISODES={'31001':Path('<home>/projects/ugrp/outputs/active-frontier-audit-v1/new-seed'),
+          '32002':Path('<home>/projects/ugrp/outputs/wall-segment-dev-v1/new-seed')}
 sys.path.insert(0,str(ROOT))
 from harness.self_wall_validation import validated_grid,OPTION
 from harness.self_odom_grid import transform

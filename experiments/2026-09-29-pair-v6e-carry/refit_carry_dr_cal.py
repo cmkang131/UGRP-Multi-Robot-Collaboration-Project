@@ -22,7 +22,7 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[2]
 HERE = Path(__file__).resolve().parent
-P = Path('/Users/changmin/projects/ugrp/outputs')
+P = Path('<home>/projects/ugrp/outputs')
 RAWS = ['pair-stage-probes-ece38792-cal', 'pair-stage-probes-a704ecc6-calB2', 'pair-stage-probes-a704ecc6-calB']
 
 

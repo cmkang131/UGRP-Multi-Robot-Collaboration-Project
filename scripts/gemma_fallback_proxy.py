@@ -34,7 +34,7 @@ SERVICE = 'ugrp-gemma-aistudio'
 PROVIDER = 'google_aistudio_gemma'
 PROFILE = 'dev_gemini_gemma_fallback_v1'
 STANDARD_PROFILE = 'study_gemma4_31b_v1'
-ROOT = Path('/Users/changmin/projects/ugrp/outputs/gemma-fallback')
+ROOT = Path('<home>/projects/ugrp/outputs/gemma-fallback')
 PACIFIC = ZoneInfo('America/Los_Angeles')
 
 

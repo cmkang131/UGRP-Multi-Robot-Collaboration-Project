@@ -15,11 +15,11 @@ from harness.self_map_prob import wrap
 spec=importlib.util.spec_from_file_location('egomap24',ROOT/'experiments/2026-10-07-rbpf-rejection/code/replay.py')
 previous=importlib.util.module_from_spec(spec)
 spec.loader.exec_module(previous)
-previous.OUT=Path('/Users/changmin/projects/ugrp/outputs/rbpf-manhattan-v1')
+previous.OUT=Path('<home>/projects/ugrp/outputs/rbpf-manhattan-v1')
 previous.EXP=EXP
 OUT,RAW=previous.OUT,previous.RAW
 load,dump,sha,rows=previous.load,previous.dump,previous.sha,previous.rows
-BASE=Path('/Users/changmin/projects/ugrp/outputs/rbpf-rejection-v1/on')
+BASE=Path('<home>/projects/ugrp/outputs/rbpf-rejection-v1/on')
 
 
 def verify_off():

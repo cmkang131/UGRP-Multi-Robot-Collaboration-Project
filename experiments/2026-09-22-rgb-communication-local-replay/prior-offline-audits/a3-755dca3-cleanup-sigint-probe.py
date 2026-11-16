@@ -10,7 +10,7 @@ import sys
 import tempfile
 from unittest.mock import patch
 
-SOURCE = Path('/Users/changmin/.codex/worktrees/a3-fresh-audit-755dca3/ugrp')
+SOURCE = Path('<home>/.codex/worktrees/a3-fresh-audit-755dca3/ugrp')
 sys.path.insert(0, str(SOURCE))
 from harness import rgb_communication_study as study
 

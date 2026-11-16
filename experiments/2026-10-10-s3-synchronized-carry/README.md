@@ -146,7 +146,7 @@ c3 fine pan failure repaired: r1/r2 alignment, grasp, lift, transport reached; s
 
 Run aggregate wall/SIM **3698.173317/557.75=6.631**, commands19775, model calls0; concurrent batch wall460.79s is a separate measure. Measured render 1146.561s and physics 1170.705s dominate; capture timers nested/not additive. No speed optimization or controlled benchmark claim.
 
-Raw: `/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix17-batch-r2-ready/cohort/*/raw`; evaluation: `outputs/oracle-runs/s3fix17-eval-r2/evaluation`. Retrieved raw hashes all match; [all ten results](results-r2.json), [first-carry commands/forces/endpoint audit](pair-dynamics-r2.json), [retrieval receipt](retrieval-r2.json). Force helper performs0 physics steps and hash-checks saved source files. It never feeds controller input.
+Raw: `<home>/projects/ugrp/outputs/oracle-runs/s3fix17-batch-r2-ready/cohort/*/raw`; evaluation: `outputs/oracle-runs/s3fix17-eval-r2/evaluation`. Retrieved raw hashes all match; [all ten results](results-r2.json), [first-carry commands/forces/endpoint audit](pair-dynamics-r2.json), [retrieval receipt](retrieval-r2.json). Force helper performs0 physics steps and hash-checks saved source files. It never feeds controller input.
 
 Next proposed round: offline scheduled-pulse index deduplication and complete pan-owned lowering/safe-release sweep first, then preregister a single short concurrent10-case carry→lower batch. No B-delivery or real-hardware success claim.
 

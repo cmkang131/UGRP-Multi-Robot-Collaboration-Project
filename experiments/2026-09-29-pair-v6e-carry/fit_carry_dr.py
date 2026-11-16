@@ -33,7 +33,7 @@ from pathlib import Path
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[2]
-DEV = Path('/Users/changmin/projects/ugrp/outputs/owncam-loop-20260925')
+DEV = Path('<home>/projects/ugrp/outputs/owncam-loop-20260925')
 CAL = json.load(open(ROOT / 'experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json'))
 MP = CAL['params']['motion_loaded']
 STEP = .05

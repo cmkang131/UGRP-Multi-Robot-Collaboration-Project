@@ -59,7 +59,7 @@ c0/u1 대안이 같은 응답을 냈다. initial/final은 구현 중 오프라�
 재현(물리/모델 호출 없음, 출력은 새 경로):
 
 ```bash
-PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 OPENBLAS_NUM_THREADS=1 "$PY" -m scripts.check_pair_v88_identifiability --output /private/tmp/v88-design-NEW.json
 "$PY" -m pytest -q tests/test_review_344.py tests/test_zone_final_pair_review_fixes.py tests/test_zone_final_pair_v3.py
 ```

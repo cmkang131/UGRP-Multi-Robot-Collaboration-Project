@@ -7,7 +7,7 @@
 - **이후 결정과의 관계:** 이 문서는 사용자의 이후 결정보다 먼저 작성됐다. 이후 결정은 자기 카메라 전용 실행기, 벽 AprilTag, 손목 카메라만 사용하는 것이다([decision_log 2026-09-25 조건 변경 절](../decision_log.md#2026-09-25--주-연구-조건-변경-무통신동적-통신ai-지휘)의 후속 항목 (7)). 본문이 교사 실행기를 공통 실행기로 전제하는 부분은 자기 카메라 트랙(PR #176/#177)이 대체한다. 지휘자 형태도 이후 (6)에서 "로봇 한 대 겸임, r1/r2/r3 순환, 허브-스포크"로 정해졌다. 본문의 `r1` 고정 권고와 별도 commander(③b) 보조 조건은 그 결정으로 대체된다(별도 지휘 AI는 전지적 참고 상한으로만 유지).
 - **이전 초안:** TOP 입력을 허용하고 `r1`을 지휘자로 둔 이전 초안(v0)은 따로 커밋하지 않았다. 그 내용과 폐기 사항은 이 문서 1절에 요약돼 있다.
 - **링크 주의:**
-  - 본문의 `/private/tmp/...` 링크(이전 초안)와 `/Users/changmin/projects/ugrp/...` 링크는 작성자 기기의 로컬 경로다. `/private/tmp` 파일은 임시 작업 파일이라 보존하지 않는다.
+  - 본문의 `/private/tmp/...` 링크(이전 초안)와 `<home>/projects/ugrp/...` 링크는 작성자 기기의 로컬 경로다. `/private/tmp` 파일은 임시 작업 파일이라 보존하지 않는다.
   - GitHub 링크는 저장소 이름이 옛 slug `kcm0127-dotcom/ugrp`로 적혀 있다. 현재 slug는 `cmkang131/UGRP-Multi-Robot-Collaboration-Project`이며, 확인 시점에 옛 slug가 현재 저장소로 연결됐다. 링크는 고쳐 쓰지 않았다.
 - 아래 본문은 Codex 출력 원문 그대로다. 비밀정보·토큰은 없었다. 끝의 Codex 세션 ID는 로컬 재개용 식별자라 출처로 남겼다.
 
@@ -33,7 +33,7 @@
 
 **1. 기존 설계에서 유지할 것과 바꿀 것**
 
-기존 보고서의 `r1` 지휘 겸임 권고, 게시판·호스트 중재 제거, 행동과 메시지 분리, `plan_first` 재현 보존은 유지한다. 반면 **공용 TOP 입력, 비용 없는 SIM 정지 협상창, 정형 통신을 보조 조건으로만 두는 구성은 폐기**한다. 이전 보고서는 TOP 허용과 협상창 중 물리 정지를 명시했으므로 이번 사용자 지시로 대체한다. [이전 보고서:46](</private/tmp/claude-501/-Users-changmin-projects-ugrp/ecd247bf-a1a7-45d6-9190-dad34be56468/scratchpad/codex-leader-design-v0.md:46>), [이전 보고서:115](</private/tmp/claude-501/-Users-changmin-projects-ugrp/ecd247bf-a1a7-45d6-9190-dad34be56468/scratchpad/codex-leader-design-v0.md:115>)
+기존 보고서의 `r1` 지휘 겸임 권고, 게시판·호스트 중재 제거, 행동과 메시지 분리, `plan_first` 재현 보존은 유지한다. 반면 **공용 TOP 입력, 비용 없는 SIM 정지 협상창, 정형 통신을 보조 조건으로만 두는 구성은 폐기**한다. 이전 보고서는 TOP 허용과 협상창 중 물리 정지를 명시했으므로 이번 사용자 지시로 대체한다. [이전 보고서:46](</private/tmp/claude-501/-<home>-projects-ugrp/ecd247bf-a1a7-45d6-9190-dad34be56468/scratchpad/codex-leader-design-v0.md:46>), [이전 보고서:115](</private/tmp/claude-501/-<home>-projects-ugrp/ecd247bf-a1a7-45d6-9190-dad34be56468/scratchpad/codex-leader-design-v0.md:115>)
 
 저장소 지침은 정적 지도와 고정 카메라 보정을 허용하되, 실시간 정답을 제어·단계 전환·성공 통보에 사용하지 않도록 한다. 이번 지시는 기존 TOP 허용 부분을 더 좁혀 **주 조건의 로봇 입력을 자기 RGB로 제한**한다. 카메라 배치/FOV 유지와 weld OFF도 그대로 적용한다. [AGENTS.md:11–15](https://github.com/kcm0127-dotcom/ugrp/blob/6d80e3e401f6936bc90cd3ccfc00249018a81748/AGENTS.md#L11-L15)
 
@@ -272,9 +272,9 @@ ID는 공개 지도·주문서와 실제 메시지 ID에서만 선택한다. `te
 
 **현재 코드 판정:** 검토한 zone 경로에서는 LLM 응답을 기다리는 동안 SIM이 전진하지 않는 구조다.
 
-- v1은 호출을 포함한 반복문 뒤에서 `zone.step(.5)`를 실행하고, `motion_started` 이후 시간으로 makespan을 계산한다. [로컬 `scripts/run_zone_dispatch.py:274`](</Users/changmin/projects/ugrp/scripts/run_zone_dispatch.py:274>), [동일 파일:331](</Users/changmin/projects/ugrp/scripts/run_zone_dispatch.py:331>)
+- v1은 호출을 포함한 반복문 뒤에서 `zone.step(.5)`를 실행하고, `motion_started` 이후 시간으로 makespan을 계산한다. [로컬 `scripts/run_zone_dispatch.py:274`](<<home>/projects/ugrp/scripts/run_zone_dispatch.py:274>), [동일 파일:331](<<home>/projects/ugrp/scripts/run_zone_dispatch.py:331>)
 - A2도 `team.ask()`를 호출한 뒤 실행 루프에서 물리를 전진시키며, 초기 `plan_first` 협상 뒤에 `motion_started`를 정한다. [A2 `scripts/zone_dispatch_v2.py:219–237`](https://github.com/kcm0127-dotcom/ugrp/blob/143360dcbfac1e59e628a4cb9d8d2d40bdbdd3a2/scripts/zone_dispatch_v2.py#L219-L237), [동일 파일:274–300](https://github.com/kcm0127-dotcom/ugrp/blob/143360dcbfac1e59e628a4cb9d8d2d40bdbdd3a2/scripts/zone_dispatch_v2.py#L274-L300)
-- `ThreeRobotRuntime.ask()`는 future 결과를 기다린다. 선택적인 `idle_callback`은 있으나 A2의 runtime 생성에는 전달하지 않는다. [로컬 `scripts/three_robot_runtime.py:128`](</Users/changmin/projects/ugrp/scripts/three_robot_runtime.py:128>), [A2 `scripts/zone_dispatch_v2.py:164–165`](https://github.com/kcm0127-dotcom/ugrp/blob/143360dcbfac1e59e628a4cb9d8d2d40bdbdd3a2/scripts/zone_dispatch_v2.py#L164-L165)
+- `ThreeRobotRuntime.ask()`는 future 결과를 기다린다. 선택적인 `idle_callback`은 있으나 A2의 runtime 생성에는 전달하지 않는다. [로컬 `scripts/three_robot_runtime.py:128`](<<home>/projects/ugrp/scripts/three_robot_runtime.py:128>), [A2 `scripts/zone_dispatch_v2.py:164–165`](https://github.com/kcm0127-dotcom/ugrp/blob/143360dcbfac1e59e628a4cb9d8d2d40bdbdd3a2/scripts/zone_dispatch_v2.py#L164-L165)
 
 **제안 비용식**
 
@@ -431,9 +431,9 @@ TeamJob의 원자적 명령 적용, 중복 참여 방지, stale generation 거�
 | `harness/zone_outcomes_v2.py` | `end(teacher_claim)` 중심 입력을 로컬 관측·타이머 기반 갱신으로 분리. legacy teacher source는 별도 진단에 보존. [A2:58–71](https://github.com/kcm0127-dotcom/ugrp/blob/143360dcbfac1e59e628a4cb9d8d2d40bdbdd3a2/harness/zone_outcomes_v2.py#L58-L71) |
 | `harness/zone_rgb_outcome.py` | PR 170은 평가·legacy용으로 보존. 새로운 own-RGB tracker를 별도 모듈로 만들고 주 조건에서 TOP source 선택을 거절. [Outcome:533–555](https://github.com/kcm0127-dotcom/ugrp/blob/c30091bf723fd4c40924711ae2a264a0f9d4f938/harness/zone_rgb_outcome.py#L533-L555) |
 | `harness/zone_cargo_perception*.py` | 기존 TOP 인식은 평가·참조용. Cargo2의 개선을 자기 RGB 성능으로 승계하지 않음. [Cargo2 `zone_cargo_perception_v2.py:374–397`](https://github.com/kcm0127-dotcom/ugrp/blob/972dc36bbdfbbfe827db79976282765858772804/harness/zone_cargo_perception_v2.py#L374-L397) |
-| 신규 zone actor runtime·transport | 수신자별 전달, star 권한, 3/4 actor, 예약 전달·비용 기록 지원. 기존 runtime은 `ROBOTS`별 inbox/client와 3-worker pool을 만든다. [로컬 `scripts/three_robot_runtime.py:44`](</Users/changmin/projects/ugrp/scripts/three_robot_runtime.py:44>) |
-| `sim/simulation_launch_options.py` | zone 연구 전용 launch mode 추가. 기존 `llm_dispatch`는 다른 `dispatch` 명령을 만들므로 전역 coordination 목록만 교체하지 않는다. [로컬:60](</Users/changmin/projects/ugrp/sim/simulation_launch_options.py:60>) |
-| `scripts/sim_cli.py` | 새 네 조건·참조 조건·재현 메뉴를 분리. 기존 두 선택지는 기존 RGB 공동 계획 경로다. [로컬:427](</Users/changmin/projects/ugrp/scripts/sim_cli.py:427>), [동일 파일:461](</Users/changmin/projects/ugrp/scripts/sim_cli.py:461>) |
+| 신규 zone actor runtime·transport | 수신자별 전달, star 권한, 3/4 actor, 예약 전달·비용 기록 지원. 기존 runtime은 `ROBOTS`별 inbox/client와 3-worker pool을 만든다. [로컬 `scripts/three_robot_runtime.py:44`](<<home>/projects/ugrp/scripts/three_robot_runtime.py:44>) |
+| `sim/simulation_launch_options.py` | zone 연구 전용 launch mode 추가. 기존 `llm_dispatch`는 다른 `dispatch` 명령을 만들므로 전역 coordination 목록만 교체하지 않는다. [로컬:60](<<home>/projects/ugrp/sim/simulation_launch_options.py:60>) |
+| `scripts/sim_cli.py` | 새 네 조건·참조 조건·재현 메뉴를 분리. 기존 두 선택지는 기존 RGB 공동 계획 경로다. [로컬:427](<<home>/projects/ugrp/scripts/sim_cli.py:427>), [동일 파일:461](<<home>/projects/ugrp/scripts/sim_cli.py:461>) |
 | `configs/simulation_workflows.json` | 새 study profile과 입력·결과 schema를 등록하고 버전 상승. 현재 A2 `zone-dispatch` 등록은 교사 실행기와 protocol v2를 명시한다. [A2:113–124](https://github.com/kcm0127-dotcom/ugrp/blob/143360dcbfac1e59e628a4cb9d8d2d40bdbdd3a2/configs/simulation_workflows.json#L113-L124) |
 | 번들·버전 기록 | 입력 경계·지도/주문서·인식/실행기·prompt·schema·scheduler·비용식·tokenizer·모델 설정을 함께 해시화. 기존 번들을 덮어쓰지 않음. [Main `docs/execution_versioning.md:7–28`](https://github.com/kcm0127-dotcom/ugrp/blob/6d80e3e401f6936bc90cd3ccfc00249018a81748/docs/execution_versioning.md#L7-L28) |
 

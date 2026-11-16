@@ -22,8 +22,8 @@ ROOT = HERE.parents[1]
 sys.path.insert(0, str(ROOT))
 from harness import m1_contract  # noqa: E402
 
-TB = Path('/Users/changmin/projects/ugrp/outputs/tensorboard')
-M1_RAW = Path('/Users/changmin/projects/ugrp/outputs/m1-owncam-20260926')
+TB = Path('<home>/projects/ugrp/outputs/tensorboard')
+M1_RAW = Path('<home>/projects/ugrp/outputs/m1-owncam-20260926')
 M1_BASELINE = ('dev-a8/m1dev-s93', 'dev-a8/m1devdiag-s95')
 EPISODES = ('smoke-s700', 'smoke-s701')
 

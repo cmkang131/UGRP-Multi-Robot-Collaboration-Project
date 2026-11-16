@@ -5,7 +5,7 @@ import argparse,hashlib,importlib.util,json,sys
 import numpy as np
 ROOT=Path(__file__).resolve().parents[3];sys.path.insert(0,str(ROOT))
 EXP=Path(__file__).resolve().parents[1]
-RAW=Path('/Users/changmin/projects/ugrp/outputs/teach-return-dev-v1')
+RAW=Path('<home>/projects/ugrp/outputs/teach-return-dev-v1')
 from scripts.run_teach_return_dev import SEEDS
 load=lambda p:json.loads(p.read_text())
 rows=lambda p:[json.loads(l) for l in p.read_text().splitlines()]

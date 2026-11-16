@@ -85,10 +85,10 @@ wall **170.610534초 / SIM22.10초 = 7.719934 wall/SIM**. reset1.30초를 제외
 
 호스트 실제 render_camera **로봇별443프레임 전부**를 S2 첫 프레임 보정 fixture와 대조해 local_position/local_quat 동일, 촬영 시각 대응도 동일했다. `v3_persistent_v1` 호스트 바인딩 유지, 제어기 외부 파라미터 맞춤 없음. #420 `relay-cache-v1` 적용enabled/physics_changed=false. no dock prior/weld/top/GT control 유지. 공통 장면 누락 조사표는 [기존 호스트/S4/자기 지도 표](../s3next/README.md)에 있다.
 
-원본 `/Users/changmin/projects/ugrp/outputs/s3-continue-0a690821-s14201-v147`, 전체1360파일/44,068,436bytes 해시 일치. manifest SHA256 `d45be5056969043fc64aa914bfb97313b34882af1142e60e7c3ef1deb7eff30c`. raw 로컬 보관은 원격 백업이 아니다. 새 실험 기록/파생 결과만 Git 보존, 원본 덮어쓰기·삭제0.
+원본 `<home>/projects/ugrp/outputs/s3-continue-0a690821-s14201-v147`, 전체1360파일/44,068,436bytes 해시 일치. manifest SHA256 `d45be5056969043fc64aa914bfb97313b34882af1142e60e7c3ef1deb7eff30c`. raw 로컬 보관은 원격 백업이 아니다. 새 실험 기록/파생 결과만 Git 보존, 원본 덮어쓰기·삭제0.
 
 - [정밀 결과/명령 계약 재현](smoke-report.json), [원본 해시](raw-verification.json), [영상 검증](video-verification.json), [TensorBoard 검증](tensorboard-verification.json), [오프라인 event 재로딩](tb-offline-readback.json).
-- [대표 영상4배속](http://127.0.0.1:6007/video/55e09581104f18e7687e): 자기 RGB3개 병렬, 새 렌더0. 로컬 `/Users/changmin/projects/ugrp/outputs/s3fix-20261009-replay-v2/views/v147/execution.mp4`,1920×480,111프레임/20fps/5.55초. 모든 프레임 디코딩·브라우저 끝까지 재생·Range206 확인.
+- [대표 영상4배속](http://127.0.0.1:6007/video/55e09581104f18e7687e): 자기 RGB3개 병렬, 새 렌더0. 로컬 `<home>/projects/ugrp/outputs/s3fix-20261009-replay-v2/views/v147/execution.mp4`,1920×480,111프레임/20fps/5.55초. 모든 프레임 디코딩·브라우저 끝까지 재생·Range206 확인.
 - [TensorBoard v146/v147 비교](http://127.0.0.1:6006/?runFilter=%5E1009-s3-v14%5B67%5D%2F&smoothing=0#timeseries), [같은 원본14회 오프라인 비교](http://127.0.0.1:6006/?runFilter=%5E1009-s3fix-replay%2F&smoothing=0#timeseries). 새 snapshot은 각각26scalar/14runs를 원본과 재로딩 대조,8pins와 HParams 지정 열 확인. 기존 서버/다른 공용 설정 키는 유지했다.
 
 다음 물리 실행 제안: pair 전 단계의 heading·단일 축 측정 pulse 계약을 먼저 오프라인 연결·검증한 뒤 새 번들 동일seed 혼합DEV1회만 제안한다(이번에는 추가 실행 없음).

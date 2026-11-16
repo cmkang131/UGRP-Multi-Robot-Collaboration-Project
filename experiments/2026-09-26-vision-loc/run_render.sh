@@ -6,8 +6,8 @@
 set -euo pipefail
 name=$1; out=$2; eps=$3; shift 3
 HERE=$(cd "$(dirname "$0")" && pwd)
-PRIMARY=/Users/changmin/projects/ugrp
-V3=/Users/changmin/projects/ugrp-wt/kiro-vision-loc-v3src
+PRIMARY=<home>/projects/ugrp
+V3=<home>/projects/ugrp-wt/kiro-vision-loc-v3src
 PY=$PRIMARY/.venv-sim-worker-mac/bin/python
 mkdir -p "$out"
 count_sims() {
@@ -32,7 +32,7 @@ echo "$(date -u +%FT%TZ) start $name eps=$eps sims=$(count_sims) free=${free}GiB
 status=0
 cd "$V3"
 # Machine-wide slot queue (kiro/sim-speed scripts/sim_slots.py, PR #209) when available; the manual cap above stays.
-SLOTS=/Users/changmin/projects/ugrp-wt/kiro-sim-speed/scripts/sim_slots.py
+SLOTS=<home>/projects/ugrp-wt/kiro-sim-speed/scripts/sim_slots.py
 wrap=()
 if [ -f "$SLOTS" ]; then wrap=(python3 "$SLOTS" run --owner kiro --label "$name" --); fi
 python3 "$PRIMARY/scripts/ugrp_session.py" run "$name" -- ${wrap[@]+"${wrap[@]}"} "$PY" "$HERE/run_vl_teacher_render.py" \

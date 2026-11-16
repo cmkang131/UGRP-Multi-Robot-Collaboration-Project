@@ -23,9 +23,9 @@ from pathlib import Path
 
 X = Path(__file__).resolve().parent
 ROOT = X.parents[1]
-OUT_ROOT = Path('/Users/changmin/projects/ugrp/outputs')
+OUT_ROOT = Path('<home>/projects/ugrp/outputs')
 RAW = OUT_ROOT/'zone-env-v3-20260926'
-PY = '/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python'
+PY = '<home>/projects/ugrp/.venv-sim-worker-mac/bin/python'
 SCHEMA = 'ugrp.zone_env_v3.tb_view.v1'
 MEDIA_PORT = 6009
 PINNED = ('evaluation/reported_success', 'result/sim_s', 'result/commands', 'result/wall_s', 'result/model_calls',

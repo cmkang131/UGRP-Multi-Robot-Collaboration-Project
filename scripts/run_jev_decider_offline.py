@@ -12,7 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from harness import jev_decider_eval as ev, jev_decider_suite as su
 
 EXP = Path(__file__).resolve().parents[1] / 'experiments' / '2026-10-11-jev-decider-offline'
-RAW = Path('/Users/changmin/projects/ugrp/outputs/jev-decider-offline-20261011')
+RAW = Path('<home>/projects/ugrp/outputs/jev-decider-offline-20261011')
 REPEATS = 3
 
 
@@ -131,7 +131,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('phase', choices=('suite', 'phase1', 'real', 'improved', 'probe', 'report'))
     ap.add_argument('--raw-dir', default=str(RAW))
-    ap.add_argument('--wire', nargs='+', default=['/tmp/jevdec/azwire', '/Users/changmin/projects/ugrp/outputs/gemma-latency-check-20261011/wire'])
+    ap.add_argument('--wire', nargs='+', default=['/tmp/jevdec/azwire', '<home>/projects/ugrp/outputs/gemma-latency-check-20261011/wire'])
     ap.add_argument('--reveal-holdout', action='store_true', help='list holdout failures (only after the improved representation is frozen)')
     ap.add_argument('--split', choices=('dev', 'holdout'), default='dev')
     ap.add_argument('--out', default=str(EXP / 'summary.json'))

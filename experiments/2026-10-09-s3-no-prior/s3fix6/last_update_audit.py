@@ -3,7 +3,7 @@ import argparse,hashlib,json,math
 from pathlib import Path
 import numpy as np
 p=argparse.ArgumentParser();p.add_argument('--replays',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
-root=Path('/Users/changmin/projects/ugrp/outputs');raws={'v149':root/'s3-sweep-b73ce193-s14201-v149','v150':root/'s3-odometry-4c9eb3aa-s14201-v150'}
+root=Path('<home>/projects/ugrp/outputs');raws={'v149':root/'s3-sweep-b73ce193-s14201-v149','v150':root/'s3-odometry-4c9eb3aa-s14201-v150'}
 rows=[];sources={}
 def read(path,lines=False):
  sources[str(path.resolve())]=hashlib.sha256(path.read_bytes()).hexdigest()

@@ -108,8 +108,8 @@ criterion A는 계속 `FAILED_NOT_RESCORED`다.
 
 ```sh
 python3 -m scripts.validate_consumer_criterion_b_v91 \
-  --raw /Users/changmin/projects/ugrp/outputs/final-pair-v91-heldout-04043e27-20261003/zone_wide_corridor_final_v3 \
-  --raw /Users/changmin/projects/ugrp/outputs/final-pair-v91-heldout-04043e27-20261003/zone_wide_door_geometry_v3 \
+  --raw <home>/projects/ugrp/outputs/final-pair-v91-heldout-04043e27-20261003/zone_wide_corridor_final_v3 \
+  --raw <home>/projects/ugrp/outputs/final-pair-v91-heldout-04043e27-20261003/zone_wide_door_geometry_v3 \
   --refetch-commitment \
   --output /absolute/path/outside-raw/criterion_B_v91_NEW.json
 ```

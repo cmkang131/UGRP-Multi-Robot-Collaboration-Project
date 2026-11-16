@@ -4,7 +4,7 @@ import csv, sys, time
 from vocommon import *
 import vo_eval as V
 
-OUT = "/Users/changmin/projects/ugrp/outputs/vo-feasibility-20261003"
+OUT = "<home>/projects/ugrp/outputs/vo-feasibility-20261003"
 RES = 0.005
 X0, X1, Y0, Y1 = 0.20, 1.40, -0.60, 0.60
 NU, NV = int((X1 - X0) / RES), int((Y1 - Y0) / RES)

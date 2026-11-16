@@ -19,7 +19,7 @@ from scripts import run_s2_active_observation as previous
 from scripts import agent_lock
 from scripts.run_final_environment_checks import check_source,write
 
-SUPERVISOR=Path('/private/tmp/claude-501/-Users-changmin/2eb0ff27-da4f-4484-8131-64ef091df6ae/scratchpad/supervisor-s2.md')
+SUPERVISOR=Path('/private/tmp/claude-501/-<home>/2eb0ff27-da4f-4484-8131-64ef091df6ae/scratchpad/supervisor-s2.md')
 
 
 def runtime_factory(b,clouds,index):

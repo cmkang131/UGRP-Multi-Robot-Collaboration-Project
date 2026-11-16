@@ -13,7 +13,7 @@ damping (1.4 N/(m/s)) to stop damping (18 N/(m/s)) and discards momentum.
 import glob, hashlib, json, os, statistics, sys
 from pathlib import Path
 
-ROOT = Path('/Users/changmin/projects/ugrp/outputs')
+ROOT = Path('<home>/projects/ugrp/outputs')
 EPS = 1e-9
 
 

@@ -35,7 +35,7 @@ import vision_loc as vl  # noqa: E402
 
 IN_W, IN_H = sm.IN_W, sm.IN_H
 MEAN, STD = sm.MEAN, sm.STD
-SEG_V2 = Path('/Users/changmin/projects/ugrp/outputs/vision-loc-20260926/model/seg-v2/seg_lraspp_mbv3.pt')
+SEG_V2 = Path('<home>/projects/ugrp/outputs/vision-loc-20260926/model/seg-v2/seg_lraspp_mbv3.pt')
 SEG_V2_SHA256 = '348539030fda962cc5ba64e21c956619bc4db9321a99cd3ae6746611a9939fd9'
 PREPROCS = ('rgb', 'perimg', 'gray_perimg')
 

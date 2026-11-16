@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Coordinator only. V92_SOURCE_SHA must be the exact reviewed 40-character SHA.
 set -eu
-cd /Users/changmin/projects/ugrp-wt/v92-loaded
-PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+cd <home>/projects/ugrp-wt/v92-loaded
+PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 FINAL_SHA="${V92_SOURCE_SHA:?Set the exact 40-character SHA from this PR handoff}"
 FINAL_BRANCH=codex/v92-loaded-schedule
-RUN_ROOT=/Users/changmin/projects/ugrp/outputs/final-pair-v92-loaded-${FINAL_SHA:0:8}-20261003
+RUN_ROOT=<home>/projects/ugrp/outputs/final-pair-v92-loaded-${FINAL_SHA:0:8}-20261003
 SLOT=sim-claude-v92-loaded
 CHILD_PID=""
 ACQUIRED=0

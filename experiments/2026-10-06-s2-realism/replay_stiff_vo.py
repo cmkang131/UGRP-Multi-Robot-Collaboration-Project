@@ -20,7 +20,7 @@ def main():
  pf=r.pose.provider.loc._pf;allrows=[];sources={}
  try:
   for case in ('stiff-north','stiff-south'):
-   raw=Path('/Users/changmin/projects/ugrp/outputs/servo-stiffness-v1')/case
+   raw=Path('<home>/projects/ugrp/outputs/servo-stiffness-v1')/case
    plant=json.loads((raw/'bundle.json').read_text());assert plant['options']['servo_stiffness']=='real_v1'
    read=lambda name:[json.loads(l) for l in (raw/name).read_text().splitlines()]
    frames=read('robots/r3/frames.jsonl');commands=read('robots/r3/commands.jsonl')

@@ -3,10 +3,10 @@ import hashlib,json,subprocess,sys
 from pathlib import Path
 from collections import Counter
 from urllib.parse import quote
-BASE=Path('/Users/changmin/projects/ugrp/outputs/s4grip2-offline')
-REPO=Path('/Users/changmin/projects/ugrp-wt/s4-llm')
-SHARED=Path('/Users/changmin/projects/ugrp/outputs')
-PYTHON='/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python'
+BASE=Path('<home>/projects/ugrp/outputs/s4grip2-offline')
+REPO=Path('<home>/projects/ugrp-wt/s4-llm')
+SHARED=Path('<home>/projects/ugrp/outputs')
+PYTHON='<home>/projects/ugrp/.venv-sim-worker-mac/bin/python'
 SHA=json.loads((BASE/'admissions-r1.json').read_text())['source_sha']
 def digest(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 views=[]

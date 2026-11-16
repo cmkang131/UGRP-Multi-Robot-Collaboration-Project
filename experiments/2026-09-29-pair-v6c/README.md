@@ -174,7 +174,7 @@ standoff 축 fit과 pre-close 부분 관측 검사는 **v1 lime 픽셀**(hue 36�
 - 러너는 `python -m scripts.run_pair_stage_probes ... --workers 4 --execute --lock-owner claude`다. workflow 행이 등록 보류라서 `sim_cli`를 거치지 않았다(#260 README 방식).
 - 모든 raw의 manifest는 `state=completed`, `source_changed=False`다.
 
-| raw (`/Users/changmin/projects/ugrp/outputs/`) | 소스 | 인자 | 경우 | wall | 부하 평균 (시작 → 끝, 1분) |
+| raw (`<home>/projects/ugrp/outputs/`) | 소스 | 인자 | 경우 | wall | 부하 평균 (시작 → 끝, 1분) |
 |---|---|---|---:|---:|---|
 | `pair-stage-probes-b5234b7a-v6c-align` | b5234b7a | `--stage align --sources teacher e2e --prior-std e2e --policies b-v6c --seeds 911 --nominal-seeds 911 912 913 --e2e-seeds 911 912 913` | 25 | 1477 s | 26.2 → 21.2 |
 | `pair-stage-probes-b534a9b5-v6c-bound-grid` | b534a9b5 | `--stage grasp_lift --sources boundary --prior-std grid --policies b-v6c --seeds 911` | 23 | 372 s | 20.3 → 36.5 |
@@ -221,7 +221,7 @@ standoff 축 fit과 pre-close 부분 관측 검사는 **v1 lime 픽셀**(hue 36�
 
 ## raw와 해시
 
-모든 raw는 `/Users/changmin/projects/ugrp/outputs/`에 있고 로컬에만 보관한다(원격 백업 아님). `cases.jsonl`과 `summary.json`은 이 폴더에 같은 바이트로 복사했다(`cases_*.jsonl`, `summary_*.json`).
+모든 raw는 `<home>/projects/ugrp/outputs/`에 있고 로컬에만 보관한다(원격 백업 아님). `cases.jsonl`과 `summary.json`은 이 폴더에 같은 바이트로 복사했다(`cases_*.jsonl`, `summary_*.json`).
 
 | raw | 파일 · 크기 | `artifacts.sha256.json` | `cases.jsonl` | `summary.json` |
 |---|---|---|---|---|
@@ -239,7 +239,7 @@ driver log sha256:
 
 ## TensorBoard
 
-- **스냅샷.** `/Users/changmin/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6c`, run 135개(경우별 129 + 그룹 집계 `ALL-*` 6). `collection.json` sha256 `2e002acbf50ffd0956d1641dc1418a7c8c3961603cfec91973d9cd56d850728e`.
+- **스냅샷.** `<home>/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6c`, run 135개(경우별 129 + 그룹 집계 `ALL-*` 6). `collection.json` sha256 `2e002acbf50ffd0956d1641dc1418a7c8c3961603cfec91973d9cd56d850728e`.
 - **파생 뷰.** `outputs/pair-stage-probes-tbviews-0929-v6c`(index sha256 `9e19ab270e5057fdb08bf5b74a3ea86c5794644c71a774d8d1844320bab3e9af`).
   - 빌더 `scripts/build_pair_stage_probe_views.py`, 변환기 `scripts/export_offline_audit.py`.
 - **검증 1.** EventAccumulator로 135개 run의 `offline/stage_pass`, `offline/pass_rate`를 파생 뷰 값과 비교했다. 불일치 0건이다.

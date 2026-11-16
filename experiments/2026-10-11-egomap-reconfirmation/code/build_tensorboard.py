@@ -8,7 +8,7 @@ from urllib.parse import urlencode
 
 ROOT = Path(__file__).resolve().parents[3]
 EXP = ROOT/'experiments/2026-10-11-egomap-reconfirmation'
-PRIMARY = Path('/Users/changmin/projects/ugrp')
+PRIMARY = Path('<home>/projects/ugrp')
 REPORTS = PRIMARY/'outputs/egomap71-reports'
 VIEWS = PRIMARY/'outputs/egomap71-tensorboard-views-v1'
 SNAPSHOT = PRIMARY/'outputs/tensorboard/1011-egomap71-v1'

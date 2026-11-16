@@ -6,7 +6,7 @@
     "close_command_override": null,
     "grasp_only": true,
     "success": false,
-    "error": "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-spacing/scripts/run_pair_navigation.py\", line 226, in run\n    (scene.hold_spacing if grasp_spacing=='visual' else scene.tick)(8.)\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-spacing/scripts/run_pair_navigation.py\", line 69, in hold_spacing\n    self.spacing_frame()\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-spacing/scripts/run_pair_navigation.py\", line 57, in spacing_frame\n    for r in ROBOTS:self.ports[r].apply(actions[r],self.time())\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-spacing/sim/camera_robot_port.py\", line 119, in apply\n    left = _bounded_number(\"left\", action[\"left\"], -0.10, 0.10)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-spacing/sim/camera_robot_port.py\", line 220, in _bounded_number\n    raise ValueError(f\"{name} must be between {lower} and {upper}\")\nValueError: left must be between -0.1 and 0.1\n",
+    "error": "Traceback (most recent call last):\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-spacing/scripts/run_pair_navigation.py\", line 226, in run\n    (scene.hold_spacing if grasp_spacing=='visual' else scene.tick)(8.)\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-spacing/scripts/run_pair_navigation.py\", line 69, in hold_spacing\n    self.spacing_frame()\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-spacing/scripts/run_pair_navigation.py\", line 57, in spacing_frame\n    for r in ROBOTS:self.ports[r].apply(actions[r],self.time())\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-spacing/sim/camera_robot_port.py\", line 119, in apply\n    left = _bounded_number(\"left\", action[\"left\"], -0.10, 0.10)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-spacing/sim/camera_robot_port.py\", line 220, in _bounded_number\n    raise ValueError(f\"{name} must be between {lower} and {upper}\")\nValueError: left must be between -0.1 and 0.1\n",
     "wall_seconds": 13.4284978749929,
     "grasp_stability": {
       "anchor_spacing_m": 0.6505950048223926,
@@ -24,7 +24,7 @@
       "success": false
     },
     "manifest": {
-      "raw_root": "/Users/changmin/projects/ugrp-worktrees/pair-grasp-spacing/outputs/pair-spacing-diagnostic-2026-09-14",
+      "raw_root": "<home>/projects/ugrp-worktrees/pair-grasp-spacing/outputs/pair-spacing-diagnostic-2026-09-14",
       "raw_remote_backup": false,
       "files": 247,
       "bytes": 11474934,
@@ -40,7 +40,7 @@
     "close_command_override": null,
     "grasp_only": true,
     "success": false,
-    "error": "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-spacing/scripts/run_pair_navigation.py\", line 226, in run\n    (scene.hold_spacing if grasp_spacing=='visual' else scene.tick)(8.)\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-spacing/scripts/run_pair_navigation.py\", line 69, in hold_spacing\n    self.spacing_frame()\n  File \"/Users/changmin/projects/ugrp-worktrees/pair-grasp-spacing/scripts/run_pair_navigation.py\", line 59, in spacing_frame\n    raise RuntimeError('grasp spacing stopped: '+json.dumps({r:d.get('error') for r,d in decisions.items()}))\nRuntimeError: grasp spacing stopped: {\"r1\": \"visual grasp formation exceeded recovery envelope\", \"r3\": \"visual grasp formation exceeded recovery envelope\"}\n",
+    "error": "Traceback (most recent call last):\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-spacing/scripts/run_pair_navigation.py\", line 226, in run\n    (scene.hold_spacing if grasp_spacing=='visual' else scene.tick)(8.)\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-spacing/scripts/run_pair_navigation.py\", line 69, in hold_spacing\n    self.spacing_frame()\n  File \"<home>/projects/ugrp-worktrees/pair-grasp-spacing/scripts/run_pair_navigation.py\", line 59, in spacing_frame\n    raise RuntimeError('grasp spacing stopped: '+json.dumps({r:d.get('error') for r,d in decisions.items()}))\nRuntimeError: grasp spacing stopped: {\"r1\": \"visual grasp formation exceeded recovery envelope\", \"r3\": \"visual grasp formation exceeded recovery envelope\"}\n",
     "wall_seconds": 15.47000112500973,
     "grasp_stability": {
       "anchor_spacing_m": 0.6505950048223926,
@@ -58,7 +58,7 @@
       "success": false
     },
     "manifest": {
-      "raw_root": "/Users/changmin/projects/ugrp-worktrees/pair-grasp-spacing/outputs/pair-spacing-diagnostic2-2026-09-14",
+      "raw_root": "<home>/projects/ugrp-worktrees/pair-grasp-spacing/outputs/pair-spacing-diagnostic2-2026-09-14",
       "raw_remote_backup": false,
       "files": 250,
       "bytes": 11612110,
@@ -92,7 +92,7 @@
       "success": true
     },
     "manifest": {
-      "raw_root": "/Users/changmin/projects/ugrp-worktrees/pair-grasp-spacing/outputs/pair-spacing-diagnostic3-2026-09-14",
+      "raw_root": "<home>/projects/ugrp-worktrees/pair-grasp-spacing/outputs/pair-spacing-diagnostic3-2026-09-14",
       "raw_remote_backup": false,
       "files": 371,
       "bytes": 17243510,
@@ -126,7 +126,7 @@
       "success": true
     },
     "manifest": {
-      "raw_root": "/Users/changmin/projects/ugrp-worktrees/pair-grasp-spacing/outputs/pair-spacing-passive1700-2026-09-14",
+      "raw_root": "<home>/projects/ugrp-worktrees/pair-grasp-spacing/outputs/pair-spacing-passive1700-2026-09-14",
       "raw_remote_backup": false,
       "files": 59,
       "bytes": 2790992,
@@ -160,7 +160,7 @@
       "success": true
     },
     "manifest": {
-      "raw_root": "/Users/changmin/projects/ugrp-worktrees/pair-grasp-spacing/outputs/pair-spacing-1600-short-2026-09-14",
+      "raw_root": "<home>/projects/ugrp-worktrees/pair-grasp-spacing/outputs/pair-spacing-1600-short-2026-09-14",
       "raw_remote_backup": false,
       "files": 371,
       "bytes": 17252861,
@@ -194,7 +194,7 @@
       "success": true
     },
     "manifest": {
-      "raw_root": "/Users/changmin/projects/ugrp-worktrees/pair-grasp-spacing/outputs/pair-spacing-1600-long-2026-09-14/narrow-door",
+      "raw_root": "<home>/projects/ugrp-worktrees/pair-grasp-spacing/outputs/pair-spacing-1600-long-2026-09-14/narrow-door",
       "raw_remote_backup": false,
       "files": 1730,
       "bytes": 86836059,

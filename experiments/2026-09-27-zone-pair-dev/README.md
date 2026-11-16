@@ -160,7 +160,7 @@ SIM 임무 시간·제출 60초·종료 후 2초·영상 5 Hz는 유지한다. w
 출력은 항상 새 경로여야 한다.
 
 ```sh
-PAIR_PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+PAIR_PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 PAIR_PREREG=experiments/2026-09-27-zone-pair-dev/prereg_v2_DRAFT.json
 "$PAIR_PY" -m scripts.sim_cli workflow plan zone-pair-dev -- \
   --prereg "$PAIR_PREREG" --run-id dev03
@@ -186,11 +186,11 @@ PAIR_PREREG=experiments/2026-09-27-zone-pair-dev/prereg_v2_DRAFT.json
 ```sh
 bash <<'PAIR_DEV'
 set -euo pipefail
-PAIR_PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+PAIR_PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 PAIR_OWNER=codex
 PAIR_BRANCH=$(git branch --show-current)
 PAIR_SHA=$(git rev-parse HEAD)
-PAIR_PRIMARY=/Users/changmin/projects/ugrp
+PAIR_PRIMARY=<home>/projects/ugrp
 PAIR_PREREG=experiments/2026-09-27-zone-pair-dev/prereg_v2_DRAFT.json
 PAIR_ROOT="$PAIR_PRIMARY/outputs/zone-pair-dev-v2-$PAIR_SHA"
 PAIR_TIMEOUT=$("$PAIR_PY" -c 'import json,sys; print(json.load(open(sys.argv[1]))["limits"]["outer_wall_timeout_s"])' "$PAIR_PREREG")
@@ -245,13 +245,13 @@ ENOSPC는 HOST_ERROR다. 디스크가 이미 가득 찼다면 최종 파일 저�
 # 성공이 아니면 exit 1; 결과 파일은 보존된다. 중단 진단을 정상 성공으로 표시하지 않는다.
 # 검토 result와 영상을 새 파생 뷰에 연결한다. 기존 raw/검토 파일은 수정하지 않는다.
 # 같은 파일시스템의 hardlink라 영상 바이트 복제가 없다. ../ symlink는 변환기가 거부한다.
-PAIR_VIEW=/Users/changmin/projects/ugrp/outputs/tb-view/pair-dev-NEW
+PAIR_VIEW=<home>/projects/ugrp/outputs/tb-view/pair-dev-NEW
 mkdir "$PAIR_VIEW"
 cp "$PAIR_OUT/eval_only/review-01/result.json" "$PAIR_VIEW/result.json"
 ln "$PAIR_OUT/eval_only/overview.mp4" "$PAIR_VIEW/overview.mp4"
 "$PAIR_PY" scripts/export_tensorboard.py \
   --source "$PAIR_VIEW" \
-  --output /Users/changmin/projects/ugrp/outputs/tensorboard/pair-dev-NEW --max-images 0
+  --output <home>/projects/ugrp/outputs/tensorboard/pair-dev-NEW --max-images 0
 ```
 
 실패/중단 결과도 새 snapshot에 넣는다. [TensorBoard 지침](../../docs/tensorboard.md)에 따라

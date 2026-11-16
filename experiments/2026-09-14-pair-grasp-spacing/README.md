@@ -50,8 +50,8 @@
 
 동일한 시작 자세·물체·카메라에서 지형당 1회인 시뮬레이션 비교다. 다양한 시작 자세, 다른 하중/마찰, 실물 로봇이나 무제한 장시간 유지의 성공을 입증하지 않는다. 영상 위치 추정과 사전 지도 기반 A*·결정론적 제어이며, LLM 적응 협업 결과로 부르지 않는다. 내려놓기는 기존 고정 시연을 재생한다. 최장 운반 90.7 SIM초까지 검증했다.
 
-실행 소스는 사전 커밋 후 코호트 동안 고정했다. `run_cohort.py`의 기본값은 robust + visual spacing + 1600 PWM이며, 다른 PWM은 명시적 진단 옵션이다. 명령과 모델 파일 해시는 [cohort.json](final/cohort.json), 환경은 [environment.json](final/environment.json)에 있다. 현재 로컬 모델 경로는 `/Users/changmin/projects/ugrp-worktrees/pair-loaded-navigation/outputs/pair-navigation/runtime/models/grasp`다. 모델/raw 자료가 Git만으로 내려오는 것으로 표현하지 않는다.
+실행 소스는 사전 커밋 후 코호트 동안 고정했다. `run_cohort.py`의 기본값은 robust + visual spacing + 1600 PWM이며, 다른 PWM은 명시적 진단 옵션이다. 명령과 모델 파일 해시는 [cohort.json](final/cohort.json), 환경은 [environment.json](final/environment.json)에 있다. 현재 로컬 모델 경로는 `<home>/projects/ugrp-worktrees/pair-loaded-navigation/outputs/pair-navigation/runtime/models/grasp`다. 모델/raw 자료가 Git만으로 내려오는 것으로 표현하지 않는다.
 
-원본 RGB·영상·전체 로그는 `/Users/changmin/projects/ugrp-worktrees/pair-grasp-spacing/outputs/pair-spacing-final1600-2026-09-14`에 로컬 보관한다. [해시 목록](final/raw-hashes.jsonl.gz)과 [실제 저장 범위](final/raw-manifest.json)를 함께 기록한다. 선택 영상·요약·검증 결과는 Git에 보존하며 raw의 원격 백업을 뜻하지 않는다. UGRP 프로젝트 예외에 따라 Drive는 사용하지 않는다.
+원본 RGB·영상·전체 로그는 `<home>/projects/ugrp-worktrees/pair-grasp-spacing/outputs/pair-spacing-final1600-2026-09-14`에 로컬 보관한다. [해시 목록](final/raw-hashes.jsonl.gz)과 [실제 저장 범위](final/raw-manifest.json)를 함께 기록한다. 선택 영상·요약·검증 결과는 Git에 보존하며 raw의 원격 백업을 뜻하지 않는다. UGRP 프로젝트 예외에 따라 Drive는 사용하지 않는다.
 
 PR은 #47 위에 쌓는 후속 변경이며 main 병합은 별도 사용자 승인 이후다.

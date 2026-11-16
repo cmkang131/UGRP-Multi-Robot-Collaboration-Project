@@ -1,7 +1,7 @@
 import hashlib,json,math,urllib.request,urllib.parse
 from pathlib import Path
 from tensorboard.backend.event_processing.event_accumulator import EventAccumulator
-BASE=Path('/Users/changmin/projects/ugrp/outputs')
+BASE=Path('<home>/projects/ugrp/outputs')
 NAME='1009-simspeed-core-725f45b1'
 SNAP=BASE/'tensorboard'/NAME
 VIEWS=BASE/'simspeed-core-20261009-views'

@@ -74,12 +74,12 @@ usage가 없는 응답은 무료로 세지 않는다. 예약 추정치를 비용
 
 ## Mac에서 이어서 수행해야 하는 실제 검증
 
-1. `/Users/changmin/projects/ugrp`의 현재 소스, Git 상태, 마지막 decision log와 원본 실패 영상 위치를 읽는다. 사용자 변경을 보존하고 실제 체크아웃에 패치를 검토·반영한다. 이 파일과 ZIP은 배포 완료 증거가 아니다.
+1. `<home>/projects/ugrp`의 현재 소스, Git 상태, 마지막 decision log와 원본 실패 영상 위치를 읽는다. 사용자 변경을 보존하고 실제 체크아웃에 패치를 검토·반영한다. 이 파일과 ZIP은 배포 완료 증거가 아니다.
 2. 기존 Mac 시뮬레이션 Python 환경으로 회귀 검사를 실행한다. 누락 원본 자료에 의존하는 검사도 Mac의 실제 데이터로 다시 수행한다.
 3. 준비 상태 확인 후 실제 pilot **한 번**을 실행한다. 아래 실행기는 별도 가짜 completion이나 추가 가용성 completion을 보내지 않는다. 첫 실제 판단부터 30회/60,000토큰 예산 안에 포함한다.
 
 ```sh
-cd /Users/changmin/projects/ugrp
+cd <home>/projects/ugrp
 # 저장소 기록에 나온 Mac 가상환경 이름. 실제 존재 여부는 이번 세션에서 미확인.
 .venv-sim-worker-mac/bin/python -m scripts.run_gemini_budget_pilot
 .venv-sim-worker-mac/bin/python -m scripts.run_gemini_budget_pilot \

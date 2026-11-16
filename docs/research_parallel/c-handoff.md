@@ -55,10 +55,10 @@
 실행한 오프라인 검사:
 
 ```sh
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_rgb_communication_runtime.py
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_rgb_communication_runtime.py
 # 10 passed
 
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m py_compile \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m py_compile \
   harness/rgb_communication_runtime.py tests/test_rgb_communication_runtime.py
 git diff --check
 ```

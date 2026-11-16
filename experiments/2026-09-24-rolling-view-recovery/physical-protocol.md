@@ -22,4 +22,4 @@
 
 매 시작 실행에서 weak-RGB streak, HOLD, 능동 시야 pose/zero-wheel/안정화 새 영상, 실제 발행한 접근 drive 창, 접근·빔 정렬·상자 통행 허가 대기 단계의 SIM 시간, 전체 motion SIM·wall·비율, 호스트 경쟁을 따로 기록한다. 소스 수준 미시 벤치나 발행 명령 창 감소는 메커니즘 자료이며 실제 주행 거리나 전체 임무 가속의 대체 근거가 아니다. grasp-start overlap에서 접근 단축은 빔 파지 대기에 흡수될 수 있다. SIM/wall 비율에 임의의 0.98 컷을 사후 적용하지 않는다. v40, 동시 Claude 실험과 다른 코호트의 결과를 합산하지 않는다.
 
-부모 실행자는 소스·v43 번들·모델·계획·카메라 fixture·프로토콜·launcher·감사기·host guard 해시를 첫 실행 전에 별도 freeze에 기록한다. 실행 결과는 `/Users/changmin/projects/ugrp/outputs/dispatch-view-recovery-20260924`에 원본으로 보존한다. 한 회차 뒤 부모가 독립 raw/manager 감사를 만들어 SHA와 여덟 경계의 영수증을 검사한 후 다음 회차를 연다. 감사기가 영수증을 대신 생성하거나 기존 코호트 원본을 덮어쓰지 않는다. 완료된 성공과 실패는 새 native TensorBoard 스냅샷에 포함하되 실제 표시 검증은 별도로 한다.
+부모 실행자는 소스·v43 번들·모델·계획·카메라 fixture·프로토콜·launcher·감사기·host guard 해시를 첫 실행 전에 별도 freeze에 기록한다. 실행 결과는 `<home>/projects/ugrp/outputs/dispatch-view-recovery-20260924`에 원본으로 보존한다. 한 회차 뒤 부모가 독립 raw/manager 감사를 만들어 SHA와 여덟 경계의 영수증을 검사한 후 다음 회차를 연다. 감사기가 영수증을 대신 생성하거나 기존 코호트 원본을 덮어쓰지 않는다. 완료된 성공과 실패는 새 native TensorBoard 스냅샷에 포함하되 실제 표시 검증은 별도로 한다.

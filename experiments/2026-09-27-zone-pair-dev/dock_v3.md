@@ -77,7 +77,7 @@ walls_v3 후속은 위 **x/행/z/yaw/keepout 및 계산식**을 새 버전으로
 준비만 확인:
 
 ```sh
-PAIR_PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+PAIR_PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 "$PAIR_PY" scripts/run_zone_pair_dev.py \
   --prereg experiments/2026-09-27-zone-pair-dev/prereg_v3.json \
   --run-id dev05 --output /tmp/zone-pair-dev05-prepare-NEW
@@ -89,12 +89,12 @@ OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 "$PAIR_PY" scripts/run_zone_pair_dev
 ```sh
 bash <<'PAIR_DEV_V3'
 set -euo pipefail
-PAIR_PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+PAIR_PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 PAIR_OWNER=codex
 PAIR_BRANCH=$(git branch --show-current)
 PAIR_SHA=$(git rev-parse HEAD)
 PAIR_PREREG=experiments/2026-09-27-zone-pair-dev/prereg_v3.json
-PAIR_ROOT="/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v3-$PAIR_SHA"
+PAIR_ROOT="<home>/projects/ugrp/outputs/zone-pair-dev-v3-$PAIR_SHA"
 test "$PAIR_BRANCH" != main
 test -z "$(git status --porcelain)"
 "$PAIR_PY" scripts/disk_report.py

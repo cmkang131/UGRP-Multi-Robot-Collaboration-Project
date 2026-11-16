@@ -27,7 +27,7 @@
    holder truth로 대상·파트너·양보·재시도를 고르지 않는다.
 6. 공용 잠금(`scripts/agent_lock.py acquire`)·여유공간 10 GiB·부하·소유 PID 확인 뒤 자기
    worktree에서 관리 session으로 실행한다. raw는 primary
-   `/Users/changmin/projects/ugrp/outputs/t13b-recovery-<candidate>-<new-run>/`에 쓴다.
+   `<home>/projects/ugrp/outputs/t13b-recovery-<candidate>-<new-run>/`에 쓴다.
    실패 파일을 재사용하지 않는다. 다른 작업의 프로세스/잠금은 건드리지 않는다.
 
 ## 사건 시계와 사전 고정

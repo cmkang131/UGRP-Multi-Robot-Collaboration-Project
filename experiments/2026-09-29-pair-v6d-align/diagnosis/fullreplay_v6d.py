@@ -1,10 +1,10 @@
 """Diagnosis-only: full v2 observe_beam default vs hue_lo=25 on saved align frames vs eval-only GT."""
 import json, math, bisect, os, sys, collections
 import numpy as np, cv2
-sys.path.insert(0,'/Users/changmin/projects/ugrp-wt/claude-v6d-align'); sys.path.insert(0,os.path.dirname(__file__))
+sys.path.insert(0,'<home>/projects/ugrp-wt/claude-v6d-align'); sys.path.insert(0,os.path.dirname(__file__))
 from hreplay import half, wrap
 from harness import owncam_pair_beam_v2 as v2, owncam_pair_beam as v1, owncam_pair_beam_v6d as w6
-BASE='/Users/changmin/projects/ugrp/outputs/pair-stage-probes-b5234b7a-v6c-align/cases/'
+BASE='<home>/projects/ugrp/outputs/pair-stage-probes-b5234b7a-v6c-align/cases/'
 POST={tuple(sorted(v2.pose_of(n).items())):n for n in v2.order()}
 def gt_grip(tr_row, rid):
     x,y,yaw=tr_row['robots'][rid]; bx,by,_=tr_row['beam_xyz']; bY=tr_row['beam_yaw']

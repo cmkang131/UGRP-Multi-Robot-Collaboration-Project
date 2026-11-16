@@ -23,7 +23,7 @@ sys.path.insert(0, str(ROOT))
 from harness.wall_tags import TagDetector, observed_tag_in_camera, predicted_tag_in_camera, tags_by_id  # noqa: E402
 from sim.zone_landmarks import tagged_map  # noqa: E402
 
-RAW = Path('/Users/changmin/projects/ugrp/outputs/owncam-loop-20260925')
+RAW = Path('<home>/projects/ugrp/outputs/owncam-loop-20260925')
 CAL = json.loads((Path(__file__).with_name('calibration_loop_v2.json')).read_text())['params']['measurement']
 
 

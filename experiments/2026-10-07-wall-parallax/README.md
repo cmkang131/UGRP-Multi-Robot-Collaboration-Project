@@ -67,7 +67,7 @@ off 골든 bytes 동일, 허용 입력만 사용, accepted behind-camera0도 모
 모든8건 통과할 때만 RBPF100+pose_graph 지도 재생·회색 실제벽/신뢰도 음영/경로 그림을 갱신한다.
 실패/자료 부족이면 튜닝·추가 녹화·지도 재생 없이 원인만 기록하고 멈춘다.
 
-raw `/Users/changmin/projects/ugrp/outputs/wall-parallax-v1/`에 새로 저장하며 원본은 보존한다.
+raw `<home>/projects/ugrp/outputs/wall-parallax-v1/`에 새로 저장하며 원본은 보존한다.
 ENOSPC=HOST_ERROR. 실험 source commit/push 후 실행, 시험은 변경1–3파일·off golden만.
 기존 venv/OpenCV/NumPy 재사용, 새 dependency 설치0. timing benchmark가 아니므로 잠금 없음.
 다른 worktree 수정/force/reset/병합0, #405 DRAFT, 모든 커밋 Codex trailer.

@@ -41,7 +41,7 @@ bash scripts/open_simulation.command workflow plan zone-study-integration-run --
   --expected-source-sha "$t12_source_sha" --output "$t12_new_output"
 ```
 
-`t12_prereg`는 horizon=900, 원본 seed/명세와 별도 dev ID, 정확한 source/bundle을 고정한 새 문서다. `t12_new_output`은 primary `/Users/changmin/projects/ugrp/outputs/` 아래 **기존에 없는 셀별 경로**다. `--dev-horizon-s`로 봉인/source 검사를 우회하지 않는다. `--llm`을 붙이지 않는다(새 모델 호출 예산 없음). 모델 없는 actor도 자기 입력에 따른 재요청 정책을 명시하고 event 시각을 script로 알고 행동하면 실패다.
+`t12_prereg`는 horizon=900, 원본 seed/명세와 별도 dev ID, 정확한 source/bundle을 고정한 새 문서다. `t12_new_output`은 primary `<home>/projects/ugrp/outputs/` 아래 **기존에 없는 셀별 경로**다. `--dev-horizon-s`로 봉인/source 검사를 우회하지 않는다. `--llm`을 붙이지 않는다(새 모델 호출 예산 없음). 모델 없는 actor도 자기 입력에 따른 재요청 정책을 명시하고 event 시각을 script로 알고 행동하면 실패다.
 
 실제 실행 드라이버 PID로 다음 공용 잠금을 획득한 뒤, 세션 관리 아래 같은 plan 인자의 `workflow run`을 실행한다. PID는 shell/종료된 임시 프로세스가 아닌 실행 수명을 소유한 드라이버여야 한다.
 

@@ -88,15 +88,15 @@ raw 로그·영상·모델은 로컬 outputs에만 보존한다. GitHub의 결�
 원 실행 소스는 92b984e9d518fbdd878d0e1260b527cb5aad6a1a, 학습 소스는 e987d4a7f5bea5d08fd4100f23be6fce9b1251f0이다. 원본 Mac에서 아래처럼 별도 출력 디렉터리를 사용한다. 다른 호스트에는 raw 데이터와 기존 grasp/stage 모델을 먼저 제공하고 프로토콜의 로컬 원본 경로를 맞춰야 한다. 새 실행의 실제 SHA는 보고서에 별도로 기록된다. 이 결과가 실물 또는 다른 플랫폼에서도 재현된다는 검증은 하지 않았다.
 
 ```sh
-SIM_PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
-ACT_PY=/Users/changmin/Project-Runtimes/ugrp/.venv-reference-act/bin/python
-MJ_PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/mjpython
+SIM_PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
+ACT_PY=<home>/Project-Runtimes/ugrp/.venv-reference-act/bin/python
+MJ_PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/mjpython
 "$SIM_PY" scripts/ugrp_session.py run carry-act-reproduction -- \
   "$SIM_PY" scripts/run_carry_act_experiment.py \
   --out outputs/carry-act-reproduction-NEW-ID \
   --act-python "$ACT_PY" --mjpython "$MJ_PY" \
-  --grasp /Users/changmin/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-transfer-t4/models/grasp \
-  --stages /Users/changmin/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-transfer-t4/models/varied \
+  --grasp <home>/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-transfer-t4/models/grasp \
+  --stages <home>/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-transfer-t4/models/varied \
   --reuse-training outputs/experiment-v1
 ```
 

@@ -2,13 +2,13 @@
 # Pre-registered pair v3 cohort: hold check fullframe_v3; arms ON/OFF (--status-channel).
 # Carry seeds 631-636 (no injection) + deliberate-drop seeds 641-644 (experimenter opens one gripper). 2 lanes.
 set -u
-WT=/Users/changmin/projects/ugrp-wt/zone-owncam-pair
+WT=<home>/projects/ugrp-wt/zone-owncam-pair
 cd $WT
 SHA=$(git rev-parse --short HEAD)
-OUT=/Users/changmin/projects/ugrp/outputs/zone-owncam-pair-20260926/cohort-v3-$SHA
+OUT=<home>/projects/ugrp/outputs/zone-owncam-pair-20260926/cohort-v3-$SHA
 mkdir -p $OUT
 LOG=$OUT/cohort.log
-source /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/activate
+source <home>/projects/ugrp/.venv-sim-worker-mac/bin/activate
 export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1
 typeset -A DROP
 DROP=(641 r1:3.0 642 r2:3.0 643 r1:6.0 644 r2:6.0)

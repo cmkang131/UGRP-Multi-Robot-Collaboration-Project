@@ -68,7 +68,7 @@ S3·55001 ABBA와 55003 단일 A가 완료됐고, S3 연구 순번을 위해 큐
 
 ## 첫 측정과 순번 반환
 
-raw: `/Users/changmin/projects/ugrp/outputs/speedctrl2-20261010-v1`, source `c35cd553`.
+raw: `<home>/projects/ugrp/outputs/speedctrl2-20261010-v1`, source `c35cd553`.
 이 수치는 controller-only이며 physics/render 0회다.
 
 | 입력 | A wall/input-SIM | B wall/input-SIM | 복원 행동 바이트 | 부하 판정 / 절감률 |

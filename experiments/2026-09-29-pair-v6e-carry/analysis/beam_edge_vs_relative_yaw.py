@@ -9,7 +9,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-OUT = Path('/Users/changmin/projects/ugrp/outputs')
+OUT = Path('<home>/projects/ugrp/outputs')
 CASES = [('d08818ef-cal2', 'lat-/opp', 0), ('d08818ef-cal2', 'lat-/opp', 1), ('d08818ef-cal2', 'lat-/opp', 3),
          ('d08818ef-cal2', 'yaw+/same', 0), ('d08818ef-cal2', 'yaw+/same', 1), ('d08818ef-cal2', 'yaw+/same', 3),
          ('d08818ef-cal2', 'nominal', 0), ('d08818ef-cal2', 'nominal', 1), ('d08818ef-cal2', 'nominal', 3)]

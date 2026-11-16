@@ -34,8 +34,8 @@ sys.path.insert(0, str(ROOT))
 from harness.camera_varied_start_student import predict_stage  # noqa: E402
 from harness.dispatch_skill_binding import canonical_pair_top  # noqa: E402
 
-RAW_ROOT = Path('/Users/changmin/projects/ugrp/outputs/beam-regrasp-20260925')
-STAGE_MODELS = Path('/Users/changmin/projects/ugrp-worktrees/team-recovery-fix/outputs/'
+RAW_ROOT = Path('<home>/projects/ugrp/outputs/beam-regrasp-20260925')
+STAGE_MODELS = Path('<home>/projects/ugrp-worktrees/team-recovery-fix/outputs/'
                     'dispatch-models/e78a5a5777f5bc48/models/varied')
 REFERENCE_TOP = ROOT / 'tests/fixtures/camera_goal_transport/reference-top.jpg'
 SLOTS = ('r1', 'r3')

@@ -71,8 +71,8 @@ ACT에는 경로 탐색이 없고 static setup 검사는 기존400/2000회 계�
 완료 score0.65도 기존 decoder 고정값이며 이번 val/시험에서 조정하지 않았다.
 최초 탐색 표·원본은 보존했고 [수정 재집계](act14-pilot-funnel.json)를 본 큐에 연결했다.
 
-실제 요청 큐는 `/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-act14-main-8a438375.json`이며 `rejection_table`은
-`/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/pilot-funnel-corrected.json`로 파일/해시가 일치한다. 남은24회 큐도 같은 표를 연결했다.
+실제 요청 큐는 `<home>/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-act14-main-8a438375.json`이며 `rejection_table`은
+`<home>/projects/ugrp/outputs/act14eval-a70c1588/pilot-funnel-corrected.json`로 파일/해시가 일치한다. 남은24회 큐도 같은 표를 연결했다.
 자기 작업 최대 동시16(요청 상한16), 전역 예약 포함 최대
 29/40이었다. 첫 동시 묶음의30 SIM초 완주9개
 wall/SIM 중앙3.06055·최대3.30193, 조기 done5개는 별도다. 단독 첫2개와 합친 값으로 동시 성능을
@@ -89,7 +89,7 @@ Mac에는 요약·몽타주·실패 선택 프레임만 남기고 원본 전체�
 종료 뒤 전체 SHA256SUMS를 검증했고 큰 JSON/JSONL은 zstd 무손실 압축·복원 SHA 대조 및
 COMPRESSED.jsonl 기록 뒤 보관한다. 원래 해시 목록을 유지하며 이후 파일은
 SHA256SUMS-post-compression으로 다시 검증한다. 독립 full raw 백업은 아직 없다.
-Mac 회수/운영 기록은 `/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588`다.
+Mac 회수/운영 기록은 `<home>/projects/ugrp/outputs/act14eval-a70c1588`다.
 
 기존 L4 `ugrp-act-l4-pilot1`에서 손실을 계산한 뒤 **TERMINATED**를 확인했다.
 8h STOP·idle20분·budget-stop ACTIVE를 유지했다. 크레딧 잔액과 실청구는 독립 확인하지 못했고

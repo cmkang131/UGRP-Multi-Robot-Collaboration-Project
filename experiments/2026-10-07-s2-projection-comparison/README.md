@@ -25,7 +25,7 @@ PR #405 시작 `675ca181`, 작업 `claude/ego-wall-map`. PR #406은 사용자가
    **6건 통과 시에만** RBPF100+positive_depth+pose_graph+wall_confidence 재생 및 누적 지도 그림 갱신.
    §17·§19 기준 유지. 실패 시 원인/경로별 줄 번호를 남기고 추가 보정·튜닝 중단.
 
-raw `/Users/changmin/projects/ugrp/outputs/s2-projection-comparison-v1/`에 새로 저장한다.
+raw `<home>/projects/ugrp/outputs/s2-projection-comparison-v1/`에 새로 저장한다.
 기존 raw/미추적4파일 보존, ENOSPC=HOST_ERROR. source·table·입력·결과 해시 기록.
 시험 통과 확인 뒤 commit/push, Codex trailer, PR #405 DRAFT 유지·병합 없음.
 의존성 추가/venv 변경 없음. TensorBoard 변환은 기존 사용자 결정대로 생략하고 Drive는 사용하지 않는다.

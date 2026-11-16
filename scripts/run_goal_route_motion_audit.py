@@ -8,7 +8,7 @@ from sim.zone_masterpi_v3_scene import static_map
 
 ROOT=previous.ROOT
 EXP=ROOT/'experiments/2026-10-09-goal-route-motion-audit'
-RAW=Path('/Users/changmin/projects/ugrp/outputs/goal-route-motion-audit-v1')
+RAW=Path('<home>/projects/ugrp/outputs/goal-route-motion-audit-v1')
 SEEDS=previous.SEEDS
 
 

@@ -48,7 +48,7 @@ MUJOCO_GL=osmesa OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 LP_N
 
 - 속도 원본: `gcp2:/home/ugrp/ugrp-sim/runs/gcp2setup-speed16`와 실행 소스의 `outputs/simulation-runs/` 표준 기록. 각 실행 결과 경로·해시는 [summary.json](summary.json)에 전부 있다.
 - 렌더 원본: `gcp2:/home/ugrp/ugrp-sim/runs/gcp2setup-render39/raw`; 전체 파일 원장은 `evidence/gcp2setup-render-sha256.json`.
-- Mac 선택16장: `/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/gcp2setup/render-frames/`. 전체 원본은 회수하지 않았다. 대량 원본은 gcp2 영속 디스크에 남고 ARM 백업은 없다.
+- Mac 선택16장: `<home>/projects/ugrp/outputs/e2e18-admin/gcp-reports/gcp2setup/render-frames/`. 전체 원본은 회수하지 않았다. 대량 원본은 gcp2 영속 디스크에 남고 ARM 백업은 없다.
 - 로컬 검사: `tests/test_gcp_host.py` 7 passed, `git diff --check` 통과. 실제 VM 플래그·시작 스크립트·환경·직접 alternates·수동 정지 시험은 별도 실증했다. CI/검토/병합은 PR 상태로 구분한다.
 - 최종 정지·조정자 전달·PR은 [summary.json](summary.json)에 기록한다. 다른 연구 대기열은 제출하지 않았다. AGENTS.md와 첫 프로젝트는 변경하지 않는다.
 

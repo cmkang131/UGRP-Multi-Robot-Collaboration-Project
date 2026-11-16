@@ -44,7 +44,7 @@
 - 전체 저장소 CI를 실행한 결과는 아니다. `git diff --check` 및 신규 파일의 CI 패턴 포함 검사 통과.
 
 ```sh
-OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
+OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
   tests/test_zone_own_executor_review3.py tests/test_zone_own_executor.py \
   tests/test_zone_own_executor_guards.py tests/test_zone_own_executor_boundaries.py \
   tests/test_zone_own_executor_host.py tests/test_m1_owncam.py tests/test_owncam_localizer.py \

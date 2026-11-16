@@ -46,7 +46,7 @@ OpenCV·MuJoCo·torch·물리 worker import를 차단한 별도 프로세스에�
 새 push의 GitHub CI 결과와 구분한다.
 
 ```sh
-PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 REC=experiments/2026-09-30-e2e-p06-evidence
 "$PY" "$REC/redesign_test_driver.py" --tb=short
 "$PY" "$REC/review_f_offline.py" . --mutation rejected_owner \
@@ -56,7 +56,7 @@ REC=experiments/2026-09-30-e2e-p06-evidence
 ```
 
 정확한 명령·JUnit 집계·로그 및 소스 해시는 [review_f_verification.json](review_f_verification.json)에 남긴다.
-원본 로그/JUnit은 `/Users/changmin/projects/ugrp/outputs/p06-review-f-fix/`에
+원본 로그/JUnit은 `<home>/projects/ugrp/outputs/p06-review-f-fix/`에
 로컬 보존하며 원격 raw 백업이라고 부르지 않는다. 작은 기록·재현 코드만 커밋한다.
 기존 심판·키·귀속·봉인·변환 판정과 고정 실행기 7개 파일은 수정 전 후보와 바이트가 같다.
 

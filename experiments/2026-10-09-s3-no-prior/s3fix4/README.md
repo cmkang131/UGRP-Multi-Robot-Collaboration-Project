@@ -61,6 +61,6 @@ would_stop 총5788 hook회: ARM_COLLISION_GUARD23, POSE_CLUSTER_UNCERTAIN60, GLO
 
 실제 v149는 **875.0666 wall / 277.6 SIM = 3.15226**, 목표≤3 **미달**. v148의4.27063과 실행 구간·행동이 달라 동일 작업 속도 개선율로 계산하지 않는다. 실제 비용은 physics289.67s, capture195.82s(그 안 render170.71s), JSON append2.35s다. 중첩 timer는 합산하지 않는다. 후속 물리 속도나 완료를 추정해 채우지 않는다.
 
-4배속 대표 영상: `/Users/changmin/projects/ugrp/outputs/s3fix4-20261009/views/v149/execution.mp4` (1374프레임/68.7s), [재생](http://127.0.0.1:6007/video/d194007738b1179bdcdc). native TensorBoard 새 스냅샷 `1009-s3-v149`와 `1009-s3-cache-verified`, v148 baseline을 구분했다. [저장 뷰 링크](tensorboard-link.json), [실제 scalar 검증](tensorboard-values.json). 원본은 로컬 보존이며 GitHub에는 기록·해시만 올라간다. 테스트 합성 자료는 공용 TensorBoard에 게시하지 않았다.
+4배속 대표 영상: `<home>/projects/ugrp/outputs/s3fix4-20261009/views/v149/execution.mp4` (1374프레임/68.7s), [재생](http://127.0.0.1:6007/video/d194007738b1179bdcdc). native TensorBoard 새 스냅샷 `1009-s3-v149`와 `1009-s3-cache-verified`, v148 baseline을 구분했다. [저장 뷰 링크](tensorboard-link.json), [실제 scalar 검증](tensorboard-values.json). 원본은 로컬 보존이며 GitHub에는 기록·해시만 올라간다. 테스트 합성 자료는 공용 TensorBoard에 게시하지 않았다.
 
 다음 물리 제안: 먼저 저장 v149에서 r2의 이동 후0.388m 오차와 접근 재시도를 오프라인 분리하고, 후속 pre-GO 재대기 sweep을 포함한 새 번들로 집기 이후 진행을 한 번 확인한다.

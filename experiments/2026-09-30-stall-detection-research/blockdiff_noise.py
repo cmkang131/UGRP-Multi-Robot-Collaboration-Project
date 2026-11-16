@@ -13,8 +13,8 @@ from common import auc
 from flow_feasibility import dark_roi
 cv2.setNumThreads(1)
 HERE = Path(__file__).parent
-OUT = Path('/Users/changmin/projects/ugrp/outputs')
-rows = json.load(open(Path('/Users/changmin/projects/ugrp/outputs/stall-detection-research/flow_rows_lag1.json')))
+OUT = Path('<home>/projects/ugrp/outputs')
+rows = json.load(open(Path('<home>/projects/ugrp/outputs/stall-detection-research/flow_rows_lag1.json')))
 st = [r for r in rows if r['label'] == 'STALL']
 mv = [r for r in rows if r['label'] == 'MOVING'][::4]
 pairs = [(r, 0) for r in st] + [(r, 1) for r in mv]

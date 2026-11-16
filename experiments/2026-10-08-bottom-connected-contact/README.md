@@ -34,7 +34,7 @@ PR405 DRAFT, TensorBoard 생략 유지. GT는 점/지도 평가에만 사용한�
   P/R, 벽 RMSE·표본 수를 모두 기록. 선분 연속 .05m 보조 지표도 보존한다.
   점 P≥.90 및 off 대비 비감소, 지도 P≥.90/R≥.70/RMSE≤.15m 기준 유지.
   점 R의 tradeoff를 숨기지 않는다. 빈 출력 P/RMSE=NA, 관문 실패.
-- raw: `/Users/changmin/projects/ugrp/outputs/bottom-connected-contact-v1`, 새 출력만.
+- raw: `<home>/projects/ugrp/outputs/bottom-connected-contact-v1`, 새 출력만.
   관련1–3시험 통과 후 커밋·push. 감독 파일은 단계마다 cat. 실패도 그대로 기록.
   디스크 오류는 HOST_ERROR, raw 삭제/외부 자원/다른 worktree 수정0.
 

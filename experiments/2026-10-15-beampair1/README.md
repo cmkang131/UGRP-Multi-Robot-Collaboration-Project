@@ -59,7 +59,7 @@ episode-001/002/007에서 6프레임씩 총18장(0–59/59/56 SIM초)을 직접 
   도달 가능한 팔 자세에서 기지 위치를 역산하는 기존 IRM 방법의 근거다.
 - [DART 저자 논문](https://arxiv.org/abs/1703.09327): 초록 확인.
   시연 중 교란과 복구를 평가하는 원칙만 참고했다. 우리 교란 크기는 최적화하지 않았다.
-- 정적 시선 원본: `/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/beam-gate-los-23a2a113.json`.
+- 정적 시선 원본: `<home>/projects/ugrp/outputs/e2e18-admin/gcp-reports/beam-gate-los-23a2a113.json`.
 - 과거 원본: ARM `/home/ubuntu/ugrp-archive/runs/native-grasp-teacher-gate-{078cbb45,1f177950}`;
   gcp1 사본 `/home/ugrp/ugrp-sim/outputs/beampair1-historical/`.
 
@@ -90,8 +90,8 @@ held 차단이 실제 발동한 틱도 모두 양수다. 세 라운드의 전체
   GCP raw는 영속 디스크 보관이며 별도 ARM 백업 완료를 뜻하지 않는다.
 
 [40회 대기열](gate40-queue.json)은 `approved=false`, `submitted=false`다. 운영 원본은
-`/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-beampair1-d79f04a3.json`.
-고정 worktree는 `/Users/changmin/projects/ugrp-wt/beam-pair-gate-d79f04a3`,
+`<home>/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-beampair1-d79f04a3.json`.
+고정 worktree는 `<home>/projects/ugrp-wt/beam-pair-gate-d79f04a3`,
 전체 source_sha와 dependency_sha, source hashes, 절대경로 rejection_table을 넣었다.
 새 시드8318600–8318639는 정적40/40이며, 과거 로컬 큐와 gcp1 raw plan에서 중복0을 확인했다.
 동시 최대16·호스트 합계40 이하, 학습RGB OFF다. 40회 물리 관문은 **0/40 미실행**이다.

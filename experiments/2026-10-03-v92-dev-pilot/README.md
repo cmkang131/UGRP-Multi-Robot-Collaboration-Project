@@ -15,7 +15,7 @@
 ## 실행과 결과
 
 - 스크립트 [fit_dev_pilot.py](fit_dev_pilot.py)는 실행 전에 커밋했다(`6a91737c`, 깨끗한 트리). 한 번만 실행했고 rc=0, 27초(10:40:43–10:41:10 UTC)였다. 명령은 [dev_command.sh](dev_command.sh)에 있다. 물리·렌더링·모델 호출은 없었다.
-- 출력 위치는 `/Users/changmin/projects/ugrp/outputs/v92-dev-pilot-c0zero-20261003T104043Z/`이다. 해시는 [outputs_dev.SHA256SUMS](outputs_dev.SHA256SUMS)에 있고, `calibration_dev_pilot.json`은 `398372ae…`다(사본: [calibration_dev_pilot.json](calibration_dev_pilot.json)).
+- 출력 위치는 `<home>/projects/ugrp/outputs/v92-dev-pilot-c0zero-20261003T104043Z/`이다. 해시는 [outputs_dev.SHA256SUMS](outputs_dev.SHA256SUMS)에 있고, `calibration_dev_pilot.json`은 `398372ae…`다(사본: [calibration_dev_pilot.json](calibration_dev_pilot.json)).
 - 하중 평균은 수렴했다(`ftol`, 계수 10/10, 모든 매개변수 내부해, 경계까지 최소 거리 0.0016, RMSE 0.00187). B″ 훈련 36/36, PRBS 검증 36/36 통과.
   - 이득 1.355/0.964/0.907, 축 시간상수 0.966/0.968/0.656 s, 공통 정지 시간상수 0.0852 s
   - u1 0.0266/0.0282/0.0319, 측면 noise_abs 0.0160

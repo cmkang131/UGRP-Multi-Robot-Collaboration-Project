@@ -8,9 +8,9 @@ from collections import Counter
 from pathlib import Path
 
 OUT = Path(sys.argv[1])
-COL = Path('/Users/changmin/projects/ugrp/outputs/final-pair-v92-loaded-257953ec-20261003')
-MEAS = Path('/Users/changmin/projects/ugrp/outputs/final-pair-v92-measured-20261003T091812Z')
-VID = Path('/Users/changmin/projects/ugrp/outputs/v92-loaded-videos-20261003')
+COL = Path('<home>/projects/ugrp/outputs/final-pair-v92-loaded-257953ec-20261003')
+MEAS = Path('<home>/projects/ugrp/outputs/final-pair-v92-measured-20261003T091812Z')
+VID = Path('<home>/projects/ugrp/outputs/v92-loaded-videos-20261003')
 
 
 def sha(p):

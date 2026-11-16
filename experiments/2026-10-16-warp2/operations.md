@@ -1,6 +1,6 @@
 # 실행·중단·출처 기록
 
-- 작업 worktree: `/Users/changmin/projects/ugrp-wt/warp-flows`, `claude/warp-flows`. A 문서를 공통 조상142dbf04에서 작성한 뒤 커밋된 warp1 API를 병합했다. R3 물리 소스는 `521f258508ccc7d24d667a158a2b26a1b3740ee9`; 후속 문서/분석 커밋을 실행 소스로 바꿔 적지 않는다.
+- 작업 worktree: `<home>/projects/ugrp-wt/warp-flows`, `claude/warp-flows`. A 문서를 공통 조상142dbf04에서 작성한 뒤 커밋된 warp1 API를 병합했다. R3 물리 소스는 `521f258508ccc7d24d667a158a2b26a1b3740ee9`; 후속 문서/분석 커밋을 실행 소스로 바꿔 적지 않는다.
 - 고정 teacher adapter `08f129213031255dd188e20df832bb6714dfca9a`, dependency `26f84d0f0ada1c33473c83cca2d3415ce51bd247`. C 비교 소스 `70553d2f4235b28648c188b26f9b2a03fa32a19d`, GPU R2 `54563a38ecd9c08523401e5c231667fef19ec08d`. C3.12 자산 준비의 실제 소스 `14fbdf6a4da4ca2793c9c0b2859be141a8fb6848`.
 - VM은 기존 gcp2 n4/L4만 썼다. gcloud 시작/정지/복사/스냅샷은 실행하지 않았다. 초기 L4 임대 시각2026-10-15 18:24:38.739602 UTC, 누적3시간 마감21:24:38.739602 UTC를 라운드가 바뀌어도 유지했다. 임대와 GPU 메모리/CPU 실행 수를 먼저 확인했다. CPU는 최대16개 자기 프로세스, 전체40 이하 admission을 검사했다. GPU N256은1개 실행 프로세스의 세계 수다.
 - 원격 소스는 직접 `/home/ugrp/ugrp-sim/git-shared.git`을 `git clone --reference … --shared --no-checkout …`로 참조했다. 다른 사본의 alternates를 사슬로 참조하지 않았다. 현재 snapshot의 누락 객체만 pack으로 전송하고, shallow HEAD·tracked clean·direct alternates를 검사했다. 전체 이력 복사·공유 저장소 gc/prune·원본 삭제는 없다.

@@ -18,7 +18,7 @@ from types import SimpleNamespace
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
-PRIMARY = Path('/Users/changmin/projects/ugrp')
+PRIMARY = Path('<home>/projects/ugrp')
 LOCK = PRIMARY / 'scripts/agent_lock.py'
 # Names used by NamespacedMasterPi.arm_joint, not inferred from body names.
 JOINT_NAMES = {'yaw': 'arm_yaw', 'shoulder': 'shoulder',

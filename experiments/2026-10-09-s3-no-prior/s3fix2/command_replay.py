@@ -12,8 +12,8 @@ from harness.zone_final_pair_binding import bind
 from harness.zone_s3_pair_heading import approach_proposal, moving
 from harness.zone_solo_cyan_pulse_cal import profile_key
 
-RAW=Path('/Users/changmin/projects/ugrp/outputs/s3-continue-0a690821-s14201-v147')
-OUT=Path('/Users/changmin/projects/ugrp/outputs/s3fix2-20261009/command-replay.json')
+RAW=Path('<home>/projects/ugrp/outputs/s3-continue-0a690821-s14201-v147')
+OUT=Path('<home>/projects/ugrp/outputs/s3fix2-20261009/command-replay.json')
 b=json.loads((RAW/'bundle.json').read_text());record=json.loads((RAW/'student_record.json').read_text())
 static=contract.hp.resolve(b['map_id'])[0]
 order=next(o for o in contract.inputs()[2]['orders'] if o['kind']=='long_beam')

@@ -1,9 +1,9 @@
 """Explicitly started finite nine-slot cohort; no priority change or CI wait."""
 from pathlib import Path
 import argparse,json,os,subprocess,sys,time
-ROOT=Path('/Users/changmin/projects/ugrp-wt/ego-wall-map')
-RAW=Path('/Users/changmin/projects/ugrp/outputs/goal-route-continuous-v1')
-SUPERVISOR=Path('/private/tmp/claude-501/-Users-changmin/2eb0ff27-da4f-4484-8131-64ef091df6ae/scratchpad/supervisor-ego.md')
+ROOT=Path('<home>/projects/ugrp-wt/ego-wall-map')
+RAW=Path('<home>/projects/ugrp/outputs/goal-route-continuous-v1')
+SUPERVISOR=Path('/private/tmp/claude-501/-<home>/2eb0ff27-da4f-4484-8131-64ef091df6ae/scratchpad/supervisor-ego.md')
 sys.path.insert(0,str(ROOT))
 from scripts.agent_lock import status,DEFAULT_ROOT
 p=argparse.ArgumentParser();p.add_argument('--source',required=True);a=p.parse_args()

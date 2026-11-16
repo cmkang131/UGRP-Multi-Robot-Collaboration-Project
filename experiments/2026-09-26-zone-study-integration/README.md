@@ -81,7 +81,7 @@ A payload 그대로다. 정적 지도(태그 포함, 해시 고정), 시나리�
 - `prereg_v2.json`: v1 결함 D1을 고친 뒤 새로 등록했다. 게이트 P1–P9, 번들 `6e949fc8…`, 런타임 `9f7b16f2`, 기록 `cbeb5301`. v1 파일은 보존했다.
 - 스모크: `smoke-i700`/`smoke-i700b`(layout seed 700, trial seed 700 → leader r2), 주 4조건 × 1회, horizon 480 SIM s, `cargo_noslip_v1`, weld OFF, 동기 SIM, 스레드 1, 동시 2개. `leader_ko`·`structured`와 v2 전체는 고정한 detached worktree에서 실행했다(런처는 매 실행 번들을 다시 계산해 prereg와 대조한다).
 - 부하 평균: 실행 시작 13.8–38.9, 종료 5.1–76.2(manifest). 공유 Mac이다. wall 시간은 결과로 쓰지 않는다.
-- raw: `/Users/changmin/projects/ugrp/outputs/zone-study-integration-20260926/smoke-45999d9c/`(v1), `…/smoke-cbeb530/`(v2). 로컬 전용이며 원격 백업이 아니다.
+- raw: `<home>/projects/ugrp/outputs/zone-study-integration-20260926/smoke-45999d9c/`(v1), `…/smoke-cbeb530/`(v2). 로컬 전용이며 원격 백업이 아니다.
 - 9/26 기록 시점에는 스모크 이후 런타임 변경 없이 결과·TensorBoard 도구와 문서만 추가했다.
 
 ## dev 배선 실행 (결과 아님)

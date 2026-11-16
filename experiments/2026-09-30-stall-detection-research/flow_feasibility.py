@@ -112,7 +112,7 @@ def windows(c, rid, lag, stride):
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument('--lag', type=float, default=1.0)
-    ap.add_argument('--stride', type=int, default=4); ap.add_argument('--out', default='/Users/changmin/projects/ugrp/outputs/stall-detection-research/flow_rows_lag1.json')
+    ap.add_argument('--stride', type=int, default=4); ap.add_argument('--out', default='<home>/projects/ugrp/outputs/stall-detection-research/flow_rows_lag1.json')
     a = ap.parse_args()
     rows = []
     t0 = time.time()

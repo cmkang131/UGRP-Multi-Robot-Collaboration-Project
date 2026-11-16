@@ -1,7 +1,7 @@
 import cv2,numpy as np,json,math
 from pathlib import Path
 CASES=[('v13',218,219),('v13',302,303),('v14',695,696),('v14',990,991)]
-ROOT=Path('/Users/changmin/projects/ugrp/outputs')
+ROOT=Path('<home>/projects/ugrp/outputs')
 
 def calib(old,new):
  h,w=new.shape[:2]; d=np.max(cv2.absdiff(old,new),2); base=(d>15).astype(np.uint8); _,_,s0,_=cv2.connectedComponentsWithStats(base,8); largest=int(s0[1:,4].max()); mn=max(8,round(h*w*.000025),math.ceil(largest*.12)); cs=[]

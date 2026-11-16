@@ -4,10 +4,10 @@
 #   SLOT (branch claude/v98-checkpoint) and SLOT_HEAD (branch claude/v98-ckpt-headbase).
 # Usage: run_gate.sh <gate output root under primary outputs>
 set -u
-WT=/Users/changmin/projects/ugrp-wt/v98-checkpoint
-HEADWT=/Users/changmin/projects/ugrp-wt/v98-ckpt-headbase
-PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
-SESSION="python3 /Users/changmin/projects/ugrp/scripts/ugrp_session.py run"
+WT=<home>/projects/ugrp-wt/v98-checkpoint
+HEADWT=<home>/projects/ugrp-wt/v98-ckpt-headbase
+PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
+SESSION="python3 <home>/projects/ugrp/scripts/ugrp_session.py run"
 ROOT=$1
 SLOT=${SLOT:-sim-claude-ckpt-a}; SLOT_HEAD=${SLOT_HEAD:-sim-claude-ckpt-head}
 CAL=experiments/2026-10-05-unloaded-gain-calibration-v101/products/C/calibration_dev_pilot_unloaded_v101.json

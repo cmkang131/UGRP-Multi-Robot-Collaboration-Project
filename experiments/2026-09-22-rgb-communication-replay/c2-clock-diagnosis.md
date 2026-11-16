@@ -8,7 +8,7 @@
 - 실제 실행 SHA: `bfe478f1209375d774b6dc2881300198f967f5ca`.
 - C source HEAD: `44e831de52158f604a78d8c31fd270263dc37784`.
   세 C runtime/planner 파일은 실행 SHA와 diff가 없다.
-- 원본 루트: `/Users/changmin/.codex/worktrees/cf5f/ugrp/outputs/rgb-communication-colab-bfe478f/recovered/result/runs`.
+- 원본 루트: `<home>/.codex/worktrees/cf5f/ugrp/outputs/rgb-communication-colab-bfe478f/recovered/result/runs`.
 - solo runtime SHA256: `9a045b2cce1d324e33e2d16e1e8b91274a07754112cd21cca7d44ef5625de376`.
 - joint runtime SHA256: `39c5e568db6b57016e4363a9a3a1e533eb442a30a52c4971a9e92e52e64ccb73`.
 - 읽기 전후 위 해시가 같다. 원본/소스/PR 변경 없음. 이 메모는 ignored local outputs이며 원격 백업이 아니다.

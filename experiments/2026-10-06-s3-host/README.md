@@ -41,14 +41,14 @@ seed **601 → 602 → 603**, 각 1800 SIM초/최대 10800 wall초, reset 최대
 
 ```zsh
 # 시뮬레이션 없음: 관리 경로/인자 확인만
-cd /Users/changmin/projects/ugrp-wt/s3-host
+cd <home>/projects/ugrp-wt/s3-host
 S3_SHA=$(git rev-parse HEAD)
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.sim_cli workflow plan zone-s3-host-v107 -- \
-  --expected-source-sha "$S3_SHA" --output /Users/changmin/projects/ugrp/outputs/s3-PLAN --seed 601
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.sim_cli workflow plan zone-s3-host-v107 -- \
+  --expected-source-sha "$S3_SHA" --output <home>/projects/ugrp/outputs/s3-PLAN --seed 601
 
 # 조정자가 #393 이후 S3 실행을 명시적으로 허용한 때만 실행
 /bin/zsh experiments/2026-10-06-s3-host/launch_dev.zsh \
-  "$S3_SHA" "/Users/changmin/projects/ugrp/outputs/s3-v107-${S3_SHA[1,8]}-NEW" --release-s3-simulation
+  "$S3_SHA" "<home>/projects/ugrp/outputs/s3-v107-${S3_SHA[1,8]}-NEW" --release-s3-simulation
 ```
 
 launch는 현재/원격 branch SHA, 깨끗한 소스, nice 0, 잠금 부재를 확인한 뒤 자신의 PID로 배타 잠금을 잡는다. 관리 실행기의 자식 프로세스 그룹 정리를 재사용하며 자기 PID만 종료하고 잠금을 반환한다. 원격 결과 없음, raw 삭제·업로드 없음. `batch.jsonl`, 각 seed의 `bundle.json`, `environment.json`, `student_record.json`, `trial.json`, `result.json`, 명령/자기 JPEG·sha256, `eval_only/referee_truth.jsonl`·`referee.json`, 전체 파일 해시를 보존한다. 공용 top 영상은 로봇 입력에 넣지 않는다.
@@ -77,7 +77,7 @@ S3 DEV **0/3 실행**, S3 졸업 미판정. #393의 S2 졸업 결과는 아직 �
 
 ```sh
 CI=true OMP_NUM_THREADS=2 PYTHONPATH=. \
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
   tests/test_s3_host.py tests/test_s3_host_runner.py tests/test_solo_cyan_v106.py
 ```
 

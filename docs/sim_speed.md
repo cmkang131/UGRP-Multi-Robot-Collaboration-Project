@@ -6,7 +6,7 @@
 
 ```sh
 .venv-sim-worker-mac/bin/python scripts/run_m1_owncam.py --prereg experiments/2026-09-26-zone-m1-owncam/prereg.json \
-  --only m1dev-s93 --output /Users/changmin/projects/ugrp/outputs/<새 폴더> --speedups exact-v1
+  --only m1dev-s93 --output <home>/projects/ugrp/outputs/<새 폴더> --speedups exact-v1
 ```
 
 - `sim/exact_speedups.py`의 두 항목만 켠다. 구동 산술(`ExactDriveKernel`, 기존 `PhysicsDriveKernel` 훅 재사용)은 `np.dot`의 합산 순서를 그대로 따르고, 시작 시 `np.dot`과 비교하는 자체 검사가 실패하면 원래 경로로 돌아간다(`manifest.json`의 `speedups.drive_kernel`에 기록). 접촉 사전 필터(`ContactPrefilter`)는 러너가 어차피 건너뛰는 접촉만 벡터 연산으로 뺀다.
@@ -35,7 +35,7 @@ python3 scripts/sim_equivalence.py <절단 run> <전체 run> --until-sim-s 120  
 ```sh
 OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 \
 python3 scripts/ugrp_session.py run kiro-prof -- .venv-sim-worker-mac/bin/python scripts/sim_profile.py m1 \
-  --episode m1dev-s93 --sim-limit 120 --speedups exact-v1 --output /Users/changmin/projects/ugrp/outputs/<새 폴더> [--sections|--cprofile]
+  --episode m1dev-s93 --sim-limit 120 --speedups exact-v1 --output <home>/projects/ugrp/outputs/<새 폴더> [--sections|--cprofile]
 ```
 
 비교는 wall이 아닌 CPU 초와 **retired instruction 수**로 한다. Apple M3(성능 코어 4 + 효율 코어 4)에서는 같은 구간의 CPU 초도 부하에 따라 2배 이상 달라진다(효율 코어 배치·경합). `profile.json`의 `counters`(instructions, P 코어 비율)와 `cpu_at_sim_mark`(고정 SIM 시각까지의 CPU)를 함께 본다. wall 비교가 필요하면 `scripts/agent_lock.py` 잠금을 잡는다.
@@ -49,7 +49,7 @@ python3 scripts/ugrp_session.py run kiro-m1 -- python3 scripts/sim_slots.py run 
 ```
 
 - 이 대기열은 **MuJoCo 라이브러리를 로딩한 프로세스 수의 보수적인 상한**을 관리한다. import 후 대기하는 pytest·노트북도 센다. 실제 `mj_step` 실행 수를 관측하지 않으며 `active_sim_count`는 `null`이다. 열린 `queue.lock`만으로 일을 안 한다고 가정하지 않는다.
-- 기본 cap은 6이다. Mac 공용 root는 기존 `/Users/changmin/projects/ugrp/outputs/sim-slots`, Linux는 `/var/tmp/ugrp-sim-slots`다. Linux에서 여러 사용자가 참여하면 관리자가 해당 디렉터리의 공용 그룹/권한을 준비한다. 모든 참여자는 동일 root·cap을 사용한다. `--root`는 격리 테스트/관리자 설정용이며 에이전트별 root를 만들면 전역 제한이 분리된다.
+- 기본 cap은 6이다. Mac 공용 root는 기존 `<home>/projects/ugrp/outputs/sim-slots`, Linux는 `/var/tmp/ugrp-sim-slots`다. Linux에서 여러 사용자가 참여하면 관리자가 해당 디렉터리의 공용 그룹/권한을 준비한다. 모든 참여자는 동일 root·cap을 사용한다. `--root`는 격리 테스트/관리자 설정용이며 에이전트별 root를 만들면 전역 제한이 분리된다.
 - `admission.lock` 안에서 집계와 예약을 수행한다. 슬롯 파일이 열려 있다는 사실은 예약 증거가 아니다. 커널 잠금, 예약 기록, PID와 커널 시작 식별자가 맞는 보유자/자식만 연결한다. 예약 **하나당 로딩 프로세스 하나**만 상쇄하고, 나머지 자식은 추가로 센다. 옛 기록에 시작 식별자가 없거나 PID가 재사용됐으면 중복 제외하지 않는다.
 - 여러 worker를 시작하는 명령은 시작 전에 **최대 동시 로딩 프로세스 수**를 `run --workers N` 또는 `sim_slot(..., workers=N)`으로 예약한다. N개 예약은 모두 한 번에 승인하거나 거부한다. 이미 로딩된 자식도 집계에서 숨기지 않는다. 이는 협력적 입장 제어이며, 예약을 과소 신고하거나 우회한 명령의 임의 fork를 OS 차원에서 차단하는 샌드박스는 아니다.
 - `sim_slot()`의 workers에는 현재 프로세스도 포함한다. 이미 MuJoCo를 로드한 호출자가 아직 미예약이면 그 한 자리만 기존 집계에서 새 예약으로 전환한다(cap=1에서도 가능). CLI/new-worker 입장에는 이 공제를 적용하지 않는다. 호출자+자식 하나면 workers=2다.

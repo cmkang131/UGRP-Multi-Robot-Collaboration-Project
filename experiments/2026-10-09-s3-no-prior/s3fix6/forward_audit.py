@@ -5,7 +5,7 @@ from pathlib import Path
 import numpy as np
 from harness.zone_solo_cyan_pulse_cal import profile_key, response
 from harness.zone_s2_realism_contract_v122 import PULSE_MODEL
-ROOT=Path('/Users/changmin/projects/ugrp/outputs')
+ROOT=Path('<home>/projects/ugrp/outputs')
 
 def rows(p):return [json.loads(s) for s in p.read_text().splitlines()]
 def audit(raw,rid,own):

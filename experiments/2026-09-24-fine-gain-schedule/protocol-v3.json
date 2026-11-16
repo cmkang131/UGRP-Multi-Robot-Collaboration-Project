@@ -42,7 +42,7 @@
     "realtime_control": false,
     "max_wall_s": 1200
   },
-  "command_template": "bash scripts/open_simulation.command dispatch --headless --plan-replay experiments/2026-09-22-parallel-transport/independent-plan.json --variant open --seed 11 --contact-profile local_contact_fine --max-wall-s 1200 --overlap-start grasp --video-fps 10 --grasp-model-dir <models>/grasp --stage-model-dir <models>/varied [--fine-gain-schedule] --output /Users/changmin/projects/ugrp/outputs/fine-gain-schedule-20260924-sync-v3/<run>",
+  "command_template": "bash scripts/open_simulation.command dispatch --headless --plan-replay experiments/2026-09-22-parallel-transport/independent-plan.json --variant open --seed 11 --contact-profile local_contact_fine --max-wall-s 1200 --overlap-start grasp --video-fps 10 --grasp-model-dir <models>/grasp --stage-model-dir <models>/varied [--fine-gain-schedule] --output <home>/projects/ugrp/outputs/fine-gain-schedule-20260924-sync-v3/<run>",
   "driver": "run_ab.py --protocol v3",
   "primary_metrics": [
     "physical_success and protocol_complete",

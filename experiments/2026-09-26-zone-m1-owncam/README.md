@@ -91,5 +91,5 @@
 - 소스: `harness/m1_owncam_delivery.py`, `harness/owncam_pose_source.py`, `harness/m1_owncam_contract.py`, `harness/owncam_localizer.py`(선택 키 추가), `scripts/run_m1_owncam.py`.
 - 교정: `calibration_m1_dev.json`(`make_calibration_m1.py`, `fit_fine_motion.py` → `fine_motion_fit_dev.json`).
 - 결과: `build_results.py` → `results.json`, `raw_index.json`(파일별 SHA-256).
-- 원본: `/Users/changmin/projects/ugrp/outputs/m1-owncam-20260926/`. 로컬에만 있고 원격 백업이 아니다.
+- 원본: `<home>/projects/ugrp/outputs/m1-owncam-20260926/`. 로컬에만 있고 원격 백업이 아니다.
 - TensorBoard 변환은 별도 작업에서 한다.

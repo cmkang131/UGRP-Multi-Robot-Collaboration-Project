@@ -17,7 +17,7 @@
 - Mac Apple M3(성능 코어 4 + 효율 코어 4), Python 3.12.13, MuJoCo 3.12.0, NumPy 2.5.2(Accelerate), OpenCV 5.0.0, Pillow 12.3.0. `OMP/OPENBLAS/VECLIB/MKL_NUM_THREADS=1`. OpenCV는 이 변수와 무관하게 GCD 작업자 8개를 쓴다.
 - 기준: `outputs/m1-owncam-20260926/dev-a8/{m1dev-s93,m1devdiag-s95}` (PR #201, `16b41e27`, v9 스킬, `cargo_noslip_v1`, weld OFF). 이 브랜치 HEAD와 실행 파일(RUNTIME_FILES) 해시가 같다.
 - 새 실행: 브랜치 `kiro/sim-speed`의 `b718da5`·`493bc0f`·`fb9c451`·`37955f6`·`92c5ea1`. 실행 파일은 `scripts/run_m1_owncam.py`의 `speedups` 인자와 새 `sim/exact_speedups.py` 외에는 기준과 같다. 모든 실행은 `code.dirty=false`다(`exact1-full-s95`는 추적 안 된 도구 파일 때문에 dirty로 기록돼 수 초 만에 멈추고 `exact1-full-s95b`로 다시 실행했다. 첫 세션의 `prof-s93-120-sections-base`도 dirty다).
-- raw: `/Users/changmin/projects/ugrp/outputs/sim-speed-20260926/` (실행별 `profile.json`, `qpos_checkpoints.jsonl`, `run/`, 동등성 보고 `equivalence/*.json`, 실행 시각·부하 `logs/launch_load.txt`).
+- raw: `<home>/projects/ugrp/outputs/sim-speed-20260926/` (실행별 `profile.json`, `qpos_checkpoints.jsonl`, `run/`, 동등성 보고 `equivalence/*.json`, 실행 시각·부하 `logs/launch_load.txt`).
 
 ## CPU 분해 (기준, s93 첫 120 SIM s, 부하 3–5)
 

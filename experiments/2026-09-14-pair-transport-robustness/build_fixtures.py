@@ -2,7 +2,7 @@ from pathlib import Path
 import sys,json,hashlib,shutil,copy
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]))
 from harness.pair_transport_vision import GeometryPairVision
-base=Path('/Users/changmin/projects/ugrp-worktrees/pair-vision-recovery/outputs/pair-vision-recovery-v2-2026-09-14')
+base=Path('<home>/projects/ugrp-worktrees/pair-vision-recovery/outputs/pair-vision-recovery-v2-2026-09-14')
 out=Path('tests/fixtures/pair_transport_robustness');out.mkdir(parents=True,exist_ok=True)
 cases={'narrow-door':451,'l-corner':132,'s-bends':400,'staggered-obstacles':400,'blocked-branch':373}
 manifest={'source_execution_sha':'cdac7b7e5154cdc531169a46c90732461b5ae06e','provenance':'Preceding observer states reconstructed only from saved top RGB. Wheel angle checks use visible wheel rectangles; drop examples are manually identified own RGB silhouettes. No runtime ground truth inputs.','cases':{},'files':{}}

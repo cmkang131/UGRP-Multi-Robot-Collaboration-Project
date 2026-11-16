@@ -160,7 +160,7 @@ v2·v3는 새 스냅샷 `0927-zone-own-executor-smoke-v2`(`exec2-*` 6 run)와 `0
 - `build_results.py` → `results.json`(게이트·로봇별 표), `raw_index.json`(원본 JSON/JSONL 파일별 SHA-256). 스모크 원본은 `smoke-4371f36/`에 있다.
 - v2·v3: `prereg_v2.json`·`prereg_v3.json`(사전 등록), `run_smoke_v2.py`·`run_smoke_v3.py`(러너; 예외·중단 시 부분 로그와 `failure.json`을 남기고 world를 닫으며 기존 에피소드를 덮어쓰지 않는다), `build_results_v2.py`·`build_results_v3.py` → `results_v2.json`·`results_v3.json`, `raw_index_v2.json`·`raw_index_v3.json`. 원본은 `smoke-v2-a5b3687e/`, `smoke-v3-92e0feeb/`, 배관은 `dev-v2-50dba9cd/`.
 - `diagnosis_v2.json`(v2 실패 원인, 사후), `regression_prefix_254d4461.txt`(수정 전 테스트 결과), `calibrate_body_model.py` → `body_model_calibration.json`.
-- 원본: `/Users/changmin/projects/ugrp/outputs/zone-own-executor-20260926/`. 로컬에만 있고 원격 백업이 아니다.
+- 원본: `<home>/projects/ugrp/outputs/zone-own-executor-20260926/`. 로컬에만 있고 원격 백업이 아니다.
 
 ## 참고 자료
 

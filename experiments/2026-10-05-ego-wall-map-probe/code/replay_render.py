@@ -69,7 +69,7 @@ from PIL import Image
 # this repository: a 640x480 JPEG is well over 1 MiB per frame and must not be
 # committed under experiments/.
 REPO_ROOT = Path(__file__).resolve().parents[3]
-DEFAULT_OUTPUTS_ROOT = Path('/Users/changmin/projects/ugrp/outputs/ego-wall-map-probe')
+DEFAULT_OUTPUTS_ROOT = Path('<home>/projects/ugrp/outputs/ego-wall-map-probe')
 
 sys.path.insert(0, str(REPO_ROOT))
 from sim.masterpi_camera_profile import raw_fisheye_remap  # noqa: E402

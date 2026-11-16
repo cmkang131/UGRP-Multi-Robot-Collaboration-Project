@@ -12,7 +12,7 @@ import subprocess
 import time
 
 PID = 67845
-ROOT = Path('/Users/changmin/.codex/worktrees/research-pixel-validation/ugrp')
+ROOT = Path('<home>/.codex/worktrees/research-pixel-validation/ugrp')
 REPORT = ROOT/'outputs/research-repair/acceptance-v3-b/report.json'
 RECORD = ROOT/'outputs/research-repair/dispatch-handoff-v3.json'
 FINISHED = 'ACT-RGB-refined--qualification-3--r0'

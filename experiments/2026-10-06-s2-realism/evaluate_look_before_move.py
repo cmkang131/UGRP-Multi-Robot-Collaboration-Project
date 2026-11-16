@@ -27,7 +27,7 @@ for s in rows(raw/'eval_only/contacts.jsonl'):
 peert=sorted(set(q['t'] for q in contacts));episodes=sum(i==0 or t-peert[i-1]>.051 for i,t in enumerate(peert))
 valid=[q for q in score if q['nees'] is not None];exceed=sum(q['nees']>5.991464547107979 for q in valid)
 miss=sum(not q['alarm'] and q['error_m']>.25 for q in score)
-old=read(Path('/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1054-v133-reproduction/result.json'))
+old=read(Path('<home>/projects/ugrp/outputs/s2-realism-027c567c-s1054-v133-reproduction/result.json'))
 post=result.get('posthoc_evaluation',{})
 summary=dict(raw=str(raw),seed=result['seed'],source_sha=read(raw/'bundle.json')['source_sha'],status=result['status'],failure=result.get('failure'),evaluation=result.get('evaluation'),posthoc=post,
 wall_s=result['wall_s'],sim_s=result['check_sim_s'],wall_per_sim=result['wall_per_sim'],duration_delta_vs_old1054_sim_s=result['check_sim_s']-old['check_sim_s'],duration_delta_vs_old1054_wall_s=result['wall_s']-old['wall_s'],time_comparison='same seed1054 paired only;1055 unpaired descriptive',

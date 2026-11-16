@@ -13,7 +13,7 @@
 
 ## 실행 절차
 
-Mac 저장 로봇 RGB 1장으로 `PYTHONPATH=. python3 -m scripts.gemma_fallback_proxy --check --image <own-RGB.jpg> --output /Users/changmin/projects/ugrp/outputs/gemma-fallback`를 한 번 실행한다. `models.list`의 유일한 Gemma 4 31B와 실제 이미지 응답이 확인되어야 `--enable` 또는 relay `--gemma-fallback --gemma-state <동일 출력>`이 열린다. `--enable`은 127.0.0.1:8393, relay는 기존 18392를 쓰며 기본 1시간·최대4시간이다. `ugrp_session.py run`으로 시작하고 해당 세션만 종료한다.
+Mac 저장 로봇 RGB 1장으로 `PYTHONPATH=. python3 -m scripts.gemma_fallback_proxy --check --image <own-RGB.jpg> --output <home>/projects/ugrp/outputs/gemma-fallback`를 한 번 실행한다. `models.list`의 유일한 Gemma 4 31B와 실제 이미지 응답이 확인되어야 `--enable` 또는 relay `--gemma-fallback --gemma-state <동일 출력>`이 열린다. `--enable`은 127.0.0.1:8393, relay는 기존 18392를 쓰며 기본 1시간·최대4시간이다. `ugrp_session.py run`으로 시작하고 해당 세션만 종료한다.
 
 서버에는 키 대신 relay identity를 전달하고 기존 역방향 SSH와 S4 러너 `--gemma-fallback`을 함께 선택한다. profile 선택과 relay identity가 다르면 거부한다. 이번 작업에서는 시뮬레이션·상시 서비스·서버 배포를 하지 않는다.
 

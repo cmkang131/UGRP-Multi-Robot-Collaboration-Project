@@ -22,7 +22,7 @@ Use the existing simulation environment. From this checkout:
 python scripts/ugrp_session.py run jev-direct-motion -- /absolute/path/to/mjpython scripts/run_jev_motion.py --execute --policies rule gemini jev --cases straight left_offset right_offset --prompt-key --output /new/local/output
 ```
 
-Key comes from hidden input or TYPESAFE_API_KEY; it is never saved. Requests go to the official TypeSafe endpoint with redirects disabled. Raw evidence is local under `/Users/changmin/projects/ugrp/outputs/jev-direct-motion-20260921-*`; Git records are not a video backup. Main is not merged without user approval.
+Key comes from hidden input or TYPESAFE_API_KEY; it is never saved. Requests go to the official TypeSafe endpoint with redirects disabled. Raw evidence is local under `<home>/projects/ugrp/outputs/jev-direct-motion-20260921-*`; Git records are not a video backup. Main is not merged without user approval.
 
 API: https://docs.typesafe.ai/api and https://docs.typesafe.ai/primitives/choice (2026-09-21).
 
@@ -44,7 +44,7 @@ The metric is agreement with the existing rule, not optimal-action accuracy or a
 
 ## 최종 결과
 
-실행 소스 `49311961d37d6ebea66aceaaa4f5efc2e9175ae3`, raw `/Users/changmin/projects/ugrp/outputs/jev-direct-motion-20260921-final-v2`. 위 프로토콜은 추론 중 SIM을 멈추는 단일 물체 접근·정렬 시험이다.
+실행 소스 `49311961d37d6ebea66aceaaa4f5efc2e9175ae3`, raw `<home>/projects/ugrp/outputs/jev-direct-motion-20260921-final-v2`. 위 프로토콜은 추론 중 SIM을 멈추는 단일 물체 접근·정렬 시험이다.
 
 | 정책 | straight | left_offset | right_offset | 실제 경과 합계 | API 중앙 / p95 | 모델 호출 / 입력 토큰 |
 |---|---|---|---|---:|---:|---:|
@@ -61,7 +61,7 @@ The metric is agreement with the existing rule, not optimal-action accuracy or a
 
 ## 입력 표현 진단 결과
 
-소스 `aed309c7e8f8695aaf77e3335180405810581a4f`, raw `/Users/changmin/projects/ugrp/outputs/jev-representation-20260921`. 72회 모두 응답을 기록했으며 입력 63,944토큰, 실제 경과 40.22초였다. 실제 청구액은 미확인이다.
+소스 `aed309c7e8f8695aaf77e3335180405810581a4f`, raw `<home>/projects/ugrp/outputs/jev-representation-20260921`. 72회 모두 응답을 기록했으며 입력 63,944토큰, 실제 경과 40.22초였다. 실제 청구액은 미확인이다.
 
 | 구성 | 규칙 일치 | 같은 상태 2회 선택 일치 |
 |---|---:|---:|
@@ -76,7 +76,7 @@ The metric is agreement with the existing rule, not optimal-action accuracy or a
 - 실행 소스 4931196: 전체 오프라인 검사 **997 passed, 1 skipped, 184 subtests passed**. 이후 표현 진단의 경계 검사를 포함한 관련 파일 **10 passed**.
 - `scripts/audit_jev_motion.py`로 최종 388개 의사결정을 원본 RGB에서 다시 계산하고 이미지 해시·실제 모델 요청/응답·선택 행동·별도 물리 성공을 검증했다. 정책 입력을 정답으로 보정하지 않았다.
 - 9개 원본 주행 영상과 비교 영상 전체를 ffmpeg로 디코딩해 오류 없음을 확인했다. 비교 영상은 결정 단계로 정렬하며 실시간 비교가 아니다. 시작·중간·종료 프레임을 직접 검토했다. 화면 표시용 확대만 적용했고 모델 입력 카메라는 그대로다.
-- 비교 영상: `/Users/changmin/projects/ugrp/outputs/jev-motion-review-20260921/comparison.mp4`.
+- 비교 영상: `<home>/projects/ugrp/outputs/jev-motion-review-20260921/comparison.mp4`.
 - `report.json`: 최종 9회 결과와 감사. `prior-attempt-results.json`: 첫 비교 9회와 개발 실패 포함, 최종 성공률에 합산하지 않음.
 - `protocol.json`, `final-turns.json.gz`: 최종 환경/계약과 388개 의사결정. `representation-*.json`, `representation-api.json.gz`: 진단의 사전 고정 순서·전 상태·72개 실제 요청/응답.
 - `raw-manifest.json.gz`: 로컬 원시 자료·검토 자료의 원본 경로, 크기, SHA256. 원본 RGB/영상은 로컬 보관이며 Git 원격 백업이 아니다. `reviewed-source-manifest.json`은 읽기 전용 조사에 사용한 외부 코드 버전을 고정한다.

@@ -25,9 +25,9 @@
 ```sh
 OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 \
 PYTHONDONTWRITEBYTECODE=1 \
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -u \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -u \
 experiments/2026-09-30-scenario-capabilities/audit.py \
---output /Users/changmin/projects/ugrp/outputs/p09-static-capabilities-NEW --lock-wait-s 600 --tests
+--output <home>/projects/ugrp/outputs/p09-static-capabilities-NEW --lock-wait-s 600 --tests
 ```
 
 driver는 지정 branch `codex/scenario-capabilities`에서만 실행한다. `evaluate(scenario, maps_dir=maps_dir_for(map_id))` 기본 격자 .05 m/yaw12/여유 .03 m/sweep ON을 사용한다. `reachability`의 격자는 .02 m이며 원판 반지름 .17/.21 m 두 개다. event 추가 경로는 evaluator가 반환한 event-only rects로 계산한다. 시뮬레이터 시간은 흐르지 않는다.

@@ -4,7 +4,7 @@ from collections import Counter
 from pathlib import Path
 import numpy as np
 HERE=Path(__file__).resolve().parent
-OUT=Path('/Users/changmin/projects/ugrp/outputs/s2-ground-vo-20261007')
+OUT=Path('<home>/projects/ugrp/outputs/s2-ground-vo-20261007')
 SIX={107.35,108.30,109.25,110.20,111.15,113.70}
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def main():
@@ -25,7 +25,7 @@ def main():
         results.append(dict(option=name,carry_rmse_m=float(np.sqrt(np.mean(np.square(errors)))),
             carry_updates=len(fixes),max_gap_s=float(max(np.diff([lo,*fixes,hi])))))
     vo=replays['candidate']['ground_vo'];by_t={round(r['t'],6):r for r in vo['rows']}
-    original=Path('/Users/changmin/projects/ugrp/outputs/s2-load-height-20261007/drift-decomposition.json')
+    original=Path('<home>/projects/ugrp/outputs/s2-load-height-20261007/drift-decomposition.json')
     pulse_rows=json.loads(original.read_text())['rows'];motion=[]
     for p in pulse_rows:
         r=by_t.get(round(p['t'],6),{});actual=np.array(p['actual_delta']);old=np.array(p['predicted_delta'])

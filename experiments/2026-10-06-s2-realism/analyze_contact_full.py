@@ -8,7 +8,7 @@ from harness.zone_solo_cyan_visibility import Visibility
 from harness.zone_solo_cyan_observed_amcl import install as observed
 from harness.zone_solo_cyan_floor_contact import install as appearance
 from harness.zone_solo_cyan_likelihood_field import endpoints
-p=Path('/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place');out=p.parent/'s2-contact-audit-20261007'
+p=Path('<home>/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place');out=p.parent/'s2-contact-audit-20261007'
 read=lambda f:json.loads((p/f).read_text());lines=lambda f:[json.loads(l) for l in (p/f).read_text().splitlines()]
 r=read('result.json');b=read('bundle.json');rec=read('student_record.json');managed=json.loads(Path(str(p)+'-managed/manifest.json').read_text())
 assert managed['status']=='process_completed' and managed['exit_code']==0

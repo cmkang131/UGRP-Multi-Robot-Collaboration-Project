@@ -53,7 +53,7 @@ def main():
     heartbeat_thread=threading.Thread(target=heartbeat,daemon=True)
     heartbeat_thread.start()
     evidence=args.worktree/'experiments/2026-10-11-egomap72-fresh'
-    local=Path('/Users/changmin/projects/ugrp/outputs/egomap72-orchestration')
+    local=Path('<home>/projects/ugrp/outputs/egomap72-orchestration')
     local.mkdir(exist_ok=True)
     def ssh(command):
         return remote.ssh('azure',command,capture_output=True,text=True).stdout.strip()
@@ -119,7 +119,7 @@ exec python3 /usr/local/lib/ugrp-storage/scripts/remote_run_finish.py --source "
                  'artifacts.sha256.json','SHA256SUMS','SHA256SUMS.tsv','ALL-hashes.tsv','COMPRESSED.jsonl'}
         selected=[key for key in marker['inventory'] if Path(key).name in allowed]
         listing=local/(name+'-fetch-files.txt');listing.write_text('\n'.join(selected)+'\n')
-        target=Path('/Users/changmin/projects/ugrp/outputs/azure-runs')/name;target.mkdir(parents=True,exist_ok=True)
+        target=Path('<home>/projects/ugrp/outputs/azure-runs')/name;target.mkdir(parents=True,exist_ok=True)
         subprocess.run(['rsync','-ac','--files-from='+str(listing),f'azure:ugrp-sim/runs/{name}/',str(target)+'/'],check=True)
         for key in selected:
             if hashlib.sha256((target/key).read_bytes()).hexdigest()!=marker['inventory'][key]['sha256']:

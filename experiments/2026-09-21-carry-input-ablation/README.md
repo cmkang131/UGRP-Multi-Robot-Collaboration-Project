@@ -31,12 +31,12 @@ Colab 회수 모델은 `model-<arm>-s<seed>/report.json`과 `act/{model.safetens
 python scripts/ugrp_session.py run carry-input-final -- python scripts/run_carry_input_ablation.py \
   --out outputs/ablation-final-NEW \
   --reuse-training /absolute/path/to/verified-training \
-  --act-python /Users/changmin/Project-Runtimes/ugrp/.venv-reference-act/bin/python \
-  --mjpython /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/mjpython \
-  --grasp /Users/changmin/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-transfer-t4/models/grasp \
-  --stages /Users/changmin/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-transfer-t4/models/varied
+  --act-python <home>/Project-Runtimes/ugrp/.venv-reference-act/bin/python \
+  --mjpython <home>/projects/ugrp/.venv-sim-worker-mac/bin/mjpython \
+  --grasp <home>/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-transfer-t4/models/grasp \
+  --stages <home>/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-transfer-t4/models/varied
 python scripts/audit_carry_input_ablation.py --out outputs/ablation-final-NEW \
-  --act-python /Users/changmin/Project-Runtimes/ugrp/.venv-reference-act/bin/python
+  --act-python <home>/Project-Runtimes/ugrp/.venv-reference-act/bin/python
 ```
 
 위 `python`은 기존 `.venv-sim-worker-mac/bin/python`이다. 실행 전에 작업 트리와 학습 provenance를 확인하고 소스를 커밋한다. 본 결과가 없으므로 고해상도나 이력의 유효성을 아직 판정하지 않는다. 향후 해상도만 개선되면 공간 정보 손실, 이력만 개선되면 현재 프레임의 상태 식별 부족을 지지한다. 둘 다 개선되지 않아도 정보 충분성이 증명되는 것은 아니며 데이터 다양성·frozen encoder·종료/협업 구조 등의 대안 원인이 남는다. 두 seed와 같은 장면 계열 네 조건은 광범위한 일반화나 강한 통계적 결론에 충분하지 않다.
@@ -52,7 +52,7 @@ python scripts/audit_carry_input_ablation.py --out outputs/ablation-final-NEW \
 
 물리 실행은 별도 깨끗한 checkout의 `e00435b82470e722196858728bc22c1123ef730c`를
 고정하고 기존 36회 프로토콜 그대로 진행한다. 원본은
-`/Users/changmin/.codex/worktrees/carry-input-physics/ugrp/outputs/colab-input-final-20260921`,
+`<home>/.codex/worktrees/carry-input-physics/ugrp/outputs/colab-input-final-20260921`,
 소유 세션은 `carry-input-final-pipeline`이다. 전체 실행과 독립 audit 전 성공률을 확정하지 않는다.
 
 코드는 커밋 `888447674318bc311e1ef65f71c654692b2b76bb`에서 재현(퇴역 전 소스 복구 기준). 당시 실행 SHA·설정·결과는 본문 기록을 따르며, [퇴역 목록](../../docs/retired_modules.md)을 참고한다.

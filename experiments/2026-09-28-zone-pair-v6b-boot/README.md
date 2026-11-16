@@ -114,7 +114,7 @@ weld OFF, 모델 호출 0. 제어 입력은 자기 손목 RGB·자기 발행 명
 ## 오프라인 재생 (물리 없음)
 
 실행: `replay_bootstrap_v6b.py <raw> offline_replay.json 4` (기록 PF seed + 추가 seed 4개).
-요약은 [replay_summary.json](replay_summary.json)이다. raw는 `/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v6-3c26acddec066adcd9164e6d2a6f51c1261c5f66/`이며, 6회 × r1/r2의 저장 JPEG·명령만 읽었다.
+요약은 [replay_summary.json](replay_summary.json)이다. raw는 `<home>/projects/ugrp/outputs/zone-pair-dev-v6-3c26acddec066adcd9164e6d2a6f51c1261c5f66/`이며, 6회 × r1/r2의 저장 JPEG·명령만 읽었다.
 
 ### A. 첫 정지 시야 (실패 4회, 로봇 8개 × PF seed 5개 = 40행)
 
@@ -174,7 +174,7 @@ dual 표본 없이, 6개 자세 × PF seed 3개 = 18/18이 새 완료 규칙(σ 
 # 1건 smoke
 OMP_NUM_THREADS=2 python3 scripts/ugrp_session.py run v6b-boot-probe -- \
   .venv-sim/bin/python scripts/probe_zone_pair_bootstrap.py \
-  --output /Users/changmin/projects/ugrp/outputs/zone-pair-v6b-boot-probe-<sha>/smoke \
+  --output <home>/projects/ugrp/outputs/zone-pair-v6b-boot-probe-<sha>/smoke \
   --seeds 911 --docks seeded --perturb 0,0,0 --policy b-boot
 # grid (미실행; agent_lock status 확인 후)
 ... --seeds 911 912 913 914 --docks seeded rot1 rot2 \
@@ -194,12 +194,12 @@ OMP_NUM_THREADS=2 python3 scripts/ugrp_session.py run v6b-boot-probe -- \
 
 - r2의 팬별 σxy는 0.675 → 0.269 → 0.092 → 0.080 m였다. 실제 렌더 영상에서 팬 스캔이 σ를 줄였고, 첫 팔 전이가 기존 guard를 통과했다.
 - r1은 σ 0.129 m로, gate LOW(0.05 m)보다 넓지만 guard 상한 0.15 m 이하다. 새 완료 규칙(상한 이하 + 변경 없는 guard)으로 완료했다.
-- JSON 사본은 `probe-smoke-dce25ce5/`에 커밋했다. 원본 위치는 `/Users/changmin/projects/ugrp/outputs/zone-pair-v6b-boot-probe-dce25ce5/smoke/`(로컬 보관만, 원격 백업 아님)이다. 자기 카메라 프레임 78장, 1.2 MiB다.
+- JSON 사본은 `probe-smoke-dce25ce5/`에 커밋했다. 원본 위치는 `<home>/projects/ugrp/outputs/zone-pair-v6b-boot-probe-dce25ce5/smoke/`(로컬 보관만, 원격 백업 아님)이다. 자기 카메라 프레임 78장, 1.2 MiB다.
   - `summary.json`: sha256 `341bd6e27dc0905b6c96b07bf021e8811ab8d9e28aef3041a9521a7302dab3f6`
   - `case000-s911-seeded/result.json`: sha256 `5d4fb60ee2ea7686b69f7073180352bd9f77e51f609310c9e74c0362b49169b0`
 - **재검토 수정 뒤 재실행 (소스 a1fe7dac, 2026-09-29):** 전체 입자 충돌 질량 검사·비유한 보고 거부·거부 팬 재검사를 넣은 소스로 같은 사례를 다시 돌렸다. 같은 방식으로 잠금을 잡고 해제했다(부하 평균 33.2→32.5, wall 14.0 s).
   결과는 같았다. r1은 팬 없이 1.3 s(σ 0.129 m), r2는 팬 1230·970 뒤 4.7 s(σ 0.080 m)에 통과했고, 평가 오차는 0.006 m와 0.049 m였다. 새 팬 검사가 r2의 두 팬을 모두 허용했다.
-  - JSON 사본: `probe-smoke-a1fe7dac/`. 원본: `/Users/changmin/projects/ugrp/outputs/zone-pair-v6b-boot-probe-a1fe7dac/smoke/`(로컬만)
+  - JSON 사본: `probe-smoke-a1fe7dac/`. 원본: `<home>/projects/ugrp/outputs/zone-pair-v6b-boot-probe-a1fe7dac/smoke/`(로컬만)
   - `summary.json` sha256 `0a382c88183d61cc7a1277a0e15b3a51fdc1ef4edcf9d4e04d903f02c91bd801`, `result.json` sha256 `c71449cc9c3f3917a5de8b3b25e3ed6e7516505613d9f5e68b2d85dc7c2a2f84`
 - **범위:** 사례 1건이다. seed × dock × 섭동 grid, 태그 없는 환경, 첫 팔 올림 뒤 단계(정렬·파지·운반)는 검증하지 않았다. 부트스트랩 통과는 운반 성공이 아니다.
 

@@ -33,7 +33,7 @@ from pathlib import Path
 CRF = 28
 EXIT_REFUSED = 2
 DEFAULT_MIN_AGE_DAYS = 3.0
-DEFAULT_RECORD_DIR = Path("/Users/changmin/projects/ugrp/outputs/cleanup-records")
+DEFAULT_RECORD_DIR = Path("<home>/projects/ugrp/outputs/cleanup-records")
 
 
 def frame_dirs(root: Path) -> list[Path]:

@@ -314,7 +314,7 @@ def test_is_rate_limit(status, text, expected):
 def test_cli_live_refusals_need_no_network_or_filesystem(capsys):
     from scripts import run_pair_llm as cli
     base = ['--condition', 'peer_nl', '--expected-source-sha', 'a' * 40, '--output',
-            '/Users/changmin/projects/ugrp/outputs/never-created', '--synthetic-plumbing-calibration', '--live', '--cap-s', '60']
+            '<home>/projects/ugrp/outputs/never-created', '--synthetic-plumbing-calibration', '--live', '--cap-s', '60']
     with pytest.raises(ValueError, match='LLM condition'):
         cli.main(['--condition', 'rule', *base[2:]])
     with pytest.raises(ValueError, match='capped at 900'):
@@ -329,7 +329,7 @@ def test_cli_live_refusals_need_no_network_or_filesystem(capsys):
     with pytest.raises(ValueError, match='positive int'):
         cli.main(base + ['--execute', '--budget-db', '/x/b.sqlite', '--proxy-pid', '1', '--cohort-id', 'c',
                          '--cohort-token-cap', '0'])
-    assert not Path('/Users/changmin/projects/ugrp/outputs/never-created').exists()
+    assert not Path('<home>/projects/ugrp/outputs/never-created').exists()
 
 
 def test_the_live_modules_never_import_the_evaluator_or_a_simulator():

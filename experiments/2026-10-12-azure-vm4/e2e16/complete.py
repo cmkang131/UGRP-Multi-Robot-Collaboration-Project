@@ -35,7 +35,7 @@ r=subprocess.run(['az','vm','get-instance-view','--subscription',sub,'-g','UGRP-
 assert any(s['code']=='PowerState/deallocated' for s in json.loads(r.stdout))
 (out/'deallocated.json').write_text(r.stdout)
 subprocess.run([sys.executable,str(out/'sync-summary.py')],check=True)
-wt=Path('/Users/changmin/projects/ugrp-wt/e2e-usstall');rel='experiments/2026-10-12-e2e-usstall/run-summary.json'
+wt=Path('<home>/projects/ugrp-wt/e2e-usstall');rel='experiments/2026-10-12-e2e-usstall/run-summary.json'
 assert subprocess.check_output(['git','-C',str(wt),'branch','--show-current'],text=True).strip()=='codex/e2e-usstall'
 subprocess.run(['git','-C',str(wt),'add','--',rel],check=True)
 subprocess.run(['git','-C',str(wt),'commit','--only','-m','Record completed E2E16 VM4 paired results and verified archival','--',rel],check=True)

@@ -5,7 +5,7 @@
 =================================== FAILURES ===================================
 ___ test_late_authorization_does_not_change_registration_or_source_receipts ____
 
-tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-pair-grasp/.pytest_tmp/test_late_authorization_does_n0')
+tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-pair-grasp/.pytest_tmp/test_late_authorization_does_n0')
 
     def test_late_authorization_does_not_change_registration_or_source_receipts(tmp_path):
         p = registered()
@@ -21,7 +21,7 @@ E       assert 909 == 907
 tests/test_zone_pair_authorization.py:67: AssertionError
 ____________ test_existing_v5f_is_preserved_and_refuses_new_source _____________
 
-tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-pair-grasp/.pytest_tmp/test_existing_v5f_is_preserved0')
+tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-pair-grasp/.pytest_tmp/test_existing_v5f_is_preserved0')
 
     def test_existing_v5f_is_preserved_and_refuses_new_source(tmp_path):
         p = json.loads(dev.PREREG_V5F.read_text())
@@ -34,7 +34,7 @@ E         + a9764dded0588fb871200354ff590b976c7bdd2c4524c7f1d4482c5c1f6870df
 tests/test_zone_pair_authorization.py:94: AssertionError
 _______ test_new_prereg_preserves_all_v3_judgement_and_uses_fresh_cohort _______
 
-tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-pair-grasp/.pytest_tmp/test_new_prereg_preserves_all_0')
+tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-pair-grasp/.pytest_tmp/test_new_prereg_preserves_all_0')
 
     def test_new_prereg_preserves_all_v3_judgement_and_uses_fresh_cohort(tmp_path):
         from scripts import run_zone_pair_dev as dev

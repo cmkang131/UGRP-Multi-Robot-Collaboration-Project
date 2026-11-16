@@ -9,7 +9,7 @@ from scripts import run_active_wall_rotleft as base
 from scripts.run_wall_servo_stiffness import arm
 from harness.self_map_closed_loop import attach,OPTION
 ROOT=base.ROOT
-RAW=Path('/Users/changmin/projects/ugrp/outputs/own-map-closed-loop-v1')
+RAW=Path('<home>/projects/ugrp/outputs/own-map-closed-loop-v1')
 dump=base.dump
 
 

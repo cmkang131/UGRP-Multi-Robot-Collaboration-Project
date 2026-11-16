@@ -4,7 +4,7 @@ from collections import Counter
 import json,hashlib,importlib.util,sys,numpy as np
 ROOT=Path(__file__).resolve().parents[3]
 sys.path.insert(0,str(ROOT))
-RAW=Path('/Users/changmin/projects/ugrp/outputs/teach-capture-v1')
+RAW=Path('<home>/projects/ugrp/outputs/teach-capture-v1')
 OUT=RAW/'evaluation'
 load=lambda p:json.loads(p.read_text())
 rows=lambda p:[json.loads(s) for s in p.open()]
@@ -55,5 +55,5 @@ if __name__=='__main__':
   physical_attempts=2,valid_teach_trials=sum(r['valid_teach_trial'] for r in reports),arrivals=sum(r['arrived'] for r in reports),
   conditional_seeds_not_started=[49003,49004,49005,49006] if not all(r['gate'] for r in reports) else [],preregistration='e9018927')
  dump(RAW/'stage1-gate.json',gate);print(gate)
- baseline=Path('/Users/changmin/projects/ugrp/outputs/own-map-return-repeat-v1')
+ baseline=Path('<home>/projects/ugrp/outputs/own-map-return-repeat-v1')
  dump(OUT/'baseline-rotation.json',{str(s):rotation(baseline/f'seed{s}') for s in range(49001,49007)})

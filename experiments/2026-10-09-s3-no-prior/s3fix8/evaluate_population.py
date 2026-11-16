@@ -1,7 +1,7 @@
 import hashlib,importlib.util,json
 from pathlib import Path
 import numpy as np
-R=Path('/Users/changmin/projects/ugrp/outputs/s3fix8-20261010');raw=Path('/Users/changmin/projects/ugrp/outputs/goal-route-motion-audit-v1/seed55001')
+R=Path('<home>/projects/ugrp/outputs/s3fix8-20261010');raw=Path('<home>/projects/ugrp/outputs/goal-route-motion-audit-v1/seed55001')
 spec=importlib.util.spec_from_file_location('prior_eval',Path('experiments/2026-10-09-s3-no-prior/s3fix6/evaluate.py'));m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
 frames=m.rows(raw/'robots/r3/frames.jsonl');span=frames[-1]['sim_time']-frames[0]['sim_time'];out={'table':{},'gt_evaluation_only':True,'sole_change':'RBPFOptions.particles=100 or500','input_sim_s':span,'timing_scope':m.read(R/'timing-scope.json'),'queue':m.read(R/'population-queue.json')}
 for n in (100,500):

@@ -8,7 +8,7 @@ from pathlib import Path
 import numpy as np
 
 HERE = Path(__file__).parent
-RAW = Path('/Users/changmin/projects/ugrp/outputs')
+RAW = Path('<home>/projects/ugrp/outputs')
 ARMS = ('n100', 'n500', 'sensor100')
 S3 = {'v149': RAW/'s3-sweep-b73ce193-s14201-v149',
       'v150': RAW/'s3-odometry-4c9eb3aa-s14201-v150'}

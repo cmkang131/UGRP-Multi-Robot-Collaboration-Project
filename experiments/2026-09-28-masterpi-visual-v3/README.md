@@ -62,7 +62,7 @@ Claude가 시작한 PR #249를 Codex가 `961271a44ad34cf17e94f36217589af7cde2fa2
 ## Codex 인계 점검 — 2026-09-28 (착수 차단)
 
 - 기준: `claude/masterpi-visual-v3`, 로컬 HEAD와 PR #249 head 모두 `961271a44ad34cf17e94f36217589af7cde2fa2a`. 시작 작업 트리는 깨끗했다.
-- 차단: `git fetch origin`이 `/Users/changmin/projects/ugrp/.git/worktrees/claude-masterpi-v3/FETCH_HEAD: Operation not permitted`로 실패했다. 공용 Git 메타데이터가 세션 쓰기 허용 범위 밖이므로 필수 fetch·단계별 커밋·push 절차를 진행할 수 없다. 권한 우회나 다른 checkout 사용은 하지 않았다.
+- 차단: `git fetch origin`이 `<home>/projects/ugrp/.git/worktrees/claude-masterpi-v3/FETCH_HEAD: Operation not permitted`로 실패했다. 공용 Git 메타데이터가 세션 쓰기 허용 범위 밖이므로 필수 fetch·단계별 커밋·push 절차를 진행할 수 없다. 권한 우회나 다른 checkout 사용은 하지 않았다.
 - 추가 확인 필요: 로컬 origin은 `https://github.com/kcm0127-dotcom/ugrp.git`, 요청 저장소는 `cmkang131/UGRP-Multi-Robot-Collaboration-Project`다. 리다이렉트/동일 저장소 여부는 확인하지 못했고 origin은 바꾸지 않았다.
 - `gh pr list`와 `gh pr view`는 api.github.com 연결 실패. GitHub 커넥터로 요청 저장소의 PR #249 본문·head는 읽었다.
 - 이번 세션 커밋 목록: 없음. 기능 전환·신규 장면/해시·bundle ID 등록: 없음. 동결 소스와 기존 등록 장면은 수정하지 않았다.
@@ -230,7 +230,7 @@ v2 기하에서 적합한 값은 v3에서 모두 다시 확인한다. 명령은 
 
 ## 출력 (로컬 원본, 커밋하지 않음)
 
-위치: `/Users/changmin/projects/ugrp/outputs/masterpi-visual-v3/`. `manifest.json`의 sha256은 `85c0826c…9c03`이다.
+위치: `<home>/projects/ugrp/outputs/masterpi-visual-v3/`. `manifest.json`의 sha256은 `85c0826c…9c03`이다.
 
 주요 비교 이미지:
 

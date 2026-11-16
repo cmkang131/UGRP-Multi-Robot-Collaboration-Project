@@ -62,8 +62,8 @@
 별도 `artifact-finalization.json`과 launcher receipt를 검증했으며,
 outer PGID 27214, solo 27225, joint 29640의 소멸도 직접 확인했다.
 
-- raw root: `/Users/changmin/.codex/worktrees/cf5f/ugrp/outputs/d3-local-replay-8c1b64a`
-- input root: `/Users/changmin/.codex/worktrees/cf5f/ugrp/outputs/d3-local-study-inputs-v3`
+- raw root: `<home>/.codex/worktrees/cf5f/ugrp/outputs/d3-local-replay-8c1b64a`
+- input root: `<home>/.codex/worktrees/cf5f/ugrp/outputs/d3-local-study-inputs-v3`
 - inventory SHA256 `a7e591c1d0e29f7a0ed347932729e736c5d5fe05f1d884952c9ce2bddc3d0a5e`
 - finalization receipt SHA256 `9823b07eb37340e662294634943af886ef5b309c11c52236e08834880c94f890`
 - outer receipt SHA256 `976e874b27aa704af7a74331f7dd918e7ee158cc18f9cbe5821d2e80c679f155`

@@ -167,7 +167,7 @@ AMCL/KLD·랜드마크·seed·suffix·기억 B·판정은 그대로, tempering o
 - 전체 품질 기준 실패를 소프트웨어 시험 실패와 혼동하지 않는다.
   지도 **2/6**, 쓸모 **7/10** 미달을 그대로 보존하고 추가 튜닝/물리를 하지 않았다.
 - 상세 원장·새 snapshot·6개 재위치 결과·논문 원문·로그:
-  `/Users/changmin/projects/ugrp/outputs/camera-map-integration-v1`.
+  `<home>/projects/ugrp/outputs/camera-map-integration-v1`.
   파일별 SHA-256은 `results/raw-manifest.json`; 입력 불변·세 cut 검사는
   `results/verification.json`. raw는 로컬 보관이며 원격 백업으로 보고하지 않는다.
 - `code/replay.py prepare`, `predict --condition own|static --trial 0|1|2`,

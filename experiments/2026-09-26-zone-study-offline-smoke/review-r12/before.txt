@@ -2,7 +2,7 @@ FFFFFFF                                                                  [100%]
 =================================== FAILURES ===================================
 ________ test_r12_post_after_right_bracket_cannot_hide_time_regression _________
 
-tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_r12_post_after_right_brac0')
+tmp_path = PosixPath('<home>/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_r12_post_after_right_brac0')
 
     def test_r12_post_after_right_bracket_cannot_hide_time_regression(tmp_path):
         budget, log = case(tmp_path)
@@ -15,7 +15,7 @@ E       assert not True
 tests/test_zone_pilot_proxy_log.py:249: AssertionError
 _ test_r12_sealed_retry_or_error_outside_time_bounds_is_incomplete[before-2026-09-27 12:00:03 transient_429_retry retry_after=0s delay=1s\n] _
 
-tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_r12_sealed_retry_or_error0')
+tmp_path = PosixPath('<home>/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_r12_sealed_retry_or_error0')
 event = '2026-09-27 12:00:00 transient_429_retry retry_after=0s delay=1s\n'
 side = 'before'
 
@@ -37,7 +37,7 @@ E       assert not True
 tests/test_zone_pilot_proxy_log.py:265: AssertionError
 _ test_r12_sealed_retry_or_error_outside_time_bounds_is_incomplete[before-2026-09-27 12:00:04 complete_exception TimeoutError: fixture\n] _
 
-tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_r12_sealed_retry_or_error1')
+tmp_path = PosixPath('<home>/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_r12_sealed_retry_or_error1')
 event = '2026-09-27 12:00:00 complete_exception TimeoutError: fixture\n'
 side = 'before'
 
@@ -59,7 +59,7 @@ E       assert not True
 tests/test_zone_pilot_proxy_log.py:265: AssertionError
 _ test_r12_sealed_retry_or_error_outside_time_bounds_is_incomplete[after-2026-09-27 12:00:03 transient_429_retry retry_after=0s delay=1s\n] _
 
-tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_r12_sealed_retry_or_error2')
+tmp_path = PosixPath('<home>/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_r12_sealed_retry_or_error2')
 event = '2026-09-27 12:00:09 transient_429_retry retry_after=0s delay=1s\n'
 side = 'after'
 
@@ -81,7 +81,7 @@ E       assert not True
 tests/test_zone_pilot_proxy_log.py:265: AssertionError
 _ test_r12_sealed_retry_or_error_outside_time_bounds_is_incomplete[after-2026-09-27 12:00:04 complete_exception TimeoutError: fixture\n] _
 
-tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_r12_sealed_retry_or_error3')
+tmp_path = PosixPath('<home>/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_r12_sealed_retry_or_error3')
 event = '2026-09-27 12:00:09 complete_exception TimeoutError: fixture\n'
 side = 'after'
 
@@ -103,7 +103,7 @@ E       assert not True
 tests/test_zone_pilot_proxy_log.py:265: AssertionError
 _____________ test_four_condition_window_gate_and_cohort_manifest ______________
 
-tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_four_condition_window_gat0')
+tmp_path = PosixPath('<home>/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_four_condition_window_gat0')
 monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1093a7cb0>
 
     def test_four_condition_window_gate_and_cohort_manifest(tmp_path, monkeypatch):
@@ -165,10 +165,10 @@ E       assert (False)
 
 tests/test_zone_pilot_proxy_log.py:349: AssertionError
 ----------------------------- Captured stdout call -----------------------------
-{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_four_condition_window_gat0/preflight/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 4, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["unresolved"], "reconciliation_complete": false}
+{"manifest": "<home>/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_four_condition_window_gat0/preflight/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 4, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["unresolved"], "reconciliation_complete": false}
 ____ test_r12_same_bundle_source_remigration_preserves_hash_chain_and_spend ____
 
-tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_r12_same_bundle_source_re0')
+tmp_path = PosixPath('<home>/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_r12_same_bundle_source_re0')
 
     def test_r12_same_bundle_source_remigration_preserves_hash_chain_and_spend(tmp_path):
         budget = PilotBudget.create(tmp_path / 'budget.sqlite', identity=identity(62))

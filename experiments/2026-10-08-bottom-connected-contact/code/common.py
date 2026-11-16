@@ -6,9 +6,9 @@ import cv2
 import numpy as np
 ROOT=Path(__file__).resolve().parents[3]
 EXP=Path(__file__).resolve().parents[1]
-RAW=Path('/Users/changmin/projects/ugrp/outputs/bottom-connected-contact-v1')
-EPISODES={'31001':Path('/Users/changmin/projects/ugrp/outputs/active-frontier-audit-v1/new-seed'),
-          '32002':Path('/Users/changmin/projects/ugrp/outputs/wall-segment-dev-v1/new-seed')}
+RAW=Path('<home>/projects/ugrp/outputs/bottom-connected-contact-v1')
+EPISODES={'31001':Path('<home>/projects/ugrp/outputs/active-frontier-audit-v1/new-seed'),
+          '32002':Path('<home>/projects/ugrp/outputs/wall-segment-dev-v1/new-seed')}
 sys.path.insert(0,str(ROOT))
 sys.path.insert(0,str(ROOT/'experiments/2026-10-05-ego-wall-map-probe/code'))
 from harness.self_odom_grid import transform
@@ -39,4 +39,4 @@ def first_box(origin,rays,lower,upper):
     exit=np.maximum(a,b).min(-1)
     return np.where((exit>=entry)&(exit>0),entry,np.inf)
 
-OLD_RAW=Path('/Users/changmin/projects/ugrp/outputs/wall-contact-types-v1')
+OLD_RAW=Path('<home>/projects/ugrp/outputs/wall-contact-types-v1')

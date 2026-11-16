@@ -152,7 +152,7 @@ L1 (문 통과), 가운데 열이 헤딩 0°. P = 통과(접촉 0), X = 가드�
 
 ## 실행 기록
 
-raw는 로컬 `/Users/changmin/projects/ugrp/outputs/door-relax-envelope-<sha8>-<태그>` (원격 백업 아님, 합계 약 4.0 GB). 잠금은 실행마다 driver PID로 잡고 끝나면 해제(시작 전 `status` null). `--workers 3`(양성 대조 일부 4), `--omp-threads 1`. 시작/끝 부하 평균(1분)은 최대 116(다른 작업). 모두 `source_changed=False`(표시한 스모크 제외), 모델 호출 0, weld OFF.
+raw는 로컬 `<home>/projects/ugrp/outputs/door-relax-envelope-<sha8>-<태그>` (원격 백업 아님, 합계 약 4.0 GB). 잠금은 실행마다 driver PID로 잡고 끝나면 해제(시작 전 `status` null). `--workers 3`(양성 대조 일부 4), `--omp-threads 1`. 시작/끝 부하 평균(1분)은 최대 116(다른 작업). 모두 `source_changed=False`(표시한 스모크 제외), 모델 호출 0, weld OFF.
 
 | 태그 (`<sha8>-<태그>`) | 내용 | 케이스 | cases.jsonl sha256 (전체) | 크기 |
 |---|---|---|---|---|

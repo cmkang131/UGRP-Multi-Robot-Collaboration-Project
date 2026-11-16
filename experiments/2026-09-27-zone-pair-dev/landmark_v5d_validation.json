@@ -34,7 +34,7 @@
     "subtests_passed": 104,
     "deselected": 2,
     "seconds": 122.33,
-    "command": "OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p tests.pose_provider_no_physics tests/test_pose_provider_contract.py tests/test_pose_provider_boundary.py tests/test_zone_pair*.py tests/test_zone_own_executor*.py tests/test_zone_study_pair_delay.py tests/test_zone_study_integration_pair.py tests/test_zone_study_source_pinning.py tests/test_vision_pose_source.py tests/test_m1_owncam.py --deselect=tests/test_zone_own_executor.py::test_team_host_feeds_each_executor_only_its_own_camera --deselect=tests/test_zone_own_executor_host.py::test_team_host_isolation_abort_and_horizon_on_the_real_world --basetemp=./.pytest_tmp",
+    "command": "OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p tests.pose_provider_no_physics tests/test_pose_provider_contract.py tests/test_pose_provider_boundary.py tests/test_zone_pair*.py tests/test_zone_own_executor*.py tests/test_zone_study_pair_delay.py tests/test_zone_study_integration_pair.py tests/test_zone_study_source_pinning.py tests/test_vision_pose_source.py tests/test_m1_owncam.py --deselect=tests/test_zone_own_executor.py::test_team_host_feeds_each_executor_only_its_own_camera --deselect=tests/test_zone_own_executor_host.py::test_team_host_isolation_abort_and_horizon_on_the_real_world --basetemp=./.pytest_tmp",
     "basetemp_removed": true,
     "log": {
       "path": "experiments/2026-09-27-zone-pair-dev/landmark_v5d_prepare/pytest.log",

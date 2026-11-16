@@ -112,7 +112,7 @@ Refs #221. #263(v6c, 병합됨)의 후속이다. v6c 정렬 13/25의 실패 12�
 
 적대적 검토(PR #265 코멘트)가 지적한 r2 p45/inspect의 미검증과 음성 대조 부재를 저장 프레임으로 오프라인에서 봤다. 물리·모델 호출은 없다. **물리 25/25 판정에도, 이 PR의 어떤 주장에도 쓰지 않는다.** 이후 확인의 근거로만 남긴다.
 
-- 스크립트 [diagnosis/hue_mask_check.py](diagnosis/hue_mask_check.py), 결과 [diagnosis/hue_mask_check.txt](diagnosis/hue_mask_check.txt)(sha256 `1fc8afcee74e98081056cd361b9404fd37d8c114cb6f348cae27007c946bd851`). 프레임별 행은 1 MiB 한도 때문에 저장소 밖 `/Users/changmin/projects/ugrp/outputs/pair-stage-probes-052e3eba-v6d-hue-mask-check.json`(sha256 `96aafae9bae05fef89930ab61a1ac049c2424e0062356dc93fbbd531f6801cbd`)에 둔다.
+- 스크립트 [diagnosis/hue_mask_check.py](diagnosis/hue_mask_check.py), 결과 [diagnosis/hue_mask_check.txt](diagnosis/hue_mask_check.txt)(sha256 `1fc8afcee74e98081056cd361b9404fd37d8c114cb6f348cae27007c946bd851`). 프레임별 행은 1 MiB 한도 때문에 저장소 밖 `<home>/projects/ugrp/outputs/pair-stage-probes-052e3eba-v6d-hue-mask-check.json`(sha256 `96aafae9bae05fef89930ab61a1ac049c2424e0062356dc93fbbd531f6801cbd`)에 둔다.
 - 대상: `052e3eba-v6d-venv-align-0`·`-1`의 저장 프레임 중 제어기가 hue 25로 빔을 본 `beam_obs` 이벤트에 대응하는 프레임(r1 1049개, r2 1062개). 각 프레임을 같은 jpg로 v1 마스크(hue 36)와 넓힌 마스크(hue 25)로 다시 관측했고, 로그의 `points`·`axis_heading_rad`와 일치함을 확인했다(재현 2111/2111).
 - 비교는 eval-only GT(오프라인 진단에만 사용, 제어기 입력 아님)의 빔 heading과 빔 윗면 평면에 투영한 발자국(0.60 × 0.05 m + 여유 0.06 m)이다.
 
@@ -131,7 +131,7 @@ Refs #221. #263(v6c, 병합됨)의 후속이다. v6c 정렬 13/25의 실패 12�
 
 ### 실행
 
-- **환경.** 공식 환경 `.venv-sim-worker-mac`(python 3.12.13, mujoco 3.12.0, numpy 2.5.2, opencv-headless 5.0.0.93, `/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python`). v6c 기준선과 같은 환경이다.
+- **환경.** 공식 환경 `.venv-sim-worker-mac`(python 3.12.13, mujoco 3.12.0, numpy 2.5.2, opencv-headless 5.0.0.93, `<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python`). v6c 기준선과 같은 환경이다.
 - **driver.** [run_cells.py](run_cells.py)(sha256 `d326f725733d85aecc2d8ca2906a7f557d2cc6c8e030b667fac3f165d7a99405`)가 v6c 격자 계획을 그대로 읽어 정책만 `b-v6d`로 바꿔 실행한다. `--only-failed-of`, `--baseline-policy`, `--skip-done`, `--omp-threads`, `--shard K/N`, `--cells`를 추가했다. 다른 로직은 `scripts/run_pair_stage_probes.py`를 그대로 쓴다.
 - **동기 SIM 모드, agent_lock 없음.** 조정자 지시에 따라 물리 잠금을 잡지 않고 동기 SIM 시간으로만 측정했다. wall 시간은 결과 주장에 쓰지 않는다. 실행마다 `uptime` 부하 평균을 manifest에 남겼다.
 - **워커.** 분할 실행마다 워커 1개, `OMP_NUM_THREADS=1`. 부하 평균이 20을 넘으면 1개로 줄이는 규칙을 지켰다.
@@ -219,7 +219,7 @@ Refs #221. #263(v6c, 병합됨)의 후속이다. v6c 정렬 13/25의 실패 12�
 
 ## raw와 해시
 
-모든 raw는 기본 체크아웃 `/Users/changmin/projects/ugrp/outputs/`에 있고, 아래 이름의 접두어는 `pair-stage-probes-`이다. 이 저장소에는 raw 프레임·영상을 커밋하지 않는다(로컬 보관이며 원격 백업이 아니다).
+모든 raw는 기본 체크아웃 `<home>/projects/ugrp/outputs/`에 있고, 아래 이름의 접두어는 `pair-stage-probes-`이다. 이 저장소에는 raw 프레임·영상을 커밋하지 않는다(로컬 보관이며 원격 백업이 아니다).
 
 | 디렉터리 | 크기 | `cases.jsonl` sha256 | `manifest.json` sha256 |
 |---|---:|---|---|
@@ -238,7 +238,7 @@ Refs #221. #263(v6c, 병합됨)의 후속이다. v6c 정렬 13/25의 실패 12�
 - `summary.json` sha256: `venv-align-combined` `aab7ef69229a56be668ca14e5b3e9ad6c17c758e4cf126b9f3eccc2b796729be`, `venv-bound-e2e` `43470ac653623fad5b0c1b376f53d6fc0944650b4b2b235081dec442070d1ee1`, `final-bound-e2e` `d3ef9bc13fceb346738fcb3daba92c52a436854b70fd6970ee8d9faf2e1d8307`, `final-align-subset` `d39d1254537171df430d58eeaadc061eb674f99d112a9e0c761ad3f0be9b736d`.
 - 각 디렉터리의 `artifacts.sha256.json`에 `cases.jsonl` · `summary.json` · `manifest.json`의 바이트 수와 sha256이 있다(합친 디렉터리는 `combine_grid.py`가 만든다).
 - **부하(uptime, load 1/5/15분).** 실행마다 manifest에 기록했다. 공식 환경 실행: 단계 3 시작 26.54/25.86/21.63 → 종료 13.29/15.61/17.35, 단계 2 두 분할 시작 9.48/14.53/16.91 → 종료 23.74/22.28/20.12(분할 1은 36.37/23.68/19.97). 다른 작업이 동시에 돌아 부하가 높았지만 동기 SIM 시간이라 결과에는 영향이 없다.
-- **진단 스크립트의 고정 경로.** `diagnosis/*.py`는 분석 시점의 worktree(`/Users/changmin/projects/ugrp-wt/claude-v6d-align`)와 v6c raw 경로를 하드코딩했다. 다른 곳에서 다시 돌리려면 경로를 바꿔야 한다. 새로 추가한 `hue_mask_check.py`는 저장소 루트를 `UGRP_ROOT`(기본: 파일 위치 기준)로 잡고 raw는 기본 체크아웃 `outputs/` 절대 경로를 쓴다. `motion_replay_axes.py`는 `motion_replay.txt`만 읽는다.
+- **진단 스크립트의 고정 경로.** `diagnosis/*.py`는 분석 시점의 worktree(`<home>/projects/ugrp-wt/claude-v6d-align`)와 v6c raw 경로를 하드코딩했다. 다른 곳에서 다시 돌리려면 경로를 바꿔야 한다. 새로 추가한 `hue_mask_check.py`는 저장소 루트를 `UGRP_ROOT`(기본: 파일 위치 기준)로 잡고 raw는 기본 체크아웃 `outputs/` 절대 경로를 쓴다. `motion_replay_axes.py`는 `motion_replay.txt`만 읽는다.
 
 ## 검증
 
@@ -254,7 +254,7 @@ Refs #221. #263(v6c, 병합됨)의 후속이다. v6c 정렬 13/25의 실패 12�
 
 ## TensorBoard
 
-- **스냅샷.** `/Users/changmin/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6d`, run 51개(경우별 48 + 그룹 집계 `ALL-*` 3). `collection.json` sha256 `a78d9c3edf016e6d86bbb1ed73df2a56e3ada3584b812ce5d3a91b962de679ef`.
+- **스냅샷.** `<home>/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6d`, run 51개(경우별 48 + 그룹 집계 `ALL-*` 3). `collection.json` sha256 `a78d9c3edf016e6d86bbb1ed73df2a56e3ada3584b812ce5d3a91b962de679ef`.
 - **파생 뷰.** `outputs/pair-stage-probes-tbviews-0929-v6d`(index sha256 `37650be8e3f698a6ef34319ccf4087e5dc400ebe6baa8548d8c05a53874dc500`). 빌더 `scripts/build_pair_stage_probe_views.py`, 변환기 `scripts/export_offline_audit.py`. 공식 환경 결과(정렬 combined + 단계 3 경계)만 넣었다. anaconda 실행과 진단은 넣지 않았다.
 - **검증 1.** EventAccumulator로 51개 run의 `offline/stage_pass`, `offline/pass_rate`, `evaluation/reported_success`를 파생 뷰 값과 비교했다. 불일치 0건이다(float32 반올림 허용 1e-4). 경우별 48개 중 47개가 통과 판정이고(정렬 25 + 단계 3 22) 집계 값은 `ALL-D-al-t-052e3eba-combined` 1.0, `ALL-D-al-e2e-052e3eba-combined` 1.0, `ALL-D-gl-bd-052e3eba-e2e` 0.957이다.
 - **검증 2.** 공용 서버(PID 9291, 다른 작업 소유, 재시작하지 않음)의 `/data/runs`에 `0929-pair-stage-probes-v6d/` run 51개가 모두 있다(v6c 135개도 함께 있어 기준선을 나란히 볼 수 있다).

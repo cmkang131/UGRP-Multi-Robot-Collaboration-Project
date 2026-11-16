@@ -94,7 +94,7 @@ def main():
     lock=status(DEFAULT_ROOT)
     if not lock or not lock['pid_alive'] or lock['owner']!='codex' or lock['branch']!='codex/s2-realism':
         raise ValueError('owned active agent lock required')
-    if not args.output.is_absolute() or not args.output.is_relative_to('/Users/changmin/projects/ugrp/outputs'):
+    if not args.output.is_absolute() or not args.output.is_relative_to('<home>/projects/ugrp/outputs'):
         raise ValueError('primary output path required')
     args.output.mkdir(exist_ok=False);write(args.output/'bundle.json',b)
     results=[]

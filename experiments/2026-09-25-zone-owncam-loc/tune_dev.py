@@ -1,9 +1,9 @@
 import sys, json, math, copy, numpy as np
-sys.path.insert(0,'/Users/changmin/projects/ugrp-wt/zone-owncam-loc')
+sys.path.insert(0,'<home>/projects/ugrp-wt/zone-owncam-loc')
 from pathlib import Path
 import scripts.eval_owncam_localization as E
 data=Path(sys.argv[1]); eps=sys.argv[2].split(','); cal=json.load(open(sys.argv[3]))['params']
-variants=json.loads(sys.argv[4]); thr=json.load(open('/Users/changmin/projects/ugrp-wt/zone-owncam-loc/experiments/2026-09-25-zone-owncam-loc/thresholds.json'))
+variants=json.loads(sys.argv[4]); thr=json.load(open('<home>/projects/ugrp-wt/zone-owncam-loc/experiments/2026-09-25-zone-owncam-loc/thresholds.json'))
 seeds=(0,1)
 cache={ep:(E.static_for(data/ep)[1], E.load_inputs(data/ep)) for ep in eps}
 for name,over in variants.items():

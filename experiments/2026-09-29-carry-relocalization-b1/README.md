@@ -212,7 +212,7 @@ PR #277 가정: 재측위 직후 방향 σ0 = 1.3°, 위치 축당 σ0 = 3.8 cm.
 ## 재현·해시
 
 - 소스 SHA: `3b1877e5`(고정). 재현 명령: `run_all.sh`(렌더 2회, 분할, 필터 4구성, 분석). 렌더는 sim 환경, 분할은 torch 환경, 필터·분석은 numpy만 필요하다.
-- 원본(로컬 보관, 원격 백업 아님): `/Users/changmin/projects/ugrp/outputs/carry-relocalization-b1-20260929/cohort/`(렌더 JPEG·교사 라벨·관측 JSON·실행 JSONL·분석). 이 저장소에는 해시와 작은 요약만 둔다.
+- 원본(로컬 보관, 원격 백업 아님): `<home>/projects/ugrp/outputs/carry-relocalization-b1-20260929/cohort/`(렌더 JPEG·교사 라벨·관측 JSON·실행 JSONL·분석). 이 저장소에는 해시와 작은 요약만 둔다.
   - 렌더 해시: `render_hashes_default.tsv`, `render_hashes_floor_light_v1.tsv`(프레임별 sha256). 대표 프레임 모음: `montage_default_p20.jpg`, `montage_floor_light_v1_p20.jpg`.
   - 실행 기록 해시: `runs_hashes.tsv`(4개 JSONL의 sha256·행 수).
   - 분석: `analysis/results.json.gz`(전 구성·그룹 통계), `analysis/budget.json`, `analysis/consistency.json`.

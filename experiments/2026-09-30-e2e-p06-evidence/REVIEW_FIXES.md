@@ -51,7 +51,7 @@ TensorBoard 공용 snapshot/서버/화면, 실제 provider 정산, 새 writer로
 - Python 3.12.13 / TensorBoard 2.21.0, 기존 Mac 환경 재사용. `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1`, OMP/BLAS/MKL/VECLIB 스레드 1.
 - 첫 선별 검사: 84 passed / 1 failed. 미상 비용 fixture의 다른 주문서 provenance가 새 검증에 거절됐다. 원래 자료의 provenance로 fixture를 고쳤고 검증 규칙은 유지했다.
 - [선별 node 목록](review_test_selectors.json): 앞선 P06 검사 + 새 반례 + 두 소스 고정 파일 전체 + door-relax 등록 보존 검사. `test_zone_study_referee.py` 전체는 실행하지 않았다.
-- 실행: `/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python /tmp/p06-review-tests.py <선별 목록> --junitxml=/tmp/p06-review-final.xml`. 이 wrapper는 `scripts.run_ci_tests.run_locked`와 `scripts.agent_lock.DEFAULT_ROOT`를 사용했다.
+- 실행: `<home>/projects/ugrp/.venv-sim-worker-mac/bin/python /tmp/p06-review-tests.py <선별 목록> --junitxml=/tmp/p06-review-final.xml`. 이 wrapper는 `scripts.run_ci_tests.run_locked`와 `scripts.agent_lock.DEFAULT_ROOT`를 사용했다.
 - JUnit: `/tmp/p06-review-final.xml`, SHA-256 `6cba82cf4b9c29a87d16adb2d4e43de0f1833ec5bf97770f3e0c030af9c8e0b2` (로컬 임시 검사 기록).
 - [검사 소스 해시](review_source_files.sha256). 302개 검사 전후 Python 해시 일치. 커밋 전 공백 검사에서 새 writer의 EOF 빈 줄 한 개만 제거했고 전후 AST 동일성을 확인했다. 위 해시 목록은 이 최종 공백 정리까지 반영한다. AST 문법과 `git diff --check` 통과. v6e runner와 기존 등록 파일은 main 대비 변경 없음.
 

@@ -11,7 +11,7 @@ from PIL import Image, ImageDraw, ImageFont
 ROOT=Path(__file__).resolve().parents[2]
 RAW=Path(sys.argv[1]).resolve()
 DEST=Path(sys.argv[2]).resolve();DEST.mkdir(parents=True,exist_ok=True)
-GRASP=Path('/Users/changmin/projects/ugrp-worktrees/pair-loaded-navigation/outputs/pair-navigation/runtime/models/grasp')
+GRASP=Path('<home>/projects/ugrp-worktrees/pair-loaded-navigation/outputs/pair-navigation/runtime/models/grasp')
 sys.path.insert(0,str(ROOT))
 from scripts.audit_pair_navigation import audit
 from scripts.evaluate_pair_navigation import evaluate_grasp_stability

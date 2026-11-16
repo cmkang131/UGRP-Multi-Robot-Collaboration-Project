@@ -44,7 +44,7 @@ v6e 봉인 소스 **85/85**가 등록 SHA-256과 일치한다. workflow와 지�
 
 ## 기록과 범위
 
-- 원본: `/Users/changmin/projects/ugrp/outputs/2026-10-01-t09a-f314-1/`.
+- 원본: `<home>/projects/ugrp/outputs/2026-10-01-t09a-f314-1/`.
   `verification.json`에 부모 SHA, Python, 대상별 결과, 실패 검사 이름, 보호 파일과 raw 해시를 기록했다.
 - 재현: 기존 Python으로 `verify.py --output <새 절대 경로> <pytest 대상...>`를 실행한다.
   변이는 `--mutation end_neg` 또는 `--mutation end_pos`와

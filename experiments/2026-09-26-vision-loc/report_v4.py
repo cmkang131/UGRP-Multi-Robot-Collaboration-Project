@@ -113,7 +113,7 @@ def main():
              'smoothing':'0','runFilter':'^'})+'#timeseries'
     d.save(d.OUT/'tensorboard-view.json',{'active_logdir':str(snapshot),'url':url,'pinned_tags':pins,
             'hparams_visible_columns':['variant','filter','cohort','split','environment','particles','model_sha8'],
-            'server_started':False,'shared_primary_root':'/Users/changmin/projects/ugrp/outputs/tensorboard',
+            'server_started':False,'shared_primary_root':'<home>/projects/ugrp/outputs/tensorboard',
             'scope':'Worktree snapshot per user output constraint; shared-root publication not performed.'})
     report['tensorboard']=verification
     d.save(d.OUT/'report.json',report)

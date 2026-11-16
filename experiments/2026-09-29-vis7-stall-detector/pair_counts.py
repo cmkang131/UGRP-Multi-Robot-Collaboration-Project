@@ -7,7 +7,7 @@ Labels follow experiments/2026-09-28-vis6-recipe1/posthoc_v6.py (GT XY speed < 0
 stuck-but-commanded; GT > 0.05 m/s = moving). Everything else is counted as `other`.
 DESCRIPTIVE ONLY. Not a measurement of the R1 detector. Nothing here selects a threshold.
 
-  python3 pair_counts.py --root /Users/changmin/projects/ugrp/outputs/vis6-recipe1-20260929 --output pair_counts.json
+  python3 pair_counts.py --root <home>/projects/ugrp/outputs/vis6-recipe1-20260929 --output pair_counts.json
 """
 from __future__ import annotations
 

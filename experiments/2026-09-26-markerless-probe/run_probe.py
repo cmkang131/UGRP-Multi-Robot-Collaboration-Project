@@ -37,7 +37,7 @@ sys.path.insert(0, str(HERE.parents[1]))
 import markerless_probe as mp  # noqa: E402
 from harness.wall_tags import TagDetector  # noqa: E402
 
-DATA_ROOT = Path('/Users/changmin/projects/ugrp/outputs/m1-owncam-20260926')
+DATA_ROOT = Path('<home>/projects/ugrp/outputs/m1-owncam-20260926')
 EPISODES = {
     'dev': ['dev-a8/m1dev-s93', 'dev-a8/m1devdiag-s95', 'dev-a6/m1devdiag-s94'],
     'test': [f'test/m1test-s{s}' for s in range(101, 107)],

@@ -114,7 +114,7 @@ PR #168(`top_cargo_v1`)의 Codex 적대 검토에서 두 결함이 나왔다.
 ## 재현
 
 ```bash
-PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 OUT=outputs/zone-cargo-perception-v2-20260925
 SPLIT=experiments/2026-09-25-zone-cargo-perception-v2/split.json
 $PY scripts/eval_zone_cargo_perception.py render --split test --split-file $SPLIT --output $OUT/test-330e856

@@ -88,7 +88,7 @@ submit의 동기 실패에는 도중 수신 대기가 생기지 않으므로, �
 [최종 소스/로그 해시·결과](review3-validation.json)를 보존한다. 재현 대상은 다음과 같다.
 
 ```sh
-OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
+OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
   tests/test_zone_study_multiturn_properties.py tests/test_zone_study_multiturn_exits.py \
   --basetemp=./.pytest_tmp -q
 ```

@@ -12,7 +12,7 @@ from pathlib import Path
 
 import numpy as np
 
-OUT = Path('/Users/changmin/projects/ugrp/outputs')
+OUT = Path('<home>/projects/ugrp/outputs')
 ROBOTS = ('r1', 'r2')
 STEP = 0.05
 TAU = 0.8          # loaded lag (carry_dr_fit_cal1 mean_model.tau_s)

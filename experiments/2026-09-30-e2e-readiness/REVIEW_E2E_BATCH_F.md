@@ -141,7 +141,7 @@ python -m pytest -q tests/test_zone_pair_registered_source.py tests/test_zone_st
 ```
 
 로컬 raw/재현 driver/변이 전후 내용/JUnit/metadata는
-`/Users/changmin/projects/ugrp/outputs/review-e2e-batch-f/`에 보존했다. 원격 raw 백업은 아니다.
+`<home>/projects/ugrp/outputs/review-e2e-batch-f/`에 보존했다. 원격 raw 백업은 아니다.
 실험·학습·물리 평가 cohort를 만들지 않았으므로 TensorBoard 성공률이나 신규 snapshot을 생성하지 않았다.
 실제 결과가 나오면 각 PR의 물리 인계에 적힌 TensorBoard 원본 연결/readback/영상 확인을 별도로 수행해야 한다.
 UGRP 예외에 따라 Drive 작업은 하지 않았다.

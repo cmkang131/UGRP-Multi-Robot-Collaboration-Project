@@ -38,7 +38,7 @@ r1-v5는 207.169초, acquire 20 / calibrate 8 / approach 4 / align 16회다. 신
 ## 재현 및 보관
 
 - 각 하위 폴더에 result, summary(존재하는 경우), 평가 로그, 당시 input-audit, 대표 현재/이전 원본 JPEG와 wire 요청을 저장했다. `summarize.py --include-evaluation <raw-root>...`로 통계를 재생성할 수 있다.
-- 전체 원본은 `/Users/changmin/projects/ugrp/outputs/visual-servo-20260909-<실행>/`에 로컬 보관된다. `raw-manifest.json`은 파일 경로·크기·SHA-256을 보존한다. 모든 wire와 원본 영상 전체를 원격 백업한 것은 아니다. 대표 자료만으로 전체 감사 재실행은 불가능하며 전체 로컬 원본과 해당 source SHA가 필요하다.
+- 전체 원본은 `<home>/projects/ugrp/outputs/visual-servo-20260909-<실행>/`에 로컬 보관된다. `raw-manifest.json`은 파일 경로·크기·SHA-256을 보존한다. 모든 wire와 원본 영상 전체를 원격 백업한 것은 아니다. 대표 자료만으로 전체 감사 재실행은 불가능하며 전체 로컬 원본과 해당 source SHA가 필요하다.
 - `environment.json`은 최종 실행 종료 직후 변경되지 않은 Python 환경을 기록했다. 모델은 gemini-3.8-flash이며 모델 호출 동안 물리는 일시 정지한다. 실물 실시간 제어 검증은 아니다.
 - 로컬 필수 검사: 282 tests / 140 subtests 통과. PR CI 결과는 PR에서 확인한다. 이 작업에서 시작한 실험 세션은 모두 종료했다.
 - GitHub PR: https://github.com/kcm0127-dotcom/ugrp/pull/24 . main 병합은 사용자 검토·명시 승인 전까지 진행하지 않는다. UGRP 지침에 따라 Drive를 사용하지 않았다.

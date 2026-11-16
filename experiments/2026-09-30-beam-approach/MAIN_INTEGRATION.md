@@ -54,7 +54,7 @@ batch H 전체, 필수 source 두 파일, T08a/T08b, 기존 approach/passage/STA
 ```sh
 PYTHONPATH=.:experiments/2026-09-30-beam-approach \
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 \
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -p offline_guard \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -p offline_guard \
   tests/test_review_e2e_batch_h.py tests/test_zone_pair_registered_source.py \
   tests/test_zone_study_source_pinning.py tests/test_pair_navigation_beam_approach.py \
   tests/test_beam_initial_pose_plan.py tests/test_pair_owncam_approach.py \

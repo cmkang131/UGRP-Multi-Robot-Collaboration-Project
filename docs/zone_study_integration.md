@@ -40,7 +40,7 @@
   - `robot_hold`: r2 이동 거리는 6.9–8.6 s 사이 사건 world 0.00001 m, 대조 world 0.217 m. 해제 뒤 8.7–9.8 s에는 0.078 m 다시 움직였다.
   - 세 로봇의 명령 행, 자기 카메라 캡처마다 보이는 `actuator_state`, `servo_command_pulses`가 두 world에서 같다.
   - 장면 XML은 숨은 장애물 몸체를 빼면 같다. 장애물은 (2.2, 0.05, 0.06)으로 올라왔다.
-- 원본: `/Users/changmin/projects/ugrp/outputs/fix257-hidden-events-probe-20260928-152803/`(로컬 보관, 원격 백업 아님). `probe.json` sha256 `43d7269cec42ba92c4fad826e65974a3c62f95a5b008e8293aebf7a08ff6f8ac`, `eval_only/hidden_events.jsonl` `623f21ebd2bedb30554b4b2bc51a7a31e001ae0016880a53b7eb31c99fe2638f`, `control_samples.json` `58ee47eb94150577d3abdfea5f882c36065337e1622f89db7f76ba978190e7c7`, `fault_samples.json` `64b53b6f63c8818d3175f34ac82646af6a3a82d74529348aefdd84470a986cbb`, 자기 카메라 프레임 258장.
+- 원본: `<home>/projects/ugrp/outputs/fix257-hidden-events-probe-20260928-152803/`(로컬 보관, 원격 백업 아님). `probe.json` sha256 `43d7269cec42ba92c4fad826e65974a3c62f95a5b008e8293aebf7a08ff6f8ac`, `eval_only/hidden_events.jsonl` `623f21ebd2bedb30554b4b2bc51a7a31e001ae0016880a53b7eb31c99fe2638f`, `control_samples.json` `58ee47eb94150577d3abdfea5f882c36065337e1622f89db7f76ba978190e7c7`, `fault_samples.json` `64b53b6f63c8818d3175f34ac82646af6a3a82d74529348aefdd84470a986cbb`, 자기 카메라 프레임 258장.
 - 범위: 교사가 잡은 상자 하나와 주행 명령 하나다. 학생 실행기의 파지·재탐색, 긴 막대 공동 운반 중 낙하, s2·s3·s5 장면 전체는 확인하지 않았다.
 
 ### 참고 자료 (검토 수정분)
@@ -218,7 +218,7 @@ v64 기준 SHA `97f91cb040bf382973ce84b24b1ca8399e64a6fb`의 scheduler·offline�
 실제 provider total 185,007과 차감량은 다른 수치다. [DB 해시와 상태](../experiments/2026-09-27-zone-study-multiturn/budget-readonly.json)를
 보존했다. 이후 다른 작업의 사용량을 포함해 실행 직전에 다시 확인한다.
 
-현재 DB identity의 `source_root`는 `/Users/changmin/projects/ugrp-wt/kiro-study-core`,
+현재 DB identity의 `source_root`는 `<home>/projects/ugrp-wt/kiro-study-core`,
 `pipeline`은 `AdapterTrial`이다. 기존 migration은 root/pipeline 변경을 허용하지 않는다.
 아래 명령은 기존 어댑터의 소스 검토·preflight 단계에 한정하며, 현재 작업 경로에서 그대로
 실행하거나 DB identity를 임의 수정하면 안 된다. 다회 driver 연결 시 이 호환성도 검토한다.
@@ -229,8 +229,8 @@ preflight를 수행한다. 새 예산 생성, 자동 정산, 설치 프록시 �
 초기 #222의 temperature 0.2 제안으로 기존 예약 계약을 바꾸지 않는다.
 
 ```sh
-PYTHON=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
-PILOT_ROOT=/Users/changmin/projects/ugrp/outputs/zone-study-adapter-pilot-r10
+PYTHON=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
+PILOT_ROOT=<home>/projects/ugrp/outputs/zone-study-adapter-pilot-r10
 # 아래 명령은 이 작업에서 실행하지 않는다. 모든 출력 이름은 미사용 경로여야 한다.
 # 기존 DB의 source_root에서 검토된 소스를 준비한 뒤 수행하는 어댑터 점검 명령이다.
 OMP_NUM_THREADS=1 "$PYTHON" -m scripts.run_zone_study_pilot --reconcile-only \

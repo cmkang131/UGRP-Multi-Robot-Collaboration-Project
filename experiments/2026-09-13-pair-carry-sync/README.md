@@ -61,7 +61,7 @@
 - 환경: macOS 27 arm64, Python 3.12.13, MuJoCo 3.12.0. 카메라와 모델 해시는 각 result, 설정/모델 입력 해시는 cohort-report에 있다.
 - 개발+최종 55회 전체의 JSON/JSONL은 `records/`의 무손실 gzip, 실제 JPEG는 중복 제거한 `rgb-01.zip`·`rgb-02.zip`으로 보관했다. 서로 다른 JPEG 1,622개, 실행별 참조 파일 6,363개이며 JPEG archive 합계 72,124,130바이트다. `restore_evidence.py`가 원래 바이트를 해시 검증하며 복원한다.
 - `evidence-index.json.gz`는 상대 경로→원본 해시·보관 위치를 연결한다. `raw-files.jsonl.gz`는 6,693개 전체 원본 파일의 위치·크기·SHA256이다. 영상 이외 복원 파일은 6,638개다.
-- 원본: `/Users/changmin/projects/ugrp/outputs/pair-sync-comparison-v1`, `/Users/changmin/projects/ugrp/outputs/pair-sync-development-v1`. 대표 영상 외 나머지 전체 동영상 50개는 로컬에만 있다. 원본 해시를 원격 동영상 백업으로 표현하지 않는다.
+- 원본: `<home>/projects/ugrp/outputs/pair-sync-comparison-v1`, `<home>/projects/ugrp/outputs/pair-sync-development-v1`. 대표 영상 외 나머지 전체 동영상 50개는 로컬에만 있다. 원본 해시를 원격 동영상 백업으로 표현하지 않는다.
 - 프로젝트 지침에 따라 로컬과 GitHub에 저장하며 Google Drive는 사용하지 않는다. main은 별도 승인 없이 병합하지 않는다.
 
 ## 다른 위치에서 기록 재검증

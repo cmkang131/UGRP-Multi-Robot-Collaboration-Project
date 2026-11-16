@@ -22,7 +22,7 @@ handoff가 적은 기계적 점검 10개를 모두 만족했다. 이것은 **환
 | 부하 | 잠금 획득 시 load avg 15.95/16.76/17.68, 종료 시 14.78/16.03/17.32. 사례별 값은 아래 표 |
 | 디스크 | 실행 전후 여유 38 GiB(10 GiB 기준 충족). raw 15 MiB |
 
-명령(handoff 그대로, `RUN_ROOT=/Users/changmin/projects/ugrp/outputs/final-env-v84-p01-1001`):
+명령(handoff 그대로, `RUN_ROOT=<home>/projects/ugrp/outputs/final-env-v84-p01-1001`):
 
 ```sh
 python -m scripts.sim_cli workflow plan zone-final-environment-check -- \
@@ -96,7 +96,7 @@ handoff의 검토 항목별 결과(3지도 동일; 계산은 `analyze_p01.py`, �
 
 ## 원본·보존
 
-- raw: `/Users/changmin/projects/ugrp/outputs/final-env-v84-p01-1001/` (`p01/` 119파일 15 MiB(PNG 63), `raw_p01.sha256`=전체 파일 sha256 목록(그 자체의 sha256 `b71deb9f4d3a9239…0cc8`),
+- raw: `<home>/projects/ugrp/outputs/final-env-v84-p01-1001/` (`p01/` 119파일 15 MiB(PNG 63), `raw_p01.sha256`=전체 파일 sha256 목록(그 자체의 sha256 `b71deb9f4d3a9239…0cc8`),
   `sim-record/`, `logs/`, `derived/`). 삭제·덮어쓰기 없음. 원격 백업 아님(로컬 보관).
 - 이 폴더의 `raw_small/`은 결과·bundle·scene·applied·setup JSON과 해시 목록의 사본(작은 파일만). PNG·접촉 JSONL은 outputs에만 있다.
 - 기본 sim 관리 기록은 worktree `outputs/simulation-runs/…/manifest.json`에서 위 `sim-record/`로 복사했다.

@@ -2,7 +2,7 @@
 
 기준: PR #235, `codex/zone-pair-executor`, HEAD
 `6d25954db079c0684e81559c9f07a0f6e4ef9cb5`.
-리뷰 원문: `/private/tmp/claude-501/-Users-changmin-projects-ugrp/ecd247bf-a1a7-45d6-9190-dad34be56468/scratchpad/codex-pair-dev-review.md`.
+리뷰 원문: `/private/tmp/claude-501/-<home>-projects-ugrp/ecd247bf-a1a7-45d6-9190-dad34be56468/scratchpad/codex-pair-dev-review.md`.
 이번 결과는 **미커밋 로컬 수정과 비물리 소프트웨어 테스트**다.
 
 ## 수정과 선택 근거
@@ -45,7 +45,7 @@ fixture는 JSON·배열·가짜 world/포트만 사용하며 MuJoCo model 생성
 
 ```sh
 OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 \
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
   tests/test_zone_pair_dev.py -k 'review_p1_planned or review_p2' \
   --basetemp=./.pytest_tmp --tb=short
 ```
@@ -63,7 +63,7 @@ tick 누락을 별도 검증했다. 두 seed의 정적 계획과 prereg 종점�
 ```sh
 OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 \
 NUMEXPR_NUM_THREADS=1 GIT_OPTIONAL_LOCKS=0 PYTHONDONTWRITEBYTECODE=1 \
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
+<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
   tests/test_zone_pair_dev.py \
   tests/test_zone_pair_review7.py tests/test_zone_pair_review6.py tests/test_zone_pair_review5.py \
   tests/test_zone_pair_review4.py tests/test_zone_pair_review3.py tests/test_zone_pair_review2.py \

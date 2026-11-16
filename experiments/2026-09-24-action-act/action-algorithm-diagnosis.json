@@ -1,7 +1,7 @@
 {
   "schema": "ugrp.dispatch.action_algorithm_diagnosis.v1",
   "candidate": "camera-only linked carrier motion for temporarily occluded solo cargo",
-  "source_run": "/Users/changmin/projects/ugrp/outputs/simulation-realtime-20260924-faster/native-v26-repeat",
+  "source_run": "<home>/projects/ugrp/outputs/simulation-realtime-20260924-faster/native-v26-repeat",
   "source_revision": "83f92c3c691311fae95dacc089fd76da3910b943",
   "source_diagnosis": "experiments/2026-09-24-faster-dispatch/v26-box-tracking-diagnosis.json",
   "failure": "At solo decision 285 the cyan cargo component is absent from TOP RGB and cargo-patch KLT has only two moving corners versus two stationary corners, below the existing three-point and 60-percent motion agreement gates.",
@@ -36,7 +36,7 @@
   ],
   "saved_success_regressions": "One accepted direct TOP RGB cargo-tracking transition each from native-v19-full (319 to 320), native-v25-full (283 to 284), and native-v26-full (284 to 285) retained the recorded cargo centers within 0.01 px.",
   "verification": {
-    "command": "PYTHONPATH=.:tests /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_dispatch_carrier_occlusion.py tests/test_dispatch_skill_binding.py tests/test_dispatch_box_identity.py tests/test_dispatch_solo_cadence.py tests/test_dispatch_execution.py tests/test_dispatch_solo_budget.py tests/test_visual_box_skill.py",
+    "command": "PYTHONPATH=.:tests <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_dispatch_carrier_occlusion.py tests/test_dispatch_skill_binding.py tests/test_dispatch_box_identity.py tests/test_dispatch_solo_cadence.py tests/test_dispatch_execution.py tests/test_dispatch_solo_budget.py tests/test_visual_box_skill.py",
     "result": "112 passed in 2.08s",
     "microbenchmark": "The isolated carrier-link helper averaged 0.00196 s over 50 repeats of saved 283-to-284 RGB on this Mac; native end-to-end timing remains unverified.",
     "compileall": "passed for harness/dispatch_skill_binding.py and harness/solo_box_transport.py",

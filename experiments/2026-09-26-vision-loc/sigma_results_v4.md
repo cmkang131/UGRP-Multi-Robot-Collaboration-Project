@@ -126,7 +126,7 @@ PSD를 유지한다. 입자·가중치·난수·추정 위치/yaw는 바꾸지 �
 이번 사용자 예외 뒤 **101 passed, 1 skipped**로 별도 완료했다.
 
 ```sh
-PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 VIS=experiments/2026-09-26-vision-loc
 # 새 출력 경로를 지정한다. 기존 산출물은 exclusive-create로 보호한다.
 OMP_NUM_THREADS=1 "$PY" "$VIS/calibrate_sigma_v4.py" --compare --output outputs/vision-loc-v4/sigma-reproduction

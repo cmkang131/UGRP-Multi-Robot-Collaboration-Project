@@ -36,7 +36,7 @@ main `6a57435e`(#328), 검증 당시 기반 HEAD `e85e00a213c52b06655a65162c80a5
 `artifact_index.json`은 원본 위치·파일 해시·개발 중 실패/중단 실행의 상태를 연결한다.
 개발 중 첫 묶음은 D2 기대값 등의 실패를 확인했고 두 긴 실행은 최종 코드 수정 때문에
 중단했다. 이 실행들은 통과로 세지 않았고 원 로그는 로컬에 보존했다.
-최종 실행 원본과 17개 전체 판정 JSON은 `/Users/changmin/projects/ugrp/outputs/v6h-classifier-299c-fix/final-v4`에 있다.
+최종 실행 원본과 17개 전체 판정 JSON은 `<home>/projects/ugrp/outputs/v6h-classifier-299c-fix/final-v4`에 있다.
 
 CI fixture 누락은 기존 frozen 파일 3개를 sparse checkout에 포함해 해결했다.
 `.github/workflows`는 별도 수정하지 않았다. 정상 push 이후 GitHub CI의 정확한

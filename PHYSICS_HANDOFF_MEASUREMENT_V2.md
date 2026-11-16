@@ -55,14 +55,14 @@ PR에서 검토한 head와 아래 remote head가 같은지 확인하고 코호�
 실행 중 다른 checkout을 자동 갱신하지 않는다. 출력 디렉터리는 항상 새 이름을 쓴다.
 
 ```bash
-cd /Users/changmin/projects/ugrp-wt/calib-measure-v2
+cd <home>/projects/ugrp-wt/calib-measure-v2
 set -euo pipefail
-PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 MEASUREMENT_SHA=$(git rev-parse origin/codex/calib-measure-v2)
 test "$(git rev-parse HEAD)" = "$MEASUREMENT_SHA"
 test -z "$(git status --porcelain --untracked-files=all)"
 MEASUREMENT_BRANCH=$(git branch --show-current)
-RUN_ROOT="/Users/changmin/projects/ugrp/outputs/measurement-v89-${MEASUREMENT_SHA:0:8}-$(date +%Y%m%d-%H%M%S)"
+RUN_ROOT="<home>/projects/ugrp/outputs/measurement-v89-${MEASUREMENT_SHA:0:8}-$(date +%Y%m%d-%H%M%S)"
 "$PY" scripts/disk_report.py
 "$PY" scripts/agent_lock.py status
 

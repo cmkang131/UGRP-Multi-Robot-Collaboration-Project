@@ -18,8 +18,8 @@ import urllib.request
 from scripts import openrouter_upstream as orp
 
 ROOT = Path(__file__).resolve().parents[2]
-SOURCE = Path('/Users/changmin/projects/ugrp-wt/e2e18-planner/outputs/task-planner-ling-vl-main-20261013/off-calls.jsonl')
-IMAGE = Path('/Users/changmin/projects/ugrp-wt/e2e18-planner/outputs/task-planner-ling-vl-image/r80-r1-00000.jpg')
+SOURCE = Path('<home>/projects/ugrp-wt/e2e18-planner/outputs/task-planner-ling-vl-main-20261013/off-calls.jsonl')
+IMAGE = Path('<home>/projects/ugrp-wt/e2e18-planner/outputs/task-planner-ling-vl-image/r80-r1-00000.jpg')
 API = 'https://openrouter.ai/api/v1/'
 
 

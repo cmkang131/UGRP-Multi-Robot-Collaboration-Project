@@ -35,7 +35,7 @@ A의 성공 원본과 같은 A의 실패 사본이 함께 있으면 A는 중복�
 실행했다. 새 환경·추출 디렉터리를 만들지 않았으며 `/private/tmp` 추출본도 없다.
 
 ```sh
-PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 $PY experiments/2026-09-30-e2e-p06-evidence/redesign_test_driver.py --tb=short
 $PY experiments/2026-09-30-e2e-p06-evidence/event_replay_mutations.py <변이명> --tb=short
 ```
@@ -74,7 +74,7 @@ manifest 키 타입·일치를 명시적으로 검사하고 관련 5개 반례�
 등록 소스 두 테스트 파일 전체를 실행한다. `.github/workflows`는 origin/main과 같으며
 새 필수 검사와 실제 event 읽기는 기존 테스트 파일·CI 목록으로 연결했다.
 
-원본 로그·JUnit·음성 대조는 `/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/`에
+원본 로그·JUnit·음성 대조는 `<home>/projects/ugrp/outputs/p06-review-e-fix/`에
 로컬 보존한다. 작은 보고서·소스·로그 해시만 Git으로 보존하며 전체 로그의 원격 백업을
 주장하지 않는다. TensorBoard는 임시 합성 event를 실제 EventAccumulator로 읽었다.
 공용 snapshot·서버·브라우저 UI와 기존 연구 raw는 변경하지 않았다.

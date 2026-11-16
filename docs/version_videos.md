@@ -36,7 +36,7 @@ SHA256 `1c6e607ef9de55da36ecfb7e89097c1f764df6f02fee7349bc8fcc21b65c7688`.
 도구: `scripts/render_pair_probe_video.py`(matplotlib·ffmpeg 필요, 물리 실행 없음). 모든 영상을 다시 만드는 명령:
 
 ```
-OUT=/Users/changmin/projects/ugrp/outputs bash experiments/2026-09-29-version-videos/build_videos.sh [출력 폴더]
+OUT=<home>/projects/ugrp/outputs bash experiments/2026-09-29-version-videos/build_videos.sh [출력 폴더]
 ```
 
 영상 파일은 모두 `experiments/2026-09-29-version-videos/videos/`에 있다.
@@ -66,7 +66,7 @@ OUT=/Users/changmin/projects/ugrp/outputs bash experiments/2026-09-29-version-vi
 `zone-s2-realism-v115` 소스 `57f8c174`, s1040/P1-2의 정렬 도달→hover 시야 미확인 실패를 선택했다.
 동일 제어의 v116/`46b8e7af` s1041도 같은 실패였으며, seed 재사용 금지에 따라 paired seed 비교는 아니다.
 영상은 사용자 지정대로 로컬
-`/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-analysis/views/s1040-probe/execution.mp4`에 둔다.
+`<home>/projects/ugrp/outputs/s2-realism-57f8c174-analysis/views/s1040-probe/execution.mp4`에 둔다.
 SHA256 `384ad6944cf42b44e0238cb3650b82af413c75b97f87cebc72d20c220915c84c`;
 26.15초, 575008bytes. [원자료·판정·한계](../experiments/2026-10-06-s2-realism/README.md#v115v116-최신-완료-기록).
 집기/운반 성공이나 실물 검증을 보여주는 영상은 아니다.
@@ -101,7 +101,7 @@ SHA256 `384ad6944cf42b44e0238cb3650b82af413c75b97f87cebc72d20c220915c84c`;
 원본 `outputs/own-door-navigation-v1/49001/wrist-map-doors-4x.mp4` (1280×480·157.55초·4배속).
 SHA256 `69bdd4f62546e3e38ea024cf94b6bc12b86cef39b8a187ee155b7f11794a1c69`.
 후보722개 중 확인0·관문 실패로 새 물리0, 성공영상 없음. 회색벽/청록문은 평가용GT, 제어입력 아님.
-- 2026-10-06 S2 v117 `ef820ab2` / s1042: REAL pre-grasp 확인 뒤 hover 하강·SIM lifted=true, pickup-site ROI clipped/unknown으로 probe gate 미통과. own-RGB4배속 영상 `/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-analysis/views/s1042-probe/execution.mp4` (34.05s,681frames,sha256 `5ed6f0714aaab173ece3a9630964dfcb76252969e6f08fdd0ec35b0425ad2041`). full/실물 성공 증거 아님. 기록: `experiments/2026-10-06-s2-realism/completed-v117.json`.
+- 2026-10-06 S2 v117 `ef820ab2` / s1042: REAL pre-grasp 확인 뒤 hover 하강·SIM lifted=true, pickup-site ROI clipped/unknown으로 probe gate 미통과. own-RGB4배속 영상 `<home>/projects/ugrp/outputs/s2-realism-ef820ab2-analysis/views/s1042-probe/execution.mp4` (34.05s,681frames,sha256 `5ed6f0714aaab173ece3a9630964dfcb76252969e6f08fdd0ec35b0425ad2041`). full/실물 성공 증거 아님. 기록: `experiments/2026-10-06-s2-realism/completed-v117.json`.
 
 ## 2026-10-15 beampair1 long_beam 근거리 교사
 
@@ -115,7 +115,7 @@ SHA256 `69bdd4f62546e3e38ea024cf94b6bc12b86cef39b8a187ee155b7f11794a1c69`.
 
 ## 2026-10-15 beampair3 양보 계획 만료
 
-`e645b34beb4fa693ab4ddedfe77045ae26b46388` + dependency `26f84d0f0ada1c33473c83cca2d3415ce51bd247`, gcp1/n4-highcpu-64, 기본off `peer_rendezvous_v2`. R3 짧은 탐색6/6 공동 들기3초; 정식40회는 미제출 큐. 대표8318611 개요(평가만)+r1/r2 자기 카메라 3배속, 원본10Hz 평가 qpos 복원: `/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/r3-8318611/playback-3x.mp4` (449970bytes, SHA256 `2f833a2796b7b78470a6d97872525f9e43c630a9fc9a742147c1659626d0a2b1`). [원본·프레임·ffprobe·직접 검토](../experiments/2026-10-15-beampair3/r3-visual-review.json). 전체2Hz·끝10초10Hz 검토, 카메라 보정 복원·위치차이0. 원본 own JPEG는1Hz이며 새 카메라 관측이나 학생 실행이 아니다. 학습·운반·놓기·실물 성공 아님.
+`e645b34beb4fa693ab4ddedfe77045ae26b46388` + dependency `26f84d0f0ada1c33473c83cca2d3415ce51bd247`, gcp1/n4-highcpu-64, 기본off `peer_rendezvous_v2`. R3 짧은 탐색6/6 공동 들기3초; 정식40회는 미제출 큐. 대표8318611 개요(평가만)+r1/r2 자기 카메라 3배속, 원본10Hz 평가 qpos 복원: `<home>/projects/ugrp/outputs/e2e18-admin/playback/beampair3/r3-8318611/playback-3x.mp4` (449970bytes, SHA256 `2f833a2796b7b78470a6d97872525f9e43c630a9fc9a742147c1659626d0a2b1`). [원본·프레임·ffprobe·직접 검토](../experiments/2026-10-15-beampair3/r3-visual-review.json). 전체2Hz·끝10초10Hz 검토, 카메라 보정 복원·위치차이0. 원본 own JPEG는1Hz이며 새 카메라 관측이나 학생 실행이 아니다. 학습·운반·놓기·실물 성공 아님.
 
 ## 2026-10-16 beampair5 재관측 뒤 목표 막힘 — NOT_READY
 

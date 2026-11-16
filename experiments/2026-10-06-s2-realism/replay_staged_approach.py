@@ -12,7 +12,7 @@ from harness import zone_solo_cyan_look_before_move as look
 from harness import zone_s2_staged_approach_contract as contract
 from harness import zone_solo_cyan_contract_v106 as old
 from scripts.run_s2_staged_approach import runtime_factory
-BASE=Path('/Users/changmin/projects/ugrp/outputs')
+BASE=Path('<home>/projects/ugrp/outputs')
 read=lambda p:json.loads(p.read_text())
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 

@@ -38,7 +38,7 @@ GO/FINISH는 시험 종료 직전 동기화 상태이고, 이후 실행기 close
 - `cases/`: 조건별 결과·평가 전용 샘플·사건 기록. 팔/바퀴 정지·재개 GIF와
   접촉표도 포함했다. 두 접촉표의 실제 카메라 영상과 전후 변화를 직접 확인했다.
 - 원본 RGB/요청·응답/모델 XML 전체의 로컬 경로:
-  `/Users/changmin/projects/ugrp-worktrees/task-stage-execution/outputs/task-stage-execution-b11659c`.
+  `<home>/projects/ugrp-worktrees/task-stage-execution/outputs/task-stage-execution-b11659c`.
   원본 전체의 원격 백업을 의미하지 않는다. GitHub에는 위 선택 기록만 저장한다.
 - 이 시험에서 시작한 세션과 자식 프로세스는 종료했다.
 

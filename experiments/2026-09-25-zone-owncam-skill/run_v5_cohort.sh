@@ -2,13 +2,13 @@
 # v5 pre-registered cohort: arm P 541-548, runner v5, diagnostic mode (gt_stub pose, NOT M1),
 # cargo_noslip_v1 (pending user decision), 2 lanes. Stop rule: any false OWN_RGB_PLACEMENT_IN_SLOT stops it.
 set -u
-WT=/Users/changmin/projects/ugrp-wt/zone-owncam-skill-v2
+WT=<home>/projects/ugrp-wt/zone-owncam-skill-v2
 cd $WT
 SHA=$(git rev-parse --short HEAD)
-OUT=/Users/changmin/projects/ugrp/outputs/zone-owncam-skill-20260925/cohort-v5-$SHA
+OUT=<home>/projects/ugrp/outputs/zone-owncam-skill-20260925/cohort-v5-$SHA
 mkdir -p $OUT
 LOG=$OUT/cohort.log
-source /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/activate
+source <home>/projects/ugrp/.venv-sim-worker-mac/bin/activate
 export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1
 STOP=$OUT/STOP
 

@@ -108,4 +108,4 @@ workflow 설명 두 파일을 뺀 **272개 파일의 Git blob 바이트 일치**
 worker·네트워크·렌더 시도 카운터는 모두 0이다. 새 실험 결과가 아니므로 TensorBoard
 변환·서버·Drive 작업은 없다. 최종 결과와 첫 실패의 해시·실행 명령은
 `analysis/review_292_delta_fixes/validation.json`, 원본 로그/JUnit은
-`/Users/changmin/projects/ugrp/outputs/v6h-register-delta-fixes-20260930/`에 있다.
+`<home>/projects/ugrp/outputs/v6h-register-delta-fixes-20260930/`에 있다.

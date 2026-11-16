@@ -5,7 +5,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
-SHARED = '/Users/changmin/projects/ugrp/outputs'
+SHARED = '<home>/projects/ugrp/outputs'
 def guard(event, args):
     if event in ('open', 'os.listdir', 'os.scandir', 'os.mkdir', 'os.remove',
                  'os.rmdir', 'os.rename', 'os.chmod', 'os.truncate'):

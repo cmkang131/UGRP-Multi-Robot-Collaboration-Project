@@ -2,7 +2,7 @@ FF                                                                       [100%]
 =================================== FAILURES ===================================
 ____________ test_interrupt_owned_descendant_after_leader_reaped[2] ____________
 
-tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_interrupt_owned_descendan0')
+tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_interrupt_owned_descendan0')
 signum = <Signals.SIGINT: 2>
 
     @pytest.mark.parametrize('signum', [signal.SIGINT, signal.SIGTERM])
@@ -86,7 +86,7 @@ E       assert 4 <= 3
 tests/test_sim_speed_review5.py:51: AssertionError
 ___________ test_interrupt_owned_descendant_after_leader_reaped[15] ____________
 
-tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_interrupt_owned_descendan1')
+tmp_path = PosixPath('<home>/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_interrupt_owned_descendan1')
 signum = <Signals.SIGTERM: 15>
 
     @pytest.mark.parametrize('signum', [signal.SIGINT, signal.SIGTERM])

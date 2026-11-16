@@ -3,7 +3,7 @@
 - **작성:** Codex CLI (gpt-6-astra, reasoning xhigh). Claude 코디네이터가 2026-09-25에 위임한 읽기 전용 분석이다. 파일 수정·시뮬레이션·테스트·Git 쓰기·worktree 생성은 하지 않았다.
 - **기준 SHA:** 로컬 main `12695bc`. `origin/claude/zone-hard-routes`는 당시 로컬에 없어, 로컬 `claude/zone-hard-routes` 브랜치의 `dc27695`를 `git show`로 읽어 인용했다(본문의 "H:" 표시 근거).
 - **상태:** **제안, 미검증** (proposal, not verified)
-- 아래 본문의 로컬 절대경로 링크(`/Users/changmin/projects/ugrp/...`, `/Users/changmin/projects/ugrp-worktrees/zone-hard-routes/...`)는 작성자 기기와 작성 시점 경로를 가리킨다. 이후 커밋에서 줄 번호·구조가 바뀌었을 수 있다.
+- 아래 본문의 로컬 절대경로 링크(`<home>/projects/ugrp/...`, `<home>/projects/ugrp-worktrees/zone-hard-routes/...`)는 작성자 기기와 작성 시점 경로를 가리킨다. 이후 커밋에서 줄 번호·구조가 바뀌었을 수 있다.
 
 ## 이후 진행 상황 (기록 시점 2026-09-25)
 
@@ -23,9 +23,9 @@
 | 역방향 조건 | 넓은 문을 막고 좁은 문은 개방 | 특정 문·진행 방향에 대한 과적합 확인. 해당 화물·대형이 좁은 문을 통과할 수 있을 때만 사용 |
 | 단일 문·복도 | 일시 차단 후 예정된 시각에 재개방 | 불필요한 접근·대기 감소 평가. 영구 차단하면 대안 경로가 없어 우회 성공 비교에 부적합 |
 
-문 위치·폭은 [H:지도:315](/Users/changmin/projects/ugrp-worktrees/zone-hard-routes/maps/zones/zone_wide_two_doors.json:315), 단일 복도와 대피 공간은 [H:zone_arena.py:136](/Users/changmin/projects/ugrp-worktrees/zone-hard-routes/sim/zone_arena.py:136)에 정의돼 있습니다.
+문 위치·폭은 [H:지도:315](<home>/projects/ugrp-worktrees/zone-hard-routes/maps/zones/zone_wide_two_doors.json:315), 단일 복도와 대피 공간은 [H:zone_arena.py:136](<home>/projects/ugrp-worktrees/zone-hard-routes/sim/zone_arena.py:136)에 정의돼 있습니다.
 
-- **진짜 비공개 조건:** 우선 기존 가림 영역을 조사하되, 현재 테스트는 통행 가능한 문·바닥의 TOP 가시성을 검사합니다. 벽 뒤의 얇은 사각만으로 문 전체를 막는 장애물을 숨길 수 있다고 가정하면 안 됩니다. [H:test_zone_hard_routes.py:101](/Users/changmin/projects/ugrp-worktrees/zone-hard-routes/tests/test_zone_hard_routes.py:101)
+- **진짜 비공개 조건:** 우선 기존 가림 영역을 조사하되, 현재 테스트는 통행 가능한 문·바닥의 TOP 가시성을 검사합니다. 벽 뒤의 얇은 사각만으로 문 전체를 막는 장애물을 숨길 수 있다고 가정하면 안 됩니다. [H:test_zone_hard_routes.py:101](<home>/projects/ugrp-worktrees/zone-hard-routes/tests/test_zone_hard_routes.py:101)
 - 기존 구조로 불가능하면, **정적 지도에 알려진 고정 덮개가 있는 문**을 별도 지도 버전으로 제안합니다. 로봇·화물 위의 덮개 아래에 낮은 장애물을 두고, 자기 카메라는 옆에서 보게 합니다. 덮개는 정상·차단 시행 모두에 존재하고 장애물만 미등록 상태입니다. 카메라 위치/FOV·영상 마스킹은 바꾸지 않습니다. 덮개의 높이·그림자까지 모델링하며, 단순한 바닥 장애물로 처리하지 않습니다.
 - **TOP 공개 조건도 유지**합니다. TOP만으로 충분한 상황에서 통신의 추가 이득이 작거나 비용만 생기는지 보는 대조군입니다. “TOP 검출기가 놓쳤다”는 이유로 비공개라고 분류하지 않습니다.
 - **처음에는 시작 시 차단**, 이후 중간 등장으로 확장합니다. 중간 등장은 조건별 작업 순서가 아닌 사전 고정 SIM 시각에 발생시키고, 미리 생성한 물리 장애물을 이동시킵니다. 로봇과 겹쳐 생성하지 않습니다. 안전상 등장 지연·취소가 생기면 실제 시각과 이유를 평가 기록에 남기고 사후 제외하지 않습니다.
@@ -33,7 +33,7 @@
 
 **2. 허용 입력만 사용하는 인식 경로**
 
-현재 `zone_perception.py`는 TOP의 **색 상자 검출기**이며 통로 차단 검출기는 아닙니다. 또한 runner는 주로 idle 로봇에게 질문하므로, 이동 중 발견·보고 경로가 먼저 필요합니다. [zone_perception.py:47](/Users/changmin/projects/ugrp/harness/zone_perception.py:47), [run_zone_dispatch.py:276](/Users/changmin/projects/ugrp/scripts/run_zone_dispatch.py:276)
+현재 `zone_perception.py`는 TOP의 **색 상자 검출기**이며 통로 차단 검출기는 아닙니다. 또한 runner는 주로 idle 로봇에게 질문하므로, 이동 중 발견·보고 경로가 먼저 필요합니다. [zone_perception.py:47](<home>/projects/ugrp/harness/zone_perception.py:47), [run_zone_dispatch.py:276](<home>/projects/ugrp/scripts/run_zone_dispatch.py:276)
 
 제안 경로는 다음과 같습니다.
 
@@ -48,7 +48,7 @@ belief에는 `passage_id`, 방향, `unknown/suspected/blocked/clear`, 관측 시
 
 **3. 로봇의 경로 결정과 교사의 안전 실행을 분리**
 
-현재 작업 인터페이스는 사실상 `box_body + slot_xy`이고, 교사가 전역 A* 경로를 선택합니다. 여기에 실제 미등록 장애물을 전부 넣으면 **보지 못한 로봇도 처음부터 우회**하게 됩니다. [zone_teacher.py:231](/Users/changmin/projects/ugrp/scripts/zone_teacher.py:231), [H:zone_teacher.py:329](/Users/changmin/projects/ugrp-worktrees/zone-hard-routes/scripts/zone_teacher.py:329)
+현재 작업 인터페이스는 사실상 `box_body + slot_xy`이고, 교사가 전역 A* 경로를 선택합니다. 여기에 실제 미등록 장애물을 전부 넣으면 **보지 못한 로봇도 처음부터 우회**하게 됩니다. [zone_teacher.py:231](<home>/projects/ugrp/scripts/zone_teacher.py:231), [H:zone_teacher.py:329](<home>/projects/ugrp-worktrees/zone-hard-routes/scripts/zone_teacher.py:329)
 
 | 결정 | 정보와 책임 |
 |---|---|
@@ -61,7 +61,7 @@ belief에는 `passage_id`, 방향, `unknown/suspected/blocked/clear`, 관측 시
 
 차단 판정·우회 결정·임무 단계 변경·동료 통보는 다음 정기 RGB 판단에서 발생해야 합니다. 교사의 내부 운동 단계와 정답 진단은 실행·평가 영역에만 남깁니다. 잘못된 RGB belief 때문에 로봇이 우회하더라도 교사가 정답으로 이를 “교정”하지 않습니다.
 
-특히 기존 `teacher_path_blocked` 등의 결과가 `own_jobs.status`와 전원 깨우기로 돌아오는 경로를 먼저 차단해야 합니다. “같은 영수증을 모두에게 제공”하는 것만으로 누설이 해결되지 않습니다. [run_zone_dispatch.py:224](/Users/changmin/projects/ugrp/scripts/run_zone_dispatch.py:224), [경계 감사:47](/Users/changmin/projects/ugrp/experiments/2026-09-25-zone-comm-boundary-audit/README.md:47)
+특히 기존 `teacher_path_blocked` 등의 결과가 `own_jobs.status`와 전원 깨우기로 돌아오는 경로를 먼저 차단해야 합니다. “같은 영수증을 모두에게 제공”하는 것만으로 누설이 해결되지 않습니다. [run_zone_dispatch.py:224](<home>/projects/ugrp/scripts/run_zone_dispatch.py:224), [경계 감사:47](<home>/projects/ugrp/experiments/2026-09-25-zone-comm-boundary-audit/README.md:47)
 
 **4. 조건별 정보와 공통 신호**
 
@@ -73,11 +73,11 @@ belief에는 `passage_id`, 방향, `unknown/suspected/blocked/clear`, 관측 시
 | `plan_first` | 시작 전 실제 협상 메시지와 합의 | 배정은 유지하되 자기 영상에 따른 로컬 우회 허용. 새 동료 보고는 없음 |
 | `dynamic` | 시작 전·실행 중 실제 전달된 메시지 | 자기 관측 또는 수신 보고로 경로 변경 |
 
-이는 현재의 **실행 중 재판단이 없는 plan_first를 확장한 새 버전**이므로 기존 ZC 결과와 섞으면 안 됩니다. 시작부터 막혀 있어도 실행 후에야 발견된다면 plan_first는 미리 알 수 없습니다. 초기 정보 공유 효과도 보려면 모든 조건에 같은 사전 관측 시간을 주는 별도 조건이 필요합니다. [run_zone_dispatch.py:246](/Users/changmin/projects/ugrp/scripts/run_zone_dispatch.py:246)
+이는 현재의 **실행 중 재판단이 없는 plan_first를 확장한 새 버전**이므로 기존 ZC 결과와 섞으면 안 됩니다. 시작부터 막혀 있어도 실행 후에야 발견된다면 plan_first는 미리 알 수 없습니다. 초기 정보 공유 효과도 보려면 모든 조건에 같은 사전 관측 시간을 주는 별도 조건이 필요합니다. [run_zone_dispatch.py:246](<home>/projects/ugrp/scripts/run_zone_dispatch.py:246)
 
-통신 효과를 분리하려면 dynamic의 호스트 게시판·동료 선언 기반 거절·정답 사건 깨우기를 제거하거나 별도 비교군으로 남깁니다. 수신자의 belief는 **실제로 전달된 메시지**로만 갱신합니다. 공통 주기에 inbox를 읽으면 메시지 없는 조건과 판단 기회도 맞출 수 있습니다. 현재 비교가 메시지만의 효과가 아니라는 근거는 [경계 감사:76](/Users/changmin/projects/ugrp/experiments/2026-09-25-zone-comm-boundary-audit/README.md:76)에 있습니다.
+통신 효과를 분리하려면 dynamic의 호스트 게시판·동료 선언 기반 거절·정답 사건 깨우기를 제거하거나 별도 비교군으로 남깁니다. 수신자의 belief는 **실제로 전달된 메시지**로만 갱신합니다. 공통 주기에 inbox를 읽으면 메시지 없는 조건과 판단 기회도 맞출 수 있습니다. 현재 비교가 메시지만의 효과가 아니라는 근거는 [경계 감사:76](<home>/projects/ugrp/experiments/2026-09-25-zone-comm-boundary-audit/README.md:76)에 있습니다.
 
-TeamJob의 최소 시작·정지·허가 동기화는 세 조건에서 동일하게 유지하되, ACK·예약 응답·공유 객체에 차단 위치나 동료 belief를 싣지 않습니다. **첫 차단 코호트는 단독 운반으로**, 이후 공동 화물로 확장하면 필수 공동 동작과 정보 전달의 효과를 구분하기 쉽습니다. [research_todo.md:50](/Users/changmin/projects/ugrp/docs/research_todo.md:50)
+TeamJob의 최소 시작·정지·허가 동기화는 세 조건에서 동일하게 유지하되, ACK·예약 응답·공유 객체에 차단 위치나 동료 belief를 싣지 않습니다. **첫 차단 코호트는 단독 운반으로**, 이후 공동 화물로 확장하면 필수 공동 동작과 정보 전달의 효과를 구분하기 쉽습니다. [research_todo.md:50](<home>/projects/ugrp/docs/research_todo.md:50)
 
 **5. 측정 지표**
 
@@ -102,6 +102,6 @@ TeamJob의 최소 시작·정지·허가 동기화는 세 조건에서 동일하
 | ④ RGB belief·실행 중 관측 | `harness/zone_perception.py` 또는 별도 차단 인식 모듈, 위 runner·프롬프트·메시지 스키마 | 정상/차단/그림자/동료 통과 fixture에서 인식 검증. 메시지 없는 로봇에 타인의 belief가 전달되지 않음 |
 | ⑤ 세 조건 파일럿 → 중간 등장 → 공동 화물 | `tests/test_zone_comm_boundary.py`, hard-routes 테스트, 새 blockage 테스트, `configs/simulation_workflows.json`, 평가·TensorBoard 변환 | 정상·TOP 공개·비공개 조건을 대응 비교. 실패 포함 전체 분모, 실제 요청/전송/RGB/경로/평가 기록 연결. 그 뒤 일정 변화·TeamJob 화물로 확장 |
 
-현재 `unexpected_obstacles`는 설정에만 존재하고 XML 생성기는 이를 넣지 않으므로 **설정 목록 채우기만으로 구현되지 않습니다**. 또한 `ZoneScene`이 에피소드를 재구성·대조하므로 시나리오 인자도 함께 연결해야 합니다. [zone_arena.py:188](/Users/changmin/projects/ugrp/sim/zone_arena.py:188), [zone_arena.py:212](/Users/changmin/projects/ugrp/sim/zone_arena.py:212), [zone_scene.py:40](/Users/changmin/projects/ugrp/sim/zone_scene.py:40)
+현재 `unexpected_obstacles`는 설정에만 존재하고 XML 생성기는 이를 넣지 않으므로 **설정 목록 채우기만으로 구현되지 않습니다**. 또한 `ZoneScene`이 에피소드를 재구성·대조하므로 시나리오 인자도 함께 연결해야 합니다. [zone_arena.py:188](<home>/projects/ugrp/sim/zone_arena.py:188), [zone_arena.py:212](<home>/projects/ugrp/sim/zone_arena.py:212), [zone_scene.py:40](<home>/projects/ugrp/sim/zone_scene.py:40)
 
 이번에는 설계·코드 근거만 확인했습니다. 실제 TOP 비가시성, 자기 RGB 검출 가능성, 차단 물리, TeamJob 통합 완료 여부는 아직 검증된 결과가 아닙니다.

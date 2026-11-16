@@ -1,5 +1,5 @@
 import json,math,collections,numpy as np
-P='/Users/changmin/projects/ugrp/outputs/'
+P='<home>/projects/ugrp/outputs/'
 def wrap(a): return (a+math.pi)%(2*math.pi)-math.pi
 out=collections.defaultdict(list)
 for raw in ['pair-stage-probes-ece38792-cal','pair-stage-probes-a704ecc6-calB2','pair-stage-probes-a704ecc6-calB']:

@@ -14,9 +14,9 @@
     "numpy": "2.5.2"
   },
   "preserved_previous_attempt": {
-    "junit": "/Users/changmin/projects/ugrp/outputs/calib-heldout-maps-resume-tests.xml",
+    "junit": "<home>/projects/ugrp/outputs/calib-heldout-maps-resume-tests.xml",
     "junit_sha256": "9cdba405d127217a00f8cd84f9e8e66f5d968cc9a45f11acc1afe7a6cc810676",
-    "log": "/Users/changmin/projects/ugrp/outputs/calib-heldout-maps-resume-tests.log",
+    "log": "<home>/projects/ugrp/outputs/calib-heldout-maps-resume-tests.log",
     "log_sha256": "90cb8f7aeb12372859c7758245df6ac3fb7e8b49f27a5f771ec87827b65599c3",
     "tests": 369,
     "failures": 2,
@@ -40,9 +40,9 @@
     ]
   },
   "ci_fix_attempt": {
-    "junit": "/Users/changmin/projects/ugrp/outputs/calib-heldout-maps-ci-fix-tests.xml",
+    "junit": "<home>/projects/ugrp/outputs/calib-heldout-maps-ci-fix-tests.xml",
     "junit_sha256": "1e91621ca8352a87bbdf82e8bed021925f7c7bd3634a8df112e5739527dbb46c",
-    "log": "/Users/changmin/projects/ugrp/outputs/calib-heldout-maps-ci-fix-tests.log",
+    "log": "<home>/projects/ugrp/outputs/calib-heldout-maps-ci-fix-tests.log",
     "log_sha256": "6243076db7e0c7dced0a3244001c11b5fd3a836661ebfe0219cbc63c401e8fcf",
     "tests": 85,
     "failures": 1,
@@ -50,42 +50,42 @@
     "failed_test_ids": [
       "tests.test_simulation_workflow_manager.WorkflowManagerTests::test_interactive_prompt_is_tee_d_before_child_waits_for_input"
     ],
-    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_ci_sharding.py tests/test_simulation_workflow_manager.py -k 'not parent_exit_cleans_background_child' -p no:cacheprovider --junitxml=/Users/changmin/projects/ugrp/outputs/calib-heldout-maps-ci-fix-tests.xml",
+    "command": "<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_ci_sharding.py tests/test_simulation_workflow_manager.py -k 'not parent_exit_cleans_background_child' -p no:cacheprovider --junitxml=<home>/projects/ugrp/outputs/calib-heldout-maps-ci-fix-tests.xml",
     "scope": "84 passed / 1 failed / 1 deselected. All 68 CI sharding tests passed. Interactive prompt test hit its existing 3 s readiness timeout under host load; no test threshold changed."
   },
   "interactive_prompt_retry": {
-    "junit": "/Users/changmin/projects/ugrp/outputs/calib-heldout-maps-prompt-retry.xml",
+    "junit": "<home>/projects/ugrp/outputs/calib-heldout-maps-prompt-retry.xml",
     "junit_sha256": "2fc92fce5e8f399ba2bd1074c2cd3e979ee6ecb4853f63c03fefce67cfa7d156",
-    "log": "/Users/changmin/projects/ugrp/outputs/calib-heldout-maps-prompt-retry.log",
+    "log": "<home>/projects/ugrp/outputs/calib-heldout-maps-prompt-retry.log",
     "log_sha256": "57be52af4623aba7a288aead2dd5009536a86c289e7cfad4320fe4586d4c738b",
     "tests": 1,
     "failures": 0,
     "errors": 0,
     "failed_test_ids": [],
-    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_interactive_prompt_is_tee_d_before_child_waits_for_input -p no:cacheprovider --junitxml=/Users/changmin/projects/ugrp/outputs/calib-heldout-maps-prompt-retry.xml",
+    "command": "<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_interactive_prompt_is_tee_d_before_child_waits_for_input -p no:cacheprovider --junitxml=<home>/projects/ugrp/outputs/calib-heldout-maps-prompt-retry.xml",
     "scope": "1 passed in 1.09 s, unchanged test and production source."
   },
   "targeted_recheck": {
     "status": "PASS",
-    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_zone_final_pair_heldout.py tests/test_zone_final_pair_v3.py tests/test_zone_final_pair_review_fixes.py -p no:cacheprovider",
+    "command": "<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_zone_final_pair_heldout.py tests/test_zone_final_pair_v3.py tests/test_zone_final_pair_review_fixes.py -p no:cacheprovider",
     "tests": 106,
     "failures": 0,
     "exit_code": 0,
     "wall_s": 659.74,
-    "summary_file": "/Users/changmin/projects/ugrp/outputs/calib-heldout-maps-targeted-recheck-summary.txt",
+    "summary_file": "<home>/projects/ugrp/outputs/calib-heldout-maps-targeted-recheck-summary.txt",
     "summary_sha256": "b44696d269d758066d1c1c4a0db89ec6428579737fd8b64429a244c8a4f05ec3"
   },
   "ci_duration_fix": {
     "file": "tests/test_zone_final_pair_heldout.py",
     "seconds": 146.14,
-    "source_junit": "/Users/changmin/projects/ugrp/outputs/calib-heldout-maps-resume-tests.xml",
+    "source_junit": "<home>/projects/ugrp/outputs/calib-heldout-maps-resume-tests.xml",
     "coverage_before": "367/408",
     "coverage_after": "368/408",
     "other_duration_entries_unchanged": true
   },
   "ci_registration": {
     "command": "python scripts/run_ci_tests.py --shard-count 8 --durations-json configs/ci_test_durations.json --list-shards",
-    "file": "/Users/changmin/projects/ugrp/outputs/calib-heldout-maps-final-shards.json",
+    "file": "<home>/projects/ugrp/outputs/calib-heldout-maps-final-shards.json",
     "sha256": "2620e19f4cbcef8ba3c5e02f0ca868d606403f9914132554637f9ad86655b5cd",
     "total_files": 408,
     "shard_count": 8,

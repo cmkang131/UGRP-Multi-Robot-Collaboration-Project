@@ -5,7 +5,7 @@ sys.path.insert(0,str(Path.cwd()/'experiments/2026-10-06-s2-realism'))
 from evaluate_sensor_consistency import line_match
 from harness.zone_solo_cyan_landmarks import MapFeatures
 from harness import zone_solo_cyan_contract_v106 as c
-raw=Path(sys.argv[1]);root=Path('/Users/changmin/projects/ugrp/outputs/s2-active-observation-v58-20261009')
+raw=Path(sys.argv[1]);root=Path('<home>/projects/ugrp/outputs/s2-active-observation-v58-20261009')
 r=json.loads((raw/'student_record.json').read_text());result=json.loads((raw/'result.json').read_text());events=r.get('active_localization',{}).get('events',[])
 truth=[json.loads(q) for q in (raw/'eval_only/trajectory.jsonl').read_text().splitlines()];ts=np.array([q['t'] for q in truth]);xyz=np.array([q['robot_xyz_m'][:2] for q in truth]);yaw=np.unwrap([q['robot_yaw_rad'] for q in truth]);mapped=MapFeatures(c.hp.resolve(c.MAP_ID)[0])
 rows=[]

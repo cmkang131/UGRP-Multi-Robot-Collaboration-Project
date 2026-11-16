@@ -33,7 +33,7 @@ PR405 DRAFT 유지. 다른 worktree/PR406 파일 수정0. TensorBoard 생략 유
   지도 절대기준은 egomap20의 P≥.90/R≥.70/RMSE≤.15m 그대로다.
   빈 출력은 P=NA이며 통과하지 않는다. raw는 새 경로에만 쓰고 기존 파일 삭제/덮어쓰기0.
 
-raw `/Users/changmin/projects/ugrp/outputs/wall-contact-types-v1`.
+raw `<home>/projects/ugrp/outputs/wall-contact-types-v1`.
 관련1–3시험파일 통과 후 커밋·push(Codex trailer), 단계마다 감독 파일 확인.
 Google Drive0·유료/원격 계산0·force/reset0·원격 백업 주장0.
 

@@ -122,7 +122,7 @@ v6c-carry README(`experiments/2026-09-29-pair-v6c-carry/README.md`)에서 인용
 
 ### 공통 조건
 
-- 러너: `/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.run_pair_stage_probes … --workers 2 --omp-threads 1 --execute --lock-owner claude --output /Users/changmin/projects/ugrp/outputs/pair-stage-probes-<sha8>-<태그>`. 병렬 워커 최대 2개, `--omp-threads 1`(러너 기본은 2). raw는 기본 체크아웃 `outputs/`에 절대 경로로 쓴다.
+- 러너: `<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.run_pair_stage_probes … --workers 2 --omp-threads 1 --execute --lock-owner claude --output <home>/projects/ugrp/outputs/pair-stage-probes-<sha8>-<태그>`. 병렬 워커 최대 2개, `--omp-threads 1`(러너 기본은 2). raw는 기본 체크아웃 `outputs/`에 절대 경로로 쓴다.
 - 사전분포 `--prior-std e2e`(E2E 정합, σ 0.03 m / 0.012 rad), `--sources teacher`, seed `911`, nominal seed `911 912 913`(nominal 셀만 3 seed).
 - **PF seed는 독립 반복이 아니다**(위 한계). 셀 단위 통과율은 분포를 보는 용도이고 통계적 유의성 검정에 쓰지 않는다.
 - 진단 패치(`--diag-patch`)는 **쓰지 않는다.** 이 계획의 모든 실행은 패치 없는 제어기다.
@@ -320,7 +320,7 @@ cal이 아래 구조 문제를 보여서 **33셀 운반 격자·held-out 운반�
 
 ### 실행 기록
 
-| raw (`/Users/changmin/projects/ugrp/outputs/pair-stage-probes-…`) | 케이스 | cases.jsonl sha256 | 크기 | 시작(UTC)/부하(1분) |
+| raw (`<home>/projects/ugrp/outputs/pair-stage-probes-…`) | 케이스 | cases.jsonl sha256 | 크기 | 시작(UTC)/부하(1분) |
 |---|---|---|---|---|
 | ece38792-cal (중단, 14건 완료 + 2건 버려짐) | 14 | 3a349438…16b74e | 154 MB | 03:19:59 / 14.6 |
 | a704ecc6-smokeC | 5 | 8219921f…070bc | 52 MB | 03:33:01 / 8.7 |
@@ -570,7 +570,7 @@ cal이 아래 구조 문제를 보여서 **33셀 운반 격자·held-out 운반�
 - **파지·들기가 끝난 시점의 이어받은 PF 오차(GT 대비, 로봇 20표본)**: |y| 중앙 0.7 cm / 최대 2.7 cm, |x| 0.2 / 0.7 cm, |yaw| 0.30° / 1.31°, σ_xy 중앙 2.6 cm (최대 3.2 cm). 즉 시작이 실제 정렬 종료 값이면 파지·들기가 y 오차를 키우지 않는다(3–6 cm는 5 cm 시트 사전에서 시작했기 때문이었다). 이 20표본이 hR2 진입 사전이다(`hR2_samples.json`, `extract_hR2_samples.py 19c8f0b2-ghG`, 선별 없이 10건 전부).
 
 ## TensorBoard
-스냅샷 `/Users/changmin/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6e-yaw`(run 41개 = 경우 40 + 집계 1, `collection.json` sha256 `9a5eba0cd3fc922e419343cad908bcf9f6a9b904d0a6f36875cfe74c9bf42035`), 파생 뷰 `outputs/pair-stage-probes-tbviews-0929-v6e-yaw`. 스모크 4건은 cal과 같은 경우 이름이라 넣지 않았다(raw는 위에 있음). EventAccumulator로 경우별 `offline/stage_pass` 합 35 = cases.jsonl 통과 35, 집계 `pass_rate` 0.875를 확인했다. `outputs/tensorboard-view.json`에는 키 `pair_stage_probes_v6e_yaw_20260929` 하나만 추가했다(run filter `^0929-pair-stage-probes-v6(c(-carry)?|e|e-yaw)/`로 v6c·v6e 기준선과 함께 보임). TensorBoard 서버가 떠 있지 않았고 새로 시작하지 않았다(브라우저 표시는 확인하지 못했다).
+스냅샷 `<home>/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6e-yaw`(run 41개 = 경우 40 + 집계 1, `collection.json` sha256 `9a5eba0cd3fc922e419343cad908bcf9f6a9b904d0a6f36875cfe74c9bf42035`), 파생 뷰 `outputs/pair-stage-probes-tbviews-0929-v6e-yaw`. 스모크 4건은 cal과 같은 경우 이름이라 넣지 않았다(raw는 위에 있음). EventAccumulator로 경우별 `offline/stage_pass` 합 35 = cases.jsonl 통과 35, 집계 `pass_rate` 0.875를 확인했다. `outputs/tensorboard-view.json`에는 키 `pair_stage_probes_v6e_yaw_20260929` 하나만 추가했다(run filter `^0929-pair-stage-probes-v6(c(-carry)?|e|e-yaw)/`로 v6c·v6e 기준선과 함께 보임). TensorBoard 서버가 떠 있지 않았고 새로 시작하지 않았다(브라우저 표시는 확인하지 못했다).
 
 ## 소스 `4fac772d` 갱신: 독립 검토 반영, cal 재측정, hA 결과 (2026-09-29, stage probe)
 
@@ -650,7 +650,7 @@ cal 통과 뒤 계획대로 hA 10건(`--setup-variant hA`, legs 0 1 3 6 7 × nom
 원인 추정이며 새 실험은 하지 않았다. 검증 방법 후보: 셀별 b로 바꾼 오프라인 재생, lat−/opp seed를 늘려 cal 재적합(사용자 결정, 소스 변경 포함).
 
 ### TensorBoard (소스 `4fac772d`)
-스냅샷 `/Users/changmin/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6e-yaw2`(cal 40 + hA 10 = 50 run + 집계 2, `collection.json` sha256 `d496e8fd68a24e9a669909878e72a4b3fd53aeeba10394a164d54aeb817ccce9`), 파생 뷰 `outputs/pair-stage-probes-tbviews-0929-v6e-yaw2`. EventAccumulator로 경우별 `offline/stage_pass` 합 39(= cal 35 + hA 4), 집계 `pass_rate` 0.875(cal), 0.40(hA) 확인. `outputs/tensorboard-view.json`에는 키 `pair_stage_probes_v6e_yaw2_20260929` 하나만 추가했다. 대시보드 서버가 떠 있지 않았고 새로 시작하지 않았다(브라우저 표시 미확인). 이전 스냅샷(`…-v6e-yaw`, 소스 `86cdefc9`)은 그대로 두었다.
+스냅샷 `<home>/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6e-yaw2`(cal 40 + hA 10 = 50 run + 집계 2, `collection.json` sha256 `d496e8fd68a24e9a669909878e72a4b3fd53aeeba10394a164d54aeb817ccce9`), 파생 뷰 `outputs/pair-stage-probes-tbviews-0929-v6e-yaw2`. EventAccumulator로 경우별 `offline/stage_pass` 합 39(= cal 35 + hA 4), 집계 `pass_rate` 0.875(cal), 0.40(hA) 확인. `outputs/tensorboard-view.json`에는 키 `pair_stage_probes_v6e_yaw2_20260929` 하나만 추가했다. 대시보드 서버가 떠 있지 않았고 새로 시작하지 않았다(브라우저 표시 미확인). 이전 스냅샷(`…-v6e-yaw`, 소스 `86cdefc9`)은 그대로 두었다.
 
 ## y 오차 원인 분리, 일반화 모델 v6g 설계, 사전 등록 계획 (2026-09-29, 조정자 지시: hA 4/10 이후)
 
@@ -1018,9 +1018,9 @@ hB [1.13, −.04, 0], hC [1.03, .12, 0], hD [1.00, .10, +.03] 각각 `b-v6g`로 
 
 ## TensorBoard
 
-- **스냅샷.** `/Users/changmin/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6e`, run 106개(경우별 98 + 그룹 집계 `ALL-*` 8). `collection.json` sha256 `ec6f3639cf33b470cbda4fea2501bb8b65fae61c9fd9881e2a7bcbce3ad0ae9b`. 파생 뷰 `outputs/pair-stage-probes-tbviews-0929-v6e`(빌더 `scripts/build_pair_stage_probe_views.py`, 변환기 `scripts/export_offline_audit.py`). 기존 스냅샷은 건드리지 않았다.
+- **스냅샷.** `<home>/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6e`, run 106개(경우별 98 + 그룹 집계 `ALL-*` 8). `collection.json` sha256 `ec6f3639cf33b470cbda4fea2501bb8b65fae61c9fd9881e2a7bcbce3ad0ae9b`. 파생 뷰 `outputs/pair-stage-probes-tbviews-0929-v6e`(빌더 `scripts/build_pair_stage_probe_views.py`, 변환기 `scripts/export_offline_audit.py`). 기존 스냅샷은 건드리지 않았다.
 - **뺀 것.** 중단된 raw `ece38792-cal`(14건, `summary.json` 없음)은 README 규칙대로 뷰에서 뺐다(같은 물리의 cal-1 26건은 `a704ecc6-calB2`, `-calB`로 들어 있다). 그래서 스냅샷의 cal-1은 26건이고 위 표의 cal-1 40건과 다르다.
 - **검증.** EventAccumulator로 98개 경우 run의 `offline/stage_pass`·`result/sim_s`·`result/wall_s`를 cases.jsonl과 비교해 불일치 0건, 8개 집계 값을 읽었다. TensorBoard 서버는 실행 중이 아니었고 새로 시작하지 않았다(브라우저 표시 확인은 못 했다).
 - **대시보드 설정.** `outputs/tensorboard-view.json`의 `pair_stage_probes_v6e_20260929`(쓰기 직전 다시 읽고 내 키만 추가, 118개 키). 고정 카드는 v6c-carry와 같고 run filter는 `^0929-pair-stage-probes-v6(c(-carry)?|e)/`(v6c 스냅샷을 기준선으로 함께 보임). 링크는 서버를 다시 띄우면 열린다: `python3 scripts/ugrp_session.py run tensorboard-review -- .venv-sim-worker-mac/bin/python scripts/run_tensorboard.py --logdir outputs/tensorboard`.
 - **이름.** `E-` = b-v6e, `ca` 운반, `sd` 내려놓기, `-Vcal` cal 배치, `-L<n>` leg, `-Lend` 목적지.
-- **v6g-hr2 스냅샷.** `/Users/changmin/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6g-hr2`(케이스 run 91 + 집계 3 = 93개, 실패 0), `collection.json` sha256 `eca3513380ca752ecd40ecf229d5c9780a53e979d8811ef8b68fa8ce3e7b3828`. 파생 뷰 `outputs/pair-stage-probes-tbviews-0929-v6g-hr2`. 설정 키 `pair_stage_probes_v6g_hr2_20260929`(쓰기 직전 다시 읽고 내 키만 추가; run filter는 v6e·v6g·v6g-hr·v6g-hr2를 함께 보임). EventAccumulator로 집계 확인: `ALL-G-ca` 0.8(=56/70), `ALL-GL-ca` 1.0, `ALL-G-gl`(hG) 1.0. 서버는 시작하지 않았고 브라우저 표시는 확인하지 못했다. 이름: `G-ca-t-hR2_NN-s911-pP-L<n>-VhR2`(P=recorded posterior), `G-gl-t-hG<NN>`.
+- **v6g-hr2 스냅샷.** `<home>/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6g-hr2`(케이스 run 91 + 집계 3 = 93개, 실패 0), `collection.json` sha256 `eca3513380ca752ecd40ecf229d5c9780a53e979d8811ef8b68fa8ce3e7b3828`. 파생 뷰 `outputs/pair-stage-probes-tbviews-0929-v6g-hr2`. 설정 키 `pair_stage_probes_v6g_hr2_20260929`(쓰기 직전 다시 읽고 내 키만 추가; run filter는 v6e·v6g·v6g-hr·v6g-hr2를 함께 보임). EventAccumulator로 집계 확인: `ALL-G-ca` 0.8(=56/70), `ALL-GL-ca` 1.0, `ALL-G-gl`(hG) 1.0. 서버는 시작하지 않았고 브라우저 표시는 확인하지 못했다. 이름: `G-ca-t-hR2_NN-s911-pP-L<n>-VhR2`(P=recorded posterior), `G-gl-t-hG<NN>`.

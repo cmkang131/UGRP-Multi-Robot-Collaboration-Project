@@ -18,7 +18,7 @@
 
 ## 예산 정지 실증
 
-같은 결제 계정 `01C770-8A2F1F-63BA5F`에 **이 프로젝트 번호만 필터**한 월1,000 KRW 예산을 생성했다. `INCLUDE_ALL_CREDITS`로 순비용을 계산하고 CURRENT_SPEND 50%/100% 알림을 둔다. `disableDefaultIamRecipients`가 false(기본값)이므로 결제 관리자/결제 사용자 이메일 알림이 켜져 있다. 이메일 실제 수신이나 실제 청구 집계의 지연은 시험하지 않았다.
+같은 결제 계정 `<billing-account-2>`에 **이 프로젝트 번호만 필터**한 월1,000 KRW 예산을 생성했다. `INCLUDE_ALL_CREDITS`로 순비용을 계산하고 CURRENT_SPEND 50%/100% 알림을 둔다. `disableDefaultIamRecipients`가 false(기본값)이므로 결제 관리자/결제 사용자 이메일 알림이 켜져 있다. 이메일 실제 수신이나 실제 청구 집계의 지연은 시험하지 않았다.
 
 `budget-stop` 토픽 → Gen2 ACTIVE 함수 `stop_on_budget`; `TARGET_PROJECT=<project-id-gcp3>`. 실행 계정 `<service-account>`의 `roles/compute.instanceAdmin.v1`을 확인했다. 토픽 publisher는 gcp2와 같은 `billing-budget-alert@system.gserviceaccount.com`이다. 함수 소스·requirements는 [gcp2 보존본](../2026-10-15-gcp2setup/evidence/)과 바이트 동일하다.
 

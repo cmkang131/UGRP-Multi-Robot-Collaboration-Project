@@ -88,8 +88,8 @@ test box 실패는 s42(R3 p90 8.0 cm, 도착은 함)와 s43(240 s 한도, 도착
 ```sh
 python3 scripts/build_owncam_loop_views.py \
   --records <PR178 worktree>/experiments/2026-09-25-zone-owncam-loop \
-  --raw /Users/changmin/projects/ugrp/outputs/owncam-loop-20260925 \
-  --output /Users/changmin/projects/ugrp/outputs/tb-owncam-loop-<새 ID>/derived
+  --raw <home>/projects/ugrp/outputs/owncam-loop-20260925 \
+  --output <home>/projects/ugrp/outputs/tb-owncam-loop-<새 ID>/derived
 .venv-sim-worker-mac/bin/python scripts/export_tensorboard.py \
   --source <파생 뷰 1>  ... --source <파생 뷰 22> \
   --output outputs/tensorboard/<새 스냅샷 ID> --max-images 0 --media-port 6009
@@ -97,7 +97,7 @@ python3 scripts/build_owncam_loop_views.py \
   --rename-snapshot outputs/tensorboard/<새 스냅샷 ID> --index <파생 뷰>/index.json
 .venv-sim-worker-mac/bin/python scripts/verify_owncam_loop_snapshot.py \
   --snapshot outputs/tensorboard/<새 스냅샷 ID> --index <파생 뷰>/index.json \
-  --raw /Users/changmin/projects/ugrp/outputs/owncam-loop-20260925 \
+  --raw <home>/projects/ugrp/outputs/owncam-loop-20260925 \
   --server http://127.0.0.1:6006 --out experiments/<기록 ID>/verification.json
 ```
 

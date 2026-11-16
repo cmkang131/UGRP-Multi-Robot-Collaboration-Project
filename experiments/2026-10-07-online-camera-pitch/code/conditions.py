@@ -8,7 +8,7 @@ import numpy as np
 
 EXP = Path(__file__).resolve().parents[1]
 ROOT = EXP.parents[1]
-OUT = Path('/Users/changmin/projects/ugrp/outputs/online-camera-pitch-v1')
+OUT = Path('<home>/projects/ugrp/outputs/online-camera-pitch-v1')
 sys.path[:0] = [str(ROOT), str(ROOT/'experiments/2026-10-07-camera-pose-projection/code'),
                str(ROOT/'experiments/2026-10-07-s2-projection-comparison/code')]
 import audit as a
@@ -50,7 +50,7 @@ def main():
     dest = OUT/'conditions'
     dest.mkdir(parents=True, exist_ok=False)
     eps = {k:v for k,v in a.old.EPISODES.items() if k in ('s1045','s1046','s1047')}
-    eps['s1050'] = Path('/Users/changmin/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place')
+    eps['s1050'] = Path('<home>/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place')
     _, models = s2_path.models()
     factories = {s:s2_path.column_model_factory(a.old.mp, a.COLS, loaded=s=='loaded')
                  for s in ('unloaded','loaded')}

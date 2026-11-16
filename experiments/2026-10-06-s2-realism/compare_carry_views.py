@@ -12,7 +12,7 @@ from harness.zone_solo_cyan_scene_change import lens_valid
 from harness.zone_color_boxes import _mask, OWN_ZONE_CYAN_HSV
 from sim.masterpi_camera_profile import scaled_camera_matrix, CAMERA_FISHEYE_D
 
-PRIMARY=Path('/Users/changmin/projects/ugrp/outputs')
+PRIMARY=Path('<home>/projects/ugrp/outputs')
 def read(p):return json.loads(p.read_text())
 def rows(p):return [json.loads(s) for s in p.read_text().splitlines()]
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()

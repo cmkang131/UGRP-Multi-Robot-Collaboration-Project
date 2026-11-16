@@ -20,7 +20,7 @@ with tempfile.TemporaryDirectory(prefix='s3-heading-source-') as tmp:
   rec=rt.record();s3=dict(source_sha=sha,factory='zone_s3_no_prior.solo_factory',heading_mode=rec['heading_mode']['option'],active_rotation_guard=rec['active_rotation_guard']['option'],gt_inputs=False,physics_runs=0)
  finally:rt.close()
 rows=[]
-base=pathlib.Path('/Users/changmin/projects/ugrp/outputs')
+base=pathlib.Path('<home>/projects/ugrp/outputs')
 for seed in [1066,1068,1065]:
  p=base/f's2-realism-99d81d8c-s{seed}-v141-graduation/student_record.json';d=json.loads(p.read_text());q=fixed_inputs(d)
  rows.append(dict(seed=seed,count=q['count'],off_matches=q['off_matches'],record_sha256=hashlib.sha256(p.read_bytes()).hexdigest()))

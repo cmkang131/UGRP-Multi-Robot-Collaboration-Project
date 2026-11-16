@@ -16,7 +16,7 @@ from scripts.tensorboard_tools.offline_audit import convert
 from scripts.tensorboard_tools.export import convert as convert_video
 from scripts.tensorboard_tools.media import media_registry
 from tensorboard.backend.event_processing.event_accumulator import EventAccumulator
-RAW = Path('/Users/changmin/projects/ugrp/outputs/camera-review-20261006')
+RAW = Path('<home>/projects/ugrp/outputs/camera-review-20261006')
 RENDER = RAW/'render-v3'; OUT = RAW/'delivery-v3'
 SNAPSHOT = RAW.parent/'tensorboard/1006-camera-review-v3'
 HERE = Path(__file__).parent

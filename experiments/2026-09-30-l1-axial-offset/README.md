@@ -154,7 +154,7 @@ README 표의 y는 두 로봇의 **PF 추정 y 오차(추정−정답)의 leg �
 | `results/raw_manifest.json` | 사용한 raw 디렉터리와 `cases.jsonl` 전체 sha256 |
 | `inputs/placements_confirmatory_DRAFT.json` | PR #285 초안의 확증 후보 60곳 사본(sha256 `bb8044058377d86efc658ce3a7458c8afc141680acfd98542260e0efda018454`) |
 
-원본(로컬, 원격 백업 아님)은 `/Users/changmin/projects/ugrp/outputs/`의 `b-v6h-gain-*`(cA cB rA rB sA sB cC cD cF)와 `door-relax-envelope-*`(chK1g, chK1gP2, chK1gP1, chBase)이며 `cases.jsonl` sha256은 `results/raw_manifest.json`에 있다. 분석 스크립트만 새로 만들었고 raw는 수정하지 않았다. 기록된 hR2 시작 10곳은 rA/rB 코호트로 들어 있다.
+원본(로컬, 원격 백업 아님)은 `<home>/projects/ugrp/outputs/`의 `b-v6h-gain-*`(cA cB rA rB sA sB cC cD cF)와 `door-relax-envelope-*`(chK1g, chK1gP2, chK1gP1, chBase)이며 `cases.jsonl` sha256은 `results/raw_manifest.json`에 있다. 분석 스크립트만 새로 만들었고 raw는 수정하지 않았다. 기록된 hR2 시작 10곳은 rA/rB 코호트로 들어 있다.
 
 TensorBoard: 새 실험·학습 결과가 아니라 기존 결과의 오프라인 재분석이라 새 스냅샷을 만들지 않았다.
 

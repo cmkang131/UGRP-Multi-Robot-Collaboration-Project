@@ -22,7 +22,7 @@ def publish(root):
     def plot_read(path):
         return read(base/path.relative_to(root) if '-baseline' in str(path) else path)
     bind(previous_plot,read=plot_read)(root)
-    shared_root=Path('/Users/changmin/projects/ugrp/outputs/tensorboard')
+    shared_root=Path('<home>/projects/ugrp/outputs/tensorboard')
     snapshot=shared_root/NAME;snapshot.mkdir(exist_ok=False)
     sources=[];summary_tags=('carry_rmse_m','carry_end_xy_m','nees_exceed_fraction','unflagged_gt_25cm',
         'near_truth_support_fraction','near_truth_median_mass','actual_resamples','measurement_count','physics_runs')

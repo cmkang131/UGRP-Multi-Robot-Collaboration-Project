@@ -2,7 +2,7 @@
 
 - 산출물: [PREREG_DRAFT.md](PREREG_DRAFT.md), [검정력 계산](POWER_ANALYSIS.md).
 - 문서만 작성했다. **DRAFT 유지 / 병합 금지 / 해시 미동결 / 실행 금지**. 실행기·설정·기존 사전 등록·다른 worktree·PR·프로세스·raw는 변경하지 않는다.
-- 작업 브랜치 `codex/main-study-prereg-draft`, 자기 worktree `/Users/changmin/projects/ugrp-wt/prereg-draft`.
+- 작업 브랜치 `codex/main-study-prereg-draft`, 자기 worktree `<home>/projects/ugrp-wt/prereg-draft`.
 - 읽은 저장소 출처: base `da92d91dbf4af193d3aa3559de9efe55653ec5c0`. 이는 작성 출처이며 향후 실험 실행 SHA의 고정 선언이 아니다. primary main을 변경하지 않았다.
 
 ## 조사와 설계

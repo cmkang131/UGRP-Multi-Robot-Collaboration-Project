@@ -108,7 +108,7 @@ def test_teacher_data_records_verified_stock_pytest_but_strict_still_blocks(tmp_
     {'cwd': '/missing/external-project'},
     {'command': 'pytest tests/test_bot.py -q'},
     {'command': 'python3 -m torch.distributed.run train.py'},
-    {'command': 'python3 -m pytest /Users/changmin/projects/ugrp/tests/test_harness.py -q'},
+    {'command': 'python3 -m pytest <home>/projects/ugrp/tests/test_harness.py -q'},
     {'command': 'python3 -m pytest --pyargs ugrp'},
 ])
 def test_teacher_data_fails_closed_for_unverified_or_ugrp_tests(tmp_path, change):

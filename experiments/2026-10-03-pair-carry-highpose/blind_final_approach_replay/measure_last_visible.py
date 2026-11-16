@@ -14,7 +14,7 @@ from harness import owncam_pair_beam_v2 as v2
 from harness.zone_final_pair_vision import PairVision, GRASP_RADIUS_M, grasp_postures
 from harness.vision_pose_source_final import camera_key
 
-RUN = Path(sys.argv[1]) if len(sys.argv) > 1 else Path('/Users/changmin/projects/ugrp/outputs/v98-dev-probe-raise_high_align-3358372e')
+RUN = Path(sys.argv[1]) if len(sys.argv) > 1 else Path('<home>/projects/ugrp/outputs/v98-dev-probe-raise_high_align-3358372e')
 RID = sys.argv[2] if len(sys.argv) > 2 else 'r1'
 T0, T1 = float(sys.argv[3]) if len(sys.argv) > 3 else 51.5, float(sys.argv[4]) if len(sys.argv) > 4 else 54.2
 cal = json.load(open(RUN/'dev_pilot_calibration.json'))

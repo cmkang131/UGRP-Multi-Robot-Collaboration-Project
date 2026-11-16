@@ -45,6 +45,6 @@ CI에서 새 pairing 테스트가 Pillow를 요구해 offline dependency 환경�
 
 ## 저장과 다음 단계
 
-각 `*-raw-manifest.json`에 모든 raw 파일 경로/크기/SHA-256과 ZIP 포함 여부를 기록한다. `*-evidence.zip`에는 모든 결과/판정/모델, teacher RGB 전체, 선택한 대표 실행의 RGB 전체를 보관한다. 원본 mp4와 생략된 회차 RGB는 `/Users/changmin/projects/ugrp/outputs/grasp-recovery-*`에 로컬 보관하며 원격 백업이 아니다. ZIP 자체와 내용의 읽기 검증을 수행한다. 프로젝트 예외에 따라 Drive를 사용하지 않는다.
+각 `*-raw-manifest.json`에 모든 raw 파일 경로/크기/SHA-256과 ZIP 포함 여부를 기록한다. `*-evidence.zip`에는 모든 결과/판정/모델, teacher RGB 전체, 선택한 대표 실행의 RGB 전체를 보관한다. 원본 mp4와 생략된 회차 RGB는 `<home>/projects/ugrp/outputs/grasp-recovery-*`에 로컬 보관하며 원격 백업이 아니다. ZIP 자체와 내용의 읽기 검증을 수행한다. 프로젝트 예외에 따라 Drive를 사용하지 않는다.
 
 PR: https://github.com/kcm0127-dotcom/ugrp/pull/31 (명시적 병합 승인 전에는 병합하지 않음). 조건부 승인된 다음 작업은 팔을 접고 20–30cm 실제 wheel approach를 수행한 뒤, 영상으로 정지를 판단하고 이 파지 단계로 연결하는 별도 curriculum이다.

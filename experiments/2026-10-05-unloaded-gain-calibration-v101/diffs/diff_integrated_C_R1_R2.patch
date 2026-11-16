@@ -28,7 +28,7 @@ index bbe0d8d..6810288 100644
 +        "heldout_status": "VALIDATED_DEV (mean model only; not MEASURED_SIM, not a confirmation sample)",
 +        "fit": "experiments/2026-10-05-unloaded-gain-calibration-v101/products/fit/fit.json",
 +        "heldout": "experiments/2026-10-05-unloaded-gain-calibration-v101/products/heldout/heldout.json",
-+        "parent": {"path": "/Users/changmin/projects/ugrp/outputs/v92-dev-pilot-c0zero-20261003T104043Z/result/calibration_dev_pilot.json",
++        "parent": {"path": "<home>/projects/ugrp/outputs/v92-dev-pilot-c0zero-20261003T104043Z/result/calibration_dev_pilot.json",
 +                   "sha256": "398372ae6b9b0fef7344d7f29146ce75b309d334b3ce31af527bc071c0e582f5"}
        }
      }
@@ -816,7 +816,7 @@ index 0000000..fb275c3
 +    "zone_wide_two_doors_final_v3": "ecbed849464b3dcc7c5f3679dffed419069391b4e72dc53276ed04dca2d64af5"
 +  },
 +  "measured_parent": {
-+    "path": "/Users/changmin/projects/ugrp/outputs/final-pair-v92-measured-20261003T091812Z/assembly/calibration.json",
++    "path": "<home>/projects/ugrp/outputs/final-pair-v92-measured-20261003T091812Z/assembly/calibration.json",
 +    "sha256": "852426d2efbe4400516fc6227279923c4a1b7747e0f2b48a6df6131d7ade4109",
 +    "status": "PARTIAL"
 +  },
@@ -981,7 +981,7 @@ index 0000000..fb275c3
 +    }
 +  },
 +  "parent_calibration": {
-+    "path": "/Users/changmin/projects/ugrp/outputs/v92-dev-pilot-c0zero-20261003T104043Z/result/calibration_dev_pilot.json",
++    "path": "<home>/projects/ugrp/outputs/v92-dev-pilot-c0zero-20261003T104043Z/result/calibration_dev_pilot.json",
 +    "sha256": "398372ae6b9b0fef7344d7f29146ce75b309d334b3ce31af527bc071c0e582f5"
 +  },
 +  "qualification": "NON-CONFIRMATORY DEV PILOT ONLY. Not MEASURED_SIM; rejected by the v92 loader. v92 loaded data were already inspected before this rule; confirmation needs a re-collection under a newly frozen rule. No task-success claim.",
@@ -4071,7 +4071,7 @@ index 45ee44e..7069c56 100644
 +++ b/tests/test_highpose_dev_pilot.py
 @@ -24,6 +24,10 @@ UNLOADED = ['gain', 'tau_s', 'tau_axis_s', 'tau_stop_s', 'noise_rel', 'noise_abs
              'scale_std', 'scale_walk', 'use_scale', 'rest_noise']
- REAL = Path('/Users/changmin/projects/ugrp/outputs/v92-dev-pilot-c0zero-20261003T104043Z/result/calibration_dev_pilot.json')
+ REAL = Path('<home>/projects/ugrp/outputs/v92-dev-pilot-c0zero-20261003T104043Z/result/calibration_dev_pilot.json')
  REAL_SHA = '398372ae6b9b0fef7344d7f29146ce75b309d334b3ce31af527bc071c0e582f5'
 +C_SHA = 'aba4ac586b2554844ad5b4b17efe968a4247278664ffb433f83f6785ca1769c4'
 +V101 = Path(__file__).resolve().parents[1]/'experiments'/'2026-10-05-unloaded-gain-calibration-v101'/'products'

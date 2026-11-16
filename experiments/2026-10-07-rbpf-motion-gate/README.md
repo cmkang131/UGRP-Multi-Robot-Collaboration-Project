@@ -53,7 +53,7 @@ Neff 선택적 재표본화 기존 시험. egomap22 same-input on frontend 오�
 - egomap22 기준 유지: P≥.70/R≥.50(실제 경로 FOV 영역), 벽RMSE≤.15/경로RMSE≤.25m,
   거리≥3m/footprint union≥.75m²/가시 벽표본≥50, 접촉·잘못된 문0, 예산 완료 또는 B도착.
   B 확인/GT 도착, 전체 P/R, 노출 분모를 함께 기록. 작은 범위로 성공을 주장하지 않는다.
-- raw `/Users/changmin/projects/ugrp/outputs/rbpf-motion-gate-v1/`, 예상≤300MiB;
+- raw `<home>/projects/ugrp/outputs/rbpf-motion-gate-v1/`, 예상≤300MiB;
   ENOSPC=HOST_ERROR. 디스크/잠금 확인, S2 동시 실행 금지. 실패 후 튜닝·두 번째 물리 없음.
 
 ## 구현 후 same-input 재생 (물리 전 동결, 개선으로 해석하지 않음)

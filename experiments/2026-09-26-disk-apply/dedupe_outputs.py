@@ -33,7 +33,7 @@ import time
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from scripts.tree_manifest import file_sha256  # noqa: E402
 
-OUTPUTS = Path("/Users/changmin/projects/ugrp/outputs")
+OUTPUTS = Path("<home>/projects/ugrp/outputs")
 # Folders whose second level is checked for activity (their top level holds this job's receipts).
 SPLIT_TOP = {"retired-worktrees", "archive"}
 

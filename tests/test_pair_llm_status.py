@@ -478,7 +478,7 @@ SMOKE1_V1_BILLS = (   # billed_tokens of v99 smoke1 request rows (call 1, a late
      'system_billed': 914, 'user': 2100, 'images': 2, 'total_text_billed': 3014},
     {'policy': 'fixed_prompt_equalized.v1', 'tokenizer': 'ugrp.zone_study_tokens.v1', 'system_actual': 914,
      'system_billed': 914, 'user': 2259, 'images': 2, 'total_text_billed': 3173})
-SMOKE1_REQUESTS = Path('/Users/changmin/projects/ugrp/outputs/pair-llm-v99-live/smoke1/peer_nl/llm/requests.jsonl')
+SMOKE1_REQUESTS = Path('<home>/projects/ugrp/outputs/pair-llm-v99-live/smoke1/peer_nl/llm/requests.jsonl')
 
 
 def test_v1_rows_have_no_image_keys_and_are_checked_as_zero_tokens_per_image():

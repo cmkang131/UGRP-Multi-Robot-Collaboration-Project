@@ -5,11 +5,11 @@ import os, sys, json
 import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from analyze_pf import load_truth, load_replay, score_frames
-D = '/Users/changmin/projects/ugrp/outputs/pf-gaincal-v101-20261005/replay'
+D = '<home>/projects/ugrp/outputs/pf-gaincal-v101-20261005/replay'
 print('case                robot cfg     frames  mean NEES2  max NEES2  frac>13.8  mean err mm  final err mm  mean sigma_xy mm  injections/particles  reloc rows')
 rows = []
 for case in ('3358372e', '7623c4dc'):
-    RAW = f'/Users/changmin/projects/ugrp/outputs/v98-dev-probe-raise_high-{case}/before_door'
+    RAW = f'<home>/projects/ugrp/outputs/v98-dev-probe-raise_high-{case}/before_door'
     for rid in ('r1', 'r2'):
         tr = load_truth(RAW, rid)
         out = {}

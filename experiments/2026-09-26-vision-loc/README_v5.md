@@ -163,7 +163,7 @@ std_xy는 trace 제곱근이므로 방향별 최대 σ의 상한으로 썼고, �
   등록 후 쓸 pin URL·HParams 열은 `final/tensorboard-view.json`에 준비했다.
 
 ```sh
-PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
 VIS=experiments/2026-09-26-vision-loc
 # 반드시 새 출력 경로: 기존 결과에 추가/덮어쓰기하지 않는다.
 OMP_NUM_THREADS=1 "$PY" "$VIS/compare_v5.py" --extract --output outputs/vision-loc-v5-reproduction

@@ -156,7 +156,7 @@ def main():
     if not a.execute:
         print(json.dumps(dict(execution_started=False,identifier=IDENTIFIER,blocks=len(schedule()[0]),pulses=len(schedule()[1]),sim_s=schedule()[2]/20)));return
     check_source(a.expected_source_sha)
-    if not a.output.is_absolute() or not a.output.resolve().is_relative_to('/Users/changmin/projects/ugrp/outputs') or a.output.exists():
+    if not a.output.is_absolute() or not a.output.resolve().is_relative_to('<home>/projects/ugrp/outputs') or a.output.exists():
         raise ValueError('new primary output required')
     from scripts import agent_lock
     held=agent_lock.acquire(agent_lock.DEFAULT_ROOT,owner='codex',branch='codex/s2-realism',

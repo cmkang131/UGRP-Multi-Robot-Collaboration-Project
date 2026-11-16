@@ -154,7 +154,7 @@
 **실행하지 않았다.** 사전 등록(`m1/prereg.json`, `m1/prereg_a1.json`)은 폐루프 게이트 통과를 조건으로 하는데, v3와 A1 모두 실패했다. seed 731–733과 751–753은 사용하지 않은 채 남아 있다.
 
 ## 영상과 TensorBoard
-- 전체 영상: `/Users/changmin/projects/ugrp/outputs/zone-env-v3-20260926/videos/*.mp4`. 왼쪽은 wrist(로봇 입력), 오른쪽은 TOP 4대 모자이크(평가 전용), SIM 2배속이다. 목록과 sha256은 `videos.json`에 있다.
+- 전체 영상: `<home>/projects/ugrp/outputs/zone-env-v3-20260926/videos/*.mp4`. 왼쪽은 wrist(로봇 입력), 오른쪽은 TOP 4대 모자이크(평가 전용), SIM 2배속이다. 목록과 sha256은 `videos.json`에 있다.
 - PR 첨부용 짧은 영상(파일당 < 1 MiB, 합계 < 1 MiB): `media/clip_*.mp4`.
 - TensorBoard 스냅샷 `outputs/tensorboard/0926-zone-env-v3`(27 run, 기록 `tensorboard_snapshot.json`)
   - run 구성:
@@ -188,7 +188,7 @@ experiments/2026-09-26-zone-env-v3/run_one.sh loop experiments/2026-09-26-zone-e
 ```
 
 ## 원본 위치 (로컬 보관, 원격 백업 아님)
-`/Users/changmin/projects/ugrp/outputs/zone-env-v3-20260926/`
+`<home>/projects/ugrp/outputs/zone-env-v3-20260926/`
 - `static/`: 정적 검사 raw, 프레임 78장.
 - `loop/dev`, `loop/dev-plain`, `loop/test`, `loop/a1-test`: 에피소드별 `result.json`·`manifest.json`, wrist 입력 프레임, 명령, `eval_only/`(GT·접촉·TOP).
 - `st6/`, `st6-overflowed/`(사용하지 않음), `videos/`.

@@ -17,6 +17,6 @@
 
 ## 보관
 
-원본은 작업 worktree의 `outputs/unified-simulation-management-20260923`에 보존했고 필요한 로그·소스 압축·실패/성공 ZIP·fixture·감사 기록을 기본 프로젝트의 `/Users/changmin/projects/ugrp/outputs/unified-simulation-management-20260923`로 복사해 모든 해시를 대조했다. 이 기록과 해시는 raw 원격 백업이 아니다. Google Drive를 사용하지 않았다.
+원본은 작업 worktree의 `outputs/unified-simulation-management-20260923`에 보존했고 필요한 로그·소스 압축·실패/성공 ZIP·fixture·감사 기록을 기본 프로젝트의 `<home>/projects/ugrp/outputs/unified-simulation-management-20260923`로 복사해 모든 해시를 대조했다. 이 기록과 해시는 raw 원격 백업이 아니다. Google Drive를 사용하지 않았다.
 
 [표준 관리 사용법](../../docs/simulation_management.md), [Google AI Pro·Colab L4 검토](../../docs/colab_standard_simulation_review_20260923.md)를 참고한다. L4의 실제 NVIDIA EGL 렌더링과 단독/공동 완주 재검증은 남아 있다.

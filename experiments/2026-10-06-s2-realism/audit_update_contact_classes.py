@@ -4,7 +4,7 @@ from pathlib import Path
 from types import SimpleNamespace as NS
 sys.path.insert(0,'experiments/2026-10-06-s2-realism')
 import audit_s1050_projection as a
-folder=Path('/Users/changmin/projects/ugrp/outputs/s2-contact-audit-20261007')
+folder=Path('<home>/projects/ugrp/outputs/s2-contact-audit-20261007')
 replay=json.loads((folder/'replay-off-final.json').read_text());effects=json.loads((folder/'update-effects.json').read_text())
 frames={round(f['sim_time'],6):f for f in (json.loads(s) for s in (a.RAW/'robots/r3/frames.jsonl').read_text().splitlines())}
 gt={round(f['t'],6):f for f in (json.loads(s) for s in (a.RAW/'eval_only/trajectory.jsonl').read_text().splitlines())}

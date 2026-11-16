@@ -2,7 +2,7 @@ FFFFFFFFFFFFFFFF.FFFFFF                                                  [100%]
 =================================== FAILURES ===================================
 ____ test_managed_corridor_entry_refuses_before_runtime[zones-no_comm-plan] ____
 
-managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+managed_study = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
 capsys = <_pytest.capture.CaptureFixture object at 0x106d617c0>, action = 'plan'
 condition = 'no_comm', directory = 'zones'
 
@@ -37,7 +37,7 @@ tests/test_zone_own_executor_corridor_contract.py:111: Failed
     "--dev-horizon-s=1"
   ],
   "command": [
-    "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
     "-m",
     "scripts.run_zone_study_integration",
     "--prereg=prereg.json",
@@ -46,11 +46,11 @@ tests/test_zone_own_executor_corridor_contract.py:111: Failed
     "--output=never-created",
     "--dev-horizon-s=1"
   ],
-  "output": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re0/never-created",
+  "output": "<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re0/never-created",
   "output_flag": "--output",
   "inputs": [
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re0/prereg.json",
+      "path": "<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re0/prereg.json",
       "kind": "file",
       "sha256": "b3da251a4925439cacd2c97a633549f50cc55e854e7b54785bcf2f77df716143",
       "files": [
@@ -67,7 +67,7 @@ tests/test_zone_own_executor_corridor_contract.py:111: Failed
 }
 ____ test_managed_corridor_entry_refuses_before_runtime[zones-no_comm-run] _____
 
-managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+managed_study = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
 capsys = <_pytest.capture.CaptureFixture object at 0x106da6d20>, action = 'run'
 condition = 'no_comm', directory = 'zones'
 
@@ -98,7 +98,7 @@ sim/workflow_manager.py:541: in run_workflow
              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-args = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re1'), 'zone-study-integration-run', None)
+args = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re1'), 'zone-study-integration-run', None)
 kwargs = {}
 
     def forbidden(*args, **kwargs):
@@ -108,7 +108,7 @@ E       Failed: admission must precede records, subprocesses, host and physics
 tests/test_zone_own_executor_corridor_contract.py:94: Failed
 ____ test_managed_corridor_entry_refuses_before_runtime[zones-peer_ko-plan] ____
 
-managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+managed_study = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
 capsys = <_pytest.capture.CaptureFixture object at 0x106d63f20>, action = 'plan'
 condition = 'peer_ko', directory = 'zones'
 
@@ -143,7 +143,7 @@ tests/test_zone_own_executor_corridor_contract.py:111: Failed
     "--dev-horizon-s=1"
   ],
   "command": [
-    "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
     "-m",
     "scripts.run_zone_study_integration",
     "--prereg=prereg.json",
@@ -152,11 +152,11 @@ tests/test_zone_own_executor_corridor_contract.py:111: Failed
     "--output=never-created",
     "--dev-horizon-s=1"
   ],
-  "output": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re2/never-created",
+  "output": "<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re2/never-created",
   "output_flag": "--output",
   "inputs": [
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re2/prereg.json",
+      "path": "<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re2/prereg.json",
       "kind": "file",
       "sha256": "b3da251a4925439cacd2c97a633549f50cc55e854e7b54785bcf2f77df716143",
       "files": [
@@ -173,7 +173,7 @@ tests/test_zone_own_executor_corridor_contract.py:111: Failed
 }
 ____ test_managed_corridor_entry_refuses_before_runtime[zones-peer_ko-run] _____
 
-managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+managed_study = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
 capsys = <_pytest.capture.CaptureFixture object at 0x106d9bdd0>, action = 'run'
 condition = 'peer_ko', directory = 'zones'
 
@@ -204,7 +204,7 @@ sim/workflow_manager.py:541: in run_workflow
              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-args = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re3'), 'zone-study-integration-run', None)
+args = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re3'), 'zone-study-integration-run', None)
 kwargs = {}
 
     def forbidden(*args, **kwargs):
@@ -214,7 +214,7 @@ E       Failed: admission must precede records, subprocesses, host and physics
 tests/test_zone_own_executor_corridor_contract.py:94: Failed
 ___ test_managed_corridor_entry_refuses_before_runtime[zones-leader_ko-plan] ___
 
-managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+managed_study = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
 capsys = <_pytest.capture.CaptureFixture object at 0x106da9d60>, action = 'plan'
 condition = 'leader_ko', directory = 'zones'
 
@@ -249,7 +249,7 @@ tests/test_zone_own_executor_corridor_contract.py:111: Failed
     "--dev-horizon-s=1"
   ],
   "command": [
-    "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
     "-m",
     "scripts.run_zone_study_integration",
     "--prereg=prereg.json",
@@ -258,11 +258,11 @@ tests/test_zone_own_executor_corridor_contract.py:111: Failed
     "--output=never-created",
     "--dev-horizon-s=1"
   ],
-  "output": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re4/never-created",
+  "output": "<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re4/never-created",
   "output_flag": "--output",
   "inputs": [
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re4/prereg.json",
+      "path": "<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re4/prereg.json",
       "kind": "file",
       "sha256": "b3da251a4925439cacd2c97a633549f50cc55e854e7b54785bcf2f77df716143",
       "files": [
@@ -279,7 +279,7 @@ tests/test_zone_own_executor_corridor_contract.py:111: Failed
 }
 ___ test_managed_corridor_entry_refuses_before_runtime[zones-leader_ko-run] ____
 
-managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+managed_study = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
 capsys = <_pytest.capture.CaptureFixture object at 0x106dbcd40>, action = 'run'
 condition = 'leader_ko', directory = 'zones'
 
@@ -310,7 +310,7 @@ sim/workflow_manager.py:541: in run_workflow
              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-args = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re5'), 'zone-study-integration-run', None)
+args = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re5'), 'zone-study-integration-run', None)
 kwargs = {}
 
     def forbidden(*args, **kwargs):
@@ -320,7 +320,7 @@ E       Failed: admission must precede records, subprocesses, host and physics
 tests/test_zone_own_executor_corridor_contract.py:94: Failed
 __ test_managed_corridor_entry_refuses_before_runtime[zones-structured-plan] ___
 
-managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+managed_study = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
 capsys = <_pytest.capture.CaptureFixture object at 0x106dbf9b0>, action = 'plan'
 condition = 'structured', directory = 'zones'
 
@@ -355,7 +355,7 @@ tests/test_zone_own_executor_corridor_contract.py:111: Failed
     "--dev-horizon-s=1"
   ],
   "command": [
-    "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
     "-m",
     "scripts.run_zone_study_integration",
     "--prereg=prereg.json",
@@ -364,11 +364,11 @@ tests/test_zone_own_executor_corridor_contract.py:111: Failed
     "--output=never-created",
     "--dev-horizon-s=1"
   ],
-  "output": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re6/never-created",
+  "output": "<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re6/never-created",
   "output_flag": "--output",
   "inputs": [
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re6/prereg.json",
+      "path": "<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re6/prereg.json",
       "kind": "file",
       "sha256": "b3da251a4925439cacd2c97a633549f50cc55e854e7b54785bcf2f77df716143",
       "files": [
@@ -385,7 +385,7 @@ tests/test_zone_own_executor_corridor_contract.py:111: Failed
 }
 ___ test_managed_corridor_entry_refuses_before_runtime[zones-structured-run] ___
 
-managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+managed_study = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
 capsys = <_pytest.capture.CaptureFixture object at 0x106dbd130>, action = 'run'
 condition = 'structured', directory = 'zones'
 
@@ -416,7 +416,7 @@ sim/workflow_manager.py:541: in run_workflow
              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-args = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re7'), 'zone-study-integration-run', None)
+args = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re7'), 'zone-study-integration-run', None)
 kwargs = {}
 
     def forbidden(*args, **kwargs):
@@ -426,7 +426,7 @@ E       Failed: admission must precede records, subprocesses, host and physics
 tests/test_zone_own_executor_corridor_contract.py:94: Failed
 _ test_managed_corridor_entry_refuses_before_runtime[zones_final-no_comm-plan] _
 
-managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+managed_study = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
 capsys = <_pytest.capture.CaptureFixture object at 0x106f54c50>, action = 'plan'
 condition = 'no_comm', directory = 'zones_final'
 
@@ -461,7 +461,7 @@ tests/test_zone_own_executor_corridor_contract.py:111: Failed
     "--dev-horizon-s=1"
   ],
   "command": [
-    "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
     "-m",
     "scripts.run_zone_study_integration",
     "--prereg=prereg.json",
@@ -470,11 +470,11 @@ tests/test_zone_own_executor_corridor_contract.py:111: Failed
     "--output=never-created",
     "--dev-horizon-s=1"
   ],
-  "output": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re8/never-created",
+  "output": "<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re8/never-created",
   "output_flag": "--output",
   "inputs": [
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re8/prereg.json",
+      "path": "<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re8/prereg.json",
       "kind": "file",
       "sha256": "b3da251a4925439cacd2c97a633549f50cc55e854e7b54785bcf2f77df716143",
       "files": [
@@ -491,7 +491,7 @@ tests/test_zone_own_executor_corridor_contract.py:111: Failed
 }
 _ test_managed_corridor_entry_refuses_before_runtime[zones_final-no_comm-run] __
 
-managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+managed_study = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
 capsys = <_pytest.capture.CaptureFixture object at 0x106dbc080>, action = 'run'
 condition = 'no_comm', directory = 'zones_final'
 
@@ -522,7 +522,7 @@ sim/workflow_manager.py:541: in run_workflow
              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-args = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re9'), 'zone-study-integration-run', None)
+args = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re9'), 'zone-study-integration-run', None)
 kwargs = {}
 
     def forbidden(*args, **kwargs):
@@ -532,7 +532,7 @@ E       Failed: admission must precede records, subprocesses, host and physics
 tests/test_zone_own_executor_corridor_contract.py:94: Failed
 _ test_managed_corridor_entry_refuses_before_runtime[zones_final-peer_ko-plan] _
 
-managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+managed_study = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
 capsys = <_pytest.capture.CaptureFixture object at 0x106dbef30>, action = 'plan'
 condition = 'peer_ko', directory = 'zones_final'
 
@@ -567,7 +567,7 @@ tests/test_zone_own_executor_corridor_contract.py:111: Failed
     "--dev-horizon-s=1"
   ],
   "command": [
-    "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
     "-m",
     "scripts.run_zone_study_integration",
     "--prereg=prereg.json",
@@ -576,11 +576,11 @@ tests/test_zone_own_executor_corridor_contract.py:111: Failed
     "--output=never-created",
     "--dev-horizon-s=1"
   ],
-  "output": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re10/never-created",
+  "output": "<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re10/never-created",
   "output_flag": "--output",
   "inputs": [
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re10/prereg.json",
+      "path": "<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re10/prereg.json",
       "kind": "file",
       "sha256": "b3da251a4925439cacd2c97a633549f50cc55e854e7b54785bcf2f77df716143",
       "files": [
@@ -597,7 +597,7 @@ tests/test_zone_own_executor_corridor_contract.py:111: Failed
 }
 _ test_managed_corridor_entry_refuses_before_runtime[zones_final-peer_ko-run] __
 
-managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+managed_study = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
 capsys = <_pytest.capture.CaptureFixture object at 0x106dbc3b0>, action = 'run'
 condition = 'peer_ko', directory = 'zones_final'
 
@@ -628,7 +628,7 @@ sim/workflow_manager.py:541: in run_workflow
              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-args = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re11'), 'zone-study-integration-run', None)
+args = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re11'), 'zone-study-integration-run', None)
 kwargs = {}
 
     def forbidden(*args, **kwargs):
@@ -638,7 +638,7 @@ E       Failed: admission must precede records, subprocesses, host and physics
 tests/test_zone_own_executor_corridor_contract.py:94: Failed
 _ test_managed_corridor_entry_refuses_before_runtime[zones_final-leader_ko-plan] _
 
-managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+managed_study = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
 capsys = <_pytest.capture.CaptureFixture object at 0x106f5fad0>, action = 'plan'
 condition = 'leader_ko', directory = 'zones_final'
 
@@ -673,7 +673,7 @@ tests/test_zone_own_executor_corridor_contract.py:111: Failed
     "--dev-horizon-s=1"
   ],
   "command": [
-    "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
     "-m",
     "scripts.run_zone_study_integration",
     "--prereg=prereg.json",
@@ -682,11 +682,11 @@ tests/test_zone_own_executor_corridor_contract.py:111: Failed
     "--output=never-created",
     "--dev-horizon-s=1"
   ],
-  "output": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re12/never-created",
+  "output": "<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re12/never-created",
   "output_flag": "--output",
   "inputs": [
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re12/prereg.json",
+      "path": "<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re12/prereg.json",
       "kind": "file",
       "sha256": "b3da251a4925439cacd2c97a633549f50cc55e854e7b54785bcf2f77df716143",
       "files": [
@@ -703,7 +703,7 @@ tests/test_zone_own_executor_corridor_contract.py:111: Failed
 }
 _ test_managed_corridor_entry_refuses_before_runtime[zones_final-leader_ko-run] _
 
-managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+managed_study = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
 capsys = <_pytest.capture.CaptureFixture object at 0x106da44d0>, action = 'run'
 condition = 'leader_ko', directory = 'zones_final'
 
@@ -734,7 +734,7 @@ sim/workflow_manager.py:541: in run_workflow
              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-args = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re13'), 'zone-study-integration-run', None)
+args = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re13'), 'zone-study-integration-run', None)
 kwargs = {}
 
     def forbidden(*args, **kwargs):
@@ -744,7 +744,7 @@ E       Failed: admission must precede records, subprocesses, host and physics
 tests/test_zone_own_executor_corridor_contract.py:94: Failed
 _ test_managed_corridor_entry_refuses_before_runtime[zones_final-structured-plan] _
 
-managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+managed_study = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
 capsys = <_pytest.capture.CaptureFixture object at 0x106d076e0>, action = 'plan'
 condition = 'structured', directory = 'zones_final'
 
@@ -779,7 +779,7 @@ tests/test_zone_own_executor_corridor_contract.py:111: Failed
     "--dev-horizon-s=1"
   ],
   "command": [
-    "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
     "-m",
     "scripts.run_zone_study_integration",
     "--prereg=prereg.json",
@@ -788,11 +788,11 @@ tests/test_zone_own_executor_corridor_contract.py:111: Failed
     "--output=never-created",
     "--dev-horizon-s=1"
   ],
-  "output": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re14/never-created",
+  "output": "<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re14/never-created",
   "output_flag": "--output",
   "inputs": [
     {
-      "path": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re14/prereg.json",
+      "path": "<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re14/prereg.json",
       "kind": "file",
       "sha256": "b3da251a4925439cacd2c97a633549f50cc55e854e7b54785bcf2f77df716143",
       "files": [
@@ -809,7 +809,7 @@ tests/test_zone_own_executor_corridor_contract.py:111: Failed
 }
 _ test_managed_corridor_entry_refuses_before_runtime[zones_final-structured-run] _
 
-managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+managed_study = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
 capsys = <_pytest.capture.CaptureFixture object at 0x106d04650>, action = 'run'
 condition = 'structured', directory = 'zones_final'
 
@@ -840,7 +840,7 @@ sim/workflow_manager.py:541: in run_workflow
              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-args = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re15'), 'zone-study-integration-run', None)
+args = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re15'), 'zone-study-integration-run', None)
 kwargs = {}
 
     def forbidden(*args, **kwargs):
@@ -850,7 +850,7 @@ E       Failed: admission must precede records, subprocesses, host and physics
 tests/test_zone_own_executor_corridor_contract.py:94: Failed
 __________ test_managed_study_selection_fails_closed[unknown_episode] __________
 
-managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_s...tudy_integration_prereg.v1', 'episodes': [{'episode_id': 'unselected', 'map': 'missing', 'scenario': 'missing.json'}]})
+managed_study = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_s...tudy_integration_prereg.v1', 'episodes': [{'episode_id': 'unselected', 'map': 'missing', 'scenario': 'missing.json'}]})
 fault = 'unknown_episode'
 
     @pytest.mark.parametrize('fault', ['unknown_episode', 'duplicate_episode', 'map_mismatch',
@@ -883,7 +883,7 @@ sim/workflow_manager.py:541: in run_workflow
              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-args = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_selection_f0'), 'zone-study-integration-run', None)
+args = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_selection_f0'), 'zone-study-integration-run', None)
 kwargs = {}
 
     def forbidden(*args, **kwargs):
@@ -893,7 +893,7 @@ E       Failed: admission must precede records, subprocesses, host and physics
 tests/test_zone_own_executor_corridor_contract.py:94: Failed
 _________ test_managed_study_selection_fails_closed[duplicate_episode] _________
 
-managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_s...: 'selected', 'scenario': 'scenario.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+managed_study = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_s...: 'selected', 'scenario': 'scenario.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
 fault = 'duplicate_episode'
 
     @pytest.mark.parametrize('fault', ['unknown_episode', 'duplicate_episode', 'map_mismatch',
@@ -926,7 +926,7 @@ sim/workflow_manager.py:541: in run_workflow
              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-args = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_selection_f1'), 'zone-study-integration-run', None)
+args = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_selection_f1'), 'zone-study-integration-run', None)
 kwargs = {}
 
     def forbidden(*args, **kwargs):
@@ -936,7 +936,7 @@ E       Failed: admission must precede records, subprocesses, host and physics
 tests/test_zone_own_executor_corridor_contract.py:94: Failed
 ___________ test_managed_study_selection_fails_closed[map_mismatch] ____________
 
-managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_s...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+managed_study = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_s...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
 fault = 'map_mismatch'
 
     @pytest.mark.parametrize('fault', ['unknown_episode', 'duplicate_episode', 'map_mismatch',
@@ -969,7 +969,7 @@ sim/workflow_manager.py:541: in run_workflow
              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-args = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_selection_f2'), 'zone-study-integration-run', None)
+args = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_selection_f2'), 'zone-study-integration-run', None)
 kwargs = {}
 
     def forbidden(*args, **kwargs):
@@ -979,7 +979,7 @@ E       Failed: admission must precede records, subprocesses, host and physics
 tests/test_zone_own_executor_corridor_contract.py:94: Failed
 ____________ test_managed_study_selection_fails_closed[missing_map] ____________
 
-managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_s...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+managed_study = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_s...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
 fault = 'missing_map'
 
     @pytest.mark.parametrize('fault', ['unknown_episode', 'duplicate_episode', 'map_mismatch',
@@ -1012,7 +1012,7 @@ sim/workflow_manager.py:541: in run_workflow
              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-args = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_selection_f3'), 'zone-study-integration-run', None)
+args = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_selection_f3'), 'zone-study-integration-run', None)
 kwargs = {}
 
     def forbidden(*args, **kwargs):
@@ -1022,7 +1022,7 @@ E       Failed: admission must precede records, subprocesses, host and physics
 tests/test_zone_own_executor_corridor_contract.py:94: Failed
 ___________ test_managed_study_selection_fails_closed[ambiguous_map] ___________
 
-managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_s...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+managed_study = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_s...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
 fault = 'ambiguous_map'
 
     @pytest.mark.parametrize('fault', ['unknown_episode', 'duplicate_episode', 'map_mismatch',
@@ -1055,7 +1055,7 @@ sim/workflow_manager.py:541: in run_workflow
              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-args = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_selection_f4'), 'zone-study-integration-run', None)
+args = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_selection_f4'), 'zone-study-integration-run', None)
 kwargs = {}
 
     def forbidden(*args, **kwargs):
@@ -1065,7 +1065,7 @@ E       Failed: admission must precede records, subprocesses, host and physics
 tests/test_zone_own_executor_corridor_contract.py:94: Failed
 __________ test_managed_study_selection_fails_closed[empty_passages] ___________
 
-managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_s...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+managed_study = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_s...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
 fault = 'empty_passages'
 
     @pytest.mark.parametrize('fault', ['unknown_episode', 'duplicate_episode', 'map_mismatch',
@@ -1098,7 +1098,7 @@ sim/workflow_manager.py:541: in run_workflow
              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-args = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_selection_f5'), 'zone-study-integration-run', None)
+args = (PosixPath('<home>/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_selection_f5'), 'zone-study-integration-run', None)
 kwargs = {}
 
     def forbidden(*args, **kwargs):

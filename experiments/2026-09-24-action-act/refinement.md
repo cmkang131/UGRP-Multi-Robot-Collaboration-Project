@@ -18,4 +18,4 @@
 
 기존 RGB 14장의 회귀 분석에서는 초기 큰 오차의 7개 연속 쌍에서만 빠른 분기가 허용됐다. 실제 완주 시간 절감은 아직 확인되지 않았고, 20초 절감이나 새 지도 일반화를 가정하지 않는다. [영상 분석 기록](approach-rgb-gate-replay.json)
 
-로컬 원본 루트는 `/Users/changmin/projects/ugrp/outputs/act-action-training-20260924`와 `/Users/changmin/projects/ugrp/outputs/dispatch-action-act-20260924`다. 저장된 계획 재생 비교이며 새 LLM 대화나 의사소통 효과를 검증하는 실험이 아니다. 학습 결과·물리 결과·배포 검증은 완료 후 별도 결과 기록에 연결한다.
+로컬 원본 루트는 `<home>/projects/ugrp/outputs/act-action-training-20260924`와 `<home>/projects/ugrp/outputs/dispatch-action-act-20260924`다. 저장된 계획 재생 비교이며 새 LLM 대화나 의사소통 효과를 검증하는 실험이 아니다. 학습 결과·물리 결과·배포 검증은 완료 후 별도 결과 기록에 연결한다.

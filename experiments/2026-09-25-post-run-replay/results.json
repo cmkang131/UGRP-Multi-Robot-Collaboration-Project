@@ -3,7 +3,7 @@
  "bundle": "rgb-standard-dispatch-v42",
  "runs": {
   "A-record": {
-   "raw_dir": "/Users/changmin/projects/ugrp/outputs/post-run-replay-20260924/smoke-1",
+   "raw_dir": "<home>/projects/ugrp/outputs/post-run-replay-20260924/smoke-1",
    "command": "bash scripts/open_simulation.command dispatch --headless --record-replay --plan-replay experiments/2026-09-22-parallel-transport/independent-plan.json --variant open --seed 11",
    "source_sha": "40149354ab697ef02653c3807ffa7f4e5d2fbeb9",
    "physical_success": true,
@@ -13,7 +13,7 @@
    "wall_s_informational": 235.59310708299745,
    "obstacle_contact_steps": 0,
    "replay": {
-    "dir": "/Users/changmin/projects/ugrp/outputs/post-run-replay-20260924/smoke-1/replay",
+    "dir": "<home>/projects/ugrp/outputs/post-run-replay-20260924/smoke-1/replay",
     "frames": 3949,
     "sim_end_s": 133.55824999856975,
     "manifest_sha256": "43142a93088b0cf1d5ea20845597a4e8bb07882aabfed35eae3f3bb3e694fa5d"
@@ -27,7 +27,7 @@
    }
   },
   "B-no-record": {
-   "raw_dir": "/Users/changmin/projects/ugrp/outputs/post-run-replay-20260924/control-no-record",
+   "raw_dir": "<home>/projects/ugrp/outputs/post-run-replay-20260924/control-no-record",
    "command": "bash scripts/open_simulation.command dispatch --headless --plan-replay experiments/2026-09-22-parallel-transport/independent-plan.json --variant open --seed 11",
    "source_sha": "40149354ab697ef02653c3807ffa7f4e5d2fbeb9",
    "physical_success": true,
@@ -62,7 +62,7 @@
   "replay_size_mb": 6.3
  },
  "tensorboard": {
-  "snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/0925-post-run-replay",
+  "snapshot": "<home>/projects/ugrp/outputs/tensorboard/0925-post-run-replay",
   "view_key": "post_run_replay_20260925"
  },
  "scope": "Viewer/recording check only: recording does not change control on this plan/seed; not a new task-success or speed claim. Control-end 132.26 SIM s differs from the 2026-09-24 126.26 baseline because main changed (source 2854fa4 -> 4014935); not attributed to replay."

@@ -64,7 +64,7 @@ mutation은 메모리에서만 guard를 바꿔 정상 witness 통과와 판정 a
 편집, Drive 작업, PR 병합은 없다. 추출용 임시 디렉터리를 만들지 않았다.
 새 실험 결과가 아니므로 TensorBoard 재변환·viewer 실행 없이 기존 snapshot을
 보존했다. `published-final/`의 상세 재분류는
-`/Users/changmin/projects/ugrp/outputs/review-299g-fix-20261001/` 아래 로컬에
+`<home>/projects/ugrp/outputs/review-299g-fix-20261001/` 아래 로컬에
 보존하며 이 폴더의 작은 결과/해시만 Git에 추가한다. raw 전체의 원격 백업을
 주장하지 않는다. 처음 수행한 검사와 중간 결과도 그대로 남겼다.
 

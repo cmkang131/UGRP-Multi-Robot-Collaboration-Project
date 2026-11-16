@@ -16,7 +16,7 @@ sys.path.insert(0, str(ROOT))
 from scripts.tensorboard_tools.offline_audit import convert
 from tensorboard.backend.event_processing.event_accumulator import EventAccumulator
 
-RAW = Path('/Users/changmin/projects/ugrp/outputs/camera-review-20261006')
+RAW = Path('<home>/projects/ugrp/outputs/camera-review-20261006')
 RENDER = RAW/'render-v1-r2'
 DELIVERY = RAW/'delivery-v1'
 SNAPSHOT = RAW.parent/'tensorboard/1006-camera-review-v1'

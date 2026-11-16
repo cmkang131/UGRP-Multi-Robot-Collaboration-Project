@@ -9,9 +9,9 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[3]
 EXP = Path(__file__).resolve().parents[1]
-RAW = Path('/Users/changmin/projects/ugrp/outputs/camera-map-integration-v1')
-CACHE = Path('/Users/changmin/projects/ugrp/outputs/own-map-causal-landmarks-v1')
-EP = Path('/Users/changmin/projects/ugrp/outputs/wall-segment-dev-v1/new-seed')
+RAW = Path('<home>/projects/ugrp/outputs/camera-map-integration-v1')
+CACHE = Path('<home>/projects/ugrp/outputs/own-map-causal-landmarks-v1')
+EP = Path('<home>/projects/ugrp/outputs/wall-segment-dev-v1/new-seed')
 sys.path.insert(0, str(ROOT))
 
 

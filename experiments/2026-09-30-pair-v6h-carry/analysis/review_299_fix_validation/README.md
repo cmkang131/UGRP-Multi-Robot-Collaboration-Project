@@ -36,9 +36,9 @@ python -m pytest -q -p no:cacheprovider -p reviewed_code_loader \
 
 ```sh
 python experiments/2026-09-30-pair-v6h-carry/analysis/revalidate_published.py \
-  --output /Users/changmin/projects/ugrp/outputs/v6h-fixcls-review299-20260930/final/published
+  --output <home>/projects/ugrp/outputs/v6h-fixcls-review299-20260930/final/published
 ```
 
-재실행할 때 output은 존재하지 않는 새 경로를 사용한다. 전체 명령 드라이버·합성 fixture·전체 재분류 JSON은 `/Users/changmin/projects/ugrp/outputs/v6h-fixcls-review299-20260930/final/`에 있다. 이 폴더에는 작은 검증 기록과 해시만 넣었다. 원 raw의 원격 백업이나 새 확증 결과가 아니며 기존 TensorBoard snapshot을 재변환/재표시하지 않았다. 독립 재검토·실제 러너 계약 검증·봉인/등록 인수는 별도다.
+재실행할 때 output은 존재하지 않는 새 경로를 사용한다. 전체 명령 드라이버·합성 fixture·전체 재분류 JSON은 `<home>/projects/ugrp/outputs/v6h-fixcls-review299-20260930/final/`에 있다. 이 폴더에는 작은 검증 기록과 해시만 넣었다. 원 raw의 원격 백업이나 새 확증 결과가 아니며 기존 TensorBoard snapshot을 재변환/재표시하지 않았다. 독립 재검토·실제 러너 계약 검증·봉인/등록 인수는 별도다.
 
 Git에 넣은 두 실패 로그 사본은 줄 끝 공백만 정리했다. 로컬 원 로그는 그대로이며 원본/사본 SHA-256을 provenance.json에 함께 기록했다.

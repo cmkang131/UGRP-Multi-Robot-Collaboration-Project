@@ -1,7 +1,7 @@
 # B의 D3 완료 raw 독립 로그 분석
 
 2026-09-22. 실행 소스 `8c1b64a95ca9dc3196e80ea6d47ea7c98d2776f5`.
-raw: `/Users/changmin/.codex/worktrees/cf5f/ugrp/outputs/d3-local-replay-8c1b64a`.
+raw: `<home>/.codex/worktrees/cf5f/ugrp/outputs/d3-local-replay-8c1b64a`.
 B 분석 소스 작업 폴더는 `6f6c/ugrp`, 제품 코드는 `1d46f7a`에서 변경하지 않았다.
 
 ## 핵심 판정

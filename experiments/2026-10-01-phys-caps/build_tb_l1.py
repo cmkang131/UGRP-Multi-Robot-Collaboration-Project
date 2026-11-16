@@ -11,7 +11,7 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-PRIMARY = Path('/Users/changmin/projects/ugrp')
+PRIMARY = Path('<home>/projects/ugrp')
 OUTS = PRIMARY / 'outputs'
 WT = HERE.parents[1]
 REPORT = json.loads((HERE / 'l1_results.json').read_text())

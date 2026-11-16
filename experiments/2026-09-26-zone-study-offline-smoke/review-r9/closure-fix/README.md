@@ -29,13 +29,13 @@ closure 검사 자체를 완화하거나 소스 추적에서 파일을 제외하
 물리 실행·실제 모델 호출은 0회다. 잠금을 쓰는 전체 검증은 coordinator가 별도로 한다.
 
 ```sh
-OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
+OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
   tests/test_zone_dispatch.py::test_zone_scene_reuses_the_standard_scene_path_without_touching_bundle_sources \
   tests/test_zone_study_review_r9.py::test_r9_length_valid_json_is_failed_not_executed \
   tests/test_zone_study_review_r9.py::test_shared_completion_source_is_pinned_without_zone_dependencies \
   -q --basetemp=./.pytest_tmp
 
-OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
+OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
   tests/test_zone_study*.py tests/test_zone_event_scheduler.py tests/test_zone_sim_cost.py \
   tests/test_zone_dispatch.py tests/test_simulation_workflow_manager.py tests/test_gemini*.py \
   -q -k 'not test_parent_exit_cleans_background_child' --basetemp=./.pytest_tmp \

@@ -213,7 +213,7 @@ v3 렌더 mount와 시각은 S2 동결 receipt/자기 관측에 모두 일치했
 
 ### 보존·전달·후속 범위
 
-raw: `/Users/changmin/projects/ugrp/outputs/s3-recovery-981baa95-s14201-v152`.
+raw: `<home>/projects/ugrp/outputs/s3-recovery-981baa95-s14201-v152`.
 54,040파일/1,724,296,204바이트 전체 SHA 일치, 원본을 덮어쓰지 않았다.
 대표 영상은 `outputs/s3fix7-20261010/v152-report/views/v152/execution.mp4`:
 자기 RGB3개만 이어 붙인1920×480·20fps·4501프레임·225.05초·**4배속**이다.

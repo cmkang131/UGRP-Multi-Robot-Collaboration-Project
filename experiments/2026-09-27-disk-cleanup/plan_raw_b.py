@@ -38,7 +38,7 @@ sys.path.insert(0, str(ROOT))
 from scripts.disk_report import tier_of  # noqa: E402
 from scripts.tree_manifest import file_sha256  # noqa: E402
 
-PRIMARY = Path("/Users/changmin/projects/ugrp")
+PRIMARY = Path("<home>/projects/ugrp")
 OUTPUTS = PRIMARY / "outputs"
 T4 = re.compile(r"^(simulation-realtime|simulation-performance|sim-speed)")
 T7 = re.compile(r"^(zone|owncam|m1-|m2-|plan-|dynamic-|map-goto|beam-|vision-|study)")

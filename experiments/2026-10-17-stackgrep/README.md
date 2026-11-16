@@ -1,6 +1,6 @@
 # 2026-10-17 stackgrep: 정적 지도 모순 전수 감사 + 열린 PR 분류
 
-- 작업자: `stackgrep` / worktree `/Users/changmin/projects/ugrp-wt/stackgrep` / branch `claude/stackgrep`
+- 작업자: `stackgrep` / worktree `<home>/projects/ugrp-wt/stackgrep` / branch `claude/stackgrep`
 - 기준: `configs/current_stack.json` (`as_of=2026-10-17`, commit `c43a9f515`), main `79a4918d0`, open PR 51개 head ref
 - 범위: **기록 전용**. 코드 수정·VM·시뮬레이션·렌더·LLM 호출·학습·PR 닫기·브랜치 삭제·증거 정리 없음.
 - 산출: 이 README + `table.json`(기계 판독 55개 감사 행, 51개 PR 분류).
