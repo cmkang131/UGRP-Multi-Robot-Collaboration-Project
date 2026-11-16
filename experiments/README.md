@@ -5,8 +5,6 @@
 - [S3 s3fix19 정수 tick 운반](2026-10-10-s3-integer-carry/README.md): 관련22시험 통과·20조건 on/off 등록; 디스크 거부/원본 소실/SSH 단절로 물리 판정 미완료.
 - [2026-10-10 S3 공동 운반 v164/v165](2026-10-10-s3-synchronized-carry/README.md): x86 동시10조건 v165 정렬·집기·상승·20mm 운반10/10; pair endpoint1/6, 이후 하강 낙하가드4/6·포즈계약 실패2/6, HOST_ERROR0. 기본 off·미채택.
 # 실험 인덱스
-- [2026-10-16 ACT16a 실패 분석](2026-10-16-act16a/README.md): 학습0, GCP2 같은40회 관문 재현·RGB 지문240/240. 정렬22/40, 새 추론 persistence 대비 wheel MAE2.96% 감소·교정 때 이전 부호79.4% 유지. history A/B 우선·계획 미승인.
-- [2026-10-15 시나리오 v7 heavy_crate 제외](2026-10-15-scenario-v7/README.md): 선택 버전 8종, s2·s7·s8 crate→2대 long_beam; 화물 33·필요 로봇 작업 수 40 유지, 정적/XML/입력 3시험 통과. 물리·렌더 0, v6 보존·합산 금지.
 - [2026-10-12 PR #405 main 병합 정리](2026-10-12-pr405-main-merge/README.md): 물리0. 충돌2건 합집합, v195 seal 보존 위해 v7 main 바이트 유지·pickle 처리 이전, egomap64/65 재개 계획 퇴역(원본 보존, 재등록 없음).
 - [2026-10-10 S3 정렬 소유권·끝점 v162](2026-10-10-s3-alignment-ownership/README.md): 기본 off A/B/C, x86 10조건 정렬·집기·상승9/10·실제 운반4/10; pair 운반0/6·c3 정렬 잔여, raw/TensorBoard 검증.
 
@@ -19,11 +17,9 @@
 
 - [2026-10-09 연속 목표 RouteMap P1](2026-10-09-goal-route-continuous/README.md): egomap56/57, main+공통v145 heading host 연결·38시험/off동일. 등록55001–55009 전부tape/scene 기하 HOST_ERROR, 유효물리0·제외0·재실행0. 구간거리/시간/귀환 미측정,기존고정테이프표와단일문기하 차이 기록.
 
-- [2026-10-09 목표 지향 RouteMap P0](2026-10-09-goal-route-p0/README.md): egomap55,물리0. 버그3건·23시험/off동일. 경기장대조7/7→7/7,위생0/6(제외0),합성pitch3/3(664/25395),색게이트거짓1/1. 누적32002 반영64→876·덮음64.7→74.2%이나RMSE악화. P1-b 9seed 등록만,감독확인대기.
 
 - [2026-10-09 teach/repeat 새 DEV 사전등록](2026-10-09-teach-return-dev/README.md): egomap54,54001–54004 각1회 사전등록. 저장49002 handoff24프레임 예외0·23명령/belief byte동일,첫정합unobservable. 21시험/off동일,seed54001은사용자설계변경으로중단(결과분모제외),나머지3개미실행. eg53 HOST_ERROR2건 별도 보존.
 - [2026-10-09 연속 teach keyframe 기록](2026-10-09-teach-capture/README.md): egomap53, VT&R3 카메라 임계·기본off. 물리2회 모두 어댑터 HOST_ERROR로 유효 귀환0;49002 teach768노드/767엣지·B연결 있음·1790명령 기존 byte동일. 오류수정23시험·정합4/4 byte동일,추가4회 미실행·실패4배속 영상.
-- [2026-10-09 복구 구간 정합·재연결](2026-10-09-traversal-reconnection/README.md): egomap52, 기존 CSM/cache·기본off. 동일6건: 복구2/41·재방문32/3698 수락, 성분47→38; B경로0/4·첫정합1/4로 관문미달·물리0. 26시험/off동일, 실패진단4배속·선택지3개 기록.
 - [2026-10-09 지나온 경로로 자기 B 귀환](2026-10-09-own-traversal-return/README.md): egomap51, 기본off traversal graph. 기존6건7,718프레임→1,029노드/982엣지, B노드4/4·연결0/4·첫정합1/4. 복구 제외로47성분, 관문미달·물리0;18시험/off동일·실패진단4배속.
 - [2026-10-08 자기 문 확인·위상 이동](2026-10-08-own-door-navigation/README.md): egomap50, 기본off 두 옵션. 개발3+기존6녹화11,966프레임, 후보P0.42%·잠재가시R30.0%·확인0, 관문미달로 물리0. B blacklist 분기4→0·중간목표4 유지;16시험/off byte동일, 기존 실패4배속 문 overlay.
 
@@ -91,12 +87,9 @@
 
 - [2026-10-06 S3 최종 v3 3대 혼합 주문 호스트](2026-10-06-s3-host/README.md): v107/3.14.0, 고정 r3 cyan + r1/r2 빔, 기존 실행기/위치 제공자/심판 연결. 모델 0회, DEV seeds 601–603 launch 준비만; 물리 인수와 S3 졸업은 미실행.
 
-- [2026-10-05 S1 혼합 배치와 v4 지도 연결](2026-10-05-s1-placement/README.md): 최종 v3 지도 조회와 색 상자·catalogue 화물의 정적 혼합 배치. v4 8종 오프라인 검사, 소스 `35034c5b`의 dev_s1lite·전체 s1 각 30 SIM초 정지·렌더 DEV screen PASS. 유한 바닥 침투를 기록했으며 실제 운반·S1 물리 졸업·S2 제어기 연결은 미검증.
 
 - [2026-10-05 S2 단독 cyan 최종 v3 후보 v106](2026-10-05-solo-cyan-v106/README.md): v98 벽 관측·입자 필터·partial-fix·호버 확인·blind close·하중 가림 재사용, 내려놓기 재관측·재집기. own RGB/정적 지도/자기 명령만. `setdown-relook-v3`, 하중 이동은 v102, 방향 결합 보정은 s911 탐색 모델. 소스 `dfec1f19`의 s912–914/3 slot에서 DEV 사후 잠정 기하 판정 3/3. `STAGE_REACHED_UNQUALIFIED`, `physical_success=null`, `research_result=false`; 정식 stop-ON·S2 전체 졸업·실물 성공은 미검증.
 
-- [2026-10-05 시나리오 v4 (v3 여덟 종 + 최종 로봇 v3 지도로 지도 필드만 교체)](2026-10-05-scenarios-v4/README.md): 연구 시나리오 s1–s8의 `map_id`·`map_file_sha256`만 `*_v3` 지도로 바꿨다(지도 기하는 v2/final_v1과 같고 id·robot_model·version·parent 해시만 다름). 새 지도 없음, v2·v3 파일은 그대로. 오프라인 검증(validate·해시·기하 동일성·s7/s8 경로)만 했고 SIM·모델 호출 0회.
-- [2026-09-29 시나리오 v3: 화물 목록 전체와 3대 운반](2026-09-29-zone-scenarios-v3/README.md): v2 여섯 종은 yellow와 3대 필요 화물 tri_frame을 쓰지 않았다. v2 여섯 종을 그대로 두고 삼자 결속 `s7`과 1·2·3대 혼합 `s8`을 더해 화물 종류 9개와 필요 인원 1/2/3을 모두 덮는 v3 여덟 종을 만들었다(두 문 지도, 사건 없음). 오프라인 검증만 했고 3대 자기 카메라 실행기는 아직 없어 실행하지 않았다.
 - [2026-10-05 시나리오 E2E 격차 분석과 구축 계획 (문서 전용)](2026-10-05-scenario-e2e-gap/README.md): 연구 시나리오 s1–s8을 자기 카메라 E2E로 돌리기까지 무엇이 되고(빔 짝 운반 DEV 1회) 무엇이 없는지(최종 환경 단독 cyan, 3대·다중 주문 호스트, 크레이트·tri_frame 어댑터) 라벨로 정리하고, 시나리오 v4 결정(D1–D7)과 가장 짧은 구축 경로(S0–S5)를 적었다. 물리·렌더·모델 호출·pytest 0회, 수치는 모두 추정.
 - [2026-10-05 적재 이득·시간상수 보정 v102 (DEV_PILOT, #363 옆 leg 7.2% 과주행)](2026-10-05-loaded-gain-calibration-v102/README.md): 표준 경로 SIM 수집 4건(옆 2·앞뒤 2), 보류 평가 VALIDATED_DEV(최대 오차 옆 0.36%·앞뒤 0.17%). 원인은 게인 곡선(아핀 데드존으로 교체), 지연·접촉 프로필 아님. fcc5215f 입력 재생(14ba8b5e 기준, 미완료): 옆 leg 54.9 -> 1.1 mm, 순수 추측항법 기준과 일부 구간 +5 mm 허용은 미충족. 7194637e 기준 재생·시험은 사용자 중단으로 미완료. #363용 diff 2개와 시험 포함. MEASURED_SIM 아님.
 - [2026-10-03 높은 자세 공동 운반 후보 v96](2026-10-03-pair-carry-highpose/README.md): 기존 beam-relative 학생·OpenCV 위치 추정, #361 D5 실측 보정·승인 목록 관문(MEASURED_SIM 승인 비어 있음) + 정확한 sha256 하나만 받는 DEV_PILOT(FUNCTIONAL_DEV, 승격 불가), 중간 HIGH 유지, P03 cap 3×300 SIM초(사전 등록 개정, 하한 63.8/104.2/184.6초)(10/4 v98-cap-3: 3×900, 사용자 결정), grip 감시는 사용자 결정으로 첫 E2E에서 기록 전용(실행 중 놓침 감지·통보 없음, 실제 렌더 영상 테스트), 개발/확증 시작점 분리. v93은 미실행 은퇴.
