@@ -1,19 +1,19 @@
 {
  "schema": "ugrp.tensorboard_snapshot_verification.v1",
- "snapshot": "<home>/projects/ugrp/outputs/tensorboard/0926-zone-perception-noslip",
+ "snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/0926-zone-perception-noslip",
  "snapshot_id": "0926-zone-perception-noslip",
  "collection_sha256": "cf80974191dda453ff4f2f9a0eac4a5816435f4649a291437e7f192425999e02",
  "converter": "scripts/export_offline_audit.py → scripts/tensorboard_tools/offline_audit.py (추가 모듈, 기존 변환기 미수정)",
  "builder": "scripts/build_perception_noslip_views.py",
  "verifier": "scripts/verify_perception_noslip_snapshot.py",
- "derived_views_local_only": "<home>/projects/ugrp-wt/kiro-tb-perc/outputs/tb-perception-noslip-20260926/derived",
+ "derived_views_local_only": "/Users/changmin/projects/ugrp-wt/kiro-tb-perc/outputs/tb-perception-noslip-20260926/derived",
  "derived_index_sha256": "9adb01bd3c0c4871817f98b7b6082c618e04cf5e418bd0fd39aff129de082b85",
  "sources": {
   "perception": {
    "pr": 193,
    "branch": "kiro/zone-own-perception",
-   "records": "<home>/projects/ugrp-wt/kiro-own-perception/experiments/2026-09-26-zone-own-perception",
-   "raw": "<home>/projects/ugrp-wt/kiro-own-perception/outputs/2026-09-26-zone-own-perception",
+   "records": "/Users/changmin/projects/ugrp-wt/kiro-own-perception/experiments/2026-09-26-zone-own-perception",
+   "raw": "/Users/changmin/projects/ugrp-wt/kiro-own-perception/outputs/2026-09-26-zone-own-perception",
    "render_and_score_source_sha": "bc22129531fb2d49f75341d7027f4520b7f67035",
    "score_summary_sha256": {
     "dev": "820c371c83859151998a8c05907d19b4c117194b1eb2e32f820a7a1daa075bb9",
@@ -24,8 +24,8 @@
   "noslip": {
    "pr": 189,
    "branch": "kiro/zone-noslip-audit",
-   "records": "<home>/projects/ugrp-wt/kiro-noslip-audit/experiments/2026-09-26-noslip-side-effects",
-   "raw": "<home>/projects/ugrp-wt/kiro-noslip-audit/outputs/noslip-audit/5578f09",
+   "records": "/Users/changmin/projects/ugrp-wt/kiro-noslip-audit/experiments/2026-09-26-noslip-side-effects",
+   "raw": "/Users/changmin/projects/ugrp-wt/kiro-noslip-audit/outputs/noslip-audit/5578f09",
    "run_source_sha": "995808812c262c72964c178921bcae17647a1ad0",
    "results_sha256": "f1b080d7fe983c9aa62f03d4ed26615139045b745a0e53ee2a10617fdf336849",
    "raw_files_hash_verified": 210,
@@ -2473,7 +2473,7 @@
   }
  ],
  "event_readback": {
-  "snapshot": "<home>/projects/ugrp/outputs/tensorboard/0926-zone-perception-noslip",
+  "snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/0926-zone-perception-noslip",
   "runs_in_index": 89,
   "runs_exported": 89,
   "runs_missing": [],
@@ -3951,7 +3951,7 @@
  ],
  "server": {
   "endpoint": "http://127.0.0.1:6006",
-  "logdir": "<home>/projects/ugrp/outputs/tensorboard",
+  "logdir": "/Users/changmin/projects/ugrp/outputs/tensorboard",
   "launcher_pid": 9291,
   "tensorboard_pid": 9293,
   "owner": "changmin",
@@ -3977,7 +3977,7 @@
   "hparams_limit": "공용 HParams experiment 목록에는 split·judgment·belief·scenario·contact_profile·condition과 offline/*·gate/* 지표가 나오지 않는다. run마다 실제로 들어 있고 session_groups 89건에서 확인했다. 0925-zone-supplement가 기록한 것과 같은 제약이다"
  },
  "view_config": {
-  "file": "<home>/projects/ugrp/outputs/tensorboard-view.json",
+  "file": "/Users/changmin/projects/ugrp/outputs/tensorboard-view.json",
   "key_added": "zone_perception_noslip_20260926",
   "other_keys_unchanged": true,
   "keys_before": 75,

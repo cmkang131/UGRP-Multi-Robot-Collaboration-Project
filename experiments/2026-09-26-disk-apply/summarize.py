@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Summarize the 2026-09-26 disk apply receipts into committed records (read-only on raw).
 
-Reads the raw receipts under <home>/projects/ugrp/outputs/disk-apply-20260926/
+Reads the raw receipts under /Users/changmin/projects/ugrp/outputs/disk-apply-20260926/
 (item1/exec-*.json, item2/exec-*.json, item3/exec-*.json, outputs/archive/codex-worktrees/*.json,
 item4/dedupe-summary.json) and writes compact JSON next to this script. Each summary
 lists the raw file it came from with its sha256, so the committed record can be
@@ -14,8 +14,8 @@ import hashlib
 import json
 from pathlib import Path
 
-RAW = Path("<home>/projects/ugrp/outputs/disk-apply-20260926")
-ARCHIVE = Path("<home>/projects/ugrp/outputs/archive/codex-worktrees")
+RAW = Path("/Users/changmin/projects/ugrp/outputs/disk-apply-20260926")
+ARCHIVE = Path("/Users/changmin/projects/ugrp/outputs/archive/codex-worktrees")
 HERE = Path(__file__).resolve().parent
 GIB = 2**30
 # Worktrees left untouched, with the reason observed at the time of each item (census 16:51, items 18:24-18:36).
@@ -52,7 +52,7 @@ def sha(path: Path) -> str:
 
 
 def rel_home(path: str) -> str:
-    return path.replace("<home>/", "~/")
+    return path.replace("/Users/changmin/", "~/")
 
 
 def retire_rows(folder: Path) -> list[dict]:

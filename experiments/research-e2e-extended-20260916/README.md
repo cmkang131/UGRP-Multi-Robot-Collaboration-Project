@@ -80,7 +80,7 @@ none은 PREPARE 41턴을 수행했으나 r1의 READY는 0회, r3는 17회였고 
   검토했다. 추가로 GRASP의 TOP 입력과 발행/판정 로그를 확인하고 전체 평가 시계열을
   집계했다. SIM은 추론 중 정지하므로 영상은 실제 모델 대기 시간을 포함하지 않는다.
 
-원본은 로컬 `<home>/projects/ugrp-worktrees/research-e2e-bottleneck/outputs/`의
+원본은 로컬 `/Users/changmin/projects/ugrp-worktrees/research-e2e-bottleneck/outputs/`의
 `research-e2e-extended-natural-20260916` 및 `research-e2e-extended-none-20260916`에 있다.
 각각 `motion.mp4`, `result.json`, `evaluation-only.jsonl`, 실제 요청/응답/JPEG와
 `audit.json`을 보존했다. **원격 백업은 없고 Git에는 코드·집계·해시를 보관한다.**

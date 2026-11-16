@@ -10,8 +10,8 @@ import json
 import statistics as st
 from pathlib import Path
 
-RAW = Path('<home>/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930')
-SEALED = Path('<home>/projects/ugrp/outputs/v6h1-sealed-analysis-v2-20261001')
+RAW = Path('/Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930')
+SEALED = Path('/Users/changmin/projects/ugrp/outputs/v6h1-sealed-analysis-v2-20261001')
 GATE_YAW_RAD = 3 * 3.141592653589793 / 180  # harness.zone_own_guards.GATE_LOADED (52.4 mrad)
 
 

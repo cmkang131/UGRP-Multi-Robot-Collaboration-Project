@@ -51,9 +51,9 @@ xfail은 제거했고 과거 SHA 추출 fixture만 현재 작업 트리 검사�
 로컬 MuJoCo/glfw/torch/모델 SDK import와 네트워크를 차단한 fake 검사다.
 
 ```sh
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
   experiments/2026-09-30-two-door-reroute/run_checks.py --mutation suite \
-  --output <home>/projects/ugrp/outputs/2026-10-01-t09b-review-i-fixes/NEW-checks
+  --output /Users/changmin/projects/ugrp/outputs/2026-10-01-t09b-review-i-fixes/NEW-checks
 ```
 
 통합 묶음은 T09b·독립 반례·T09a·passage·모델 기하·pair status·메시지 protocol·

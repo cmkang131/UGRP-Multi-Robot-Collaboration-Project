@@ -4,7 +4,7 @@
   "base_main_sha": "26545c2499f94c3f99a5d650f7cc8ea992f24196",
   "local_execution": "offline only, no host lock; no performance inference",
   "final_suite": {
-    "command": "<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p tests.pose_provider_no_physics tests/test_zone_pair_registered_source.py tests/test_zone_study_source_pinning.py tests/test_zone_own_executor.py tests/test_zone_own_executor_boundaries.py tests/test_zone_own_executor_guards.py tests/test_zone_own_executor_can.py tests/test_m1_owncam.py tests/test_zone_own_perception.py --junitxml=<home>/projects/ugrp/outputs/cap-t04-can/offline-final-20260930/pytest.xml",
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p tests.pose_provider_no_physics tests/test_zone_pair_registered_source.py tests/test_zone_study_source_pinning.py tests/test_zone_own_executor.py tests/test_zone_own_executor_boundaries.py tests/test_zone_own_executor_guards.py tests/test_zone_own_executor_can.py tests/test_m1_owncam.py tests/test_zone_own_perception.py --junitxml=/Users/changmin/projects/ugrp/outputs/cap-t04-can/offline-final-20260930/pytest.xml",
     "exit_code": 0,
     "passed": 234,
     "skipped": 1,
@@ -26,7 +26,7 @@
       "tests": "342",
       "time": "362.978",
       "timestamp": "2026-09-30T23:58:05.435746+09:00",
-      "hostname": "<mac-host>"
+      "hostname": "gangchangmin-ui-MacBookAir.local"
     },
     "junit_classes": {
       "tests.test_zone_pair_registered_source": {
@@ -83,8 +83,8 @@
       }
     },
     "artifacts": {
-      "<home>/projects/ugrp/outputs/cap-t04-can/offline-final-20260930/pytest.log": "e0ea27c5064d75afac9539ffebb79307d372f2c6588a3f0c481ebc2749df5b62",
-      "<home>/projects/ugrp/outputs/cap-t04-can/offline-final-20260930/pytest.xml": "8f8424913820c14e453f9a47c21a2ed224f47753f9be4560a5ba9ef8c006d829"
+      "/Users/changmin/projects/ugrp/outputs/cap-t04-can/offline-final-20260930/pytest.log": "e0ea27c5064d75afac9539ffebb79307d372f2c6588a3f0c481ebc2749df5b62",
+      "/Users/changmin/projects/ugrp/outputs/cap-t04-can/offline-final-20260930/pytest.xml": "8f8424913820c14e453f9a47c21a2ed224f47753f9be4560a5ba9ef8c006d829"
     }
   },
   "post_refresh_check": {
@@ -103,7 +103,7 @@
         "test": "tests/test_zone_own_executor_can.py::test_cylinder_center_from_own_jpeg",
         "exit_code": 1,
         "killed_by_assertion": true,
-        "log": "<home>/projects/ugrp/outputs/cap-t04-can/offline-mutation-20260930-v2/remove_floor_perception.log",
+        "log": "/Users/changmin/projects/ugrp/outputs/cap-t04-can/offline-mutation-20260930-v2/remove_floor_perception.log",
         "log_sha256": "1a96ad20ef11d2024bcbc4e4d970dfd02ff1609c6eaae1511a3710f0f266cd20"
       },
       {
@@ -111,7 +111,7 @@
         "test": "tests/test_zone_own_executor_can.py::test_ungrasped_and_empty_gripper_never_reach_holding_or_release",
         "exit_code": 1,
         "killed_by_assertion": true,
-        "log": "<home>/projects/ugrp/outputs/cap-t04-can/offline-mutation-20260930-v2/remove_lift_evidence_gate.log",
+        "log": "/Users/changmin/projects/ugrp/outputs/cap-t04-can/offline-mutation-20260930-v2/remove_lift_evidence_gate.log",
         "log_sha256": "87c4e50a1f87e95b48238d86da805188f544023f287d10153eff66e6b858a1a3"
       },
       {
@@ -119,7 +119,7 @@
         "test": "tests/test_zone_own_executor_can.py::test_bad_release_views_cannot_turn_open_gripper_into_completion",
         "exit_code": 1,
         "killed_by_assertion": true,
-        "log": "<home>/projects/ugrp/outputs/cap-t04-can/offline-mutation-20260930-v2/remove_release_evidence_gate.log",
+        "log": "/Users/changmin/projects/ugrp/outputs/cap-t04-can/offline-mutation-20260930-v2/remove_release_evidence_gate.log",
         "log_sha256": "847ba6b4e415e2be753c31a43de5dcacc7f84d2ab90098c0f71be8e1884888cf"
       },
       {
@@ -127,7 +127,7 @@
         "test": "tests/test_zone_own_executor_can.py::test_input_and_pose_refusal[top]",
         "exit_code": 1,
         "killed_by_assertion": true,
-        "log": "<home>/projects/ugrp/outputs/cap-t04-can/offline-mutation-20260930-v2/remove_own_camera_boundary.log",
+        "log": "/Users/changmin/projects/ugrp/outputs/cap-t04-can/offline-mutation-20260930-v2/remove_own_camera_boundary.log",
         "log_sha256": "642d2c3edb4079ea74e9f03e9d5f5d37d055e4d8b09f650e04bd414d36bbd799"
       }
     ]

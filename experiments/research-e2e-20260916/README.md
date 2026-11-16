@@ -129,7 +129,7 @@ python scripts/audit_research_camera_e2e.py outputs/research-e2e-v2-natural-repe
 ```
 
 대표 영상은 로컬 `outputs/research-e2e-v2-natural-repeat/motion.mp4`다.
-원본은 `<home>/projects/ugrp-worktrees/research-e2e-bottleneck/outputs/` 아래
+원본은 `/Users/changmin/projects/ugrp-worktrees/research-e2e-bottleneck/outputs/` 아래
 각 trial 폴더에 있으며 원격 백업되지 않았다. Git에는 코드·설정·집계·해시만 보관한다.
 
 ## 검증 범위

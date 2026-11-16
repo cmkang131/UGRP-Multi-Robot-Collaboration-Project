@@ -112,7 +112,7 @@ held=false, 속도 <.01 m/s 조건이 연속 2 SIM초 유지되어야 한다.
   드라이버 PID를 얻은 뒤 `scripts/agent_lock.py acquire --owner <실제 소유자> --branch
   <실행 브랜치> --purpose T06-crate-physics --pid <드라이버 PID> --expected-minutes <예상 분>`을
   수행한다. `ugrp_session.py run`으로 자식을 관리하고 종료 시 자기 세션과 잠금만 정리한다.
-- raw는 `<home>/projects/ugrp/outputs/t06-crate-lug/<candidate-sha>/<cell>/`에
+- raw는 `/Users/changmin/projects/ugrp/outputs/t06-crate-lug/<candidate-sha>/<cell>/`에
   새로 저장한다. 실행 SHA/입력/설정/모델/환경 해시, 전체 명령·원본 자기 RGB·판독 결과,
   송수신/거절된 enum, GO 시각, 단계 SIM초, referee trace, 실패/관통/낙하·하중/관절/마찰
   진단, 정상 분모1·실패 주입 분모1, 명령 수·모델 호출0·비용0을 남긴다.

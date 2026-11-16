@@ -24,7 +24,7 @@ Retry-After/RetryInfo·일일 Pacific 자정 reset을 존중하며, 기본 쿨�
 다음 새 프록시에서만 `scripts.s4_proxy_relay --multi-key-v1` 또는
 `scripts.gemma_fallback_proxy --multi-key-v1`로 켠다. 이번 작업에서 프록시를
 시작·재시작·종료하지 않았고, 실행 중이던 e2e 경로
-`<home>/projects/ugrp-wt/e2e-integration`의 소스를 편집하지 않았다.
+`/Users/changmin/projects/ugrp-wt/e2e-integration`의 소스를 편집하지 않았다.
 기존 cohort에 적용하거나 프록시 receipt를 갱신한 작업도 아니다.
 
 관련 시험 3파일 56/56 통과(3.58초): 기존 fallback, 단일 키 성공/403/429/503

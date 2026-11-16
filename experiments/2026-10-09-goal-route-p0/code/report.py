@@ -17,7 +17,7 @@ def main():
   bugs_fixed=3,tests_passed=23,p1b_registered_seeds=list(range(55001,55010)),p1b_executed=0,
   decision='P1-a SEARCH synthetic feasibility supports supervised physical calibration proposal; P1-b registration only, pending supervisor and implementation. Hygiene and color gate not adopted.')
  dump(EXP/'results/summary.json',summary)
- text='''\n## P0 결과 (물리0,모델0,재튜닝0)\n\n설계/버그/사전등록 `239216bf`, 옵션 동결 `80bc4f22`, 재생기 `d9ec34d2`, pitch 수치버그 수정 `6e75104e`. 원시 예측/입력 해시는 `<home>/projects/ugrp/outputs/goal-route-p0-v1/`에, 채점은 `results/`에 저장했다. 다른 worktree 수정0.\n\n### P0-2 다른 경기장 대조군\n\n같은 기준 PF(읽기 전용 ownmap-s2 `191cd213f2f522ddd5468cdaeb34ff6694714957`)와 기록된 RGB/명령만 재생. 기준 최초수렴까지7필드 bytes 동일 **7/7**, 다른 지도 최초정상수렴 **7/7**(제외0,GT누락0). 사전 규칙 n≥6에 따라 **경기장 불일치는 이 최초수렴 실패의 주원인이 아님**. 전체 경로 추적/다른 경기장 주행 성공을 뜻하지 않는다. 공통외벽/색구역이있는초기수렴진단이라다른지도일반허용근거가아니다. v139/v140 s1060의 동일 초기구간은 독립 표본으로 해석하지 않는다.\n\n|S2 기록|기준 최초t / XY / yaw|다른 지도 최초t / XY / yaw|정상(기준/다른)|\n|---|---|---|---|\n'''
+ text='''\n## P0 결과 (물리0,모델0,재튜닝0)\n\n설계/버그/사전등록 `239216bf`, 옵션 동결 `80bc4f22`, 재생기 `d9ec34d2`, pitch 수치버그 수정 `6e75104e`. 원시 예측/입력 해시는 `/Users/changmin/projects/ugrp/outputs/goal-route-p0-v1/`에, 채점은 `results/`에 저장했다. 다른 worktree 수정0.\n\n### P0-2 다른 경기장 대조군\n\n같은 기준 PF(읽기 전용 ownmap-s2 `191cd213f2f522ddd5468cdaeb34ff6694714957`)와 기록된 RGB/명령만 재생. 기준 최초수렴까지7필드 bytes 동일 **7/7**, 다른 지도 최초정상수렴 **7/7**(제외0,GT누락0). 사전 규칙 n≥6에 따라 **경기장 불일치는 이 최초수렴 실패의 주원인이 아님**. 전체 경로 추적/다른 경기장 주행 성공을 뜻하지 않는다. 공통외벽/색구역이있는초기수렴진단이라다른지도일반허용근거가아니다. v139/v140 s1060의 동일 초기구간은 독립 표본으로 해석하지 않는다.\n\n|S2 기록|기준 최초t / XY / yaw|다른 지도 최초t / XY / yaw|정상(기준/다른)|\n|---|---|---|---|\n'''
  for r in pf['pairs']:
   def cell(k):
    q=r[k];return f"{q['first_t']:.2f}s / {q['xy_error_m']:.3f}m / {q['yaw_error_deg']:.2f}°"

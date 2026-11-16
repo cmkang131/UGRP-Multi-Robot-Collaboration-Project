@@ -6,5 +6,5 @@ Azure is authorized; own-map runtime integration remains absent. The authored-ro
 No physics, rendering, model request, proxy or tunnel was started; carry/B placement are unmeasured.
 `azctl stop` returned Already deallocated; status confirmed D16as_v5 / PowerState/deallocated in subscription 88b7ee7f.
 This task VM use 0 h / compute $0; authorized cap 5 h / $4.24. Disk/IP charges excluded.
-Evidence, hashes and all 16 cases: summary.json; raw `<home>/projects/ugrp/outputs/azure-s4-first-batch-20261011`.
+Evidence, hashes and all 16 cases: summary.json; raw `/Users/changmin/projects/ugrp/outputs/azure-s4-first-batch-20261011`.
 Next implementation: executable own-map S4 adapter and frozen commands; preserve the preparation plan and historical cohorts.

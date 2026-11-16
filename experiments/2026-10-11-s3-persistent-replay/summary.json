@@ -50,9 +50,9 @@
     "full_raw_retrieved": 20,
     "local_sha256_verified_files": 69796,
     "all_hashes_match": true,
-    "local_root": "<home>/projects/ugrp/outputs/oracle-runs",
+    "local_root": "/Users/changmin/projects/ugrp/outputs/oracle-runs",
     "last_worker_fetch_utc": "2026-10-10T15:31:46.341922+00:00",
-    "verification_path": "<home>/projects/ugrp/outputs/s3fix20-control-20261011/local-raw-verification.json",
+    "verification_path": "/Users/changmin/projects/ugrp/outputs/s3fix20-control-20261011/local-raw-verification.json",
     "verification_sha256": "c36c580a2bcc70eac6c8fa3e0231e0641e99db1f8445566446c7fa8c16036b44"
   },
   "remaining_causes": {
@@ -114,14 +114,14 @@
     "PR_draft": true
   },
   "receipts": {
-    "<home>/projects/ugrp/outputs/oracle-runs/s3fix20-eval-r1/summary.json": "c12b354614a04684133749a578bc16182c23242aab193fbfeeb1b863ee1e4263",
-    "<home>/projects/ugrp/outputs/oracle-runs/s3fix20-eval-r1/endpoint-decomposition.json": "b39b508bc3e1960b1cb7dbd6a58a0f1a6a59d1158490f87199c10cfb334c40cf",
-    "<home>/projects/ugrp/outputs/s3fix20-control-20261011/cohort.json": "dbf4be31554c8c830e79e849be4e3474c6ed3ec67e83647e223cdcf32672b795",
-    "<home>/projects/ugrp/outputs/s3fix20-control-20261011/initial-checks-live.json": "e96ae4b9c45610254ef5638f95c042a414389a7185e10f5c471154912d9582cb",
-    "<home>/projects/ugrp/outputs/s3fix20-control-20261011/source-verification.json": "a36d1eb5003eac2e0bb0479cf4a48df0de15ae5f4dc970dc5f355012538b98d2",
-    "<home>/projects/ugrp/outputs/s3fix20-control-20261011/cache-dedup.json": "c4f515097685d1a39c0f634e3c2add45d35284b1b5e7b348149a35849e2910a8",
-    "<home>/projects/ugrp/outputs/s3fix20-control-20261011/cache-dedup-small.json": "73ffa6346ffc2988b107394ac04f05a3c5f62bbfeaf74adaaca96df7a1671816",
-    "<home>/projects/ugrp/outputs/s3fix20-control-20261011/record-detail.json": "1933bc9a7c0dbaa145874fdb5bbd12910c62f85a5b833f7c645034e0911b80d5"
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix20-eval-r1/summary.json": "c12b354614a04684133749a578bc16182c23242aab193fbfeeb1b863ee1e4263",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix20-eval-r1/endpoint-decomposition.json": "b39b508bc3e1960b1cb7dbd6a58a0f1a6a59d1158490f87199c10cfb334c40cf",
+    "/Users/changmin/projects/ugrp/outputs/s3fix20-control-20261011/cohort.json": "dbf4be31554c8c830e79e849be4e3474c6ed3ec67e83647e223cdcf32672b795",
+    "/Users/changmin/projects/ugrp/outputs/s3fix20-control-20261011/initial-checks-live.json": "e96ae4b9c45610254ef5638f95c042a414389a7185e10f5c471154912d9582cb",
+    "/Users/changmin/projects/ugrp/outputs/s3fix20-control-20261011/source-verification.json": "a36d1eb5003eac2e0bb0479cf4a48df0de15ae5f4dc970dc5f355012538b98d2",
+    "/Users/changmin/projects/ugrp/outputs/s3fix20-control-20261011/cache-dedup.json": "c4f515097685d1a39c0f634e3c2add45d35284b1b5e7b348149a35849e2910a8",
+    "/Users/changmin/projects/ugrp/outputs/s3fix20-control-20261011/cache-dedup-small.json": "73ffa6346ffc2988b107394ac04f05a3c5f62bbfeaf74adaaca96df7a1671816",
+    "/Users/changmin/projects/ugrp/outputs/s3fix20-control-20261011/record-detail.json": "1933bc9a7c0dbaa145874fdb5bbd12910c62f85a5b833f7c645034e0911b80d5"
   },
   "n": 20,
   "by_option": {
@@ -168,7 +168,7 @@
     "original_sha256": "e79e978532a41a3c8878e220237ee39444865729fd2e173fe50aad88eaee80d6",
     "attempt": 3,
     "conditions": "pair c0-c5 + cyan c0/c3/c4/c5, both off/integer_ticks_v1; A setdown; seed14201+condition",
-    "command_receipt": "<home>/projects/ugrp/outputs/s3fix20-control-20261011/preregistration.json",
+    "command_receipt": "/Users/changmin/projects/ugrp/outputs/s3fix20-control-20261011/preregistration.json",
     "command_receipt_sha256": "b089523c015f998e99cbd7270a3d41bebd10f46a25e3b02ec872f4d2f88f4cab",
     "initial_check_wall_s": 180,
     "criteria": "pair: exactly12 nonzero first-leg carry commands per robot; matching mirrored commands/common timestamps; first-leg static endpoint error<=20mm. Setdown: original s3fix18 floor>=.1N, COM<=25mm, |vz|<=20mm/s, tilt<10deg for>=.20SIM after both full-open; zero physical/host/controller terminal. Cyan: unchanged alignment/grasp/lift/carry>=20mm regression; no pair pulse contract or artificial cyan final-stage bypass."
@@ -196,7 +196,7 @@
       "first_leg_endpoint_error_m": null,
       "raw": {
         "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-off-cyan-c0-r3/raw",
-        "local": "<home>/projects/ugrp/outputs/oracle-runs/s3fix19-off-cyan-c0-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-off-cyan-c0-r3/raw",
         "manifest_sha256": "25069b830b25139891ab5e7e067d8a5bc2e57420b0d93b012dff4c73a805d9d7",
         "files": 3640,
         "local_sha256_verified": true
@@ -237,7 +237,7 @@
       "first_leg_endpoint_error_m": null,
       "raw": {
         "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-off-cyan-c3-r3/raw",
-        "local": "<home>/projects/ugrp/outputs/oracle-runs/s3fix19-off-cyan-c3-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-off-cyan-c3-r3/raw",
         "manifest_sha256": "d9c7c5ee6e622e8842d8597afdca7c21286321df82ff280b7ebf1288ec253f4f",
         "files": 3640,
         "local_sha256_verified": true
@@ -278,7 +278,7 @@
       "first_leg_endpoint_error_m": null,
       "raw": {
         "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-off-cyan-c4-r3/raw",
-        "local": "<home>/projects/ugrp/outputs/oracle-runs/s3fix19-off-cyan-c4-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-off-cyan-c4-r3/raw",
         "manifest_sha256": "10b9c6694a4a50bbc9930ab0ee284b7cc5895f487a3e1d1f1f22d983d96ab00f",
         "files": 3640,
         "local_sha256_verified": true
@@ -319,7 +319,7 @@
       "first_leg_endpoint_error_m": null,
       "raw": {
         "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-off-cyan-c5-r3/raw",
-        "local": "<home>/projects/ugrp/outputs/oracle-runs/s3fix19-off-cyan-c5-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-off-cyan-c5-r3/raw",
         "manifest_sha256": "5dbe8e545612d4b7ecc3d1110aca04edd89b758dd66421d0f64f811980ac1048",
         "files": 3640,
         "local_sha256_verified": true
@@ -364,7 +364,7 @@
       "command_sync": true,
       "raw": {
         "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-off-pair-c0-r3/raw",
-        "local": "<home>/projects/ugrp/outputs/oracle-runs/s3fix19-off-pair-c0-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-off-pair-c0-r3/raw",
         "manifest_sha256": "a45474e727f9e732b11e2e368c6bca5196abcdc824e9725d6365635697d6eaa9",
         "files": 3375,
         "local_sha256_verified": true
@@ -423,7 +423,7 @@
       "command_sync": true,
       "raw": {
         "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-off-pair-c1-r3/raw",
-        "local": "<home>/projects/ugrp/outputs/oracle-runs/s3fix19-off-pair-c1-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-off-pair-c1-r3/raw",
         "manifest_sha256": "5ddbd6b12853bb2a0897e7a3cdea69113656e6bf18433b21b23620f52717d843",
         "files": 3345,
         "local_sha256_verified": true
@@ -482,7 +482,7 @@
       "command_sync": true,
       "raw": {
         "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-off-pair-c2-r3/raw",
-        "local": "<home>/projects/ugrp/outputs/oracle-runs/s3fix19-off-pair-c2-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-off-pair-c2-r3/raw",
         "manifest_sha256": "5899b5f2e31722f341426c233959143835b7c6e4dee17a9e487a16e6d0cddbe1",
         "files": 3434,
         "local_sha256_verified": true
@@ -541,7 +541,7 @@
       "command_sync": true,
       "raw": {
         "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-off-pair-c3-r3/raw",
-        "local": "<home>/projects/ugrp/outputs/oracle-runs/s3fix19-off-pair-c3-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-off-pair-c3-r3/raw",
         "manifest_sha256": "4d9021235bf3428d7ff5ad0a4e8109cffcdbe38ac3e6f27511116dc1a018710d",
         "files": 3464,
         "local_sha256_verified": true
@@ -600,7 +600,7 @@
       "command_sync": true,
       "raw": {
         "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-off-pair-c4-r3/raw",
-        "local": "<home>/projects/ugrp/outputs/oracle-runs/s3fix19-off-pair-c4-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-off-pair-c4-r3/raw",
         "manifest_sha256": "0dfd9064b12747bf307a829c862fa868e020e70dbafffba0ac198af070a0e90f",
         "files": 3315,
         "local_sha256_verified": true
@@ -659,7 +659,7 @@
       "command_sync": true,
       "raw": {
         "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-off-pair-c5-r3/raw",
-        "local": "<home>/projects/ugrp/outputs/oracle-runs/s3fix19-off-pair-c5-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-off-pair-c5-r3/raw",
         "manifest_sha256": "5bdd131cc2cae6142c58ccf5440e6835968cca216efb7c9874dd6d9895664569",
         "files": 3405,
         "local_sha256_verified": true
@@ -714,7 +714,7 @@
       "first_leg_endpoint_error_m": null,
       "raw": {
         "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-on-cyan-c0-r3/raw",
-        "local": "<home>/projects/ugrp/outputs/oracle-runs/s3fix19-on-cyan-c0-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-on-cyan-c0-r3/raw",
         "manifest_sha256": "b81ad79bd706d921ce3ed6837688ad0659a0736f753b8c968fc752a94fc62587",
         "files": 3640,
         "local_sha256_verified": true
@@ -755,7 +755,7 @@
       "first_leg_endpoint_error_m": null,
       "raw": {
         "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-on-cyan-c3-r3/raw",
-        "local": "<home>/projects/ugrp/outputs/oracle-runs/s3fix19-on-cyan-c3-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-on-cyan-c3-r3/raw",
         "manifest_sha256": "d8b29c3bd1d8b0e11f363465ca28e3056214f204121a46787707ffd8fba1a5d4",
         "files": 3640,
         "local_sha256_verified": true
@@ -796,7 +796,7 @@
       "first_leg_endpoint_error_m": null,
       "raw": {
         "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-on-cyan-c4-r3/raw",
-        "local": "<home>/projects/ugrp/outputs/oracle-runs/s3fix19-on-cyan-c4-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-on-cyan-c4-r3/raw",
         "manifest_sha256": "a618be6b87199e62b8d5798560eb3127620f0d97c253fb0ac0f7734ec96cb82d",
         "files": 3640,
         "local_sha256_verified": true
@@ -837,7 +837,7 @@
       "first_leg_endpoint_error_m": null,
       "raw": {
         "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-on-cyan-c5-r3/raw",
-        "local": "<home>/projects/ugrp/outputs/oracle-runs/s3fix19-on-cyan-c5-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-on-cyan-c5-r3/raw",
         "manifest_sha256": "e68ffe9ee7d021ae347440303e958ae06920994c5cabde44adbd3f5c0694c009",
         "files": 3640,
         "local_sha256_verified": true
@@ -882,7 +882,7 @@
       "command_sync": true,
       "raw": {
         "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-on-pair-c0-r3/raw",
-        "local": "<home>/projects/ugrp/outputs/oracle-runs/s3fix19-on-pair-c0-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-on-pair-c0-r3/raw",
         "manifest_sha256": "70823e1e10a63d1fb2eb0264625826c5b0269dbe7452f7eb6c145b7e7cb1b355",
         "files": 3375,
         "local_sha256_verified": true
@@ -941,7 +941,7 @@
       "command_sync": true,
       "raw": {
         "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-on-pair-c1-r3/raw",
-        "local": "<home>/projects/ugrp/outputs/oracle-runs/s3fix19-on-pair-c1-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-on-pair-c1-r3/raw",
         "manifest_sha256": "c7b46966bcca7ad114a091bb0a9ccd450c211fd41734b425678078f6e0cfca29",
         "files": 3345,
         "local_sha256_verified": true
@@ -1000,7 +1000,7 @@
       "command_sync": true,
       "raw": {
         "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-on-pair-c2-r3/raw",
-        "local": "<home>/projects/ugrp/outputs/oracle-runs/s3fix19-on-pair-c2-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-on-pair-c2-r3/raw",
         "manifest_sha256": "f28182ad45417bb9db6d90e22155e44ab052b3d418b7e21d66936e3cd84b2c11",
         "files": 3434,
         "local_sha256_verified": true
@@ -1059,7 +1059,7 @@
       "command_sync": true,
       "raw": {
         "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-on-pair-c3-r3/raw",
-        "local": "<home>/projects/ugrp/outputs/oracle-runs/s3fix19-on-pair-c3-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-on-pair-c3-r3/raw",
         "manifest_sha256": "797271e07dd824105977ce0daa46cd0147f1dbee9f0ec6e36f113ca8e9cef968",
         "files": 3464,
         "local_sha256_verified": true
@@ -1118,7 +1118,7 @@
       "command_sync": true,
       "raw": {
         "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-on-pair-c4-r3/raw",
-        "local": "<home>/projects/ugrp/outputs/oracle-runs/s3fix19-on-pair-c4-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-on-pair-c4-r3/raw",
         "manifest_sha256": "0943869f23b14c3a117595b3cd2d6a350e9faad77b8a5d409cc9ef47b1d03b49",
         "files": 3315,
         "local_sha256_verified": true
@@ -1177,7 +1177,7 @@
       "command_sync": true,
       "raw": {
         "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-on-pair-c5-r3/raw",
-        "local": "<home>/projects/ugrp/outputs/oracle-runs/s3fix19-on-pair-c5-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-on-pair-c5-r3/raw",
         "manifest_sha256": "4a88d9ad7e7de25a965187a6231ec1683c7de4a662979b78279729d641cae4c9",
         "files": 3405,
         "local_sha256_verified": true

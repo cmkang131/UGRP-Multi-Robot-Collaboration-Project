@@ -1,7 +1,7 @@
 """Mac: combine per-VM collected JSON into experiments summary.json."""
 import json, statistics, sys, hashlib
 from pathlib import Path
-O = Path('<home>/projects/ugrp/outputs/azure-vm-bench-20261012')
+O = Path('/Users/changmin/projects/ugrp/outputs/azure-vm-bench-20261012')
 vms = json.loads((O/'vms.json').read_text())
 out = {}
 for short, info in vms.items():

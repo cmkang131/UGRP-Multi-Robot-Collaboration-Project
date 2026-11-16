@@ -86,7 +86,7 @@ natural 타임아웃 2개의 usage는 누락됐다. 금액은 제공되지 않�
   최종 none 155개 중 12개를 전 구간에 분산해 직접 검토했다. 별도 평가 시계열은
   전체를 집계했다. 전 프레임 육안 검토로 표현하지 않는다.
 
-원본은 `<home>/projects/ugrp-worktrees/research-e2e-bottleneck/outputs/`의
+원본은 `/Users/changmin/projects/ugrp-worktrees/research-e2e-bottleneck/outputs/`의
 `research-recovery-f00a799-natural`, `research-recovery-final-natural`,
 `research-recovery-final-none`에 있다. 각 폴더의 `motion.mp4`가 영상이며
 `result.json`, `evaluation-only.jsonl`, 로봇별 요청/응답/JPEG를 함께 보존한다.

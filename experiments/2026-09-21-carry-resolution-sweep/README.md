@@ -21,7 +21,7 @@
 
 ## 실행 경계
 
-- 학습: <account-2> 계정의 Colab CLI T4. Drive를 사용하지 않는다.
+- 학습: kcm0127 계정의 Colab CLI T4. Drive를 사용하지 않는다.
 - 먼저 512px/4프레임 2-update 진단으로 full-data cache/native 및 CPU 배포 오차와 자원을 측정한다.
   GPU/RAM/시간 한계가 있으면 실패를 보존하고 변경 사항을 별도로 기록한다. 배치/정밀도를 묵시적으로 낮추지 않는다.
 - source와 protocol은 커밋·해시 검증 후 업로드한다. 프로토콜 경로를 명시해 이전 8개 학습을 다시 실행하지 않는다.

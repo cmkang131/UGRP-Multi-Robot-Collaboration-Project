@@ -3,7 +3,7 @@ from map_replay import *
 from harness.self_pose_graph import wrap
 FIELDS=('t_est','x','y','yaw','std_xy_m','std_yaw_rad','last_fix_t')
 def main():
- plan=load(Path('<home>/projects/ugrp-wt/ownmap-s2/experiments/2026-10-09-ownmap-s2/registration-v2.json'));results=[]
+ plan=load(Path('/Users/changmin/projects/ugrp-wt/ownmap-s2/experiments/2026-10-09-ownmap-s2/registration-v2.json'));results=[]
  for p in plan['pairs']:
   truth=rows(Path(p['raw'])/'eval_only/trajectory.jsonl');ts=np.array([r['t'] for r in truth]);xy=np.array([r['robot_xyz_m'][:2] for r in truth]);yaw=np.unwrap([r['robot_yaw_rad'] for r in truth])
   reference={round(r['t'],6):r for r in load(Path(p['raw'])/'student_record.json')['poses']}

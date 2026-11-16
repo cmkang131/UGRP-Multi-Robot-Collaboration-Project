@@ -62,7 +62,7 @@ GT·측정 관절·심판·다른 로봇 입력이나 새 통신 통로를 추�
 s6 T11은 [PHYSICS_HANDOFF.md](PHYSICS_HANDOFF.md)의 별도 인수 범위로 남는다.
 단위 회귀를 새 실험 성과로 TensorBoard에 변환하지 않았다.
 
-로그는 `<home>/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/`에
+로그는 `/Users/changmin/projects/ugrp/outputs/cap-t04-can/review-i-fixes-20261001/`에
 로컬 보관한다. 커밋한 소형 요약/해시와 raw 원격 백업은 구분하며 Drive는 쓰지 않는다.
 이번 수정에서 `/private/tmp` 추출 디렉터리를 만들지 않았다.
 일반 PR CI를 실행하도록 정상 push하며 **PR #335는 draft로 유지하고 병합하지 않는다**.

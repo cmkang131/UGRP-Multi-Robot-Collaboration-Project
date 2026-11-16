@@ -3,7 +3,7 @@
   "observed_utc": "2026-09-24T13:44:25.557137+00:00",
   "tag": "models-20260924-action-act-v1",
   "model_id": "act-action-first-study-seed24-20260924",
-  "checkout": "<home>/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/checkout",
+  "checkout": "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/checkout",
   "steps": [
     {
       "name": "source-head",
@@ -14,8 +14,8 @@
       ],
       "exit_code": 0,
       "elapsed_wall_s": 0.015874374978011474,
-      "stdout": "<home>/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/source-head.stdout",
-      "stderr": "<home>/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/source-head.stderr",
+      "stdout": "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/source-head.stdout",
+      "stderr": "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/source-head.stderr",
       "stdout_sha256": "a93b810a915c419700089ac0021cf298e52bc5f30dc5a410cda9b31a5252db4f",
       "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
@@ -28,8 +28,8 @@
       ],
       "exit_code": 0,
       "elapsed_wall_s": 0.2806596250156872,
-      "stdout": "<home>/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/source-clean.stdout",
-      "stderr": "<home>/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/source-clean.stderr",
+      "stdout": "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/source-clean.stdout",
+      "stderr": "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/source-clean.stderr",
       "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
@@ -43,12 +43,12 @@
         "fetch",
         "act-action-first-study-seed24-20260924",
         "--output",
-        "<home>/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/installed"
+        "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/installed"
       ],
       "exit_code": 0,
       "elapsed_wall_s": 7.408901332993992,
-      "stdout": "<home>/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/network-fetch.stdout",
-      "stderr": "<home>/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/network-fetch.stderr",
+      "stdout": "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/network-fetch.stdout",
+      "stderr": "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/network-fetch.stderr",
       "stdout_sha256": "3005ece708031381d7667ab28a3a45d93013a0ef9873d45e9cccf0c8313a14d7",
       "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
@@ -62,37 +62,37 @@
         "verify",
         "act-action-first-study-seed24-20260924",
         "--path",
-        "<home>/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/installed"
+        "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/installed"
       ],
       "exit_code": 0,
       "elapsed_wall_s": 0.11443416701513343,
-      "stdout": "<home>/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/full-file-verify.stdout",
-      "stderr": "<home>/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/full-file-verify.stderr",
+      "stdout": "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/full-file-verify.stdout",
+      "stderr": "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/full-file-verify.stderr",
       "stdout_sha256": "5dc0de74ebccde6b47e485a99d5aad3dd830b866d61b9ad9a3e6ec30dec2fdff",
       "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
       "name": "actual-act-worker",
       "command": [
-        "<home>/Project-Runtimes/ugrp/.venv-reference-act/bin/python",
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-reference-act/bin/python",
         "-m",
         "scripts.carry_input_worker",
         "--model-dir",
-        "<home>/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/installed/act",
+        "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/installed/act",
         "--torch-threads",
         "2"
       ],
       "exit_code": 0,
       "elapsed_wall_s": 3.8442517499788664,
-      "stdout": "<home>/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/actual-act-worker.stdout",
-      "stderr": "<home>/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/actual-act-worker.stderr",
+      "stdout": "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/actual-act-worker.stdout",
+      "stderr": "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/actual-act-worker.stderr",
       "stdout_sha256": "c311f13f7d0e66d09e7dc2fa04c0a2463715840f82ef90ed2775ee5e757fb8f1",
       "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
       "name": "artifact-tests",
       "command": [
-        "<home>/projects/ugrp/.venv-sim-worker-mac/bin/python",
+        "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
         "-m",
         "pytest",
         "-q",
@@ -100,8 +100,8 @@
       ],
       "exit_code": 0,
       "elapsed_wall_s": 0.9012656249979045,
-      "stdout": "<home>/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/artifact-tests.stdout",
-      "stderr": "<home>/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/artifact-tests.stderr",
+      "stdout": "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/artifact-tests.stdout",
+      "stderr": "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/artifact-tests.stderr",
       "stdout_sha256": "36748f831019e619ac15382103e92bb7b033f5dfe997946035f77e857bfaa059",
       "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
@@ -111,14 +111,14 @@
   "release_source_sha": "d31440045d649df3af4a6dad6c1d36df6578e2b0",
   "fetch": {
     "id": "act-action-first-study-seed24-20260924",
-    "path": "<home>/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/installed",
+    "path": "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/installed",
     "verified_files": 18,
     "verified_bytes": 54390431,
     "installed": true
   },
   "verify": {
     "id": "act-action-first-study-seed24-20260924",
-    "path": "<home>/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/installed",
+    "path": "/Users/changmin/projects/ugrp/outputs/act-action-training-20260924/model-release-tools/download-verification-v1/installed",
     "verified_files": 18,
     "verified_bytes": 54390431
   },

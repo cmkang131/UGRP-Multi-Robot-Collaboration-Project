@@ -42,7 +42,7 @@ GT/TOP 평가 자료 변이는 네 조건에서 공개 자기 요청/명령을 �
 exact source/환경/해시와 실패한 초기 검사도 `VERIFICATION.json`에 기록했다.
 공용 잠금은 `run_ci_tests.run_locked`로 정상 획득·반환했다. 검사 시간은 성능 비교가 아니다.
 구문 검사·원본 파일 보존·pytest는 각각 분리해 보고한다. 실패한 첫 검사도 원본 JUnit에 남긴다.
-raw 검증 파일은 `<home>/projects/ugrp/outputs/e2e-p02-mixed/`에 로컬 보관한다.
+raw 검증 파일은 `/Users/changmin/projects/ugrp/outputs/e2e-p02-mixed/`에 로컬 보관한다.
 Git에 있는 해시는 raw 원격 백업이 아니다. 기존 raw·bundle·snapshot을 삭제하거나 덮어쓰지 않는다.
 
 ## 인계·남은 일

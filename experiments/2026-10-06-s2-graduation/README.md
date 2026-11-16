@@ -67,7 +67,7 @@
 null 잠금에서 owner codex/branch codex/s2-graduation/purpose `S2 graduation`/자기 셸 PID로
 acquire하고 자기 자식·watchdog 정리 후 release한다. 한 번에 한 시뮬레이션, nice 0,
 `NO_BG_NICE`; 최대 900 SIM초/10800 wall초. 전체 계획의 상한은 14회이며 반복 실패 시 조기 종료한다.
-raw는 `<home>/projects/ugrp/outputs/s2-graduation-<sha8>-s<seed>-<slot>-<stage>`에만 쓴다.
+raw는 `/Users/changmin/projects/ugrp/outputs/s2-graduation-<sha8>-s<seed>-<slot>-<stage>`에만 쓴다.
 실행 전 여유 35.55 GiB 확인. 매 실행 여유 10 GiB 미만이면 HOST_ERROR로 보존하며 시작하지 않는다.
 원본 삭제·덮어쓰기·Drive 업로드 없음. local raw와 GitHub 기록을 구분한다.
 기존 Codex worktree 수가 상한을 넘었지만 사용자 지정 새 worktree와 다른 작업 보존을 위해

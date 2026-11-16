@@ -95,7 +95,7 @@
 - 72 case / 144 robot 최대값이 기존 raw `sigma_yaw_max`와 **144/144 일치**. 전 case 정책·override·종료 hold·최대값 phase·명령 없음 검사 통과. 사용한 원본 291개와 고정 소스 blob 15개의 SHA-256은 [yaw_sigma_summary.json](yaw_sigma_summary.json)에 기록했다. 읽은 원본은 분석 전후 해시 일치.
 - 고정 소스 AST에서 순수 gate 정의만 분리해 검사: 5°/4°에서 52.19 mrad와 4.5° 허용, 5.01° 즉시 차단, 0.6 s 뒤 상태 전이, 기본 singleton 유지. 기존 관련 회귀 정의는 [`test_zone_pair_v6h.py:70–74,192–230,322–327`](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/4c6b439f3f7c9a147c901f8b260a1e214d4eb396/tests/test_zone_pair_v6h.py#L322-L327). 이 작업에서 기존 controller 테스트 전체나 물리 인수 재생을 실행했다는 뜻은 아니다.
 - 다른 출력 폴더에 독립 재실행하여 CSV 2개와 summary JSON의 바이트 일치를 확인했다. 그림은 104,380 B(<1 MiB), 통계 그림만 새로 만들었고 카메라 영상 렌더는 하지 않았다.
-- raw: `<home>/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930`; 봉인 산출물: `<home>/projects/ugrp/outputs/v6h1-sealed-analysis-v2-20261001`. 로컬 원본 보관이며 원격 raw 백업은 아니다. [원 결과 PR #349](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/349), [실행 후보 PR #292](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/292), [원 결과와 봉인 해시](README.md).
+- raw: `/Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930`; 봉인 산출물: `/Users/changmin/projects/ugrp/outputs/v6h1-sealed-analysis-v2-20261001`. 로컬 원본 보관이며 원격 raw 백업은 아니다. [원 결과 PR #349](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/349), [실행 후보 PR #292](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/292), [원 결과와 봉인 해시](README.md).
 
 ```sh
 # 저장된 자료만 재집계. 기존 결과를 덮어쓰지 않는 새 출력 경로 사용.

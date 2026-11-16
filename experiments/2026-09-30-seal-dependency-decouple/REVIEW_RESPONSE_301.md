@@ -82,7 +82,7 @@ MuJoCo 3.12.0, pytest 9.1.1, macOS 27.2 arm64. 패키지 버전은 metadata로 �
 재현 명령:
 
 ```sh
-PYTHONPATH=. PYTHONDONTWRITEBYTECODE=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python - <<'PYTEST'
+PYTHONPATH=. PYTHONDONTWRITEBYTECODE=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python - <<'PYTEST'
 import os, sys
 from scripts.run_ci_tests import local_lock_root, run_locked
 files = [
@@ -115,7 +115,7 @@ PYTEST
 
 [검증 JSON](REVIEW_RESPONSE_301_validation.json)에 실행별 집계·환경·검사 소스 hash·
 원본 보존 hash·raw 로그/JUnit hash를 남겼다. raw는
-`<home>/projects/ugrp/outputs/seal-301-fix-20260930/`의 로컬 보관이며 원격 백업이 아니다.
+`/Users/changmin/projects/ugrp/outputs/seal-301-fix-20260930/`의 로컬 보관이며 원격 백업이 아니다.
 기존 `VALIDATION.md`/`validation.json`은 최초 구현 당시 기록으로 그대로 보존한다.
 
 로컬 물리·렌더·모델 호출·학습·raw 삭제·과거 봉인 재작성·#292 수정은 없다.

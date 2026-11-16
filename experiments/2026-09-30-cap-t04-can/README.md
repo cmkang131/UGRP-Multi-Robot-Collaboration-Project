@@ -39,14 +39,14 @@ skip은 명시적으로 제외한 기존 물리 host 검사 1개다. guard의 �
 받았고 can 의존 소스/입력 해시가 모두 같았다. 변경된 CI 수집기의 can glob도 1개 검사로 재확인했다.
 
 ```sh
-PY=<home>/projects/ugrp/.venv-sim-worker-mac/bin/python
+PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
 "$PY" -m pytest -q tests/test_zone_own_executor_can.py
 "$PY" -m pytest -q -p tests.pose_provider_no_physics \
   tests/test_zone_pair_registered_source.py tests/test_zone_study_source_pinning.py \
   tests/test_zone_own_executor.py tests/test_zone_own_executor_boundaries.py tests/test_zone_own_executor_guards.py
 "$PY" -m pytest -q tests/test_m1_owncam.py tests/test_zone_own_perception.py
 "$PY" experiments/2026-09-30-cap-t04-can/mutation_check.py \
-  --output <home>/projects/ugrp/outputs/cap-t04-can/mutation-NEW-ID
+  --output /Users/changmin/projects/ugrp/outputs/cap-t04-can/mutation-NEW-ID
 ```
 
 변이는 별도 Python 프로세스 안에서만 적용한다. 원통 검출 제거, 들기 증거 무시, 방출 증거 무시,

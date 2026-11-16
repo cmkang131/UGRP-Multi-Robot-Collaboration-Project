@@ -61,9 +61,9 @@ Mutation 실패는 실제 assertion 실패이며 실행/collection 오류를 검
 재현:
 
 ```sh
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
   experiments/2026-09-30-t06-crate-lug/offline_checks.py --output /absolute/NEW-offline
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
   experiments/2026-09-30-t06-crate-lug/mutation_check.py --output /absolute/NEW-mutations
 ```
 

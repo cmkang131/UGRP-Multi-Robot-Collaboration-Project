@@ -25,7 +25,7 @@ python3 experiments/2026-10-15-scenario-v7/build_v7.py
 ## 시험 기록과 한계
 
 ```sh
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_zone_study_scenarios_v7.py
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_zone_study_scenarios_v7.py
 ```
 
 최종 **3 passed / 실패·오류·skip 0 / 1.054초**. 세 시험은 전체 8개 설정의 교체·이전 버전 보존·정적 기하, XML fixture와 해시, 네 통신 조건(8×4)의 실제 요청 구성을 검사한다. MuJoCo·torch·물리 실행 모듈은 import 차단했다. XML은 기존 오프라인 시험과 같은 최소 robot/dispatch 템플릿을 사용하고 실제 벽·화물·복제·접촉 XML 변환을 적용했다. 네이티브 로봇 모델 전체의 컴파일 검증은 아니다.
@@ -36,7 +36,7 @@ python3 experiments/2026-10-15-scenario-v7/build_v7.py
 |---|---|---|
 | test_vocabulary_expectation | 1 | 어휘 목록은 종류뿐 아니라 주문·화물 ID도 포함한다. 종류는 주문표에서 검사하고 어휘에는 제외된 종류가 없는지 검사하도록 시험을 수정했다. 제품 동작 결함은 아니다. |
 
-초기 2통과·1실패, 수정 뒤 3통과, XML quaternion 검사를 더한 최종 3통과를 모두 `summary.json.test_attempts`에 원본 경로·SHA-256과 함께 보존했다. 원본은 `<home>/projects/ugrp/outputs/scenario-v7-nocrate/pytest-{initial,final,verified}.xml`에 있다. v6 파일 8개는 기준 커밋의 blob과 바이트 비교했다.
+초기 2통과·1실패, 수정 뒤 3통과, XML quaternion 검사를 더한 최종 3통과를 모두 `summary.json.test_attempts`에 원본 경로·SHA-256과 함께 보존했다. 원본은 `/Users/changmin/projects/ugrp/outputs/scenario-v7-nocrate/pytest-{initial,final,verified}.xml`에 있다. v6 파일 8개는 기준 커밋의 blob과 바이트 비교했다.
 
 검증은 유한한 정적 검사만 수행했다. 경로 탐색·시간 상한을 새로 만들지 않았고, 계획기·거부 원장·cap_end 동작도 바꾸지 않았다. 전체 경로의 연속 sweep·동적 막힘 이후 우회·여러 화물 적재 순서는 미검증이다. Mac 물리·렌더·모델 호출·GCP 실행은 모두 0회이며 실제 파지·운반 성공을 주장하지 않는다.
 

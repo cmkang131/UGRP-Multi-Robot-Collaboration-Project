@@ -48,7 +48,7 @@ v6e 소스 해시 불일치는 별도로 재현했다.
 
 공용 `scripts.run_ci_tests.run_locked` 잠금을 사용하고 다른 작업의 잠금·프로세스는
 변경하지 않았다. 모든 pytest raw와 새 더미 SQLite/JUnit은
-`<home>/projects/ugrp/outputs/e2e-p05-dialogue/review-fixes-20260930T122615Z/`에
+`/Users/changmin/projects/ugrp/outputs/e2e-p05-dialogue/review-fixes-20260930T122615Z/`에
 로컬 보존한다. 원격 raw 백업을 뜻하지 않는다.
 
 정상 GitHub CI를 수행하며 취소·건너뛰기 표식은 사용하지 않는다. 최종 HEAD의

@@ -43,7 +43,7 @@
 
 ### 1·3. 은퇴 (`scripts/agent_worktree.py retire`)
 
-- 무시된 `outputs/<이름>`은 기본 체크아웃의 **같은 상대 경로**(`<home>/projects/ugrp/outputs/<이름>`)로 옮겼다. 이미 있는 이름(`outputs/simulation-runs`)과 `outputs/` 밖의 무시 파일(`MUJOCO_LOG.TXT`, venv 링크)은 `outputs/retired-worktrees/<주인>-<이름>/`으로 옮겼다.
+- 무시된 `outputs/<이름>`은 기본 체크아웃의 **같은 상대 경로**(`/Users/changmin/projects/ugrp/outputs/<이름>`)로 옮겼다. 이미 있는 이름(`outputs/simulation-runs`)과 `outputs/` 밖의 무시 파일(`MUJOCO_LOG.TXT`, venv 링크)은 `outputs/retired-worktrees/<주인>-<이름>/`으로 옮겼다.
   - 예: `rgb-common-physical-recovery-20260923`(31,252개)과 `zone-team-a2-v2-20260925`는 `outputs/` 바로 아래로 옮겼다. `rgb-common-physical-recovery`의 `outputs/simulation-runs`(18개)는 `retired-worktrees/codex-rgb-common-physical-recovery/outputs/simulation-runs/`로 옮겼다.
 - 파일별 목록(경로·종류·크기·sha256)은 각 `outputs/retired-worktrees/<라벨>/MANIFEST.tsv`, 영수증은 `RETIRED.json`과 `outputs/retired-worktrees/retirements.jsonl`이다.
 - 미병합 Codex 9개(`archive_codex_worktree.py`)
@@ -109,12 +109,12 @@
   - `check_moves.py`: 참조 확인
   - `dedupe_outputs.py`: 항목 4a 계획·검증·요약
   - `summarize.py`: `applied.json` 생성
-- raw(로컬, 커밋 안 함): `<home>/projects/ugrp/outputs/disk-apply-20260926/`
+- raw(로컬, 커밋 안 함): `/Users/changmin/projects/ugrp/outputs/disk-apply-20260926/`
   - `census-before.json`, `disk-report-before.*`, `disk-report-after.*`, `before-df.txt`, `after-df.txt`, `moves-check.json`
   - `item1/`·`item3/`: dry run과 실행 영수증, 항목 전후 `df`
   - `item2/`: 영수증, 전후 status
   - `item4/`: fclones 그룹 105 MB, 계획, 사전 manifest, 로그, 검증, 요약, 솎기 후보
-- 보존본(로컬): `<home>/projects/ugrp/outputs/archive/codex-worktrees/<이름>-0926.{bundle,json}`. 원격 사본은 origin의 `codex/archive-*-0926` 브랜치 9개다.
+- 보존본(로컬): `/Users/changmin/projects/ugrp/outputs/archive/codex-worktrees/<이름>-0926.{bundle,json}`. 원격 사본은 origin의 `codex/archive-*-0926` 브랜치 9개다.
 - 로컬 raw만으로는 백업이 아니다. 이번 작업은 raw를 원격에 올리지 않았다.
 
 ## 남은 문제

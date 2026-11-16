@@ -96,7 +96,7 @@ alignment streak를 올리지 않는다. 두 로봇의 상태는 같은 enum 채
 
 ## 결과 보존과 제출
 
-primary `<home>/projects/ugrp/outputs/t08b-<후보SHA>-<새ID>/`에 source/input/environment,
+primary `/Users/changmin/projects/ugrp/outputs/t08b-<후보SHA>-<새ID>/`에 source/input/environment,
 raw JPEG(원본/전달본), commands/ACK, decisions/status, provider posterior·servo·history 인계,
 각 단계 SIM초와 terminal/failure, 평가 전용 GT/접촉, 영상, manifest SHA-256을 남긴다.
 실행 후6셀 전체 판정표와 미발동 fault·미도달 분모를 `experiments/` 새 기록으로 연결한다.

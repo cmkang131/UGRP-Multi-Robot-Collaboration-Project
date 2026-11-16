@@ -11,7 +11,7 @@ Mac의 기존 `.venv-sim-worker-mac`에서 `bash scripts/open_simulation.command
 
 ## 원본·해시
 
-원본 두 디렉터리는 작업 worktree의 `outputs/simulation-runs/`에 생성했고, 동일한 이름으로 기본 체크아웃의 `<home>/projects/ugrp/outputs/simulation-runs/`에 복사해 파일별 SHA-256을 대조했다(각 28개·31개 파일). 원본은 로컬 보관이며 원격 백업이 아니다.
+원본 두 디렉터리는 작업 worktree의 `outputs/simulation-runs/`에 생성했고, 동일한 이름으로 기본 체크아웃의 `/Users/changmin/projects/ugrp/outputs/simulation-runs/`에 복사해 파일별 SHA-256을 대조했다(각 28개·31개 파일). 원본은 로컬 보관이며 원격 백업이 아니다.
 
 | 실행 | 파일 | SHA-256 |
 | --- | --- | --- |

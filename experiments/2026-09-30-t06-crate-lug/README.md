@@ -69,13 +69,13 @@ primary main의 소스나 다른 feature worktree를 변경하지 않았다.
 CI 설정, 가상환경, 시뮬레이션 세션, 잠금을 생성/수정하지 않는다.
 
 ```sh
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
   experiments/2026-09-30-t06-crate-lug/offline_checks.py \
-  --output <home>/projects/ugrp/outputs/t06-crate-lug/offline-NEW
+  --output /Users/changmin/projects/ugrp/outputs/t06-crate-lug/offline-NEW
 
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
   experiments/2026-09-30-t06-crate-lug/mutation_check.py \
-  --output <home>/projects/ugrp/outputs/t06-crate-lug/mutations-NEW
+  --output /Users/changmin/projects/ugrp/outputs/t06-crate-lug/mutations-NEW
 ```
 
 최종 건수·JUnit/log 해시·검사 대상 소스 해시는 [verification.json](verification.json)에 둔다.

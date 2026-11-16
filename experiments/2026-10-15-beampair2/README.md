@@ -9,7 +9,7 @@ gcp1 원본 `/home/ugrp/ugrp-sim/runs/beampair1-gate-8318604-d79f04a3`에서
 [사전 거부 분포·재현 명령](original-summary.json): r1 대기121틱 중 r2 목표영역
 침범92틱, 다른 장애물0. 목표 signed gap 최저−0.133892m, 종료직전−0.002334m.
 이는 기존 inflated 모델 간 틈이며 실물 충돌/침투량이 아니다.
-운영 원장도 재확인했다: `<home>/projects/ugrp/outputs/e2e18-admin/gcp-reports/beampair1-d79f04a3-ops/funnel.json`.
+운영 원장도 재확인했다: `/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/beampair1-d79f04a3-ops/funnel.json`.
 후속 회수 후 시작7·success5·실패1·중단1이며 최초 보고의 확정5·성공4와 시점이 다르다.
 
 기존 몽타주를 직접 검토했다: r1/r2 각각0·4·8·11·15·19 SIM초, 총12장.
@@ -107,10 +107,10 @@ R1·R2 첫 성공 원본은 하위milestone 메타데이터로 보존하며 기�
 
 [새40회 대기열](gate40-queue.json): 전체 SHA·소스 해시·기존40개 frozen setup,
 8318604 맨 앞, 새 run 이름, 새 실행 토글, 절대경로 rejection_table을 연결했다.
-운영 사본은 `<home>/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-beampair2-f84b2c8a.json`.
+운영 사본은 `/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-beampair2-f84b2c8a.json`.
 `approved=false`, `submitted=false`, `ready=false`, `gate_measured_N=0`.
 **조정자가 pinned worktree를 만든다.** 예상 경로는
-`<home>/projects/ugrp-wt/beam-pair-gate-f84b2c8a`.
+`/Users/changmin/projects/ugrp-wt/beam-pair-gate-f84b2c8a`.
 기존d79 결과·R1/R2 탐색 성공은40회 결과에 더하지 않는다. 모든40개를 처음부터 다시 잰다.
 
 남은 활성화 전 조건: clean pin/전체해시,16동시 첫30 속도·원본 확인,

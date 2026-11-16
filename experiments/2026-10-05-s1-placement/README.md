@@ -71,7 +71,7 @@ S3에서 S2 제어기를 이 mixed scene의 `cyan_1`에 연결한다.
 이 worktree에서 오프라인 초기화를 확인한다:
 
 ```sh
-PYTHONPATH=. <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -c 'from sim.zone_environment_scene_provider import scenario_scene; s=scenario_scene("dev_s1lite",911); print(s.record())'
+PYTHONPATH=. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -c 'from sim.zone_environment_scene_provider import scenario_scene; s=scenario_scene("dev_s1lite",911); print(s.record())'
 ```
 
 다음은 **코디네이터가 sandbox 밖에서만** 수행할 유한 30 SIM초 정지·렌더 확인이다.
@@ -83,7 +83,7 @@ PYTHONPATH=. <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -c 'from sim.z
 새 물리 결과의 기록·TensorBoard 전환은 수행한 코디네이터의 후속 작업이다.
 
 ```sh
-UGRP_SCENARIO=dev_s1lite PYTHONPATH=. <home>/projects/ugrp/.venv-sim-worker-mac/bin/python - <<'PY'
+UGRP_SCENARIO=dev_s1lite PYTHONPATH=. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python - <<'PY'
 import hashlib, json, os, subprocess
 from datetime import datetime
 from pathlib import Path
@@ -92,7 +92,7 @@ from sim.zone_final_v3_scene import build_world
 
 assert not subprocess.check_output(['git', 'status', '--porcelain'], text=True).strip(), 'commit/freeze first'
 name = os.environ['UGRP_SCENARIO']
-out = Path('<home>/projects/ugrp/outputs/s1-placement') / (name + '-' + datetime.now().strftime('%Y%m%d-%H%M%S'))
+out = Path('/Users/changmin/projects/ugrp/outputs/s1-placement') / (name + '-' + datetime.now().strftime('%Y%m%d-%H%M%S'))
 out.mkdir(parents=True, exist_ok=False)
 scene = scenario_scene(name, 911)
 world = build_world(scene, 'cargo_noslip_v1', seed=911, width=640, height=480,
@@ -142,7 +142,7 @@ PY
 ## 2026-10-06 유한 정지·렌더 결과 (후속)
 
 - 실행 소스: `35034c5bb13cc189d70d39c599de3c14c3eea03e` (`codex/s1-placement`, PR #392). 실행 전/후 clean HEAD와 원격 SHA를 확인했다. 두 장면을 직렬로 각 1회 실행했으며 재실행·소스 수정은 없다.
-- 환경: 지정된 `<home>/projects/ugrp/.venv-sim-worker-mac/bin/python`, Python 3.12.13, MuJoCo 3.12.0, macOS, seed 911, `cargo_noslip_v1`, `noslip_iterations=10`, timestep 0.00025 s. DEV 배치 진단이며 시나리오의 연구 seed 601–603 결과가 아니다.
+- 환경: 지정된 `/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python`, Python 3.12.13, MuJoCo 3.12.0, macOS, seed 911, `cargo_noslip_v1`, `noslip_iterations=10`, timestep 0.00025 s. DEV 배치 진단이며 시나리오의 연구 seed 601–603 결과가 아니다.
 - README의 `scenario_scene → build_world → scene.setup → 30 s while/_physics_step_for → capture → close`를 그대로 실행했다. 사용자 지정 출력 경로로 `out`만 바꾸고, 평가 전용 qpos/quaternion/qvel/접촉 판독·추가 카메라 저장을 붙였다. 읽은 정답은 제어·명령·단계 전환에 전달하지 않았다. 원문/실제 실행 본문/평가 드라이버를 raw에 각각 보존했다.
 - 초기란 표준 `Scene.setup` 직후(time=1.3 s)다. setup에는 기존 reset 팔 접기 동작이 포함된다. 이후 30 SIM초(120,000 step, 종료 time=31.3 s)에 새 이동/팔 명령·controller·LLM 호출은 0회다. reset 동작까지 무명령이라고 해석하지 않는다.
 - 각 실행 직전 잠금 `status=null`을 확인했고 acquire의 purpose는 `S1 placement settle/render`였다. driver PID dev=97572, s1=97724, expected-minutes=5. `setopt NO_BG_NICE`, 실행 Python nice=0; `ugrp_session.py run s1-settle-35034c5b-dev/s1`이 자식을 관리했다. 둘 다 exit 0, 세션 종료·release 후 `status=null`을 확인했다. 다른 작업의 프로세스·worktree는 수정/종료하지 않았다.
@@ -179,11 +179,11 @@ wall은 평가 판독과 렌더 오버헤드를 포함하므로 속도 비교 �
 
 ### 출력·렌더·해시
 
-- dev_s1lite: `<home>/projects/ugrp/outputs/s1-placement-settle-35034c5b-dev_s1lite`
+- dev_s1lite: `/Users/changmin/projects/ugrp/outputs/s1-placement-settle-35034c5b-dev_s1lite`
   - `summary-eval-only.json` SHA-256: `f144b7da34f608ace3cc6cb5b577a68076bd046e19c62713dc3ca11b98aab111`
   - `files-sha256.json` SHA-256: `985ab2db203d93c36c7324bfb9fac1a993187f6977f30aa62e704313eb0e83a1`; 등록 파일 29개 전체 재계산 일치.
   - `evaluation-driver.py` SHA-256: `a2f7d7cd0b4ed88035e457237674c02c9d23f0bb6f5132eeb1f63cd9c2ff4720`; 원문 `readme-command-original.py`, 실제 본문 `readme-command-applied.py`, `receipt.json`, `environment.json`, `scene.xml`, `setup-private.json` 보존.
-- 전체 s1: `<home>/projects/ugrp/outputs/s1-placement-settle-35034c5b-s1_normal_mixed_v4`
+- 전체 s1: `/Users/changmin/projects/ugrp/outputs/s1-placement-settle-35034c5b-s1_normal_mixed_v4`
   - `summary-eval-only.json` SHA-256: `3a8437d14e973b3785032e9368c3b4274d5a1c2c736cfb628c5e0c4e59fdecc8`
   - `files-sha256.json` SHA-256: `413801a04838c734e9e0ef2bd04fea7b3dd2dee4564031c040f4c9184e03c870`; 등록 파일 29개 전체 재계산 일치.
   - `evaluation-driver.py` SHA-256: `a2f7d7cd0b4ed88035e457237674c02c9d23f0bb6f5132eeb1f63cd9c2ff4720`; 원문 `readme-command-original.py`, 실제 본문 `readme-command-applied.py`, `receipt.json`, `environment.json`, `scene.xml`, `setup-private.json` 보존.
@@ -208,10 +208,10 @@ wall은 평가 판독과 렌더 오버헤드를 포함하므로 속도 비교 �
 
 ### TensorBoard와 남은 범위
 
-- 새 snapshot: `<home>/projects/ugrp/outputs/tensorboard/1006-s1-placement-settle-35034c5b`, runs `dev-s911`, `s1-s911`; 기존 snapshot 원본 경로 중복 없음 확인 후 변환 2개/실패 0개.
-- 파생 뷰: `<home>/projects/ugrp/outputs/s1-placement-settle-35034c5b-tbviews`. `scripts/export_offline_audit.py`로 gate/침투/기울기/이동과 기록된 SIM·wall·명령·호출만 옮겼다. `evaluation/reported_success=1`은 위 DEV settle screen이며 운반 성공이 아니다. 모델 응답시간은 미기록이라 태그를 만들지 않았다.
+- 새 snapshot: `/Users/changmin/projects/ugrp/outputs/tensorboard/1006-s1-placement-settle-35034c5b`, runs `dev-s911`, `s1-s911`; 기존 snapshot 원본 경로 중복 없음 확인 후 변환 2개/실패 0개.
+- 파생 뷰: `/Users/changmin/projects/ugrp/outputs/s1-placement-settle-35034c5b-tbviews`. `scripts/export_offline_audit.py`로 gate/침투/기울기/이동과 기록된 SIM·wall·명령·호출만 옮겼다. `evaluation/reported_success=1`은 위 DEV settle screen이며 운반 성공이 아니다. 모델 응답시간은 미기록이라 태그를 만들지 않았다.
 - EventAccumulator 재판독과 실제 서버 scalar API에서 2 run × 11개 = 22개 값이 원본/파생 선언과 일치했고 HParams 이벤트도 존재했다. 공유 viewing root `outputs/tensorboard`, 세션 `tensorboard-s1-settle-1006`을 사용했다. JPG 정지 이미지만 요청/저장했으므로 새 MP4 등록/재생은 해당 없음이다. UI 확인 상태는 아래 최종 확인에 별도로 남긴다.
 - 이 기록은 raw의 원격 백업이 아니다. Git에는 이 요약·해시/경로를 보존하며 raw는 지정된 로컬 outputs에 유지한다. PR #392는 DRAFT 유지·병합하지 않는다. 실제 운반·접근/파지 도달성·S1 물리 졸업·S2 제어기 연결·본 연구 코호트는 미검증이다.
 
 - 최종 화면 확인: Chrome `강`의 기존 TensorBoard 탭에서 두 run을 선택하고 Time Series의 DEV 판정=1, SIM초=30, 명령=0, 호출=0을 확인했다. pin 5개를 적용했으며 최대 침투 카드의 최종 시각 재판독은 미확인(이벤트/API 값 검증은 완료)이다. 공유-root HParams 화면에는 scenario·새 침투/기울기 열이 없어, 제공된 outcome/seed/source_sha/판정/SIM/명령/호출 열만 적용했다. 새 S1 HParams 행/전체 열 구성은 UI 미확인으로 남긴다. 새 exporter·뷰어 변경으로 확장하지 않았다.
-- 저장된 [TensorBoard pin 링크](http://127.0.0.1:6006/?pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22evaluation%2Freported_success%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fsim_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fcommands%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fmax_penetration_mm%22%7D%5D&smoothing=0&runFilter=%5E1006-s1-placement-settle-35034c5b%2F#timeseries); 표시 설정은 기본 체크아웃 `outputs/tensorboard-view.json`의 `s1_placement_settle_20261006`에 자기 키만 추가했다. 검증 기록은 `<home>/projects/ugrp/outputs/s1-placement-settle-35034c5b-tb-verification.json`이다. viewer를 다시 열려면 이 worktree에서 `python3 scripts/ugrp_session.py run tensorboard-s1-settle-1006 -- <home>/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/run_tensorboard.py --logdir <home>/projects/ugrp/outputs/tensorboard`를 사용한다. 작업 종료 때 이번 viewer 세션만 정리한다.
+- 저장된 [TensorBoard pin 링크](http://127.0.0.1:6006/?pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22evaluation%2Freported_success%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fsim_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fcommands%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fmax_penetration_mm%22%7D%5D&smoothing=0&runFilter=%5E1006-s1-placement-settle-35034c5b%2F#timeseries); 표시 설정은 기본 체크아웃 `outputs/tensorboard-view.json`의 `s1_placement_settle_20261006`에 자기 키만 추가했다. 검증 기록은 `/Users/changmin/projects/ugrp/outputs/s1-placement-settle-35034c5b-tb-verification.json`이다. viewer를 다시 열려면 이 worktree에서 `python3 scripts/ugrp_session.py run tensorboard-s1-settle-1006 -- /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/run_tensorboard.py --logdir /Users/changmin/projects/ugrp/outputs/tensorboard`를 사용한다. 작업 종료 때 이번 viewer 세션만 정리한다.

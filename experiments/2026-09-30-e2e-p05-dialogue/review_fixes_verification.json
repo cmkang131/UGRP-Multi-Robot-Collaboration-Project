@@ -59,7 +59,7 @@
   "pre_fix_note": "red has 20 test-helper ID lookup failures plus B1/B2 counterexamples; red-corrected has 5 remaining rejected-reply ID lookup failures and 8 B1/B2 counterexamples. Helper errors are not product defects. All raw preserved.",
   "final_invocation": {
     "command": [
-      "<home>/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
       "-m",
       "pytest",
       "-q",
@@ -77,11 +77,11 @@
       "tests/test_zone_pair_registered_source.py",
       "tests/test_zone_pair_door_relax.py::test_registered_sources_are_not_touched_by_this_change",
       "--basetemp",
-      "<home>/projects/ugrp/outputs/e2e-p05-dialogue/review-fixes-20260930T122615Z/regressions/raw",
+      "/Users/changmin/projects/ugrp/outputs/e2e-p05-dialogue/review-fixes-20260930T122615Z/regressions/raw",
       "--junitxml",
-      "<home>/projects/ugrp/outputs/e2e-p05-dialogue/review-fixes-20260930T122615Z/regressions/junit.xml"
+      "/Users/changmin/projects/ugrp/outputs/e2e-p05-dialogue/review-fixes-20260930T122615Z/regressions/junit.xml"
     ],
-    "cwd": "<home>/projects/ugrp-wt/e2e-p05-dialogue",
+    "cwd": "/Users/changmin/projects/ugrp-wt/e2e-p05-dialogue",
     "head": "5411f5e8d29186c00b44c2731e9915583da39aae",
     "merge_head": "c12796676802ab54cad2f0635e3e96e911691c76",
     "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
@@ -118,16 +118,16 @@
     ]
   },
   "raw": {
-    "root": "<home>/projects/ugrp/outputs/e2e-p05-dialogue/review-fixes-20260930T122615Z",
+    "root": "/Users/changmin/projects/ugrp/outputs/e2e-p05-dialogue/review-fixes-20260930T122615Z",
     "files": 7388,
     "bytes": 186119505,
-    "manifest_path": "<home>/projects/ugrp/outputs/e2e-p05-dialogue/review-fixes-20260930T122615Z/raw_manifest.json",
+    "manifest_path": "/Users/changmin/projects/ugrp/outputs/e2e-p05-dialogue/review-fixes-20260930T122615Z/raw_manifest.json",
     "manifest_sha256": "c5a60e1e2c6372e438f70fe443f5c3296b1876c6682e9aa4aa7d68ec8dcd2c0b",
     "backup": "local only"
   },
   "lock": {
     "method": "scripts.run_ci_tests.run_locked",
-    "shared_root": "<home>/projects/ugrp/outputs/agent-locks",
+    "shared_root": "/Users/changmin/projects/ugrp/outputs/agent-locks",
     "released": true
   },
   "ci": "Normal GitHub CI after push; exact-head outcome will be reported in the PR comment. No cancellation or skip."

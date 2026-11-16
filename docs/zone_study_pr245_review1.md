@@ -1,7 +1,7 @@
 # PR #245 P1 수정 기록 — 2026-09-28
 
 검토·작업 기준 SHA는 `894de3dbf42b3dffa9fcc695d2b4f5a45e48f1a3`이다.
-검토 원문은 `/private/tmp/claude-501/-<home>-projects-ugrp/ecd247bf-a1a7-45d6-9190-dad34be56468/scratchpad/codex-245-review1.md`다.
+검토 원문은 `/private/tmp/claude-501/-Users-changmin-projects-ugrp/ecd247bf-a1a7-45d6-9190-dad34be56468/scratchpad/codex-245-review1.md`다.
 모델 호출·물리 step·Git 커밋·push·병합 없이 해당 worktree에서 수정했다.
 
 ## P1-1: 메시지 보류와 공통 결정 기회 분리
@@ -84,7 +84,7 @@ dialogue_window와 leader 역할 메타데이터를 명시적으로 제외하도
 관련 검사 실행 범위:
 
 ```sh
-OMP_NUM_THREADS=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
+OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
   tests/test_zone_study_multiturn.py tests/test_zone_study_integration.py \
   tests/test_zone_study_integration_pair.py tests/test_zone_study_source_pinning.py \
   tests/test_zone_study_integration_seams.py tests/test_zone_study_pair_delay.py \

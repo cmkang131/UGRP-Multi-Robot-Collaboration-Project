@@ -4,7 +4,7 @@
 하지 않았다. 실행 중인 공용 TensorBoard 서버(PID 9291/9293, 소유자 changmin, 9/22 시작)는
 재시작하지 않고 새 run이 실제로 서비스되는지만 확인했다.
 
-- **스냅샷:** `<home>/projects/ugrp/outputs/tensorboard/0926-zone-perception-noslip` (run 89개, 38 MB)
+- **스냅샷:** `/Users/changmin/projects/ugrp/outputs/tensorboard/0926-zone-perception-noslip` (run 89개, 38 MB)
 - **대시보드:** [http://127.0.0.1:6006](http://127.0.0.1:6006/?smoothing=0&runFilter=%5E0926-zone-perception-noslip/#timeseries) — 고정 카드·열·부분 뷰는 `outputs/tensorboard-view.json`의 `zone_perception_noslip_20260926`
 - **검증 기록:** [verification.json](verification.json) (`collection.json` SHA-256 `cf809741…`)
 

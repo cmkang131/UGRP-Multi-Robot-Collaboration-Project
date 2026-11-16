@@ -46,12 +46,12 @@ alias와 가져온 시험 파일이 #371 측정 커밋과 동일함을 Git blob�
 
 ## 검증·원본
 
-- Python: `<home>/projects/ugrp/.venv-sim-worker-mac/bin/python`.
+- Python: `/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python`.
 - 위 5개 파일: **126 passed in 224.94s**, `CI=true`, `OMP_NUM_THREADS=2`,
   legacy JUnit. 실제 명령·PID·부하 평균·종료 코드는 `local-selected-receipt.json`에 기록했다.
 - JSON의 기존 항목 보존과 shard의 정확히 한 번 포함·전체 합집합을 검사했다.
   `tests/test_ci_sharding.py`: **68 passed in 1.65s**. `git diff --check`도 통과했다.
-- 원본 경로: `<home>/projects/ugrp/outputs/ci-durations/pr392-20261006/`.
+- 원본 경로: `/Users/changmin/projects/ugrp/outputs/ci-durations/pr392-20261006/`.
   실패 로그, 회수 JUnit 7개와 SHA-256, 전후 shard 목록, 로컬 JUnit·로그,
   `duration-update-receipt.json`을 보존한다. push 뒤 CI 결과는 이 경로와 PR 코멘트에 남긴다.
   단위 시험 기록이므로 TensorBoard 연구 결과 snapshot 대상이 아니다.

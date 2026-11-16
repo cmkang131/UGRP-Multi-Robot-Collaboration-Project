@@ -33,7 +33,7 @@
 최초 정적 검증기의 중복 패턴 금지 가정은 양쪽 부모에 이미 있던 중복 4개를 발견해
 정확한 Counter 합집합 검사로 바로잡았다. 소스/테스트 수정은 필요하지 않았다.
 
-raw 경로: `<home>/projects/ugrp/outputs/e2e-p02-main-merge-20260930T141223Z`. 로컬 보관이며 원격 백업을 뜻하지 않는다.
+raw 경로: `/Users/changmin/projects/ugrp/outputs/e2e-p02-main-merge-20260930T141223Z`. 로컬 보관이며 원격 백업을 뜻하지 않는다.
 새 실험/학습/평가 코호트가 없어 TensorBoard 변환은 수행하지 않았다. Drive 작업 없음.
 GitHub CI와 실제 PR 병합 여부는 push 뒤 별도 확인하며, 이 기록은 전체 CI 통과나
 최종 v3/provider/v6h1 혼합 운반 성공을 주장하지 않는다.

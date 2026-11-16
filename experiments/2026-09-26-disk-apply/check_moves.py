@@ -7,9 +7,9 @@ the primary checkout. Every text blob on every local/remote ref is scanned for
 `<old worktree>/<path>`; a reference into moved data is resolved through the
 receipt's `moved[].path -> destination` (longest prefix) and checked on disk.
 
-    python3 experiments/2026-09-26-disk-apply/check_moves.py --repo <home>/projects/ugrp \
-        --receipts <home>/projects/ugrp/outputs/disk-apply-20260926/item1 \
-        --receipts <home>/projects/ugrp/outputs/disk-apply-20260926/item3 --output moves.json
+    python3 experiments/2026-09-26-disk-apply/check_moves.py --repo /Users/changmin/projects/ugrp \
+        --receipts /Users/changmin/projects/ugrp/outputs/disk-apply-20260926/item1 \
+        --receipts /Users/changmin/projects/ugrp/outputs/disk-apply-20260926/item3 --output moves.json
 """
 
 from __future__ import annotations

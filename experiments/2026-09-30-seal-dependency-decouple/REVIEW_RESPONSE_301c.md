@@ -72,18 +72,18 @@ blob을 사용했다고 검증 JSON에 명시한다. 기존 registration과 runn
 공용 catalog slice 제공은 여전히 후속 범위다.
 
 원본 로그·JUnit·변이·보존 감사 위치:
-`<home>/projects/ugrp/outputs/seal-review-301c-fix-20261001/`.
+`/Users/changmin/projects/ugrp/outputs/seal-review-301c-fix-20261001/`.
 이 raw는 로컬 보관이며 원격 백업이 아니다. GitHub에는 변경·검증 집계·hash를 보존한다.
 연구 실험 결과가 없으므로 TensorBoard 변환은 없고, UGRP 예외에 따라 Drive 작업도 없다.
 
 ```sh
-PYTHONPATH=. PYTHONDONTWRITEBYTECODE=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q --tb=short \
+PYTHONPATH=. PYTHONDONTWRITEBYTECODE=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q --tb=short \
   tests/test_seal_runtime_provenance.py tests/test_execution_dependency_contract.py \
   tests/test_seal_v2_review_301.py tests/test_seal_v2_fail_closed.py \
   tests/test_seal_v2_review_301b.py tests/test_seal_v2_review_301c.py \
   tests/test_zone_pair_registered_source.py tests/test_zone_study_source_pinning.py \
   tests/test_zone_pair_v6.py tests/test_rgb_execution_bundle.py \
   tests/test_ci_sharding.py tests/test_ci_host_lock.py tests/test_agent_lock.py tests/test_ugrp_session.py
-PYTHONPATH=. PYTHONDONTWRITEBYTECODE=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
+PYTHONPATH=. PYTHONDONTWRITEBYTECODE=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
   experiments/2026-09-30-seal-dependency-decouple/check_runtime_mutations.py --output /absolute/new-results
 ```

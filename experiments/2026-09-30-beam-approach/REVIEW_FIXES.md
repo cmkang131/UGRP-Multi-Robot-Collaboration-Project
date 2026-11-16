@@ -66,7 +66,7 @@ T08b 124개와 T08a 64개는 기존 CI glob/shard에서 각각 한 파일로 수
   `394f9cda5d67a9d1b94ad1688f39f5616fc00e7b`, 통합 HEAD는
   `0a8f0d4c`다. #315 `86847071f0332c23e5858c93607e2b0bbeb6dc98` 재병합은
   already up to date였다. 재조회에서도 새 커밋은 없고 #315 자체는 OPEN/draft·미병합이다.
-- 기존 `<home>/projects/ugrp/.venv-sim-worker-mac/bin/python` 사용:
+- 기존 `/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python` 사용:
   Python 3.12.13, pytest 9.1.1, NumPy 2.5.2, OpenCV 5.0.0.
 - 수정 소스 SHA-256: `334e5403542b4d9f3ab9c1ade4d7ebaa64422e9e69c134893ad7f322aacea959`.
   테스트·보존 검사·로그의 해시는 JSON에 별도 기록한다.
@@ -74,16 +74,16 @@ T08b 124개와 T08a 64개는 기존 CI glob/shard에서 각각 한 파일로 수
 ```sh
 PYTHONPATH=.:experiments/2026-09-30-beam-approach \
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 \
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -p offline_guard \
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -p offline_guard \
   tests/test_pair_navigation_beam_approach.py tests/test_pair_navigation_beam_initial_pose_plan.py \
   tests/test_zone_pair_registered_source.py tests/test_zone_study_source_pinning.py \
   tests/test_pair_owncam_approach.py tests/test_pair_passage_plan.py tests/test_zone_pair_status.py -q
 
-<home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
   experiments/2026-09-30-beam-approach/mutation_check.py /absolute/NEW-output
 ```
 
-로컬 원본은 `<home>/projects/ugrp/outputs/t08b-review-fixes-20261001/`에 보존했다.
+로컬 원본은 `/Users/changmin/projects/ugrp/outputs/t08b-review-fixes-20261001/`에 보존했다.
 이 자료는 로컬 보관이며 원격 raw 백업이 아니다. UGRP 예외에 따라 Drive를 사용하지 않았다.
 `/private/tmp` 추출 디렉터리는 만들지 않았다.
 

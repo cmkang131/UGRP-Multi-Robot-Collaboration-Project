@@ -39,7 +39,7 @@ DAG 유효성만으로 자원 교착 부재나 물리 안전을 보장하지 않
 
 ## 보존과 재현
 
-로컬 원본: `<home>/projects/ugrp/outputs/multi-object-pilot-20260920-v1/`.
+로컬 원본: `/Users/changmin/projects/ugrp/outputs/multi-object-pilot-20260920-v1/`.
 그 안에 임무 12개와 합의/계획/예약 이벤트 파일 36개가 있다. 파일별 해시는
 [artifact-hashes.json](artifact-hashes.json), 모든 조건 결과는 [results.json](results.json),
 소스·조건·임무 hash는 [manifest.json](manifest.json), 환경은 [environment.json](environment.json)에 보존했다.

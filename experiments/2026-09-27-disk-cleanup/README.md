@@ -79,7 +79,7 @@
 
 | worktree | 상태 | 이유 |
 |---|---|---|
-| `<home>/projects/ugrp` | 기본 체크아웃 | 지시로 제외. 182커밋 뒤처져 있지만 갱신도 하지 않았다(병합 담당 에이전트 영역) |
+| `/Users/changmin/projects/ugrp` | 기본 체크아웃 | 지시로 제외. 182커밋 뒤처져 있지만 갱신도 하지 않았다(병합 담당 에이전트 영역) |
 | `ugrp-wt/codex-pair-executor` (#235) | 열린 PR | 지시로 제외(Codex 작업 중). cwd 프로세스 88개, 2시간 내 수정 |
 | `ugrp-wt/kiro-study-integration` (#229) | 열린 PR | 지시로 제외. cwd 23개, 2시간 내 수정 |
 | `ugrp-wt/codex-vision-loc-v4` | main 조상 | 지시로 제외(Codex 작업 중). 미추적 26개, cwd 7개 |
@@ -197,10 +197,10 @@
 ### 실행 (사용자가 직접)
 
 ```sh
-cd <home>/projects/ugrp-wt/claude-disk-cleanup-0927
+cd /Users/changmin/projects/ugrp-wt/claude-disk-cleanup-0927
 python3 experiments/2026-09-27-disk-cleanup/plan_raw_b.py execute \
-  --summary <home>/projects/ugrp/outputs/disk-cleanup-20260927/raw-b/receipt-b-summary.json \
-  --log <home>/projects/ugrp/outputs/disk-cleanup-20260927/raw-b/execute-log.jsonl \
+  --summary /Users/changmin/projects/ugrp/outputs/disk-cleanup-20260927/raw-b/receipt-b-summary.json \
+  --log /Users/changmin/projects/ugrp/outputs/disk-cleanup-20260927/raw-b/execute-log.jsonl \
   --i-confirm-permanent-deletion
 ```
 
@@ -219,12 +219,12 @@ python3 experiments/2026-09-27-disk-cleanup/plan_raw_b.py execute \
   - `drop_done_groups.py`: 이미 clone한 그룹을 빼는 사전 필터
   - `tiers.py`: 등급 분류(읽기 전용)
   - `footprint/`: 보고서 전·후, `df`, 캐시 목록, 중복 제거 계획·요약, sparse 영수증, 등급 결과
-- raw(로컬, 커밋 안 함): `<home>/projects/ugrp/outputs/disk-cleanup-20260927/`
+- raw(로컬, 커밋 안 함): `/Users/changmin/projects/ugrp/outputs/disk-cleanup-20260927/`
   - `disk-report-before.json` sha256 d46aae0e…, `disk-report-after.json` 8afd4250…
   - `retire/`: dry run·실행 영수증 10개와 전후 `df`
   - `dedupe/`: `fclones-group.json` 5fbf685d…, `dedupe-plan.json` d21183bb…, `dedupe-manifest-before.tsv` b3b1d248…, 로그, 검증
 - 은퇴 영수증: `outputs/retired-worktrees/claude0927-<이름>/{MANIFEST.tsv,RETIRED.json}`
-- 도구 실행 방법: 기본 체크아웃이 182커밋 뒤처져 `scripts/agent_worktree.py`가 없었다. 그래서 origin/main의 `scripts/`(`git archive`)와 이 worktree의 사본을 `--primary <home>/projects/ugrp`로 실행했다. 이 worktree는 claude 상한(8개)을 넘어 `--allow-over-cap`(사유 기록)으로 만들었고, 은퇴 뒤 claude 소유는 이 worktree를 포함해 8개다.
+- 도구 실행 방법: 기본 체크아웃이 182커밋 뒤처져 `scripts/agent_worktree.py`가 없었다. 그래서 origin/main의 `scripts/`(`git archive`)와 이 worktree의 사본을 `--primary /Users/changmin/projects/ugrp`로 실행했다. 이 worktree는 claude 상한(8개)을 넘어 `--allow-over-cap`(사유 기록)으로 만들었고, 은퇴 뒤 claude 소유는 이 worktree를 포함해 8개다.
 
 ## 참고 자료
 

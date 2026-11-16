@@ -3,7 +3,7 @@
 제어·인식·최종 테스트 소스 커밋: `157d655a33cf196cdcfc2fd854e1b0cb642d4b97`. 이후 기록 커밋은 문서/JSON만 바꾼다.
 
 물리 step 0, renderer 0, 모델 호출 0. 호스트 잠금을 획득하지 않았다.
-실행 Python은 기존 `<home>/projects/ugrp/.venv-sim-worker-mac/bin/python`이다.
+실행 Python은 기존 `/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python`이다.
 환경·source closure·파일별 SHA-256은 [verification.json](verification.json)에 있다.
 이 숫자는 코드 회귀검사이며 로봇 trial/성공률이 아니다.
 
@@ -68,7 +68,7 @@ assertion을 추가해 경계 분기 자체를 검사하도록 했다. 생산 �
 
 ## 원본·남은 확인
 
-- 로컬 로그/JUnit/mutation 원본: `<home>/projects/ugrp/outputs/t05-tile/offline/`.
+- 로컬 로그/JUnit/mutation 원본: `/Users/changmin/projects/ugrp/outputs/t05-tile/offline/`.
   `regression-01`과 `latest-base-01`은 stdout/JUnit 전체를 보존했다.
   최초 165건은 도구가 반환한 종료 코드/요약만 보존했고 전체 stdout 파일은 없다.
 - Git에는 JSON 요약·source/log hash·이 문서·재실행 스크립트를 보존한다.

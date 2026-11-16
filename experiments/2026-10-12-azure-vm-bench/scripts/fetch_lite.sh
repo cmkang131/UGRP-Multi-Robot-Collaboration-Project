@@ -1,6 +1,6 @@
 #!/bin/bash
 set -euo pipefail
-v=$1; O=<home>/projects/ugrp/outputs/azure-vm-bench-20261012/runs-${v}; mkdir -p "$O"
+v=$1; O=/Users/changmin/projects/ugrp/outputs/azure-vm-bench-20261012/runs-${v}; mkdir -p "$O"
 F=(--exclude='*.jpg' --exclude='*.jpeg' --exclude='*.png' --exclude='*.npz' --exclude='*.npy' --exclude='*.mp4' --exclude='*-request.json' --exclude='rgb/' --exclude='request_images/')
 RSH="ssh -F $PWD/ssh_config"
 rsync -a -e "$RSH" "${F[@]}" --include="vmb-${v}-*/***" --include="vmb-attempt1-relay400/***" --exclude='*' "vmb-${v}:ugrp-sim/runs/" "$O/"

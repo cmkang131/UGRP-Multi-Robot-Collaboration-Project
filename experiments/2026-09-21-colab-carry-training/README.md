@@ -88,7 +88,7 @@ Colab VM이 종료되기 전에 회수해야 하며 자동 영구 백업은 아�
 
 ## CLI 전환 및 첫 결과 회수
 
-Mac 잠금 해제 후 `google-colab-cli 0.6.0`을 <account-2> 계정의 기존 T4 런타임에 연결했다.
+Mac 잠금 해제 후 `google-colab-cli 0.6.0`을 kcm0127 계정의 기존 T4 런타임에 연결했다.
 새 VM 생성·학습 재시작·Drive 조회/마운트 없이 기존 커널의 `fullproc`과 파일을 확인했다.
 PyPI 기본 의존성 `jupyter-kernel-client 1.0.2`에는 CLI가 요구하는 `KernelClient`가 없어
 첫 `exec`는 실패했다. 공식 저장소 `uv.lock`의 Google Colab fork를 고정해 해결했다.
@@ -127,7 +127,7 @@ atol/rtol 1e-4 이내(최대 3.7551e-6)였다. 이는 전송·모델 로드 검�
 이미 Mac에 회수한 5개 모델은 해시가 일치했고, 해당 모델의 train/dev 처음·마지막
 20개 native 예측 검사도 통과했다(최대 차이 5.1260e-6).
 
-같은 <account-2> 계정에 CLI 세션 `ugrp-carry-recovery`를 생성해 T4를 다시 할당했다.
+같은 kcm0127 계정에 CLI 세션 `ugrp-carry-recovery`를 생성해 T4를 다시 할당했다.
 소스 `9aef6bb`, canonical 데이터, 전체 설치 패키지 freeze가 최초 런타임과 일치한다.
 소스/데이터 ZIP과 5개 완성 모델 ZIP을 업로드해 원격 해시를 대조한 뒤 복구했다.
 CLI의 큰 파일 단일 업로드는 HTTP 400으로 실패했고, Jupyter Contents API의
@@ -145,7 +145,7 @@ SIGKILL로 종료됐다. cgroup의 oom/oom_kill 카운터는 0이어서 원인�
 
 원본은 로컬 `outputs/colab-results/`와 `outputs/colab-verification/runtime-recovery.json`에
 보관한다. Drive나 원격 raw 백업을 사용하지 않았다. 물리 평가는 별도 고정 checkout
-`<home>/.codex/worktrees/carry-input-physics/ugrp`의 소스
+`/Users/changmin/.codex/worktrees/carry-input-physics/ugrp`의 소스
 `e00435b82470e722196858728bc22c1123ef730c`에서 기존 36-run 프로토콜을 사용한다.
 8개 모델의 전체 회수·해시 및 Mac native 검증을 통과해야 시작하며, 시작 전 소유 Colab VM을 종료한다.
 

@@ -21,7 +21,7 @@ from pathlib import Path
 import subprocess
 import sys
 
-ARCHIVE_DIR = Path("<home>/projects/ugrp/outputs/archive/codex-worktrees")
+ARCHIVE_DIR = Path("/Users/changmin/projects/ugrp/outputs/archive/codex-worktrees")
 
 
 def git(cwd: Path, *args: str, check: bool = True) -> subprocess.CompletedProcess:

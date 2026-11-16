@@ -1,6 +1,6 @@
 # PR #392 최신 main 통합과 병합 준비 (2026-10-06)
 
-작업 경로는 `<home>/projects/ugrp-wt/s1-placement`, 브랜치는
+작업 경로는 `/Users/changmin/projects/ugrp-wt/s1-placement`, 브랜치는
 `codex/s1-placement`다. 기본 체크아웃의 `AGENTS.md`와 README·현재 상태·
 CONTRIBUTING을 먼저 읽었다. 사용자 지시에 따라 PR은 DRAFT 유지·병합 금지다.
 
@@ -27,7 +27,7 @@ CONTRIBUTING을 먼저 읽었다. 사용자 지시에 따라 PR은 DRAFT 유지�
 
 ```sh
 CI=true OMP_NUM_THREADS=2 PYTHONPATH=. \
-  <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
+  /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
   tests/test_zone_final_env.py tests/test_zone_environment_registry.py \
   tests/test_zone_scenario_scene.py tests/test_ci_sharding.py \
   --junitxml=outputs/pr392-main-merge-20261006/selected-tests.xml

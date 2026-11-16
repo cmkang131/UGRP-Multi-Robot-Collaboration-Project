@@ -92,13 +92,13 @@ PR #328을 포함한 main `6a57435e6e24f7f7a3f082d9458d3d9f4ebc010e`을
 재현 명령(물리 없음):
 
 ```sh
-PYTHONPATH=. PYTHONDONTWRITEBYTECODE=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
+PYTHONPATH=. PYTHONDONTWRITEBYTECODE=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
   tests/test_seal_runtime_provenance.py \
   tests/test_execution_dependency_contract.py tests/test_seal_v2_review_301.py \
   tests/test_seal_v2_fail_closed.py tests/test_zone_pair_registered_source.py \
   tests/test_zone_study_source_pinning.py tests/test_zone_pair_v6.py \
   tests/test_rgb_execution_bundle.py tests/test_ci_sharding.py tests/test_ci_host_lock.py
-PYTHONDONTWRITEBYTECODE=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
+PYTHONDONTWRITEBYTECODE=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
   experiments/2026-09-30-seal-dependency-decouple/check_runtime_mutations.py \
   --output /absolute/new-mutation-results
 ```
@@ -108,7 +108,7 @@ PYTHONDONTWRITEBYTECODE=1 <home>/projects/ugrp/.venv-sim-worker-mac/bin/python \
 `pytest -q -rx --rootdir=. --confcutdir=. -p no:cacheprovider test_seal_v2_review_301b.py`로 실행했다.
 
 원본 로그·JUnit·변이 결과·파일별 보존 감사는
-`<home>/projects/ugrp/outputs/seal-runtime-provenance-20260930/resume-01/`에 있다.
+`/Users/changmin/projects/ugrp/outputs/seal-runtime-provenance-20260930/resume-01/`에 있다.
 이 raw는 로컬 보관이다. GitHub에는 코드·문서·검증 집계·해시를 보존하며 raw의 원격
 백업을 뜻하지 않는다. 최종 소스·로그 해시는 `RUNTIME_PROVENANCE_validation.json`에 있다.
 

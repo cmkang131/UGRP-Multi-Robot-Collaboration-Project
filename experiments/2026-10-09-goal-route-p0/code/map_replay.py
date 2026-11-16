@@ -7,7 +7,7 @@ from harness import goal_route_p0 as adapter
 from harness.self_pulse_odom import command_odometry
 from harness.self_odom_grid import transform
 from harness.grid_acceleration import using
-BASE=Path('<home>/projects/ugrp/outputs')
+BASE=Path('/Users/changmin/projects/ugrp/outputs')
 OUT=BASE/'goal-route-p0-v1';EXP=Path(__file__).resolve().parents[1]
 def load(p):return json.loads(Path(p).read_text())
 def rows(p):return [json.loads(l) for l in Path(p).read_text().splitlines()]

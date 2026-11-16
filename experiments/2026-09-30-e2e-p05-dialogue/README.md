@@ -68,7 +68,7 @@ Refs #222, #223. READINESS S10/S12의 계약 검사이며, 실제 모델 효과�
 24개 다회 조합은 로봇당 3턴, fake 요청 216건·전달 메시지 72건이며 pair status 해시가 하나로 같다.
 JUnit 시간 135.13초는 검증 실행 기록이며 성능 비교/벤치마크 결과가 아니다.
 명령·환경·파일별 소스 해시·JUnit/원본 manifest 해시는 [verification.json](verification.json)에 기록했다.
-최종 원본은 `<home>/projects/ugrp/outputs/e2e-p05-dialogue/regressions-icl2cruy/`다.
+최종 원본은 `/Users/changmin/projects/ugrp/outputs/e2e-p05-dialogue/regressions-icl2cruy/`다.
 수정 전 재송신 반례 `check-et73pr5q/`와 중간 회귀의 651 passed/5 failed 원본
 `regressions-ysxi0fte/`도 같은 상위 디렉터리에 보존했다.
 `scripts.run_ci_tests.run_locked`로 공용 잠금을 획득한 뒤 pytest를 시작한다.
