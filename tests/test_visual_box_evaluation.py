@@ -43,6 +43,30 @@ class VisualBoxEvaluationTests(unittest.TestCase):
         self.assertTrue(result["active_constraints_during_episode"])
         self.assertFalse(result["gates"]["constraint_free"])
 
+    def test_missing_constraint_evidence_is_not_constraint_free(self):
+        for missing_at in ("initial", "middle", "final"):
+            with self.subTest(missing_at=missing_at):
+                snapshots = {
+                    "initial": state((0.0, 0.0, 0.015)),
+                    "middle": state((0.1, 0.0, 0.060)),
+                    "final": state((0.30, 0.0, 0.015), stable=True),
+                }
+                del snapshots[missing_at]["cargo"]["box"]["constraints_active"]
+                with self.assertRaisesRegex(ValueError, "missing constraints_active"):
+                    evaluate_visual_box_transfer(
+                        snapshots["initial"], snapshots["final"], [snapshots["middle"]]
+                    )
+
+    def test_explicit_empty_constraint_map_is_not_missing_evidence(self):
+        initial = state((0.0, 0.0, 0.015))
+        middle = state((0.1, 0.0, 0.060))
+        final = state((0.30, 0.0, 0.015), stable=True)
+        for snapshot in (initial, middle, final):
+            snapshot["cargo"]["box"]["constraints_active"] = {}
+        result = evaluate_visual_box_transfer(initial, final, [middle])
+        self.assertTrue(result["success"])
+        self.assertTrue(result["gates"]["constraint_free"])
+
     def test_final_height_does_not_replace_peak_lift_and_stability(self):
         result = evaluate_visual_box_transfer(
             state((0.0, 0.0, 0.015)),

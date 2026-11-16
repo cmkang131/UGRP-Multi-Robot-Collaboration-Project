@@ -1,0 +1,263 @@
+{
+  "scope": "synthetic evaluator contract tests, not physical reproduction",
+  "cases": [
+    {
+      "source": "harness/grasp_act_rollout.py",
+      "case": "normal_lift",
+      "expected": true,
+      "actual": true,
+      "matches": true,
+      "detail": null
+    },
+    {
+      "source": "harness/grasp_act_rollout.py",
+      "case": "no_lift",
+      "expected": false,
+      "actual": false,
+      "matches": true,
+      "detail": null
+    },
+    {
+      "source": "harness/grasp_act_rollout.py",
+      "case": "one_finger_unloaded",
+      "expected": false,
+      "actual": false,
+      "matches": true,
+      "detail": null
+    },
+    {
+      "source": "harness/grasp_act_rollout.py",
+      "case": "tilted",
+      "expected": false,
+      "actual": false,
+      "matches": true,
+      "detail": null
+    },
+    {
+      "source": "harness/grasp_act_rollout.py",
+      "case": "exact_lift_thresholds_and_3s",
+      "expected": true,
+      "actual": true,
+      "matches": true,
+      "detail": null
+    },
+    {
+      "source": "harness/grasp_act_rollout.py",
+      "case": "only_2_9s",
+      "expected": false,
+      "actual": false,
+      "matches": true,
+      "detail": null
+    },
+    {
+      "source": "harness/grasp_act_rollout.py",
+      "case": "no_samples",
+      "expected": false,
+      "actual": false,
+      "matches": true,
+      "detail": null
+    },
+    {
+      "source": "harness/grasp_act_rollout.py",
+      "case": "missing_100ms_sample",
+      "expected": "ValueError",
+      "actual": "ValueError",
+      "matches": true,
+      "detail": "evaluation clock gap"
+    },
+    {
+      "source": "harness/grasp_act_rollout.py",
+      "case": "missing_force_field",
+      "expected": "TypeError",
+      "actual": "TypeError",
+      "matches": true,
+      "detail": "LiftScore.add() missing 1 required keyword-only argument: 'forces'"
+    },
+    {
+      "source": "harness/grasp_act_rollout.py",
+      "case": "weld_active",
+      "expected": "ValueError",
+      "actual": "ValueError",
+      "matches": true,
+      "detail": "WELD_ACTIVE"
+    },
+    {
+      "source": "harness/grasp_act_rollout.py",
+      "case": "normal_release",
+      "expected": true,
+      "actual": true,
+      "matches": true,
+      "detail": null
+    },
+    {
+      "source": "harness/grasp_act_rollout.py",
+      "case": "drop_then_grounding",
+      "expected": false,
+      "actual": false,
+      "matches": true,
+      "detail": null
+    },
+    {
+      "source": "harness/grasp_act_rollout.py",
+      "case": "release_moving",
+      "expected": false,
+      "actual": false,
+      "matches": true,
+      "detail": null
+    },
+    {
+      "source": "harness/grasp_act_rollout.py",
+      "case": "release_lower_clearance_boundary",
+      "expected": true,
+      "actual": true,
+      "matches": true,
+      "detail": null
+    },
+    {
+      "source": "harness/grasp_act_rollout.py",
+      "case": "release_upper_clearance_boundary",
+      "expected": true,
+      "actual": true,
+      "matches": true,
+      "detail": null
+    },
+    {
+      "source": "harness/grasp_act_rollout.py",
+      "case": "release_force_exact_0_1N",
+      "expected": false,
+      "actual": false,
+      "matches": true,
+      "detail": null
+    },
+    {
+      "source": "solo_pipeline/harness/grasp_act_rollout.py",
+      "case": "normal_lift",
+      "expected": true,
+      "actual": true,
+      "matches": true,
+      "detail": null
+    },
+    {
+      "source": "solo_pipeline/harness/grasp_act_rollout.py",
+      "case": "no_lift",
+      "expected": false,
+      "actual": false,
+      "matches": true,
+      "detail": null
+    },
+    {
+      "source": "solo_pipeline/harness/grasp_act_rollout.py",
+      "case": "one_finger_unloaded",
+      "expected": false,
+      "actual": false,
+      "matches": true,
+      "detail": null
+    },
+    {
+      "source": "solo_pipeline/harness/grasp_act_rollout.py",
+      "case": "tilted",
+      "expected": false,
+      "actual": false,
+      "matches": true,
+      "detail": null
+    },
+    {
+      "source": "solo_pipeline/harness/grasp_act_rollout.py",
+      "case": "exact_lift_thresholds_and_3s",
+      "expected": true,
+      "actual": true,
+      "matches": true,
+      "detail": null
+    },
+    {
+      "source": "solo_pipeline/harness/grasp_act_rollout.py",
+      "case": "only_2_9s",
+      "expected": false,
+      "actual": false,
+      "matches": true,
+      "detail": null
+    },
+    {
+      "source": "solo_pipeline/harness/grasp_act_rollout.py",
+      "case": "no_samples",
+      "expected": false,
+      "actual": false,
+      "matches": true,
+      "detail": null
+    },
+    {
+      "source": "solo_pipeline/harness/grasp_act_rollout.py",
+      "case": "missing_100ms_sample",
+      "expected": "ValueError",
+      "actual": "ValueError",
+      "matches": true,
+      "detail": "evaluation clock gap"
+    },
+    {
+      "source": "solo_pipeline/harness/grasp_act_rollout.py",
+      "case": "missing_force_field",
+      "expected": "TypeError",
+      "actual": "TypeError",
+      "matches": true,
+      "detail": "LiftScore.add() missing 1 required keyword-only argument: 'forces'"
+    },
+    {
+      "source": "solo_pipeline/harness/grasp_act_rollout.py",
+      "case": "weld_active",
+      "expected": "ValueError",
+      "actual": "ValueError",
+      "matches": true,
+      "detail": "WELD_ACTIVE"
+    },
+    {
+      "source": "solo_pipeline/harness/grasp_act_rollout.py",
+      "case": "normal_release",
+      "expected": true,
+      "actual": true,
+      "matches": true,
+      "detail": null
+    },
+    {
+      "source": "solo_pipeline/harness/grasp_act_rollout.py",
+      "case": "drop_then_grounding",
+      "expected": false,
+      "actual": false,
+      "matches": true,
+      "detail": null
+    },
+    {
+      "source": "solo_pipeline/harness/grasp_act_rollout.py",
+      "case": "release_moving",
+      "expected": false,
+      "actual": false,
+      "matches": true,
+      "detail": null
+    },
+    {
+      "source": "solo_pipeline/harness/grasp_act_rollout.py",
+      "case": "release_lower_clearance_boundary",
+      "expected": true,
+      "actual": true,
+      "matches": true,
+      "detail": null
+    },
+    {
+      "source": "solo_pipeline/harness/grasp_act_rollout.py",
+      "case": "release_upper_clearance_boundary",
+      "expected": true,
+      "actual": true,
+      "matches": true,
+      "detail": null
+    },
+    {
+      "source": "solo_pipeline/harness/grasp_act_rollout.py",
+      "case": "release_force_exact_0_1N",
+      "expected": false,
+      "actual": false,
+      "matches": true,
+      "detail": null
+    }
+  ],
+  "passed": 32,
+  "total": 32
+}

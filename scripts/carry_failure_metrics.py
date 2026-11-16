@@ -101,9 +101,18 @@ def outcome(output, exit_code, timed_out=False):
 
 def aggregate(jobs, rows):
     expected = {j['trial_id']: j for j in jobs}
+    if len(expected) != len(jobs):
+        raise ValueError('duplicate planned trial')
     actual = {r['trial_id']: r for r in rows}
     if len(actual) != len(rows) or not actual.keys() <= expected.keys():
         raise ValueError('duplicate or unplanned trial result')
+    # Reuse the frozen identity check from combine_matched_carry_shards here:
+    # direct reports and admission readback must not regroup an existing ID
+    # under a different condition/case/repeat. Legacy jobs may omit repeat.
+    for row in rows:
+        planned = expected[row['trial_id']]
+        if any(row.get(key) != planned.get(key) for key in ('case', 'condition', 'repeat')):
+            raise ValueError('trial metadata mismatch: ' + row['trial_id'])
     groups = {}
     for condition in sorted({j['condition'] for j in jobs}):
         planned = [j for j in jobs if j['condition'] == condition]

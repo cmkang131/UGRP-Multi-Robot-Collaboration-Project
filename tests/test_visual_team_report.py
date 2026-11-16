@@ -3,6 +3,7 @@ from pathlib import Path
 
 from scripts.render_visual_team_report import render, summarize_run
 from scripts.replay_gemini_team import _is_recorded_stop
+from scripts.evaluate_gemini_cohort import run_cohort
 
 
 def _write(path: Path, value) -> None:
@@ -84,3 +85,105 @@ def test_manifest_mode_and_blocked_not_started_lifecycle_are_preserved(tmp_path)
     assert "통신 모드 <strong>natural</strong>" in page
     assert "미시작" in page
     assert "0/0" in page
+
+
+def test_started_crash_without_artifacts_remains_in_attempt_denominator(tmp_path):
+    runs = [{"path": f"team-{seed}-none", "seed": seed, "communication": "none"}
+            for seed in (41, 42, 43)]
+    _write(tmp_path / "cohort-manifest.json", {"runs": runs})
+
+    def execute(run):
+        if run["seed"] == 41:
+            _run(tmp_path, run["path"], mode="none", success=True, messages=[])
+            return 0
+        return 2  # Child exits before it creates a result or trace directory.
+
+    state = run_cohort(tmp_path, runs, jobs=1, execute=execute)
+    summary = render(tmp_path, tmp_path / "index.html")
+    by_name = {run["name"]: run for group in summary["groups"].values() for run in group}
+    crashed = by_name["team-42-none"]
+    mode = summary["communication_modes"]["none"]
+    assert len(state["attempted"]) == summary["attempted_runs"] == mode["attempted_runs"] == 2
+    assert crashed["attempted"] and crashed["terminal"]
+    assert crashed["lifecycle"] == "operational_failure"
+    assert crashed["operational_failure"] == "PROCESS_EXIT_2"
+    assert crashed["success"] is None and not crashed["complete"]
+    assert by_name["team-43-none"]["lifecycle"] == "not_attempted"
+    assert mode["successful_runs"] == mode["operational_failed_runs"] == mode["not_attempted_runs"] == 1
+    assert summary["finished_runs"] == 2 and summary["unfinished_runs"] == 1
+    page = (tmp_path / "index.html").read_text()
+    assert "<tr><td>none</td><td>1/2</td><td>1/1</td><td>1</td><td>1</td>" in page
+    assert "성공 / 전체 시도" in page and "기록 성공 / 물리판정 기록" in page
+    assert "운영 실패" in page
+
+
+def test_started_only_without_exit_does_not_invent_terminal_failure(tmp_path):
+    _write(tmp_path / "cohort-manifest.json", {"runs": [
+        {"path": "team-41-none", "seed": 41, "communication": "none"}]})
+    _write(tmp_path / "cohort-status.json", {"status": "running", "started_runs": ["team-41-none"]})
+    summary = render(tmp_path, tmp_path / "index.html")
+    run = summary["groups"]["team3"][0]
+    assert run["lifecycle"] == "running" and run["attempted"]
+    assert not run["terminal"] and run["success"] is None
+    assert summary["operational_failed_runs"] == summary["finished_runs"] == 0
+
+
+def test_operational_failure_preserves_raw_success_but_does_not_count_it(tmp_path):
+    name = "team-41-none"
+    _run(tmp_path, name, mode="none", success=True, messages=[])
+    _write(tmp_path / "cohort-manifest.json", {"runs": [
+        {"path": name, "seed": 41, "communication": "none"}]})
+    _write(tmp_path / "cohort-status.json", {"status": "infrastructure_blocked",
+        "started_runs": [name], "attempted": [{"path": name, "returncode": 2,
+                                               "infrastructure_problem": "PROCESS_EXIT_2"}]})
+    summary = render(tmp_path, tmp_path / "index.html")
+    mode = summary["communication_modes"]["none"]
+    assert summary["groups"]["solo1"][0]["success"] is True
+    assert mode["recorded_successful_runs"] == mode["completed_runs"] == 1
+    assert mode["successful_runs"] == 0 and mode["operational_failed_runs"] == 1
+
+
+def test_truncated_result_is_terminal_operational_failure_with_unknown_physics(tmp_path):
+    runs = [{"path": "team-41-none", "seed": 41, "communication": "none"}]
+    _write(tmp_path / "cohort-manifest.json", {"runs": runs})
+
+    def execute(run):
+        folder = tmp_path / run["path"]
+        folder.mkdir()
+        (folder / "result.json").write_text('{"success":')
+        return 0
+
+    run_cohort(tmp_path, runs, jobs=1, execute=execute)
+    summary = render(tmp_path, tmp_path / "index.html")
+    run = summary["groups"]["team3"][0]
+    assert run["lifecycle"] == "operational_failure" and run["terminal"]
+    assert run["operational_failure"] == "INVALID_RESULT" and run["success"] is None
+    assert summary["attempted_runs"] == summary["finished_runs"] == 1
+    assert summary["results_available"] == summary["successful_runs"] == 0
+
+
+def test_non_utf8_result_keeps_failure_ledger_and_report_available(tmp_path):
+    runs = [{"path": f"team-{seed}-none", "seed": seed, "communication": "none"}
+            for seed in (41, 42)]
+    _write(tmp_path / "cohort-manifest.json", {"runs": runs})
+    corrupt = b"\xff\xfe\x00"
+
+    def execute(run):
+        folder = tmp_path / run["path"]
+        folder.mkdir()
+        (folder / "result.json").write_bytes(corrupt)
+        return 0
+
+    state = run_cohort(tmp_path, runs, jobs=1, execute=execute)
+    summary = render(tmp_path, tmp_path / "index.html")
+    by_name = {run["name"]: run for group in summary["groups"].values() for run in group}
+    assert state["blocking_reason"] == "INVALID_RESULT"
+    assert len(state["attempted"]) == summary["attempted_runs"] == 1
+    assert state["not_started"] == runs[1:]
+    assert by_name["team-41-none"]["operational_failure"] == "INVALID_RESULT"
+    assert by_name["team-41-none"]["success"] is None
+    assert by_name["team-42-none"]["lifecycle"] == "not_attempted"
+    assert summary["operational_failed_runs"] == summary["finished_runs"] == 1
+    assert summary["results_available"] == summary["successful_runs"] == 0
+    assert (tmp_path / "index.html").is_file()
+    assert (tmp_path / "team-41-none" / "result.json").read_bytes() == corrupt

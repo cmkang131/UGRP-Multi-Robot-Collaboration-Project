@@ -1,0 +1,894 @@
+{
+  "scope": "synthetic unit-level evidence, zero physics/model calls",
+  "cases": [
+    {
+      "case": "box_normal_success",
+      "expected_success": true,
+      "actual_success": true,
+      "verdict": {
+        "success": true,
+        "mode": "short_transfer",
+        "cargo_id": "box",
+        "max_box_height_m": 0.06,
+        "max_lift_above_initial_m": 0.045,
+        "planar_displacement_m": 0.3,
+        "final_stable": true,
+        "active_constraints_during_episode": false,
+        "constraint_samples": [
+          {
+            "r1": false
+          },
+          {
+            "r1": false
+          },
+          {
+            "r1": false
+          }
+        ],
+        "destination_evaluation_success": null,
+        "gates": {
+          "lift": true,
+          "transfer": true,
+          "final_stable": true,
+          "constraint_free": true
+        },
+        "thresholds": {
+          "minimum_lift_m": 0.04,
+          "minimum_planar_displacement_m": 0.25
+        },
+        "claim_scope": "single_box_lift_transfer_outcome_not_cooperation_proof"
+      },
+      "matches_expectation": true
+    },
+    {
+      "case": "box_drag_no_lift",
+      "expected_success": false,
+      "actual_success": false,
+      "verdict": {
+        "success": false,
+        "mode": "short_transfer",
+        "cargo_id": "box",
+        "max_box_height_m": 0.015,
+        "max_lift_above_initial_m": 0.0,
+        "planar_displacement_m": 0.3,
+        "final_stable": true,
+        "active_constraints_during_episode": false,
+        "constraint_samples": [
+          {
+            "r1": false
+          },
+          {
+            "r1": false
+          },
+          {
+            "r1": false
+          }
+        ],
+        "destination_evaluation_success": null,
+        "gates": {
+          "lift": false,
+          "transfer": true,
+          "final_stable": true,
+          "constraint_free": true
+        },
+        "thresholds": {
+          "minimum_lift_m": 0.04,
+          "minimum_planar_displacement_m": 0.25
+        },
+        "claim_scope": "single_box_lift_transfer_outcome_not_cooperation_proof"
+      },
+      "matches_expectation": true
+    },
+    {
+      "case": "box_exact_lift_and_distance_boundary",
+      "expected_success": true,
+      "actual_success": true,
+      "verdict": {
+        "success": true,
+        "mode": "short_transfer",
+        "cargo_id": "box",
+        "max_box_height_m": 0.055,
+        "max_lift_above_initial_m": 0.04,
+        "planar_displacement_m": 0.25,
+        "final_stable": true,
+        "active_constraints_during_episode": false,
+        "constraint_samples": [
+          {
+            "r1": false
+          },
+          {
+            "r1": false
+          },
+          {
+            "r1": false
+          }
+        ],
+        "destination_evaluation_success": null,
+        "gates": {
+          "lift": true,
+          "transfer": true,
+          "final_stable": true,
+          "constraint_free": true
+        },
+        "thresholds": {
+          "minimum_lift_m": 0.04,
+          "minimum_planar_displacement_m": 0.25
+        },
+        "claim_scope": "single_box_lift_transfer_outcome_not_cooperation_proof"
+      },
+      "matches_expectation": true
+    },
+    {
+      "case": "box_below_distance_boundary",
+      "expected_success": false,
+      "actual_success": false,
+      "verdict": {
+        "success": false,
+        "mode": "short_transfer",
+        "cargo_id": "box",
+        "max_box_height_m": 0.06,
+        "max_lift_above_initial_m": 0.045,
+        "planar_displacement_m": 0.249999,
+        "final_stable": true,
+        "active_constraints_during_episode": false,
+        "constraint_samples": [
+          {
+            "r1": false
+          },
+          {
+            "r1": false
+          },
+          {
+            "r1": false
+          }
+        ],
+        "destination_evaluation_success": null,
+        "gates": {
+          "lift": true,
+          "transfer": false,
+          "final_stable": true,
+          "constraint_free": true
+        },
+        "thresholds": {
+          "minimum_lift_m": 0.04,
+          "minimum_planar_displacement_m": 0.25
+        },
+        "claim_scope": "single_box_lift_transfer_outcome_not_cooperation_proof"
+      },
+      "matches_expectation": true
+    },
+    {
+      "case": "box_known_active_constraint",
+      "expected_success": false,
+      "actual_success": false,
+      "verdict": {
+        "success": false,
+        "mode": "short_transfer",
+        "cargo_id": "box",
+        "max_box_height_m": 0.06,
+        "max_lift_above_initial_m": 0.045,
+        "planar_displacement_m": 0.3,
+        "final_stable": true,
+        "active_constraints_during_episode": true,
+        "constraint_samples": [
+          {
+            "r1": false
+          },
+          {
+            "r1": true
+          },
+          {
+            "r1": false
+          }
+        ],
+        "destination_evaluation_success": null,
+        "gates": {
+          "lift": true,
+          "transfer": true,
+          "final_stable": true,
+          "constraint_free": false
+        },
+        "thresholds": {
+          "minimum_lift_m": 0.04,
+          "minimum_planar_displacement_m": 0.25
+        },
+        "claim_scope": "single_box_lift_transfer_outcome_not_cooperation_proof"
+      },
+      "matches_expectation": true
+    },
+    {
+      "case": "box_middle_constraint_record_missing",
+      "expected_success": false,
+      "actual_success": true,
+      "verdict": {
+        "success": true,
+        "mode": "short_transfer",
+        "cargo_id": "box",
+        "max_box_height_m": 0.06,
+        "max_lift_above_initial_m": 0.045,
+        "planar_displacement_m": 0.3,
+        "final_stable": true,
+        "active_constraints_during_episode": false,
+        "constraint_samples": [
+          {
+            "r1": false
+          },
+          {},
+          {
+            "r1": false
+          }
+        ],
+        "destination_evaluation_success": null,
+        "gates": {
+          "lift": true,
+          "transfer": true,
+          "final_stable": true,
+          "constraint_free": true
+        },
+        "thresholds": {
+          "minimum_lift_m": 0.04,
+          "minimum_planar_displacement_m": 0.25
+        },
+        "claim_scope": "single_box_lift_transfer_outcome_not_cooperation_proof"
+      },
+      "matches_expectation": false
+    },
+    {
+      "case": "box_all_constraint_records_missing",
+      "expected_success": false,
+      "actual_success": true,
+      "verdict": {
+        "success": true,
+        "mode": "short_transfer",
+        "cargo_id": "box",
+        "max_box_height_m": 0.06,
+        "max_lift_above_initial_m": 0.045,
+        "planar_displacement_m": 0.3,
+        "final_stable": true,
+        "active_constraints_during_episode": false,
+        "constraint_samples": [
+          {},
+          {},
+          {}
+        ],
+        "destination_evaluation_success": null,
+        "gates": {
+          "lift": true,
+          "transfer": true,
+          "final_stable": true,
+          "constraint_free": true
+        },
+        "thresholds": {
+          "minimum_lift_m": 0.04,
+          "minimum_planar_displacement_m": 0.25
+        },
+        "claim_scope": "single_box_lift_transfer_outcome_not_cooperation_proof"
+      },
+      "matches_expectation": false
+    },
+    {
+      "case": "box_explicit_empty_constraint_maps",
+      "expected_success": true,
+      "actual_success": true,
+      "verdict": {
+        "success": true,
+        "mode": "short_transfer",
+        "cargo_id": "box",
+        "max_box_height_m": 0.06,
+        "max_lift_above_initial_m": 0.045,
+        "planar_displacement_m": 0.3,
+        "final_stable": true,
+        "active_constraints_during_episode": false,
+        "constraint_samples": [
+          {},
+          {},
+          {}
+        ],
+        "destination_evaluation_success": null,
+        "gates": {
+          "lift": true,
+          "transfer": true,
+          "final_stable": true,
+          "constraint_free": true
+        },
+        "thresholds": {
+          "minimum_lift_m": 0.04,
+          "minimum_planar_displacement_m": 0.25
+        },
+        "claim_scope": "single_box_lift_transfer_outcome_not_cooperation_proof"
+      },
+      "matches_expectation": true
+    },
+    {
+      "case": "box_missing_final_stability",
+      "expected_success": false,
+      "actual_success": false,
+      "verdict": {
+        "success": false,
+        "mode": "short_transfer",
+        "cargo_id": "box",
+        "max_box_height_m": 0.06,
+        "max_lift_above_initial_m": 0.045,
+        "planar_displacement_m": 0.3,
+        "final_stable": false,
+        "active_constraints_during_episode": false,
+        "constraint_samples": [
+          {
+            "r1": false
+          },
+          {
+            "r1": false
+          },
+          {
+            "r1": false
+          }
+        ],
+        "destination_evaluation_success": null,
+        "gates": {
+          "lift": true,
+          "transfer": true,
+          "final_stable": false,
+          "constraint_free": true
+        },
+        "thresholds": {
+          "minimum_lift_m": 0.04,
+          "minimum_planar_displacement_m": 0.25
+        },
+        "claim_scope": "single_box_lift_transfer_outcome_not_cooperation_proof"
+      },
+      "matches_expectation": true
+    },
+    {
+      "case": "camera_normal_success",
+      "expected_success": true,
+      "actual_success": true,
+      "verdict": {
+        "success": true,
+        "gates": {
+          "valid_samples": true,
+          "required_phases": true,
+          "weld_off": true,
+          "grasp_hold": true,
+          "carry_continuity": true,
+          "carry_progress": true,
+          "transport_endpoint": true,
+          "lateral_drift": true,
+          "release_continuity": true,
+          "release_grounded_clear": true,
+          "release_stable": true
+        },
+        "reasons": [],
+        "metrics": {
+          "target_distance_m": 0.2,
+          "tolerance_m": 0.03,
+          "minimum_hold_s": 2.0,
+          "release_stable_s": 1.0,
+          "max_sample_gap_s": 0.15,
+          "sample_count": 40,
+          "grasp_hold_duration_s": 2.0,
+          "carry_start_to_end_progress_m": 0.2,
+          "final_displacement_m": 0.2,
+          "displacement_error_m": 0.0,
+          "lateral_drift_m": 0.0,
+          "release_hold_duration_s": 1.0,
+          "release_position_span_3d_m": 0.0
+        },
+        "scope": "sampled referee continuity only"
+      },
+      "matches_expectation": true
+    },
+    {
+      "case": "camera_one_robot_loses_contact",
+      "expected_success": false,
+      "actual_success": false,
+      "verdict": {
+        "success": false,
+        "gates": {
+          "valid_samples": true,
+          "required_phases": true,
+          "weld_off": true,
+          "grasp_hold": true,
+          "carry_continuity": false,
+          "carry_progress": true,
+          "transport_endpoint": true,
+          "lateral_drift": true,
+          "release_continuity": true,
+          "release_grounded_clear": true,
+          "release_stable": true
+        },
+        "reasons": [
+          "carry samples are missing, discontinuous, unlifted, non-bilateral, or welded"
+        ],
+        "metrics": {
+          "target_distance_m": 0.2,
+          "tolerance_m": 0.03,
+          "minimum_hold_s": 2.0,
+          "release_stable_s": 1.0,
+          "max_sample_gap_s": 0.15,
+          "sample_count": 40,
+          "grasp_hold_duration_s": 2.0,
+          "carry_start_to_end_progress_m": 0.2,
+          "final_displacement_m": 0.2,
+          "displacement_error_m": 0.0,
+          "lateral_drift_m": 0.0,
+          "release_hold_duration_s": 1.0,
+          "release_position_span_3d_m": 0.0
+        },
+        "scope": "sampled referee continuity only"
+      },
+      "matches_expectation": true
+    },
+    {
+      "case": "camera_exact_displacement_and_drift_boundary",
+      "expected_success": true,
+      "actual_success": true,
+      "verdict": {
+        "success": true,
+        "gates": {
+          "valid_samples": true,
+          "required_phases": true,
+          "weld_off": true,
+          "grasp_hold": true,
+          "carry_continuity": true,
+          "carry_progress": true,
+          "transport_endpoint": true,
+          "lateral_drift": true,
+          "release_continuity": true,
+          "release_grounded_clear": true,
+          "release_stable": true
+        },
+        "reasons": [],
+        "metrics": {
+          "target_distance_m": 0.2,
+          "tolerance_m": 0.03,
+          "minimum_hold_s": 2.0,
+          "release_stable_s": 1.0,
+          "max_sample_gap_s": 0.15,
+          "sample_count": 40,
+          "grasp_hold_duration_s": 2.0,
+          "carry_start_to_end_progress_m": 0.2,
+          "final_displacement_m": 0.23,
+          "displacement_error_m": 0.03,
+          "lateral_drift_m": 0.03,
+          "release_hold_duration_s": 1.0,
+          "release_position_span_3d_m": 0.0
+        },
+        "scope": "sampled referee continuity only"
+      },
+      "matches_expectation": true
+    },
+    {
+      "case": "camera_beyond_displacement_boundary",
+      "expected_success": false,
+      "actual_success": false,
+      "verdict": {
+        "success": false,
+        "gates": {
+          "valid_samples": true,
+          "required_phases": true,
+          "weld_off": true,
+          "grasp_hold": true,
+          "carry_continuity": true,
+          "carry_progress": true,
+          "transport_endpoint": false,
+          "lateral_drift": true,
+          "release_continuity": true,
+          "release_grounded_clear": true,
+          "release_stable": true
+        },
+        "reasons": [
+          "final displacement is outside target tolerance"
+        ],
+        "metrics": {
+          "target_distance_m": 0.2,
+          "tolerance_m": 0.03,
+          "minimum_hold_s": 2.0,
+          "release_stable_s": 1.0,
+          "max_sample_gap_s": 0.15,
+          "sample_count": 40,
+          "grasp_hold_duration_s": 2.0,
+          "carry_start_to_end_progress_m": 0.2,
+          "final_displacement_m": 0.230001,
+          "displacement_error_m": 0.030001,
+          "lateral_drift_m": 0.0,
+          "release_hold_duration_s": 1.0,
+          "release_position_span_3d_m": 0.0
+        },
+        "scope": "sampled referee continuity only"
+      },
+      "matches_expectation": true
+    },
+    {
+      "case": "camera_missing_floor_evidence",
+      "expected_success": false,
+      "actual_success": false,
+      "verdict": {
+        "success": false,
+        "gates": {
+          "valid_samples": true,
+          "required_phases": true,
+          "weld_off": true,
+          "grasp_hold": true,
+          "carry_continuity": true,
+          "carry_progress": true,
+          "transport_endpoint": true,
+          "lateral_drift": true,
+          "release_continuity": true,
+          "release_grounded_clear": false,
+          "release_stable": true
+        },
+        "reasons": [
+          "release_hold is not grounded and clear of robots/fingers"
+        ],
+        "metrics": {
+          "target_distance_m": 0.2,
+          "tolerance_m": 0.03,
+          "minimum_hold_s": 2.0,
+          "release_stable_s": 1.0,
+          "max_sample_gap_s": 0.15,
+          "sample_count": 40,
+          "grasp_hold_duration_s": 2.0,
+          "carry_start_to_end_progress_m": 0.2,
+          "final_displacement_m": 0.2,
+          "displacement_error_m": 0.0,
+          "lateral_drift_m": 0.0,
+          "release_hold_duration_s": 1.0,
+          "release_position_span_3d_m": 0.0
+        },
+        "scope": "sampled referee continuity only"
+      },
+      "matches_expectation": true
+    },
+    {
+      "case": "camera_ten_second_gap_inside_carry",
+      "expected_success": false,
+      "actual_success": false,
+      "verdict": {
+        "success": false,
+        "gates": {
+          "valid_samples": true,
+          "required_phases": true,
+          "weld_off": true,
+          "grasp_hold": true,
+          "carry_continuity": false,
+          "carry_progress": true,
+          "transport_endpoint": true,
+          "lateral_drift": true,
+          "release_continuity": true,
+          "release_grounded_clear": true,
+          "release_stable": true
+        },
+        "reasons": [
+          "carry samples are missing, discontinuous, unlifted, non-bilateral, or welded"
+        ],
+        "metrics": {
+          "target_distance_m": 0.2,
+          "tolerance_m": 0.03,
+          "minimum_hold_s": 2.0,
+          "release_stable_s": 1.0,
+          "max_sample_gap_s": 0.15,
+          "sample_count": 40,
+          "grasp_hold_duration_s": 2.0,
+          "carry_start_to_end_progress_m": 0.2,
+          "final_displacement_m": 0.2,
+          "displacement_error_m": 0.0,
+          "lateral_drift_m": 0.0,
+          "release_hold_duration_s": 1.0,
+          "release_position_span_3d_m": 0.0
+        },
+        "scope": "sampled referee continuity only"
+      },
+      "matches_expectation": true
+    },
+    {
+      "case": "camera_ten_second_gap_before_carry",
+      "expected_success": false,
+      "actual_success": true,
+      "verdict": {
+        "success": true,
+        "gates": {
+          "valid_samples": true,
+          "required_phases": true,
+          "weld_off": true,
+          "grasp_hold": true,
+          "carry_continuity": true,
+          "carry_progress": true,
+          "transport_endpoint": true,
+          "lateral_drift": true,
+          "release_continuity": true,
+          "release_grounded_clear": true,
+          "release_stable": true
+        },
+        "reasons": [],
+        "metrics": {
+          "target_distance_m": 0.2,
+          "tolerance_m": 0.03,
+          "minimum_hold_s": 2.0,
+          "release_stable_s": 1.0,
+          "max_sample_gap_s": 0.15,
+          "sample_count": 40,
+          "grasp_hold_duration_s": 2.0,
+          "carry_start_to_end_progress_m": 0.2,
+          "final_displacement_m": 0.2,
+          "displacement_error_m": 0.0,
+          "lateral_drift_m": 0.0,
+          "release_hold_duration_s": 1.0,
+          "release_position_span_3d_m": 0.0
+        },
+        "scope": "sampled referee continuity only"
+      },
+      "matches_expectation": false
+    },
+    {
+      "case": "camera_ten_second_gap_before_place",
+      "expected_success": false,
+      "actual_success": true,
+      "verdict": {
+        "success": true,
+        "gates": {
+          "valid_samples": true,
+          "required_phases": true,
+          "weld_off": true,
+          "grasp_hold": true,
+          "carry_continuity": true,
+          "carry_progress": true,
+          "transport_endpoint": true,
+          "lateral_drift": true,
+          "release_continuity": true,
+          "release_grounded_clear": true,
+          "release_stable": true
+        },
+        "reasons": [],
+        "metrics": {
+          "target_distance_m": 0.2,
+          "tolerance_m": 0.03,
+          "minimum_hold_s": 2.0,
+          "release_stable_s": 1.0,
+          "max_sample_gap_s": 0.15,
+          "sample_count": 40,
+          "grasp_hold_duration_s": 2.0,
+          "carry_start_to_end_progress_m": 0.2,
+          "final_displacement_m": 0.2,
+          "displacement_error_m": 0.0,
+          "lateral_drift_m": 0.0,
+          "release_hold_duration_s": 1.0,
+          "release_position_span_3d_m": 0.0
+        },
+        "scope": "sampled referee continuity only"
+      },
+      "matches_expectation": false
+    },
+    {
+      "case": "camera_ten_second_gap_before_release_hold",
+      "expected_success": false,
+      "actual_success": true,
+      "verdict": {
+        "success": true,
+        "gates": {
+          "valid_samples": true,
+          "required_phases": true,
+          "weld_off": true,
+          "grasp_hold": true,
+          "carry_continuity": true,
+          "carry_progress": true,
+          "transport_endpoint": true,
+          "lateral_drift": true,
+          "release_continuity": true,
+          "release_grounded_clear": true,
+          "release_stable": true
+        },
+        "reasons": [],
+        "metrics": {
+          "target_distance_m": 0.2,
+          "tolerance_m": 0.03,
+          "minimum_hold_s": 2.0,
+          "release_stable_s": 1.0,
+          "max_sample_gap_s": 0.15,
+          "sample_count": 40,
+          "grasp_hold_duration_s": 2.0,
+          "carry_start_to_end_progress_m": 0.2,
+          "final_displacement_m": 0.2,
+          "displacement_error_m": 0.0,
+          "lateral_drift_m": 0.0,
+          "release_hold_duration_s": 1.0,
+          "release_position_span_3d_m": 0.0
+        },
+        "scope": "sampled referee continuity only"
+      },
+      "matches_expectation": false
+    },
+    {
+      "case": "camera_retract_before_lower",
+      "expected_success": false,
+      "actual_success": true,
+      "verdict": {
+        "success": true,
+        "gates": {
+          "valid_samples": true,
+          "required_phases": true,
+          "weld_off": true,
+          "grasp_hold": true,
+          "carry_continuity": true,
+          "carry_progress": true,
+          "transport_endpoint": true,
+          "lateral_drift": true,
+          "release_continuity": true,
+          "release_grounded_clear": true,
+          "release_stable": true
+        },
+        "reasons": [],
+        "metrics": {
+          "target_distance_m": 0.2,
+          "tolerance_m": 0.03,
+          "minimum_hold_s": 2.0,
+          "release_stable_s": 1.0,
+          "max_sample_gap_s": 0.15,
+          "sample_count": 40,
+          "grasp_hold_duration_s": 2.0,
+          "carry_start_to_end_progress_m": 0.2,
+          "final_displacement_m": 0.2,
+          "displacement_error_m": 0.0,
+          "lateral_drift_m": 0.0,
+          "release_hold_duration_s": 1.0,
+          "release_position_span_3d_m": 0.0
+        },
+        "scope": "sampled referee continuity only"
+      },
+      "matches_expectation": false
+    },
+    {
+      "case": "camera_carry_stop_then_resume_is_allowed",
+      "expected_success": true,
+      "actual_success": true,
+      "verdict": {
+        "success": true,
+        "gates": {
+          "valid_samples": true,
+          "required_phases": true,
+          "weld_off": true,
+          "grasp_hold": true,
+          "carry_continuity": true,
+          "carry_progress": true,
+          "transport_endpoint": true,
+          "lateral_drift": true,
+          "release_continuity": true,
+          "release_grounded_clear": true,
+          "release_stable": true
+        },
+        "reasons": [],
+        "metrics": {
+          "target_distance_m": 0.2,
+          "tolerance_m": 0.03,
+          "minimum_hold_s": 2.0,
+          "release_stable_s": 1.0,
+          "max_sample_gap_s": 0.15,
+          "sample_count": 40,
+          "grasp_hold_duration_s": 2.0,
+          "carry_start_to_end_progress_m": 0.2,
+          "final_displacement_m": 0.2,
+          "displacement_error_m": 0.0,
+          "lateral_drift_m": 0.0,
+          "release_hold_duration_s": 1.0,
+          "release_position_span_3d_m": 0.0
+        },
+        "scope": "sampled referee continuity only"
+      },
+      "matches_expectation": true
+    },
+    {
+      "case": "pair_provisional_geometry_positive",
+      "expected_success": true,
+      "actual_success": true,
+      "verdict": {
+        "schema": "ugrp.pair_llm_eval.v1",
+        "judge_status": "PROVISIONAL_GEOMETRIC_JUDGE_NOT_THE_363_JUDGE",
+        "target_zone": "B",
+        "samples": 3,
+        "success_provisional": true,
+        "start_xyz_m": [
+          0.0,
+          0.0,
+          0.03
+        ],
+        "final_xyz_m": [
+          1.0,
+          0.0,
+          0.03
+        ],
+        "displacement_m": 1.0,
+        "traveled_m": 1.0,
+        "lift_max_m": 0.07,
+        "in_zone_final": true,
+        "lifted": true,
+        "set_down": true,
+        "first_motion_s": 1.0,
+        "delivery_s": 2.0,
+        "end_s": 2.0,
+        "reason": "OK"
+      },
+      "matches_expectation": true
+    },
+    {
+      "case": "pair_empty_trajectory",
+      "expected_success": false,
+      "actual_success": false,
+      "verdict": {
+        "schema": "ugrp.pair_llm_eval.v1",
+        "judge_status": "PROVISIONAL_GEOMETRIC_JUDGE_NOT_THE_363_JUDGE",
+        "target_zone": "B",
+        "samples": 0,
+        "success_provisional": false,
+        "reason": "NO_TRAJECTORY"
+      },
+      "matches_expectation": true
+    },
+    {
+      "case": "pair_nonfinite_lift_sample",
+      "expected_success": false,
+      "actual_success": true,
+      "verdict": {
+        "schema": "ugrp.pair_llm_eval.v1",
+        "judge_status": "PROVISIONAL_GEOMETRIC_JUDGE_NOT_THE_363_JUDGE",
+        "target_zone": "B",
+        "samples": 3,
+        "success_provisional": true,
+        "start_xyz_m": [
+          0.0,
+          0.0,
+          0.03
+        ],
+        "final_xyz_m": [
+          1.0,
+          0.0,
+          0.03
+        ],
+        "displacement_m": 1.0,
+        "traveled_m": 1.0,
+        "lift_max_m": Infinity,
+        "in_zone_final": true,
+        "lifted": true,
+        "set_down": true,
+        "first_motion_s": 1.0,
+        "delivery_s": 2.0,
+        "end_s": 2.0,
+        "reason": "OK"
+      },
+      "matches_expectation": false
+    },
+    {
+      "case": "pair_backwards_timestamp",
+      "expected_success": false,
+      "actual_success": true,
+      "verdict": {
+        "schema": "ugrp.pair_llm_eval.v1",
+        "judge_status": "PROVISIONAL_GEOMETRIC_JUDGE_NOT_THE_363_JUDGE",
+        "target_zone": "B",
+        "samples": 3,
+        "success_provisional": true,
+        "start_xyz_m": [
+          0.0,
+          0.0,
+          0.03
+        ],
+        "final_xyz_m": [
+          1.0,
+          0.0,
+          0.03
+        ],
+        "displacement_m": 1.0,
+        "traveled_m": 1.0,
+        "lift_max_m": 0.07,
+        "in_zone_final": true,
+        "lifted": true,
+        "set_down": true,
+        "first_motion_s": 1.0,
+        "delivery_s": 0.5,
+        "end_s": 0.5,
+        "reason": "OK"
+      },
+      "matches_expectation": false
+    }
+  ],
+  "matches": 16,
+  "total": 24
+}

@@ -1,0 +1,42 @@
+{
+  "crash_denominator": {
+    "scheduler_attempted": 2,
+    "scheduler_blocking_reason": "PROCESS_EXIT_2",
+    "report_attempted": 1,
+    "crash_lifecycle": "pending",
+    "crash_report_attempted": false,
+    "not_started_lifecycle": "not_attempted",
+    "rendered_mode_row": "<tr><td>none</td><td>1/1</td><td>1</td><td>0</td><td>0</td><td>\u2014</td></tr>",
+    "expected": {
+      "attempted": 2,
+      "successful": 1,
+      "operational_failed": 1,
+      "not_started": 1,
+      "all_attempt_success": "1/2"
+    }
+  },
+  "malformed_result": {
+    "raised": "JSONDecodeError",
+    "message": "Expecting value: line 1 column 12 (char 11)",
+    "cohort_status_written": false,
+    "expected": "Retain attempted row as invalid result and stop remaining scheduling."
+  },
+  "row_identity": {
+    "complete": true,
+    "conditions": {
+      "act": {
+        "planned": 1,
+        "attempted": 2,
+        "pending": -1,
+        "failures": 2
+      },
+      "teacher": {
+        "planned": 1,
+        "attempted": 0,
+        "pending": 1,
+        "failures": 0
+      }
+    },
+    "expected": "Reject a result whose condition conflicts with the scheduled trial_id."
+  }
+}

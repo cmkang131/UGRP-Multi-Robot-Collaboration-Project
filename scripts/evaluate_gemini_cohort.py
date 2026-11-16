@@ -20,7 +20,18 @@ def infrastructure_problem(run: Path, returncode: int) -> str | None:
     path = run / 'result.json'
     if not path.exists():
         return 'MISSING_RESULT'
-    result = json.loads(path.read_text())
+    try:
+        result = json.loads(path.read_text())
+    except (OSError, ValueError):
+        return 'INVALID_RESULT'
+    # A child can exit before its non-atomic result write is complete. Keep
+    # that attempt in the cohort ledger instead of raising during accounting.
+    if (not isinstance(result, dict) or type(result.get('success')) is not bool
+            or not isinstance(result.get('inference_unresolved', {}), dict)
+            or not isinstance(result.get('outcomes', {}), dict)
+            or any(not isinstance(outcome, dict)
+                   for outcome in result.get('outcomes', {}).values())):
+        return 'INVALID_RESULT'
     if result.get('error'):
         return 'RUNNER_ERROR'
     if any(result.get('inference_unresolved', {}).values()):

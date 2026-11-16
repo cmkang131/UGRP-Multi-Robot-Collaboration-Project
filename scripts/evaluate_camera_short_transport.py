@@ -126,6 +126,13 @@ def evaluate_transport_samples(
             valid = False
             reasons.append(f"sample {index} time is not strictly increasing")
             break
+        # The scene records every ~0.1 SIM s across phase changes as well
+        # (ApproachScene._referee_tick). Reuse the existing continuity limit;
+        # checking each phase alone would hide a lost interval at its boundary.
+        if previous_time is not None and now - previous_time > MAX_SAMPLE_GAP_S + 1e-12:
+            valid = False
+            reasons.append(f"sample {index} gap exceeds {MAX_SAMPLE_GAP_S} s")
+            break
         previous_time = now
     gates["valid_samples"] = valid
     gates["weld_off"] = valid and all(_weld_off(sample) for sample in samples)

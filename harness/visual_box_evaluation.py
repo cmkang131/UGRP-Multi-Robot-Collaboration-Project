@@ -128,7 +128,11 @@ def _position(box: Mapping[str, Any]) -> tuple[float, float, float]:
 
 
 def _active_constraints(box: Mapping[str, Any]) -> dict[str, bool]:
-    value = box.get("constraints_active", {})
+    # Missing telemetry cannot establish that no simulator attachment was used.
+    # An explicitly recorded empty map still means the snapshot has no constraints.
+    if "constraints_active" not in box:
+        raise ValueError("cargo snapshot is missing constraints_active evidence")
+    value = box["constraints_active"]
     if not isinstance(value, Mapping):
         raise ValueError("constraints_active must be an object")
     result: dict[str, bool] = {}
