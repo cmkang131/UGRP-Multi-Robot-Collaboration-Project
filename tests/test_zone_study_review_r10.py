@@ -118,7 +118,7 @@ def test_dry_manifest_binds_full_source_bundle_inputs_without_implicit_ack(tmp_p
     assert manifest['proxy_runtime'] is None and manifest['network_calls'] == 0
     source = manifest['source_identity']
     bundle, bundle_sha = bundles.load_bundle(bundles.RUNNABLE_ID)
-    assert source['rgb_execution_bundle']['id'] == 'rgb-standard-dispatch-v63'
+    assert source['rgb_execution_bundle']['id'] == bundles.RUNNABLE_ID
     assert source['rgb_execution_bundle']['sha256'] == bundle_sha
     assert source['rgb_execution_bundle']['effective'] == bundle['effective']
     assert set(bundles.source_closure()) <= set(source['files'])
@@ -143,7 +143,7 @@ def test_v62_retires_v61_with_identical_physics_and_immutable_bytes():
 
 
 def test_v63_preserves_executed_v62_bytes_and_effective_contract():
-    current, _ = bundles.load_bundle(bundles.RUNNABLE_ID)
+    current, _ = bundles.load_bundle('rgb-standard-dispatch-v63', require_runnable=False)
     old, old_sha = bundles.load_bundle('rgb-standard-dispatch-v62', require_runnable=False)
     assert old_sha == '6601192a6da7ac018dd3a7104364065bb9afb9dce0d61e79021f824648b07f69'
     assert 'rgb-standard-dispatch-v62' in bundles.RETIRED_IDS
@@ -153,5 +153,26 @@ def test_v63_preserves_executed_v62_bytes_and_effective_contract():
     assert current['status'] == 'experimental_unqualified'
     for source in ('harness/llm_completion.py', 'harness/three_robot_plan.py'):
         assert current['source_files_sha256'][source] == sha((bundles.ROOT / source).read_bytes())
+    with pytest.raises(ValueError, match='original source checkout'):
+        bundles.load_bundle(old['id'])
+
+
+def test_v64_preserves_v63_bytes_and_limits_changes_to_evaluator_sources():
+    current, _ = bundles.load_bundle('rgb-standard-dispatch-v64', require_runnable=False)
+    old, old_sha = bundles.load_bundle('rgb-standard-dispatch-v63', require_runnable=False)
+    assert old_sha == 'ef4fe391e57c145b6625ba052e651542745bfcb6244d8e25736827ee8122aa01'
+    assert old['id'] in bundles.RETIRED_IDS
+    assert current['parent_bundle'] == current['parent_bundle_id'] == old['id']
+    assert current['effective'] == old['effective']
+    assert current['status'] == 'experimental_unqualified'
+    assert current['zone_study_pilot']['physical_success'] is None
+    version_fields = {'id', 'parent_bundle', 'parent_bundle_id', 'claim_scope',
+                      'source_files_sha256'}
+    assert {k: v for k, v in current.items() if k not in version_fields} == {
+        k: v for k, v in old.items() if k not in version_fields}
+    current_hashes, old_hashes = current['source_files_sha256'], old['source_files_sha256']
+    assert set(current_hashes) == set(old_hashes)
+    assert {name for name in current_hashes if current_hashes[name] != old_hashes[name]} == {
+        'harness/rgb_execution_bundle.py', 'scripts/evaluate_camera_short_transport.py'}
     with pytest.raises(ValueError, match='original source checkout'):
         bundles.load_bundle(old['id'])

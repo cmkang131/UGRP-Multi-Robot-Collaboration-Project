@@ -39,6 +39,10 @@
     "scripts/render_visual_team_report.py": {
       "base_sha256": "1ee70274fd897b042ec264132d724c8349010a58c063546a04ab6c3d552d8cee",
       "candidate_sha256": "b7e4c14f2e73d06f7b703318fed92ad49e98a633ff168736be47bcde5cbddc16"
+    },
+    "harness/rgb_execution_bundle.py": {
+      "base_sha256": "93c0d91880b23b1f00d7b0bd3a7491e79ef785ea4dbf2dc561cb3ee89e2b996a",
+      "candidate_sha256": "39019f737dc359bb3c98f63330f2747a1e25a4bdb7a65a14483a738494789d7d"
     }
   },
   "verification": {
@@ -85,6 +89,12 @@
       "failed": 6,
       "passed": 1,
       "output": "identity-regressions-before.txt"
+    },
+    "bundle_version_tests": {
+      "passed": 11,
+      "output": "ci-followup.md",
+      "static_bundle_check": "passed",
+      "immutable_registry_check": "passed"
     }
   },
   "issues": {
@@ -101,5 +111,21 @@
     "Synthetic evaluator outcomes are not physical success rates.",
     "Place phase order and provisional Pair invalid coordinate/time cases remain open.",
     "Cohort supervisor death before its first checkpoint is not inferred from missing files."
-  ]
+  ],
+  "ci_followup": {
+    "initial_head": "4f4fb568fcfb2ea9ec83289ee55147da8c349f79",
+    "initial_run_id": 43798751461,
+    "initial_failed_job_id": 133073669996,
+    "cause": "our evaluator change drifted the immutable v63 source pin",
+    "resolution": "new experimental_unqualified rgb-standard-dispatch-v64; all existing registry bytes preserved",
+    "remote_full_ci": "see PR checks; not asserted passed by this audit file"
+  },
+  "execution_bundle": {
+    "id": "rgb-standard-dispatch-v64",
+    "parent": "rgb-standard-dispatch-v63",
+    "status": "experimental_unqualified",
+    "sha256": "5187af8d8c0662595b247d6050eecce527d8621f7063ec8bc4567ea569df53b8",
+    "reservation": "bundle-reservation.json",
+    "physical_success_inherited": false
+  }
 }
