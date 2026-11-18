@@ -9,6 +9,8 @@ import numpy as np
 import pytest
 
 from harness.active_wall_mapping import ActiveMapper, VISUAL_MAPPING
+from harness.carry_nav_v1 import CarryNav
+from harness.ras1_place_observations import Ras1PlaceObservations
 
 
 @pytest.fixture
@@ -79,3 +81,31 @@ def test_rgb_replay_uses_verified_native_frame_and_visible_floor(adapter, tmp_pa
     frame.write_bytes(frame.read_bytes() + b'corruption')
     with pytest.raises(ValueError, match='HASH_MISMATCH'):
         adapter.replay(tmp_path)
+
+
+def test_ras1_contacts_feed_current_carry_navigation_and_drop_invalid_pose(adapter):
+    profile = {'pose': adapter.POSE}
+    scale = dict(camera_height_cm=20., camera_origin_design_m=[.10, 0., .20])
+    source = Ras1PlaceObservations(scale=scale, floor_profile=profile)
+    anchor = dict(t=1., commanded_arm_pose=adapter.POSE, camera_xy_cm=[0., 0.],
+                  contact_points_cm=[[20., 0.], [20., 10.]], tracking=dict(reason='anchor'))
+    assert source.observe(anchor)
+    # Body pose back 5 cm and turned 0.2 rad. The contact samples retain the
+    # initial axes, so they should land on the same two wall cells.
+    motion = dict(anchor, t=2., camera_xy_cm=[-5.199334, 1.986693],
+                  contact_points_cm=[[25.199334, -1.986693], [25.199334, 8.013307]],
+                  tracking=dict(reason='ok', pose_status='nominal_floor_pose',
+                                pose=dict(x=-.25, y=0., yaw_deg=np.degrees(.2))))
+    assert source.observe(motion)
+    assert np.allclose(list(source.pose.values()), [-.05, 0., .2])
+    assert len(source.places.walls) == 2
+    carry = CarryNav(None, source.places, source.pose, [], 'through_door')
+    assert np.allclose([p[:2] for p in carry._around()], [[.3, 0.], [.3, .1]])
+    # Losing tracking leaves the last contacts in memory and withholds pose.
+    assert not source.observe(dict(motion, t=3., tracking=dict(reason='tracking_lost_map_frozen')))
+    assert source.pose is None and source.record()['updates'] == 2
+    assert len(source.places.walls) == 2
+    # Changing the commanded wrist breaks the fixed orientation session.
+    changed = {**adapter.POSE, 3: adapter.POSE[3] + 1}
+    assert not source.observe(dict(motion, t=4., commanded_arm_pose=changed))
+    assert not source.observe(dict(motion, t=5.))

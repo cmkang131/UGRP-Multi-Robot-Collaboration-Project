@@ -148,3 +148,26 @@ python experiments/2026-11-12-green-wall/replay_active_map.py \
 원본 JPEG 재처리는 ras1 SSH 연결 시간 초과로 미실행했다. RGB 경로의
 왜곡 보정·벽/바닥 지도 갱신·해시 검증은 합성 입력으로 별도 확인했다.
 이전 실물 결과의 거리 정확도와 수직 벽 확정은 여전히 미검증이다.
+
+## 실물 관측을 현재 운반 실행층에 연결
+
+현재 실행층의 운반 코드는 `harness/carry_nav_v1.py`의 `CarryNav`와
+`harness/place_memory_v1.py`의 `PlaceMemory`를 쓴다. ras1의 정지 관측에서
+이미 계산한 벽 접점과 상대 이동을 `Ras1PlaceObservations`가 첫 차체 기준으로
+변환해 같은 `PlaceMemory`에 넣는다. 경기장 벽이 주어지지 않은 지역
+경로에서는 `CarryNav`의 주변 장애물 조회가 이 기억의 벽 점을 읽는다.
+출력의 `visual_pose`는 같은 지역 좌표계의 상대 위치다.
+
+기록만 확인할 때는 위 재생기에 `--source checkpoints`를 넘긴다. 새 촬영에서
+장소 기억도 함께 저장할 때는 저장소 루트에서 아래 명령을 쓴다.
+
+```sh
+python experiments/2026-11-12-green-wall/run_wall_distance.py \
+  --floor-profile experiments/2026-11-12-green-wall/floor-profile-dev-181359.json \
+  --place-memory
+```
+
+`result.json`의 `carry_place_observations`에 차체 기준 위치와 벽 점을 기록한다.
+보관된 실물 관측 6/6건에서 장소 기억이 갱신돼 벽 점 6개가 남았다. 자동 테스트로
+기존 `CarryNav`의 주변 장애물 조회가 같은 벽 기억을 읽는 것을 확인했다.
+새 옵션의 실물 운반 주행과 카메라를 옮기는 동안의 관측은 미검증이다.

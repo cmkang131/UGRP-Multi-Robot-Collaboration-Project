@@ -13,6 +13,7 @@ if __package__ in (None, ''):
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from harness.active_wall_mapping import ActiveMapper, VISUAL_MAPPING, inverse
+from harness.ras1_place_observations import Ras1PlaceObservations
 from harness.self_odom_grid import transform
 from green_wall_mapper import Mapper, POSE, camera_geometry
 
@@ -101,6 +102,8 @@ def replay(run_dir, *, source='rgb'):
     if not result.get('floor_profile'):
         raise ValueError('RAS1_FIXED_FLOOR_PROFILE_REQUIRED')
     mapper = Mapper(result['floor_profile']) if source == 'rgb' else None
+    places = (Ras1PlaceObservations(scale=result['scale'], floor_profile=result['floor_profile'])
+              if source == 'checkpoints' else None)
     ledger = {}
     if source == 'rgb':
         for line in (run_dir / 'frames.jsonl').read_text().splitlines():
@@ -122,6 +125,10 @@ def replay(run_dir, *, source='rgb'):
         else:
             observation, pose = from_checkpoint(checkpoint, anchor=index == 0)
             tracking = checkpoint['tracking']
+        # Only use the original, matched checkpoint path for an archived
+        # PlaceMemory result. A failed RGB replay cannot borrow its pose.
+        if places is not None:
+            places.observe(checkpoint)
         _, trace = controller.receive(robot_id='ras1', t=checkpoint['t'], frame_id=index,
                                       rgb=rgb, servo=servo, observation=observation, visual_pose=pose)
         traces.append(dict(trace, image=checkpoint['image'], tracking_reason=tracking['reason'],
@@ -135,11 +142,14 @@ def replay(run_dir, *, source='rgb'):
              floor_frames=sorted(grid.floor_frames.get(cell, ())))
         for cell in sorted(grid.odds)
     ]
-    return dict(source=source, input_sha256=hashlib.sha256(result_bytes).hexdigest(),
+    output = dict(source=source, input_sha256=hashlib.sha256(result_bytes).hexdigest(),
                 coordinate_frame='initial camera ground projection, +x forward, +y left',
                 design_camera_height_m=height_m, metric_accuracy_verified=False,
                 wall_geometry_confirmed=False, resolution_m=grid.resolution,
                 updates=grid.revision, traces=traces, cells=cells)
+    if places is not None:
+        output['carry_place_observations'] = places.record()
+    return output
 
 
 def main():

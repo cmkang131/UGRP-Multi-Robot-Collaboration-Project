@@ -23,6 +23,8 @@ def run():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--floor-profile',type=Path,required=True)
     parser.add_argument('--move',action='store_true')
+    parser.add_argument('--place-memory', action='store_true',
+                        help='record the carry executor\'s local wall observations')
     parser.add_argument('--excursion-cm',type=float,default=5.,help='design-scale target gap increase; not measured ground truth')
     parser.add_argument('--output',type=Path,default=Path.home()/'wall-distance-runs')
     a=parser.parse_args()
@@ -30,6 +32,11 @@ def run():
     if socket.gethostname()!='ras1':raise ValueError('ras1 only')
     sys.path.insert(0,str(RUNTIME));import masterpi_control as c
     profile=json.loads(a.floor_profile.read_text());mapper=Mapper(profile);scale=design_scale()
+    place_observations = None
+    if a.place_memory:
+        sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+        from harness.ras1_place_observations import Ras1PlaceObservations
+        place_observations = Ras1PlaceObservations(scale=scale, floor_profile=profile)
     root=a.output/time.strftime('%Y%m%d-%H%M%S');root.mkdir(parents=True,exist_ok=False)
     lease=c.acquire_actuator_lease(owner='codex:fixed-head-wall-distance')
     motors=c.MotorTransport();c._active_motor_transport=motors
@@ -81,6 +88,8 @@ def run():
                 camera_xy_cm=(camera*scale['camera_height_cm']).tolist(),yaw_deg=yaw,
                 commanded_arm_pose=c.load_pose_state(),**distance)
         if cp['commanded_arm_pose']!=initial_pose:raise RuntimeError('head commands changed')
+        if place_observations is not None and not place_observations.observe(cp):
+            raise RuntimeError('carry place observation rejected')
         checkpoints.append(cp);cv2.imwrite(str(root/('checkpoint-%02d.jpg'%(len(checkpoints)-1))),overlay)
         print(json.dumps(dict(checkpoint=len(checkpoints),phase=phase,gap_cm=cp['wall_gap_cm'],
                               camera_xy_cm=cp['camera_xy_cm'],inliers=info.get('inliers',0))),flush=True)
@@ -153,6 +162,8 @@ def run():
                     initial_pose=initial_pose,final_pose=c.load_pose_state(),servo_writes=0,
                     floor_profile=profile,source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                     metric_accuracy_verified=False,raw_location=str(root))
+        if place_observations is not None:
+            result['carry_place_observations'] = place_observations.record()
         (root/'result.json').write_text(json.dumps(result,indent=2)+'\n')
         (root/'RUN_META.json').write_text(json.dumps(dict(**{'class':'dev'},sha=os.environ.get('UGRP_SOURCE_SHA'),branch='codex/strict-wall-motion-ras1',pr=None,batch=root.name),indent=2)+'\n')
         print('OUTPUT '+str(root),flush=True)
