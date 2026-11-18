@@ -1,249 +1,129 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 860" width="1280" height="860" role="img" aria-label="전체 구조: 로봇 3대 또는 9대. 모든 로봇이 모든 주문과 순서 규칙을 알고, 상자는 자기 카메라로만 본다. 팀 구조는 동등(누구나 누구에게나 말함)과 선출 팀장(모든 말이 팀장을 거치고 팀장 배정은 구속)이다. 지도는 생성기 하나로, 로봇 3대와 문 1개인 모듈을 1개 또는 3개 붙인다. 계획층은 로봇마다 LLM 하나로, 결정마다 일하기 또는 말하기를 고르고, 말하기는 시뮬 시간을 쓴다. 실행층은 v38에 v39 수정을 더해 ACT 로 집기와 들기를, 코드로 접근, 운반, 문 통과, 내려놓기를 한다. 채점은 놓인 상자와 순서로 배달 비율, 완료 시간, 순서 위반을 낸다" font-family="'Noto Sans CJK KR','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',Helvetica,Arial,sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 560" width="1080" height="560" role="img" aria-label="전체 구조(2차 실험): 로봇 3대(상자 5개) 또는 6대(상자 10개)가 상자를 여러 번 나른다. 모든 로봇이 모든 주문과 순서 규칙을 안다. 팀 구조는 동등(누구나 누구에게나 말함)과 선출 팀장(모든 말이 팀장을 거치고 팀장 배정을 따름) 두 가지다. 로봇마다 LLM 하나가 결정마다 일하기 또는 말하기를 고르고, 말하면 시뮬 시간을 쓴다. 고른 행동은 실행층이 바꾼다: 집기와 들기는 ACT, 접근, 운반, 문 통과, 내려놓기는 코드. 자기 카메라는 계획층과 실행층에, 천장 카메라는 실행층에만 준다. 채점은 실행이 끝난 뒤 정답 좌표로 배달 비율, 완료 시간, 순서 위반을 낸다" font-family="'Noto Sans CJK KR','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',Helvetica,Arial,sans-serif">
   <title>전체 구조</title>
   <defs>
     <style>
-      text { fill: #1a1a1a; font-size: 12px; }
-      .tb { font-size: 13px; font-weight: 600; }
-      .tm { font-size: 13px; font-weight: 500; }
-      .ts { font-size: 11.5px; fill: #4b5563; }
+      text { fill: #1a1a1a; font-size: 13px; }
+      .tb { font-size: 14px; font-weight: 600; }
+      .tm { font-size: 13.5px; font-weight: 600; }
+      .ts { font-size: 12px; fill: #4b5563; }
       .bl { fill: #1f5fbf; }
-      .cont { fill: #f1f2f4; stroke: #374151; stroke-width: 1.4; }
+      .cont { fill: #f1f2f4; stroke: #374151; stroke-width: 1.3; }
       .box { fill: #fff; stroke: #374151; stroke-width: 1.1; }
-      .llm { stroke-width: 2.2; }
-      .act { fill: #dcdfe4; }
-      .cam { fill: #eaf1fb; stroke: #1f5fbf; stroke-width: 1.6; }
-      .dash { stroke-dasharray: 5 4; }
-      .lg { fill: none; stroke: #6b7280; stroke-width: 1.3; }
-      .ln { fill: none; stroke: #1a1a1a; stroke-width: 1.15; }
+      .llm { fill: #fff; stroke: #1a1a1a; stroke-width: 2.4; }
+      .act { fill: #dcdfe4; stroke: #374151; stroke-width: 1.1; }
+      .cam { fill: #eaf1fb; stroke: #1f5fbf; stroke-width: 1.5; }
+      .dash { fill: #fff; stroke: #6b7280; stroke-width: 1.3; stroke-dasharray: 5 4; }
+      .ln { fill: none; stroke: #1a1a1a; stroke-width: 1.2; }
       .lb { fill: none; stroke: #1f5fbf; stroke-width: 1.6; }
+      .lg { fill: none; stroke: #6b7280; stroke-width: 1.3; stroke-dasharray: 5 4; }
+      .node { fill: #fff; stroke: #1a1a1a; stroke-width: 1.3; }
+      .lead { fill: #fff; stroke: #1a1a1a; stroke-width: 2.4; }
+      .edge { stroke: #1a1a1a; stroke-width: 1.2; }
     </style>
-    <marker id="h" viewBox="0 0 10 10" refX="9.4" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M0.5 1.2 L10 5 L0.5 8.8 z" fill="#1a1a1a"/>
-    </marker>
-    <marker id="g" viewBox="0 0 10 10" refX="9.4" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M0.5 1.2 L10 5 L0.5 8.8 z" fill="#6b7280"/>
-    </marker>
-    <marker id="b" viewBox="0 0 10 10" refX="9.4" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M0.5 1.2 L10 5 L0.5 8.8 z" fill="#1f5fbf"/>
-    </marker>
+    <marker id="h" viewBox="0 0 10 10" refX="9.4" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0.5 1.2 L10 5 L0.5 8.8 z" fill="#1a1a1a"/></marker>
+    <marker id="b" viewBox="0 0 10 10" refX="9.4" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0.5 1.2 L10 5 L0.5 8.8 z" fill="#1f5fbf"/></marker>
+    <marker id="g" viewBox="0 0 10 10" refX="9.4" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0.5 1.2 L10 5 L0.5 8.8 z" fill="#6b7280"/></marker>
   </defs>
-  <rect x="0.5" y="0.5" width="1279" height="859" rx="10" fill="#fafafa" stroke="#c4c7cc"/>
+  <rect x="0.5" y="0.5" width="1079" height="559" rx="10" fill="#fafafa" stroke="#c4c7cc"/>
 
-  <!-- ===== (1) experiment conditions ===== -->
-  <rect class="cont" x="24" y="20" width="960" height="196" rx="3"/>
-  <text class="tb" x="40" y="42">① 실험 조건</text>
-  <text class="ts" x="132" y="42">로봇 3대 또는 9대. 과제와 지도 규칙은 같고, 팀 구조만 바꾼다</text>
+  <!-- ① conditions strip -->
+  <rect class="cont" x="20" y="18" width="1040" height="150" rx="3"/>
+  <text class="tb" x="36" y="42">① 실험 조건</text>
+  <text class="ts" x="128" y="42">바꾸는 것은 팀 구조와 로봇 수뿐이다</text>
 
-  <rect class="box" x="40" y="56" width="250" height="148" rx="2"/>
-  <text class="tm" x="52" y="78">과제 (한 종류)</text>
-  <text x="52" y="98">모든 로봇이 모든 주문과</text>
-  <text x="52" y="115">순서 규칙을 안다</text>
-  <text x="52" y="135">순서: 앞 주문이 놓여야 뒤 주문 인정</text>
-  <text x="52" y="155">같은 색 상자가 여럿: 나눠 맡아야</text>
-  <text x="52" y="175">상자는 자기 카메라로만 본다</text>
-  <text class="ts" x="52" y="194">로봇마다 상자 하나를 나른다</text>
+  <rect class="box" x="36" y="54" width="300" height="100" rx="2"/>
+  <text class="tm" x="48" y="76">로봇 수</text>
+  <text x="48" y="98">3대 · 상자 5개</text>
+  <text x="48" y="118">6대 · 상자 10개</text>
+  <text class="ts" x="48" y="140">상자가 로봇보다 많아 여러 번 나른다</text>
 
-  <rect class="box" x="302" y="56" width="280" height="148" rx="2"/>
-  <text class="tm" x="314" y="78">팀 구조</text>
-  <text x="314" y="99">P 동등: 누구나 누구에게나,</text>
-  <text x="338" y="116">또는 모두에게 말한다</text>
-  <text x="314" y="137">LE 선출 팀장: 모든 말이 팀장을</text>
-  <text x="338" y="154">거친다. 팀장 배정은 따라야 한다</text>
-  <text class="ts" x="314" y="175">팀장 = 아는 주문 최다, 같으면 무작위</text>
-  <text class="ts" x="314" y="193">팀장이 멈추면 팀원은 모두에게 말한다</text>
+  <rect class="box" x="352" y="54" width="300" height="100" rx="2"/>
+  <text class="tm" x="364" y="76">과제 (한 종류)</text>
+  <text x="364" y="98">모든 로봇이 모든 주문과</text>
+  <text x="364" y="118">순서 규칙을 안다</text>
+  <text class="ts" x="364" y="140">상자는 자기 카메라로 본 것만 안다</text>
 
-  <rect class="box" x="594" y="56" width="374" height="148" rx="2"/>
-  <text class="tm" x="606" y="78">LE 메시지 길</text>
-  <path class="ln" d="M673 109 L637 136" marker-start="url(#h)" marker-end="url(#h)"/>
-  <path class="ln" d="M687 109 L723 136" marker-start="url(#h)" marker-end="url(#h)"/>
-  <circle cx="680" cy="96" r="14" fill="#fff" stroke="#1a1a1a" stroke-width="2.6"/>
-  <circle cx="628" cy="148" r="14" fill="#fff" stroke="#1a1a1a" stroke-width="1.15"/>
-  <circle cx="732" cy="148" r="14" fill="#fff" stroke="#1a1a1a" stroke-width="1.15"/>
-  <g text-anchor="middle" class="ts">
-    <text x="680" y="100" style="fill:#1a1a1a">팀장</text>
-    <text x="628" y="152" style="fill:#1a1a1a">팀원</text>
-    <text x="732" y="152" style="fill:#1a1a1a">팀원</text>
-    <text x="680" y="178">팀원끼리는 직접 안 보낸다</text>
-    <text x="680" y="194">P 는 모두가 모두에게</text>
-  </g>
-  <path d="M770 64 V196" stroke="#9ca3af" stroke-width="1" stroke-dasharray="2 4" fill="none"/>
-  <text class="tm" x="782" y="78">지도 (생성기 하나)</text>
-  <text x="782" y="99">모듈 = 로봇 3, 문 1,</text>
-  <text x="806" y="116">상자 방 + 목적지 방</text>
-  <text x="782" y="137">3대 = 모듈 1개, 9대 = 3개</text>
-  <text class="ts" x="782" y="158">로봇당 면적, 문당 로봇 수가 같다</text>
-  <text class="ts" x="782" y="176">정답 계획이 성공한 지도만 쓴다</text>
-  <text class="ts" x="782" y="194">메시지 수 제한 없음</text>
+  <rect class="box" x="668" y="54" width="376" height="100" rx="2"/>
+  <text class="tm" x="680" y="76">팀 구조</text>
+  <!-- P -->
+  <text x="684" y="100">P 동등</text>
+  <line class="edge" x1="770" y1="96" x2="812" y2="96"/>
+  <line class="edge" x1="770" y1="96" x2="791" y2="132"/>
+  <line class="edge" x1="812" y1="96" x2="791" y2="132"/>
+  <circle class="node" cx="770" cy="96" r="8"/><circle class="node" cx="812" cy="96" r="8"/><circle class="node" cx="791" cy="132" r="8"/>
+  <!-- LE -->
+  <text x="830" y="100">LE 선출 팀장</text>
+  <line class="edge" x1="1004" y1="90" x2="984" y2="130"/>
+  <line class="edge" x1="1004" y1="90" x2="1024" y2="130"/>
+  <circle class="lead" cx="1004" cy="90" r="9"/><circle class="node" cx="984" cy="130" r="8"/><circle class="node" cx="1024" cy="130" r="8"/>
+  <text class="ts" x="830" y="122">모든 말이 팀장을 거치고</text>
+  <text class="ts" x="830" y="140">팀장 배정을 따른다</text>
 
-  <!-- (1) -> (2) -->
-  <path class="ln" d="M500 216 V248" marker-end="url(#h)"/>
-  <text x="510" y="238">주문·순서 규칙, 팀 구조</text>
+  <line class="ln" x1="510" y1="168" x2="510" y2="206" marker-end="url(#h)"/>
+  <text class="ts" x="518" y="192">주문 · 순서 규칙 · 팀 구조</text>
 
-  <!-- ===== (2) planning layer ===== -->
-  <rect class="cont" x="308" y="250" width="676" height="236" rx="3"/>
-  <text class="tb" x="324" y="272">② 계획층</text>
-  <text class="ts" x="400" y="272">로봇마다 LLM 하나. 결정할 때가 되면 실행층이 묻는다</text>
+  <!-- sensors -->
+  <rect class="box" x="20" y="210" width="210" height="96" rx="2"/>
+  <text class="tm" x="32" y="232">④ 자기 카메라 (팔 끝)</text>
+  <text x="32" y="254">상자 · 문 · 목적지 표식</text>
+  <text class="ts" x="32" y="276">계획층: 본 상자 목록</text>
+  <text class="ts" x="32" y="294">실행층: 방향과 거리</text>
 
-  <rect class="box" x="324" y="288" width="210" height="186" rx="2"/>
-  <text class="tm" x="336" y="310">받는 정보</text>
-  <text x="336" y="334">자기 방 이름<tspan class="ts" dx="4">(자기 진행에서)</tspan></text>
-  <text x="336" y="358">본 상자<tspan class="ts" dx="4">(자기 카메라 목록)</tspan></text>
-  <text x="336" y="382">모든 주문과 순서 규칙</text>
-  <text x="336" y="406">받은 메시지</text>
-  <text x="336" y="430">팀장 배정<tspan class="ts" dx="4">(LE 팀원)</tspan></text>
-  <text class="ts" x="336" y="460">다른 로봇의 위치는 받지 않는다</text>
+  <rect class="cam" x="20" y="330" width="210" height="96" rx="2"/>
+  <text class="tm bl" x="32" y="352">④ 천장 카메라</text>
+  <text class="bl" x="32" y="374">모든 로봇의 위치 · 방향</text>
+  <text class="bl" x="32" y="394">0.5초마다</text>
+  <text class="ts bl" x="32" y="414">실행층만 쓴다</text>
 
-  <path class="ln" d="M534 381 H552" marker-end="url(#h)"/>
-  <rect class="box" x="554" y="288" width="170" height="186" rx="2"/>
-  <text class="tm" x="566" y="310">결정마다</text>
-  <rect class="box llm" x="564" y="322" width="150" height="66" rx="2"/>
-  <text class="tm" x="574" y="340">일하기 또는 말하기</text>
-  <text class="ts" x="574" y="357">LLM 이 코드가 만든</text>
-  <text class="ts" x="574" y="374">선택지에서 하나 고름</text>
-  <path class="ln" d="M639 388 V398" marker-end="url(#h)"/>
-  <rect class="box" x="564" y="400" width="150" height="66" rx="2"/>
-  <text class="tm" x="574" y="418">말하면 시간을 쓴다</text>
-  <text class="ts" x="574" y="435">1.45 s + 글자당 0.0036 s</text>
-  <text class="ts" x="574" y="452">그동안 몸은 서 있다</text>
+  <!-- ②③ one robot -->
+  <rect class="cont" x="270" y="210" width="500" height="330" rx="3"/>
+  <text class="tb" x="286" y="234">로봇마다 (모든 로봇이 같다)</text>
 
-  <path class="ln" d="M724 381 H742" marker-end="url(#h)"/>
-  <rect class="box" x="744" y="288" width="224" height="186" rx="2"/>
-  <text class="tm" x="756" y="310">고르는 것</text>
-  <text x="756" y="332">집을 상자 · 목적지 표식</text>
-  <text x="756" y="351">문: 지금 지나기, 기다리기</text>
-  <text x="756" y="370">머물기 · 다시 찾기 <tspan class="ts">(v39)</tspan></text>
-  <text x="756" y="389">든 상자를 내려놓고 끝내기</text>
-  <rect class="box llm" x="756" y="400" width="200" height="66" rx="2"/>
-  <text class="tm" x="766" y="418">말하기: rX 에게, 모두에게</text>
-  <text class="ts" x="766" y="435">LE 팀원은 팀장에게만</text>
-  <text class="ts" x="766" y="452">팀장 배정을 받으면 그 색·구역만</text>
+  <rect class="llm" x="286" y="248" width="468" height="92" rx="2"/>
+  <text class="tm" x="300" y="270">② 계획층 · LLM</text>
+  <text x="300" y="294">결정마다 <tspan font-weight="600">일하기</tspan> 또는 <tspan font-weight="600">말하기</tspan> 중 하나를 고른다</text>
+  <text class="ts" x="300" y="314">일하기: 집을 상자, 목적지, 문 지나기 · 기다리기, 내려놓기</text>
+  <text class="ts" x="300" y="331">말하기: 그동안 몸은 서 있다 (시뮬 시간을 쓴다)</text>
 
-  <!-- (2) <-> other robots -->
-  <path class="ln" d="M984 380 H1058" marker-start="url(#h)" marker-end="url(#h)"/>
-  <text x="1021" y="372" text-anchor="middle">메시지</text>
-  <rect class="box llm" x="1060" y="310" width="196" height="140" rx="2"/>
-  <text class="tm" x="1072" y="334">다른 로봇의 계획층</text>
-  <text x="1072" y="358">말하기가 끝나고 2초 뒤</text>
-  <text x="1072" y="377">도착. 받는 로봇은 읽는</text>
-  <text x="1072" y="396">시간만큼 늦게 본다</text>
-  <text class="ts" x="1072" y="424">팀장은 자기 운반을 끝낸</text>
-  <text class="ts" x="1072" y="440">뒤에도 남아 중계한다</text>
+  <line class="ln" x1="470" y1="340" x2="470" y2="372" marker-end="url(#h)"/>
+  <text class="ts" x="478" y="362">행동</text>
+  <line class="lg" x1="600" y1="372" x2="600" y2="340" marker-end="url(#g)"/>
+  <text class="ts" x="608" y="362">진행 보고</text>
 
-  <!-- (2) <-> (3) -->
-  <path class="ln" d="M856 474 V518" marker-end="url(#h)"/>
-  <text x="866" y="506">행동 선택</text>
-  <path class="ln dash" d="M430 520 V476" marker-end="url(#h)"/>
-  <text x="440" y="506">진행 보고</text>
+  <rect class="box" x="286" y="376" width="468" height="86" rx="2"/>
+  <text class="tm" x="300" y="398">③ 실행층</text>
+  <rect class="act" x="300" y="408" width="140" height="42" rx="2"/>
+  <text x="312" y="426">집기 · 들기</text>
+  <text class="ts" x="312" y="443">ACT 학습 모델</text>
+  <rect class="box" x="452" y="408" width="288" height="42" rx="2"/>
+  <text x="464" y="426">접근 · 운반 · 문 통과 · 내려놓기</text>
+  <text class="ts" x="464" y="443">코드</text>
 
-  <!-- ===== (3) execution layer ===== -->
-  <rect class="cont" x="308" y="520" width="676" height="270" rx="3"/>
-  <text class="tb" x="324" y="542">③ 실행층</text>
-  <text class="ts" x="400" y="542">로봇마다 하나. 고른 행동을 바퀴와 관절 명령으로 바꾼다. v38 + v39(들기 확인 고침, 다시 찾기, 고장 시 몸 정지)</text>
+  <line class="ln" x1="520" y1="462" x2="520" y2="490" marker-end="url(#h)"/>
+  <rect class="box" x="400" y="492" width="240" height="36" rx="2"/>
+  <text x="414" y="515">로봇 · 바퀴 4, 서보 5</text>
 
-  <rect class="box" x="324" y="558" width="116" height="92" rx="2"/>
-  <text class="tm" x="334" y="580">접근</text>
-  <text class="ts" x="334" y="600">코드</text>
-  <text class="ts" x="334" y="617">정면 맞추기</text>
-  <path class="ln" d="M440 604 H454" marker-end="url(#h)"/>
-  <rect class="box act" x="456" y="558" width="116" height="92" rx="2"/>
-  <text class="tm" x="466" y="580">집기·들기</text>
-  <text class="ts" x="466" y="600">ACT</text>
-  <text class="ts" x="466" y="617">학습 모델</text>
-  <path class="ln" d="M572 604 H586" marker-end="url(#h)"/>
-  <rect class="box" x="588" y="558" width="116" height="92" rx="2"/>
-  <text class="tm" x="598" y="580">들었는지 확인</text>
-  <text class="ts" x="598" y="600">코드</text>
-  <text class="ts" x="598" y="617">빈손이면 다시</text>
-  <path class="ln" d="M704 604 H718" marker-end="url(#h)"/>
-  <rect class="box" x="720" y="558" width="116" height="92" rx="2"/>
-  <text class="tm" x="730" y="580">운반·문 통과</text>
-  <text class="ts" x="730" y="600">코드</text>
-  <text class="ts" x="730" y="617">표식 앞까지</text>
-  <path class="ln" d="M836 604 H850" marker-end="url(#h)"/>
-  <rect class="box" x="852" y="558" width="116" height="92" rx="2"/>
-  <text class="tm" x="862" y="580">내려놓기</text>
-  <text class="ts" x="862" y="600">코드</text>
-  <text class="ts" x="862" y="617">고정 순서 재생</text>
+  <!-- sensor arrows -->
+  <path class="ln" d="M230 258 H286" marker-end="url(#h)"/>
+  <path class="ln" d="M230 290 H258 V420 H286" marker-end="url(#h)"/>
+  <path class="lb" d="M230 400 H246 V440 H286" marker-end="url(#b)"/>
 
-  <rect class="box" x="324" y="666" width="644" height="108" rx="2"/>
-  <text class="tm" x="336" y="688">로봇 사이 공통 규칙 (코드, 모든 팀 구조에 같다)</text>
-  <text x="336" y="712">접근 대기 · 운반 중 앞 로봇 정지 · 문 앞 대기 · 목적지 전 듣기</text>
-  <text class="ts" x="336" y="734">접근 대기는 번호가 낮은 로봇이 먼저다. 다른 로봇의 위치는 천장 카메라로 안다</text>
-  <text class="ts" x="336" y="754">몸 움직임의 교착만 푼다. 문을 누가 먼저 지날지는 계획층(LLM)이 정한다</text>
+  <!-- other robots -->
+  <rect class="llm" x="810" y="210" width="250" height="120" rx="2"/>
+  <text class="tm" x="824" y="232">다른 로봇의 계획층</text>
+  <text x="824" y="256">P: 누구에게나, 또는 모두에게</text>
+  <text x="824" y="278">LE: 팀원은 팀장에게만,</text>
+  <text x="824" y="296">팀장은 팀원에게 전하고 배정</text>
+  <text class="ts" x="824" y="318">받은 말은 다음 결정에 보인다</text>
+  <line class="ln" x1="754" y1="282" x2="810" y2="282" marker-start="url(#h)" marker-end="url(#h)"/>
+  <text class="ts" x="776" y="272">말</text>
 
-  <!-- (3) -> robot -->
-  <text x="1021" y="594" text-anchor="middle">바퀴·관절</text>
-  <text x="1021" y="610" text-anchor="middle">명령</text>
-  <path class="ln" d="M984 622 H1058" marker-end="url(#h)"/>
-  <rect class="box" x="1060" y="574" width="196" height="100" rx="2"/>
-  <text class="tm" x="1072" y="598">로봇</text>
-  <text x="1072" y="620">바퀴 4, 서보 5</text>
-  <text class="ts" x="1072" y="640">0.1초마다 명령을 받는다</text>
-  <text class="ts" x="1072" y="658">자기 카메라는 팔 끝에 있다</text>
-
-  <!-- ===== (4) sensing ===== -->
-  <rect class="cont" x="24" y="250" width="220" height="540" rx="3"/>
-  <text class="tb" x="40" y="272">④ 감지</text>
-
-  <rect class="box" x="36" y="288" width="196" height="164" rx="2"/>
-  <text class="tm" x="48" y="310">자기 카메라</text>
-  <text class="ts" x="48" y="327">팔 끝, 로봇마다</text>
-  <text x="48" y="352">상자, 목적지 표식,</text>
-  <text x="48" y="371">든 상자, 문을 찾는다</text>
-  <text class="ts" x="48" y="402">계획층: 본 상자 목록</text>
-  <text class="ts" x="48" y="420">실행층: 방향과 거리</text>
-
-  <path class="ln" d="M232 340 H322" marker-end="url(#h)"/>
-  <text x="276" y="332" text-anchor="middle">관측</text>
-  <path class="ln" d="M232 436 H276 V590 H322" marker-end="url(#h)"/>
-  <text x="270" y="520" text-anchor="end">관측</text>
-
-  <rect class="box cam" x="36" y="476" width="196" height="176" rx="2"/>
-  <text class="tm bl" x="48" y="498">천장 카메라</text>
-  <text class="ts bl" x="48" y="515">1대, 경기장 위</text>
-  <text class="bl" x="48" y="540">로봇 윗면의 번호 표식을</text>
-  <text class="bl" x="48" y="559">읽어 모든 로봇의 위치와</text>
-  <text class="bl" x="48" y="578">방향을 잰다 (0.5초마다)</text>
-  <text class="ts bl" x="48" y="606">실행층만 쓴다</text>
-  <text class="ts bl" x="48" y="624">계획층에는 주지 않는다</text>
-  <path class="lb" d="M232 640 H306" marker-end="url(#b)"/>
-  <text class="bl" x="270" y="632" text-anchor="middle">위치</text>
-
-  <rect class="box dash" x="36" y="672" width="196" height="104" rx="2"/>
-  <text class="tm" x="48" y="694">고정 정보</text>
-  <text class="ts" x="48" y="711">센서가 아니라 주어진 값</text>
-  <text x="48" y="736">경기장 모양(벽, 문)</text>
-  <text class="ts" x="48" y="758">실행층만 쓴다</text>
-  <path class="ln" d="M232 724 H306" marker-end="url(#h)"/>
-  <text x="270" y="716" text-anchor="middle">벽·문</text>
-
-  <!-- ===== (5) scoring (beside) ===== -->
-  <rect class="cont dash" x="1060" y="20" width="196" height="250" rx="3"/>
-  <text class="tb" x="1072" y="42">⑤ 채점 (옆)</text>
-  <text x="1072" y="66">시뮬레이터가 아는 정답</text>
-  <text x="1072" y="85">(상자와 표식의 실제 위치,</text>
-  <text x="1072" y="104">접촉력)은 채점에만 쓴다</text>
-  <text class="tm" x="1072" y="130">어느 층에도 주지 않는다</text>
-  <text class="ts" x="1072" y="160">읽는 것: 놓인 상자와</text>
-  <text class="ts" x="1072" y="177">놓인 순서, 끝난 시각</text>
-  <text class="ts" x="1072" y="194">(실행이 끝난 뒤)</text>
-  <text class="ts" x="1072" y="222">내는 것: 배달 비율 R0,</text>
-  <text class="ts" x="1072" y="239">완료 시간, 순서 위반</text>
-  <path class="lg" d="M984 262 H1058" marker-end="url(#g)"/>
-  <text class="ts" x="1021" y="236" text-anchor="middle">놓인 상자</text>
-  <text class="ts" x="1021" y="251" text-anchor="middle">순서·시각</text>
-
-  <!-- ===== legend ===== -->
-  <rect x="28" y="812" width="28" height="16" rx="2" fill="#fff" stroke="#374151" stroke-width="2.2"/>
-  <text x="64" y="825">LLM 이 하는 일</text>
-  <rect x="190" y="812" width="28" height="16" rx="2" fill="#dcdfe4" stroke="#374151" stroke-width="1.1"/>
-  <text x="226" y="825">학습 모델(ACT)이 하는 일</text>
-  <rect x="410" y="812" width="28" height="16" rx="2" fill="#fff" stroke="#374151" stroke-width="1.1"/>
-  <text x="446" y="825">코드가 하는 일</text>
-  <path class="lb" d="M580 820 H618" marker-end="url(#b)"/>
-  <text class="bl" x="628" y="825">천장 카메라 측정값 (실행층만)</text>
-  <path class="ln dash" d="M850 820 H888" marker-end="url(#h)"/>
-  <text x="898" y="825">진행 보고</text>
-  <path class="lg" d="M1000 820 H1038" marker-end="url(#g)"/>
-  <text x="1048" y="825">채점이 읽는 것</text>
+  <!-- scoring -->
+  <rect class="dash" x="810" y="376" width="250" height="152" rx="3"/>
+  <text class="tm" x="824" y="398">⑤ 채점 (옆에서)</text>
+  <text x="824" y="422">실행이 끝난 뒤 정답 좌표로</text>
+  <text x="824" y="442">놓인 상자와 순서를 센다</text>
+  <text class="ts" x="824" y="466">배달 비율 · 완료 시간 · 순서 위반</text>
+  <text class="ts" x="824" y="490">정답은 어느 층에도 주지 않는다</text>
+  <path class="lg" d="M770 470 H810" marker-end="url(#g)"/>
 </svg>
