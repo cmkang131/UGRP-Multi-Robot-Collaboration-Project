@@ -1,0 +1,116 @@
+# ras1 초록 벽·점박이 바닥 DEV
+
+2026-11-18 사용자 방향에 따른 시뮬레이션→실물 연결 범위와 최신 T01–T13 계약의
+차이는 [Sim2Real 대응 기록](SIM2REAL.md)에 정리했다. 아래는11/12 실행 당시 기록이다.
+
+사용자 요청(2026-11-12): 초록 벽, 회색 점박이 바닥. 바닥 점을 특징점으로
+차체를 움직이며 벽을 인식하고 지도를 만들고, 터미널 실행 명령을 제공한다.
+
+PR405 기반 작업 브랜치의 K/D와 명령 카메라 체인을 재사용하는 별도 DEV
+색/접점 프런트엔드다. 기존 PR405 ego map 전체, 엄격한 수직 3-D 평면 검증기,
+metric SLAM의 실물 성공을 승계하지 않는다. 초록색은 사용자가 지정한 벽의
+후보이며, 실제 바닥이 바로 아래 보이는 접점만 투영한다. 바닥 Shi–Tomasi
+특징점→전후 LK→RANSAC homography로 현재 바닥을 첫 관측에 정합한다.
+추적 실패 시 누적 지도를 고정하고 다음 차체 명령을 내지 않는다.
+
+카메라 자세는 기존 POSE_SEARCH(2000/740/2320/1320/1500)로 고정한다.
+초기45프레임 노출 안정화 뒤, LK 전후 일치가 부족하면 ORB Hamming 상호 대응과
+0.75 ratio로 같은24개/2.45px/공간분포 기하 관문을 다시 검사한다.
+35의 전후100ms는 기존 하드웨어 실행 범위 안의 짧은 명령이며
+명령을 실제 이동 거리로 환산하지 않는다. 기본은 정지 관측이고 --move가
+명시된 경우에만 유한한 이동을 한다. 커널 actuator lease, SIGINT/HUP/TERM,
+90초 호스트 watchdog, 각 펄스와 전체 finally 정지를 사용한다.
+
+바닥 homography를 K로 분해해 영상 기반 회전·이동/카메라 높이를 얻고,
+명목 카메라-차체 오프셋을 사용한 상대 차체 위치를 별도 표시한다.
+수치 위치의 원점은 첫 명목 차체 위치(0,0)이고, 지도 화면은 현재 로봇을 항상
+(0,0)·정면으로 두고 저장 접점/궤적을 반대로 옮긴다. 단위는 **카메라 높이**다.
+카메라-차체 외부 파라미터·거리 축척·초록 물체의 수직 평면 여부는 미검증이다.
+표시된 점은 관측한 초록/회색 접점이고 미관측 영역은 unknown이다.
+HSV·연결 면적·분포 범위는 DEV 휴리스틱으로 명시하며 일반화 채택값이 아니다.
+24 floor inliers와 2.45px reprojection은 기존 strict-wall 경로와 같다.
+
+원본은 ras1 ~/green-wall-runs/<run>/에 보존하고, Mac에는 요약/대표 영상·그림만
+회수한다. 새 대량 로컬 녹화는 Mac 여유7.6GiB로 하지 않는다.
+
+공식 방법 참고:
+- https://docs.opencv.org/4.x/d4/dee/tutorial_optical_flow.html
+- https://docs.opencv.org/4.x/d9/dab/tutorial_homography.html
+- https://docs.opencv.org/4.x/dc/dc3/tutorial_py_matcher.html
+- Malis & Vargas, Deeper understanding of the homography decomposition for
+  vision-based control, INRIA RR-6303 (2007), https://hal.inria.fr/inria-00174036
+- Campos et al., ORB-SLAM3 (2021), https://arxiv.org/abs/2007.11898
+  (특징점·fisheye 모델 참고, 이 DEV를 ORB-SLAM3 실행으로 표현하지 않음).
+
+실물 첫 전후6회는550–592 floor inliers와0.17–0.20px 중앙 재투영 오차를
+얻었으나 nominal floor normal과 관측 방향이 약30deg 어긋나 pose는 전부 거부됐다.
+fit_floor_normal.py는 그6개 DEV homography에서 공통 법선을 추정한다.
+동수의 다른 법선 해가 있으면 거부하며, 새 촬영 전에 프로필을 고정한다.
+이것은 RGB 기반 바닥 기울기 보정이며 렌즈 전체 재보정/미터 축척 확정이 아니다.
+
+예: ras1에서 `python3 ~/green-wall-mapper-20261112/green_wall_mapper.py --move --pairs 3 --floor-profile ~/green-wall-mapper-20261112/floor-profile-dev-181359.json`.
+overlay-map.avi는 정지 관측 순서의 3fps 요약이며 연속 실시간 영상이 아니다.
+소스·시험·실제 이동/실패 결과는 summary.json으로 별도 기록한다.
+
+## 새 고정 프로필 검증 결과
+
+`91e2a8ed3394e68c13a29d87a1c54cb25a193102` / mapper SHA256
+`7ade1ab0799c8a90743ba265530e6f1dc989e3a95e54f72068b78583d8383b50`
+와 고정 floor-profile SHA256
+`c7eee2314d66a4b6b27d652704ee8ad08535dedaf3209fc6bc9083e5e61d3862`로
+새 실제 촬영 `ras1:/home/ras1/green-wall-runs/20261112-182136`을 실행했다.
+전후 명령3쌍(6펄스),7정지 관측,6/6 floor homography 및 상대 pose 기하 관문을
+통과하고 마지막 정지를 확인했다. inliers534–583, 중앙 재투영0.155–0.198px.
+마지막 추정(+0.0154,-0.0248,+0.0445deg)은 카메라 높이 단위이며 외부 정답
+위치/정확도/원점 복귀 오차를 측정한 값이 아니다.
+
+전후 명령에 대해 이동은 주로 카메라 옆축에 나타났다. 실제 차체 축과 카메라
+yaw/바퀴 명령축 정합은 미검증이며, 발행 명령에 맞춰 영상 추정을 강제 수정하지
+않았다. 수직 벽 평면 검증도 여전히 false다. 과거 엄격한 벽 검증 성공을 승계하지
+않고, 초록색/회색의 보이는 접점만 사용자 지정 목표 후보로 표시한다.
+
+렌즈 역변환/기지 homography/기지 카메라 오프셋을 포함한 pose/법선 합의/추적 실패
+동결/접점 구분의 시험6개가 ras1에서0.640초에 통과했다. 그 뒤 변경은 egocentric
+화면 표시 및 저장된 overlay·pose 재생이다. 새 물리 실행으로 소급하지 않는다.
+render_run.py는 저장7프레임/6pose만 재생했으며 추론을 다시 계산하지 않았다.
+
+Linear HAN-36에 원인·실물 결과·한계와 대표 접점/지도/특징점 이미지를 기록했다.
+
+## 머리 고정·벽에 접근/후퇴·설계 cm 지도 (사용자 후속 요청)
+
+사용자는 실측 높이 대신 **모터값과 설계도**를 쓰라고 지정했다. 같은 팔 명령
+2000/740/2320/1320/1500과 동결 기구 체인으로 계산한 카메라 높이는
+23.0860865cm다. `wall_distance.py`는 이 높이로 RGB floor-motion과 벽 접점을
+cm로 환산한다. 모터 속도나 명령 시간을 이동 거리로 환산하지 않는다.
+독립적인 실제 cm 정확도 검증은 여전히 하지 않았으며 화면에도 design-scale로 표시한다.
+
+`run_wall_distance.py`는 서보 쓰기를 전혀 하지 않고, 첫 짧은 차체 이동의
+**관측 벽 거리 변화**로 어느 구동 패턴이 벽에서 멀어지는지 정한다. 이번에는
+기존 API `left`가 후퇴, `right`가 접근으로 관측됐다. 이름으로 실제 방향을
+가정하거나 전역 wheel map을 바꾸지 않는다. 첫 관측 normal fraction0.99945로
+옆 이동이 아닌 벽 법선 방향 이동을 확인했다. 최대8 설계 cm 목표·유한 펄스,
+특징점/접점/머리명령 일관성 검사·각 펄스/최종 정지·actuator lease를 유지한다.
+
+고정 소스 `65e42db68891937c1ee4224c7a494e338f9ef0f8`, 실제 실행
+`ras1:/home/ras1/wall-distance-runs/20261112-195538/`:
+
+- 머리/팔 명령0회, 초기/최종 명령 자세 동일. 차체5펄스·6거리 관측·최종 정지.
+- 카메라 기준 벽 거리 추정(cm): **17.563→19.993→22.776→20.400→18.299→17.353**.
+  최대 증가5.213 설계 cm. 실제 물리 거리/원점 복귀 오차를 외부 정답으로 잰 값이 아니다.
+- 40개 연속 RGB 원본(실제 시간 범위3.540초)과 명령 시작/정지 시각을 보존.
+  render_distance.py는 실제 원본 시각 순서와 각 시점까지 얻은 측정 checkpoint만
+  표시한다. 중간 pose 보간이나 가상의 움직임은 넣지 않았다. 원본 표시 영상은
+  마지막 프레임 약0.5초 유지 포함4.08초, 별도3배 느린 재생본을 제공한다.
+- 최초 실행은 checkpoint 경로 포맷 오류로 **차체0명령**에서 정지했다.
+  수정 후 정지 촬영 smoke 통과, 같은 고정 소스로 위 실제 왕복을 수행했다.
+- 관련 시험은 두 파일9개가 ras1에서0.775초에 통과했다. 거리 단위 변환,
+  접점 이상치, 옆 이동 거부/관측 방향 선택을 포함한다.
+
+결과·실패·raw 위치는 wall-distance-summary.json. 원본과 해시는 ras1에 보존하고
+Mac에는 summary/대표 연속 영상/최종 그림만 회수했다.
+
+다시 실행(ras1, 현재 고정 팔 자세가 일치할 때):
+```sh
+cd ~/green-wall-mapper-20261112
+python3 run_wall_distance.py --floor-profile floor-profile-dev-181359.json --move --excursion-cm 5
+```

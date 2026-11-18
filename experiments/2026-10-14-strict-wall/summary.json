@@ -1,0 +1,42 @@
+{
+  "ras1_new_view_capture": {
+    "outcome": "complete",
+    "views": 30,
+    "frames": 60,
+    "chassis_motion": "none",
+    "source_commit": "954210bcc",
+    "raw": "outputs/ras1-activeview-20261014-184754",
+    "raw_scope": "original execution workspace; private absolute location retained in original execution records"
+  },
+  "calibration_dev": {
+    "candidate": "ras1_residual_lens_dev_v1",
+    "adoption_gate_on_reused_dev_split": true,
+    "independent_confirmation": false,
+    "production_qualified": false,
+    "failed_attempts": 5,
+    "successful_dev_attempt": 6
+  },
+  "fresh_confirmation": {
+    "classification": "dev",
+    "outcome": "HOST_ERROR",
+    "stage": "SSH preflight",
+    "source_commit": "f4af41e08",
+    "views": 0,
+    "frames": 0,
+    "chassis_commands_issued": false,
+    "camera_commands_issued": false,
+    "reason": "known-IP SSH connection timeout; mDNS resolution unavailable",
+    "external_state": "user reports ras1 power is off",
+    "independent_calibration_validation_complete": false
+  },
+  "github_pr": {
+    "created": false,
+    "push_failed": "missing GitHub HTTPS credentials; SSH key not authorized",
+    "user_cannot_authenticate_now": true
+  },
+  "tests": {
+    "files": 2,
+    "passed": 14
+  },
+  "raw_images_uploaded": false
+}

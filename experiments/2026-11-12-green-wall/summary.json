@@ -1,0 +1,141 @@
+{
+  "runs": [
+    {
+      "run": "20261112-180243",
+      "raw_location": "/home/ras1/green-wall-runs/20261112-180243",
+      "source_commit": null,
+      "source_sha256": "e63ead553c1292728d886d014891a961e1e7a0ff637c7a4b1f74d231726840d1",
+      "frames": 1,
+      "commands": 0,
+      "floor_updates": 0,
+      "pose_updates": 0,
+      "stopped": true,
+      "errors": [],
+      "wall_geometry_confirmed": false,
+      "metric_verified": false,
+      "result_sha256": "a53b0d7063284566f719816e33e2d9281ce4b9c40c5087226f61cd4b1a122de0",
+      "note": "stationary development probe before first commit; not confirmatory"
+    },
+    {
+      "run": "20261112-180444",
+      "raw_location": "/home/ras1/green-wall-runs/20261112-180444",
+      "source_commit": "43a0e13a228f6006e482d834a3d999a1189f701c",
+      "source_sha256": "a03e17dac951227cd710185584288927cceed42bf5b8dd5c11e6fdd02ac71ed1",
+      "frames": 2,
+      "commands": 1,
+      "floor_updates": 0,
+      "pose_updates": 0,
+      "stopped": true,
+      "errors": [
+        "RuntimeError('floor tracking lost; stopped before next pulse')"
+      ],
+      "wall_geometry_confirmed": false,
+      "metric_verified": false,
+      "result_sha256": "c14b7b63816775206665dbc445994c349afc31c83af56c7e38a948714d87f9dd"
+    },
+    {
+      "run": "20261112-181359",
+      "raw_location": "/home/ras1/green-wall-runs/20261112-181359",
+      "source_commit": "e7f7b885c829c8a2fdf854766463726554b757ce",
+      "source_sha256": "a21f131f0464c65988ab81cbecd616e5079e880071ec00c6047867b3e653361c",
+      "frames": 7,
+      "commands": 6,
+      "floor_updates": 6,
+      "pose_updates": 0,
+      "stopped": true,
+      "errors": [],
+      "wall_geometry_confirmed": false,
+      "metric_verified": false,
+      "result_sha256": "9ce9f181f8b6e418d72cca79e4b09f4dfb33544c49266f7647945915e871e2f1",
+      "inliers": [
+        573,
+        592,
+        550,
+        563,
+        577,
+        578
+      ],
+      "reprojection_median_px": [
+        0.19201402366161346,
+        0.1800910383462906,
+        0.19929571449756622,
+        0.16905568540096283,
+        0.18671438097953796,
+        0.17596197128295898
+      ],
+      "last_pose": {
+        "x": 0.0,
+        "y": 0.0,
+        "yaw_deg": 0.0
+      }
+    },
+    {
+      "run": "20261112-182014",
+      "raw_location": "/home/ras1/green-wall-runs/20261112-182014",
+      "source_commit": "91e2a8ed3394e68c13a29d87a1c54cb25a193102",
+      "source_sha256": "7ade1ab0799c8a90743ba265530e6f1dc989e3a95e54f72068b78583d8383b50",
+      "frames": 0,
+      "commands": 0,
+      "floor_updates": 0,
+      "pose_updates": 0,
+      "stopped": true,
+      "errors": [
+        "ControlError('battery voltage 65430 mV outside valid range (4500..9500 mV)')"
+      ],
+      "wall_geometry_confirmed": false,
+      "metric_verified": false,
+      "result_sha256": "154ef84067f7624ad246bb004132073e3e2f0cf4d7ed4c6353bfec2564654399",
+      "last_pose": {
+        "x": 0.0,
+        "y": 0.0,
+        "yaw_deg": 0.0
+      }
+    },
+    {
+      "run": "20261112-182136",
+      "raw_location": "/home/ras1/green-wall-runs/20261112-182136",
+      "source_commit": "91e2a8ed3394e68c13a29d87a1c54cb25a193102",
+      "source_sha256": "7ade1ab0799c8a90743ba265530e6f1dc989e3a95e54f72068b78583d8383b50",
+      "frames": 7,
+      "commands": 6,
+      "floor_updates": 6,
+      "pose_updates": 6,
+      "stopped": true,
+      "errors": [],
+      "wall_geometry_confirmed": false,
+      "metric_verified": false,
+      "result_sha256": "089b7a2fc969a086eabaf7ec8515efcdca43546934bfad4ff3a4c3c3e7d87ed2",
+      "inliers": [
+        562,
+        534,
+        576,
+        578,
+        572,
+        583
+      ],
+      "reprojection_median_px": [
+        0.17493517696857452,
+        0.15461143851280212,
+        0.1699114739894867,
+        0.16059474647045135,
+        0.1983054280281067,
+        0.17145298421382904
+      ],
+      "last_pose": {
+        "x": 0.015395699513428724,
+        "y": -0.024792780760070757,
+        "yaw_deg": 0.044461490706222094,
+        "camera_height_change": -0.0009540870716837615,
+        "floor_normal_alignment": 0.9770251022470775,
+        "rotation_deg": 0.7080780905607512,
+        "unit": "initial nominal camera height",
+        "metric_verified": false
+      }
+    }
+  ],
+  "tests": {
+    "passed": 6,
+    "seconds": 0.64,
+    "host": "ras1"
+  }
+}

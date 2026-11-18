@@ -1,0 +1,102 @@
+{
+  "tests": {
+    "passed": 9,
+    "seconds": 0.775,
+    "host": "ras1"
+  },
+  "runs": [
+    {
+      "run": "20261112-195400",
+      "raw_location": "/home/ras1/wall-distance-runs/20261112-195400",
+      "source": "3881c7c929df04888c6aec0bcf1da63eba266e44",
+      "frames": 3,
+      "commands": 0,
+      "checkpoints": 1,
+      "gaps_cm": [
+        17.563414502992362
+      ],
+      "stopped": true,
+      "errors": [
+        "TypeError(\"unsupported operand type(s) for %: 'PosixPath' and 'int'\")"
+      ],
+      "servo_writes": 0,
+      "pose_unchanged": true,
+      "scale": {
+        "camera_height_cm": 23.08608650949605,
+        "camera_origin_design_m": [
+          0.12524423195220422,
+          0.0,
+          0.23086086509496048
+        ],
+        "source": "own arm PWM + PR405 frozen mechanical chain",
+        "independently_measured": false
+      },
+      "actions": null,
+      "result_sha256": "d15fcc05f687fd9ddbf0908f1dedcb18a3299359e56adecf323a80fe27de60eb"
+    },
+    {
+      "run": "20261112-195517",
+      "raw_location": "/home/ras1/wall-distance-runs/20261112-195517",
+      "source": "65e42db68891937c1ee4224c7a494e338f9ef0f8",
+      "frames": 10,
+      "commands": 0,
+      "checkpoints": 1,
+      "gaps_cm": [
+        17.560602065828032
+      ],
+      "stopped": true,
+      "errors": [],
+      "servo_writes": 0,
+      "pose_unchanged": true,
+      "scale": {
+        "camera_height_cm": 23.08608650949605,
+        "camera_origin_design_m": [
+          0.12524423195220422,
+          0.0,
+          0.23086086509496048
+        ],
+        "source": "own arm PWM + PR405 frozen mechanical chain",
+        "independently_measured": false
+      },
+      "actions": null,
+      "result_sha256": "93bd95a1322b7e36e48bc611b7a3406254d8697b2321457cff54c1409207f1c2"
+    },
+    {
+      "run": "20261112-195538",
+      "raw_location": "/home/ras1/wall-distance-runs/20261112-195538",
+      "source": "65e42db68891937c1ee4224c7a494e338f9ef0f8",
+      "frames": 40,
+      "commands": 5,
+      "checkpoints": 6,
+      "gaps_cm": [
+        17.563072576147018,
+        19.992597699824536,
+        22.77593071295693,
+        20.399622176065726,
+        18.298542907408926,
+        17.353107168425804
+      ],
+      "stopped": true,
+      "errors": [],
+      "servo_writes": 0,
+      "pose_unchanged": true,
+      "scale": {
+        "camera_height_cm": 23.08608650949605,
+        "camera_origin_design_m": [
+          0.12524423195220422,
+          0.0,
+          0.23086086509496048
+        ],
+        "source": "own arm PWM + PR405 frozen mechanical chain",
+        "independently_measured": false
+      },
+      "actions": {
+        "away": "left",
+        "toward": "right",
+        "observed_gap_change_cm": 2.429525123677518,
+        "normal_fraction": 0.9994510063764693
+      },
+      "result_sha256": "642701b57b901199d1743efc3c00e2470c8cb7da68b35a45e1967fb6b81e04b4"
+    }
+  ]
+}
