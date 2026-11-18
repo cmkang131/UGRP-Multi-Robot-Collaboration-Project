@@ -497,12 +497,10 @@ class PlaceMemory:
             key = (round(ox / .05), round(oy / .05))
             if key not in self.obstacles or self.obstacles[key][2] > rng:
                 self.obstacles[key] = (ox, oy, rng, x, y, phase)
-        for q in wall_points(jpeg, posture, self.projection, ignore_below_row):
-            wx, wy = x + c * q[0] - s * q[1], y + s * q[0] + c * q[1]
-            key = (round(wx / .05), round(wy / .05))
-            rng = math.hypot(q[0], q[1])
-            if key not in self.walls or self.walls[key][2] > rng:
-                self.walls[key] = (wx, wy, rng, phase)
+        self.observe_wall_contacts(
+            wall_points(jpeg, posture, self.projection, ignore_below_row),
+            pose=pose, phase=phase,
+        )
         finder = door_candidates_near if near else door_candidates
         for cand in finder(jpeg, posture, self.projection, ignore_below_row):
             pts = [[x + c * p[0] - s * p[1], y + s * p[0] + c * p[1]] for p in (cand['left'], cand['right'])]
@@ -512,6 +510,17 @@ class PlaceMemory:
                 if near:
                     entry['tall_thing'] = cand.get('tall_thing')
                 self.observations.append(entry)
+
+    def observe_wall_contacts(self, points, *, pose, phase):
+        """Remember body-relative ground contacts in the look-around list frame."""
+        x, y, yaw = pose
+        c, s = math.cos(yaw), math.sin(yaw)
+        for px, py in points:
+            wx, wy = x + c * px - s * py, y + s * px + c * py
+            key = (round(wx / .05), round(wy / .05))
+            distance = math.hypot(px, py)
+            if key not in self.walls or self.walls[key][2] > distance:
+                self.walls[key] = (wx, wy, distance, phase)
 
     def observe_zone(self, jpeg, posture, colour, pose=(0., 0., 0.), phase='zone_scan', held_kind=None):
         """Remember where the paint of one zone colour was seen (list frame).

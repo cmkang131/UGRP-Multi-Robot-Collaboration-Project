@@ -1,0 +1,195 @@
+{
+  "schema": "ugrp.residual_lens_v1",
+  "physical_host": "ras1",
+  "K": [
+    [
+      619.5194540517232,
+      0.0,
+      287.68910608896766
+    ],
+    [
+      0.0,
+      622.1654884818748,
+      218.69686648455726
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "D": [
+    -0.0199819517209417,
+    -0.1707593617153504,
+    -0.2568318201202376,
+    0.9650933421665181
+  ],
+  "coefficients": [
+    -0.057914922825812065,
+    -0.14427351144955897,
+    0.005951868265471161,
+    0.02886364775317969
+  ],
+  "fit": {
+    "success": true,
+    "cost": 1.993169654981683,
+    "condition": 761.8001849315335
+  },
+  "validation": {
+    "adopt": true,
+    "both_halves_supported": true,
+    "geometry_sane": true,
+    "edges": [
+      {
+        "id": "wall03",
+        "side": "left",
+        "before_rms_px": 1.1527056703823801,
+        "after_rms_px": 0.5205101321379532
+      },
+      {
+        "id": "tile03a",
+        "side": "left",
+        "before_rms_px": 0.36882764274055213,
+        "after_rms_px": 0.2638704709977273
+      },
+      {
+        "id": "tile03b",
+        "side": "left",
+        "before_rms_px": 0.34423955627374175,
+        "after_rms_px": 0.35707083928675626
+      },
+      {
+        "id": "wall57",
+        "side": "right",
+        "before_rms_px": 2.023533323216953,
+        "after_rms_px": 1.6394394688763356
+      },
+      {
+        "id": "tile57a",
+        "side": "right",
+        "before_rms_px": 0.33068596713270315,
+        "after_rms_px": 0.24768556963504906
+      },
+      {
+        "id": "tile57b",
+        "side": "right",
+        "before_rms_px": 0.33811430368624135,
+        "after_rms_px": 0.2866315833026895
+      },
+      {
+        "id": "joint21",
+        "side": "left",
+        "before_rms_px": 0.5676920693158964,
+        "after_rms_px": 0.3193678433356839
+      }
+    ]
+  },
+  "all_edges": [
+    {
+      "id": "wall55",
+      "split": "train",
+      "side": "left",
+      "before_rms_px": 0.7961693373011702,
+      "after_rms_px": 0.08361308423127468
+    },
+    {
+      "id": "tile55a",
+      "split": "train",
+      "side": "left",
+      "before_rms_px": 1.5825898440763413,
+      "after_rms_px": 0.8074834997882915
+    },
+    {
+      "id": "tile55b",
+      "split": "train",
+      "side": "left",
+      "before_rms_px": 0.26843120063134296,
+      "after_rms_px": 0.19194552191675812
+    },
+    {
+      "id": "wall25",
+      "split": "train",
+      "side": "right",
+      "before_rms_px": 1.4878939348231228,
+      "after_rms_px": 1.5118159756793246
+    },
+    {
+      "id": "joint25",
+      "split": "train",
+      "side": "right",
+      "before_rms_px": 0.19978198789727003,
+      "after_rms_px": 0.19242773792715046
+    },
+    {
+      "id": "tile25",
+      "split": "train",
+      "side": "right",
+      "before_rms_px": 1.2506691991214967,
+      "after_rms_px": 1.2837917012785913
+    },
+    {
+      "id": "wall59",
+      "split": "train",
+      "side": "right",
+      "before_rms_px": 0.9662121052946583,
+      "after_rms_px": 0.4062158640200802
+    },
+    {
+      "id": "wall03",
+      "split": "validation",
+      "side": "left",
+      "before_rms_px": 1.1527056703823804,
+      "after_rms_px": 0.5205101321379532
+    },
+    {
+      "id": "tile03a",
+      "split": "validation",
+      "side": "left",
+      "before_rms_px": 0.3688276427405522,
+      "after_rms_px": 0.2638704709977273
+    },
+    {
+      "id": "tile03b",
+      "split": "validation",
+      "side": "left",
+      "before_rms_px": 0.34423955627374175,
+      "after_rms_px": 0.35707083928675626
+    },
+    {
+      "id": "wall57",
+      "split": "validation",
+      "side": "right",
+      "before_rms_px": 2.023533323216953,
+      "after_rms_px": 1.639439468876336
+    },
+    {
+      "id": "tile57a",
+      "split": "validation",
+      "side": "right",
+      "before_rms_px": 0.33068596713270315,
+      "after_rms_px": 0.24768556963504906
+    },
+    {
+      "id": "tile57b",
+      "split": "validation",
+      "side": "right",
+      "before_rms_px": 0.33811430368624135,
+      "after_rms_px": 0.2866315833026895
+    },
+    {
+      "id": "joint21",
+      "split": "validation",
+      "side": "left",
+      "before_rms_px": 0.5676920693158963,
+      "after_rms_px": 0.3193678433356839
+    }
+  ],
+  "adopted": true,
+  "metric_mount_calibrated": false,
+  "depth_dependence_modelled": false,
+  "validation_scope": "DEV split reused during annotation correction; independent confirmation pending",
+  "production_qualified": false,
+  "source_dataset": "ras1-activeview-20261014-184754",
+  "source_profile_sha256": "70e5e388098f08200df0723da8fb833651f2ebf5a6e35b992e3b97bcb66dec77",
+  "output_intrinsics_preserved": true
+}
