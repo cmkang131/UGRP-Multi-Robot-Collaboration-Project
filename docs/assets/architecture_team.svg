@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 700" width="1080" height="700" role="img" aria-label="팀 구조: P 동등에서는 누구나 특정 로봇 하나나 모두에게 말하고 배정이 없다. LE 선출 팀장에서는 팀원이 팀장에게만 말하고, 다른 로봇을 불러도 말은 팀장에게만 간다. 팀장은 팀원 하나나 모두에게 말한다. 팀장은 첫 결정 때 아는 주문 수로 뽑는데 2차에서는 모두 같아서 시드로 뽑힌다. 중계는 자동이 아니고 팀장 LLM 이 다시 말해야 한다. 배정 줄 assign rX: 색 -> 구역 을 팀원이 읽으면 그 색 상자와 그 구역만 고를 수 있다. 배정 전에는 첫 집기 결정부터 75초 동안 기다리기와 말하기만 할 수 있다. 집기에 실패하면 풀리고, 다중 운반에서는 다음 운반에서 다시 묶인다. 배정은 로봇마다 줄 서는 대기열이다. 팀장이 멈추면 팀원은 모두에게 말할 수 있다" font-family="'Noto Sans CJK KR','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',Helvetica,Arial,sans-serif">
+  <title>팀 구조</title>
+  <defs>
+    <style>
+      text { fill: #1a1a1a; font-size: 13px; }
+      .tb { font-size: 15px; font-weight: 600; }
+      .tm { font-size: 13.5px; font-weight: 600; }
+      .ts { font-size: 12px; fill: #4b5563; }
+      .mono { font-family: Menlo, Consolas, monospace; font-size: 12.5px; }
+      .cont { fill: #f1f2f4; stroke: #374151; stroke-width: 1.3; }
+      .box { fill: #fff; stroke: #374151; stroke-width: 1.1; }
+      .st { fill: #fff; stroke: #1a1a1a; stroke-width: 1.4; }
+      .bound { fill: #eaf1fb; stroke: #1f5fbf; stroke-width: 1.6; }
+      .warn { fill: #fff7e6; stroke: #b45309; stroke-width: 1.3; stroke-dasharray: 5 4; }
+      .node { fill: #fff; stroke: #1a1a1a; stroke-width: 1.4; }
+      .lead { fill: #1a1a1a; stroke: #1a1a1a; stroke-width: 1.4; }
+      .ln { fill: none; stroke: #1a1a1a; stroke-width: 1.3; }
+      .lb { fill: none; stroke: #1f5fbf; stroke-width: 1.6; }
+      .lr { fill: none; stroke: #b91c1c; stroke-width: 1.3; stroke-dasharray: 4 3; }
+      .nl { font-size: 12.5px; font-weight: 600; text-anchor: middle; }
+      .nw { font-size: 12.5px; font-weight: 600; text-anchor: middle; fill: #fff; }
+    </style>
+    <marker id="h" viewBox="0 0 10 10" refX="9.4" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0.5 1.2 L10 5 L0.5 8.8 z" fill="#1a1a1a"/></marker>
+    <marker id="b" viewBox="0 0 10 10" refX="9.4" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0.5 1.2 L10 5 L0.5 8.8 z" fill="#1f5fbf"/></marker>
+    <marker id="r" viewBox="0 0 10 10" refX="9.4" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0.5 1.2 L10 5 L0.5 8.8 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0.5" y="0.5" width="1079" height="699" rx="10" fill="#fafafa" stroke="#c4c7cc"/>
+
+  <!-- P -->
+  <rect class="cont" x="20" y="18" width="380" height="300" rx="3"/>
+  <text class="tb" x="36" y="44">P 동등</text>
+  <line class="ln" x1="110" y1="100" x2="290" y2="100" marker-start="url(#h)" marker-end="url(#h)"/>
+  <line class="ln" x1="98" y1="114" x2="190" y2="196" marker-start="url(#h)" marker-end="url(#h)"/>
+  <line class="ln" x1="302" y1="114" x2="210" y2="196" marker-start="url(#h)" marker-end="url(#h)"/>
+  <circle class="node" cx="90" cy="100" r="18"/><text class="nl" x="90" y="105">r1</text>
+  <circle class="node" cx="310" cy="100" r="18"/><text class="nl" x="310" y="105">r2</text>
+  <circle class="node" cx="200" cy="210" r="18"/><text class="nl" x="200" y="215">r3</text>
+  <text x="36" y="262">말: <tspan class="mono">say to rX</tspan> 또는 <tspan class="mono">say to everyone</tspan></text>
+  <text x="36" y="284">배정 없음. 각자 상자와 구역을 고른다</text>
+  <text class="ts" x="36" y="306">선택지에 동료마다 say 하나 + 모두에게 하나</text>
+
+  <!-- LE -->
+  <rect class="cont" x="420" y="18" width="640" height="300" rx="3"/>
+  <text class="tb" x="436" y="44">LE 선출 팀장 (별 모양)</text>
+  <line class="ln" x1="556" y1="86" x2="512" y2="186" marker-start="url(#h)" marker-end="url(#h)"/>
+  <line class="ln" x1="584" y1="86" x2="628" y2="186" marker-start="url(#h)" marker-end="url(#h)"/>
+  <path class="lr" d="M520 212 Q570 250 620 212" marker-end="url(#r)"/>
+  <text x="556" y="262" fill="#b91c1c" font-size="12">✕ 팀원끼리 직접 못 함</text>
+  <circle class="lead" cx="570" cy="70" r="20"/><text class="nw" x="570" y="75">팀장</text>
+  <circle class="node" cx="505" cy="204" r="18"/><text class="nl" x="505" y="209">팀원</text>
+  <circle class="node" cx="635" cy="204" r="18"/><text class="nl" x="635" y="209">팀원</text>
+  <text class="ts" x="436" y="286">팀원이 다른 팀원이나 모두를 불러도</text>
+  <text class="ts" x="436" y="302">말은 팀장에게만 간다</text>
+
+  <text class="tm" x="700" y="72">누가 팀장인가</text>
+  <text x="700" y="92">첫 결정 때 아는 주문이 가장 많은 로봇.</text>
+  <text x="700" y="110">2차는 모두가 다 알아 늘 동점이라,</text>
+  <text x="700" y="128">실행마다 고정된 시드로 뽑는다</text>
+  <text class="tm" x="700" y="160">말 통로</text>
+  <text x="700" y="180">팀원 → 팀장만</text>
+  <text x="700" y="198">팀장 → 팀원 한 명 또는 모두</text>
+  <text class="tm" x="700" y="230">중계는 자동이 아니다</text>
+  <text x="700" y="250">팀장 LLM 이 들은 말을 다시 말해야 전해진다.</text>
+  <text x="700" y="268">자기 운반이 끝나도 팀원이 일하는 동안</text>
+  <text x="700" y="286">남아서 새 말이 오면 답하거나 중계한다</text>
+
+  <!-- binding -->
+  <rect class="cont" x="20" y="336" width="1040" height="346" rx="3"/>
+  <text class="tb" x="36" y="362">LE 팀원의 배정 구속</text>
+  <text class="ts" x="196" y="362">팀장이 말 안에 쓰는 줄:</text>
+  <text class="mono" x="346" y="362">assign rX: 색 -&gt; 구역</text>
+  <text class="ts" x="512" y="362">(한 말에 여러 줄 가능, 팀장이 쓴 줄만 인정, 팀장 자신은 구속 안 됨)</text>
+
+  <rect class="st" x="36" y="384" width="230" height="110" rx="6"/>
+  <text class="tm" x="50" y="406">배정 전 · 대기</text>
+  <text x="50" y="428">첫 집기 결정부터 75초 동안</text>
+  <text x="50" y="446">집기 대신 기다리기·말하기만</text>
+  <text class="ts" x="50" y="470">75초가 지나면 깨워서 묻는다</text>
+  <text class="ts" x="50" y="486">(다중 운반: 첫 배달 전에만)</text>
+
+  <rect class="st" x="36" y="560" width="230" height="74" rx="6"/>
+  <text class="tm" x="50" y="582">자유</text>
+  <text x="50" y="604">모든 상자·구역을 고를 수 있다</text>
+  <text class="ts" x="50" y="622">나중에 배정이 오면 다시 구속</text>
+
+  <rect class="bound" x="360" y="384" width="300" height="130" rx="6"/>
+  <text class="tm" x="374" y="406" fill="#1f5fbf">구속</text>
+  <text x="374" y="428">상자 고를 때: 배정된 색 상자만</text>
+  <text x="374" y="446">목적지에서: 배정된 구역만</text>
+  <text x="374" y="464">(+ 기다리기, 말하기)</text>
+  <text class="ts" x="374" y="488">문, 보고, 중계 때는 제한 없음</text>
+  <text class="ts" x="374" y="504">그 색 상자가 안 보이면 그 결정만 풀림</text>
+
+  <!-- arrows -->
+  <path class="lb" d="M266 430 H360" marker-end="url(#b)"/>
+  <text x="272" y="420" font-size="12" fill="#1f5fbf">배정 줄을</text>
+  <text x="272" y="452" font-size="12" fill="#1f5fbf">읽은 뒤</text>
+  <path class="ln" d="M150 494 V560" marker-end="url(#h)"/>
+  <text x="158" y="532" font-size="12">75초 지남</text>
+  <path class="ln" d="M440 514 V600 H266" marker-end="url(#h)"/>
+  <text x="296" y="592" font-size="12">집기 실패 (빈 집게)</text>
+  <path class="lb" d="M266 616 H560 V514" marker-end="url(#b)"/>
+  <text x="456" y="634" font-size="12" fill="#1f5fbf">다중 운반: 다음 운반 시작</text>
+
+  <rect class="box" x="700" y="384" width="344" height="130" rx="2"/>
+  <text class="tm" x="714" y="406">다중 운반 (3대 상자 5, 6대 상자 10)</text>
+  <text x="714" y="428">배정은 로봇마다 줄 서는 대기열이다.</text>
+  <text x="714" y="446">줄은 덧붙일 수만 있고 바꿀 수 없다</text>
+  <text x="714" y="464">맨 앞 배정은 그 로봇이 같은 색을</text>
+  <text x="714" y="482">그 구역에 놓아야 끝난다</text>
+  <text class="ts" x="714" y="504">로봇당 최대 3번 운반</text>
+
+  <rect class="warn" x="700" y="530" width="344" height="104" rx="3"/>
+  <text class="tm" x="714" y="552">팀장이 멈추면 (호출 상한·고장)</text>
+  <text x="714" y="574">팀원은 모두에게 말할 수 있게 된다</text>
+  <text x="714" y="592">이미 받은 구속은 그대로 남는다</text>
+  <text x="714" y="610">배정 없는 팀원은 75초가 끝날 때까지 대기</text>
+  <text class="ts" x="714" y="628">멈춘 로봇은 LLM 을 부르지 않고 서 있다</text>
+
+  <text class="ts" x="36" y="668">P 에는 배정과 구속이 없다. 두 구조 모두 말하기 시간 규칙, 자유 말하기, 같은 모델(온도 0.7)을 쓴다</text>
+</svg>
