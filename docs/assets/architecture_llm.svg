@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 760" width="1080" height="760" role="img" aria-label="LLM 결정 한 번: 실행층이 상자 고를 때, 목적지, 문 앞, 진행 보고, 다음 운반, 새 메시지, 중계, 기다리기 20초 뒤에 계획기에 묻는다. 계획기는 조직 지시, 목표, 진행(자기 사실, 전해 들은 배정), 대화 기록, 이전 행동 10개, 구속 상태, 선택지 순서로 프롬프트를 만든다. LLM 은 한 번 호출로 이유, 행동, 말을 JSON 으로 낸다. 파서는 라벨, 비슷한 글자 맞추기, 한 번 다시 묻기, 무작위 순서로 읽는다. 일하기면 실행층이 움직이고, 말하기면 몸이 1.45초 + 글자당 0.0036초 서 있고, 2초 뒤 도착해 받는 로봇이 0.7초 + 글자당 0.0018초 읽은 뒤 대화 기록에 보인다. 대화 기록은 최근 메시지 일부만 보이고, 프롬프트가 12 KB 를 넘으면 오래된 메시지부터 뺀다. 호출 상한은 로봇당 150, 실행당 300" font-family="'Noto Sans CJK KR','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',Helvetica,Arial,sans-serif">
+  <title>LLM 결정과 대화</title>
+  <defs>
+    <style>
+      text { fill: #1a1a1a; font-size: 13px; }
+      .tb { font-size: 15px; font-weight: 600; }
+      .tm { font-size: 13.5px; font-weight: 600; }
+      .ts { font-size: 12px; fill: #4b5563; }
+      .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; }
+      .cont { fill: #f1f2f4; stroke: #374151; stroke-width: 1.3; }
+      .box { fill: #fff; stroke: #374151; stroke-width: 1.1; }
+      .llm { fill: #fff; stroke: #1a1a1a; stroke-width: 2.4; }
+      .sec { fill: #fff; stroke: #9ca3af; stroke-width: 1; }
+      .talk { fill: #eaf1fb; stroke: #1f5fbf; stroke-width: 1.4; }
+      .hide { fill: #fff7e6; stroke: #b45309; stroke-width: 1.3; stroke-dasharray: 5 4; }
+      .ln { fill: none; stroke: #1a1a1a; stroke-width: 1.3; }
+      .lb { fill: none; stroke: #1f5fbf; stroke-width: 1.6; }
+      .lg { fill: none; stroke: #6b7280; stroke-width: 1.3; stroke-dasharray: 5 4; }
+    </style>
+    <marker id="h" viewBox="0 0 10 10" refX="9.4" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0.5 1.2 L10 5 L0.5 8.8 z" fill="#1a1a1a"/></marker>
+    <marker id="b" viewBox="0 0 10 10" refX="9.4" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0.5 1.2 L10 5 L0.5 8.8 z" fill="#1f5fbf"/></marker>
+    <marker id="g" viewBox="0 0 10 10" refX="9.4" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0.5 1.2 L10 5 L0.5 8.8 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0.5" y="0.5" width="1079" height="759" rx="10" fill="#fafafa" stroke="#c4c7cc"/>
+
+  <!-- 1 triggers -->
+  <rect class="cont" x="20" y="18" width="250" height="420" rx="3"/>
+  <text class="tb" x="36" y="44">① 언제 묻나</text>
+  <text class="ts" x="36" y="64">실행층이 계획기 /decide 에 묻는다</text>
+  <text x="36" y="92">상자 고를 때</text>
+  <text x="36" y="116">상자를 든 뒤 목적지</text>
+  <text class="ts" x="48" y="134">로봇 번호 × 4초 늦게 (r1 0초)</text>
+  <text x="36" y="158">문 앞에서 새 말이 왔을 때</text>
+  <text class="ts" x="48" y="176">목적지 다시 정하기, 최대 3번</text>
+  <text x="36" y="200">문 앞: 지금 지나기 / 기다리기</text>
+  <text x="36" y="224">진행 보고</text>
+  <text class="ts" x="48" y="242">문 통과, 운반 끝, 집기 실패</text>
+  <text x="36" y="266">다음 운반: 돌아가기 / 끝내기</text>
+  <text x="36" y="290">결정 사이 새 말이 왔을 때</text>
+  <text class="ts" x="48" y="308">1초마다 확인. 결정 때 쓴 말만</text>
+  <text class="ts" x="48" y="324">기회를 열어 답이 꼬리 물지 않음</text>
+  <text x="36" y="348">LE 팀장의 중계</text>
+  <text class="ts" x="48" y="366">자기 일이 끝난 뒤, 새 말이 오면</text>
+  <text x="36" y="390">기다리기를 고른 뒤</text>
+  <text class="ts" x="48" y="408">20초 뒤 또는 새 말이 오면 다시</text>
+
+  <path class="ln" d="M270 228 H300" marker-end="url(#h)"/>
+
+  <!-- 2 prompt -->
+  <rect class="cont" x="300" y="18" width="360" height="420" rx="3"/>
+  <text class="tb" x="316" y="44">② 프롬프트 (이 순서)</text>
+  <rect class="sec" x="316" y="56" width="328" height="30" rx="2"/><text x="328" y="76">1 머리말 · 2 조직 지시</text><text class="ts" x="484" y="76">P 비어 있음, LE 팀장 규칙</text>
+  <rect class="sec" x="316" y="92" width="328" height="30" rx="2"/><text x="328" y="112">3 목표</text><text class="ts" x="384" y="112">모든 주문, 순서 규칙, 다중 운반 문장</text>
+  <rect class="sec" x="316" y="128" width="328" height="66" rx="2"/><text x="328" y="148">4 진행 (JSON)</text>
+  <text class="ts" x="328" y="166">자기 사실: 주문, 본 상자(색·거리·방향), 진행</text>
+  <text class="ts" x="328" y="184">전해 들은 배정 ("rX 가 t 초에 알림")</text>
+  <rect class="sec" x="316" y="200" width="328" height="48" rx="2"/><text x="328" y="220">5 대화 기록</text>
+  <text class="ts" x="328" y="238">최근 받은 말 max(5, 안 읽은 수) + 자기 말 1개</text>
+  <rect class="sec" x="316" y="254" width="328" height="30" rx="2"/><text x="328" y="274">6 이전 행동 10개</text>
+  <rect class="sec" x="316" y="290" width="328" height="30" rx="2"/><text x="328" y="310">7 구속 상태</text><text class="ts" x="420" y="310">"배정 없음, t 초까지" / "c 를 z 로"</text>
+  <rect class="sec" x="316" y="326" width="328" height="48" rx="2"/><text x="328" y="346">8 선택지 A. B. C. …</text>
+  <text class="ts" x="328" y="364">몸 행동 먼저, 그다음 say 줄</text>
+  <rect class="sec" x="316" y="380" width="328" height="42" rx="2"/><text x="328" y="398">9 답 형식</text>
+  <text class="mono" x="328" y="414">{"reasoning","action","say"}</text>
+
+  <path class="ln" d="M660 228 H690" marker-end="url(#h)"/>
+
+  <!-- 3 LLM + parser -->
+  <rect class="llm" x="690" y="18" width="370" height="132" rx="2"/>
+  <text class="tb" x="704" y="44">③ LLM 한 번 호출</text>
+  <text x="704" y="68">z-ai/glm-5.3-flash, 온도 0.7</text>
+  <text x="704" y="90">이유 · 행동 · 말을 한 번에 낸다</text>
+  <text class="ts" x="704" y="114">호출 상한: 로봇당 150, 실행당 300</text>
+  <text class="ts" x="704" y="132">(6대면 로봇당 평균 50)</text>
+
+  <path class="ln" d="M875 150 V176" marker-end="url(#h)"/>
+  <rect class="box" x="690" y="178" width="370" height="110" rx="2"/>
+  <text class="tm" x="704" y="200">파서</text>
+  <text x="704" y="222">라벨 → 비슷한 글자 맞추기 →</text>
+  <text x="704" y="240">"라벨만 답하라" 한 번 다시 묻기 → 무작위</text>
+  <text class="ts" x="704" y="262">몸 행동 옆에 말을 쓰면 말하기로 읽는다</text>
+  <text class="ts" x="704" y="280">말 없는 say 는 기다리기로 읽는다</text>
+
+  <path class="ln" d="M780 288 V320" marker-end="url(#h)"/>
+  <path class="lb" d="M970 288 V320" marker-end="url(#b)"/>
+
+  <rect class="box" x="690" y="322" width="170" height="116" rx="2"/>
+  <text class="tm" x="704" y="344">일하기</text>
+  <text x="704" y="366">실행층이 움직인다</text>
+  <text class="ts" x="704" y="388">상자, 목적지, 문,</text>
+  <text class="ts" x="704" y="404">돌아가기, 내려놓기,</text>
+  <text class="ts" x="704" y="420">다시 찾기, 기다리기</text>
+
+  <rect class="talk" x="876" y="322" width="184" height="116" rx="2"/>
+  <text class="tm" x="890" y="344" fill="#1f5fbf">말하기</text>
+  <text class="mono" x="890" y="366">say to rX: 글</text>
+  <text class="mono" x="890" y="384">say to everyone: 글</text>
+  <text class="ts" x="890" y="406">600자까지. 새 말 없이</text>
+  <text class="ts" x="890" y="422">두 번 연달아 못 한다</text>
+
+  <path class="lb" d="M888 438 V464" marker-end="url(#b)"/>
+
+  <!-- talk timeline -->
+  <rect class="cont" x="20" y="466" width="880" height="150" rx="3"/>
+  <text class="tb" x="36" y="492">④ 말 한 번이 쓰는 시간 (시뮬 시간)</text>
+  <rect class="talk" x="36" y="508" width="230" height="92" rx="2"/>
+  <text class="tm" x="50" y="530">말하는 쪽: 몸이 선다</text>
+  <text class="mono" x="50" y="554">1.45 s + 0.0036 s × 글자</text>
+  <text class="ts" x="50" y="576">최소 2초. 바퀴 0</text>
+  <text class="ts" x="50" y="592">값은 1차 LLM 호출 10,408개에서 잼</text>
+  <path class="lb" d="M266 554 H300" marker-end="url(#b)"/>
+  <rect class="box" x="300" y="508" width="150" height="92" rx="2"/>
+  <text class="tm" x="314" y="530">전달</text>
+  <text class="mono" x="314" y="554">+ 2 s</text>
+  <text class="ts" x="314" y="576">말이 끝난 뒤</text>
+  <path class="lb" d="M450 554 H484" marker-end="url(#b)"/>
+  <rect class="talk" x="484" y="508" width="230" height="92" rx="2"/>
+  <text class="tm" x="498" y="530">받는 쪽: 읽기</text>
+  <text class="mono" x="498" y="554">0.7 s + 0.0018 s × 글자</text>
+  <text class="ts" x="498" y="576">한 줄로 차례대로 읽는다</text>
+  <text class="ts" x="498" y="592">값은 가정(말하기의 절반)</text>
+  <path class="lb" d="M714 554 H748" marker-end="url(#b)"/>
+  <rect class="box" x="748" y="508" width="136" height="92" rx="2"/>
+  <text class="tm" x="762" y="530">보인다</text>
+  <text x="762" y="552">받는 로봇의</text>
+  <text x="762" y="570">대화 기록(5)</text>
+  <text class="ts" x="762" y="590">→ 말 기회 ①</text>
+
+  <!-- memory -->
+  <rect class="box" x="20" y="632" width="520" height="112" rx="2"/>
+  <text class="tm" x="34" y="654">기억과 크기</text>
+  <text x="34" y="676">말은 모두 저장하지만, 프롬프트에는 최근 일부만 보인다</text>
+  <text x="34" y="696">프롬프트가 12 KB 를 넘으면 오래된 말부터 하나씩 뺀다</text>
+  <text x="34" y="716">자기 사실은 줄이지 않는다. 그래도 넘치면 그 로봇은 멈춘다</text>
+  <text class="ts" x="34" y="736">요약은 없다</text>
+
+  <rect class="hide" x="560" y="632" width="500" height="112" rx="3"/>
+  <text class="tm" x="574" y="654">LLM 이 받지 않는 것</text>
+  <text x="574" y="676">다른 로봇의 위치 (문이 막히면 "문을 못 지났다"만)</text>
+  <text x="574" y="696">배달이 맞았는지 ("구역 z 에 내려놓았다"만)</text>
+  <text x="574" y="716">점수, 다른 로봇의 능력, 천장 카메라 값</text>
+  <text class="ts" x="574" y="736">다른 로봇이 본 상자와 진행은 말로만 안다</text>
+
+  <rect class="box" x="916" y="466" width="144" height="150" rx="2"/>
+  <text class="tm" x="930" y="488">계획기 주소</text>
+  <text class="mono" x="930" y="512">/decide</text><text class="ts" x="990" y="512">결정</text>
+  <text class="mono" x="930" y="534">/tell</text><text class="ts" x="990" y="534">사실</text>
+  <text class="mono" x="930" y="556">/chance</text><text class="ts" x="990" y="556">말 기회</text>
+  <text class="mono" x="930" y="578">/poll</text><text class="ts" x="990" y="578">새 말?</text>
+  <text class="mono" x="930" y="600">/record</text><text class="ts" x="990" y="600">기록</text>
+</svg>
