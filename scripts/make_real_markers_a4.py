@@ -126,7 +126,7 @@ def robot_cards(robot):
                     card * 1000, card * tags.INNER * 1000, note))
     n = top.TOP_ID0 - 1 + robot
     out.append(('천장 카메라용 윗면', n, top.CARD_M * 1000, top.CARD_M * 0.75 * 1000,
-                '수평, 바닥에서 %.0f mm (기둥 위), 표식 윗변 = 로봇 앞' % ((top.BASE_Z + top.CARD_AT[2]) * 1000)))
+                '수평, 바닥에서 %.0f mm (기둥 위), 오른쪽(▶) = 로봇 앞' % ((top.BASE_Z + top.CARD_AT[2]) * 1000)))
     return out
 
 
@@ -185,7 +185,8 @@ def guide_page(c, robots, signs):
     line('• 로봇 옆면 카드: 뒤쪽 제어보드 케이스의 뒤·왼·오른 면 바깥에 평평하게, 카드 중심이 바닥에서 약 76 mm.')
     line('  케이스 옆면 높이가 51 mm 이므로 48 mm 카드가 그 안에 들어갑니다. 앞 카드는 앞 범퍼 판에 붙입니다.', 0)
     line('• 로봇 윗면 카드: 뒤 케이스 위에 가는 기둥을 세워, 카드 중심이 바닥에서 약 %.0f mm 인 곳에 수평으로.' % ((top.BASE_Z + top.CARD_AT[2]) * 1000))
-    line('  팔을 들어도 가리지 않는 높이입니다. 표식의 윗변(화살표)이 로봇의 앞을 향하게 붙입니다.', 0)
+    line('  팔을 들어도 가리지 않는 높이입니다. 위에서 볼 때 카드의 오른쪽(▶ 표시)이 로봇의 앞을 향하게 붙입니다.', 0)
+    line('  (천장 판독기는 표식 윗변의 왼쪽→오른쪽 방향을 로봇 진행 방향으로 읽습니다. overhead_v1.OverheadReader)', 0, size=8)
     line('• 천장 카메라: 경기장 가운데 위 약 %.1f m, 바로 아래를 보게 설치(시뮬 값, 실제 카메라에 맞게 한 번 보정).' % top.HEIGHT_M)
     y -= 2 * mm
 
@@ -253,8 +254,14 @@ def robot_page(c, robot):
         c.drawString(cx, cy - 10 * mm, '카드 %.0f mm · 검은 사각형 %.2f mm' % (card_mm, marker_mm))
         c.drawString(cx, cy - 14 * mm, note)
         if number >= top.TOP_ID0:
+            # OverheadReader takes the marker's top edge, left to right, as the heading: the marker's right side is the front
             c.setFont(FONT_B, 9)
-            c.drawCentredString(cx + card / 2, cy + card + 2 * mm, '▲ 로봇 앞')
+            c.drawCentredString(cx + card / 2, cy + card + 2 * mm, '▲ 위 (윗변)')
+            c.saveState()
+            c.translate(cx + card + 3 * mm, cy + card / 2)
+            c.rotate(-90)
+            c.drawCentredString(0, 0, '▲ 로봇 앞 (진행 방향)')
+            c.restoreState()
         else:
             c.setFont(FONT, 7)
             c.drawCentredString(cx + card / 2, cy + card + 1.5 * mm, '▲ 위')
