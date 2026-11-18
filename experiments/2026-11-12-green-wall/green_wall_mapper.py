@@ -25,14 +25,15 @@ POSE = {1:2000,3:740,4:2320,5:1320,6:1500}
 RUNTIME = Path('/home/ras1/MasterPi/tools/.ugrp_versions/strict-wall-20261014')
 
 
-def camera_geometry():
+def camera_geometry(pose=None):
     """PR405 structural command chain, copied without live joint measurements."""
     chain=json.loads(Path(__file__).with_name('camera-chain.json').read_text())
+    pose = POSE if pose is None else pose
     deviation={3:54,4:53,5:89};scale=2000/180
-    angle={6:math.radians((POSE[6]-1500)/scale),
-           5:math.radians(90-(POSE[5]-deviation[5]-1500)/scale),
-           4:math.radians(-(POSE[4]-deviation[4]-1500)/scale),
-           3:math.radians((POSE[3]-deviation[3]-1500)/scale)}
+    angle={6:math.radians((pose[6]-1500)/scale),
+           5:math.radians(90-(pose[5]-deviation[5]-1500)/scale),
+           4:math.radians(-(pose[4]-deviation[4]-1500)/scale),
+           3:math.radians((pose[3]-deviation[3]-1500)/scale)}
     def fixed(v):
         w,x,y,z=v['quaternion_wxyz'];t=np.eye(4)
         t[:3,3]=v['translation_m']

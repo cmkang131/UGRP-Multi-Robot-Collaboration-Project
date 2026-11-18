@@ -15,7 +15,8 @@ class Ras1PlaceObservations:
     This interface supplies no arena-frame pose or door measurement.
     """
 
-    def __init__(self, *, scale, floor_profile):
+    def __init__(self, *, scale, floor_profile, source='ras1_fixed_camera'):
+        self.source = source
         self._posture = {int(key): value for key, value in floor_profile['pose'].items()}
         self._height = float(scale['camera_height_cm']) / 100
         origin = np.asarray(scale['camera_origin_design_m'], dtype=float)
@@ -65,13 +66,13 @@ class Ras1PlaceObservations:
         initial_body_points = points / 100 + camera + self._camera_offset
         c, s = math.cos(pose[2]), math.sin(pose[2])
         local = (initial_body_points - pose[:2]) @ np.array([[c, -s], [s, c]])
-        self.places.observe_wall_contacts(local, pose=pose, phase='ras1_fixed_camera')
+        self.places.observe_wall_contacts(local, pose=pose, phase=self.source)
         self.pose = dict(zip(('x', 'y', 'yaw'), pose))
         self._anchored = True
         self.updates += 1
         return True
 
     def record(self):
-        return dict(source='ras1_fixed_camera', frame='initial_body',
+        return dict(source=self.source, frame='initial_body',
                     metric_accuracy_verified=False, visual_pose=self.pose,
                     updates=self.updates, wall_points_m=list(self.places.walls.values()))

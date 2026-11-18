@@ -109,3 +109,30 @@ def test_ras1_contacts_feed_current_carry_navigation_and_drop_invalid_pose(adapt
     changed = {**adapter.POSE, 3: adapter.POSE[3] + 1}
     assert not source.observe(dict(motion, t=4., commanded_arm_pose=changed))
     assert not source.observe(dict(motion, t=5.))
+
+
+def test_fixed_floor_pose_handles_return_and_rejects_scale_change(adapter):
+    from fixed_floor_motion import fixed_floor_pose
+
+    intrinsics = np.array([[500., 0., 320.], [0., 500., 240.], [0., 0., 1.]])
+    camera_axes = np.diag([1., -1., -1.])
+    offset = np.array([.1, -.05, 1.])
+    xx, yy = np.meshgrid(np.linspace(-.4, .4, 9), np.linspace(-.2, .3, 7))
+    current = np.column_stack((xx.ravel(), yy.ravel()))
+
+    def pixels(points):
+        return np.column_stack((320 + 500 * points[:, 0], 240 - 500 * points[:, 1]))
+
+    for yaw, shift in [(0., np.zeros(2)), (.036, np.array([.06, -.024]))]:
+        c, s = np.cos(yaw), np.sin(yaw)
+        rotation = np.array([[c, -s], [s, c]])
+        anchor = current @ rotation.T + shift
+        pose, support = fixed_floor_pose(pixels(anchor), pixels(current), intrinsics, camera_axes, offset)
+        assert support['inliers'] == len(current)
+        assert np.allclose([pose['camera_x'], pose['camera_y']], shift)
+        assert np.allclose([pose['x'], pose['y']], shift + (np.eye(2) - rotation) @ offset[:2])
+        assert np.isclose(pose['yaw_deg'], np.degrees(yaw))
+
+    pose, support = fixed_floor_pose(pixels(1.15 * current), pixels(current), intrinsics, camera_axes, offset)
+    assert pose is None
+    assert support['reason'] == 'ground_scale_changed'
