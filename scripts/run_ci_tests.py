@@ -108,6 +108,7 @@ TEST_PATTERNS = (
     "tests/test_wall_floor_lorigo.py",
     "tests/test_wall_cell_attribution.py",
     "tests/test_active_wall_rotleft.py",
+    "tests/test_ras1_active_wall_replay.py",
     "tests/test_camera_projection_audit.py",
     "tests/test_s2_projection_comparison.py",
     "tests/test_online_camera_pitch.py",

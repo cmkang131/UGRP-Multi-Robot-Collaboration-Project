@@ -114,3 +114,37 @@ Mac에는 summary/대표 연속 영상/최종 그림만 회수했다.
 cd ~/green-wall-mapper-20261112
 python3 run_wall_distance.py --floor-profile floor-profile-dev-181359.json --move --excursion-cm 5
 ```
+
+## 실물 관측을 ActiveMapper에 연결
+
+[릴리스의 ActiveMapper](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/models-20261112-solo-pair-status-v1/harness/active_wall_mapping.py)는
+영상에서 얻은 관측을 명령 기반 위치와 함께 지도에 넣는다. 이 실물 경로는 같은
+`ActiveMapper`의 `visual_odometry_v1` 모드에 자기 카메라에서 얻은 상대 위치와
+벽·바닥 관측을 공급한다. 지도 원점은 첫 카메라의 바닥 투영점이다.
+왜곡 보정과 색 마스크, 점박이 바닥의 LK/ORB 대응, 바닥 호모그래피는 기존
+ras1 `Mapper`를 사용한다. 원본 RGB 경로에서 접점 아래의 관측된 바닥 픽셀만
+자유 공간 근거로 기록한다. 새 위치나 접점이 없으면 이전 위치와 지도를
+유지한다. 이 지도 검증 실행기는 매 프레임 `hold`를 반환한다.
+
+저장소 루트에서 원본 프레임이 있는 위치를 지정한다. 실행은 저장된
+`result.json`, `frames.jsonl`, JPEG를 읽으며 프레임의 SHA-256을 확인한다.
+
+```sh
+python experiments/2026-11-12-green-wall/replay_active_map.py \
+  ~/wall-distance-runs/20261112-195538 --output active-map.json
+```
+
+요약 `result.json`만 회수한 경우는 `--source checkpoints`로 영상에서 이미
+산출된 카메라 위치와 벽 접점만 사용한다. 이 모드에는 바닥 픽셀이 들어 있지
+않으므로 자유 공간을 추가하지 않는다. 출력에 프레임별 위치·갱신 여부와
+셀별 관측 근거를 기록한다.
+
+2026-11-18 확인 결과, 11/12 실물 기록
+`wall-distance-runs/20261112-195538`의 저장 관측 6/6건이 지도에 반영됐다.
+5cm 격자의 벽 후보 셀 6개에 총 350개 접점 표본이 들어갔다. 카메라 추정
+전후 변위는 최대 5.23cm였고, 실물 환산은 설계 높이 23.086cm를 썼다.
+입력 요약 SHA-256
+`642701b57b901199d1743efc3c00e2470c8cb7da68b35a45e1967fb6b81e04b4`.
+원본 JPEG 재처리는 ras1 SSH 연결 시간 초과로 미실행했다. RGB 경로의
+왜곡 보정·벽/바닥 지도 갱신·해시 검증은 합성 입력으로 별도 확인했다.
+이전 실물 결과의 거리 정확도와 수직 벽 확정은 여전히 미검증이다.
