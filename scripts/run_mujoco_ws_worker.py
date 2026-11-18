@@ -15,6 +15,21 @@ from websockets.sync.client import connect
 from sim.multi_masterpi_production import MultiMasterPiProductionV2, ROBOT_IDS
 from sim.self_observer import diagnose_action
 from sim.worker_contract import REMOTE_WORKER_CONTRACT
+from harness.utc_clock import NtpUtcClock, ClockError, command_deadline, scheduled_request
+
+_utc_dispatch_clock = None
+def utc_dispatch(command):
+    global _utc_dispatch_clock
+    if scheduled_request(command) is None:
+        return None
+    if _utc_dispatch_clock is None:
+        _utc_dispatch_clock = NtpUtcClock()
+    try:
+        _utc_dispatch_clock.now()
+    except ClockError:
+        _utc_dispatch_clock.synchronize()
+    return command_deadline(command, clock=_utc_dispatch_clock)
+
 
 SPEED_FILE = Path(os.environ.get('UGRP_SIM_SPEED_FILE','/content/ugrp_sim_speed'))
 FIRST_PERSON_CAMERA = 'robot_cam'
@@ -467,10 +482,19 @@ def run(url, token, seed):
                         ws.send(json.dumps({'type':'result','id':cid,'result':completed_results[cid]},separators=(',',':')))
                         ws.send(json.dumps({'type':'state','state':world.state(),'state_seq':next_seq()},separators=(',',':')))
                         print('redelivered result for',cid,action,flush=True); continue
+                    try:
+                        utc_timing = utc_dispatch(cmd)
+                    except ClockError as exc:
+                        payload = {'ok': False, 'action': action, 'reason': str(exc),
+                                   'failure_code': 'UTC_RESERVATION_REJECTED'}
+                        completed_results[cid] = payload
+                        ws.send(json.dumps({'type': 'result', 'id': cid, 'result': payload}, separators=(',', ':')))
+                        continue
                     if isinstance(cmd.get('commands'), list) and hasattr(world, 'act_parallel'):
                         touch_activity(); last_activity_touch['value']=time.monotonic()
                         incoming_speed=float(msg.get('sim_speed') or speed()); world.set_speed_multiplier(incoming_speed)
-                        parallel_commands=list(cmd.get('commands') or [])
+                        parallel_commands=[{k:v for k,v in item.items() if k not in {'execute_at_utc_s','clock_budget_ms'}}
+                                           for item in (cmd.get('commands') or [])]
                         command_by_robot={
                             str(item.get('robot_id') or ''):item
                             for item in parallel_commands if isinstance(item,dict)
@@ -513,6 +537,7 @@ def run(url, token, seed):
                             'state':world.state(),
                             'worker_action_s':round(action_s,3),
                             'parallel_timing':dict(getattr(world,'last_parallel_timing',{}) or {}),
+                            'utc_dispatch':utc_timing,
                         }
                         completed_results[cid]=payload
                         ws.send(json.dumps({'type':'result','id':cid,'result':payload},separators=(',',':')))
@@ -546,7 +571,7 @@ def run(url, token, seed):
                     emit_live(force=True,robot_ids=(robot_id,))
                     t=time.perf_counter()
                     call_params={k:v for k,v in cmd.items() if k not in {
-                        'id','action','created','robot_id','team_batch_id','team_batch_expected'
+                        'id','action','created','robot_id','team_batch_id','team_batch_expected','execute_at_utc_s','clock_budget_ms'
                     }}
                     result=world.act(robot_id,action,**call_params)
                     action_s=time.perf_counter()-t
@@ -563,7 +588,7 @@ def run(url, token, seed):
                     payload={
                         'ok':result.ok,'action':result.action,'robot_id':robot_id,'reason':result.reason,
                         'state':after_state,'state_seq':result_seq,'sim_speed':incoming_speed,
-                        'worker_action_s':round(action_s,3),'transport':'websocket',
+                        'worker_action_s':round(action_s,3),'transport':'websocket','utc_dispatch':utc_timing,
                     }
                     payload['_sim_diagnostic']=diagnostic
                     payload['_sim_trace']={
