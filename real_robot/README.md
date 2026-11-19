@@ -61,3 +61,7 @@ Pi 와 노트북의 시계는 다르다. 프레임의 `t_capture` 는 Pi 시계,
 - 실물 확인: 바퀴 띄운 상태에서 정지 시각·연결 끊김 정지부터 본다([안전 체크리스트](../docs/sim2real/README.md#구동-전-체크리스트)).
 
 시험: `python3 -m pytest tests/test_real_robot_link.py`.
+
+## 실물 평가
+
+천장 카메라 보정·기록, 사건 기록, 지표 추출은 [EVALUATION.md](EVALUATION.md).
