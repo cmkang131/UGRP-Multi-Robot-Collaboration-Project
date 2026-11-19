@@ -1,0 +1,28 @@
+{
+  "crash_denominator": {
+    "scheduler_attempted": 2,
+    "scheduler_blocking_reason": "PROCESS_EXIT_2",
+    "report_attempted": 2,
+    "crash_lifecycle": "operational_failure",
+    "crash_report_attempted": true,
+    "not_started_lifecycle": "not_attempted",
+    "rendered_mode_row": "<tr><td>none</td><td>1/2</td><td>1/1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>\u2014</td></tr>",
+    "expected": {
+      "attempted": 2,
+      "successful": 1,
+      "operational_failed": 1,
+      "not_started": 1,
+      "all_attempt_success": "1/2"
+    }
+  },
+  "malformed_result": {
+    "returned_state": "infrastructure_blocked",
+    "cohort_status_written": true,
+    "expected": "Retain attempted row as invalid result and stop remaining scheduling."
+  },
+  "row_identity": {
+    "rejected": true,
+    "error": "trial metadata mismatch: teacher--open--r0",
+    "expected": "Reject a result whose condition conflicts with the scheduled trial_id."
+  }
+}

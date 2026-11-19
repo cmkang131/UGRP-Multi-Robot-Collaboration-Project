@@ -77,6 +77,28 @@ class CameraShortTransportEvaluationTests(unittest.TestCase):
             row["sim_time_s"] += .2
         self.assertFalse(evaluate_transport_samples(rows)["gates"]["carry_continuity"])
 
+    def test_sample_gap_at_phase_boundary_fails_closed(self):
+        for phase in ("carry", "place_lower", "place_open", "place_retract", "release_hold"):
+            with self.subTest(phase=phase):
+                rows = valid_samples()
+                boundary = next(i for i, row in enumerate(rows) if row["phase"] == phase)
+                for row in rows[boundary:]:
+                    row["sim_time_s"] += 10.0
+                result = evaluate_transport_samples(rows)
+                self.assertFalse(result["success"])
+                self.assertFalse(result["gates"]["valid_samples"])
+                self.assertTrue(any("gap exceeds" in reason for reason in result["reasons"]))
+
+    def test_phase_boundary_uses_existing_sample_gap_limit(self):
+        for extra_gap, expected in ((.05, True), (.050001, False)):
+            with self.subTest(extra_gap=extra_gap):
+                rows = valid_samples()
+                boundary = next(i for i, row in enumerate(rows) if row["phase"] == "carry")
+                for row in rows[boundary:]:
+                    row["sim_time_s"] += extra_gap
+                result = evaluate_transport_samples(rows)
+                self.assertEqual(result["success"], expected)
+
     def test_interleaved_phase_is_not_a_contiguous_block(self):
         rows = valid_samples()
         rows.insert(23, sample(2.25, "place_lower", .075))

@@ -188,6 +188,17 @@ python -m scripts.build_execution_dependency_contract verify --contract new-rece
 
 ## 공통 RGB 실행기에 적용된 검사
 
+- `rgb-standard-dispatch-v64` (PR #705, 2026-11-16 판정·집계 감사):
+  조정자가 main과 열린 PR #705·#493·#385의 `RUNNABLE_ID` 최대 v63을 확인해
+  예약했다. v63 JSON은 SHA-256
+  `ef4fe391e57c145b6625ba052e651542745bfcb6244d8e25736827ee8122aa01` 그대로
+  은퇴 보존한다. 단거리 운반 평가의 기존 0.15초 기록 간격 한도를 단계 사이에도
+  적용해, 그 경계의 기록 누락을 성공으로 통과시키지 않는다. 전이 소스 174개를
+  다시 고정했으며 v63 대비 hash 변경은 해당 평가기와 번들 등록 모듈 두 파일이다.
+  물리·카메라·제어·명령 설정과 임계값은 그대로이고 `experimental_unqualified`로
+  시작한다. 검증 범위는 오프라인 합성 회귀와 번들 검사이며, 과거 결과·실모델·물리
+  성공을 승계하지 않는다. 기존 실행·청구 원장은 원래 번들과 함께 보존한다.
+
 - `rgb-standard-dispatch-v63` (PR #194, 실제 R10 PREFLIGHT 펜스 회귀 수정):
   코디네이터가 main·열린 PR 최댓값 v62를 확인해 지정한 번호다. 실행된 v62 JSON은
   SHA-256 `6601192a6da7ac018dd3a7104364065bb9afb9dce0d61e79021f824648b07f69` 그대로 은퇴 보존한다.

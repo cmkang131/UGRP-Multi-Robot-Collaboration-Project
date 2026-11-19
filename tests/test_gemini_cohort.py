@@ -1,4 +1,5 @@
 import json
+import pytest
 
 from scripts.evaluate_gemini_cohort import run_cohort, infrastructure_problem
 
@@ -14,6 +15,7 @@ def test_seed_runner_passes_timeout_and_reasoning_to_child_without_changing_budg
 
 def test_budget_ending_during_server_cooldown_remains_infrastructure_block(tmp_path):
     (tmp_path / 'result.json').write_text(json.dumps({
+        'success': False,
         'inference_unresolved': {'r1': 1},
         'outcomes': {'r1': {'reason': 'TIME_BUDGET', 'success': False}}}))
     assert infrastructure_problem(tmp_path, 0) == 'INFERENCE_UNAVAILABLE'
@@ -26,7 +28,7 @@ def test_successful_process_with_provider_failure_stops_remaining_trials(tmp_pat
         attempted.append(run['path'])
         path = tmp_path / run['path']
         path.mkdir()
-        (path / 'result.json').write_text(json.dumps({'outcomes': {
+        (path / 'result.json').write_text(json.dumps({'success': False, 'outcomes': {
             'r1': {'success': False, 'reason': 'LLM_ERROR:http'}}}))
         return 0
     state = run_cohort(tmp_path, runs, jobs=1, execute=execute)
@@ -40,10 +42,37 @@ def test_physical_task_failure_stays_in_denominator_and_does_not_abort(tmp_path)
     def execute(run):
         path = tmp_path / run['path']
         path.mkdir()
-        (path / 'result.json').write_text(json.dumps({'outcomes': {
+        (path / 'result.json').write_text(json.dumps({'success': False, 'outcomes': {
             'r1': {'success': False, 'reason': 'VISUAL_ATTACHMENT_UNCONFIRMED'}}}))
         return 0
     state = run_cohort(tmp_path, runs, jobs=1, execute=execute)
     assert state['status'] == 'finished'
     assert len(state['attempted']) == 3
     assert not state['not_started']
+
+
+@pytest.mark.parametrize('raw', [
+    '{"success":', '[]', 'null', '{}', '{"success":"false"}',
+    '{"success":false,"inference_unresolved":null}',
+    '{"success":false,"outcomes":[]}',
+    '{"success":false,"outcomes":{"r1":null}}',
+])
+def test_invalid_result_retains_attempt_and_stops_scheduling(tmp_path, raw):
+    runs = [{'path': 'first'}, {'path': 'not-started'}]
+    executed = []
+
+    def execute(run):
+        executed.append(run['path'])
+        path = tmp_path / run['path']
+        path.mkdir()
+        (path / 'result.json').write_text(raw)
+        return 0
+
+    state = run_cohort(tmp_path, runs, jobs=1, execute=execute)
+    assert state == json.loads((tmp_path / 'cohort-status.json').read_text())
+    assert executed == ['first']
+    assert state['status'] == 'infrastructure_blocked'
+    assert state['blocking_reason'] == 'INVALID_RESULT'
+    assert state['attempted'] == [{**runs[0], 'returncode': 0,
+                                    'infrastructure_problem': 'INVALID_RESULT'}]
+    assert state['not_started'] == runs[1:]

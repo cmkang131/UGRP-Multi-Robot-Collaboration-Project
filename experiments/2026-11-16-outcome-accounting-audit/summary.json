@@ -1,0 +1,131 @@
+{
+  "date_kst": "2026-11-16",
+  "base_commit": "ca954d9fa64f94303a3f645c265aff85e2af2fce",
+  "scope": "Independent CPU-only evaluation/accounting code audit with synthetic records; not robot performance measurement",
+  "physics_runs": 0,
+  "model_calls": 0,
+  "historical_raw_runs_rescored": 0,
+  "environment": {
+    "python": "3.12.14",
+    "system": "Linux",
+    "machine": "x86_64",
+    "packages": {
+      "pytest": "9.1.1",
+      "numpy": "2.5.2",
+      "scipy": "1.17.1",
+      "opencv-python-headless": "5.0.0.93",
+      "pillow": "12.3.0",
+      "mujoco": "3.12.0",
+      "glfw": "2.10.2"
+    }
+  },
+  "source_hashes": {
+    "harness/visual_box_evaluation.py": {
+      "base_sha256": "63deb657be5e41a0bd55a314c08843a44b4a031384db636b9475f881460de7ce",
+      "candidate_sha256": "12cc52f887345d6a442ce1442377ae71a237d8c8a4d6cf60f2e4cbfd09ce3caf"
+    },
+    "scripts/carry_failure_metrics.py": {
+      "base_sha256": "d84fe7c0a968ca933bdf00be790f44f0f559c36e05fe9717eb2c9a6a690fbeb1",
+      "candidate_sha256": "a14cb335f70699cca61494349174515470e64f2940f8d07702f6b2550089bab7"
+    },
+    "scripts/evaluate_camera_short_transport.py": {
+      "base_sha256": "0a36eb1ac1a39cdead272ec14da287bf752177a0d6345d835cbbb5f5e12a3ffc",
+      "candidate_sha256": "a4d88e9a66ec401be1d797e7963ba0ec5da237b78aae8baee54149da909a9e7c"
+    },
+    "scripts/evaluate_gemini_cohort.py": {
+      "base_sha256": "917dcfa194a4b17c81edf2a56e5218b24ee47e6c606f6cef48d648a6e4de5433",
+      "candidate_sha256": "1d1fb541d502535234f40f0d8b26930ab79075849d7ff336bb5c8b7c77c8a7c9"
+    },
+    "scripts/render_visual_team_report.py": {
+      "base_sha256": "1ee70274fd897b042ec264132d724c8349010a58c063546a04ab6c3d552d8cee",
+      "candidate_sha256": "b7e4c14f2e73d06f7b703318fed92ad49e98a633ff168736be47bcde5cbddc16"
+    },
+    "harness/rgb_execution_bundle.py": {
+      "base_sha256": "93c0d91880b23b1f00d7b0bd3a7491e79ef785ea4dbf2dc561cb3ee89e2b996a",
+      "candidate_sha256": "39019f737dc359bb3c98f63330f2747a1e25a4bdb7a65a14483a738494789d7d"
+    }
+  },
+  "verification": {
+    "focused_tests": {
+      "passed": 80,
+      "subtests_passed": 10,
+      "output": "focused-tests.txt"
+    },
+    "unmodified_accounting_and_retry_tests": {
+      "passed": 15,
+      "commands": "README.md"
+    },
+    "solo_contract_cases": {
+      "before": {
+        "matched": 32,
+        "total": 32
+      },
+      "after": {
+        "matched": 32,
+        "total": 32
+      }
+    },
+    "outcome_cases": {
+      "before": {
+        "matched": 16,
+        "total": 24
+      },
+      "after": {
+        "matched": 21,
+        "total": 24
+      },
+      "remaining_counterexamples": [
+        "camera_retract_before_lower",
+        "pair_nonfinite_lift_sample",
+        "pair_backwards_timestamp"
+      ]
+    },
+    "aggregation_cases": {
+      "total": 3,
+      "before": "aggregation-before.json",
+      "after": "aggregation-after.json"
+    },
+    "carry_identity_regressions_before": {
+      "failed": 6,
+      "passed": 1,
+      "output": "identity-regressions-before.txt"
+    },
+    "bundle_version_tests": {
+      "passed": 11,
+      "output": "ci-followup.md",
+      "static_bundle_check": "passed",
+      "immutable_registry_check": "passed"
+    }
+  },
+  "issues": {
+    "current_contract": 677,
+    "crash_accounting": 678,
+    "trial_identity": 680,
+    "missing_constraint_evidence": 681,
+    "timeline_gap_and_order": 683,
+    "provisional_pair_input_validation": 684
+  },
+  "limits": [
+    "Latest plan coverage and marker delivery runtime partially unpublished; not independently recounted.",
+    "Published Solo 19/20 and 12/12 not independently recounted.",
+    "Synthetic evaluator outcomes are not physical success rates.",
+    "Place phase order and provisional Pair invalid coordinate/time cases remain open.",
+    "Cohort supervisor death before its first checkpoint is not inferred from missing files."
+  ],
+  "ci_followup": {
+    "initial_head": "4f4fb568fcfb2ea9ec83289ee55147da8c349f79",
+    "initial_run_id": 43798751461,
+    "initial_failed_job_id": 133073669996,
+    "cause": "our evaluator change drifted the immutable v63 source pin",
+    "resolution": "new experimental_unqualified rgb-standard-dispatch-v64; all existing registry bytes preserved",
+    "remote_full_ci": "see PR checks; not asserted passed by this audit file"
+  },
+  "execution_bundle": {
+    "id": "rgb-standard-dispatch-v64",
+    "parent": "rgb-standard-dispatch-v63",
+    "status": "experimental_unqualified",
+    "sha256": "5187af8d8c0662595b247d6050eecce527d8621f7063ec8bc4567ea569df53b8",
+    "reservation": "bundle-reservation.json",
+    "physical_success_inherited": false
+  }
+}

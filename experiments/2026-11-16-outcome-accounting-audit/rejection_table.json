@@ -1,0 +1,37 @@
+{
+  "scope": "Baseline synthetic counterexamples; distinct probes, not an experimental trial rejection cohort",
+  "baseline_commit": "ca954d9fa64f94303a3f645c265aff85e2af2fce",
+  "outcome_funnel": {
+    "evaluated": 24,
+    "matched_contract": 16,
+    "counterexamples": 8,
+    "counterexamples_by_category": {
+      "constraint_evidence_missing": 2,
+      "phase_boundary_gap": 3,
+      "place_phase_order": 1,
+      "provisional_nonfinite": 1,
+      "provisional_time_order": 1
+    }
+  },
+  "solo_funnel": {
+    "evaluated": 32,
+    "matched_contract": 32,
+    "counterexamples": 0
+  },
+  "aggregation_counterexamples": {
+    "started_crash_omitted": 1,
+    "malformed_json_loses_ledger": 1,
+    "wrong_condition_accepted": 1
+  },
+  "sources": [
+    "outcomes-before.stdout.txt",
+    "solo-before.json",
+    "aggregation-before.json"
+  ],
+  "reproduction_commands": [
+    ".venv-test/bin/python experiments/2026-11-16-outcome-accounting-audit/probe_outcomes.py",
+    ".venv-test/bin/python experiments/2026-11-16-outcome-accounting-audit/probe_solo.py",
+    ".venv-test/bin/python experiments/2026-11-16-outcome-accounting-audit/probe_aggregation.py"
+  ],
+  "reproduction_note": "Run probes in a separate checkout at baseline_commit for baseline behavior; current candidate has the documented corrections."
+}

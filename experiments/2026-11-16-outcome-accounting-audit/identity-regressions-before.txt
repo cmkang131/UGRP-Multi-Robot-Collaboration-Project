@@ -1,0 +1,121 @@
+FFFFFF.                                                                  [100%]
+=================================== FAILURES ===================================
+__ test_result_metadata_cannot_move_an_attempt_to_another_cell[condition-act] __
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-3/test_result_metadata_cannot_mo0')
+field = 'condition', value = 'act'
+
+    @pytest.mark.parametrize('field,value', [
+        ('condition', 'act'),
+        ('case', {'id': 'another-case'}),
+        ('case', {'id': 'open', 'seed': 999}),
+        ('repeat', 1),
+        ('repeat', None),
+    ])
+    def test_result_metadata_cannot_move_an_attempt_to_another_cell(tmp_path, field, value):
+        jobs = schedule({'test': [{'id': 'open'}]}, ['teacher', 'act'])
+        row = {**jobs[0], 'outcome': outcome(tmp_path, 1), field: value}
+>       with pytest.raises(ValueError, match='trial metadata mismatch'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_carry_failure_measurement.py:33: Failed
+___ test_result_metadata_cannot_move_an_attempt_to_another_cell[case-value1] ___
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-3/test_result_metadata_cannot_mo1')
+field = 'case', value = {'id': 'another-case'}
+
+    @pytest.mark.parametrize('field,value', [
+        ('condition', 'act'),
+        ('case', {'id': 'another-case'}),
+        ('case', {'id': 'open', 'seed': 999}),
+        ('repeat', 1),
+        ('repeat', None),
+    ])
+    def test_result_metadata_cannot_move_an_attempt_to_another_cell(tmp_path, field, value):
+        jobs = schedule({'test': [{'id': 'open'}]}, ['teacher', 'act'])
+        row = {**jobs[0], 'outcome': outcome(tmp_path, 1), field: value}
+>       with pytest.raises(ValueError, match='trial metadata mismatch'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_carry_failure_measurement.py:33: Failed
+___ test_result_metadata_cannot_move_an_attempt_to_another_cell[case-value2] ___
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-3/test_result_metadata_cannot_mo2')
+field = 'case', value = {'id': 'open', 'seed': 999}
+
+    @pytest.mark.parametrize('field,value', [
+        ('condition', 'act'),
+        ('case', {'id': 'another-case'}),
+        ('case', {'id': 'open', 'seed': 999}),
+        ('repeat', 1),
+        ('repeat', None),
+    ])
+    def test_result_metadata_cannot_move_an_attempt_to_another_cell(tmp_path, field, value):
+        jobs = schedule({'test': [{'id': 'open'}]}, ['teacher', 'act'])
+        row = {**jobs[0], 'outcome': outcome(tmp_path, 1), field: value}
+>       with pytest.raises(ValueError, match='trial metadata mismatch'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_carry_failure_measurement.py:33: Failed
+____ test_result_metadata_cannot_move_an_attempt_to_another_cell[repeat-1] _____
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-3/test_result_metadata_cannot_mo3')
+field = 'repeat', value = 1
+
+    @pytest.mark.parametrize('field,value', [
+        ('condition', 'act'),
+        ('case', {'id': 'another-case'}),
+        ('case', {'id': 'open', 'seed': 999}),
+        ('repeat', 1),
+        ('repeat', None),
+    ])
+    def test_result_metadata_cannot_move_an_attempt_to_another_cell(tmp_path, field, value):
+        jobs = schedule({'test': [{'id': 'open'}]}, ['teacher', 'act'])
+        row = {**jobs[0], 'outcome': outcome(tmp_path, 1), field: value}
+>       with pytest.raises(ValueError, match='trial metadata mismatch'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_carry_failure_measurement.py:33: Failed
+___ test_result_metadata_cannot_move_an_attempt_to_another_cell[repeat-None] ___
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-3/test_result_metadata_cannot_mo4')
+field = 'repeat', value = None
+
+    @pytest.mark.parametrize('field,value', [
+        ('condition', 'act'),
+        ('case', {'id': 'another-case'}),
+        ('case', {'id': 'open', 'seed': 999}),
+        ('repeat', 1),
+        ('repeat', None),
+    ])
+    def test_result_metadata_cannot_move_an_attempt_to_another_cell(tmp_path, field, value):
+        jobs = schedule({'test': [{'id': 'open'}]}, ['teacher', 'act'])
+        row = {**jobs[0], 'outcome': outcome(tmp_path, 1), field: value}
+>       with pytest.raises(ValueError, match='trial metadata mismatch'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_carry_failure_measurement.py:33: Failed
+___________ test_duplicate_planned_id_cannot_shrink_the_denominator ____________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-3/test_duplicate_planned_id_cann0')
+
+    def test_duplicate_planned_id_cannot_shrink_the_denominator(tmp_path):
+        job = schedule({'test': [{'id': 'open'}]}, ['teacher'])[0]
+>       with pytest.raises(ValueError, match='duplicate planned trial'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_carry_failure_measurement.py:39: Failed
+=========================== short test summary info ============================
+FAILED tests/test_carry_failure_measurement.py::test_result_metadata_cannot_move_an_attempt_to_another_cell[condition-act]
+FAILED tests/test_carry_failure_measurement.py::test_result_metadata_cannot_move_an_attempt_to_another_cell[case-value1]
+FAILED tests/test_carry_failure_measurement.py::test_result_metadata_cannot_move_an_attempt_to_another_cell[case-value2]
+FAILED tests/test_carry_failure_measurement.py::test_result_metadata_cannot_move_an_attempt_to_another_cell[repeat-1]
+FAILED tests/test_carry_failure_measurement.py::test_result_metadata_cannot_move_an_attempt_to_another_cell[repeat-None]
+FAILED tests/test_carry_failure_measurement.py::test_duplicate_planned_id_cannot_shrink_the_denominator
+6 failed, 1 passed, 14 deselected in 0.22s

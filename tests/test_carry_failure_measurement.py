@@ -20,6 +20,33 @@ def test_planned_repeats_are_unique_and_pending_is_not_a_failure(tmp_path):
         aggregate(jobs, [row, row])
 
 
+@pytest.mark.parametrize('field,value', [
+    ('condition', 'act'),
+    ('case', {'id': 'another-case'}),
+    ('case', {'id': 'open', 'seed': 999}),
+    ('repeat', 1),
+    ('repeat', None),
+])
+def test_result_metadata_cannot_move_an_attempt_to_another_cell(tmp_path, field, value):
+    jobs = schedule({'test': [{'id': 'open'}]}, ['teacher', 'act'])
+    row = {**jobs[0], 'outcome': outcome(tmp_path, 1), field: value}
+    with pytest.raises(ValueError, match='trial metadata mismatch'):
+        aggregate(jobs, [row])
+
+
+def test_duplicate_planned_id_cannot_shrink_the_denominator(tmp_path):
+    job = schedule({'test': [{'id': 'open'}]}, ['teacher'])[0]
+    with pytest.raises(ValueError, match='duplicate planned trial'):
+        aggregate([job, job], [{**job, 'outcome': outcome(tmp_path, 1)}])
+
+
+def test_legacy_jobs_without_repeat_preserve_explicit_identity(tmp_path):
+    job = {'trial_id': 'teacher--open', 'condition': 'teacher', 'case': {'id': 'open'}}
+    result = aggregate([job], [{**job, 'outcome': outcome(tmp_path, 1)}])
+    assert result['complete']
+    assert result['conditions']['teacher']['attempted'] == 1
+
+
 def test_approach_failure_is_counted_without_inventing_act_failure(tmp_path):
     (tmp_path/'result.json').write_text(json.dumps({'physical_success': False, 'phase': 'APPROACH',
         'protocol_complete': False, 'error': 'fine RGB alignment outside saved skill support'}))

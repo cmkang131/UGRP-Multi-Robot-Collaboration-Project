@@ -24,7 +24,7 @@ PHASE_KO = {
 def _json(path: Path):
     try:
         return json.loads(path.read_text())
-    except (OSError, json.JSONDecodeError):
+    except (OSError, ValueError):
         return None
 
 
@@ -124,7 +124,9 @@ def _audit_counts(rows: list[dict]) -> dict[str, int]:
     return {"recovery": recovery, "placement_veto": placement_veto, "grip_rechecks": grip_rechecks}
 
 
-def summarize_run(path: Path, planned: dict | None = None, lifecycle: str | None = None) -> dict:
+def summarize_run(path: Path, planned: dict | None = None, lifecycle: str | None = None,
+                  attempt: dict | None = None) -> dict:
+    """Summarize evidence; attempt is a terminal scheduler row, not a start marker."""
     result = _json(path / "result.json")
     config = _json(path / "run-config.json")
     rows = _rows(path / "control.jsonl")
@@ -169,7 +171,21 @@ def summarize_run(path: Path, planned: dict | None = None, lifecycle: str | None
                 found[family] = {"time": row.get("time"), "step": row.get("step")}
         jumps[rid] = found
     outcomes = result.get("outcomes", {}) if isinstance(result, dict) else {}
-    complete = isinstance(result, dict)
+    complete = isinstance(result, dict) and type(result.get("success")) is bool
+    operational_failure = None
+    if attempt is not None:
+        operational_failure = attempt.get("infrastructure_problem")
+        if not operational_failure and attempt.get("returncode") not in (None, 0):
+            operational_failure = f'PROCESS_EXIT_{attempt["returncode"]}'
+        if not operational_failure and not complete:
+            operational_failure = "INVALID_RESULT" if (path / "result.json").exists() else "MISSING_RESULT"
+    if not operational_failure and complete and result.get("error"):
+        operational_failure = "RUNNER_ERROR"
+    # started_runs alone does not prove termination. Only a scheduler attempt
+    # with a recorded result/exit, or a valid final result, closes the attempt.
+    terminal = complete or bool(operational_failure)
+    run_lifecycle = ("operational_failure" if operational_failure else
+                     "complete" if complete else (lifecycle or "pending"))
     communication = result.get("communication") if complete else None
     if communication not in {"none", "status", "natural"} and isinstance(config, dict):
         communication = config.get("communication")
@@ -194,9 +210,13 @@ def summarize_run(path: Path, planned: dict | None = None, lifecycle: str | None
         "seed": _seed(path, result),
         "group": _infer_group(path, result, rows),
         "complete": complete,
-        "lifecycle": "complete" if complete else (lifecycle or "pending"),
-        "attempted": complete or lifecycle == "running",
+        "lifecycle": run_lifecycle,
+        "attempted": attempt is not None or complete or lifecycle == "running",
+        "terminal": terminal,
+        "operational_failure": operational_failure,
+        "scheduler_attempt": attempt,
         "success": result.get("success") if complete else None,
+        "counted_success": complete and result["success"] is True and not operational_failure,
         "active_robots": robot_ids,
         "outcomes": outcomes if isinstance(outcomes, dict) else {},
         "elapsed_sim_s": result.get("elapsed_sim_s") if complete else None,
@@ -264,9 +284,11 @@ def _message_transcript(run: dict, video_id: str) -> str:
 
 
 def _run_card(run: dict, output: Path) -> str:
-    status = ("미시작" if run["lifecycle"] == "not_attempted" else "진행 중" if not run["complete"]
+    status = ("운영 실패" if run["operational_failure"] else
+              "미시작" if run["lifecycle"] == "not_attempted" else
+              "대기" if run["lifecycle"] == "pending" else "진행 중" if not run["complete"]
               else "성공" if run["success"] else "실패")
-    status_class = "pending" if not run["complete"] else ("pass" if run["success"] else "fail")
+    status_class = "pending" if not run["terminal"] else ("pass" if run["counted_success"] else "fail")
     video = _link(run["video"], output)
     video_id = "video-" + re.sub(r"[^a-zA-Z0-9_-]", "-", run["name"])
     media = (f'<video id="{video_id}" controls preload="metadata" src="{video}"></video>' if video else
@@ -327,7 +349,7 @@ def _run_card(run: dict, output: Path) -> str:
       {media}<p class="metrics">통신 모드 <strong>{html.escape(run["communication_mode"])}</strong> · {metrics}</p>
       <details class="messages"><summary>실제 방송 메시지 {len(run["message_rows"])}건</summary>{transcript}</details>
       <div class="robots">{"".join(robots) or '<p class="missing">robot log 없음</p>'}</div>
-      <details><summary>실행 및 재현 정보</summary><pre>{html.escape(json.dumps({"controller":run["controller"],"requested_model":run["model"],"actual_response_models":run["response_models"],"llm_calls":run["llm_calls"],"llm_dispositions":run["llm_dispositions"],"audit_counts":run["audit_counts"],"messages":run["messages"],"source_hash":run["source_hash"],"physics":run["physics"],"error":run["error"]},ensure_ascii=False,indent=2))}</pre></details></section>'''
+      <details><summary>실행 및 재현 정보</summary><pre>{html.escape(json.dumps({"controller":run["controller"],"requested_model":run["model"],"actual_response_models":run["response_models"],"llm_calls":run["llm_calls"],"llm_dispositions":run["llm_dispositions"],"audit_counts":run["audit_counts"],"messages":run["messages"],"source_hash":run["source_hash"],"physics":run["physics"],"error":run["error"],"recorded_success":run["success"],"operational_failure":run["operational_failure"],"scheduler_attempt":run["scheduler_attempt"]},ensure_ascii=False,indent=2))}</pre></details></section>'''
 
 
 def render(root: Path, output: Path) -> dict:
@@ -337,23 +359,31 @@ def render(root: Path, output: Path) -> dict:
                      if isinstance(item, dict) and isinstance(item.get("path"), str)} if manifest else {}
     cohort_status = _json(root / "cohort-status.json")
     blocked = isinstance(cohort_status, dict) and cohort_status.get("status") == "infrastructure_blocked"
-    started = set(cohort_status.get("started_runs", [])) if blocked and isinstance(cohort_status.get("started_runs"), list) else set()
+    started = set(cohort_status.get("started_runs", [])) if isinstance(cohort_status, dict) and isinstance(cohort_status.get("started_runs"), list) else set()
+    attempts = {str(item["path"]): item for item in cohort_status.get("attempted", [])
+                if isinstance(item, dict) and isinstance(item.get("path"), str)
+                and (item.get("returncode") is not None or item.get("infrastructure_problem"))
+                } if isinstance(cohort_status, dict) and isinstance(cohort_status.get("attempted"), list) else {}
     runs = []
     for path in discover_runs(root):
-        planned = planned_items.get(path.name)
+        relative = str(path.relative_to(root))
+        planned = planned_items.get(relative)
         has_activity = path.exists() and any((path / marker).exists() for marker in
             ("result.json", "control.jsonl", "llm-decisions.jsonl", "motion-1x.mp4"))
-        lifecycle = ("not_attempted" if blocked and path.name not in started and not has_activity
-                     else "running" if has_activity else "pending")
-        runs.append(summarize_run(path, planned, lifecycle))
+        lifecycle = ("not_attempted" if blocked and relative not in started and relative not in attempts and not has_activity
+                     else "running" if has_activity or relative in started else "pending")
+        runs.append(summarize_run(path, planned, lifecycle, attempts.get(relative)))
     runs.sort(key=lambda run: (run["group"], run["success"] is not True,
                                run["seed"] if run["seed"] is not None else 10**9, run["name"]))
     summary = {
         "cohort_root": str(root),
         "planned_runs": len(runs),
-        "finished_runs": sum(run["complete"] for run in runs),
-        "successful_runs": sum(run["success"] is True for run in runs),
-        "unfinished_runs": sum(not run["complete"] for run in runs),
+        "attempted_runs": sum(run["attempted"] for run in runs),
+        "finished_runs": sum(run["terminal"] for run in runs),
+        "results_available": sum(run["complete"] for run in runs),
+        "successful_runs": sum(run["counted_success"] for run in runs),
+        "operational_failed_runs": sum(bool(run["operational_failure"]) for run in runs),
+        "unfinished_runs": sum(not run["terminal"] for run in runs),
         "planned_seeds": sorted({run["seed"] for run in runs if run["seed"] is not None}),
         "groups": {group: [run for run in runs if run["group"] == group]
                    for group in ("solo1", "team3")},
@@ -362,12 +392,15 @@ def render(root: Path, output: Path) -> dict:
     for run in runs:
         aggregate = modes.setdefault(run["communication_mode"], {"runs": 0, "completed_runs": 0,
             "attempted_runs": 0, "not_attempted_runs": 0, "successful_runs": 0,
+            "operational_failed_runs": 0, "recorded_successful_runs": 0,
             "successful_robot_deliveries": 0, "llm_calls": 0, "broadcasts": 0, "wall_latency_ms": []})
         aggregate["runs"] += 1
         aggregate["completed_runs"] += run["complete"]
         aggregate["attempted_runs"] += run["attempted"]
         aggregate["not_attempted_runs"] += run["lifecycle"] == "not_attempted"
-        aggregate["successful_runs"] += run["success"] is True
+        aggregate["successful_runs"] += run["counted_success"]
+        aggregate["recorded_successful_runs"] += run["success"] is True
+        aggregate["operational_failed_runs"] += bool(run["operational_failure"])
         aggregate["successful_robot_deliveries"] += sum(
             outcome.get("success") is True for outcome in run["outcomes"].values() if isinstance(outcome, dict))
         if isinstance(run["llm_calls"], dict):
@@ -388,18 +421,21 @@ def render(root: Path, output: Path) -> dict:
     except OSError:
         supplement = ""
     mode_rows = ''.join(
-        f'<tr><td>{html.escape(mode)}</td><td>{item["successful_runs"]}/{item["completed_runs"]}</td>'
+        f'<tr><td>{html.escape(mode)}</td><td>{item["successful_runs"]}/{item["attempted_runs"]}</td>'
+        f'<td>{item["recorded_successful_runs"]}/{item["completed_runs"]}</td>'
+        f'<td>{item["operational_failed_runs"]}</td><td>{item["not_attempted_runs"]}</td>'
         f'<td>{item["successful_robot_deliveries"]}</td><td>{item["llm_calls"]}</td><td>{item["broadcasts"]}</td>'
         f'<td>{_fmt(sum(item["wall_latency_ms"])/len(item["wall_latency_ms"]),1) if item["wall_latency_ms"] else "—"}</td></tr>'
         for mode, item in sorted(modes.items()))
-    mode_table = ('<table><thead><tr><th>통신 모드</th><th>성공 run</th><th>성공 배달</th><th>LLM 호출</th>'
+    mode_table = ('<table><thead><tr><th>통신 모드</th><th>성공 / 전체 시도</th><th>기록 성공 / 물리판정 기록</th>'
+                  '<th>운영 실패</th><th>미시작</th><th>성공 배달</th><th>LLM 호출</th>'
                   '<th>실제 방송</th><th>기록된 평균 wall latency (ms)</th></tr></thead><tbody>' + mode_rows + '</tbody></table>')
     page = f'''<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Gemini RGB Team 검토</title><style>
 body{{margin:auto;max-width:1180px;padding:24px;background:#101318;color:#eef2f7;font:15px system-ui}}h1,h2,h3,h4{{margin:.3em 0}}.notice,.run{{background:#191f27;border:1px solid #303946;border-radius:14px;padding:16px;margin:14px 0}}.run header{{display:flex;justify-content:space-between;align-items:center}}video{{width:100%;max-height:540px;background:#050607;border-radius:10px;margin-top:10px}}.robots{{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}}.robot{{background:#11161d;padding:10px;border-radius:10px}}img,.thumb{{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px}}.badge,.gate,.jumps button,.transcript button{{display:inline-block;padding:3px 7px;border:0;border-radius:99px;background:#384250;color:#eef2f7;margin:2px;cursor:pointer}}.pass .badge,.gate.ok{{background:#176b48}}.fail .badge,.gate.no{{background:#8a3038}}.pending .badge{{background:#85651c}}.missing,.muted{{color:#9eabb9;padding:20px;text-align:center}}.metrics{{color:#c5d0dc}}pre{{white-space:pre-wrap;overflow-wrap:anywhere}}table{{width:100%;border-collapse:collapse;margin-top:12px}}th,td{{padding:7px;border-bottom:1px solid #384250;text-align:left}}.transcript li{{margin:6px 0}}
-</style><script>function seekVideo(id,t){{const v=document.getElementById(id);if(v){{v.currentTime=t;v.play();}}}}</script><body><h1>Gemini 독립 RGB 운반 검토</h1><div class="notice"><strong>계획 {summary['planned_runs']} · 완료 {summary['finished_runs']} · 성공 {summary['successful_runs']} · 실패 {summary['finished_runs']-summary['successful_runs']} · 미완료 {summary['unfinished_runs']} · 계획 seed {html.escape(', '.join(map(str,summary['planned_seeds'])) or '—')}</strong>
+</style><script>function seekVideo(id,t){{const v=document.getElementById(id);if(v){{v.currentTime=t;v.play();}}}}</script><body><h1>Gemini 독립 RGB 운반 검토</h1><div class="notice"><strong>계획 {summary['planned_runs']} · 시도 {summary['attempted_runs']} · 종료 {summary['finished_runs']} · 성공 {summary['successful_runs']} · 실패 {summary['finished_runs']-summary['successful_runs']} (운영 실패 {summary['operational_failed_runs']}) · 미완료 {summary['unfinished_runs']} · 계획 seed {html.escape(', '.join(map(str,summary['planned_seeds'])) or '—')}</strong>
 <p>각 로봇은 자기 RGB 카메라 2개(고정 nav, wrist)와 자기 actuator 상태를 사용합니다. controller, 요청 model, 실제 응답 model, LLM 호출 수와 메시지 수는 저장된 result와 LLM audit 값을 구분해 표시합니다. 판단 이유는 accepted 응답만 표시하며 rejected/discarded 응답은 처리 집계에 남깁니다. cargo와 목표 zone은 operator가 지정했습니다. Zone 한 변은 0.82m이고 물리 marker/크기 prior를 사용합니다. 이 결과만으로 communication 효과를 입증하지 않습니다.</p>
-<p>성공·실패는 referee의 물리 gate 판정입니다. Gemini 응답 모델과 응답 적용 여부는 별도 audit이며 성공을 뜻하지 않습니다. 비공개 판단 이유와 실제 방송은 구분하며, 방송은 messages.jsonl에 기록된 항목만 표시합니다. 방송 시간 버튼은 해당 영상 시점으로 이동합니다.</p>{mode_table}</div>{supplement}{''.join(sections)}</body></html>'''
+<p>물리판정 기록은 result.json의 명시적인 성공·실패 값입니다. 실행 오류와 결과 누락·손상은 운영 실패로 따로 표시하며 전체 시도 분모에 남깁니다. 물리판정 기록만의 분모와 전체 시도 분모를 함께 표시합니다. 미시작은 시도 분모에서 제외하고 계획 수에 남기며, 진행 중인 시도가 있으면 집계는 잠정치입니다. 시도 0건의 비율은 미정입니다. Gemini 응답 모델과 응답 적용 여부는 별도 audit이며 성공을 뜻하지 않습니다. 비공개 판단 이유와 실제 방송은 구분하며, 방송은 messages.jsonl에 기록된 항목만 표시합니다. 방송 시간 버튼은 해당 영상 시점으로 이동합니다.</p>{mode_table}</div>{supplement}{''.join(sections)}</body></html>'''
     output.write_text(page)
     return summary
 
