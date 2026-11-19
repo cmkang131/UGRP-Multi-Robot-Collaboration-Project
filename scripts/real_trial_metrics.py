@@ -6,13 +6,14 @@
 Inputs in the folder (formats in real_robot/EVALUATION.md, templates in configs/real_robot/):
   trial.json     the sheet written before the trial: kind (pick1 | coop), orders, sign rectangles, cap
   events.jsonl   laptop runner log: start / handover / release_done / finished, laptop monotonic t
-  overhead.jsonl scripts/real_overhead.py record output (same laptop clock)
   operator.json  what a person wrote at the end: where each box is, pick attempts, interventions
+  overhead.jsonl OPTIONAL: scripts/real_overhead.py record output (same laptop clock)
 
 Truth for "which box is at which sign" is the operator sheet (a person looks at the floor, as the
-simulator reads true coordinates). Times come from the event log. The ceiling camera gives an
-independent check of each release (robot pose at release + reach -> sign) and the motion numbers;
-every disagreement is listed under `checks`, never silently resolved.
+simulator reads true coordinates). Times come from the event log. R0, completion time and order
+violations need only these two. Each release is checked between the log and the operator; with the
+ceiling camera also against the robot pose at release + reach, and the motion numbers and handover
+pose error are added. Every disagreement is listed under `checks`, never silently resolved.
 """
 from __future__ import annotations
 
@@ -92,16 +93,15 @@ def order_metrics(trial, events, operator):
 
 def release_checks(trial, events, overhead, operator):
     """Ceiling camera: robot pose at release + reach -> sign; compare with the log and the operator."""
-    reach = float(trial['release_reach_m'])
+    reach = float(trial['release_reach_m']) if overhead else None
     tracks, rows = {}, []
     for e in (e for e in events if e['event'] == 'release_done'):
-        tr = tracks.setdefault(e['robot'], Track(overhead, e['robot']))
-        p = tr.at(e['t'])
+        p = tracks.setdefault(e['robot'], Track(overhead, e['robot'])).at(e['t']) if overhead else None
         est = None if p is None else _sign_at(trial['signs'], p[0] + reach * math.cos(p[2]), p[1] + reach * math.sin(p[2]))
         truth = operator['final'].get(e['item'], {}).get('sign')
         rows.append({'item': e['item'], 'robot': e['robot'], 'log_sign': e.get('sign'), 'ceiling_sign': est,
                      'operator_sign': truth, 'pose_seen': p is not None,
-                     'agree': p is not None and est == truth == e.get('sign')})
+                     'agree': e.get('sign') == truth and (not overhead or (p is not None and est == truth))})
     return rows
 
 
@@ -143,17 +143,21 @@ def score(folder):
     t0 = next(e['t'] for e in events if e['event'] == 'start')
     t1 = max(e['t'] for e in events)
     robots = sorted({e['robot'] for e in events if 'robot' in e})
-    sync = next((r['t'] for r in overhead if r.get('sync')), None)
-    out = {'trial_id': trial['trial_id'], 'kind': trial['kind'], 'robots': robots,
-           'motion': motion_metrics(overhead, robots, t0, t1),
-           'clock': {'start_t': t0, 'sync_card_t': sync,
-                     'phone_offset_s': None if sync is None or operator.get('phone_sync_s') is None
+    # phone video: the start card seen by the ceiling camera, or without it the start event itself (the operator
+    # notes the phone-video second at which the start key was pressed)
+    sync = next((r['t'] for r in overhead if r.get('sync')), t0)
+    out = {'trial_id': trial['trial_id'], 'kind': trial['kind'], 'robots': robots, 'ceiling_camera': bool(overhead),
+           'clock': {'start_t': t0, 'sync_t': sync,
+                     'phone_offset_s': None if operator.get('phone_sync_s') is None
                      else round(operator['phone_sync_s'] - (sync - t0), 2)},
            'interventions': operator.get('interventions', [])}
+    if overhead:
+        out['motion'] = motion_metrics(overhead, robots, t0, t1)
     if trial['kind'] == 'pick1':
         att = operator.get('attempts', [])
         out['pick'] = {'success': sum(bool(a.get('lifted') and a.get('held_3s')) for a in att), 'attempts': len(att)}
-        out['handover'] = handover_errors(trial, events, overhead)
+        if overhead:
+            out['handover'] = handover_errors(trial, events, overhead)
     if trial.get('orders'):
         out.update(order_metrics(trial, events, operator))
         out['checks'] = release_checks(trial, events, overhead, operator)

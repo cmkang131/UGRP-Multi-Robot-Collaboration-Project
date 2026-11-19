@@ -158,3 +158,18 @@ def test_pick1_handover_error_in_station_frame(tmp_path):
     h = out['handover'][0]
     assert out['pick'] == {'success': 1, 'attempts': 1}
     assert h['along_mm'] == -5.0 and h['lateral_mm'] == -8.0 and abs(h['yaw_deg'] - 2.0) < 1e-6
+
+
+def test_metrics_without_ceiling_camera(tmp_path):
+    ev = [{'t': 100, 'event': 'start'},
+          {'t': 400, 'event': 'release_done', 'robot': 'r1', 'item': 'red_1', 'sign': 12},
+          {'t': 500, 'event': 'release_done', 'robot': 'r2', 'item': 'cyan_1', 'sign': 13},
+          {'t': 520, 'event': 'finished', 'robot': 'r1'}, {'t': 530, 'event': 'finished', 'robot': 'r2'}]
+    op = {'final': {'red_1': {'kind': 'red', 'sign': 12}, 'cyan_1': {'kind': 'cyan', 'sign': 14}}, 'phone_sync_s': 3.0}
+    folder = _trial_folder(tmp_path, ev, op, [])
+    (folder / 'overhead.jsonl').unlink()
+    out = rtm.score(folder)
+    assert not out['ceiling_camera'] and 'motion' not in out
+    assert out['R0'] == 0.5 and out['completion_s'] == 430 and out['order_violations'] == 0
+    assert out['disagreements'] == 1                 # log says 13, the operator found it at 14
+    assert out['clock']['phone_offset_s'] == 3.0     # phone second at which the start key was pressed
