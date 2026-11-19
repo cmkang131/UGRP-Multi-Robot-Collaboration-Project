@@ -333,3 +333,39 @@ def test_bench_fake_lifted_run(tmp_path, monkeypatch):
                        '--out', str(out), '--fake']) == 0
     text = out.read_text()
     assert text.count('pass') == 4 and 'front_left_forward' in text
+
+
+def test_real_io_paces_commands_and_uses_newest_frame():
+    """Laptop RealIO against the Pi server (fake board) and the camera stream (fake source)."""
+    from real_robot import camera
+    from real_robot.skill_io import RealIO
+
+    class Source:
+        n = 0
+
+        def grab(self):
+            Source.n += 1
+            return time.monotonic(), b'jpeg%d' % Source.n, 640, 480
+
+    board = FakeBoard()
+    ex = Executor(board, calibration.parse(TEST_CAL), lambda e: None)
+    server = Server(ex, '127.0.0.1', 0)
+    st = threading.Thread(target=server.serve_forever, daemon=True); st.start()
+    stop, ready, addr = threading.Event(), threading.Event(), []
+    ct = threading.Thread(target=camera.serve, args=(Source(), '127.0.0.1', 0), kwargs=dict(period_s=0.05, stop=stop, ready=ready, address=addr), daemon=True)
+    ct.start(); ready.wait(2)
+    io = RealIO('127.0.0.1', cmd_port=server.address[1], cam_port=addr[0][1])
+    io.start(INIT, settle_s=0.1)
+    for k in range(4):
+        jpeg = io.frame()
+        assert jpeg.startswith(b'jpeg')
+        if k == 1:
+            time.sleep(0.25)          # a slow brain tick (ACT inference)
+        io.send(row(io.now(), (0.31,) * 4, (0.1,) * 4))
+    gaps = [b['t_wall'] - a['t_wall'] for a, b in zip(io.ticks, io.ticks[1:])]
+    assert min(gaps) >= 0.099 and io.now() == pytest.approx(0.4)
+    assert gaps[0] >= 0.25 and gaps[1] < 0.2     # the slow tick delays it; the next is not sent at once to catch up
+    io.close()
+    stop.set(); server.running = False
+    st.join(timeout=1); ct.join(timeout=1)
+    assert ex.speeds == [0, 0, 0, 0]
