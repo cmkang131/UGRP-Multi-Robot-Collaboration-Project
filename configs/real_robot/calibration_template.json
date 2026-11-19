@@ -1,0 +1,13 @@
+{
+  "robot_id": "ugrp1",
+  "measured": false,
+  "source": null,
+  "_how_to_fill": "Copy to <robot_id>.json. motor/sign: which board channel drives each sim wheel and in which direction (T03 bench, wheels lifted). points: [sim_abs, board_abs] pairs where the measured displacement per 0.1 s pulse matches the sim (T03); sim range is 0.31..0.40, board values must be 35..100. servo_min_duration_s: shortest move time the board accepts (T04). Set measured=true only after the measurements are recorded under experiments/.",
+  "wheels": {
+    "front_left":  {"motor": null, "sign": null, "points": []},
+    "front_right": {"motor": null, "sign": null, "points": []},
+    "rear_left":   {"motor": null, "sign": null, "points": []},
+    "rear_right":  {"motor": null, "sign": null, "points": []}
+  },
+  "servo_min_duration_s": null
+}
