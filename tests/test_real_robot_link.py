@@ -212,3 +212,53 @@ def test_i2c_frames_match_existing_cli(monkeypatch):
     assert calls[-1] == frame(mc.servo_i2c_argv(5, 1330, 0.2))
     with pytest.raises(ValueError):
         board.write_motor(1, 20)
+
+
+def test_camera_stream_keeps_newest_frame_with_pi_capture_time():
+    from real_robot import camera
+
+    class Source:
+        n = 0
+
+        def grab(self):
+            Source.n += 1
+            return time.monotonic(), b'\xff\xd8' + bytes([Source.n % 256]) * 1000 + b'\xff\xd9', 640, 480
+
+    stop, ready, address = threading.Event(), threading.Event(), []
+    thread = threading.Thread(target=camera.serve, args=(Source(), '127.0.0.1', 0),
+                              kwargs={'period_s': 0.02, 'stop': stop, 'ready': ready, 'address': address}, daemon=True)
+    thread.start()
+    ready.wait(1)
+    link = camera.CameraLink(*address[0])
+    time.sleep(0.3)
+    header, jpeg = link.newest()
+    assert link.received >= 5 and link.error is None
+    assert header['bytes'] == len(jpeg) == 1004 and jpeg.startswith(b'\xff\xd8')
+    assert header['t_capture'] <= header['t_send'] <= header['t_arrival_laptop']
+    assert (header['width'], header['height']) == (640, 480)
+    link.close()
+    stop.set()
+    thread.join(timeout=1)
+
+
+def test_pi_check_runs_without_hardware():
+    import json
+    import subprocess
+    import sys
+    out = subprocess.run([sys.executable, 'real_robot/pi_check.py'], capture_output=True, text=True, timeout=60)
+    report = json.loads(out.stdout)
+    assert report['battery']['ok'] is False  # no board here; must report, not crash
+    assert 'camera' in report and 'busy' in report
+
+
+def test_fleet_check_table_rows():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location('fleet', 'scripts/masterpi_fleet_check.py')
+    fleet = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fleet)
+    assert fleet.row({'host': 'ugrp2', 'reachable': False, 'error': 'timeout'})[:2] == ['ugrp2', 'NO']
+    r = {'reachable': True, 'ssh_host': 'ugrp1', 'model': 'Raspberry Pi 4 Model B', 'smbus2': True,
+         'battery': {'ok': True, 'mv': 7900}, 'camera': {'frame': {'ok': True, 'shape': [480, 640, 3]}},
+         'services': ['masterpi.service'], 'busy': {'/dev/video0': [{'pid': 1, 'cmd': '/usr/bin/python3 rpc_server.py'}]}}
+    cells = fleet.row(r)
+    assert cells[3] == '7900 mV' and cells[4].startswith('ok 480x640') and 'rpc_server.py' in cells[7]

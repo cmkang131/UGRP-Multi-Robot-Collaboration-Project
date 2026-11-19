@@ -1,0 +1,132 @@
+"""Pi -> laptop camera frames with the Pi capture time.
+
+Wire format per frame: 4-byte big-endian header length, JSON header, then the JPEG bytes.
+Header: {"frame_id", "t_capture" (Pi monotonic, right after grab), "t_send", "bytes", "width", "height"}.
+
+The laptop keeps only the newest frame (the controller wants the current picture, not a
+queue of old ones) and records its own arrival time. Pi and laptop clocks are different:
+compare them only through a round trip on one device (see README).
+"""
+from __future__ import annotations
+
+import json
+import socket
+import struct
+import threading
+import time
+
+
+def encode(header: dict, jpeg: bytes) -> bytes:
+    head = json.dumps(header).encode()
+    return struct.pack('>I', len(head)) + head + jpeg
+
+
+def _read_exact(sock, n):
+    buf = bytearray()
+    while len(buf) < n:
+        chunk = sock.recv(n - len(buf))
+        if not chunk:
+            raise ConnectionError('camera stream closed')
+        buf += chunk
+    return bytes(buf)
+
+
+def read_frame(sock):
+    (n,) = struct.unpack('>I', _read_exact(sock, 4))
+    header = json.loads(_read_exact(sock, n))
+    return header, _read_exact(sock, header['bytes'])
+
+
+class OpenCVSource:
+    """640x480 own-camera frames on the Pi (sim contract: own RGB 640x480)."""
+
+    def __init__(self, index=0, width=640, height=480, quality=90):
+        import cv2
+        self.cv2 = cv2
+        self.cap = cv2.VideoCapture(index)
+        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
+        self.cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)  # newest frame, not a stale driver queue
+        self.quality = quality
+
+    def grab(self):
+        ok, frame = self.cap.read()
+        t = time.monotonic()
+        if not ok:
+            raise RuntimeError('camera read failed')
+        ok, jpeg = self.cv2.imencode('.jpg', frame, [self.cv2.IMWRITE_JPEG_QUALITY, self.quality])
+        return t, jpeg.tobytes(), frame.shape[1], frame.shape[0]
+
+    def close(self):
+        self.cap.release()
+
+
+def serve(source, host: str, port: int, period_s: float = 0.1, stop: threading.Event | None = None,
+          ready: threading.Event | None = None, address: list | None = None):
+    """Send one frame every `period_s` (sim control period 0.1 s) to one client at a time."""
+    stop = stop or threading.Event()
+    listener = socket.create_server((host, port))
+    listener.settimeout(0.2)
+    if address is not None:
+        address.append(listener.getsockname())
+    if ready is not None:
+        ready.set()
+    frame_id = 0
+    try:
+        while not stop.is_set():
+            try:
+                conn, _ = listener.accept()
+            except socket.timeout:
+                continue
+            conn.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+            next_t = time.monotonic()
+            try:
+                while not stop.is_set():
+                    t_capture, jpeg, w, h = source.grab()
+                    frame_id += 1
+                    conn.sendall(encode({'frame_id': frame_id, 't_capture': t_capture, 't_send': time.monotonic(),
+                                         'bytes': len(jpeg), 'width': w, 'height': h}, jpeg))
+                    next_t += period_s
+                    time.sleep(max(0.0, next_t - time.monotonic()))
+            except OSError:
+                pass
+            finally:
+                conn.close()
+    finally:
+        listener.close()
+
+
+class CameraLink:
+    """Laptop side: background reader that keeps the newest frame."""
+
+    def __init__(self, host: str, port: int, timeout_s: float = 2.0):
+        self.sock = socket.create_connection((host, port), timeout=timeout_s)
+        self.sock.settimeout(None)
+        self.lock = threading.Lock()
+        self.latest = None
+        self.received = 0
+        self.error = None
+        self.thread = threading.Thread(target=self._run, daemon=True)
+        self.thread.start()
+
+    def _run(self):
+        try:
+            while True:
+                header, jpeg = read_frame(self.sock)
+                header['t_arrival_laptop'] = time.monotonic()
+                with self.lock:
+                    self.latest = (header, jpeg)
+                    self.received += 1
+        except (OSError, ConnectionError, ValueError) as exc:
+            self.error = str(exc)
+
+    def newest(self):
+        with self.lock:
+            return self.latest
+
+    def close(self):
+        try:
+            self.sock.shutdown(socket.SHUT_RDWR)
+        except OSError:
+            pass
+        self.sock.close()

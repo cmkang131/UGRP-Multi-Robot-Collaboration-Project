@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import threading
 import time
 from pathlib import Path
 
@@ -27,6 +28,8 @@ def main(argv=None) -> int:
     p.add_argument('--host', default='0.0.0.0')
     p.add_argument('--port', type=int, default=8765)
     p.add_argument('--log', default=None, help='JSONL event log (default: stdout)')
+    p.add_argument('--camera-port', type=int, default=None,
+                   help='also stream own-camera JPEG frames (0.1 s period) on this port')
     args = p.parse_args(argv)
 
     cal = cal_mod.load(args.calibration)
@@ -42,11 +45,18 @@ def main(argv=None) -> int:
     server = Server(Executor(board, cal, log), args.host, args.port)
     log({'event': 'start', 'robot_id': cal.robot_id, 'board': args.board,
          'calibration': args.calibration, 'measured': cal.measured, 'address': list(server.address)})
+    stop = threading.Event()
+    if args.camera_port is not None:
+        from real_robot.camera import OpenCVSource, serve
+        threading.Thread(target=serve, args=(OpenCVSource(), args.host, args.camera_port),
+                         kwargs={'stop': stop}, daemon=True).start()
+        log({'event': 'camera_start', 'port': args.camera_port})
     try:
         server.serve_forever()
     except KeyboardInterrupt:
         pass
     finally:
+        stop.set()
         if isinstance(board, I2CBoard):
             board.close()
     return 0

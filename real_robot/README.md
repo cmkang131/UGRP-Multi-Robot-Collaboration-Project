@@ -22,7 +22,10 @@ MasterPi 확장 보드의 모터 레지스터에는 속도만 들어가고 시�
 | `executor.py` | 명령 적용, 펄스 끝 정지, 거부, 기록 |
 | `boards.py` | 가짜 보드(시험용), 실제 I2C 보드(smbus2 로 버스를 한 번 열어 둠. 프레임은 `scripts/masterpi_control.py` 와 같은 바이트) |
 | `server.py` | Pi 쪽 TCP 서버(JSON 한 줄씩), 노트북 쪽 `RobotLink` |
-| `../scripts/masterpi_robot_server.py` | 실행 진입점 |
+| `camera.py` | Pi → 노트북 카메라 프레임(640×480 JPEG, 0.1초 간격, Pi 촬영 시각 포함). 노트북은 가장 새 프레임만 둔다 |
+| `pi_check.py` | 로봇에서 도는 읽기 전용 점검(배터리, 카메라, I2C, 카메라·I2C를 잡은 프로세스, 제조사 서비스, 온도, 시계 동기). 아무것도 움직이지 않음 |
+| `../scripts/masterpi_robot_server.py` | 실행 진입점. `--camera-port` 를 주면 카메라 전송도 같이 켬 |
+| `../scripts/masterpi_fleet_check.py` | 노트북에서 여러 로봇에 SSH 로 `pi_check.py` 를 돌려 표로 보여 줌 |
 | `../configs/real_robot/calibration_template.json` | 보정 파일 양식. 채우기 전에는 읽히지 않음 |
 
 ## 쓰는 법
@@ -42,9 +45,18 @@ reply = link.send(command_row)   # 시뮬 포트에 주던 그 행. reply 에 Pi
 
 Pi 에서 Hiwonder 기본 서비스(앱 제어, 카메라 스트림)는 끄고 돌린다. I2C 와 카메라를 두 프로그램이 같이 잡으면 충돌한다.
 
+## 로봇을 켜면 먼저
+
+```bash
+python3 scripts/masterpi_fleet_check.py ugrp1 ugrp2 ugrp3 --json fleet.json   # SSH 이름은 각자 ~/.ssh/config
+```
+
+배터리 전압, 카메라 한 장, smbus2 설치 여부, 카메라·I2C 를 이미 잡고 있는 프로그램(Hiwonder 앱 등)을 한 줄씩 보여 준다. 모터·서보 명령은 보내지 않는다.
+
+Pi 와 노트북의 시계는 다르다. 프레임의 `t_capture` 는 Pi 시계, `t_arrival_laptop` 은 노트북 시계다. 두 값을 바로 빼지 않는다. 지연은 명령 서버 응답의 왕복 시간처럼 한 기기 안에서 잰다.
+
 ## 아직 없는 것
 
-- 카메라 프레임 전송(Pi → 노트북, 촬영 시각 포함).
 - 보정 파일 실측값(T03 바퀴, T04 서보).
 - 실물 확인: 바퀴 띄운 상태에서 정지 시각·연결 끊김 정지부터 본다([안전 체크리스트](../docs/sim2real/README.md#구동-전-체크리스트)).
 
