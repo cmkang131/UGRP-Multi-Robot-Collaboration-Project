@@ -36,6 +36,8 @@ class Calibration:
     source: str | None
     wheels: dict        # sim wheel name -> WheelMap
     servo_min_duration_s: float  # shortest servo move the board accepts (measured/specified)
+    sim_no_motion_max: float | None = None  # largest sim wheel value that does not move the sim robot
+
 
     def board_speed(self, wheel_index: int, sim_value: float) -> int:
         """Map one simulator wheel value (0 or +-0.31..0.40) to a signed board integer."""
@@ -43,6 +45,8 @@ class Calibration:
             return 0
         wheel = self.wheels[SIM_WHEELS[wheel_index]]
         magnitude = abs(sim_value)
+        if self.sim_no_motion_max is not None and magnitude <= self.sim_no_motion_max + 1e-9:
+            return 0  # the sim robot does not move at this value (sim reference), so the real wheel stays off
         pts = wheel.points
         if not pts[0][0] - 1e-9 <= magnitude <= pts[-1][0] + 1e-9:
             raise ValueError(f'wheel value {sim_value} outside measured range '
@@ -84,8 +88,12 @@ def parse(data: dict) -> Calibration:
     servo_min = _finite('servo_min_duration_s', data['servo_min_duration_s'])
     if not 0.0 < servo_min <= 3.0:
         raise ValueError('servo_min_duration_s must be in (0, 3]')
+    no_motion = data.get('sim_no_motion_max')
+    if no_motion is not None:
+        no_motion = _finite('sim_no_motion_max', no_motion)
     return Calibration(robot_id=str(data['robot_id']), measured=bool(data['measured']),
-                       source=data.get('source'), wheels=wheels, servo_min_duration_s=servo_min)
+                       source=data.get('source'), wheels=wheels, servo_min_duration_s=servo_min,
+                       sim_no_motion_max=no_motion)
 
 
 def load(path: str | Path) -> Calibration:

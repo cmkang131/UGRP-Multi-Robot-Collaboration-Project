@@ -262,3 +262,74 @@ def test_fleet_check_table_rows():
          'services': ['masterpi.service'], 'busy': {'/dev/video0': [{'pid': 1, 'cmd': '/usr/bin/python3 rpc_server.py'}]}}
     cells = fleet.row(r)
     assert cells[3] == '7900 mV' and cells[4].startswith('ok 480x640') and 'rpc_server.py' in cells[7]
+
+
+def test_wheel_map_from_drive_map_matches_config():
+    import importlib.util
+    import json
+    from pathlib import Path
+    from real_robot import wheel_map
+    spec = importlib.util.spec_from_file_location('mc', 'scripts/masterpi_control.py')
+    mc = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mc)
+    solved = wheel_map.solve({k: mc.DRIVE_MAP[k] for k in ('forward', 'left', 'rotate-left')})
+    config = json.loads(Path('configs/real_robot/wheel_map_from_drive_map.json').read_text())['wheels']
+    assert solved == config
+    # every DRIVE_MAP direction (incl. backward/right/rotate-right) is reproduced by the map
+    sim = {'forward': (1, 1, 1, 1), 'backward': (-1, -1, -1, -1), 'left': (-1, 1, 1, -1), 'right': (1, -1, -1, 1),
+           'rotate-left': (-1, 1, -1, 1), 'rotate-right': (1, -1, 1, -1)}
+    for direction, pattern in sim.items():
+        real = [0] * 4
+        for w, name in enumerate(wheel_map.WHEELS):
+            real[solved[name]['motor'] - 1] = solved[name]['sign'] * pattern[w]
+        assert tuple(real) == mc.DRIVE_MAP[direction], direction
+
+
+def test_fitter_matches_sim_displacement_and_bench_fake_rows(tmp_path):
+    import csv
+    import importlib.util
+    import json
+    spec = importlib.util.spec_from_file_location('fitcal', 'scripts/fit_real_robot_calibration.py')
+    fitcal = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fitcal)
+    sim = [{'direction': 'forward', 'value': v, 'pulse_s': 0.1, 'forward_mm': mm}
+           for v, mm in ((0.31, 0.0), (0.32, 0.0), (0.33, 10.0), (0.40, 16.0))]
+    # Test-only "measurements": real moves 8 mm at 35, 20 mm at 55 per 0.1 s.
+    bench = [{'mode': 'floor', 'direction': 'forward', 'split': 'fit', 'pulse_s': '0.1', 'board_speed': str(b),
+              'dx_mm': str(mm), 'dy_mm': ''} for b, mm in ((35, 8.0), (35, 8.0), (55, 20.0))]
+    points, skipped, _ = fitcal.fit(bench, sim)
+    assert points == [[0.33, 38.3], [0.40, 48.3]]
+    assert {s['sim_value'] for s in skipped} == {0.31, 0.32}
+    rows = bench + [{'mode': 'lifted', 'check': 'pass', 'direction': n, 'split': 'check', 'pulse_s': '0.3',
+                     'board_speed': '40', 'dx_mm': '', 'dy_mm': ''} for n in range(4)]
+    path = tmp_path / 'bench.csv'
+    with path.open('w', newline='') as f:
+        w = csv.DictWriter(f, sorted({k for r in rows for k in r}))
+        w.writeheader()
+        w.writerows(rows)
+    simf = tmp_path / 'sim.jsonl'
+    simf.write_text('\n'.join(json.dumps(r) for r in sim))
+    out = tmp_path / 'cal.json'
+    fitcal.main(['--bench', str(path), '--sim-reference', str(simf), '--robot-id', 't',
+                 '--wheel-map', 'configs/real_robot/wheel_map_from_drive_map.json',
+                 '--servo-min-duration-s', '0.02', '--out', str(out)])
+    cal = calibration.load(out)
+    assert cal.measured is True and cal.sim_no_motion_max == 0.32
+    assert cal.board_speed(0, 0.31) == 0                     # sim dead zone -> wheel off
+    assert cal.board_speed(0, 0.33) == 38                     # front_left = motor 3, sign +1
+    assert cal.board_speed(1, 0.40) == -48                    # front_right = motor 1, sign -1
+
+
+def test_bench_fake_lifted_run(tmp_path, monkeypatch):
+    import builtins
+    import importlib.util
+    spec = importlib.util.spec_from_file_location('bench', 'scripts/real_pulse_bench.py')
+    bench = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(bench)
+    answers = iter(['', 'y'] * 4)
+    monkeypatch.setattr(builtins, 'input', lambda *_: next(answers))
+    out = tmp_path / 'b.csv'
+    assert bench.main(['lifted', '--wheel-map', 'configs/real_robot/wheel_map_from_drive_map.json',
+                       '--out', str(out), '--fake']) == 0
+    text = out.read_text()
+    assert text.count('pass') == 4 and 'front_left_forward' in text

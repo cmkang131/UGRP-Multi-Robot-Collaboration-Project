@@ -1,0 +1,10 @@
+{
+  "source": "scripts/masterpi_control.py DRIVE_MAP (physical MasterPi patterns recovered from the known-good pickup code, ugrp1, 2026-09) solved against the sim patterns in sim/camera_robot_port.py (forward 1,1,1,1; left -1,1,1,-1; yaw-left -1,1,-1,1). The solution is unique (real_robot/wheel_map.py). Check it on the lifted-wheel bench before driving on the floor.",
+  "verified_on_bench": false,
+  "wheels": {
+    "front_left":  {"motor": 3, "sign": 1},
+    "front_right": {"motor": 1, "sign": -1},
+    "rear_left":   {"motor": 4, "sign": -1},
+    "rear_right":  {"motor": 2, "sign": 1}
+  }
+}
