@@ -1,0 +1,470 @@
+{
+ "side": "sim",
+ "kind": "cyan",
+ "release": null,
+ "cap_s": 320.0,
+ "plan_seed": 91432,
+ "approach": {
+  "enabled": true,
+  "object_kind": "cyan",
+  "arrived": true,
+  "reason": "arrived",
+  "ticks_code": 115,
+  "ticks_visible": 34,
+  "arrival": {
+   "tick": 114,
+   "t": 25.800000000032178,
+   "A": 21321,
+   "cx": 291.03935087472445,
+   "cy": 247.51578256179354,
+   "w": 182,
+   "bearing_deg": -0.35,
+   "d_hat_m": 0.1998,
+   "cy_ok": false
+  },
+  "posture_at_end": {
+   "1": 2000,
+   "3": 500,
+   "4": 2500,
+   "5": 1320,
+   "6": 1500
+  },
+  "handoff_hint": {
+   "bearing_rad": -0.01631,
+   "distance_m": 0.63736,
+   "facing_rad": -0.01631
+  },
+  "navigation": {
+   "pre_station_rel_start_m": [
+    0.2373,
+    -0.0039
+   ],
+   "turn1_rad": -0.0163,
+   "forward_m": 0.2374,
+   "turn2_rad": 0.0,
+   "steps": 22,
+   "legs": [
+    {
+     "to_rel_m": [
+      0.2373,
+      -0.0039
+     ],
+     "turn_rad": -0.0163,
+     "forward_m": 0.2374
+    }
+   ],
+   "via_rel_start_m": null,
+   "nav_done_tick": 66
+  },
+  "search": {
+   "pulses": 0,
+   "sweep_state": null
+  },
+  "via_check": {
+   "others_start_m": [],
+   "clearance_to_line_m": [],
+   "via_used": false
+  },
+  "near_range": {
+   "relook_cycles": 1,
+   "gate_rejected_detections": 0,
+   "relook_d_m": [
+    0.2,
+    0.25,
+    0.3,
+    0.35,
+    0.45
+   ],
+   "relook_dist_m": 0.45,
+   "pos_gate_m": 0.25,
+   "clip_creep_stop_m": 0.3,
+   "clip_hold_max": 30,
+   "creep_lost_max_m": 0.12,
+   "relook_reset_run": 3
+  },
+  "odometry_end": [
+   0.3456,
+   0.0246,
+   -0.047
+  ],
+  "tracking": {
+   "acquisitions": 1,
+   "reacquisitions": 2,
+   "switches": 2,
+   "two_blob_frames": 0,
+   "held_frames": 14,
+   "search_frames": 1,
+   "first_acquisition": {
+    "tick": 0,
+    "cost": 0.744,
+    "A": 2835,
+    "cx": 299.82,
+    "cy": 279.14,
+    "n_blobs": 1
+   },
+   "events": [
+    {
+     "tick": 67,
+     "kind": "reacquired_sector",
+     "A": 6451,
+     "cx": 211.4,
+     "bearing_off_rad": 0.088
+    },
+    {
+     "tick": 81,
+     "kind": "switch",
+     "from_A": 2772,
+     "to_A": 1309,
+     "n_blobs": 1
+    },
+    {
+     "tick": 83,
+     "kind": "switch",
+     "from_A": 1180,
+     "to_A": 322,
+     "n_blobs": 1
+    },
+    {
+     "tick": 112,
+     "kind": "reacquired_sector",
+     "A": 21314,
+     "cx": 291.0,
+     "bearing_off_rad": 0.066
+    }
+   ]
+  },
+  "references": {
+   "cx_ref_px": 286.9,
+   "cy_ref_px": 327.1,
+   "A_lo_px": 20506.0,
+   "A_hi_px": 21947.0,
+   "A_ref_px": 21289.0,
+   "d_stop_m": 0.2
+  },
+  "inputs": "own RGB, own issued commands, one observed-list index",
+  "trace_file": "approach-trace.json",
+  "variant": "approach_survey_v1",
+  "survey": {
+   "entries": [
+    {
+     "kind": "cyan",
+     "x": 0.6372762547274804,
+     "y": -0.01039207990122007,
+     "bearing_rad": -0.01630557991191834,
+     "distance_m": 0.6373609810493248,
+     "observations": 12,
+     "dispersion": 0.0014379581838906137
+    },
+    {
+     "kind": "red",
+     "x": 1.5622372416359338,
+     "y": -1.41365545649334,
+     "bearing_rad": -0.7355111142410716,
+     "distance_m": 2.1068950967781106,
+     "observations": 9,
+     "dispersion": 0.001200908845388254
+    }
+   ],
+   "selected_index": 0,
+   "evidence": {
+    "frames": 39,
+    "components": 30,
+    "whole": 21,
+    "projection_rejected": 0,
+    "range_rejected": 0,
+    "accepted": 21,
+    "merged": 19,
+    "new_tracks": 2
+   },
+   "pan_sequence": [
+    1500,
+    1250,
+    1000,
+    750,
+    500,
+    1000,
+    1500,
+    1750,
+    2000,
+    2250,
+    2500,
+    2000,
+    1500
+   ]
+  },
+  "approach_reason": "arrived",
+  "alignment": {
+   "ran": true,
+   "reason": "aligned_wide_face",
+   "recover_steps": 0,
+   "pulses": [
+    {
+     "mode": "lat",
+     "sign": -1.0,
+     "duration_s": 0.1,
+     "tick": 5
+    },
+    {
+     "mode": "lat",
+     "sign": -1.0,
+     "duration_s": 0.1,
+     "nudge": true,
+     "tick": 14
+    },
+    {
+     "mode": "turn",
+     "sign": 1.0,
+     "duration_s": 0.075,
+     "tick": 20
+    },
+    {
+     "mode": "lat",
+     "sign": -1.0,
+     "duration_s": 0.1,
+     "tick": 26
+    },
+    {
+     "mode": "turn",
+     "sign": 1.0,
+     "duration_s": 0.075,
+     "tick": 32
+    },
+    {
+     "mode": "lat",
+     "sign": -1.0,
+     "duration_s": 0.1,
+     "tick": 38
+    },
+    {
+     "mode": "lat",
+     "sign": -1.0,
+     "duration_s": 0.125,
+     "tick": 44
+    },
+    {
+     "mode": "turn",
+     "sign": 1.0,
+     "duration_s": 0.075,
+     "tick": 50
+    },
+    {
+     "mode": "lat",
+     "sign": -1.0,
+     "duration_s": 0.125,
+     "tick": 56
+    },
+    {
+     "mode": "lat",
+     "sign": -1.0,
+     "duration_s": 0.125,
+     "tick": 62
+    },
+    {
+     "mode": "turn",
+     "sign": 1.0,
+     "duration_s": 0.075,
+     "tick": 68
+    },
+    {
+     "mode": "lat",
+     "sign": -1.0,
+     "duration_s": 0.125,
+     "tick": 74
+    },
+    {
+     "mode": "lat",
+     "sign": -1.0,
+     "duration_s": 0.15,
+     "tick": 80
+    },
+    {
+     "mode": "turn",
+     "sign": 1.0,
+     "duration_s": 0.075,
+     "tick": 86
+    },
+    {
+     "mode": "lat",
+     "sign": -1.0,
+     "duration_s": 0.15,
+     "tick": 92
+    },
+    {
+     "mode": "lat",
+     "sign": -1.0,
+     "duration_s": 0.15,
+     "tick": 98
+    },
+    {
+     "mode": "turn",
+     "sign": 1.0,
+     "duration_s": 0.075,
+     "tick": 104
+    },
+    {
+     "mode": "lat",
+     "sign": -1.0,
+     "duration_s": 0.15,
+     "tick": 110
+    },
+    {
+     "mode": "lat",
+     "sign": -1.0,
+     "duration_s": 0.15,
+     "tick": 119
+    },
+    {
+     "mode": "turn",
+     "sign": 1.0,
+     "duration_s": 0.075,
+     "tick": 125
+    },
+    {
+     "mode": "lat",
+     "sign": -1.0,
+     "duration_s": 0.15,
+     "tick": 131
+    },
+    {
+     "mode": "lat",
+     "sign": -1.0,
+     "duration_s": 0.15,
+     "tick": 137
+    },
+    {
+     "mode": "turn",
+     "sign": 1.0,
+     "duration_s": 0.075,
+     "tick": 143
+    },
+    {
+     "mode": "turn",
+     "sign": 1.0,
+     "duration_s": 0.075,
+     "tick": 149
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 155
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 161
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 167
+    },
+    {
+     "mode": "fwd",
+     "sign": 1.0,
+     "duration_s": 0.05,
+     "tick": 173
+    },
+    {
+     "mode": "fwd",
+     "sign": 1.0,
+     "duration_s": 0.05,
+     "tick": 179
+    },
+    {
+     "mode": "fwd",
+     "sign": 1.0,
+     "duration_s": 0.05,
+     "tick": 185
+    },
+    {
+     "mode": "fwd",
+     "sign": 1.0,
+     "duration_s": 0.05,
+     "tick": 191
+    }
+   ],
+   "face_type": "wide",
+   "quarter_orbit_used": false
+  },
+  "stage_ticks": {
+   "init": 10,
+   "survey": 104,
+   "restore": 7,
+   "approach": 115,
+   "align": 198
+  },
+  "stage_log": [
+   {
+    "stage": "select",
+    "result": "selected",
+    "index": 0,
+    "entries": 2
+   },
+   {
+    "stage": "approach",
+    "reason": "arrived",
+    "ticks": 115
+   },
+   {
+    "stage": "align",
+    "reason": "aligned_wide_face",
+    "ticks": 198,
+    "pulses": 31
+   }
+  ]
+ },
+ "selected": {
+  "entries": [
+   {
+    "kind": "cyan",
+    "x": 0.6372762547274804,
+    "y": -0.01039207990122007,
+    "bearing_rad": -0.01630557991191834,
+    "distance_m": 0.6373609810493248,
+    "observations": 12,
+    "dispersion": 0.0014379581838906137
+   },
+   {
+    "kind": "red",
+    "x": 1.5622372416359338,
+    "y": -1.41365545649334,
+    "bearing_rad": -0.7355111142410716,
+    "distance_m": 2.1068950967781106,
+    "observations": 9,
+    "dispersion": 0.001200908845388254
+   }
+  ],
+  "selected_index": 0
+ },
+ "rule": {
+  "wanted": false,
+  "armed_at_handover": true,
+  "note": "armed: approach arrived",
+  "act_clock": {
+   "rebased_at_s": 45.60000000012672,
+   "approach_s": 11.5
+  }
+ },
+ "learned_done_ignored_rows": 0,
+ "skill": "grasp",
+ "done_times": {
+  "grasp": 54.500000000169216
+ },
+ "finished": true,
+ "wall_s": 135.6,
+ "act_latency_s": {
+  "n": 15,
+  "median": 0.3378878219999706,
+  "max": 0.3593872489999512
+ },
+ "eval_only": {
+  "box": "cyan_2",
+  "kind": "cyan",
+  "max_rise_m": 0.0687,
+  "held_last_s": 3.0,
+  "lifted_and_held": true
+ }
+}

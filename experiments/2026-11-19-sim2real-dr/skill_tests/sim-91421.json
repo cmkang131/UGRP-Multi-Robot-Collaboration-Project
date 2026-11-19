@@ -1,0 +1,836 @@
+{
+ "side": "sim",
+ "kind": "red",
+ "release": null,
+ "cap_s": 320.0,
+ "plan_seed": 91421,
+ "approach": {
+  "enabled": true,
+  "object_kind": "red",
+  "arrived": true,
+  "reason": "arrived",
+  "ticks_code": 77,
+  "ticks_visible": 28,
+  "arrival": {
+   "tick": 76,
+   "t": 22.000000000014033,
+   "A": 20781,
+   "cx": 297.8652615369809,
+   "cy": 258.22409893652855,
+   "w": 180,
+   "bearing_deg": -0.92,
+   "d_hat_m": 0.2024,
+   "cy_ok": false
+  },
+  "posture_at_end": {
+   "1": 2000,
+   "3": 507,
+   "4": 2497,
+   "5": 1320,
+   "6": 1500
+  },
+  "handoff_hint": {
+   "bearing_rad": -0.21887,
+   "distance_m": 0.47972,
+   "facing_rad": -0.21887
+  },
+  "navigation": {
+   "pre_station_rel_start_m": [
+    0.0778,
+    -0.0173
+   ],
+   "turn1_rad": -0.2189,
+   "forward_m": 0.0797,
+   "turn2_rad": 0.0,
+   "steps": 11,
+   "legs": [
+    {
+     "to_rel_m": [
+      0.0778,
+      -0.0173
+     ],
+     "turn_rad": -0.2189,
+     "forward_m": 0.0797
+    }
+   ],
+   "via_rel_start_m": null,
+   "nav_done_tick": 33
+  },
+  "search": {
+   "pulses": 0,
+   "sweep_state": null
+  },
+  "via_check": {
+   "others_start_m": [
+    [
+     0.997,
+     0.159
+    ]
+   ],
+   "clearance_to_line_m": [
+    0.936
+   ],
+   "via_used": false
+  },
+  "near_range": {
+   "relook_cycles": 1,
+   "gate_rejected_detections": 5,
+   "relook_d_m": [
+    0.2,
+    0.25,
+    0.3,
+    0.35,
+    0.45
+   ],
+   "relook_dist_m": 0.45,
+   "pos_gate_m": 0.25,
+   "clip_creep_stop_m": 0.3,
+   "clip_hold_max": 30,
+   "creep_lost_max_m": 0.12,
+   "relook_reset_run": 3
+  },
+  "odometry_end": [
+   0.1873,
+   -0.0118,
+   -0.282
+  ],
+  "tracking": {
+   "acquisitions": 1,
+   "reacquisitions": 2,
+   "switches": 1,
+   "two_blob_frames": 2,
+   "held_frames": 15,
+   "search_frames": 1,
+   "first_acquisition": {
+    "tick": 0,
+    "cost": 1.198,
+    "A": 5427,
+    "cx": 437.4,
+    "cy": 395.78,
+    "n_blobs": 1
+   },
+   "events": [
+    {
+     "tick": 34,
+     "kind": "reacquired_sector",
+     "A": 5658,
+     "cx": 182.8,
+     "bearing_off_rad": 0.103
+    },
+    {
+     "tick": 52,
+     "kind": "switch",
+     "from_A": 1692,
+     "to_A": 690,
+     "n_blobs": 1
+    },
+    {
+     "tick": 73,
+     "kind": "reacquired_sector",
+     "A": 20390,
+     "cx": 295.0,
+     "bearing_off_rad": 0.023
+    }
+   ]
+  },
+  "references": {
+   "cx_ref_px": 286.9,
+   "cy_ref_px": 327.1,
+   "A_lo_px": 20506.0,
+   "A_hi_px": 21947.0,
+   "A_ref_px": 21289.0,
+   "d_stop_m": 0.2
+  },
+  "inputs": "own RGB, own issued commands, one observed-list index",
+  "trace_file": "approach-trace.json",
+  "variant": "approach_survey_v1",
+  "survey": {
+   "entries": [
+    {
+     "kind": "red",
+     "x": 1.0129444169071724,
+     "y": 0.1609405767566427,
+     "bearing_rad": 0.15756684874364824,
+     "distance_m": 1.0256501650125018,
+     "observations": 12,
+     "dispersion": 0.001973069562746909
+    },
+    {
+     "kind": "red",
+     "x": 0.4682788902030813,
+     "y": -0.10416109525310153,
+     "bearing_rad": -0.21887064397571107,
+     "distance_m": 0.47972351701178373,
+     "observations": 12,
+     "dispersion": 0.0005089492301982657
+    }
+   ],
+   "selected_index": 1,
+   "evidence": {
+    "frames": 39,
+    "components": 27,
+    "whole": 24,
+    "projection_rejected": 0,
+    "range_rejected": 0,
+    "accepted": 24,
+    "merged": 22,
+    "new_tracks": 2
+   },
+   "pan_sequence": [
+    1500,
+    1250,
+    1000,
+    750,
+    500,
+    1000,
+    1500,
+    1750,
+    2000,
+    2250,
+    2500,
+    2000,
+    1500
+   ]
+  },
+  "approach_reason": "arrived",
+  "alignment": {
+   "ran": true,
+   "reason": "aligned_wide_face",
+   "recover_steps": 0,
+   "pulses": [
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.1,
+     "tick": 5
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.125,
+     "tick": 11
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.075,
+     "tick": 17
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 23
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 29
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.075,
+     "tick": 35
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 41
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 47
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.075,
+     "tick": 53
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 59
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 65
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.075,
+     "tick": 71
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 77
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.075,
+     "tick": 83
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 89
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 95
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.075,
+     "tick": 101
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 107
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 113
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.075,
+     "tick": 119
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 125
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 131
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.075,
+     "tick": 137
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 143
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 149
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.075,
+     "tick": 155
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.075,
+     "tick": 161
+    },
+    {
+     "mode": "turn",
+     "sign": 1.0,
+     "duration_s": 0.05,
+     "tick": 167
+    },
+    {
+     "mode": "fwd",
+     "sign": 1.0,
+     "duration_s": 0.05,
+     "tick": 173
+    },
+    {
+     "mode": "fwd",
+     "sign": 1.0,
+     "duration_s": 0.05,
+     "tick": 179
+    },
+    {
+     "mode": "fwd",
+     "sign": 1.0,
+     "duration_s": 0.05,
+     "tick": 185
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 191
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 197
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 203
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 209
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 215
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 221
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 227
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 233
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 239
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 245
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 251
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 257
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 263
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 269
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 275
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 281
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.1,
+     "nudge": true,
+     "tick": 290
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 296
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 302
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 308
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 314
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 320
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 326
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 332
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 338
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 344
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 350
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 356
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 362
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 368
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.125,
+     "tick": 377
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 383
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 389
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 395
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 404
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 410
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 416
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 422
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 428
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 434
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 440
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 446
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 452
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 458
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 464
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 470
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 476
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 482
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 488
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 494
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 500
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 506
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 512
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 518
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 524
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 530
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.15,
+     "tick": 536
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 542
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.05,
+     "tick": 548
+    },
+    {
+     "mode": "fwd",
+     "sign": 1.0,
+     "duration_s": 0.05,
+     "tick": 554
+    },
+    {
+     "mode": "fwd",
+     "sign": 1.0,
+     "duration_s": 0.05,
+     "tick": 560
+    }
+   ],
+   "face_type": "wide",
+   "quarter_orbit_used": true
+  },
+  "stage_ticks": {
+   "init": 10,
+   "survey": 104,
+   "restore": 7,
+   "approach": 77,
+   "align": 567
+  },
+  "stage_log": [
+   {
+    "stage": "select",
+    "result": "selected",
+    "index": 1,
+    "entries": 2
+   },
+   {
+    "stage": "approach",
+    "reason": "arrived",
+    "ticks": 77
+   },
+   {
+    "stage": "align",
+    "reason": "aligned_wide_face",
+    "ticks": 567,
+    "pulses": 92
+   }
+  ]
+ },
+ "selected": {
+  "entries": [
+   {
+    "kind": "red",
+    "x": 1.0129444169071724,
+    "y": 0.1609405767566427,
+    "bearing_rad": 0.15756684874364824,
+    "distance_m": 1.0256501650125018,
+    "observations": 12,
+    "dispersion": 0.001973069562746909
+   },
+   {
+    "kind": "red",
+    "x": 0.4682788902030813,
+    "y": -0.10416109525310153,
+    "bearing_rad": -0.21887064397571107,
+    "distance_m": 0.47972351701178373,
+    "observations": 12,
+    "dispersion": 0.0005089492301982657
+   }
+  ],
+  "selected_index": 1
+ },
+ "rule": {
+  "wanted": false,
+  "armed_at_handover": true,
+  "note": "armed: approach arrived",
+  "act_clock": {
+   "rebased_at_s": 78.69999999986696,
+   "approach_s": 7.7
+  }
+ },
+ "learned_done_ignored_rows": 0,
+ "skill": "grasp",
+ "done_times": {
+  "grasp": 88.29999999963995
+ },
+ "finished": true,
+ "wall_s": 194.5,
+ "act_latency_s": {
+  "n": 16,
+  "median": 0.1914007230000152,
+  "max": 0.2362568480000391
+ },
+ "eval_only": {
+  "box": "red_1",
+  "kind": "red",
+  "max_rise_m": 0.0668,
+  "held_last_s": 3.0,
+  "lifted_and_held": true
+ }
+}

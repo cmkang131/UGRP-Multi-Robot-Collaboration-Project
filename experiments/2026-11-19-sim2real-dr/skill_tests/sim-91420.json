@@ -1,0 +1,370 @@
+{
+ "side": "sim",
+ "kind": "cyan",
+ "release": null,
+ "cap_s": 320.0,
+ "plan_seed": 91420,
+ "approach": {
+  "enabled": true,
+  "object_kind": "cyan",
+  "arrived": true,
+  "reason": "arrived",
+  "ticks_code": 217,
+  "ticks_visible": 32,
+  "arrival": {
+   "tick": 216,
+   "t": 36.00000000008088,
+   "A": 21567,
+   "cx": 286.40687160940325,
+   "cy": 279.77428478694304,
+   "w": 175,
+   "bearing_deg": 0.04,
+   "d_hat_m": 0.1987,
+   "cy_ok": false
+  },
+  "posture_at_end": {
+   "1": 2000,
+   "3": 500,
+   "4": 2500,
+   "5": 1320,
+   "6": 1500
+  },
+  "handoff_hint": {
+   "bearing_rad": 0.35113,
+   "distance_m": 0.95442,
+   "facing_rad": 0.35113
+  },
+  "navigation": {
+   "pre_station_rel_start_m": [
+    0.5206,
+    0.1907
+   ],
+   "turn1_rad": 0.3511,
+   "forward_m": 0.5544,
+   "turn2_rad": -0.0,
+   "steps": 57,
+   "legs": [
+    {
+     "to_rel_m": [
+      0.5206,
+      0.1907
+     ],
+     "turn_rad": 0.3511,
+     "forward_m": 0.5544
+    }
+   ],
+   "via_rel_start_m": null,
+   "nav_done_tick": 171
+  },
+  "search": {
+   "pulses": 0,
+   "sweep_state": null
+  },
+  "via_check": {
+   "others_start_m": [],
+   "clearance_to_line_m": [],
+   "via_used": false
+  },
+  "near_range": {
+   "relook_cycles": 1,
+   "gate_rejected_detections": 0,
+   "relook_d_m": [
+    0.2,
+    0.25,
+    0.3,
+    0.35,
+    0.45
+   ],
+   "relook_dist_m": 0.45,
+   "pos_gate_m": 0.25,
+   "clip_creep_stop_m": 0.3,
+   "clip_hold_max": 30,
+   "creep_lost_max_m": 0.12,
+   "relook_reset_run": 3
+  },
+  "odometry_end": [
+   0.6248,
+   0.1915,
+   0.47
+  ],
+  "tracking": {
+   "acquisitions": 1,
+   "reacquisitions": 2,
+   "switches": 5,
+   "two_blob_frames": 0,
+   "held_frames": 10,
+   "search_frames": 4,
+   "first_acquisition": {
+    "tick": 0,
+    "cost": 0.002,
+    "A": 949,
+    "cx": 49.22,
+    "cy": 198.48,
+    "n_blobs": 1
+   },
+   "events": [
+    {
+     "tick": 1,
+     "kind": "switch",
+     "from_A": 949,
+     "to_A": 969,
+     "n_blobs": 1
+    },
+    {
+     "tick": 4,
+     "kind": "switch",
+     "from_A": 994,
+     "to_A": 964,
+     "n_blobs": 1
+    },
+    {
+     "tick": 7,
+     "kind": "switch",
+     "from_A": 1004,
+     "to_A": 980,
+     "n_blobs": 1
+    },
+    {
+     "tick": 16,
+     "kind": "switch",
+     "from_A": 993,
+     "to_A": 989,
+     "n_blobs": 1
+    },
+    {
+     "tick": 172,
+     "kind": "reacquired_sector",
+     "A": 944,
+     "cx": 541.4,
+     "bearing_off_rad": 0.117
+    },
+    {
+     "tick": 194,
+     "kind": "switch",
+     "from_A": 1589,
+     "to_A": 534,
+     "n_blobs": 1
+    },
+    {
+     "tick": 214,
+     "kind": "reacquired_sector",
+     "A": 21268,
+     "cx": 286.6,
+     "bearing_off_rad": 0.004
+    }
+   ]
+  },
+  "references": {
+   "cx_ref_px": 286.9,
+   "cy_ref_px": 327.1,
+   "A_lo_px": 20506.0,
+   "A_hi_px": 21947.0,
+   "A_ref_px": 21289.0,
+   "d_stop_m": 0.2
+  },
+  "inputs": "own RGB, own issued commands, one observed-list index",
+  "trace_file": "approach-trace.json",
+  "variant": "approach_survey_v1",
+  "survey": {
+   "entries": [
+    {
+     "kind": "red",
+     "x": 1.499972040485937,
+     "y": 0.43908483815152716,
+     "bearing_rad": 0.2847725827203227,
+     "distance_m": 1.56291766172569,
+     "observations": 12,
+     "dispersion": 0.003475834623356505
+    },
+    {
+     "kind": "cyan",
+     "x": 0.8961845510803699,
+     "y": 0.32827619133808034,
+     "bearing_rad": 0.3511252721711495,
+     "distance_m": 0.9544171034692117,
+     "observations": 18,
+     "dispersion": 0.00863584421671657
+    }
+   ],
+   "selected_index": 1,
+   "evidence": {
+    "frames": 39,
+    "components": 36,
+    "whole": 30,
+    "projection_rejected": 0,
+    "range_rejected": 0,
+    "accepted": 30,
+    "merged": 28,
+    "new_tracks": 2
+   },
+   "pan_sequence": [
+    1500,
+    1250,
+    1000,
+    750,
+    500,
+    1000,
+    1500,
+    1750,
+    2000,
+    2250,
+    2500,
+    2000,
+    1500
+   ]
+  },
+  "approach_reason": "arrived",
+  "alignment": {
+   "ran": true,
+   "reason": "aligned_wide_face",
+   "recover_steps": 0,
+   "pulses": [
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.1,
+     "tick": 5
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.1,
+     "tick": 11
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.075,
+     "tick": 17
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.1,
+     "tick": 23
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.075,
+     "tick": 29
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.1,
+     "tick": 35
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.1,
+     "tick": 41
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.075,
+     "tick": 47
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.1,
+     "tick": 53
+    },
+    {
+     "mode": "lat",
+     "sign": 1.0,
+     "duration_s": 0.1,
+     "tick": 59
+    },
+    {
+     "mode": "turn",
+     "sign": -1.0,
+     "duration_s": 0.075,
+     "tick": 65
+    }
+   ],
+   "face_type": "wide",
+   "quarter_orbit_used": false
+  },
+  "stage_ticks": {
+   "init": 10,
+   "survey": 104,
+   "restore": 7,
+   "approach": 217,
+   "align": 72
+  },
+  "stage_log": [
+   {
+    "stage": "select",
+    "result": "selected",
+    "index": 1,
+    "entries": 2
+   },
+   {
+    "stage": "approach",
+    "reason": "arrived",
+    "ticks": 217
+   },
+   {
+    "stage": "align",
+    "reason": "aligned_wide_face",
+    "ticks": 72,
+    "pulses": 11
+   }
+  ]
+ },
+ "selected": {
+  "entries": [
+   {
+    "kind": "red",
+    "x": 1.499972040485937,
+    "y": 0.43908483815152716,
+    "bearing_rad": 0.2847725827203227,
+    "distance_m": 1.56291766172569,
+    "observations": 12,
+    "dispersion": 0.003475834623356505
+   },
+   {
+    "kind": "cyan",
+    "x": 0.8961845510803699,
+    "y": 0.32827619133808034,
+    "bearing_rad": 0.3511252721711495,
+    "distance_m": 0.9544171034692117,
+    "observations": 18,
+    "dispersion": 0.00863584421671657
+   }
+  ],
+  "selected_index": 1
+ },
+ "rule": {
+  "wanted": false,
+  "armed_at_handover": true,
+  "note": "armed: approach arrived",
+  "act_clock": {
+   "rebased_at_s": 43.20000000011526,
+   "approach_s": 21.700000000000003
+  }
+ },
+ "learned_done_ignored_rows": 0,
+ "skill": "grasp",
+ "done_times": {
+  "grasp": 52.200000000158234
+ },
+ "finished": true,
+ "wall_s": 137.2,
+ "act_latency_s": {
+  "n": 16,
+  "median": 0.34754585600001064,
+  "max": 0.3958437579999554
+ },
+ "eval_only": {
+  "box": "cyan_1",
+  "kind": "cyan",
+  "max_rise_m": 0.0715,
+  "held_last_s": 3.0,
+  "lifted_and_held": true
+ }
+}

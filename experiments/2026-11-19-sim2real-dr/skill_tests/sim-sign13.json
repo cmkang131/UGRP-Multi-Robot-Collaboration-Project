@@ -1,0 +1,106 @@
+{
+ "test": "sign",
+ "side": "sim",
+ "kind": "red",
+ "sign": 13,
+ "release": null,
+ "cap_s": 320.0,
+ "plan_seed": 91421,
+ "sim_spawn_r1": [
+  2.8000000000000003,
+  0.05,
+  0.032355118817659255,
+  0.0
+ ],
+ "sim_moved_boxes": {},
+ "outcome": "at_zone",
+ "phase": "done",
+ "zone_seen": {
+  "from_door": {
+   "kind": "zone_sign13",
+   "x": 2.443243293047967,
+   "y": -1.6911329431702844,
+   "points": 180,
+   "spread_m": [
+    1.9234462935935592,
+    2.8842269589760297
+   ]
+  },
+  "close": {
+   "kind": "zone_sign13",
+   "x": 3.392617352811851,
+   "y": -0.5085617434884941,
+   "points": 60,
+   "spread_m": [
+    0.0,
+    0.0
+   ]
+  }
+ },
+ "steps": [
+  {
+   "decision": "go_to_zone",
+   "zone": {
+    "kind": "zone_sign13",
+    "x": 2.443243293047967,
+    "y": -1.6911329431702844,
+    "points": 180,
+    "spread_m": [
+     1.9234462935935592,
+     2.8842269589760297
+    ]
+   },
+   "spec": "back:0p,right:29.60,fwd:2.071"
+  },
+  {
+   "decision": "zone_not_seen_close_sweep"
+  },
+  {
+   "decision": "set_down_in_zone",
+   "zone": {
+    "kind": "zone_sign13",
+    "x": 3.392617352811851,
+    "y": -0.5085617434884941,
+    "points": 60,
+    "spread_m": [
+     0.0,
+     0.0
+    ]
+   },
+   "spec": "back:0p,left:57.81,fwd:1.529"
+  }
+ ],
+ "pose_estimate": {
+  "x": 3.12918460318524,
+  "y": -0.6754272552193304,
+  "yaw": 0.35368530717958946
+ },
+ "rows_issued": 706,
+ "finished": true,
+ "wall_s": 155.2,
+ "act_latency_s": {
+  "n": 0,
+  "median": null,
+  "max": null
+ },
+ "eval_only": {
+  "sign": 13,
+  "area": [
+   2.9,
+   3.9,
+   -3.125,
+   -2.47
+  ],
+  "base": [
+   3.7773,
+   -2.1107,
+   -0.3684
+  ],
+  "heading_error_deg": 68.9,
+  "setdown_point": [
+   4.067,
+   -2.222
+  ],
+  "point_in_area": false
+ }
+}
