@@ -6,33 +6,36 @@
 
 ## 1. 도구 설치와 저장소 받기
 
-저장소는 비공개다. 먼저 저장소 관리자에게 GitHub 계정의 collaborator 초대와 코드 기여 권한을 받고 초대를 수락한다.
+저장소는 공개되어 있다. 저장소를 받고 기본 데모를 실행하는 데 GitHub 로그인이나 쓰기 권한은 필요하지 않다. GitHub CLI 설치와 로그인은 PR을 보내는 3절에서 한다.
+
+실행 시점에 **저장소가 있는 파일시스템의 여유 공간이 10 GiB 이상**이어야 한다. 세션 실행기가 이 조건을 검사하므로, 부족하면 먼저 공간을 확보한다. 세션의 프로세스 식별에는 `/bin/ps`도 필요하며 아래 `procps` 패키지가 제공한다.
 
 ```bash
 sudo apt update
-sudo apt install -y git gh python3.12 python3.12-venv libosmesa6 libgl1 libglfw3 ffmpeg fonts-noto-cjk
-
-gh auth login
+sudo apt install -y git python3.12 python3.12-venv procps libosmesa6 libgl1 libglfw3 ffmpeg fonts-noto-cjk
 ```
 
-인증 안내에서 GitHub.com, HTTPS, 웹 브라우저 로그인을 선택한다. 자신의 GitHub 계정으로 인증한다. 이어서:
+이어서 현재 저장소 주소로 clone하고 환경을 만든다.
 
 ```bash
 mkdir -p ~/projects
 cd ~/projects
-gh repo clone kcm0127-dotcom/ugrp
+git clone https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project.git ugrp
 cd ugrp
+df -h .
 python3.12 -m venv .venv-dev
 .venv-dev/bin/python -m pip install --upgrade pip
 .venv-dev/bin/python -m pip install -r requirements-sim.txt -r requirements-test.txt
 .venv-dev/bin/python -m pip check
 ```
 
+일부 회귀 검사는 `git show <과거 SHA>:<파일>`로 당시 코드를 읽는다. 위의 일반 clone을 사용하며, `--depth 1`이나 `--single-branch`로 이력을 줄이면 필요한 커밋이 없어 검사가 실패할 수 있다.
+
 이후 모든 명령은 `~/projects/ugrp`에서 실행한다. 가상환경 활성화 없이 `.venv-dev/bin/python`을 직접 사용하므로 새 터미널에서도 같은 환경을 사용한다. 기존 Mac의 `.venv-sim-worker-mac` 폴더를 복사하지 않는다.
 
 ## 2. 모델 비용 없이 시뮬레이션 확인
 
-MuJoCo 기본 창을 열려면 데스크톱 그래픽 세션에서 `bash scripts/open_simulation.command`를 실행한다. [로컬 CLI/Python API 안내](local_simulation.md)에 설정·저수준 제어·무화면 실행 방법이 있다. 아래 GIF 경로는 설치 확인용 유한 실행이다.
+아래 GIF 경로는 창 없이 끝나는 설치 확인용 실행이다. [로컬 CLI/Python API 안내](local_simulation.md)에 데스크톱 창과 서버의 무화면 실행 명령을 각각 적었다. OSMesa를 설정한 터미널에서 나중에 데스크톱 창을 열 때에는 `env -u MUJOCO_GL bash scripts/open_simulation.command`로 기본 GLFW를 사용한다.
 
 ```bash
 export MUJOCO_GL=osmesa
@@ -60,11 +63,27 @@ cd ~/projects/ugrp
 
 ## 3. 테스트하고 PR 보내기
 
+먼저 데모의 입력·출력 조건과 실행 명령 구성을 짧게 검사한다. 이 검사는 물리 실행을 대신하지 않으므로 2절의 GIF와 결과 JSON도 확인한다.
+
+```bash
+.venv-dev/bin/python -m pytest -q \
+  tests/test_sim_quickstart.py tests/test_simulation_launch_options.py
+```
+
+다음은 전체 오프라인 회귀 검사다. 최소 설치 확인보다 범위가 크고 오래 걸릴 수 있다. 변경한 코드의 관련 테스트를 먼저 실행하고, 전체 검사·CI의 범위와 분할 실행은 [개발 안내](../CONTRIBUTING.md#자동-테스트)를 따른다.
+
 ```bash
 .venv-dev/bin/python scripts/run_ci_tests.py
 ```
 
-통과하면 작업 브랜치를 만든다. `your-topic`은 수정할 기능 이름으로 바꾼다.
+PR을 보내려면 GitHub CLI를 설치하고 자신의 계정으로 인증한다. 로그인 안내에서 GitHub.com, HTTPS, 웹 브라우저 로그인을 선택한다. 이 저장소에 직접 push하려면 저장소 관리자에게 코드 기여 권한을 받고 초대를 수락해야 한다.
+
+```bash
+sudo apt install -y gh
+gh auth login
+```
+
+작업 브랜치를 만든다. `your-topic`은 수정할 기능 이름으로 바꾼다.
 
 ```bash
 git switch main
@@ -82,15 +101,15 @@ git push -u origin HEAD
 gh pr create --base main --web
 ```
 
-PR 양식에 문제, 변경 후 동작, 테스트 결과와 데모 검토 결과를 적는다. GitHub의 `offline-regressions`와 `ubuntu-simulation` 결과를 확인한다. `@kcm0127-dotcom`의 Approve 리뷰가 있어야 병합할 수 있다. 승인 후 코드를 바꾸면 다시 승인받는다. `main`에 직접 push하지 않는다. 권한 오류가 나면 관리자에게 저장소 쓰기 권한을 확인한다. 이 비공개 저장소를 공개 저장소로 복사하지 않는다.
+PR 양식에 문제, 변경 후 동작, 테스트 결과와 데모 검토 결과를 적는다. GitHub의 `offline-regressions`와 `ubuntu-simulation` 결과를 확인한다. `@kcm0127-dotcom`의 Approve 리뷰가 있어야 병합할 수 있다. 승인 후 코드를 바꾸면 다시 승인받는다. `main`에 직접 push하지 않는다. 권한 오류가 나면 관리자에게 저장소 쓰기 권한을 확인한다. 공개 저장소이므로 인증정보와 개인 환경 파일을 커밋하지 않는다.
 
 모델 행동을 바꾼 PR은 기본 데모만으로 운반 성능을 검증했다고 쓰지 않는다. [실험 관리 절차](../CONTRIBUTING.md)에 따라 실행 코드 SHA와 전체 결과를 별도로 남긴다. `outputs/` 영상·로그는 자동으로 GitHub에 업로드되지 않는다.
 
 ## 4. 실제 Gemini 운반 실험 — 선택 사항
 
-기본 데모와 테스트가 통과한 뒤 **[각자 PC에서 Gemini 로그인 프록시 설치](gemini_subscription_proxy.md)**를 따른다. 각 팀원이 본인 PC에서 서버를 실행하고 본인 Google 계정으로 로그인한다. 개발자 Mac이나 개발자 계정에 연결할 필요가 없다.
+이 선택 실험에는 본인이 준비한 모델 프록시가 필요하다. [프록시 설정 예시](../configs/gemini-proxy.example.yaml)는 있지만, 설치·개인 계정 로그인 안내로 연결하던 `docs/gemini_subscription_proxy.md`는 현재 저장소에 없다([설치·검증 문제 #682](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/682)). 새 체크아웃과 이 안내만으로 프록시 준비를 완료할 수 없으며, 아래 명령은 본인 PC와 본인 계정으로 프록시를 이미 준비한 경우의 실행 예다.
 
-위 안내의 설치·로그인·모델 목록·실제 짧은 응답 확인을 완료하고 로컬 프록시를 실행한 상태에서 진행한다. 아래 명령은 CLIProxyAPI의 `gemini-3.8-flash-high`를 명시하므로 본인 계정에서 해당 이름으로 응답할 수 있어야 한다. 기존 기본값 `gemini-3.8-flash`와 구분해 실험 manifest에 기록한다. 지원되지 않으면 기존 비교 실험을 그대로 실행할 수 없으며, 기본 데모·테스트·PR 작업은 계속할 수 있다.
+로컬 프록시의 로그인·모델 목록·실제 짧은 응답을 확인하고 진행한다. 아래 명령은 모델 ID `gemini-3.8-flash-high`를 요청하므로 본인 계정에서 해당 이름으로 응답할 수 있어야 한다. 기존 기본값 `gemini-3.8-flash`와 구분해 실험 manifest에 기록한다. 지원되지 않으면 기존 비교 실험을 그대로 실행할 수 없으며, 기본 데모·테스트·PR 작업은 계속할 수 있다.
 
 `127.0.0.1`은 이 Ubuntu 자신을 뜻한다. UGRP 저장소 루트의 터미널에서:
 
@@ -112,22 +131,26 @@ ffmpeg -hide_banner -encoders | grep libx264
 
 현재 예산은 시드당 최대 30회 모델 호출·120,000 입력 토큰·300 시뮬레이션 초다. CPU 렌더링과 모델 대기 때문에 실제 시간은 더 길 수 있다. 실패 결과도 보존하고, 전체 비교 실험 중 소스를 수정하지 않는다. 위 한 시드 확인은 N7의 5개 시드 비교를 대체하지 않는다.
 
+**현재 검증기와의 불일치:** 위 실행기는 `gemini-3.8-flash-high`, `noslip_iterations=0`을 사용한다. 기존 [`verify_gemini_budget_run.py`](../scripts/verify_gemini_budget_run.py)는 과거 pilot의 `gemini-3.8-flash`, `noslip_iterations=3`을 고정 검사한다. `--seed`와 `--max-input-tokens`만 바꿔도 이 차이는 남으므로, 그 검증기를 위 실행의 성공 판정에 사용하지 않는다. 실행 조건에 맞는 검증 절차가 정리되기 전에는 자동 검증 완료로 표시하지 않는다.
+
+실행이 결과 파일을 남겼다면 다음 도구로 검토 자료를 만들 수 있다. 이 명령의 완료도 운반 성공 판정은 아니다.
+
 ```bash
-.venv-dev/bin/python -m scripts.verify_gemini_budget_run \
-  outputs/gemini-trial-01/solo-45 --seed 45 --max-input-tokens 120000
 .venv-dev/bin/python -m scripts.review_navigation_trial \
   outputs/gemini-trial-01/solo-45
 ```
 
-자동 결과와 생성된 영상을 함께 검토한다. 과거 N7 raw 로그는 저장소에 없으므로 새 clone만으로 모든 과거 실패 재생 도구를 실행할 수 없다.
+실행 로그, `cohort-status.json`, 각 실행의 결과와 생성된 영상을 함께 검토한다. 현재 seed 실행기는 `infrastructure_blocked`를 기록해도 종료 코드 0을 반환할 수 있으므로, 종료 코드만으로 완료 여부를 판단하지 않는다([#685](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/685)). 과거 N7 raw 로그는 저장소에 없으므로 새 clone만으로 모든 과거 실패 재생 도구를 실행할 수 없다.
 
 ## 막힐 때
 
 | 증상 | 확인할 내용 |
 |---|---|
-| `Repository not found` | 비공개 저장소 초대 수락 여부와 `gh auth status`의 로그인 계정 |
+| `Repository not found` | 1절의 현재 저장소 URL과 네트워크 접근 확인. 공개 clone에는 로그인이 필요 없음. push 권한 오류는 `gh auth status`와 쓰기 권한을 별도로 확인 |
 | `No matching distribution found` | Ubuntu 24.04 x86_64인지, `.venv-dev/bin/python --version`이 3.12인지 확인. 임의로 버전을 풀기 전에 오류를 PR/이슈에 첨부 |
-| `DISPLAY`, GLFW, OpenGL 오류 | 실행하는 터미널에서 `export MUJOCO_GL=osmesa`를 다시 실행하고 `libosmesa6` 설치 확인 |
+| `DISPLAY`, GLFW, OpenGL 오류 | 무화면 GIF는 `MUJOCO_GL=osmesa`와 `libosmesa6` 설치 확인. 데스크톱 창은 X11/Wayland 세션에서 `env -u MUJOCO_GL`로 실행. 서버에서는 `--paused` 없이 `--headless` 사용 |
+| `refusing to start`와 `floor 10 GiB` | `df -h .`로 저장소 파일시스템 여유를 확인하고 공간 확보 |
+| `/bin/ps`를 찾을 수 없음 | `sudo apt install procps`로 세션 실행기의 OS 의존성 설치 |
 | `FileExistsError` 또는 출력 폴더가 이미 존재 | 기존 결과를 지우지 말고 새 출력 이름 사용 |
 | `ffmpeg`가 없거나 `libx264` 오류 | `sudo apt install ffmpeg`와 위 인코더 검사. 무료 GIF 데모에는 ffmpeg가 필요 없음 |
 | 모델 연결 거부·401·모델 없음 | 본인 PC의 프록시 실행·로그인 상태와 지원 모델 확인. 기본 데모와는 별도 문제 |

@@ -88,7 +88,7 @@ LLM 계획과 팀 구조까지 넣은 그림은 [전체 구조](architecture.md)
 | 학습 | 앞선 체크포인트에서 이어서 4,000스텝, 학습률 5e-5, 배치 8 |
 | 추론 시간 | CPU 에서 한 번에 중앙값 0.31초 |
 
-가중치 파일은 저장소에 넣지 않는다. 팀 드라이브 `UGRP/models/solo-act-gseg-step4000/` 에 있다.
+가중치 파일은 Git 이력에 넣지 않는다. 공개 [Solo v1 릴리스](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/tag/solo-v1-20261114)의 `solo-act-model-gseg-step4000.zip`에 가중치·설정·adapter가 있다. 다운로드 확인과 전체 실행 재현의 상태는 [모델 배포 안내](model_artifacts.md#solo-v1-2026-11-14)를 따른다.
 
 ## 6. 확인한 범위
 
@@ -119,7 +119,8 @@ LLM 계획과 팀 구조까지 넣은 그림은 [전체 구조](architecture.md)
 ## 8. 코드와 가중치
 
 - 코드: [`solo_pipeline/`](../solo_pipeline/README.md). 평가에 쓴 코드를 단계별 파일로 모았다. 조각을 잇는 법과 필요한 것이 그 폴더의 README 에 있다.
-- 가중치: 저장소의 Releases 에 코드 묶음과 함께 붙어 있다.
+- 가중치: [Solo v1 릴리스](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/tag/solo-v1-20261114)에 코드 묶음과 함께 붙어 있다.
+- 새 체크아웃의 전체 평가 재현은 아직 막혀 있다. 실행기의 누락 보조 파일, 고정 장면·plan·protocol 연결, 외부 CPU 실행 조건은 [#679](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/679)에서 추적한다. 6절의 개발 환경 결과와 외부 재현 완료를 구분한다.
 
 ## 9. 든 채 옮기기
 

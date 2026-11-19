@@ -4,6 +4,16 @@
 
 이 폴더는 평가에 쓴 코드를 그대로 모은 것이다. 저장소의 `harness/`, `scripts/` 에 있는 같은 이름의 옛 파일과 섞이지 않게 따로 두었다.
 
+## 새 체크아웃의 실행 상태
+
+코드와 가중치는 [Solo v1 릴리스](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/tag/solo-v1-20261114)에 공개되어 있다. 다만 현재 묶음만으로 전체 평가를 실행할 수는 없다. 2026-11-16 새 체크아웃에서는 아래 사용법 확인 명령부터 `solo_pipeline/scripts/solo_appearance_v1.py` 누락으로 실패했다.
+
+```bash
+.venv-dev/bin/python solo_pipeline/scripts/run_grasp_act_student.py --help
+```
+
+같은 파일은 릴리스 코드 ZIP에도 없다. 고정 장면·plan·protocol·CPU 추론 환경·호스트 제한을 포함한 재현 준비는 [#679](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/679)에서 추적한다. 아래 조각 설명과 개발 환경 성공률은 보존하며, 이를 새 환경의 재현 완료로 표시하지 않는다.
+
 ## 무엇이 들어 있나
 
 | 단계 | 파일 | 하는 일 |

@@ -20,18 +20,31 @@ MuJoCo 창에서 Space는 재개/일시정지, R은 초기화다. 창을 닫거�
 
 ## 설치와 첫 실행
 
-Python 3.12를 사용한다. 기존 Mac 환경 `.venv-sim-worker-mac`을 재사용하며, 새 clone에서는 다음과 같이 설치한다.
+Python 3.12를 사용한다. Ubuntu 24.04는 먼저 [설치 안내](ubuntu_quickstart.md)의 OS 패키지를 설치한다. 세션 실행에는 `/bin/ps`와 저장소 파일시스템의 여유 공간 10 GiB 이상도 필요하다(`df -h .`로 확인). 기존 Mac 환경 `.venv-sim-worker-mac`을 재사용하며, 새 clone에서는 다음과 같이 Python 환경을 만든다.
 
 ```bash
 python3.12 -m venv .venv-dev
 .venv-dev/bin/python -m pip install -r requirements-sim.txt
 .venv-dev/bin/python -m pip check
-bash scripts/open_simulation.command run configs/simulation/drive.json --paused --capture
 ```
 
-첫 명령은 모델 계정 없이 예제 명령 스케줄을 MuJoCo 기본 창에 연다. **Space**로 재개하면 3초의 SIM 시간 동안 로봇 명령을 실행하고 종료한다. `--capture`는 시작·종료의 로봇 RGB를 결과 폴더에 저장한다. 터미널에 표시된 `result.json` 경로와 `bash scripts/open_simulation.command workflow runs`의 실행 기록을 확인한다. 창을 열었다는 사실과 예제 명령 완료는 연구용 운반 성공이 아니다. 인자 없이 실행하면 선택 메뉴가 열리며 기본 선택 1은 모델 프록시가 필요한 공동 계획이다.
+**데스크톱 창으로 실행:** X11/Wayland 그래픽 세션이 필요하다. WSL은 WSLg가 필요하며 각 PC의 그래픽 지원은 따로 확인한다. `env -u MUJOCO_GL`은 앞서 GIF 실행을 위해 설정한 OSMesa 값을 이 명령에서만 제거하여 기본 GLFW를 사용하게 한다.
 
-Ubuntu 24.04는 먼저 [설치 안내](ubuntu_quickstart.md)를 따른다. 창을 띄우려면 데스크톱의 X11/Wayland 그래픽 세션이 필요하다. WSL은 WSLg가 필요하며 각 PC의 그래픽 지원은 따로 확인한다. 서버에서는 `--headless`를 사용한다. Linux에서 RGB를 저장하는 headless 실행에는 `libosmesa6`와 `MUJOCO_GL=osmesa`를 사용할 수 있다. 네이티브 창에는 기본 GLFW를 사용한다.
+```bash
+env -u MUJOCO_GL bash scripts/open_simulation.command \
+  run configs/simulation/drive.json --paused --capture
+```
+
+모델 계정 없이 예제 명령 스케줄을 MuJoCo 기본 창에 연다. **Space**로 재개하면 3초의 SIM 시간 동안 로봇 명령을 실행하고 종료한다.
+
+**서버에서 창 없이 실행:** Linux의 `libosmesa6`를 설치한 뒤 CPU 소프트웨어 렌더링을 사용한다. `--paused`는 창에서만 사용할 수 있으므로 함께 넣지 않는다.
+
+```bash
+MUJOCO_GL=osmesa bash scripts/open_simulation.command \
+  run configs/simulation/drive.json --headless --capture
+```
+
+두 명령 모두 `--capture`로 시작·종료의 로봇 RGB를 결과 폴더에 저장한다. 터미널에 표시된 `result.json` 경로와 `bash scripts/open_simulation.command workflow runs`의 실행 기록을 확인한다. 창을 열었다는 사실과 예제 명령 완료는 연구용 운반 성공이 아니다. 인자 없이 실행하면 선택 메뉴가 열리며 기본 선택 1은 모델 프록시가 필요한 공동 계획이다.
 
 실행기는 저장소 또는 기본 worktree의 `.venv-sim-worker-mac`, `.venv-dev`를 찾는다. 외부 환경은 `UGRP_SIM_PYTHON=/absolute/path/bin/python`으로 지정한다. macOS의 네이티브 창은 MuJoCo가 제공하는 **`mjpython`**으로 실행해야 하며 실행기가 자동 선택한다. 환경을 활성화했다면 `mjpython -m scripts.sim_cli ...`(Mac 창), `python -m scripts.sim_cli ...`(Linux 또는 headless)를 직접 써도 된다.
 
