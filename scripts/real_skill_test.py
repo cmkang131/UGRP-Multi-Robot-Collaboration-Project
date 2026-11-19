@@ -77,13 +77,13 @@ PARKED = {'r2': [-0.7, 1.1, SPAWN_Z, 0.0], 'r3': [-0.7, 0.6, SPAWN_Z, 0.0]}   # 
 BOX_AHEAD_M = 0.6
 
 
-def sign_plan(plan, kind=None):
+def sign_plan(plan, kind=None, box_ahead_m=None):
     """The solo plan with r1 just past the door facing east, r2/r3 parked; for C (kind given) the box of `kind`
     BOX_AHEAD_M east of r1."""
     plan = dict(plan)
     x0 = DOOR_X + PASS_BEYOND_M
     plan['spawns'] = dict(plan['spawns'], r1=[x0, DOOR_Y, SPAWN_Z, 0.0], **PARKED)
-    objects = {kind + '_1': [x0 + BOX_AHEAD_M, DOOR_Y]} if kind else {}
+    objects = {kind + '_1': [x0 + (BOX_AHEAD_M if box_ahead_m is None else box_ahead_m), DOOR_Y]} if kind else {}
     return plan, objects
 
 
@@ -115,11 +115,11 @@ def sim_sign(truth_rows, sign, held_box=None):
 class PickThenSign:
     """C with a real grasp first: PickBrain until its sequence ends, then SignBrain holding the grasp posture."""
 
-    def __init__(self, pick, sign, kind, log=None):
+    def __init__(self, pick, sign, kind, zone_close_far=False, log=None):
         # built now, not at the hand-over: on the simulator the step loop runs inside the frozen scene package,
         # whose harness modules differ from the ones the team kit imports
         self.pick, self.log = pick, log
-        self.next = SignBrain(sign, held_kind=kind, with_release=True)
+        self.next = SignBrain(sign, held_kind=kind, with_release=True, zone_close_far=zone_close_far)
         self.sign = None
 
     def start(self):
@@ -166,16 +166,17 @@ def run(a):
     if a.test == 'pick':
         brain = PickBrain(worker.predict, kind=kind, with_release=a.release)
     elif a.test == 'sign':
-        brain = SignBrain(a.sign)
+        brain = SignBrain(a.sign, zone_close_far=a.zone_close_far)
     elif needs_pick:
-        brain = PickThenSign(PickBrain(worker.predict, kind=kind), a.sign, kind)
+        brain = PickThenSign(PickBrain(worker.predict, kind=kind), a.sign, kind, zone_close_far=a.zone_close_far)
     else:
-        brain = SignBrain(a.sign, held_kind=kind, with_release=True)
+        brain = SignBrain(a.sign, held_kind=kind, with_release=True, zone_close_far=a.zone_close_far)
     if a.side == 'sim' and a.test != 'pick':
-        plan, objects = sign_plan(plan, kind if needs_pick else None)
+        plan, objects = sign_plan(plan, kind if needs_pick else None, getattr(a, 'sim_box_ahead_m', None))
     commands = (out / 'commands.jsonl').open('x')
     truth_f = (out / 'truth.jsonl').open('x') if a.side == 'sim' else None
     truth_rows, summary = [], {'test': a.test, 'side': a.side, 'kind': kind, 'sign': getattr(a, 'sign', None),
+                               'zone_close_far': getattr(a, 'zone_close_far', False),
                                'release': getattr(a, 'release', None), 'cap_s': a.cap_s, 'plan_seed': plan and plan['seed'],
                                'sim_spawn_r1': plan and a.side == 'sim' and plan['spawns']['r1'], 'sim_moved_boxes': objects}
     t0 = time.monotonic()
@@ -252,8 +253,12 @@ def main(argv=None):
             k.add_argument('--release', action='store_true', help='set the box down again after the lift (release_code_v1)')
         else:
             k.add_argument('--sign', type=int, choices=(11, 12, 13), required=True)
+            k.add_argument('--zone-close-far', action='store_true',
+                           help='close sign check of the phase-2 runs (2.3 m first close look, read up to 3.3 m); '
+                                'needs the phase-2 execution layer laid over the repository (phase2_pipeline/README.md)')
         if name == 'place':
             k.add_argument('--after-pick', action='store_true', help='real: grasp with ACT first (always on the simulator)')
+            k.add_argument('--sim-box-ahead-m', type=float, help='sim: box this far east of r1 (default BOX_AHEAD_M)')
     a = p.parse_args(argv)
     if a.side == 'sim' and not a.plan:
         p.error('--side sim needs --plan')

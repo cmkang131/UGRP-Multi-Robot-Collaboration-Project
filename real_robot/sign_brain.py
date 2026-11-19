@@ -45,15 +45,24 @@ def team_kit():
 
 
 class SignBrain:
-    def __init__(self, sign, *, hold_pwm=None, held_kind=None, with_release=False, log=None):
+    def __init__(self, sign, *, hold_pwm=None, held_kind=None, with_release=False, zone_close_far=False, log=None):
+        """zone_close_far: the close sign check of the phase-2 runs (--zone-confirm-close --zone-close-fix
+        --zone-close-far: first close look 2.3 m in front of the floor point, sign read up to 3.3 m). Needs the
+        phase-2 execution layer laid over the repository (phase2_pipeline/README.md, PR #730)."""
         from harness import grasp_act_contract as c
         self.c, self.log, self.sign = c, log, int(sign)
         self.kit, self.carry_pwm = team_kit()
         _load('ground_projection', ROOT / 'harness' / 'approach_survey_v1_parts' / 'ground_projection.py')
         places = _load('place_memory_v1', ROOT / 'harness' / 'place_memory_v1.py').PlaceMemory(sys.modules['ground_projection'])
         nav_mod = _load('carry_nav_v1', ROOT / 'harness' / 'carry_nav_v1.py')
-        self.nav = nav_mod.CarryNav(self.kit, places, {'x': 0., 'y': 0., 'yaw': 0.}, [], 'zone_sign%d' % self.sign,
-                                    held_kind=held_kind)
+        close = {'zone_confirm_close': True, 'zone_close_fix': True, 'zone_close_far': True} if zone_close_far else {}
+        try:
+            self.nav = nav_mod.CarryNav(self.kit, places, {'x': 0., 'y': 0., 'yaw': 0.}, [], 'zone_sign%d' % self.sign,
+                                        held_kind=held_kind, **close)
+        except TypeError as e:
+            raise SystemExit('zone_close_far needs the phase-2 execution layer laid over the repository '
+                             '(phase2_pipeline/README.md): %s' % e)
+        self.zone_close_far = bool(zone_close_far)
         self.nav.phase = 'pass'              # as just after the door: the next step is the look-around for the sign
         # the carry raises the arm to the look-around posture right after the grasp ('arm:far', CARRY_ARM_ROWS rows) and
         # keeps it up through the door; starting from the hold posture, the same rows come first here
@@ -101,6 +110,6 @@ class SignBrain:
 
     def record(self):
         r = self.nav.record()
-        return {'sign': self.sign, 'outcome': r['outcome'], 'phase': r['phase'], 'zone_seen': r['zone_seen'],
+        return {'sign': self.sign, 'zone_close_far': self.zone_close_far, 'close_reads': r.get('close_reads'), 'outcome': r['outcome'], 'phase': r['phase'], 'zone_seen': r['zone_seen'],
                 'steps': r['steps'], 'pose_estimate': r['pose_estimate'], 'rows_issued': r['rows_issued'],
                 'release': self.release.record() if self.release is not None else None, 'finished': self.finished}
