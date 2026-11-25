@@ -38,26 +38,80 @@ def read_frame(sock):
 
 
 class OpenCVSource:
-    """640x480 own-camera frames on the Pi (sim contract: own RGB 640x480)."""
+    """640x480 own-camera frames on the Pi (sim contract: own RGB 640x480).
 
-    def __init__(self, index=0, width=640, height=480, quality=90):
+    A background capture thread continuously drains `cap.read()` and keeps only the
+    newest `(t_capture, frame)` so `grab()` never returns a stale frame sitting in
+    the V4L2 driver ring buffer.
+    """
+
+    def __init__(self, index=0, width=640, height=480, quality=70, capture=None):
         import cv2
         self.cv2 = cv2
-        self.cap = cv2.VideoCapture(index)
-        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
-        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
-        self.cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)  # newest frame, not a stale driver queue
+        if capture is not None:
+            self.cap = capture
+        else:
+            backend = getattr(cv2, 'CAP_V4L2', None)
+            self.cap = cv2.VideoCapture(index, backend) if backend is not None else cv2.VideoCapture(index)
+            if not self.cap.isOpened() and backend is not None:
+                self.cap.release()
+                self.cap = cv2.VideoCapture(index)
+            if not self.cap.isOpened():
+                self.cap.release()
+                raise RuntimeError(f'camera index {index} could not be opened')
+            self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+            self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
+            self.cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)  # newest frame, not a stale driver queue
         self.quality = quality
+        self._cond = threading.Condition()
+        self._latest = None
+        self._error = None
+        self._stop = threading.Event()
+        self._thread = threading.Thread(target=self._capture_loop, daemon=True)
+        self._thread.start()
 
-    def grab(self):
-        ok, frame = self.cap.read()
-        t = time.monotonic()
-        if not ok:
-            raise RuntimeError('camera read failed')
+    def _capture_loop(self):
+        try:
+            while not self._stop.is_set():
+                ok, frame = self.cap.read()
+                t = time.monotonic()
+                if not ok:
+                    with self._cond:
+                        self._error = RuntimeError('camera read failed')
+                        self._cond.notify_all()
+                    return
+                with self._cond:
+                    self._latest = (t, frame)
+                    self._cond.notify_all()
+        except Exception as exc:
+            with self._cond:
+                self._error = exc
+                self._cond.notify_all()
+
+    def grab(self, timeout_s: float = 2.0):
+        deadline = time.monotonic() + timeout_s
+        with self._cond:
+            while self._latest is None and self._error is None and not self._stop.is_set():
+                rem = deadline - time.monotonic()
+                if rem <= 0.0:
+                    raise TimeoutError('timed out waiting for camera frame')
+                self._cond.wait(rem)
+            if self._error is not None:
+                raise self._error
+            if self._latest is None:
+                raise RuntimeError('camera closed')
+            t, frame = self._latest
         ok, jpeg = self.cv2.imencode('.jpg', frame, [self.cv2.IMWRITE_JPEG_QUALITY, self.quality])
+        if not ok:
+            raise RuntimeError('camera JPEG encode failed')
         return t, jpeg.tobytes(), frame.shape[1], frame.shape[0]
 
     def close(self):
+        self._stop.set()
+        with self._cond:
+            self._cond.notify_all()
+        if self._thread.is_alive():
+            self._thread.join(timeout=1.0)
         self.cap.release()
 
 
@@ -86,8 +140,11 @@ def serve(source, host: str, port: int, period_s: float = 0.1, stop: threading.E
                     frame_id += 1
                     conn.sendall(encode({'frame_id': frame_id, 't_capture': t_capture, 't_send': time.monotonic(),
                                          'bytes': len(jpeg), 'width': w, 'height': h}, jpeg))
-                    next_t += period_s
-                    time.sleep(max(0.0, next_t - time.monotonic()))
+                    now = time.monotonic()
+                    next_t = max(next_t + period_s, now)
+                    sleep_s = next_t - now
+                    if sleep_s > 0.0:
+                        time.sleep(sleep_s)
             except OSError:
                 pass
             finally:

@@ -39,6 +39,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
+import os
 import sys
 import time
 from pathlib import Path
@@ -151,7 +153,78 @@ class PickThenSign:
                 'sign': self.sign.record() if self.sign is not None else None}
 
 
+def _build_adapter(a):
+    from real_robot.adapter import Sim2RealAdapter
+    from real_robot.calibration import CameraConfig, VisionConfig
+    explicit = getattr(a, '_explicit_args', set())
+    cal_path = getattr(a, 'calibration', None)
+    if cal_path is not None and a.side != 'real':
+        raise ValueError('--calibration is only valid with --side real')
+
+    def _override(dest, default_val):
+        return dest in explicit or getattr(a, dest, default_val) != default_val
+
+    cam_overrides = {}
+    if getattr(a, 'no_sim_camera_warp', False):
+        cam_overrides['enabled'] = False
+    elif getattr(a, 'sim_camera_warp', False):
+        cam_overrides['enabled'] = True
+    if _override('camera_f_real', 515.7):
+        cam_overrides['f_real'] = float(a.camera_f_real)
+    if _override('camera_warp_pitch_deg', 0.0):
+        cam_overrides['pitch_offset_deg'] = float(a.camera_warp_pitch_deg)
+    if _override('camera_warp_yaw_deg', 0.0):
+        cam_overrides['yaw_offset_deg'] = float(a.camera_warp_yaw_deg)
+    if _override('camera_warp_roll_deg', 0.0):
+        cam_overrides['roll_offset_deg'] = float(a.camera_warp_roll_deg)
+    if _override('camera_cx_real', 320.0):
+        cam_overrides['cx_real'] = float(a.camera_cx_real)
+    if _override('camera_cy_real', 240.0):
+        cam_overrides['cy_real'] = float(a.camera_cy_real)
+
+    vis_overrides = {}
+    if _override('camera_pitch_offset_deg', 0.0):
+        vis_overrides['camera_pitch_offset_deg'] = float(a.camera_pitch_offset_deg)
+    if _override('area_scale', 1.0):
+        vis_overrides['area_scale'] = float(a.area_scale)
+    if _override('red_hue_max', 8):
+        vis_overrides['red_hue_max'] = int(a.red_hue_max)
+    if _override('red_sat_min', 150):
+        vis_overrides['red_sat_min'] = int(a.red_sat_min)
+
+    if cal_path is not None:
+        adapter = Sim2RealAdapter.from_file(cal_path, camera_overrides=cam_overrides, vision_overrides=vis_overrides)
+    else:
+        if cam_overrides.get('enabled', False) and a.side != 'real':
+            raise ValueError('--sim-camera-warp is only valid with --side real')
+        adapter = Sim2RealAdapter(
+            camera=CameraConfig(**cam_overrides),
+            vision=VisionConfig(**vis_overrides),
+        )
+    if adapter.camera.enabled and a.side != 'real':
+        raise ValueError('--sim-camera-warp is only valid with --side real')
+    return adapter
+
+
 def run(a):
+    pitch_offset = float(getattr(a, 'camera_pitch_offset_deg', 0.0))
+    area_scale = float(getattr(a, 'area_scale', 1.0))
+    red_hue_max = int(getattr(a, 'red_hue_max', 8))
+    red_sat_min = int(getattr(a, 'red_sat_min', 150))
+    if not math.isfinite(pitch_offset):
+        raise ValueError(f'--camera-pitch-offset-deg must be finite, got {pitch_offset!r}')
+    if not math.isfinite(area_scale) or area_scale <= 0.0:
+        raise ValueError(f'--area-scale must be finite and > 0, got {area_scale!r}')
+    if not 0 <= red_hue_max <= 8:
+        raise ValueError(f'--red-hue-max must be an integer in 0..8, got {red_hue_max!r}')
+    if not 0 <= red_sat_min <= 255:
+        raise ValueError(f'--red-sat-min must be an integer in 0..255, got {red_sat_min!r}')
+    adapter = _build_adapter(a)
+    with adapter.vision_context():
+        _run_with_adapter(a, adapter)
+
+
+def _run_with_adapter(a, adapter):
     out = Path(a.out)
     (out / 'rgb').mkdir(parents=True, exist_ok=False)
     plan = json.loads(Path(a.plan).read_text()) if a.plan else None
@@ -173,11 +246,18 @@ def run(a):
         brain = SignBrain(a.sign, held_kind=kind, with_release=True, zone_close_far=a.zone_close_far)
     if a.side == 'sim' and a.test != 'pick':
         plan, objects = sign_plan(plan, kind if needs_pick else None, getattr(a, 'sim_box_ahead_m', None))
+    warper = adapter.frame_transform
     commands = (out / 'commands.jsonl').open('x')
     truth_f = (out / 'truth.jsonl').open('x') if a.side == 'sim' else None
     truth_rows, summary = [], {'test': a.test, 'side': a.side, 'kind': kind, 'sign': getattr(a, 'sign', None),
                                'zone_close_far': getattr(a, 'zone_close_far', False),
                                'release': getattr(a, 'release', None), 'cap_s': a.cap_s, 'plan_seed': plan and plan['seed'],
+                               'camera_pitch_offset_deg': adapter.vision.camera_pitch_offset_deg,
+                               'area_scale': adapter.vision.area_scale,
+                               'red_hue_max': adapter.vision.red_hue_max,
+                               'red_sat_min': adapter.vision.red_sat_min,
+                               'sim_camera_warp': warper.config() if warper is not None else None,
+                               'sim2real_adapter': adapter.summary() if a.side == 'real' else None,
                                'sim_spawn_r1': plan and a.side == 'sim' and plan['spawns']['r1'], 'sim_moved_boxes': objects}
     t0 = time.monotonic()
 
@@ -207,7 +287,7 @@ def run(a):
                 loop(io)
         else:
             from real_robot.skill_io import RealIO
-            io = RealIO(a.host, cmd_port=a.cmd_port, cam_port=a.cam_port)
+            io = RealIO(a.host, cmd_port=a.cmd_port, cam_port=a.cam_port, frame_transform=warper)
             try:
                 loop(io)
             finally:
@@ -232,7 +312,31 @@ def run(a):
     print(json.dumps({k: summary.get(k) for k in ('test', 'finished', 'eval_only', 'wall_s')}, default=str))
 
 
-def main(argv=None):
+class _TrackStore(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        setattr(namespace, self.dest, values)
+        explicit = getattr(namespace, '_explicit_args', None)
+        if explicit is None:
+            explicit = set()
+            setattr(namespace, '_explicit_args', explicit)
+        explicit.add(self.dest)
+
+
+class _TrackStoreTrue(argparse.Action):
+    def __init__(self, option_strings, dest, default=False, required=False, help=None):
+        super().__init__(option_strings=option_strings, dest=dest, nargs=0, const=True,
+                         default=default, required=required, help=help)
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        setattr(namespace, self.dest, True)
+        explicit = getattr(namespace, '_explicit_args', None)
+        if explicit is None:
+            explicit = set()
+            setattr(namespace, '_explicit_args', explicit)
+        explicit.add(self.dest)
+
+
+def build_parser():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     s = p.add_subparsers(dest='test', required=True)
     for name in ('pick', 'sign', 'place'):
@@ -241,6 +345,7 @@ def main(argv=None):
         k.add_argument('--plan', help='sim: solo plan json (scene, seed, spawns)')
         k.add_argument('--scene-source', help='sim: frozen 6f057f7e scene package')
         k.add_argument('--host', help='real: Pi address')
+        k.add_argument('--calibration', help='real: per-robot Sim2Real profile JSON (loads camera warp + vision thresholds)')
         k.add_argument('--cmd-port', type=int, default=8765)
         k.add_argument('--cam-port', type=int, default=8766)
         k.add_argument('--kind', choices=('red', 'cyan'))
@@ -248,6 +353,30 @@ def main(argv=None):
         k.add_argument('--actor-python')
         k.add_argument('--actor-threads', type=int, default=1, choices=(1, 2, 4, 8, 16))
         k.add_argument('--cap-s', type=float, default=320., help='control seconds (the evaluated runs: <= 320)')
+        k.add_argument('--camera-pitch-offset-deg', type=float, default=0.0, action=_TrackStore,
+                       help='real: opt-in camera mount pitch offset in degrees (+ = steeper downward than model, default 0.0)')
+        k.add_argument('--area-scale', type=float, default=1.0, action=_TrackStore,
+                       help='real: opt-in target blob area scale vs sim A_ref_px (default 1.0)')
+        k.add_argument('--red-hue-max', type=int, default=8, action=_TrackStore,
+                       help='real: opt-in OpenCV low-red hue max 0..8 (default 8; set 0 to ignore orange MasterPi wheels)')
+        k.add_argument('--red-sat-min', type=int, default=150, action=_TrackStore,
+                       help='real: opt-in OpenCV red HSV saturation min 0..255 (default 150; e.g. 185 ignores human skin)')
+        k.add_argument('--sim-camera-warp', action=_TrackStoreTrue, default=False,
+                       help='real: opt-in cv2.remap warp from real camera intrinsics/pitch to sim camera (default off)')
+        k.add_argument('--no-sim-camera-warp', action=_TrackStoreTrue, default=False,
+                       help='real: explicitly disable camera warp even if enabled in --calibration')
+        k.add_argument('--camera-f-real', type=float, default=515.7, action=_TrackStore,
+                       help='real: focal length (px) for --sim-camera-warp (default 515.7)')
+        k.add_argument('--camera-warp-pitch-deg', type=float, default=0.0, action=_TrackStore,
+                       help='real: physical mount pitch offset (deg, + = steeper downward) for --sim-camera-warp (default 0.0)')
+        k.add_argument('--camera-warp-yaw-deg', type=float, default=0.0, action=_TrackStore,
+                       help='real: physical mount yaw offset (deg, + = camera pointed right) for --sim-camera-warp (default 0.0)')
+        k.add_argument('--camera-warp-roll-deg', type=float, default=0.0, action=_TrackStore,
+                       help='real: physical mount roll offset (deg, + = clockwise) for --sim-camera-warp (default 0.0)')
+        k.add_argument('--camera-cx-real', type=float, default=320.0, action=_TrackStore,
+                       help='real: principal point x (px) for --sim-camera-warp (default 320.0)')
+        k.add_argument('--camera-cy-real', type=float, default=240.0, action=_TrackStore,
+                       help='real: principal point y (px) for --sim-camera-warp (default 240.0)')
         k.add_argument('--out', required=True)
         if name == 'pick':
             k.add_argument('--release', action='store_true', help='set the box down again after the lift (release_code_v1)')
@@ -259,11 +388,42 @@ def main(argv=None):
         if name == 'place':
             k.add_argument('--after-pick', action='store_true', help='real: grasp with ACT first (always on the simulator)')
             k.add_argument('--sim-box-ahead-m', type=float, help='sim: box this far east of r1 (default BOX_AHEAD_M)')
+    return p
+
+
+def main(argv=None):
+    p = build_parser()
     a = p.parse_args(argv)
     if a.side == 'sim' and not a.plan:
         p.error('--side sim needs --plan')
     if a.side == 'real' and not a.host:
         p.error('--side real needs --host')
+    if a.calibration and a.side != 'real':
+        p.error('--calibration is only valid with --side real')
+    if a.sim_camera_warp and a.no_sim_camera_warp:
+        p.error('--sim-camera-warp and --no-sim-camera-warp are mutually exclusive')
+    if not math.isfinite(a.camera_pitch_offset_deg):
+        p.error('--camera-pitch-offset-deg must be finite')
+    if not math.isfinite(a.area_scale) or a.area_scale <= 0.0:
+        p.error('--area-scale must be finite and > 0')
+    if not 0 <= a.red_hue_max <= 8:
+        p.error('--red-hue-max must be an integer in 0..8')
+    if not 0 <= a.red_sat_min <= 255:
+        p.error('--red-sat-min must be an integer in 0..255')
+    if a.sim_camera_warp:
+        if a.side != 'real':
+            p.error('--sim-camera-warp is only valid with --side real')
+        if not math.isfinite(a.camera_f_real) or a.camera_f_real <= 0.0:
+            p.error('--camera-f-real must be finite and > 0')
+        for flag, val in (
+            ('--camera-warp-pitch-deg', a.camera_warp_pitch_deg),
+            ('--camera-warp-yaw-deg', a.camera_warp_yaw_deg),
+            ('--camera-warp-roll-deg', a.camera_warp_roll_deg),
+        ):
+            if not math.isfinite(val) or not -60.0 <= val <= 60.0:
+                p.error(f'{flag} must be finite in [-60, 60]')
+        if not (math.isfinite(a.camera_cx_real) and math.isfinite(a.camera_cy_real)):
+            p.error('--camera-cx-real and --camera-cy-real must be finite')
     run(a)
 
 

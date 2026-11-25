@@ -9,5 +9,31 @@
     "rear_left":   {"motor": null, "sign": null, "points": []},
     "rear_right":  {"motor": null, "sign": null, "points": []}
   },
-  "servo_min_duration_s": null
+  "servo_min_duration_s": null,
+  "sim_no_motion_max": 0.32,
+  "pulse_scale": {"drive": 1.0, "rotate": 1.0, "strafe": 1.0},
+  "servos": {
+    "1": {"offset_pwm": 0, "min_pwm": 500, "max_pwm": 2500},
+    "3": {"offset_pwm": 0, "min_pwm": 500, "max_pwm": 2500},
+    "4": {"offset_pwm": 0, "min_pwm": 500, "max_pwm": 2500},
+    "5": {"offset_pwm": 0, "min_pwm": 500, "max_pwm": 2500},
+    "6": {"offset_pwm": 0, "min_pwm": 500, "max_pwm": 2500}
+  },
+  "camera": {
+    "enabled": false,
+    "f_real": 450.0,
+    "pitch_offset_deg": 0.0,
+    "yaw_offset_deg": 0.0,
+    "roll_offset_deg": 0.0,
+    "cx_real": 320.0,
+    "cy_real": 240.0,
+    "d_real": null,
+    "jpeg_quality": 90
+  },
+  "vision": {
+    "red_hue_max": 0,
+    "red_sat_min": 185,
+    "area_scale": 1.0,
+    "camera_pitch_offset_deg": 0.0
+  }
 }

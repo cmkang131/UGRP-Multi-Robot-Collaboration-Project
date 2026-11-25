@@ -34,6 +34,21 @@ def _load_contract():
 
 
 contract = _load_contract()
+MAX_PULSE_DURATION_S = 0.15
+
+
+def classify_pulse_motion(wheels) -> str:
+    """Classify 4-wheel sim command (FL, FR, RL, RR) into 'stop', 'rotate', 'strafe', or 'drive'."""
+    fl, fr, rl, rr = wheels
+    if fl == 0.0 and fr == 0.0 and rl == 0.0 and rr == 0.0:
+        return 'stop'
+    if fl != 0.0 and fr != 0.0 and rl != 0.0 and rr != 0.0:
+        s = (1 if fl > 0 else -1, 1 if fr > 0 else -1, 1 if rl > 0 else -1, 1 if rr > 0 else -1)
+        if s[0] == s[2] == -s[1] == -s[3]:
+            return 'rotate'
+        if s[0] == s[3] == -s[1] == -s[2]:
+            return 'strafe'
+    return 'drive'
 
 
 class Executor:
@@ -49,14 +64,22 @@ class Executor:
     # -- servos -----------------------------------------------------------------
     def initialize_servos(self, pwm: dict, duration_s: float, now: float) -> None:
         """First pose: the real servos' position is unknown, so the move time is given explicitly."""
+        mapped = []
         for key, value in pwm.items():
             servo = int(key)
             if servo not in contract.SERVOS or type(value) is not int or not 500 <= value <= 2500:
                 raise ValueError(f'invalid initial servo {key}={value}')
-        for key, value in pwm.items():
-            self.board.write_servo(int(key), value, duration_s)
-            self.pwm[int(key)] = value
-        self.log({'event': 'init_servos', 't_recv': now, 'pwm': dict(pwm), 'duration_s': duration_s})
+            phys, clamped = self.cal.servo_pwm(servo, value)
+            mapped.append((servo, value, phys, clamped))
+        physical_pwm = {}
+        for servo, sim_val, phys_val, _ in mapped:
+            self.board.write_servo(servo, phys_val, duration_s)
+            self.pwm[servo] = sim_val
+            physical_pwm[str(servo)] = phys_val
+        ev = {'event': 'init_servos', 't_recv': now, 'pwm': dict(pwm), 'duration_s': duration_s}
+        if any(phys != sim for _, sim, phys, _ in mapped):
+            ev['physical_pwm'] = physical_pwm
+        self.log(ev)
 
     # -- commands ---------------------------------------------------------------
     def apply(self, seq: int, row: dict, now: float) -> dict:
@@ -75,30 +98,48 @@ class Executor:
                 delta = abs(target - self.pwm[servo])
                 if delta == 0:
                     continue
+                phys_target, clamped = self.cal.servo_pwm(servo, target)
                 duration = delta / SIM_SERVO_SLEW_PWM_PER_S
                 raised = duration < self.cal.servo_min_duration_s
-                servo_moves.append((servo, target, max(duration, self.cal.servo_min_duration_s), duration, raised))
+                servo_moves.append((servo, target, phys_target, clamped,
+                                    max(duration, self.cal.servo_min_duration_s), duration, raised))
         except (ValueError, KeyError, TypeError) as exc:
             event.update(status='rejected', reason=str(exc))
             self.log(event)
             return event
+        pulse_motion = 'stop' if not any(speeds) else classify_pulse_motion(value['wheels'])
+        scale = self.cal.pulse_scale_for(pulse_motion)
         written = []
+        effective_durations = []
         for i, speed in enumerate(speeds):
             motor = self.cal.wheels[_wheel_name(i)].motor
             self.board.write_motor(motor, speed)
             self.speeds[i] = speed
-            self.deadlines[i] = now + value['duration_s'][i] if speed else None
+            if speed:
+                eff_dur = min(MAX_PULSE_DURATION_S, value['duration_s'][i] * scale)
+                self.deadlines[i] = now + eff_dur
+            else:
+                eff_dur = 0.0
+                self.deadlines[i] = None
+            effective_durations.append(eff_dur)
             written.append({'motor': motor, 'speed': speed, 't_write': self.board.clock()})
         servos = []
-        for servo, target, duration, sim_duration, raised in servo_moves:
-            self.board.write_servo(servo, target, duration)
+        for servo, target, phys_target, clamped, duration, sim_duration, raised in servo_moves:
+            self.board.write_servo(servo, phys_target, duration)
             self.pwm[servo] = target
-            servos.append({'servo': servo, 'pwm': target, 'duration_s': duration,
-                           'sim_duration_s': sim_duration, 'duration_raised': raised,
-                           't_write': self.board.clock()})
+            item = {'servo': servo, 'pwm': phys_target, 'duration_s': duration,
+                    'sim_duration_s': sim_duration, 'duration_raised': raised,
+                    't_write': self.board.clock()}
+            if phys_target != target or clamped:
+                item['sim_pwm'] = target
+                item['clamped'] = clamped
+            servos.append(item)
         self.last_seq = seq
         event.update(status='applied', motors=written, servos=servos,
-                     deadlines=list(self.deadlines))
+                     deadlines=list(self.deadlines),
+                     pulse_motion=pulse_motion,
+                     pulse_scale=scale,
+                     effective_duration_s=effective_durations)
         self.log(event)
         return event
 

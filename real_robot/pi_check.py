@@ -59,7 +59,11 @@ def camera():
     except ImportError:
         result['frame'] = {'ok': False, 'error': 'cv2 not installed'}
         return result
-    cap = cv2.VideoCapture(0)
+    backend = getattr(cv2, 'CAP_V4L2', None)
+    cap = cv2.VideoCapture(0, backend) if backend is not None else cv2.VideoCapture(0)
+    if not cap.isOpened() and backend is not None:
+        cap.release()
+        cap = cv2.VideoCapture(0)
     try:
         t0 = time.monotonic()
         ok, frame = cap.read()

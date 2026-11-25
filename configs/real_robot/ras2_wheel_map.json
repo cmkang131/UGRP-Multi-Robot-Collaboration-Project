@@ -1,0 +1,10 @@
+{
+  "source": "Autonomous camera-measured 6-direction paired floor bench on ras2 (2026-11-25). Unlike ugrp1 DRIVE_MAP (-1,+1,+1,-1), ras2 matches standard Board.py/mecanum.py wiring: M1=FL(+1), M2=FR(+1), M3=RL(+1), M4=RR(+1) at I2CBoard API (which flips M1,M3 internally via board_signed_speed).",
+  "verified_on_bench": true,
+  "wheels": {
+    "front_left":  {"motor": 1, "sign": 1},
+    "front_right": {"motor": 2, "sign": 1},
+    "rear_left":   {"motor": 3, "sign": 1},
+    "rear_right":  {"motor": 4, "sign": 1}
+  }
+}

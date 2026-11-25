@@ -1,0 +1,247 @@
+{
+ "robot_id": "ras2",
+ "measured": true,
+ "source": {
+  "bench_json": "/home/ubuntu/projects/ugrp/sim2real-work/experiments/sim2real-20261125-T03-ras2/ras2_t03_camera_bench.json",
+  "bench_csv": "/home/ubuntu/projects/ugrp/sim2real-work/experiments/sim2real-20261125-T03-ras2/bench_area30mm.csv",
+  "camera_pitch_diag": "/home/ubuntu/projects/ugrp/sim2real-work/experiments/sim2real-20261125-T03-ras2/camera_pitch_diag.json",
+  "sim_reference": "experiments/2026-11-19-sim2real-dr/sim_pulse_reference.jsonl",
+  "wheel_map": "configs/real_robot/ras2_wheel_map.json",
+  "wheel_map_verification": "6-direction paired floor bench on white_desk (forward/backward/rotate-left/rotate-right/left/right all matched M1=FL:+1, M2=FR:+1, M3=RL:+1, M4=RR:+1 across 68 paired trials, 63 obs_ok)",
+  "cube_calibration": "30 mm (3 cm) red cube confirmed; pitch-independent sqrt(area) scale; forward 0.10 s holdout MAE 1.40 mm",
+  "real_forward_median_mm_per_0.1s": [
+   [
+    35,
+    9.265
+   ],
+   [
+    40,
+    13.925
+   ],
+   [
+    50,
+    22.16
+   ],
+   [
+    60,
+    25.625
+   ]
+  ],
+  "skipped": [
+   {
+    "sim_value": 0.31,
+    "sim_mm": 0.02,
+    "why": "sim does not move at this value"
+   },
+   {
+    "sim_value": 0.32,
+    "sim_mm": 0.01,
+    "why": "sim does not move at this value"
+   }
+  ],
+  "pulse_scale_note": "drive=1.0 (36.5..42.2 matches sim 10.64..15.71 mm/0.10s); rotate=0.68 (tuned from 0.54 after ras2_i2c_safety & ras2-pick-01 showed ~20-25ms spin-up dead time, so 0.10s->0.068s~5deg, 0.07s->0.048s); strafe=0.70.",
+  "servo_bench": "servo_bench.json (all 5 servos 1,3,4,5,6 verified in FAR_POSTURE; servo_min_duration_s=0.02 s)",
+  "continuous_gap_fix": "Prepended [0.32, 35.0] so continuous ACT floats in (0.32, 0.33) interpolate cleanly while <=0.32 still returns 0 via sim_no_motion_max=0.32 (fixes ras2-pick-02 seq 446 rejection at 0.327287)."
+ },
+ "wheels": {
+  "front_left": {
+   "motor": 1,
+   "sign": 1,
+   "points": [
+    [
+     0.32,
+     35.0
+    ],
+    [
+     0.33,
+     36.5
+    ],
+    [
+     0.34,
+     37.2
+    ],
+    [
+     0.35,
+     37.7
+    ],
+    [
+     0.36,
+     38.6
+    ],
+    [
+     0.37,
+     39.0
+    ],
+    [
+     0.38,
+     40.0
+    ],
+    [
+     0.39,
+     41.0
+    ],
+    [
+     0.4,
+     42.2
+    ]
+   ]
+  },
+  "front_right": {
+   "motor": 2,
+   "sign": 1,
+   "points": [
+    [
+     0.32,
+     35.0
+    ],
+    [
+     0.33,
+     36.5
+    ],
+    [
+     0.34,
+     37.2
+    ],
+    [
+     0.35,
+     37.7
+    ],
+    [
+     0.36,
+     38.6
+    ],
+    [
+     0.37,
+     39.0
+    ],
+    [
+     0.38,
+     40.0
+    ],
+    [
+     0.39,
+     41.0
+    ],
+    [
+     0.4,
+     42.2
+    ]
+   ]
+  },
+  "rear_left": {
+   "motor": 3,
+   "sign": 1,
+   "points": [
+    [
+     0.32,
+     35.0
+    ],
+    [
+     0.33,
+     36.5
+    ],
+    [
+     0.34,
+     37.2
+    ],
+    [
+     0.35,
+     37.7
+    ],
+    [
+     0.36,
+     38.6
+    ],
+    [
+     0.37,
+     39.0
+    ],
+    [
+     0.38,
+     40.0
+    ],
+    [
+     0.39,
+     41.0
+    ],
+    [
+     0.4,
+     42.2
+    ]
+   ]
+  },
+  "rear_right": {
+   "motor": 4,
+   "sign": 1,
+   "points": [
+    [
+     0.32,
+     35.0
+    ],
+    [
+     0.33,
+     36.5
+    ],
+    [
+     0.34,
+     37.2
+    ],
+    [
+     0.35,
+     37.7
+    ],
+    [
+     0.36,
+     38.6
+    ],
+    [
+     0.37,
+     39.0
+    ],
+    [
+     0.38,
+     40.0
+    ],
+    [
+     0.39,
+     41.0
+    ],
+    [
+     0.4,
+     42.2
+    ]
+   ]
+  }
+ },
+ "servo_min_duration_s": 0.02,
+ "sim_no_motion_max": 0.32,
+ "pulse_scale": {
+  "drive": 1.0,
+  "rotate": 0.68,
+  "strafe": 0.7
+ },
+ "servos": {
+  "1": {"offset_pwm": 0, "min_pwm": 500, "max_pwm": 2500},
+  "3": {"offset_pwm": 0, "min_pwm": 500, "max_pwm": 2500},
+  "4": {"offset_pwm": 0, "min_pwm": 500, "max_pwm": 2500},
+  "5": {"offset_pwm": 0, "min_pwm": 500, "max_pwm": 2500},
+  "6": {"offset_pwm": 0, "min_pwm": 500, "max_pwm": 2500}
+ },
+ "camera": {
+  "enabled": true,
+  "f_real": 450.0,
+  "pitch_offset_deg": 14.0,
+  "yaw_offset_deg": 0.0,
+  "roll_offset_deg": 0.0,
+  "cx_real": 320.0,
+  "cy_real": 240.0,
+  "d_real": null,
+  "jpeg_quality": 90
+ },
+ "vision": {
+  "red_hue_max": 0,
+  "red_sat_min": 185,
+  "area_scale": 1.0,
+  "camera_pitch_offset_deg": 0.0
+ }
+}

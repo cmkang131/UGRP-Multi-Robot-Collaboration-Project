@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import math
+import os
 import random
 
 import cv2
@@ -39,6 +40,36 @@ A_LO_PX = 20506.0
 A_HI_PX = 21947.0
 D_STOP_M = 0.20
 K_BEARING_PX_PER_RAD = 680.5
+AREA_SCALE_ENV = 'UGRP_APPROACH_AREA_SCALE'
+_AREA_SCALE = None
+
+
+def area_scale() -> float:
+    """Opt-in scale factor for target blob area references (A_REF_PX/A_LO_PX/A_HI_PX).
+
+    Defaults to 1.0 when unset so simulator and existing callers remain unchanged.
+    """
+    if _AREA_SCALE is not None:
+        return _AREA_SCALE
+    raw = os.environ.get(AREA_SCALE_ENV)
+    if not raw:
+        return 1.0
+    val = float(raw)
+    if not math.isfinite(val) or val <= 0.0:
+        raise ValueError(f'{AREA_SCALE_ENV} must be finite and > 0, got {raw!r}')
+    return val
+
+
+def set_area_scale(scale: float | None) -> float:
+    """Explicitly set (or clear with None) the module-level target area scale factor."""
+    global _AREA_SCALE
+    if scale is None:
+        _AREA_SCALE = None
+        return area_scale()
+    if isinstance(scale, bool) or not isinstance(scale, (int, float)) or not math.isfinite(scale) or scale <= 0.0:
+        raise ValueError(f'area scale must be a finite number > 0, got {scale!r}')
+    _AREA_SCALE = float(scale)
+    return _AREA_SCALE
 
 # Geometry of the fixed stop (world frame; teacher demos).
 STATION_OFFSET_M = 0.20       # stop point: 0.20 m west of the box centre
@@ -119,9 +150,67 @@ HINT_BEARING_NOISE_RAD = math.radians(5.0)
 HINT_DISTANCE_NOISE_FRAC = 0.10
 HINT_FACING_NOISE_RAD = math.radians(5.0)
 
+RED_HUE_MAX_DEFAULT = 8
+RED_HUE_MAX_ENV = 'UGRP_RED_HUE_MAX'
+_RED_HUE_MAX = None
+RED_SAT_MIN_DEFAULT = 150
+RED_SAT_MIN_ENV = 'UGRP_RED_SAT_MIN'
+_RED_SAT_MIN = None
+
+
+def red_hue_max() -> int:
+    """Opt-in upper bound on OpenCV low-red hue [0..8] (default 8; set 0 on real MasterPi to ignore orange wheels)."""
+    if _RED_HUE_MAX is not None:
+        return _RED_HUE_MAX
+    raw = os.environ.get(RED_HUE_MAX_ENV)
+    if not raw:
+        return RED_HUE_MAX_DEFAULT
+    val = int(raw)
+    if str(val) != raw.strip() or not 0 <= val <= RED_HUE_MAX_DEFAULT:
+        raise ValueError(f'{RED_HUE_MAX_ENV} must be an integer in 0..{RED_HUE_MAX_DEFAULT}, got {raw!r}')
+    return val
+
+
+def set_red_hue_max(hue_max: int | None) -> int:
+    """Explicitly set (or clear with None) the module-level red hue upper bound (0..8)."""
+    global _RED_HUE_MAX
+    if hue_max is None:
+        _RED_HUE_MAX = None
+        return red_hue_max()
+    if type(hue_max) is not int or not 0 <= hue_max <= RED_HUE_MAX_DEFAULT:
+        raise ValueError(f'red hue max must be an integer in 0..{RED_HUE_MAX_DEFAULT}, got {hue_max!r}')
+    _RED_HUE_MAX = hue_max
+    return _RED_HUE_MAX
+
+
+def red_sat_min() -> int:
+    """Opt-in lower bound on OpenCV red HSV saturation [0..255] (default 150; raise e.g. 185 on real table to ignore skin)."""
+    if _RED_SAT_MIN is not None:
+        return _RED_SAT_MIN
+    raw = os.environ.get(RED_SAT_MIN_ENV)
+    if not raw:
+        return RED_SAT_MIN_DEFAULT
+    val = int(raw)
+    if str(val) != raw.strip() or not 0 <= val <= 255:
+        raise ValueError(f'{RED_SAT_MIN_ENV} must be an integer in 0..255, got {raw!r}')
+    return val
+
+
+def set_red_sat_min(sat_min: int | None) -> int:
+    """Explicitly set (or clear with None) the module-level red saturation lower bound (0..255)."""
+    global _RED_SAT_MIN
+    if sat_min is None:
+        _RED_SAT_MIN = None
+        return red_sat_min()
+    if type(sat_min) is not int or not 0 <= sat_min <= 255:
+        raise ValueError(f'red sat min must be an integer in 0..255, got {sat_min!r}')
+    _RED_SAT_MIN = sat_min
+    return _RED_SAT_MIN
+
+
 _HSV_RANGES = {
     # Same thresholds as harness/seg_frontend_v1.py (OpenCV 8-bit HSV).
-    'red': lambda h, s, v: ((h <= 8) | (h >= 172)) & (s > 150) & (v > 90),
+    'red': lambda h, s, v: ((h <= red_hue_max()) | (h >= 172)) & (s > red_sat_min()) & (v > 90),
     'cyan': lambda h, s, v: (h >= 110) & (h <= 124) & (s > 170) & (v > 70),
 }
 
@@ -248,7 +337,7 @@ def _identity_dev(blob, d_est, b_est):
     gives only the lateral offset at the expected distance, since its distance is not measured."""
     beta = _bearing_of_col(blob['cx'])
     if _is_whole(blob):
-        d_blob = D_STOP_M * math.sqrt(A_REF_PX / blob['A'])
+        d_blob = D_STOP_M * math.sqrt((A_REF_PX * area_scale()) / blob['A'])
         return math.hypot(d_blob * math.cos(beta) - d_est * math.cos(b_est),
                           d_blob * math.sin(beta) - d_est * math.sin(b_est))
     return d_est * abs(math.sin(_wrap(beta - b_est)))
@@ -272,7 +361,7 @@ class BlobTracker:
         self.expected = None
         if hint is not None:
             self.expected = {'cx': CX_REF_PX - K_BEARING_PX_PER_RAD * hint['bearing_rad'],
-                             'A': A_REF_PX * (D_STOP_M / max(hint['distance_m'], 1e-3)) ** 2}
+                             'A': (A_REF_PX * area_scale()) * (D_STOP_M / max(hint['distance_m'], 1e-3)) ** 2}
         self.track = None
         self.last_accept = None
         self.lost = 0
@@ -497,7 +586,7 @@ class ApproachServo:
         for b in raw:
             if not _is_whole(b) or _identity_dev(b, d_est, b_est) <= POS_GATE_M:
                 continue
-            d_b = D_STOP_M * math.sqrt(A_REF_PX / b['A'])
+            d_b = D_STOP_M * math.sqrt((A_REF_PX * area_scale()) / b['A'])
             beta = _bearing_of_col(b['cx'])
             others.append((d_b * math.cos(beta), d_b * math.sin(beta)))
         clear = [_seg_dist(o, (0.0, 0.0), p_rel) for o in others]
@@ -596,9 +685,10 @@ class ApproachServo:
                 cx, cy = blob['cx'], blob['cy']
                 bearing = _bearing_of_col(cx)
                 whole = _is_whole(blob)
+                a_scale = area_scale()
                 if whole:
                     self.clip_hold = 0
-                    d_hat = D_STOP_M * math.sqrt(A_REF_PX / blob['A'])
+                    d_hat = D_STOP_M * math.sqrt((A_REF_PX * a_scale) / blob['A'])
                     d_use = d_hat
                 else:
                     # Rim-clipped or edge blob: its area under-states the box, so d_hat is not used. The tilt stays on the
@@ -608,7 +698,8 @@ class ApproachServo:
                 self.posture = posture_for(d_use)
                 e_d = d_use - D_STOP_M
                 cy_ok = abs(cy - CY_REF_PX) <= 12.0
-                crit = whole and (abs(cx - CX_REF_PX) <= TOL_CX_PX and A_LO_PX <= blob['A'] <= A_HI_PX)
+                crit = whole and (abs(cx - CX_REF_PX) <= TOL_CX_PX
+                                  and A_LO_PX * a_scale <= blob['A'] <= A_HI_PX * a_scale)
                 if not self.rest_next:
                     lat = d_use * math.tan(bearing)  # box offset from the heading line, metres, + = left
                     if abs(lat) > LAT_TOL_M:          # keep bearing 0 by lateral pulses (heading unchanged)
@@ -728,8 +819,11 @@ class ApproachServo:
                              'switches': tr.switches, 'two_blob_frames': tr.two_blob_frames,
                              'held_frames': tr.held_frames, 'search_frames': tr.search_frames,
                              'first_acquisition': tr.first_acq, 'events': tr.events[:50]},
-                'references': {'cx_ref_px': CX_REF_PX, 'cy_ref_px': CY_REF_PX, 'A_lo_px': A_LO_PX,
-                               'A_hi_px': A_HI_PX, 'A_ref_px': A_REF_PX, 'd_stop_m': D_STOP_M},
+                'references': dict(
+                    {'cx_ref_px': CX_REF_PX, 'cy_ref_px': CY_REF_PX, 'A_lo_px': A_LO_PX * area_scale(),
+                     'A_hi_px': A_HI_PX * area_scale(), 'A_ref_px': A_REF_PX * area_scale(), 'd_stop_m': D_STOP_M},
+                    **({'area_scale': area_scale()} if area_scale() != 1.0 else {}),
+                ),
                 'inputs': 'own RGB blobs of the target colour, object_kind, the handoff hint once at the start, and the '
                           'drive record (own issued pulses); no ground truth, no map, no teacher, no ACT input',
                 'trace_file': 'approach-trace.json'}

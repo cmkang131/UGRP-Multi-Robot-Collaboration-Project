@@ -77,14 +77,20 @@ def main(argv=None) -> int:
     if not points:
         raise SystemExit(f'no sim value could be matched: {skipped}')
     dead = [x['sim_value'] for x in skipped if x['why'].startswith('sim does not move')]
+    dead_max = max(dead) if dead else None
+    cal_points = list(points)
+    # Bridge the continuous (dead_max, first_fitted_sim] gap for ACT commands: <= dead_max still maps
+    # to 0 via sim_no_motion_max, while values strictly above dead_max interpolate from BOARD_MIN_ABS_SPEED.
+    if dead_max is not None and cal_points[0][0] > dead_max:
+        cal_points.insert(0, [dead_max, 35.0])
     wmap = json.loads(Path(a.wheel_map).read_text())['wheels']
     cal = {'robot_id': a.robot_id, 'measured': bench_ok,
            'source': {'bench_csv': a.bench, 'sim_reference': a.sim_reference, 'wheel_map': a.wheel_map,
                       'real_forward_median_mm_per_0.1s': real_pts, 'skipped': skipped,
                       'wheel_map_bench_checks': len(checks), 'measured_requires': 'last 4 lifted checks pass'},
-           'wheels': {name: {'motor': m['motor'], 'sign': m['sign'], 'points': points} for name, m in wmap.items()},
+           'wheels': {name: {'motor': m['motor'], 'sign': m['sign'], 'points': cal_points} for name, m in wmap.items()},
            'servo_min_duration_s': a.servo_min_duration_s,
-           'sim_no_motion_max': max(dead) if dead else None}
+           'sim_no_motion_max': dead_max}
     Path(a.out).write_text(json.dumps(cal, indent=1))
     print(json.dumps({'measured': bench_ok, 'points': points, 'skipped': skipped}, indent=1))
     return 0
