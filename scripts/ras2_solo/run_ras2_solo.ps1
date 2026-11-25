@@ -4,10 +4,13 @@ param(
     [ValidateSet('ras2', 'ugrp1')][string]$RobotName = 'ras2',
     [ValidateSet('red', 'cyan')][string]$Target = 'red',
     [switch]$Execute,
+    [switch]$Calibrate,
+    [ValidateSet('cube', 'published-rectangle')][string]$ObjectShape = 'cube',
     [ValidateRange(1,600)][int]$Seconds = 240
 )
 
 $ErrorActionPreference = 'Stop'
+if ($Execute -and $Calibrate) { throw 'Choose Execute or Calibrate, not both' }
 $project = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $priorAssetRoot = $env:UGRP_SOLO_ROOT
 try {
@@ -39,15 +42,20 @@ try {
         $env:SSH_ASKPASS = $helper
         $env:SSH_ASKPASS_REQUIRE = 'force'
         $env:DISPLAY = 'ras2-solo'
-        $arguments = @((Join-Path $PSScriptRoot 'source\run.py'), '--host', $RobotAddress,
+        $entryFile = if ($Calibrate) { 'source\calibrate.py' } else { 'source\run.py' }
+        $arguments = @((Join-Path $PSScriptRoot $entryFile), '--host', $RobotAddress,
                        '--user', $User, '--expected-host', $RobotName, '--target', $Target, '--seconds', $Seconds)
-        if ($Execute) {
+        if ($Calibrate) {
+            Write-Host 'CALIBRATE: supervised arm poses, followed by three requested wheel test pulses.'
+            Write-Host 'Use a clear floor. Follow the placement/measurement prompts; no ACT grasp is run.'
+        } elseif ($Execute) {
             Write-Host "EXECUTE: $RobotName will move its wheels, arm, gripper and camera."
             Write-Host 'Experimental profile: published SIM camera geometry; nonzero wheel floor 35.'
             $arguments += '--execute'
         } else {
             Write-Host 'CHECK: verify the model, Pi board, camera and live-image inference.'
         }
+        if (-not $Calibrate) { $arguments += @('--object-shape', $ObjectShape, '--cube-edge-mm', '30') }
         & $actPython @arguments
         if ($LASTEXITCODE -ne 0) { throw 'Solo run failed. Check the printed log directory.' }
     } finally {

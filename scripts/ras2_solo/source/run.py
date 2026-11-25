@@ -171,6 +171,8 @@ def main():
     parser.add_argument('--execute', action='store_true')
     parser.add_argument('--seconds', type=float, default=240.)
     parser.add_argument('--wheel-floor', type=int, choices=(35,), default=35)
+    parser.add_argument('--object-shape', choices=('cube', 'published-rectangle'), default='cube')
+    parser.add_argument('--cube-edge-mm', type=float, choices=(30.,), default=30.)
     args = parser.parse_args()
     import re
     if not re.fullmatch(r'[A-Za-z_][A-Za-z0-9_-]*', args.user):
@@ -183,6 +185,7 @@ def main():
     output.mkdir(parents=True, exist_ok=False)
     report = {'mode': 'execute' if args.execute else 'check', 'target': args.target,
               'expected_host': args.expected_host, 'address': args.host,
+              'object_shape': args.object_shape, 'cube_edge_mm': args.cube_edge_mm,
               'model': 'solo-act-model-gseg-step4000', 'image_frontend': 'seg5_v1',
               'camera_geometry': 'published SIM reference; ras2 calibration pending',
               'wheel_projection': 'experimental nonzero floor 35, original pulse widths, inverse motor permutation',
@@ -222,6 +225,9 @@ def main():
         initial['t'] = accepted['accepted_at']
         history = OwnHistory('r1', 'ras2-live', initial)
         approach = SurveyApproach(contract, lambda entries: select_target(entries, args.target))
+        if args.object_shape == 'cube':
+            from cube_alignment import configure_cube
+            configure_cube(approach)
         rule = GraspTransitionRule()
         pending = deque()
         phase = None
