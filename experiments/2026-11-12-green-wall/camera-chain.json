@@ -1,0 +1,136 @@
+{
+  "schema": "ugrp.own_command_camera_fk.v1",
+  "frame": "chassis_yaw_floor",
+  "floor_to_chassis_translation_m": [
+    0,
+    0,
+    0.0325
+  ],
+  "chain": [
+    {
+      "name": "arm_base",
+      "translation_m": [
+        0.0482,
+        0.0,
+        0.0605
+      ],
+      "quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "servo": 6,
+      "joint_axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "range_rad": [
+        -1.75,
+        1.75
+      ]
+    },
+    {
+      "name": "shoulder_link",
+      "translation_m": [
+        0.0,
+        0.0,
+        0.0347
+      ],
+      "quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "servo": 5,
+      "joint_axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "range_rad": [
+        -0.15,
+        2.8
+      ]
+    },
+    {
+      "name": "elbow_link",
+      "translation_m": [
+        0.065,
+        0.0,
+        0.0
+      ],
+      "quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "servo": 4,
+      "joint_axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "range_rad": [
+        -1.8,
+        1.8
+      ]
+    },
+    {
+      "name": "wrist_link",
+      "translation_m": [
+        0.062,
+        0.0,
+        0.0
+      ],
+      "quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "servo": 3,
+      "joint_axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "range_rad": [
+        -1.8,
+        1.8
+      ]
+    },
+    {
+      "name": "gripper",
+      "translation_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "camera": {
+    "translation_m": [
+      0.0529820099255583,
+      0.0,
+      0.0281521739130435
+    ],
+    "quaternion_wxyz": [
+      0.454519477672044,
+      0.541675220419702,
+      -0.541675220419702,
+      -0.454519477672044
+    ]
+  },
+  "inputs": "own commanded PWM only; nominal level chassis; no live pose or joint measurements",
+  "calibration_status": "v3 structural geometry, not a sag fit or physical camera calibration"
+}

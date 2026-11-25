@@ -22,6 +22,7 @@ from harness.active_camera import goal_detector
 from harness.floor_goal_v3 import FloorGoalMemoryV3
 
 ROOT=Path(__file__).resolve().parents[1]
+VISUAL_MAPPING = 'visual_odometry_v1'
 OPTIONS=dict(self_map='odom_grid_v1',pose_correction='own_map_rbpf_v1',pose_correction_options={'particles':100},
     wall_projection_guard='positive_depth_v1',pose_graph='own_submap_v1',wall_confidence='inverse_sensor_v1',
     motion_model='s2_pulse_v122',loop_rejection='switchable_v1',wall_evidence='tsdf_weight_v1')
@@ -29,7 +30,9 @@ OPTIONS=dict(self_map='odom_grid_v1',pose_correction='own_map_rbpf_v1',pose_corr
 
 def active_output(legacy,*,active_mapping='off',controller=None,**kwargs):
     if active_mapping=='off':return legacy
-    if active_mapping!='frontier_rbpf_v1' or controller is None:raise ValueError('EXPLICIT_ACTIVE_MAPPING_REQUIRED')
+    if active_mapping not in ('frontier_rbpf_v1', VISUAL_MAPPING) or controller is None:raise ValueError('EXPLICIT_ACTIVE_MAPPING_REQUIRED')
+    if (active_mapping == VISUAL_MAPPING) != getattr(controller, 'visual_mapping', False):
+        raise ValueError('ACTIVE_MAPPING_MODE_MISMATCH')
     return controller.receive(**kwargs)
 
 
@@ -73,7 +76,22 @@ def pulse_command(twist,t,*,costmap=None,pose=None,core=None,points=(),motion_mo
 
 class ActiveMapper:
     def __init__(self,robot_id,start,servo,*,active_mapping='off',active_loop='off',seed=22001,navigation_map='off',motion_model='off'):
-        if active_mapping!='frontier_rbpf_v1':raise ValueError('EXPLICIT_ACTIVE_MAPPING_REQUIRED')
+        if active_mapping not in ('frontier_rbpf_v1', VISUAL_MAPPING):raise ValueError('EXPLICIT_ACTIVE_MAPPING_REQUIRED')
+        self.visual_mapping = active_mapping == VISUAL_MAPPING
+        if self.visual_mapping:
+            if (active_loop, navigation_map, motion_model) != ('off', 'off', 'off'):
+                raise ValueError('VISUAL_MAPPING_ONLY')
+            from harness.public_navigation_resolution import RESOLUTION
+            self.robot_id = robot_id
+            self.started = float(start)
+            if not math.isfinite(self.started):
+                raise ValueError('ACTIVE_INVALID_START_TIME')
+            self.grid = ObservedGrid(robot_id, RESOLUTION)
+            self.frames, self.poses = [], []
+            self._visual_pose = np.zeros(3)
+            self._last_visual_t = None
+            self._last_visual_frame = None
+            return
         if active_loop not in ('off','information_gain_v1'):raise ValueError('UNKNOWN_ACTIVE_LOOP')
         if navigation_map not in ('off','public_ros_v8'):raise ValueError('UNKNOWN_NAVIGATION_MAP')
         # Reuse PR409 v5-v8's native navigation resolution, independent of SLAM.
@@ -111,12 +129,44 @@ class ActiveMapper:
         self.plan=None
 
     @property
-    def local_pose(self):return np.asarray(self.memory.self_map.odom.pose)
+    def local_pose(self):
+        if self.visual_mapping:
+            return self._visual_pose.copy()
+        return np.asarray(self.memory.self_map.odom.pose)
 
     @property
-    def pose(self):return compose(self.map_to_odom,self.local_pose)
+    def pose(self):
+        if self.visual_mapping:
+            return self.local_pose
+        return compose(self.map_to_odom,self.local_pose)
 
-    def command(self,row):self.memory.command(row)
+    def command(self,row):
+        if self.visual_mapping:
+            raise ValueError('VISUAL_MAPPING_ONLY')
+        self.memory.command(row)
+
+    def _receive_visual(self, t, frame_id, observation, pose):
+        """Map measured endpoints in the initial camera ground frame."""
+        t = float(t)
+        if (not math.isfinite(t) or t < self.started
+                or (self._last_visual_t is not None and t <= self._last_visual_t)):
+            raise ValueError('ACTIVE_NON_MONOTONIC_TIME')
+        if not isinstance(frame_id, (int, np.integer)) or frame_id < 0 or (
+                self._last_visual_frame is not None and frame_id <= self._last_visual_frame):
+            raise ValueError('ACTIVE_NON_MONOTONIC_FRAME')
+        updated = pose is not None and observation is not None
+        if updated:
+            self.grid.observe(robot_id=self.robot_id, frame_id=frame_id, pose=pose,
+                              floor_xy=observation['floor_xy'], wall_xy=observation['wall_xy'])
+            self._visual_pose = np.asarray(pose, float).copy()
+            self.poses.append(dict(robot_id=self.robot_id, t=t, pose=self.pose.tolist()))
+            self.frames.append(dict(observation, t=t, frame_id=frame_id))
+        self._last_visual_t, self._last_visual_frame = t, frame_id
+        command = dict(t=t, kind='hold')
+        return command, dict(t=t, frame_id=frame_id, pose=self.pose.tolist(),
+                             map_cells=len(self.grid.odds), map_updated=updated,
+                             status='visual_mapping_only' if updated else 'visual_observation_unavailable',
+                             command=command)
 
     def _rays(self,record,pose):
         from harness.self_map_csm import sample_segments
@@ -195,8 +245,12 @@ class ActiveMapper:
         self.events.append(dict(t=t,reason='information_decision',uncertain=uncertain,candidates=scored,
                                 selected=None if not scored else selected['kind']))
 
-    def receive(self,*,robot_id,t,frame_id,rgb,servo,observation):
+    def receive(self,*,robot_id,t,frame_id,rgb,servo,observation,visual_pose=None):
         if robot_id!=self.robot_id:raise ValueError('ACTIVE_PEER_INPUT_FORBIDDEN')
+        if self.visual_mapping:
+            return self._receive_visual(t, frame_id, observation, visual_pose)
+        if visual_pose is not None:
+            raise ValueError('ACTIVE_VISUAL_POSE_REQUIRES_VISUAL_MAPPING')
         grid=self.memory.self_map
         grid.odom.advance(t)
         if observation['segments']:

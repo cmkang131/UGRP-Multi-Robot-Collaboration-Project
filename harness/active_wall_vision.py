@@ -22,8 +22,13 @@ def modules():
 
 
 def observe(rgb,servo,*,body_settling=1.,wall_detector='off',contact_rule='off',
-            contact_state=None,frame_id=None,odometry_pose=None):
+            contact_state=None,frame_id=None,odometry_pose=None,
+            wall_verification='off',verification_state=None,robot_id=None,t=None,
+            camera_model=None):
     mp,hfw,ewm=modules()
+    if camera_model is not None:
+        from harness.wall_lens_residual import bind_camera
+        mp=bind_camera(mp,camera_model)
     origin,rotation=camera_transform(servo)
     cm=mp.ColumnModel(tuple(sorted(servo.items())),0.,mp.column_positions(96,2),camera_transform=(origin,rotation))
     params={'floor_patch_max_m':.81,'run_step_window':3,'top_edge_px':4}
@@ -35,8 +40,12 @@ def observe(rgb,servo,*,body_settling=1.,wall_detector='off',contact_rule='off',
         grey=cv2.cvtColor(und,cv2.COLOR_BGR2GRAY).astype(float)
         return und,scan,grey
     from harness.e2e_exact_speedups2 import wall_frontend
-    und,scan,grey=wall_frontend(compute,rgb,servo=servo,origin=origin,rotation=rotation,params=params,loaded=False,
-        wall_detector=wall_detector,contact_rule=contact_rule,contact_state=contact_state,mp=mp,hfw=hfw)
+    if camera_model is None:
+        und,scan,grey=wall_frontend(compute,rgb,servo=servo,origin=origin,rotation=rotation,params=params,loaded=False,
+            wall_detector=wall_detector,contact_rule=contact_rule,contact_state=contact_state,mp=mp,hfw=hfw)
+    else:
+        # The legacy exact cache has no residual-lens key. Do not mix models.
+        und,scan,grey=compute()
     segments,features=[],[]
     for segment in hfw.link_segments(scan,params):
         r,a,s,b,_=ewm.segment_to_chassis(segment,cm.origin[:2],0.)
@@ -73,6 +82,12 @@ def observe(rgb,servo,*,body_settling=1.,wall_detector='off',contact_rule='off',
             points=origin+rays*depths[:,None]
         keep=(depths>0)&np.isfinite(points).all(1)&(np.linalg.norm(points-origin,axis=1)<4.)
         floor=points[keep,:2]
-    return dict(segments=np.asarray(valid).reshape(-1,2,2).tolist(),features=features,
+    legacy=dict(segments=np.asarray(valid).reshape(-1,2,2).tolist(),features=features,
                 floor_xy=floor.tolist(),camera=origin[:2].tolist(),camera_origin=origin.tolist(),
                 camera_rotation=rotation.tolist(),guard=guard)
+
+    if wall_verification=='off':
+        return legacy
+    from harness.strict_wall_motion import verify_output
+    return verify_output(legacy,wall_verification=wall_verification,state=verification_state,
+        rgb=rgb,servo=servo,robot_id=robot_id,frame_id=frame_id,t=t,camera_model=camera_model)
