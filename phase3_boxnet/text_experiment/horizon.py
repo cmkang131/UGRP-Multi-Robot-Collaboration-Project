@@ -29,6 +29,9 @@ def validate_horizon(horizon, framework=None):
 
 def available_actions(runtime):
     rows, cols = runtime.spec.rows, runtime.spec.cols
+    if getattr(runtime.spec, "env", "boxnet1") == "boxnet2":
+        from boxnet2 import available_actions as corner_actions
+        return corner_actions(rows, cols, runtime.state)
     actions = {}
     for i in range(rows):
         for j in range(cols):
@@ -38,8 +41,11 @@ def available_actions(runtime):
     return actions
 
 
-def check_joint(state, plan, available, returned_only):
+def check_joint(state, plan, available, returned_only, env="boxnet1"):
     """Keep the single-proposal check and close its silent malformed/off-board cases."""
+    if env == "boxnet2":
+        from boxnet2 import check_plan
+        return check_plan(plan, available)
     encoded = json.dumps(plan)
     try:
         feedback = plan_feedback(state, encoded, encoded, returned_only)
@@ -93,7 +99,7 @@ class PlanningRound:
         self.dialogue = ""
         self.returned_only = runtime.condition == "e2"
         self.available = available_actions(runtime)
-        self.agent_positions = {coordinates(key) for key in runtime.state}
+        self.agent_positions = {tuple(map(float, speaker_coordinates(robot))) for robot in runtime.robots}
         self.turns = {}
         self.log = dict(planning_round=number, first_step=first_step, plans_proposed=0, plans_executed=0,
                         effective_steps=0, empty_steps_skipped=0, discarded_steps=0,
@@ -151,7 +157,8 @@ class PlanningRound:
         prompt = matched.build_prompt(spec.rows, spec.cols, rt.state, self.history[0], self.history[1],
             horizon=spec.horizon, history_method=self.method, history_window=spec.history_window,
             state_position=spec.state_position, robot=robot, block=block, earlier=earlier, returned_only=self.returned_only,
-            announcement=notice, dropoff_rule=spec.dropoff_rule, plan_note=spec.plan_note, failed_writer=spec.failed_writer)
+            announcement=notice, dropoff_rule=spec.dropoff_rule, plan_note=spec.plan_note, failed_writer=spec.failed_writer,
+            env=spec.env)
         prompt = rt.relay.insert(prompt, speaker, role)
         return Turn(speaker, [prompt], initial_peers=json.dumps(earlier) if self.idle else None, members=members)
 
@@ -215,7 +222,7 @@ class PlanningRound:
             reader = None
             if self.spec.cut_answer == "prefix":
                 reader = partial(cut_reply_prefix, horizon=self.spec.horizon, own=self.own, speaker=turn.speaker,
-                                 agent_positions={speaker_coordinates(name) for name in turn.members})
+                                 agent_positions={speaker_coordinates(name) for name in turn.members}, syntax=rt.parser.syntax)
             reply, _ = rt.session.call(messages, scope=scope, prefix_reader=reader)
         finally:
             if self.matched and repair and rt.session.cursor > previous:
@@ -300,7 +307,7 @@ class PlanningRound:
             plan = first
             if self.own:
                 plan = {turn.speaker: first} if first is not None else {}
-            turn.feedback, bad = check_joint(rt.state, plan, self.available, self.returned_only)
+            turn.feedback, bad = check_joint(rt.state, plan, self.available, self.returned_only, self.spec.env)
             status = "invalid" if turn.feedback else "valid"
             if self.multi_writer and turn.feedback:
                 if self.own and not self.matched:
@@ -497,26 +504,38 @@ class PlanningRound:
                 self.log["empty_steps_skipped"] += 1
                 continue
             available = self.available if position == 1 else available_actions(rt)
-            feedback, bad = check_joint(rt.state, plan, available, self.returned_only)
+            feedback, bad = check_joint(rt.state, plan, available, self.returned_only, self.spec.env)
             if feedback:
                 self.log.update(stop_reason="invalid", invalid_position=position, feedback=feedback,
                                 discarded_steps=len(plans) - position + 1,
                                 rejected_actions=bad, rejected_calls={agent: self.action_call(agent) for agent in bad})
                 return
-            applied = []
-            feedback, state = action_from_response(rt.state, plan, applied, returned_only=self.returned_only)
-            if feedback or len(applied) != len(plan):
-                raise ValueError("BoxNet1 executor disagrees with its checked doable actions")
             first_executed = self.log["plans_executed"] == 0
             step = len(states)
             if not first_executed:
                 rt.begin_iteration(step, continuation=True)
             row = rt.iterations[-1]
+            executed_plan = plan
+            if self.spec.env == "boxnet2":
+                from boxnet2 import execute
+                result = execute(rt.state, plan, self.spec.collision, step)
+                row["collisions"] = result.collisions
+                if result.failed:
+                    row.update(issued_plan=plan, applied_actions=[], execution_feedback=result.feedback)
+                    self.log.update(stop_reason="collision", discarded_steps=len(plans) - position + 1)
+                    raise StopEpisode("collision")
+                state, applied, feedback = result.state, result.applied, result.feedback
+                executed_plan = {robot: plan[robot] for robot in result.robots}
+            else:
+                applied = []
+                feedback, state = action_from_response(rt.state, plan, applied, returned_only=self.returned_only)
+                if feedback or len(applied) != len(plan):
+                    raise ValueError("BoxNet1 executor disagrees with its checked doable actions")
             if self.multi_writer:
-                row["action_calls"] = {agent: self.action_call(agent) for agent in plan}
+                row["action_calls"] = {agent: self.action_call(agent) for agent in executed_plan}
             plan_call = None if self.multi_writer else self.log["final_call"]
             state = rt.executed(state, plan, applied, feedback, plan_call)
-            responses.append(json.dumps(plan))
+            responses.append(json.dumps(executed_plan))
             states.append(state)
             dialogues.append(transcript if first_executed else "")
             (self.folder / "response" / f"response{step}.json").write_text(responses[-1])
@@ -545,6 +564,10 @@ class PlanningRound:
         if self.log["stop_reason"] == "invalid":
             self.log["stall_cause"] = WRITER_CAUSES["invalid"]
             return "Syntactic Error"
+        if self.spec.env == "boxnet2" and any(
+                it.get("collisions") for it in self.rt.iterations if it["planning_round"] == self.log["planning_round"]):
+            self.log["stall_cause"] = "all actions cancelled by collision"
+            return "stalled after collisions"
         for event in reversed(self.log["writer_blocked"]):
             if event["required"]:
                 self.log.update(stall_cause=event["cause"], stall_call=event["call"])

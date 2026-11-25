@@ -13,9 +13,23 @@ COORD = r"(\d+(?:\.\d+)?)"
 COORD_PAIR = rf"\[\s*{COORD}\s*,\s*{COORD}\s*\]"
 PLAN_AGENT = re.compile("Agent" + COORD_PAIR)
 STEP_KEY = re.compile(r"(?:step\s+)?(0*[1-9][0-9]*)", re.IGNORECASE)
-OWN_MOVE = re.compile(r"move\((box_\w+),\s(?:(target_\w+|dropoff(?:_\w+)?)|square" + COORD_PAIR + r")\)")
-SPACED_MOVE = re.compile(r"move\s*\(\s*(box_\w+)\s*,\s*(?:(target_\w+|dropoff(?:_\w+)?)|square\s*"
-                         + COORD_PAIR + r")\s*\)")
+@dataclass(frozen=True)
+class MoveSyntax:
+    place: str
+    strict: re.Pattern
+    spaced: re.Pattern
+
+
+def move_syntax(place, sites):
+    strict = re.compile(r"move\((box_\w+),\s(?:(" + sites + ")|" + place + COORD_PAIR + r")\)")
+    spaced = re.compile(r"move\s*\(\s*(box_\w+)\s*,\s*(?:(" + sites + ")|" + place + r"\s*"
+                        + COORD_PAIR + r")\s*\)")
+    return MoveSyntax(place, strict, spaced)
+
+
+SQUARE_MOVES = move_syntax("square", r"target_\w+|dropoff(?:_\w+)?")
+CORNER_MOVES = move_syntax("position", r"target_\w+")
+OWN_MOVE, SPACED_MOVE = SQUARE_MOVES.strict, SQUARE_MOVES.spaced
 OWN_FORMS = ("list", "nested", "self_dict", "string", "fenced")
 JSON_NULL = re.compile(r"\bnull\b")
 UNUSABLE = object()
@@ -173,8 +187,8 @@ def embedded_values(text, *, own=False, prior_shapes=False, decoder=DECODER, kee
                     yield prefix
 
 
-def own_entry(value):
-    return value is None or (isinstance(value, str) and OWN_MOVE.fullmatch(value) is not None)
+def own_entry(value, syntax=SQUARE_MOVES):
+    return value is None or (isinstance(value, str) and syntax.strict.fullmatch(value) is not None)
 
 
 def speaker_coordinates(name):
@@ -198,7 +212,7 @@ def foreign_agent(value, allowed):
     return None
 
 
-def as_sequence(value, horizon, own, lenient, *, agent_positions=None, format_errors=None, prior_shapes=False):
+def as_sequence(value, horizon, own, lenient, *, agent_positions=None, format_errors=None, prior_shapes=False, syntax=SQUARE_MOVES):
     if not own and lenient and isinstance(value, dict):
         steps = [] if prior_shapes else [STEP_KEY.fullmatch(k.strip()) for k in value]
         if steps and all(steps):
@@ -217,7 +231,7 @@ def as_sequence(value, horizon, own, lenient, *, agent_positions=None, format_er
     if not isinstance(value, list) or len(value) > horizon:
         return None
     if own:
-        if len(value) != horizon or not all(own_entry(v) for v in value):
+        if len(value) != horizon or not all(own_entry(v, syntax) for v in value):
             return None
     else:
         for plan in value:
@@ -249,7 +263,7 @@ class OwnReply:
         return self.form != "list" or self.padded or self.cut or self.normalized or self.invalid_position is not None
 
 
-def normalize_own_entry(value, speaker=None, diagnostic=None, *, matched_shapes=False):
+def normalize_own_entry(value, speaker=None, diagnostic=None, *, matched_shapes=False, syntax=SQUARE_MOVES):
     if isinstance(value, dict):
         if not value:
             return None if matched_shapes else UNUSABLE
@@ -267,24 +281,24 @@ def normalize_own_entry(value, speaker=None, diagnostic=None, *, matched_shapes=
             return UNUSABLE
         if matched_shapes and value == {}:
             return None
-    if own_entry(value):
+    if own_entry(value, syntax):
         return value
     if not isinstance(value, str):
         return UNUSABLE
     text = value.strip()
     if text.lower() in ("", "null", "none", "wait") or (matched_shapes and text.lower() in ("idle", "{}")):
         return None
-    match = SPACED_MOVE.fullmatch(text)
+    match = syntax.spaced.fullmatch(text)
     if match is None:
         return UNUSABLE
     box, site, row, col = match.groups()
     if row is not None:
-        site = f"square[{row}, {col}]"
+        site = f"{syntax.place}[{row}, {col}]"
     return f"move({box}, {site})"
 
 
 def own_value(value, horizon, speaker, *, embedded=False, normalized=False, prior_shapes=False, diagnostic=None,
-              matched_shapes=False, pad_to_horizon=True):
+              matched_shapes=False, pad_to_horizon=True, syntax=SQUARE_MOVES):
     form = "fenced" if embedded else "list"
     if isinstance(value, dict):
         if not matched_shapes:
@@ -305,7 +319,7 @@ def own_value(value, horizon, speaker, *, embedded=False, normalized=False, prio
             if speaker_coordinates(name) == speaker_coordinates(speaker or "") and isinstance(wrapped, list):
                 value, form = wrapped, "self_dict"
             else:
-                entry = normalize_own_entry(value, speaker, diagnostic, matched_shapes=matched_shapes)
+                entry = normalize_own_entry(value, speaker, diagnostic, matched_shapes=matched_shapes, syntax=syntax)
                 if horizon != 1:
                     if diagnostic is not None:
                         diagnostic.setdefault("reason", "wrong_length")
@@ -318,8 +332,8 @@ def own_value(value, horizon, speaker, *, embedded=False, normalized=False, prio
             return None
     elif not isinstance(value, list):
         if prior_shapes:
-            return OwnReply([value], "string") if horizon == 1 and own_entry(value) else None
-        entry = normalize_own_entry(value, speaker, diagnostic, matched_shapes=matched_shapes)
+            return OwnReply([value], "string") if horizon == 1 and own_entry(value, syntax) else None
+        entry = normalize_own_entry(value, speaker, diagnostic, matched_shapes=matched_shapes, syntax=syntax)
         if entry is None:
             length = horizon if pad_to_horizon else 1
             return OwnReply([None] * length, "string", padded=length > 1)
@@ -336,14 +350,14 @@ def own_value(value, horizon, speaker, *, embedded=False, normalized=False, prio
             value = [entry[0] if isinstance(entry, list) and len(entry) == 1 else UNUSABLE for entry in value]
         if form != "self_dict":
             form = "nested"
-    if prior_shapes and not all(own_entry(entry) for entry in value):
+    if prior_shapes and not all(own_entry(entry, syntax) for entry in value):
         return None
     size = len(value)
     object_entries = any(isinstance(raw, dict) for raw in value)
     entries = []
     invalid_position = None
     for position, raw in enumerate(value, 1):
-        entry = normalize_own_entry(raw, speaker, diagnostic, matched_shapes=matched_shapes)
+        entry = normalize_own_entry(raw, speaker, diagnostic, matched_shapes=matched_shapes, syntax=syntax)
         if entry is UNUSABLE:
             if matched_shapes and diagnostic is not None and diagnostic.get("reason") == "foreign_agent":
                 return None
@@ -367,7 +381,7 @@ def own_value(value, horizon, speaker, *, embedded=False, normalized=False, prio
                     invalid_position=invalid_position, normalized=normalized)
 
 
-def read_own_reply(reply, horizon, speaker, mode, *, prior_shapes=False, matched_shapes=False, pad_to_horizon=True):
+def read_own_reply(reply, horizon, speaker, mode, *, prior_shapes=False, matched_shapes=False, pad_to_horizon=True, syntax=SQUARE_MOVES):
     """Return an OWN parse plus a stable accepted/refusal shape record."""
     diagnostic = {}
 
@@ -410,19 +424,19 @@ def read_own_reply(reply, horizon, speaker, mode, *, prior_shapes=False, matched
                         break
                     diagnostic.update(reason="entry_type", detail=f"entry {position} is an object; use an action string or null")
                     break
-                if not own_entry(entry):
+                if not own_entry(entry, syntax):
                     diagnostic.update(reason="entry_type", detail=f"entry {position} is not an action string or null")
                     break
-        entries = as_sequence(value, horizon, own=True, lenient=False)
+        entries = as_sequence(value, horizon, own=True, lenient=False, syntax=syntax)
         return result(OwnReply(entries, "list") if entries is not None else None)
 
     read_value = partial(own_value, horizon=horizon, speaker=speaker, diagnostic=diagnostic,
-                         matched_shapes=matched_shapes, pad_to_horizon=pad_to_horizon)
+                         matched_shapes=matched_shapes, pad_to_horizon=pad_to_horizon, syntax=syntax)
     try:
         value, normalized = (OWN_DECODER.decode(reply), False) if prior_shapes else decode_own_value(reply.strip())
     except (ValueError, RecursionError):
         text = reply.rsplit("EXECUTE", 1)[-1].strip()
-        if horizon == 1 and (OWN_MOVE if prior_shapes else SPACED_MOVE).fullmatch(text):
+        if horizon == 1 and (syntax.strict if prior_shapes else syntax.spaced).fullmatch(text):
             return result(read_value(text))
         prefix = None if prior_shapes else own_prefix(text, keep_tail=matched_shapes)
         if prefix is not None:
@@ -452,7 +466,7 @@ def parse_own_reply(reply, horizon, speaker, mode, *, prior_shapes=False):
     return read_own_reply(reply, horizon, speaker, mode, prior_shapes=prior_shapes)[0]
 
 
-def matched_joint_value(value, horizon, mode, positions):
+def matched_joint_value(value, horizon, mode, positions, syntax=SQUARE_MOVES):
     """Validate one complete joint submission, including its scope and optional lenient envelope."""
     strict = mode == "strict"
     if positions is not None:
@@ -489,7 +503,7 @@ def matched_joint_value(value, horizon, mode, positions):
             if robot in seen:
                 return None, ReplyShape(None, False, "duplicate_agent", f"{name} is assigned twice in entry {index}.")
             seen.add(robot)
-            if not isinstance(action, str) or (strict and OWN_MOVE.fullmatch(action) is None):
+            if not isinstance(action, str) or (strict and syntax.strict.fullmatch(action) is None):
                 return None, ReplyShape(None, False, "entry_type", f"Entry {index} needs an action string for {name}.")
     if not value or len(value) > horizon or (strict and len(value) != horizon):
         expected = str(horizon) if strict or horizon == 1 else f"1 to {horizon}"
@@ -497,14 +511,14 @@ def matched_joint_value(value, horizon, mode, positions):
     return value, ReplyShape(form, True)
 
 
-def read_matched_joint(reply, horizon, mode, positions):
+def read_matched_joint(reply, horizon, mode, positions, syntax=SQUARE_MOVES):
     try:
         value = OWN_DECODER.decode(reply)
     except json.JSONDecodeError:
         if mode == "lenient":
             selected = error = None
             for candidate in embedded_values(reply.rsplit("EXECUTE", 1)[-1], decoder=OWN_DECODER):
-                entries, shape = matched_joint_value(candidate, horizon, mode, positions)
+                entries, shape = matched_joint_value(candidate, horizon, mode, positions, syntax)
                 if shape.reason == "foreign_agent":
                     return None, shape
                 if entries is None:
@@ -520,7 +534,7 @@ def read_matched_joint(reply, horizon, mode, positions):
         return None, ReplyShape(None, False, "unreadable", "The reply contains no readable JSON plan.")
     except (ValueError, RecursionError) as exc:
         return None, ReplyShape(None, False, "unreadable", str(exc))
-    return matched_joint_value(value, horizon, mode, positions)
+    return matched_joint_value(value, horizon, mode, positions, syntax)
 
 
 _SPACE = re.compile(r"\s*")
@@ -618,7 +632,7 @@ def _cut_container(text, own, speaker):
     return text[:last] + "}" if last else None
 
 
-def cut_reply_prefix(reply, horizon, *, own, speaker, agent_positions):
+def cut_reply_prefix(reply, horizon, *, own, speaker, agent_positions, syntax=SQUARE_MOVES):
     """Return the short writer reply and its unpadded step count, or no usable prefix."""
     text = reply.rsplit("EXECUTE", 1)[-1].strip()
     for fragment, closed in embedded_fragments(text, own=own, cut=True):
@@ -629,11 +643,11 @@ def cut_reply_prefix(reply, horizon, *, own, speaker, agent_positions):
     # The configured judge still sees the writer's short reply (including its
     # envelope), so strict length/format checks and ordinary repairs still apply.
     if own:
-        parsed, _ = read_own_reply(text, horizon, speaker, "lenient", matched_shapes=True, pad_to_horizon=False)
+        parsed, _ = read_own_reply(text, horizon, speaker, "lenient", matched_shapes=True, pad_to_horizon=False, syntax=syntax)
         if parsed and parsed.entries:
             return text, len(parsed.entries)
     else:
-        steps, _ = read_matched_joint(text, horizon, "lenient", agent_positions)
+        steps, _ = read_matched_joint(text, horizon, "lenient", agent_positions, syntax)
         if steps:
             return text, len(steps)
     return None
@@ -653,9 +667,10 @@ def first_object(reply):
 
 
 class PlanParser:
-    def __init__(self, mode="lenient", mark_rescue=None, *, record_own=None, record_shape=None):
+    def __init__(self, mode="lenient", mark_rescue=None, *, record_own=None, record_shape=None, syntax=SQUARE_MOVES):
         if mode not in ("lenient", "strict"):
             raise ValueError(f"Unknown parse mode {mode}")
+        self.syntax = syntax
         self.mode = mode
         self.mark_rescue = mark_rescue
         self.record_own = record_own
@@ -700,7 +715,7 @@ class PlanParser:
         """Select a joint sequence or the submitting robot's own entries."""
         if own and not legacy_own:
             parsed, shape = read_own_reply(reply, horizon, speaker, self.mode, prior_shapes=prior_shapes,
-                                           matched_shapes=matched_shape)
+                                           matched_shapes=matched_shape, syntax=self.syntax)
             self._shape(shape, matched_shape)
             if self.record_own is not None:
                 self.record_own(parsed)
@@ -708,7 +723,7 @@ class PlanParser:
                 self.mark_rescue()
             return parsed.entries if parsed else None
         if matched_shape:
-            entries, shape = read_matched_joint(reply, horizon, self.mode, agent_positions)
+            entries, shape = read_matched_joint(reply, horizon, self.mode, agent_positions, self.syntax)
             self._shape(shape, True)
             if entries is None and format_errors is not None:
                 format_errors.append(shape.detail or shape.reason)

@@ -59,6 +59,11 @@ def read_json(path):
 
 
 def snapshot(source, destination, expected):
+    # The unmodified v21 driver addresses source snapshots by their published names.
+    if source.parent == ROOT and destination.parent.name == "source" and source.name in PROTOCOL_SOURCES:
+        legacy = source_path(source.name, "boxnet1")
+        if legacy != source and digest(legacy.read_bytes()) == expected:
+            source = legacy
     raw = source.read_bytes()
     if digest(raw) != expected:
         raise ValueError(f"Input changed during snapshot: {source}")
@@ -79,14 +84,26 @@ PROTOCOL_SOURCES = ("run_chen2d.py", "env1-box-arrange.py", "env1_create.py", "p
                     "map_sets.py", "matched_protocol.py", "board_sizes.py")
 
 
-def source_hashes():
-    return {name: digest((ROOT / name).read_bytes()) for name in PROTOCOL_SOURCES}
+BOXNET2_SOURCES = (*PROTOCOL_SOURCES, "boxnet2.py", "boxnet2_maps.py", "boxnet2_planning.py")
+
+
+def source_path(name, env="boxnet1"):
+    """Resolve a published source name in its executable protocol revision."""
+    legacy = ROOT / "protocol_boxnet1" / name
+    if env == "boxnet1" and legacy.is_file():
+        return legacy
+    return ROOT / name
+
+
+def source_hashes(env="boxnet1"):
+    sources = BOXNET2_SOURCES if env == "boxnet2" else PROTOCOL_SOURCES
+    return {name: digest(source_path(name, env).read_bytes()) for name in sources}
 
 
 def version_from_hashes(hashes):
     return digest(json.dumps(hashes, sort_keys=True, separators=(",", ":")).encode())[:12]
 
 
-@lru_cache(maxsize=1)
-def code_version():
-    return version_from_hashes(source_hashes())
+@lru_cache(maxsize=2)
+def code_version(env="boxnet1"):
+    return version_from_hashes(source_hashes(env))

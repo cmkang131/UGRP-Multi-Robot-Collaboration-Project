@@ -79,6 +79,11 @@ def run_settings(out):
     if not path.is_file():
         raise ValueError(f"Missing run.json in {out}")
     config = read_json(path)
+    env = config.get("env", "boxnet1")
+    if (env not in ("boxnet1", "boxnet2") or
+            (env == "boxnet2" and config.get("collision") not in ("skip", "fail")) or
+            (env == "boxnet1" and "collision" in config)):
+        raise ValueError(f"Invalid environment or collision policy in {path}")
     if config.get("protocol", "legacy") not in ("legacy", "matched"):
         raise ValueError(f"Invalid protocol in {path}")
     if "map_set" in config:
@@ -132,6 +137,8 @@ def run_settings(out):
 
 
 def check_planning_settings(record, settings, location):
+    if (record.get("env", "boxnet1"), record.get("collision")) != (settings.get("env", "boxnet1"), settings.get("collision")):
+        raise ValueError(f"Mixed environment or collision policy in {location}")
     position = settings.get("state_position", "before")
     protocol = settings.get("protocol", "legacy")
     validate_board(record["size"], record.get("map_set", "legacy"), protocol, (record["condition"],))
@@ -322,6 +329,8 @@ def episode_csv(out):
         with atomic_file(out / "episodes.csv") as handle:
             settings = run_settings(out)
             columns = [*COLUMNS]
+            if settings.get("env") == "boxnet2":
+                columns.extend(("env", "collision", "collision_cancelled_moves"))
             if "map_set" in settings:
                 columns.extend(("map_set", "boxes_per_robot", "box_count", "protocol"))
             if settings.get("protocol") == "matched":
@@ -575,6 +584,8 @@ def main():
         fixed = [{k: v for k, v in c.items() if k not in grouped_fields} for c in configs]
         if any(c != fixed[0] for c in fixed):
             raise ValueError("Run settings differ across the supplied directories")
+        if configs[0].get("env") == "boxnet2":
+            print(f'BoxNet2 · collision {configs[0]["collision"]}')
         rows, planned, missing = [], Counter(), defaultdict(Counter)
         for out in outs:
             recorded = episode_csv(out)

@@ -7,6 +7,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 TABLE = ROOT / "scenes" / "trials.csv"
 TRIAL_TABLES = (TABLE.name, "trials-swapped.csv")
+STATION_TILT_MODES = ("strict", "ignore")
 DEPTH, HALF_SPAN, OPENING = 2.65, 1.35, 1.10
 WALL_HALF = 0.025
 RELEASE_STAND, SCAN_STAND = 0.31, 0.80

@@ -19,7 +19,7 @@ from matched_protocol import GROUP_WRITER, JOINT_FORMAT, JOINT_WRITER, OWN_FORMA
 from planning_metrics import CUTOFF_SPLITS, MATCHED_CALL_CAP, MATCHED_ENV_CAP, MATCHED_ROUND_CAP
 from probe_reading import ARMS, SavedState, build_prompt, judge_reply, run as run_probe, summarize
 from prompt_env1 import OWN_DIALOGUE
-from storage import ROOT, digest, json_text, read_json, source_hashes, write_json
+from storage import ROOT, digest, json_text, read_json, source_hashes, source_path, write_json
 from test_chen2d import calls, fixture_spec
 from test_chen2d_v3 import scripted_transport
 from test_chen2d_v4 import cli
@@ -311,8 +311,9 @@ with (patch('episode.time', SimpleNamespace(monotonic=lambda: 0.0)),
             tree = self.work / label
             tree.mkdir()
             for name, sha in manifest.items():
-                self.assertEqual(digest((source / name).read_bytes()), sha)
-                shutil.copyfile(source / name, tree / name)
+                registered = source_path(name) if source == ROOT else source / name
+                self.assertEqual(digest(registered.read_bytes()), sha)
+                shutil.copyfile(registered, tree / name)
             # Keep option defaults, with one designated map/condition and offline transport.
             # Omission of --frameworks exercises the actual native and matched defaults.
             for run, opts in (("native", []), ("own", ["--frameworks", "OWN"]), ("matched", ["--protocol", "matched"])):

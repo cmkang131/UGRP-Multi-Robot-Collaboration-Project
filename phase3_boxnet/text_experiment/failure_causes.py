@@ -205,7 +205,7 @@ def classify(row, calls, states=None):
     cuts = [[was_truncated(a) for a in c["attempts"]] for c in planning]
     terminal_cutoff = bool(cuts and cuts[-1]) and all(cuts[-1]) and not planning[-1].get("cut_answer_salvaged")
     iterations = row["iterations"]
-    if row.get("horizon", 1) > 1 or row.get("framework") in ("OWN", "GROUP"):
+    if row.get("env") == "boxnet2" or row.get("horizon", 1) > 1 or row.get("framework") in ("OWN", "GROUP"):
         rounds = row["round_log"]
         steps = [b["planning_round"] for b in rounds]
         env_step = {b["planning_round"]: b["first_step"] for b in rounds}

@@ -1,0 +1,743 @@
+{
+  "1x3": {
+    "baselines": {
+      "parallel_coordinated": {
+        "runs": 16,
+        "completed": 16,
+        "maps": 16,
+        "maps_any": 16,
+        "maps_all": 16,
+        "clean_completions": 16,
+        "failures": {},
+        "steps": {
+          "n": 16,
+          "median": 3.0,
+          "min": 1,
+          "max": 4
+        },
+        "steps_completed": {
+          "n": 16,
+          "median": 3.0,
+          "min": 1,
+          "max": 4
+        },
+        "cancelled_moves": {
+          "n": 16,
+          "median": 0.0,
+          "min": 0,
+          "max": 0
+        },
+        "completions_per_map": {
+          "n": 16,
+          "median": 1.0,
+          "min": 1,
+          "max": 1
+        }
+      },
+      "independent_local": {
+        "runs": 16,
+        "completed": 14,
+        "maps": 16,
+        "maps_any": 14,
+        "maps_all": 14,
+        "clean_completions": 14,
+        "failures": {
+          "livelock": 2
+        },
+        "steps": {
+          "n": 16,
+          "median": 3.0,
+          "min": 1,
+          "max": 40
+        },
+        "steps_completed": {
+          "n": 14,
+          "median": 3.0,
+          "min": 1,
+          "max": 4
+        },
+        "cancelled_moves": {
+          "n": 16,
+          "median": 0.0,
+          "min": 0,
+          "max": 80
+        },
+        "completions_per_map": {
+          "n": 16,
+          "median": 1.0,
+          "min": 0,
+          "max": 1
+        }
+      },
+      "ignores_occupancy": {
+        "runs": 16,
+        "completed": 13,
+        "maps": 16,
+        "maps_any": 13,
+        "maps_all": 13,
+        "clean_completions": 12,
+        "failures": {
+          "livelock": 3
+        },
+        "steps": {
+          "n": 16,
+          "median": 3.0,
+          "min": 1,
+          "max": 40
+        },
+        "steps_completed": {
+          "n": 13,
+          "median": 3,
+          "min": 1,
+          "max": 4
+        },
+        "cancelled_moves": {
+          "n": 16,
+          "median": 0.0,
+          "min": 0,
+          "max": 80
+        },
+        "completions_per_map": {
+          "n": 16,
+          "median": 1.0,
+          "min": 0,
+          "max": 1
+        }
+      },
+      "independent_local_random": {
+        "runs": 320,
+        "completed": 320,
+        "maps": 16,
+        "maps_any": 16,
+        "maps_all": 16,
+        "clean_completions": 294,
+        "failures": {},
+        "steps": {
+          "n": 320,
+          "median": 3.0,
+          "min": 1,
+          "max": 8
+        },
+        "steps_completed": {
+          "n": 320,
+          "median": 3.0,
+          "min": 1,
+          "max": 8
+        },
+        "cancelled_moves": {
+          "n": 320,
+          "median": 0.0,
+          "min": 0,
+          "max": 4
+        },
+        "completions_per_map": {
+          "n": 16,
+          "median": 20.0,
+          "min": 20,
+          "max": 20
+        }
+      },
+      "boxnet1_reference": {
+        "runs": 16,
+        "completed": 16,
+        "maps": 16,
+        "maps_any": 16,
+        "maps_all": 16,
+        "clean_completions": 16,
+        "failures": {},
+        "steps": {
+          "n": 16,
+          "median": 3.5,
+          "min": 2,
+          "max": 5
+        },
+        "steps_completed": {
+          "n": 16,
+          "median": 3.5,
+          "min": 2,
+          "max": 5
+        },
+        "cancelled_moves": {
+          "n": 16,
+          "median": 0.0,
+          "min": 0,
+          "max": 0
+        },
+        "completions_per_map": {
+          "n": 16,
+          "median": 1.0,
+          "min": 1,
+          "max": 1
+        }
+      },
+      "exact_joint": {
+        "runs": 16,
+        "completed": 16,
+        "maps": 16,
+        "maps_any": 16,
+        "maps_all": 16,
+        "clean_completions": 16,
+        "failures": {},
+        "steps": {
+          "n": 16,
+          "median": 3.0,
+          "min": 1,
+          "max": 4
+        },
+        "steps_completed": {
+          "n": 16,
+          "median": 3.0,
+          "min": 1,
+          "max": 4
+        },
+        "cancelled_moves": {
+          "n": 16,
+          "median": 0.0,
+          "min": 0,
+          "max": 0
+        },
+        "completions_per_map": {
+          "n": 16,
+          "median": 1.0,
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    "difficulty": {
+      "min_corner_handovers": {
+        "n": 16,
+        "median": 2.0,
+        "min": 0,
+        "max": 4
+      },
+      "min_box_moves": {
+        "n": 16,
+        "median": 5.0,
+        "min": 3,
+        "max": 7
+      },
+      "min_robot_changes": {
+        "n": 16,
+        "median": 2.0,
+        "min": 0,
+        "max": 4
+      },
+      "min_box_moves_distinct": {
+        "n": 16,
+        "median": 5.0,
+        "min": 3,
+        "max": 7
+      },
+      "min_robot_changes_distinct": {
+        "n": 16,
+        "median": 2.0,
+        "min": 0,
+        "max": 4
+      },
+      "min_box_moves_fixed": {
+        "n": 11,
+        "median": 4,
+        "min": 3,
+        "max": 7
+      },
+      "min_robot_changes_fixed": {
+        "n": 11,
+        "median": 1,
+        "min": 0,
+        "max": 4
+      },
+      "min_box_moves_fixed_distinct": {
+        "n": 11,
+        "median": 4,
+        "min": 3,
+        "max": 7
+      },
+      "min_robot_changes_fixed_distinct": {
+        "n": 11,
+        "median": 1,
+        "min": 0,
+        "max": 4
+      },
+      "fixed_unreachable_boxes": {
+        "n": 16,
+        "median": 0.0,
+        "min": 0,
+        "max": 1
+      }
+    },
+    "parallel_minus_exact": {
+      "n": 16,
+      "median": 0.0,
+      "min": 0,
+      "max": 1
+    }
+  },
+  "2x3": {
+    "baselines": {
+      "parallel_coordinated": {
+        "runs": 16,
+        "completed": 16,
+        "maps": 16,
+        "maps_any": 16,
+        "maps_all": 16,
+        "clean_completions": 16,
+        "failures": {},
+        "steps": {
+          "n": 16,
+          "median": 4.0,
+          "min": 2,
+          "max": 6
+        },
+        "steps_completed": {
+          "n": 16,
+          "median": 4.0,
+          "min": 2,
+          "max": 6
+        },
+        "cancelled_moves": {
+          "n": 16,
+          "median": 0.0,
+          "min": 0,
+          "max": 0
+        },
+        "completions_per_map": {
+          "n": 16,
+          "median": 1.0,
+          "min": 1,
+          "max": 1
+        }
+      },
+      "independent_local": {
+        "runs": 16,
+        "completed": 8,
+        "maps": 16,
+        "maps_any": 8,
+        "maps_all": 8,
+        "clean_completions": 8,
+        "failures": {
+          "livelock": 8
+        },
+        "steps": {
+          "n": 16,
+          "median": 23.0,
+          "min": 2,
+          "max": 40
+        },
+        "steps_completed": {
+          "n": 8,
+          "median": 4.0,
+          "min": 2,
+          "max": 6
+        },
+        "cancelled_moves": {
+          "n": 16,
+          "median": 39.0,
+          "min": 0,
+          "max": 158
+        },
+        "completions_per_map": {
+          "n": 16,
+          "median": 0.5,
+          "min": 0,
+          "max": 1
+        }
+      },
+      "ignores_occupancy": {
+        "runs": 16,
+        "completed": 10,
+        "maps": 16,
+        "maps_any": 10,
+        "maps_all": 10,
+        "clean_completions": 7,
+        "failures": {
+          "livelock": 6
+        },
+        "steps": {
+          "n": 16,
+          "median": 5.0,
+          "min": 2,
+          "max": 40
+        },
+        "steps_completed": {
+          "n": 10,
+          "median": 4.0,
+          "min": 2,
+          "max": 6
+        },
+        "cancelled_moves": {
+          "n": 16,
+          "median": 3.0,
+          "min": 0,
+          "max": 200
+        },
+        "completions_per_map": {
+          "n": 16,
+          "median": 1.0,
+          "min": 0,
+          "max": 1
+        }
+      },
+      "independent_local_random": {
+        "runs": 320,
+        "completed": 320,
+        "maps": 16,
+        "maps_any": 16,
+        "maps_all": 16,
+        "clean_completions": 186,
+        "failures": {},
+        "steps": {
+          "n": 320,
+          "median": 5.0,
+          "min": 2,
+          "max": 28
+        },
+        "steps_completed": {
+          "n": 320,
+          "median": 5.0,
+          "min": 2,
+          "max": 28
+        },
+        "cancelled_moves": {
+          "n": 320,
+          "median": 0.0,
+          "min": 0,
+          "max": 55
+        },
+        "completions_per_map": {
+          "n": 16,
+          "median": 20.0,
+          "min": 20,
+          "max": 20
+        }
+      },
+      "boxnet1_reference": {
+        "runs": 16,
+        "completed": 16,
+        "maps": 16,
+        "maps_any": 16,
+        "maps_all": 16,
+        "clean_completions": 16,
+        "failures": {},
+        "steps": {
+          "n": 16,
+          "median": 5.0,
+          "min": 4,
+          "max": 8
+        },
+        "steps_completed": {
+          "n": 16,
+          "median": 5.0,
+          "min": 4,
+          "max": 8
+        },
+        "cancelled_moves": {
+          "n": 16,
+          "median": 0.0,
+          "min": 0,
+          "max": 0
+        },
+        "completions_per_map": {
+          "n": 16,
+          "median": 1.0,
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    "difficulty": {
+      "min_corner_handovers": {
+        "n": 16,
+        "median": 3.5,
+        "min": 2,
+        "max": 8
+      },
+      "min_box_moves": {
+        "n": 16,
+        "median": 9.5,
+        "min": 7,
+        "max": 13
+      },
+      "min_robot_changes": {
+        "n": 16,
+        "median": 3.5,
+        "min": 1,
+        "max": 7
+      },
+      "min_box_moves_distinct": {
+        "n": 16,
+        "median": 9.5,
+        "min": 8,
+        "max": 14
+      },
+      "min_robot_changes_distinct": {
+        "n": 16,
+        "median": 3.5,
+        "min": 2,
+        "max": 8
+      },
+      "min_box_moves_fixed": {
+        "n": 5,
+        "median": 9,
+        "min": 8,
+        "max": 14
+      },
+      "min_robot_changes_fixed": {
+        "n": 5,
+        "median": 3,
+        "min": 2,
+        "max": 8
+      },
+      "min_box_moves_fixed_distinct": {
+        "n": 5,
+        "median": 9,
+        "min": 8,
+        "max": 14
+      },
+      "min_robot_changes_fixed_distinct": {
+        "n": 5,
+        "median": 3,
+        "min": 2,
+        "max": 8
+      },
+      "fixed_unreachable_boxes": {
+        "n": 16,
+        "median": 1.0,
+        "min": 0,
+        "max": 4
+      }
+    },
+    "parallel_minus_exact": {
+      "n": 0
+    }
+  },
+  "3x3": {
+    "baselines": {
+      "parallel_coordinated": {
+        "runs": 16,
+        "completed": 16,
+        "maps": 16,
+        "maps_any": 16,
+        "maps_all": 16,
+        "clean_completions": 16,
+        "failures": {},
+        "steps": {
+          "n": 16,
+          "median": 5.0,
+          "min": 3,
+          "max": 7
+        },
+        "steps_completed": {
+          "n": 16,
+          "median": 5.0,
+          "min": 3,
+          "max": 7
+        },
+        "cancelled_moves": {
+          "n": 16,
+          "median": 0.0,
+          "min": 0,
+          "max": 0
+        },
+        "completions_per_map": {
+          "n": 16,
+          "median": 1.0,
+          "min": 1,
+          "max": 1
+        }
+      },
+      "independent_local": {
+        "runs": 16,
+        "completed": 8,
+        "maps": 16,
+        "maps_any": 8,
+        "maps_all": 8,
+        "clean_completions": 7,
+        "failures": {
+          "livelock": 8
+        },
+        "steps": {
+          "n": 16,
+          "median": 23.0,
+          "min": 4,
+          "max": 40
+        },
+        "steps_completed": {
+          "n": 8,
+          "median": 5.5,
+          "min": 4,
+          "max": 6
+        },
+        "cancelled_moves": {
+          "n": 16,
+          "median": 59.5,
+          "min": 0,
+          "max": 273
+        },
+        "completions_per_map": {
+          "n": 16,
+          "median": 0.5,
+          "min": 0,
+          "max": 1
+        }
+      },
+      "ignores_occupancy": {
+        "runs": 16,
+        "completed": 7,
+        "maps": 16,
+        "maps_any": 7,
+        "maps_all": 7,
+        "clean_completions": 1,
+        "failures": {
+          "livelock": 9
+        },
+        "steps": {
+          "n": 16,
+          "median": 40.0,
+          "min": 3,
+          "max": 40
+        },
+        "steps_completed": {
+          "n": 7,
+          "median": 6,
+          "min": 3,
+          "max": 7
+        },
+        "cancelled_moves": {
+          "n": 16,
+          "median": 77.5,
+          "min": 0,
+          "max": 196
+        },
+        "completions_per_map": {
+          "n": 16,
+          "median": 0.0,
+          "min": 0,
+          "max": 1
+        }
+      },
+      "independent_local_random": {
+        "runs": 320,
+        "completed": 313,
+        "maps": 16,
+        "maps_any": 16,
+        "maps_all": 15,
+        "clean_completions": 123,
+        "failures": {
+          "progress_timeout": 1,
+          "deadlock": 6
+        },
+        "steps": {
+          "n": 320,
+          "median": 7.0,
+          "min": 4,
+          "max": 40
+        },
+        "steps_completed": {
+          "n": 313,
+          "median": 7,
+          "min": 4,
+          "max": 19
+        },
+        "cancelled_moves": {
+          "n": 320,
+          "median": 2.0,
+          "min": 0,
+          "max": 105
+        },
+        "completions_per_map": {
+          "n": 16,
+          "median": 20.0,
+          "min": 13,
+          "max": 20
+        }
+      },
+      "boxnet1_reference": {
+        "runs": 16,
+        "completed": 16,
+        "maps": 16,
+        "maps_any": 16,
+        "maps_all": 16,
+        "clean_completions": 16,
+        "failures": {},
+        "steps": {
+          "n": 16,
+          "median": 7.0,
+          "min": 5,
+          "max": 11
+        },
+        "steps_completed": {
+          "n": 16,
+          "median": 7.0,
+          "min": 5,
+          "max": 11
+        },
+        "cancelled_moves": {
+          "n": 16,
+          "median": 0.0,
+          "min": 0,
+          "max": 0
+        },
+        "completions_per_map": {
+          "n": 16,
+          "median": 1.0,
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    "difficulty": {
+      "min_corner_handovers": {
+        "n": 16,
+        "median": 8.0,
+        "min": 3,
+        "max": 10
+      },
+      "min_box_moves": {
+        "n": 16,
+        "median": 16.0,
+        "min": 12,
+        "max": 18
+      },
+      "min_robot_changes": {
+        "n": 16,
+        "median": 7.0,
+        "min": 3,
+        "max": 9
+      },
+      "min_box_moves_distinct": {
+        "n": 16,
+        "median": 17.0,
+        "min": 12,
+        "max": 19
+      },
+      "min_robot_changes_distinct": {
+        "n": 16,
+        "median": 8.0,
+        "min": 3,
+        "max": 10
+      },
+      "min_box_moves_fixed": {
+        "n": 0
+      },
+      "min_robot_changes_fixed": {
+        "n": 0
+      },
+      "min_box_moves_fixed_distinct": {
+        "n": 0
+      },
+      "min_robot_changes_fixed_distinct": {
+        "n": 0
+      },
+      "fixed_unreachable_boxes": {
+        "n": 16,
+        "median": 3.0,
+        "min": 1,
+        "max": 6
+      }
+    },
+    "parallel_minus_exact": {
+      "n": 0
+    }
+  }
+}

@@ -13,7 +13,8 @@ PARENT = "d369231d5e0198c67e63b0bb557e7ed328ee603a"
 FIRST_OVERLAY = "b04f88c6110b6301d78a8ed4dd76c9e0f06f3eb2"
 FIX2 = "2891894258b177ac4850a4992329b7795da056ae"
 FIX3 = "7ab759bb7d7c29a1c5eb2612c4c690f513612e0c"
-COMMIT = "d013eeabeeff4f228d9afb9ac107c4b0d1f7448a"
+FIX4 = "d013eeabeeff4f228d9afb9ac107c4b0d1f7448a"  # executor used by the FIX3 and FIX4 cohorts
+COMMIT = "ba0eb353ef00e376bfa64b3b17d7b26d77425973"  # executor used by the FIX6 image (FIX5 reused FIX4)
 EXEC_FILES = ("harness/handover_policy.py", "scripts/handover_card_check.py",
               "scripts/handover_world.py", "sim/handover_scene.py")
 GATE_FILES = ("run_trial.py", "layout.py", "records.py", "criteria.py", "score.py", "scenes/trials.csv",
@@ -42,7 +43,8 @@ def context():
         files["exec/" + name] = blob
     if (ROOT / "exec-repo/.git").exists():
         lineage = git("rev-list", "--parents", f"{PARENT}..{COMMIT}").decode().splitlines()
-        if lineage != [f"{COMMIT} {FIX3}", f"{FIX3} {FIX2}", f"{FIX2} {FIRST_OVERLAY}", f"{FIRST_OVERLAY} {PARENT}"]:
+        if lineage != [f"{COMMIT} {FIX4}", f"{FIX4} {FIX3}", f"{FIX3} {FIX2}", f"{FIX2} {FIRST_OVERLAY}",
+                   f"{FIRST_OVERLAY} {PARENT}"]:
             raise ValueError("unexpected hand-over history above the baked executor")
         changes = git("diff", "--no-renames", "--name-status", PARENT, COMMIT)
         if set(changes.decode().splitlines()) != {"A\t" + name for name in EXEC_FILES}:

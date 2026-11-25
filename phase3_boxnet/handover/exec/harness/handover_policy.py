@@ -51,8 +51,9 @@ def absolute(pose, x, y):
 
 
 class Policy:
-    def __init__(self, world, actor):
+    def __init__(self, world, actor, *, station_tilt="strict"):
         self.w, self.rec, self.trial, self.actor = world, world.record, world.trial, actor
+        self.station_tilt = station_tilt
         self.kind = "cyan" if self.trial["colour"] == "blue" else "red"
         self.seen = False
         self.stage = "donor_pick"
@@ -263,9 +264,11 @@ class Policy:
         name = "release" if role == "donor" else "set_down"
         self.stage = name
         carried = self.w.witness()
-        if not criteria.held(carried, rid):
-            self.rec.observe("station_hold_failed", stage=name, robot=rid, pose=carried,
+        held = criteria.held(carried, rid, ignore_tilt=self.station_tilt == "ignore")
+        if not held or carried["tilt_deg"] > layout.TILT_TOL:
+            self.rec.observe("held_tilted" if held else "station_hold_failed", stage=name, robot=rid, pose=carried,
                              chassis_pose=self.w.actual_pose(rid), pwm=dict(self.w.pwm[rid]))
+        if not held:
             raise StopTrial(name, "box was no longer held at the release station")
         self.w.carrying = None
         self.rec.event(name+"_start", robot=rid, pose=carried, chassis=self.w.actual_xy(rid))

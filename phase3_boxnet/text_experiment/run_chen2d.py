@@ -1,5 +1,27 @@
-"""Run Chen BoxNet1 with shared seeded environments and optional changed orders."""
+"""Run Chen BoxNet1 or the opt-in matched BoxNet2 corner environment."""
 import argparse
+import sys
+
+
+def environment_args():
+    selector = argparse.ArgumentParser(add_help=False, allow_abbrev=False)
+    selector.add_argument("--env", choices=("boxnet1", "boxnet2"), default="boxnet1")
+    return selector.parse_known_args()
+
+
+if __name__ == "__main__":
+    # BoxNet1's published source, per-episode revision and resumable config are all byte contracts.
+    # Load its original modules before importing the extended protocol in this process.
+    import storage
+    selected, remaining = environment_args()
+    if (selected.env == "boxnet1" and (storage.ROOT / "protocol_boxnet1").is_dir()
+            and not any(a in ("-h", "--help") or a.startswith("--collision") for a in remaining)):
+        sys.argv[1:] = remaining
+        sys.path.insert(0, str(storage.ROOT / "protocol_boxnet1"))
+        from protocol_boxnet1.run_chen2d import main as boxnet1_main
+        boxnet1_main()
+        sys.exit(0)
+
 import json
 import math
 import os
@@ -24,7 +46,7 @@ from map_sets import parse_map_set, saved_map_env
 from matched_protocol import (CUT_ANSWERS, FAILED_WRITERS, PLAN_NOTES, REPAIRS_PER_WRITER, block_shapes,
                               group_partition, validate_writer_options)
 from relay import RELAY_DISPLAYS, RELAY_TIMINGS, SPEECH_RULES, check_relay_options
-from storage import ROOT, digest, local_path, locked, read_json, snapshot, source_hashes, version_from_hashes, write_json
+from storage import ROOT, digest, local_path, locked, read_json, snapshot, source_hashes, source_path, version_from_hashes, write_json
 from summarize import episode_csv
 
 FRAMEWORKS = ("CMAS", "HMAS-2", "DMAS", "HMAS-1")
@@ -32,6 +54,10 @@ SUPPORTED_FRAMEWORKS = (*FRAMEWORKS, "OWN", "GROUP")
 
 
 def select_specs(args):
+    env = getattr(args, "env", "boxnet1")
+    collision = getattr(args, "collision", None)
+    if env == "boxnet1" and collision is not None:
+        raise ValueError("--collision requires --env boxnet2")
     protocol = getattr(args, "protocol", "legacy")
     plan_note, failed_writer = getattr(args, "plan_note", "none"), getattr(args, "failed_writer", "drop")
     max_stalled_rounds = getattr(args, "max_stalled_rounds", None)
@@ -40,6 +66,8 @@ def select_specs(args):
     sizes = selection(args.sizes, MATCHED_SIZES if protocol == "matched" else ENROL_SIZES)
     map_set = parse_map_set(getattr(args, "map_set", "legacy"))
     conditions = ["e1" if c == "change" else c for c in selection(args.conditions, ("static", "e1", "e2", "change"))]
+    if env == "boxnet2" and (protocol != "matched" or conditions != ["static"] or args.dropoff != "event"):
+        raise ValueError("BoxNet2 uses --protocol matched --conditions static --dropoff event")
     for size in sizes:
         validate_board(size, map_set.map_set, protocol, conditions)
     frameworks = selection(args.frameworks or ("CMAS,OWN" if protocol == "matched" else ",".join(FRAMEWORKS)), SUPPORTED_FRAMEWORKS)
@@ -75,7 +103,11 @@ def select_specs(args):
         rows, cols = map(int, size.split("x"))
         envs = {}
         for seed in seeds:
-            path, sha, fields = saved_map_env(rows, cols, seed, map_set)
+            if env == "boxnet2":
+                from boxnet2_maps import saved_corner_env
+                path, sha, fields = saved_corner_env(rows, cols, seed, map_set)
+            else:
+                path, sha, fields = saved_map_env(rows, cols, seed, map_set)
             for condition in conditions:
                 version = event_version(rows, cols, seed, condition) if map_set.map_set == "legacy" else EVENT_FILE_VERSION
                 envs[seed, condition] = (path, sha, digest(event_path(path, version).read_bytes()), fields)
@@ -89,7 +121,7 @@ def select_specs(args):
                                   protocol=protocol, max_planning_rounds=getattr(args, "max_planning_rounds", None),
                                   plan_note=plan_note, failed_writer=failed_writer, max_stalled_rounds=max_stalled_rounds,
                                   cut_answer=cut_answer, group_size=group_size if framework == "GROUP" else None,
-                                  **fields, **history))
+                                  env=env, collision=collision, **fields, **history))
     return specs
 
 
@@ -134,7 +166,7 @@ def freeze_assignments(out, specs):
 
 def run(args, out):
     specs = select_specs(args)
-    sources = source_hashes()
+    sources = source_hashes(specs[0].env)
     config = dict(code_version=version_from_hashes(sources), source_sha256=sources,
                   model=args.model, reasoning_setting=specs[0].reasoning_setting,
                   map_set=specs[0].map_set, boxes_per_robot=specs[0].boxes_per_robot, protocol=specs[0].protocol,
@@ -153,6 +185,8 @@ def run(args, out):
         config.update(real_client_sha256=digest((BRAIN / "llm.py").read_bytes()),
                       hard_episode_calls=api.HARD_EPISODE_CALLS, hard_campaign_usd=api.HARD_CAMPAIGN_USD,
                       retry_total_s=api.RETRY_TOTAL_S, retry_window=os.environ.get("UGRP_V8_RETRY_WINDOW") == "1")
+    if specs[0].env == "boxnet2":
+        config.update(env=specs[0].env, collision=specs[0].collision)
     effective_ceiling = min(args.episode_call_ceiling, config.get("hard_episode_calls", args.episode_call_ceiling))
     if effective_ceiling < args.episode_call_ceiling:
         print(f"Requested --episode-call-ceiling {args.episode_call_ceiling} exceeds the client's hard cap of "
@@ -193,7 +227,7 @@ def run(args, out):
     if previous != config:
         write_json(config_path, config)
     for name, sha in sources.items():
-        snapshot(ROOT / name, out / "source" / name, sha)
+        snapshot(source_path(name, specs[0].env), out / "source" / name, sha)
     specs = freeze_assignments(out, specs)
     if args.shuffle is not None:
         random.Random(args.shuffle).shuffle(specs)
@@ -206,6 +240,8 @@ def run(args, out):
     selectors["horizon"] = specs[0].horizon
     selectors.update(state_position=specs[0].state_position, max_env_steps=specs[0].max_env_steps)
     selectors.update(protocol=specs[0].protocol, map_set=specs[0].map_set, boxes_per_robot=specs[0].boxes_per_robot)
+    if specs[0].env == "boxnet2":
+        selectors.update(env=specs[0].env, collision=specs[0].collision)
     if specs[0].protocol == "matched":
         selectors.update(max_planning_rounds=specs[0].max_planning_rounds, plan_note=specs[0].plan_note,
                          failed_writer=specs[0].failed_writer)
@@ -292,6 +328,10 @@ def main():
     parser.add_argument("--max-stalled-rounds", type=int, metavar="K",
                         help="with --failed-writer idle, stop after K consecutive rounds without an action (default 3)")
     parser.add_argument("--map-set", default="legacy", help="legacy or scaled:R boxes per robot")
+    parser.add_argument("--env", choices=("boxnet1", "boxnet2"), default="boxnet1",
+                        help="use corner transfers and exclusive corner occupancy with boxnet2")
+    parser.add_argument("--collision", choices=("skip", "fail"),
+                        help="BoxNet2 final-occupancy policy (default skip)")
     parser.add_argument("--max-planning-rounds", type=int, metavar="N",
                         help="matched planning-round ceiling for all grid sizes (default 30)")
     parser.add_argument("--max-env-steps", type=int, metavar="N",
@@ -318,6 +358,9 @@ def main():
     parser.add_argument("--fake-script", default="correct",
                         help="choose " + ", ".join(SCRIPTS) + ", or cut:TEXT for a scripted matched output limit")
     try:
+        if environment_args()[0].env == "boxnet2":
+            parser.set_defaults(protocol="matched", conditions="static", horizon=5, map_set="scaled:1",
+                                dropoff="event", plan_note="continue", failed_writer="idle", cut_answer="prefix")
         args = parser.parse_args()
         if args.frameworks is None:
             args.frameworks = "CMAS,OWN" if args.protocol == "matched" else ",".join(FRAMEWORKS)

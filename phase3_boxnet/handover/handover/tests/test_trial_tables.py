@@ -31,6 +31,7 @@ class TrialTables(unittest.TestCase):
             with patch.object(run_trial, "run", return_value=0) as run:
                 self.assertEqual(run_trial.main(["--trial", "1", "--out", "new", *args]), 0)
             trial, path, budget = run.call_args.args
+            self.assertEqual(run.call_args.kwargs, {"station_tilt": "strict"})
             self.assertEqual((trial, path, budget), (layout.trials(table)[1], Path("new"), 1080))
             self.assertEqual(trial["colour"], colour)
             if args:
@@ -43,15 +44,34 @@ class TrialTables(unittest.TestCase):
         rows[-1]["trial_table"] = "trials-swapped.csv"
         self.assertEqual(score.aggregate(rows), (0, "INVALID (mixed trial tables)"))
 
+    def test_archived_scores_match_the_frozen_fix5_cli_byte_for_byte(self):
+        root = run_trial.BASE
+        runs = Path("cloudrun/runs")
+        old = runs / "handover-fix5-swap-yimHXMgy/build/context/handover/score.py"
+        if not (root / old).is_file():
+            self.skipTest("requires the archived FIX5 scorer and trial records")
+        for cohort, count in (("handover-20261125a", 1), ("handover-fix3-20261125c", 12),
+                              ("handover-fix4-Zc6HAKV9", 12), ("handover-fix5-swap-yimHXMgy", 12)):
+            with self.subTest(cohort=cohort):
+                paths = sorted(p.relative_to(root) for p in (root / runs / cohort / "trials").glob("trial-*"))
+                self.assertEqual(len(paths), count)
+                previous, current = (subprocess.run([sys.executable, "-B", cli, *paths], cwd=root, capture_output=True)
+                                     for cli in (old, Path("handover/score.py")))
+                self.assertIn(b" evaluated ", previous.stdout)
+                self.assertEqual((current.returncode, current.stdout, current.stderr),
+                                 (previous.returncode, previous.stdout, previous.stderr))
+
     def test_real_driver_records_the_swapped_row_before_runtime_setup(self):
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp) / "trial-01"
             env = dict(os.environ, HANDOVER_ACT_MODEL=str(Path(tmp) / "absent-model"),
                        HANDOVER_SCENE_ROOT=str(Path(tmp) / "absent-scene"))
             p = subprocess.run([sys.executable, "-B", run_trial.__file__, "--trial", "1", "--out", str(out),
-                                "--trial-table", "trials-swapped.csv"], env=env, capture_output=True)
+                                "--trial-table", "trials-swapped.csv", "--station-tilt", "ignore"],
+                               env=env, capture_output=True)
             self.assertEqual(p.returncode, 2)
             self.assertEqual(json.loads((out / "trial.json").read_bytes()), layout.trials("trials-swapped.csv")[1])
             run = json.loads((out / "run.json").read_bytes())
+            self.assertEqual(run["station_tilt"], "ignore")
             self.assertEqual((run["status"], run["stage"]), ("error", "setup"))
             self.assertIn("missing local runtime inputs", run["reason"])

@@ -110,7 +110,8 @@ def group_partition(rows, cols, size):
 
 def build_prompt(rows, cols, state, responses, states, *, horizon, history_method, history_window,
                  state_position, robot=None, block=None, earlier=None, step_offset=0, strip_style=False,
-                 announcement="", dropoff_rule=False, returned_only=False, plan_note="none", failed_writer="drop"):
+                 announcement="", dropoff_rule=False, returned_only=False, plan_note="none", failed_writer="drop",
+                 env="boxnet1"):
     """robot is a zero-based grid index. The history budget is independent of the reader."""
     if state_position not in ("before", "after") or horizon < 1 or history_window < 0:
         raise ValueError("Invalid matched prompt settings")
@@ -124,11 +125,20 @@ def build_prompt(rows, cols, state, responses, states, *, horizon, history_metho
     # Matched history contains public executed state/actions for either nonempty method.
     past = state_action_history(responses, states, history_window, step_offset=step_offset)
     history = HISTORY_HEADING + "\n" + past
-    board = announcement + STATE_HEADING + "\n" + state_update_func(rows, cols, state, returned_only)
+    if env == "boxnet2":
+        import boxnet2
+        observation = boxnet2.board_text(rows, cols, state)
+        task, example = boxnet2.TASK, boxnet2.EXAMPLES
+    else:
+        observation = state_update_func(rows, cols, state, returned_only)
+        task, example = TASK, ACTION_EXAMPLES
+    board = announcement + STATE_HEADING + "\n" + observation
     goal = GOAL + (" " + DROPOFF_RULE if dropoff_rule in (True, "on") else "")
-    intro = [goal, TASK]
+    intro = [goal, task]
     if not strip_style:
-        intro.append(ACTION_EXAMPLES)
+        intro.append(example)
+    if env == "boxnet2":
+        intro.append(boxnet2.COLLISION_RULE)
     intro = "\n".join(intro) + "\n\n"
     if block is not None:
         writer = GROUP_WRITER.format(robots=json.dumps(block))

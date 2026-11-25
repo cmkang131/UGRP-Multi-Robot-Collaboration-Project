@@ -562,3 +562,68 @@ Compare the two rows for each layout by donor/receiver, first attempt, retry and
 ### 확인 안 됨
 
 The finger-close instant, gripper-centre offset and box yaw at closure remain unmeasured in FIX4. The release's per-colour development and held-out results could not be verified from the release records. The FIX5 image build, installed native-camera checks, swapped-cohort physics outcomes and real-robot behaviour remain unverified. FIX5 staged files and replayed existing measurements offline. It made no network, cloud or model calls.
+
+## FIX6
+
+With `--station-tilt ignore`, the donor and receiver start the normal placement replay when **each finger measures at least 0.5 N and the box has at least 12 mm of bottom clearance**. If tilt exceeds 10°, `observations.jsonl` records `held_tilted` with the measured `pose.tilt_deg`, both finger loads, clearance, robot, stage, chassis pose and PWM at the replay start. A weak finger or insufficient clearance still produces `station_hold_failed`. The driver writes the mode to `run.json`. The default and older records without the field use `strict`. [Station decision](exec/harness/handover_policy.py#L262) · [Driver and run record](handover/run_trial.py#L122) · [Offline scorer](handover/score.py#L74)
+
+**The 10° value comes from the frozen executor's evaluation rules.** Its lift record specifies 10°, and its set-down evaluator describes an upright, stationary, grounded box with unloaded fingers and gives upright the same 10° tolerance. The handover gate adopted this numerical convention. At rest it distinguishes a box lying flat from one propped on an edge. The grasp still requires a three-second flat lift. The carry watchdog and two attempts per role keep their existing rules. [Lift criterion](exec/harness/grasp_act_rollout.py#L67) · [Upright set-down criterion](exec/harness/grasp_act_rollout.py#L241) · [Handover tolerances](handover/layout.py#L14) · [Carry watchdog](exec/scripts/handover_world.py#L138)
+
+For a donor admitted with a tilted grip, the first detached sample must still be within 0.10 m and 25° yaw of the mark. It can finish leveling after the fingers open. At either station, **all ten settled samples** must have tilt ≤10°, absolute bottom clearance ≤4 mm, speed ≤0.035 m/s and every finger below 0.05 N. All ten donor samples must be at the mark, and the free box must still be there when the donor clears. All ten receiver samples and the final box must be within the sign area, 0–0.65 m inward and at most 0.50 m to either side. [Separation and resting samples](handover/score.py#L157) · [Placement geometry](handover/criteria.py#L16)
+
+### Four rows to rerun
+
+These are the final station witnesses before the archived runs stopped. All four boxes were red. [Archived measurements](cloudrun/handover/verification/fix6-archive-checks.txt)
+
+| Table and trial | Station | Sim time (s) | Tilt (°) | Clearance (mm) | Finger loads (N) |
+|---|---|---:|---:|---:|---:|
+| Original 4 | Donor release, r2 | 43.3 | 16.12 | 69.92 | 3.606 / 3.665 |
+| Original 6 | Receiver set-down, r1 | 131.3 | 10.81 | 65.29 | 4.580 / 4.580 |
+| Swapped 2 | Receiver set-down, r1 | 132.2 | 10.84 | 65.06 | 4.919 / 4.918 |
+| Swapped 5 | Receiver set-down, r2 | 130.1 | 10.71 | 68.02 | 4.037 / 4.036 |
+
+The other 20 rows contain 36 placement starts. The maximum recorded station tilt was 9.52° across 19 original starts and 9.79° across 17 swapped starts. Those rows contribute **9/10 original and 8/10 swapped successes**. The three failures exhausted their grasp attempts. To reach 10/12, the original table needs at least one of its two reruns to succeed and the swapped table needs both. [Retained rows, thresholds and failures](cloudrun/handover/verification/fix6-archive-checks.txt)
+
+**Repeatability on the recorded seeds.** All six original red trials had identical grasp-attempt outcomes and simulated attempt times in FIX3 and FIX4. On the unchanged control paths, trials 1, 4 and 9 reproduced the entire chassis CSV byte for byte and ended at the same stage and simulated time, respectively complete at 306.6 s, release at 43.3 s and receiver pickup at 196.0 s. Trial 1 also reproduced its final box pose, with up to 1.39 × 10⁻¹⁷ m difference in intermediate lift clearance. On trials 6, 7 and 12 the chassis traces matched through 114.0, 115.7 and 212.0 s, respectively, when FIX4's raw sign reader changed the control path. This supports reusing the 20 outcomes whose station decision stays the same. Their provenance remains FIX4 or FIX5. [Per-trial trace hashes, matching prefixes and attempt times](cloudrun/handover/verification/fix6-archive-checks.txt)
+
+### Offline verification
+
+**84 tests passed and 2 native-vision tests skipped.** Hand-over passed 47 of 49, the cloud wrapper passed 20 of 20 and the dispatcher passed 17 of 17. The policy tests ran the 87-row placement replay on constructed witnesses at both stations. The scorer tests covered a tilted arrival and flat landing, a tilted landing, misplaced landings, a weak grip, low clearance and the strict default. The wrapper fixture exercised the two pairs through submission, recorded driver arguments, fetch and composite scoring. All eight executor golden hashes matched. The dispatcher emitted its two existing lock-file resource warnings. [Three-suite log](cloudrun/handover/verification/fix6-tests.log) · [Policy cases](handover/tests/test_policy.py#L118) · [Scoring cases](handover/tests/test_gate.py#L155) · [Paired wrapper test](cloudrun/handover/test_handover_cloud.py#L278)
+
+The FIX6 and archived FIX5 scorer CLIs produced identical stdout, stderr and exit codes on **all 37 available archived trial folders**, with identical arguments per cohort. The original smoke is still pending at one evaluated row. FIX3 scores 3/12, FIX4 scores 9/12 and FIX5 swapped scores 8/12. FIX2 has a staged build and no fetched trials. [Byte comparison test](handover/tests/test_trial_tables.py#L47) · [Output sizes, hashes and gate totals](cloudrun/handover/verification/fix6-archive-checks.txt)
+
+One image context is staged from local executor commit `ba0eb353ef00e376bfa64b3b17d7b26d77425973` on `phase3/handover-cloud`. Its 18 files total 90,720 bytes. Inventory SHA-256 is `f63c8dea9ee4f5635469068783d74cdfe4d15ccd3a69c12c33a9133b9b73fda3`. An independent read verified every staged file and all 14 input hashes in the layer manifest. The new worker maps each two-task execution to its exact trial IDs and carries the recorded tilt mode into the driver. [Staged layer](cloudrun/handover/verification/fix6-context/layer.json) · [Full inventory](cloudrun/handover/verification/fix6-staged.sha256) · [Worker trial groups](cloudrun/handover/worker.py#L22)
+
+### Main-session commands
+
+The kit pins one trial table per cohort. Use two cohort directories, one build and one deployment. Run the blocks in the same Bash shell and keep the two printed paths for resuming. Each execution has exactly two tasks. [Cohort options and reservations](cloudrun/handover/ops.py#L160)
+
+```bash
+cd <work>/20261123-phase3
+export PATH="$HOME/bin:$PATH"
+hg() {
+  python3 -B cloudrun/handover/ops.py "$@"
+}
+original=$(mktemp -d "$PWD/cloudrun/runs/handover-fix6-original-XXXXXXXX") &&
+swapped=$(mktemp -d "$PWD/cloudrun/runs/handover-fix6-swapped-XXXXXXXX") &&
+ln -s -- "$original/build" "$swapped/build" &&
+printf 'original=%s\nswapped=%s\n' "$original" "$swapped" &&
+hg build "$original" &&
+hg deploy "$original" &&
+hg run "$original" trials-4-6 --trial-table trials.csv --station-tilt ignore &&
+hg watch "$original" trials-4-6 &&
+hg fetch "$original" trials-4-6 &&
+hg run "$swapped" trials-2-5 --trial-table trials-swapped.csv --station-tilt ignore &&
+hg watch "$swapped" trials-2-5 &&
+hg fetch "$swapped" trials-2-5
+```
+
+After both fetches, score all 24 table/trial pairs. The command takes original 4 and 6 and swapped 2 and 5 from the FIX6 directories. It takes the other ten rows of each table from their named archives. It checks each row's table, ID, recorded mode and evaluation status, prints its source directory, and reports both 10/12 gates plus a descriptive total out of 24. [Composite scoring command](handover/verification/score_fix6.py)
+
+```bash
+python3 -B handover/verification/score_fix6.py "$original" "$swapped"
+```
+
+### 확인 안 됨
+
+FIX6 이미지 빌드와 이미지 안의 카메라 검사, 네 번의 실제 시뮬레이션에서 상자가 내려앉은 자세, 두 표의 갱신된 게이트 결과, 실물 로봇에서의 성능은 확인 안 됨

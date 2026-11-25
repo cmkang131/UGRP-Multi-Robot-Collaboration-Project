@@ -3822,3 +3822,407 @@ python3 -B test_chen2d_v14.py test_chen2d test_chen2d_v{2..14} \
 ### 확인 안 됨
 
 The task brief reports empty visible answers on 72 of 74 cuts in the earlier real run. Only two replies had visible text, and their complete-step counts remain unverified here. How often a live provider returns usable leading steps, how many robot-steps those replies preserve, and their effect on deliveries, latency or billed cost remain unmeasured. The pilot results above come from the local fake model. [Task brief](TASK-CHEN2D-21.md) · [Pilot rehearsal](review/chen2d-21/pilot-fake.txt)
+
+## CHEN2D-22
+
+**Stopped under P2 before BoxNet2 map enrolment.** At two boxes per robot, a 3×3 board needs 18 starting boxes. Its 4×4 grid of shared corners has room for 16. All 16 seeds at this size are therefore impossible before the first move, at any planning limit. The main session must revise the box count or the board dimensions to run the proposed comparison. [P2 stop condition, lines 59–62](TASK-CHEN2D-22.md#L59) · [Scaled box counts, lines 65–79](map_sets.py#L65) · [Chen’s grid and empty-corner placement, lines 190–215](../20261113-l0-planning-env/refs/hmas/env2_create.py#L190)
+
+Chen puts targets at cell centres and boxes at integer-coordinate corners. A robot can move a box on one of its four corners to any one of the other three corners of its cell or deliver it to a same-colour target in that cell. Delivery removes one box and one target. The executor checks destination occupancy after processing the step’s actions. Chen’s driver ends the episode on collision. Both proposed collision policies require a legal initial state. [Corner enumeration, lines 15–18](../20261113-l0-planning-env/refs/hmas/env2_create.py#L15) · [Doable actions, lines 47–64](../20261113-l0-planning-env/refs/hmas/env2_create.py#L47) · [Execution and occupancy check, lines 169–188](../20261113-l0-planning-env/refs/hmas/env2_create.py#L169) · [Driver, lines 243–250](../20261113-l0-planning-env/refs/hmas/env2-box-arrange.py#L243)
+
+In a 1×3 row each shared edge has two corners. The task maps these to the two hand-over places of the corresponding MuJoCo door, one per direction. [Corner coordinates, lines 15–18](../20261113-l0-planning-env/refs/hmas/env2_create.py#L15) · [Scene interpretation, lines 31–33](TASK-CHEN2D-22.md#L31)
+
+### Feasibility across the 48 requested maps
+
+Chen draws a box cell and a target cell, shuffles the four corners of the box cell, and places the pair at the first free corner and the sampled target cell. If all four corners are occupied, the loop advances to the next pair. This can reduce the workload even when the board has free corners elsewhere. The check below used the upstream placement function in memory, supplied the prescribed colour counts, and gave each size and seed its own `random.Random(seed)` stream. Fixed colour counts consumed no placement draws. [Placement loop, lines 200–215](../20261113-l0-planning-env/refs/hmas/env2_create.py#L200) · [Scaled generator, lines 190–210](env1_create.py#L190) · [Reproducible check](review/chen2d-22/check_capacity.py)
+
+The BoxNet1 `scaled:2` registry in this workspace contains zero of these 48 size–seed pairs. The `scaled:1` registry contains all 48, and each board’s SHA-256 matched its manifest. For the requested density, the check regenerated BoxNet1 controls in memory from the existing `scaled:2` generator. Its independent rule delivered every box on all 48 controls in 5–15 steps. [Registry lookup, lines 104–129](map_sets.py#L104) · [Independent rule and execution checks, lines 80–114](map_events.py#L80) · [Per-seed results](review/chen2d-22/feasibility.csv)
+
+Colour counts below are in blue, red, green, purple and orange order. Each size has 16 seeds. The last two columns give the median and the full range. [Colour allocation, lines 20 and 71–79](map_sets.py#L71)
+
+| Size | Boxes per colour | Required boxes | Distinct corners | Seeds placing every pair | BoxNet2 pairs placed | BoxNet1 steps to finish |
+|---|---|---:|---:|---:|---:|---:|
+| 1×3 | 2, 1, 1, 1, 1 | 6 | 8 | 14/16 | 6 (5–6) | 6 (5–7) |
+| 2×3 | 3, 3, 2, 2, 2 | 12 | 12 | 1/16 | 10 (7–12) | 9 (6–12) |
+| 3×3 | 4, 4, 4, 3, 3 | 18 | 16 | 0/16 | 14 (11–16) | 11 (7–15) |
+
+Only 15 of 48 placements retained the required per-colour counts. At 2×3 the load fits exactly, and only seed 4 filled all 12 corners in the source’s single pass. At 3×3 even perfect placement falls two boxes short. Every size–seed pair proposed for the pilot (seeds 0 and 1) came up short. A pair counted below consists of a box and its matching target at initialization. BoxNet1 step counts correspond to the full requested load. [Placement and control data](review/chen2d-22/feasibility.csv)
+
+| Seed | 1×3 pairs placed | 2×3 pairs placed | 3×3 pairs placed | 1×3 BoxNet1 steps | 2×3 BoxNet1 steps | 3×3 BoxNet1 steps |
+|---:|---:|---:|---:|---:|---:|---:|
+| 0 | 5 | 9 | 13 | 7 | 11 | 10 |
+| 1 | 5 | 11 | 13 | 5 | 9 | 12 |
+| 2 | 6 | 9 | 12 | 6 | 9 | 10 |
+| 3 | 6 | 10 | 16 | 7 | 12 | 10 |
+| 4 | 6 | 12 | 14 | 6 | 10 | 11 |
+| 5 | 6 | 11 | 15 | 6 | 7 | 11 |
+| 6 | 6 | 10 | 15 | 6 | 9 | 13 |
+| 7 | 6 | 10 | 14 | 7 | 12 | 15 |
+| 8 | 6 | 9 | 14 | 7 | 8 | 12 |
+| 9 | 6 | 10 | 15 | 6 | 9 | 10 |
+| 10 | 6 | 7 | 14 | 7 | 6 | 7 |
+| 11 | 6 | 11 | 15 | 5 | 8 | 10 |
+| 12 | 6 | 11 | 15 | 5 | 7 | 10 |
+| 13 | 6 | 10 | 13 | 5 | 9 | 14 |
+| 14 | 6 | 10 | 11 | 7 | 9 | 13 |
+| 15 | 6 | 11 | 13 | 7 | 9 | 11 |
+
+### Offline verification
+
+**292 existing tests passed in 447.611 seconds** on BoxNet1 protocol revision `6172cbfbac44`. The folder-local test harness used fake replies and scripted transports. Before and after the run, path and content digests matched across all 863 files in `envs/` and 399 in `envs-scaled/`. The BoxNet2 check evaluated placement only. Run `python3 -B review/chen2d-22/check_capacity.py` from this directory to reproduce the 48-row CSV, SHA-256 `b9a33965355e68835605f3f8e827062198a26f1709a42fdbac0152e1286ce741`. [Full regression log](review/chen2d-22/baseline-tests.txt) · [Check source](review/chen2d-22/check_capacity.py) · [CSV](review/chen2d-22/feasibility.csv)
+
+### 확인 안 됨
+
+The requested 3×3 starts have no defined `coordinated_steps` or `min_corner_handovers`. BoxNet2 coordination demand, independent-rule completions and collision cancellations on admissible boards remain unmeasured. Work stopped before runner integration and the three writer prompts. The 8,192- and 2,048-token pilots have zero BoxNet2 episodes, so launch commands and call or cost estimates await a feasible specification.
+
+## CHEN2D-22B
+
+**At one box per robot, the coordinated reference completed all 48 BoxNet2 maps in 3–19 steps with zero collisions. The independent rule completed 30 of 48 within 40 steps.** Twenty finished without a cancellation, ten recovered from at least one, and eighteen reached the cap. On 3×3, only one seed finished without a cancellation. The BoxNet1 independent control completed all 48 in 2–11 steps. Both P2 criteria support continuing to the matched-writer pilot. These are deterministic planner results. [Per-map results and board hashes](review/chen2d-22/continuation/map-results.csv) · [Replayable reference plans](review/chen2d-22/continuation/reference-plans.json)
+
+The continuation changes the experimental density to `--map-set scaled:1`. Final user confirmation of this choice is pending. The runner accepts a positive `scaled:R` rate and checks the requested count against corner capacity. The original two-per-robot feasibility result remains above. Chen’s generator used one box per colour across five colours. Here the three sizes use 3, 6 and 9 boxes to match their registered controls and the proposed MuJoCo workload. [Continuation](TASK-CHEN2D-22.md#L76) · [Chen’s density and colours, lines 234–239](../20261113-l0-planning-env/refs/hmas/env2_create.py#L234) · [Scaled count and colour allocation](map_sets.py#L65)
+
+### Board, prompts and collision handling
+
+- Targets occupy cell centres `i+0.5_j+0.5`. Boxes occupy the integer grid vertices, spelled with a decimal point in the saved JSON. A robot can reach the four vertices of its own cell, including a vertex shared diagonally with another cell. A 1×3 row has two corners on each shared edge. These are the two hand-over places of that door in the proposed MuJoCo scene, one per direction. BoxNet2 itself permits either direction at either corner. [Chen’s geometry, lines 15–18 and 190–198](../20261113-l0-planning-env/refs/hmas/env2_create.py#L15) · [Board keys, lines 190–198](../20261113-l0-planning-env/refs/hmas/env2_create.py#L190) · [Door interpretation](TASK-CHEN2D-22.md#L31)
+- Each robot’s doable list visits its four corners in Chen’s order. A singly occupied corner contributes three moves to the other corners, including currently occupied destinations. A matching target in the robot’s cell adds one delivery action. Multiple targets may share a cell. The text uses Chen’s prompt spelling `position[row, col]` and also shows the absolute contents of the four corners, which distinguishes equal-colour boxes. The shared collision wording appears once in each writer’s initial prompt. [Source list order and delivery, lines 47–64](../20261113-l0-planning-env/refs/hmas/env2_create.py#L47) · [Action spelling and shared wording, lines 15–21](../20261113-l0-planning-env/refs/hmas/prompt_env2.py#L15) · [Corner observations](boxnet2.py#L82)
+- Each robot supplies at most one action in a step. A corner move transfers one box. A delivery removes the box and one matching target. Joint occupancy is checked after the entire tentative step, so swaps and arrivals into vacated corners can execute. Chen’s colour-only commands have an order-sensitive detail. In issued robot order the executor looks up the first visible box of that colour on the working board. A later robot can therefore find that a previously visible box has moved. An unavailable action receives ordinary execution feedback. The `fail` policy reproduces this lookup, the tentative board and Chen’s collision flag, then ends the episode as `collision` before committing that board or crediting any delivery in it. [First-colour lookup, lines 20–44](../20261113-l0-planning-env/refs/hmas/env2_create.py#L20) · [Execution and final-occupancy test, lines 153–188](../20261113-l0-planning-env/refs/hmas/env2_create.py#L153) · [Driver return and commit order, lines 243–255](../20261113-l0-planning-env/refs/hmas/env2-box-arrange.py#L243)
+- With the default BoxNet2 policy `skip`, the executor tentatively resolves the same joint step. It cancels every applied arrival whose destination ends that pass with multiple boxes. It restarts from the pre-step board with those proposals removed, retaining the original physical box and source of every surviving move. This prevents a rollback from silently substituting a same-colour box. A dependent action whose box is no longer at its source receives execution feedback. A cancelled departure can leave an occupant in place and block another arrival on the next pass. Every crowded corner in a legally initialized board has at least one arriving move. Each cancellation pass permanently removes at least one proposal. With *m* proposals the process therefore takes at most *m* cancellation passes and one clean pass. The remaining actions commit together. [Continuation’s collision policy](TASK-CHEN2D-22.md#L34) · [Execution and cancellation loop](boxnet2.py#L125) · [Swap, stationary occupant, chain and same-colour tests](test_chen2d_v22.py)
+- Each cancelled move has a `collision` event with the environment step, pass number, robot, colour, pre-step box corner, action source corner, destination corner, moves meeting there, pre-step and tentative occupants, and any relevant previously cancelled departures. Each iteration keeps its issued plan as well as the actions that actually applied. Matched history and executed-writer token credit use the applied actions. A mixed step can deliver another robot’s box while cancelling the conflicting arrivals. With idle-writer handling, three consecutive planning rounds with zero applied actions reach the existing stall ceiling. The matched horizon, earlier-lists slot, continuation sentence and output-limit prefix parsing apply to all three structures. [Environment execution](horizon.py#L492) · [Matched writer](matched_protocol.py#L111) · [Idle writer and prefix test](test_chen2d_v22.py)
+
+### Registered inputs and difficulty measures
+
+Each size and seed uses the colour counts read from its verified BoxNet1 `scaled:1` board. The generator starts a fresh `random.Random(seed)`. Fixed counts consume no random draw. For each pair it draws the box cell, draws the target cell, shuffles Chen’s corner offsets in their original order, and takes the first free corner. If all four are occupied, it redraws only the box cell from the same stream, retaining the target and the shuffled preferences. Ten boards required thirteen extra cell draws in total. The remaining 38 boards match upstream placement exactly when given the same fixed counts. Each size manifest hashes its boards and static metadata. Each metadata file identifies the control SHA-256, inventory and redraw count. [Source sampling loop, lines 200–215](../20261113-l0-planning-env/refs/hmas/env2_create.py#L200) · [Generator](boxnet2.py#L29) · [Registry](boxnet2_maps.py) · [1×3 manifest](envs-boxnet2/r1/1x3/manifest.json) · [2×3 manifest](envs-boxnet2/r1/2x3/manifest.json) · [3×3 manifest](envs-boxnet2/r1/3x3/manifest.json)
+
+**Coordinated steps.** At each delivery boundary, a centralized planner runs breadth-first search for each box while holding the others fixed. It selects the shortest feasible delivery route, breaks ties by starting corner, executes that route one robot action per step, and repeats. The search respects source colour lookup as well as occupied corners. Every step was replayed under `fail`. This prioritized policy gives a feasible step count. Its makespan can exceed that of a parallel plan. [Prioritized planner](boxnet2_planning.py#L82) · [Reference traces](review/chen2d-22/continuation/reference-plans.json)
+
+**Minimum corner handovers.** A handover is a change of acting robot between successive actions on the same physical box. Any robot incident on its starting corner may act first. Two cells can exchange a box if they share a corner. For a starting corner `(x,y)` and target cell centre `(u,v)`, the minimum over first robots of the cell-to-cell Chebyshev distance is `max(|x−u|, |y−v|) − 0.5`. Every change of robot can advance at most one cell along either axis. A box already touching its target cell costs zero handovers. For each colour, minimum-cost one-to-one assignment pairs boxes with individual target slots, including repeated targets in one cell. The sum is a geometric lower bound. For **every one of the 48 maps**, a separate search found a legal collision-free plan attaining that bound. Replaying each witness and counting its changes of robot proves the reported minimum on that physical board. [Collaborative-action difficulty in the local survey, line 14](../20261123-plan3/DIFFICULTY-SURVEY-20261125.md#L14) · [Distance and assignment](boxnet2_planning.py#L30) · [Witness search](review/chen2d-22/continuation/measure_maps.py) · [Physical replay test](test_chen2d_v22.py) · [Replay with Chen’s original executor](review/chen2d-22/continuation/audit_maps.py)
+
+**Independent steps.** Each robot can observe the colour and position of each target. Its four accessible corners are equidistant from its centre. Among addressable boxes it chooses a local delivery or a corner hop that strictly shortens the corner-graph distance to a nearest matching target. Ties use remaining distance, box colour, target cell and source corner, then the lowest eligible destination corner. It waits if it cannot improve a route. It considers neither other robots’ proposals nor destination occupancy. All proposals come from the same pre-step state and are executed under `skip`. Unfinished maps ran for all 40 steps, so their cancellation totals include repeated conflicts. The BoxNet1 control uses the existing `reference_plan` unchanged. [Independent corner rule](boxnet2_planning.py#L56) · [BoxNet1 control](map_events.py#L80) · [Joint measurement](review/chen2d-22/continuation/measure_maps.py)
+
+### Results by size
+
+Each size contains 16 seeds. Numeric cells show median (minimum–maximum), including capped runs. The clean-completion column counts independent BoxNet2 completions with zero cancelled moves. Every size had 16/16 coordinated completions and 16/16 BoxNet1 control completions. [Per-map CSV](review/chen2d-22/continuation/map-results.csv)
+
+| Size | Boxes / corners | Box-cell redraws | Coordinated steps | Minimum handovers | Independent complete | Clean completions | Independent steps | Cancelled moves | BoxNet1 steps |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 1×3 | 3 / 8 | 0 (0–0) | 5 (3–7) | 2 (0–4) | 13/16 | 12/16 | 3 (1–40) | 0 (0–80) | 3.5 (2–5) |
+| 2×3 | 6 / 12 | 0 (0–1) | 10 (8–14) | 3.5 (2–8) | 10/16 | 7/16 | 5 (2–40) | 3 (0–200) | 5 (4–8) |
+| 3×3 | 9 / 16 | 1 (0–3) | 17 (12–19) | 8 (3–10) | 7/16 | 1/16 | 40 (3–40) | 77.5 (0–196) | 7 (5–11) |
+
+The median minimum rose from 2 handovers on 1×3 to 8 on 3×3. Among the 18 maps where the independent rule reached 40 steps, every map had a cancelled move. The 1,927 cancelled moves are individual proposals across all 48 runs. Several robots can have a move cancelled in the same step. [Map results](review/chen2d-22/continuation/map-results.csv)
+
+### All 48 maps
+
+“Cap” means boxes remained after step 40. The BoxNet1 column gives the steps to full delivery on the paired control. The CSV includes the full SHA-256 of both inputs for every row. [Measurement CSV](review/chen2d-22/continuation/map-results.csv)
+
+| Size | Seed | Redraws | Coordinated steps | Minimum handovers | Independent result | Independent steps | Cancelled moves | BoxNet1 steps |
+|---|---:|---:|---:|---:|---|---:|---:|---:|
+| 1×3 | 0 | 0 | 5 | 2 | Complete | 4 | 1 | 3 |
+| 1×3 | 1 | 0 | 4 | 1 | Complete | 3 | 0 | 5 |
+| 1×3 | 2 | 0 | 4 | 1 | Complete | 2 | 0 | 5 |
+| 1×3 | 3 | 0 | 5 | 2 | Complete | 3 | 0 | 4 |
+| 1×3 | 4 | 0 | 3 | 0 | Complete | 1 | 0 | 4 |
+| 1×3 | 5 | 0 | 3 | 0 | Complete | 2 | 0 | 4 |
+| 1×3 | 6 | 0 | 6 | 3 | Complete | 3 | 0 | 3 |
+| 1×3 | 7 | 0 | 6 | 3 | Cap | 40 | 80 | 3 |
+| 1×3 | 8 | 0 | 6 | 3 | Cap | 40 | 80 | 5 |
+| 1×3 | 9 | 0 | 5 | 2 | Complete | 3 | 0 | 3 |
+| 1×3 | 10 | 0 | 7 | 4 | Cap | 40 | 39 | 4 |
+| 1×3 | 11 | 0 | 5 | 2 | Complete | 3 | 0 | 3 |
+| 1×3 | 12 | 0 | 4 | 1 | Complete | 2 | 0 | 3 |
+| 1×3 | 13 | 0 | 5 | 2 | Complete | 3 | 0 | 3 |
+| 1×3 | 14 | 0 | 5 | 2 | Complete | 3 | 0 | 4 |
+| 1×3 | 15 | 0 | 3 | 0 | Complete | 3 | 0 | 2 |
+| 2×3 | 0 | 0 | 11 | 5 | Cap | 40 | 80 | 8 |
+| 2×3 | 1 | 0 | 9 | 3 | Complete | 4 | 0 | 4 |
+| 2×3 | 2 | 0 | 8 | 2 | Complete | 2 | 0 | 6 |
+| 2×3 | 3 | 0 | 10 | 4 | Cap | 40 | 157 | 7 |
+| 2×3 | 4 | 0 | 10 | 3 | Cap | 40 | 78 | 5 |
+| 2×3 | 5 | 0 | 14 | 8 | Complete | 6 | 4 | 5 |
+| 2×3 | 6 | 0 | 11 | 5 | Cap | 40 | 38 | 4 |
+| 2×3 | 7 | 0 | 8 | 2 | Complete | 4 | 0 | 8 |
+| 2×3 | 8 | 0 | 8 | 2 | Complete | 4 | 0 | 7 |
+| 2×3 | 9 | 0 | 10 | 3 | Cap | 40 | 78 | 5 |
+| 2×3 | 10 | 1 | 12 | 6 | Cap | 40 | 200 | 8 |
+| 2×3 | 11 | 0 | 10 | 4 | Complete | 4 | 0 | 5 |
+| 2×3 | 12 | 0 | 11 | 5 | Complete | 6 | 4 | 5 |
+| 2×3 | 13 | 0 | 9 | 3 | Complete | 4 | 0 | 5 |
+| 2×3 | 14 | 0 | 10 | 4 | Complete | 4 | 0 | 5 |
+| 2×3 | 15 | 0 | 8 | 2 | Complete | 4 | 2 | 7 |
+| 3×3 | 0 | 0 | 14 | 5 | Complete | 5 | 0 | 6 |
+| 3×3 | 1 | 1 | 16 | 7 | Cap | 40 | 78 | 5 |
+| 3×3 | 2 | 1 | 18 | 8 | Complete | 7 | 10 | 6 |
+| 3×3 | 3 | 0 | 17 | 8 | Cap | 40 | 80 | 7 |
+| 3×3 | 4 | 0 | 15 | 6 | Cap | 40 | 118 | 9 |
+| 3×3 | 5 | 1 | 17 | 8 | Complete | 7 | 3 | 11 |
+| 3×3 | 6 | 1 | 13 | 4 | Cap | 40 | 119 | 7 |
+| 3×3 | 7 | 1 | 17 | 8 | Cap | 40 | 116 | 8 |
+| 3×3 | 8 | 0 | 18 | 9 | Complete | 6 | 4 | 8 |
+| 3×3 | 9 | 0 | 18 | 9 | Complete | 6 | 8 | 8 |
+| 3×3 | 10 | 1 | 16 | 7 | Cap | 40 | 196 | 5 |
+| 3×3 | 11 | 0 | 19 | 10 | Cap | 40 | 77 | 6 |
+| 3×3 | 12 | 0 | 17 | 8 | Cap | 40 | 118 | 6 |
+| 3×3 | 13 | 2 | 19 | 10 | Complete | 5 | 1 | 9 |
+| 3×3 | 14 | 1 | 15 | 6 | Cap | 40 | 156 | 10 |
+| 3×3 | 15 | 3 | 12 | 3 | Complete | 3 | 2 | 6 |
+
+### Full matched prompts on the same 3×3 map
+
+The following are the complete system and user messages on seed 0, round 1, at the 8,192-token limit. The leader is the first central call. For GROUP and OWN the second writer shows the earlier-lists slot after one submission. All three read the same board and the same executed history. The exact wire serialization joins messages with a blank line. [Serialization](LLM.py#L137) · [Pilot map](envs-boxnet2/r1/3x3/env0.json)
+
+#### Leader
+
+Agent[0.5, 0.5], call 1. [Recorded messages](review/chen2d-22/continuation/fake-8192/episodes/3x3_CMAS_static_env0/calls/00001.json)
+
+```text
+[system]
+You are a helpful assistant.
+
+[user]
+Match all boxes to their color-coded targets.
+Each robot occupies a 1x1 square identified by its center coordinates. It can move one box on a corner of its square to one of the other three corners or to a matching target in its square. Each square can contain multiple targets.
+Example actions are move(box_blue, position[0.0, 1.0]) and move(box_blue, target_blue).
+[Do remember that each corner can only contain at most one box! Hence, you need to avoid the collision of boxes. Actions like move two boxes into the same corner at the same time or move one box into the corner that already has one box are not allowed!]
+
+Earlier executed state and action pairs:
+
+Current board and doable actions:
+Agent[0.5, 0.5]: I am in square[0.5, 0.5], I can observe [], my corners contain {'0.0_0.0': ['box_purple'], '0.0_1.0': ['box_green'], '1.0_0.0': [], '1.0_1.0': ['box_orange']}, I can do ['move(box_purple, position[0.0, 1.0])', 'move(box_purple, position[1.0, 0.0])', 'move(box_purple, position[1.0, 1.0])', 'move(box_green, position[0.0, 0.0])', 'move(box_green, position[1.0, 0.0])', 'move(box_green, position[1.0, 1.0])', 'move(box_orange, position[0.0, 0.0])', 'move(box_orange, position[0.0, 1.0])', 'move(box_orange, position[1.0, 0.0])']
+Agent[0.5, 1.5]: I am in square[0.5, 1.5], I can observe [], my corners contain {'0.0_1.0': ['box_green'], '0.0_2.0': [], '1.0_1.0': ['box_orange'], '1.0_2.0': ['box_red']}, I can do ['move(box_green, position[0.0, 2.0])', 'move(box_green, position[1.0, 1.0])', 'move(box_green, position[1.0, 2.0])', 'move(box_orange, position[0.0, 1.0])', 'move(box_orange, position[0.0, 2.0])', 'move(box_orange, position[1.0, 2.0])', 'move(box_red, position[0.0, 1.0])', 'move(box_red, position[0.0, 2.0])', 'move(box_red, position[1.0, 1.0])']
+Agent[0.5, 2.5]: I am in square[0.5, 2.5], I can observe ['target_red'], my corners contain {'0.0_2.0': [], '0.0_3.0': [], '1.0_2.0': ['box_red'], '1.0_3.0': []}, I can do ['move(box_red, position[0.0, 2.0])', 'move(box_red, position[0.0, 3.0])', 'move(box_red, position[1.0, 3.0])', 'move(box_red, target_red)']
+Agent[1.5, 0.5]: I am in square[1.5, 0.5], I can observe [], my corners contain {'1.0_0.0': [], '1.0_1.0': ['box_orange'], '2.0_0.0': [], '2.0_1.0': ['box_blue']}, I can do ['move(box_orange, position[1.0, 0.0])', 'move(box_orange, position[2.0, 0.0])', 'move(box_orange, position[2.0, 1.0])', 'move(box_blue, position[1.0, 0.0])', 'move(box_blue, position[1.0, 1.0])', 'move(box_blue, position[2.0, 0.0])']
+Agent[1.5, 1.5]: I am in square[1.5, 1.5], I can observe ['target_blue'], my corners contain {'1.0_1.0': ['box_orange'], '1.0_2.0': ['box_red'], '2.0_1.0': ['box_blue'], '2.0_2.0': ['box_red']}, I can do ['move(box_orange, position[1.0, 2.0])', 'move(box_orange, position[2.0, 1.0])', 'move(box_orange, position[2.0, 2.0])', 'move(box_red, position[1.0, 1.0])', 'move(box_red, position[2.0, 1.0])', 'move(box_red, position[2.0, 2.0])', 'move(box_blue, position[1.0, 1.0])', 'move(box_blue, position[1.0, 2.0])', 'move(box_blue, position[2.0, 2.0])', 'move(box_blue, target_blue)', 'move(box_red, position[1.0, 1.0])', 'move(box_red, position[1.0, 2.0])', 'move(box_red, position[2.0, 1.0])']
+Agent[1.5, 2.5]: I am in square[1.5, 2.5], I can observe ['target_green'], my corners contain {'1.0_2.0': ['box_red'], '1.0_3.0': [], '2.0_2.0': ['box_red'], '2.0_3.0': ['box_green']}, I can do ['move(box_red, position[1.0, 3.0])', 'move(box_red, position[2.0, 2.0])', 'move(box_red, position[2.0, 3.0])', 'move(box_red, position[1.0, 2.0])', 'move(box_red, position[1.0, 3.0])', 'move(box_red, position[2.0, 3.0])', 'move(box_green, position[1.0, 2.0])', 'move(box_green, position[1.0, 3.0])', 'move(box_green, position[2.0, 2.0])', 'move(box_green, target_green)']
+Agent[2.5, 0.5]: I am in square[2.5, 0.5], I can observe ['target_blue', 'target_green'], my corners contain {'2.0_0.0': [], '2.0_1.0': ['box_blue'], '3.0_0.0': [], '3.0_1.0': ['box_blue']}, I can do ['move(box_blue, position[2.0, 0.0])', 'move(box_blue, position[3.0, 0.0])', 'move(box_blue, position[3.0, 1.0])', 'move(box_blue, target_blue)', 'move(box_blue, position[2.0, 0.0])', 'move(box_blue, position[2.0, 1.0])', 'move(box_blue, position[3.0, 0.0])', 'move(box_blue, target_blue)']
+Agent[2.5, 1.5]: I am in square[2.5, 1.5], I can observe ['target_purple', 'target_orange'], my corners contain {'2.0_1.0': ['box_blue'], '2.0_2.0': ['box_red'], '3.0_1.0': ['box_blue'], '3.0_2.0': ['box_purple']}, I can do ['move(box_blue, position[2.0, 2.0])', 'move(box_blue, position[3.0, 1.0])', 'move(box_blue, position[3.0, 2.0])', 'move(box_red, position[2.0, 1.0])', 'move(box_red, position[3.0, 1.0])', 'move(box_red, position[3.0, 2.0])', 'move(box_blue, position[2.0, 1.0])', 'move(box_blue, position[2.0, 2.0])', 'move(box_blue, position[3.0, 2.0])', 'move(box_purple, position[2.0, 1.0])', 'move(box_purple, position[2.0, 2.0])', 'move(box_purple, position[3.0, 1.0])', 'move(box_purple, target_purple)']
+Agent[2.5, 2.5]: I am in square[2.5, 2.5], I can observe ['target_red', 'target_purple'], my corners contain {'2.0_2.0': ['box_red'], '2.0_3.0': ['box_green'], '3.0_2.0': ['box_purple'], '3.0_3.0': []}, I can do ['move(box_red, position[2.0, 3.0])', 'move(box_red, position[3.0, 2.0])', 'move(box_red, position[3.0, 3.0])', 'move(box_red, target_red)', 'move(box_green, position[2.0, 2.0])', 'move(box_green, position[3.0, 2.0])', 'move(box_green, position[3.0, 3.0])', 'move(box_purple, position[2.0, 2.0])', 'move(box_purple, position[2.0, 3.0])', 'move(box_purple, position[3.0, 3.0])', 'move(box_purple, target_purple)']
+
+Write a joint entry for every step, choosing the actions of all robots.
+Earlier robots' lists in this planning round: {}
+Return a JSON list for the next 5 steps in execution order.
+The job may need more than 5 steps: plan only the next 5 steps; after they are executed, another planning round continues from the new state.
+Each list entry is a joint object mapping acting Agent[row, col] names to action strings. Use {} for an idle step.
+Assume the earlier entries have been executed. Return only the list.
+Respond concisely.
+```
+
+#### Sub-team
+
+Agent[1.5, 0.5], call 2. [Recorded messages](review/chen2d-22/continuation/fake-8192/episodes/3x3_GROUP-g3_static_env0/calls/00002.json)
+
+```text
+[system]
+You are a helpful assistant.
+
+[user]
+Match all boxes to their color-coded targets.
+Each robot occupies a 1x1 square identified by its center coordinates. It can move one box on a corner of its square to one of the other three corners or to a matching target in its square. Each square can contain multiple targets.
+Example actions are move(box_blue, position[0.0, 1.0]) and move(box_blue, target_blue).
+[Do remember that each corner can only contain at most one box! Hence, you need to avoid the collision of boxes. Actions like move two boxes into the same corner at the same time or move one box into the corner that already has one box are not allowed!]
+
+Earlier executed state and action pairs:
+
+Current board and doable actions:
+Agent[0.5, 0.5]: I am in square[0.5, 0.5], I can observe [], my corners contain {'0.0_0.0': ['box_purple'], '0.0_1.0': ['box_green'], '1.0_0.0': [], '1.0_1.0': ['box_orange']}, I can do ['move(box_purple, position[0.0, 1.0])', 'move(box_purple, position[1.0, 0.0])', 'move(box_purple, position[1.0, 1.0])', 'move(box_green, position[0.0, 0.0])', 'move(box_green, position[1.0, 0.0])', 'move(box_green, position[1.0, 1.0])', 'move(box_orange, position[0.0, 0.0])', 'move(box_orange, position[0.0, 1.0])', 'move(box_orange, position[1.0, 0.0])']
+Agent[0.5, 1.5]: I am in square[0.5, 1.5], I can observe [], my corners contain {'0.0_1.0': ['box_green'], '0.0_2.0': [], '1.0_1.0': ['box_orange'], '1.0_2.0': ['box_red']}, I can do ['move(box_green, position[0.0, 2.0])', 'move(box_green, position[1.0, 1.0])', 'move(box_green, position[1.0, 2.0])', 'move(box_orange, position[0.0, 1.0])', 'move(box_orange, position[0.0, 2.0])', 'move(box_orange, position[1.0, 2.0])', 'move(box_red, position[0.0, 1.0])', 'move(box_red, position[0.0, 2.0])', 'move(box_red, position[1.0, 1.0])']
+Agent[0.5, 2.5]: I am in square[0.5, 2.5], I can observe ['target_red'], my corners contain {'0.0_2.0': [], '0.0_3.0': [], '1.0_2.0': ['box_red'], '1.0_3.0': []}, I can do ['move(box_red, position[0.0, 2.0])', 'move(box_red, position[0.0, 3.0])', 'move(box_red, position[1.0, 3.0])', 'move(box_red, target_red)']
+Agent[1.5, 0.5]: I am in square[1.5, 0.5], I can observe [], my corners contain {'1.0_0.0': [], '1.0_1.0': ['box_orange'], '2.0_0.0': [], '2.0_1.0': ['box_blue']}, I can do ['move(box_orange, position[1.0, 0.0])', 'move(box_orange, position[2.0, 0.0])', 'move(box_orange, position[2.0, 1.0])', 'move(box_blue, position[1.0, 0.0])', 'move(box_blue, position[1.0, 1.0])', 'move(box_blue, position[2.0, 0.0])']
+Agent[1.5, 1.5]: I am in square[1.5, 1.5], I can observe ['target_blue'], my corners contain {'1.0_1.0': ['box_orange'], '1.0_2.0': ['box_red'], '2.0_1.0': ['box_blue'], '2.0_2.0': ['box_red']}, I can do ['move(box_orange, position[1.0, 2.0])', 'move(box_orange, position[2.0, 1.0])', 'move(box_orange, position[2.0, 2.0])', 'move(box_red, position[1.0, 1.0])', 'move(box_red, position[2.0, 1.0])', 'move(box_red, position[2.0, 2.0])', 'move(box_blue, position[1.0, 1.0])', 'move(box_blue, position[1.0, 2.0])', 'move(box_blue, position[2.0, 2.0])', 'move(box_blue, target_blue)', 'move(box_red, position[1.0, 1.0])', 'move(box_red, position[1.0, 2.0])', 'move(box_red, position[2.0, 1.0])']
+Agent[1.5, 2.5]: I am in square[1.5, 2.5], I can observe ['target_green'], my corners contain {'1.0_2.0': ['box_red'], '1.0_3.0': [], '2.0_2.0': ['box_red'], '2.0_3.0': ['box_green']}, I can do ['move(box_red, position[1.0, 3.0])', 'move(box_red, position[2.0, 2.0])', 'move(box_red, position[2.0, 3.0])', 'move(box_red, position[1.0, 2.0])', 'move(box_red, position[1.0, 3.0])', 'move(box_red, position[2.0, 3.0])', 'move(box_green, position[1.0, 2.0])', 'move(box_green, position[1.0, 3.0])', 'move(box_green, position[2.0, 2.0])', 'move(box_green, target_green)']
+Agent[2.5, 0.5]: I am in square[2.5, 0.5], I can observe ['target_blue', 'target_green'], my corners contain {'2.0_0.0': [], '2.0_1.0': ['box_blue'], '3.0_0.0': [], '3.0_1.0': ['box_blue']}, I can do ['move(box_blue, position[2.0, 0.0])', 'move(box_blue, position[3.0, 0.0])', 'move(box_blue, position[3.0, 1.0])', 'move(box_blue, target_blue)', 'move(box_blue, position[2.0, 0.0])', 'move(box_blue, position[2.0, 1.0])', 'move(box_blue, position[3.0, 0.0])', 'move(box_blue, target_blue)']
+Agent[2.5, 1.5]: I am in square[2.5, 1.5], I can observe ['target_purple', 'target_orange'], my corners contain {'2.0_1.0': ['box_blue'], '2.0_2.0': ['box_red'], '3.0_1.0': ['box_blue'], '3.0_2.0': ['box_purple']}, I can do ['move(box_blue, position[2.0, 2.0])', 'move(box_blue, position[3.0, 1.0])', 'move(box_blue, position[3.0, 2.0])', 'move(box_red, position[2.0, 1.0])', 'move(box_red, position[3.0, 1.0])', 'move(box_red, position[3.0, 2.0])', 'move(box_blue, position[2.0, 1.0])', 'move(box_blue, position[2.0, 2.0])', 'move(box_blue, position[3.0, 2.0])', 'move(box_purple, position[2.0, 1.0])', 'move(box_purple, position[2.0, 2.0])', 'move(box_purple, position[3.0, 1.0])', 'move(box_purple, target_purple)']
+Agent[2.5, 2.5]: I am in square[2.5, 2.5], I can observe ['target_red', 'target_purple'], my corners contain {'2.0_2.0': ['box_red'], '2.0_3.0': ['box_green'], '3.0_2.0': ['box_purple'], '3.0_3.0': []}, I can do ['move(box_red, position[2.0, 3.0])', 'move(box_red, position[3.0, 2.0])', 'move(box_red, position[3.0, 3.0])', 'move(box_red, target_red)', 'move(box_green, position[2.0, 2.0])', 'move(box_green, position[3.0, 2.0])', 'move(box_green, position[3.0, 3.0])', 'move(box_purple, position[2.0, 2.0])', 'move(box_purple, position[2.0, 3.0])', 'move(box_purple, position[3.0, 3.0])', 'move(box_purple, target_purple)']
+
+Write a joint entry for every step, choosing actions only for ["Agent[1.5, 0.5]", "Agent[1.5, 1.5]", "Agent[1.5, 2.5]"].
+Earlier robots' lists in this planning round: {"Agent[0.5, 0.5]": [{"Agent[0.5, 2.5]": "move(box_red, target_red)"}, {}, {}, {}, {}]}
+Return a JSON list for the next 5 steps in execution order.
+The job may need more than 5 steps: plan only the next 5 steps; after they are executed, another planning round continues from the new state.
+Each list entry is a joint object mapping acting Agent[row, col] names to action strings. Use {} for an idle step.
+Assume the earlier entries have been executed. Return only the list.
+Respond concisely.
+```
+
+#### Own writer
+
+Agent[0.5, 1.5], call 2. [Recorded messages](review/chen2d-22/continuation/fake-8192/episodes/3x3_OWN_static_env0/calls/00002.json)
+
+```text
+[system]
+You are a helpful assistant.
+
+[user]
+Match all boxes to their color-coded targets.
+Each robot occupies a 1x1 square identified by its center coordinates. It can move one box on a corner of its square to one of the other three corners or to a matching target in its square. Each square can contain multiple targets.
+Example actions are move(box_blue, position[0.0, 1.0]) and move(box_blue, target_blue).
+[Do remember that each corner can only contain at most one box! Hence, you need to avoid the collision of boxes. Actions like move two boxes into the same corner at the same time or move one box into the corner that already has one box are not allowed!]
+
+Earlier executed state and action pairs:
+
+Current board and doable actions:
+Agent[0.5, 0.5]: I am in square[0.5, 0.5], I can observe [], my corners contain {'0.0_0.0': ['box_purple'], '0.0_1.0': ['box_green'], '1.0_0.0': [], '1.0_1.0': ['box_orange']}, I can do ['move(box_purple, position[0.0, 1.0])', 'move(box_purple, position[1.0, 0.0])', 'move(box_purple, position[1.0, 1.0])', 'move(box_green, position[0.0, 0.0])', 'move(box_green, position[1.0, 0.0])', 'move(box_green, position[1.0, 1.0])', 'move(box_orange, position[0.0, 0.0])', 'move(box_orange, position[0.0, 1.0])', 'move(box_orange, position[1.0, 0.0])']
+Agent[0.5, 1.5]: I am in square[0.5, 1.5], I can observe [], my corners contain {'0.0_1.0': ['box_green'], '0.0_2.0': [], '1.0_1.0': ['box_orange'], '1.0_2.0': ['box_red']}, I can do ['move(box_green, position[0.0, 2.0])', 'move(box_green, position[1.0, 1.0])', 'move(box_green, position[1.0, 2.0])', 'move(box_orange, position[0.0, 1.0])', 'move(box_orange, position[0.0, 2.0])', 'move(box_orange, position[1.0, 2.0])', 'move(box_red, position[0.0, 1.0])', 'move(box_red, position[0.0, 2.0])', 'move(box_red, position[1.0, 1.0])']
+Agent[0.5, 2.5]: I am in square[0.5, 2.5], I can observe ['target_red'], my corners contain {'0.0_2.0': [], '0.0_3.0': [], '1.0_2.0': ['box_red'], '1.0_3.0': []}, I can do ['move(box_red, position[0.0, 2.0])', 'move(box_red, position[0.0, 3.0])', 'move(box_red, position[1.0, 3.0])', 'move(box_red, target_red)']
+Agent[1.5, 0.5]: I am in square[1.5, 0.5], I can observe [], my corners contain {'1.0_0.0': [], '1.0_1.0': ['box_orange'], '2.0_0.0': [], '2.0_1.0': ['box_blue']}, I can do ['move(box_orange, position[1.0, 0.0])', 'move(box_orange, position[2.0, 0.0])', 'move(box_orange, position[2.0, 1.0])', 'move(box_blue, position[1.0, 0.0])', 'move(box_blue, position[1.0, 1.0])', 'move(box_blue, position[2.0, 0.0])']
+Agent[1.5, 1.5]: I am in square[1.5, 1.5], I can observe ['target_blue'], my corners contain {'1.0_1.0': ['box_orange'], '1.0_2.0': ['box_red'], '2.0_1.0': ['box_blue'], '2.0_2.0': ['box_red']}, I can do ['move(box_orange, position[1.0, 2.0])', 'move(box_orange, position[2.0, 1.0])', 'move(box_orange, position[2.0, 2.0])', 'move(box_red, position[1.0, 1.0])', 'move(box_red, position[2.0, 1.0])', 'move(box_red, position[2.0, 2.0])', 'move(box_blue, position[1.0, 1.0])', 'move(box_blue, position[1.0, 2.0])', 'move(box_blue, position[2.0, 2.0])', 'move(box_blue, target_blue)', 'move(box_red, position[1.0, 1.0])', 'move(box_red, position[1.0, 2.0])', 'move(box_red, position[2.0, 1.0])']
+Agent[1.5, 2.5]: I am in square[1.5, 2.5], I can observe ['target_green'], my corners contain {'1.0_2.0': ['box_red'], '1.0_3.0': [], '2.0_2.0': ['box_red'], '2.0_3.0': ['box_green']}, I can do ['move(box_red, position[1.0, 3.0])', 'move(box_red, position[2.0, 2.0])', 'move(box_red, position[2.0, 3.0])', 'move(box_red, position[1.0, 2.0])', 'move(box_red, position[1.0, 3.0])', 'move(box_red, position[2.0, 3.0])', 'move(box_green, position[1.0, 2.0])', 'move(box_green, position[1.0, 3.0])', 'move(box_green, position[2.0, 2.0])', 'move(box_green, target_green)']
+Agent[2.5, 0.5]: I am in square[2.5, 0.5], I can observe ['target_blue', 'target_green'], my corners contain {'2.0_0.0': [], '2.0_1.0': ['box_blue'], '3.0_0.0': [], '3.0_1.0': ['box_blue']}, I can do ['move(box_blue, position[2.0, 0.0])', 'move(box_blue, position[3.0, 0.0])', 'move(box_blue, position[3.0, 1.0])', 'move(box_blue, target_blue)', 'move(box_blue, position[2.0, 0.0])', 'move(box_blue, position[2.0, 1.0])', 'move(box_blue, position[3.0, 0.0])', 'move(box_blue, target_blue)']
+Agent[2.5, 1.5]: I am in square[2.5, 1.5], I can observe ['target_purple', 'target_orange'], my corners contain {'2.0_1.0': ['box_blue'], '2.0_2.0': ['box_red'], '3.0_1.0': ['box_blue'], '3.0_2.0': ['box_purple']}, I can do ['move(box_blue, position[2.0, 2.0])', 'move(box_blue, position[3.0, 1.0])', 'move(box_blue, position[3.0, 2.0])', 'move(box_red, position[2.0, 1.0])', 'move(box_red, position[3.0, 1.0])', 'move(box_red, position[3.0, 2.0])', 'move(box_blue, position[2.0, 1.0])', 'move(box_blue, position[2.0, 2.0])', 'move(box_blue, position[3.0, 2.0])', 'move(box_purple, position[2.0, 1.0])', 'move(box_purple, position[2.0, 2.0])', 'move(box_purple, position[3.0, 1.0])', 'move(box_purple, target_purple)']
+Agent[2.5, 2.5]: I am in square[2.5, 2.5], I can observe ['target_red', 'target_purple'], my corners contain {'2.0_2.0': ['box_red'], '2.0_3.0': ['box_green'], '3.0_2.0': ['box_purple'], '3.0_3.0': []}, I can do ['move(box_red, position[2.0, 3.0])', 'move(box_red, position[3.0, 2.0])', 'move(box_red, position[3.0, 3.0])', 'move(box_red, target_red)', 'move(box_green, position[2.0, 2.0])', 'move(box_green, position[3.0, 2.0])', 'move(box_green, position[3.0, 3.0])', 'move(box_purple, position[2.0, 2.0])', 'move(box_purple, position[2.0, 3.0])', 'move(box_purple, position[3.0, 3.0])', 'move(box_purple, target_purple)']
+
+Write an individual entry for every step, choosing only the action of Agent[0.5, 1.5].
+Earlier robots' lists in this planning round: {"Agent[0.5, 0.5]": [null, null, null, null, null]}
+Return a JSON list for the next 5 steps in execution order.
+The job may need more than 5 steps: plan only the next 5 steps; after they are executed, another planning round continues from the new state.
+Each list entry is your own action string or the JSON literal null for a wait.
+Assume the earlier entries have been executed. Return only the list.
+Respond concisely.
+```
+
+### Pilot commands for the main session
+
+Each command in the loop selects 18 episodes, covering the three sizes, seeds 0 and 1, and CMAS, GROUP and OWN. A GROUP writer covers three robots. It is the sole joint writer on 1×3, one of two writers on 2×3 and one of three on 3×3. The two limits use distinct output directories. The 30-step matched pilot ceiling follows task 21. The 40-step cutoff above belongs to the independent map assessment. [Registered partitions](matched_protocol.py#L99) · [Earlier matched pilot settings](#chen2d-21)
+
+```bash
+common=(--model z-ai/glm-5.3-flash --env boxnet2 --collision skip --protocol matched --map-set scaled:1
+        --sizes 1x3,2x3,3x3 --frameworks CMAS,GROUP,OWN --group-size 3 --conditions static
+        --horizon 5 --history-method authors --history-window 100000 --state-position after
+        --plan-note continue --failed-writer idle --max-stalled-rounds 3 --dropoff event --parse lenient
+        --cut-answer prefix --max-env-steps 30 --max-planning-rounds 30 --episode-call-ceiling 600
+        --temperature 0 --retry-temperature 0 --reasoning default --jobs 8 --max-cost-usd 1.50)
+
+for limit in 8192 2048; do
+  python3 -B run_chen2d.py "${common[@]}" --envs 0-1 --max-calls 10800 \
+    --max-output-tokens "$limit" --out "runs/chen2d-22b-boxnet2-r1-$limit"
+done
+python3 -B summarize.py --by planning runs/chen2d-22b-boxnet2-r1-{8192,2048}
+```
+
+The rehearsal used these settings with `--model fake` and review output directories. For each writer, the fake reconstructed the state from the visible current-board text, computed a deterministic feasible schedule and returned the entries for that writer’s assigned robots. All 36 recorded episodes replayed through the collision-fail executor against their saved states. Each limit delivered 108/108 boxes with 146 physical fake attempts, zero cuts and zero cancelled moves. This measures the call load of that schedule. [8,192 run](review/chen2d-22/continuation/fake-8192/run.json) · [2,048 run](review/chen2d-22/continuation/fake-2048/run.json) · [Independent trace recount](review/chen2d-22/continuation/audit_pilots.py)
+
+| Writer, per output limit | Episodes | Delivered / total | Physical fake calls | Scripted tokens | Scripted tokens / delivered box |
+|---|---:|---:|---:|---:|---:|
+| CMAS | 6 | 36 / 36 | 14 | 252 | 7.0 |
+| GROUP, three robots per writer | 6 | 36 / 36 | 33 | 594 | 16.5 |
+| OWN | 6 | 36 / 36 | 99 | 1,782 | 49.5 |
+| All | 18 | 108 / 108 | 146 | 2,628 | 24.33 |
+
+Each fake attempt records 11 input tokens, 7 output tokens and USD 0.001 of simulated cost. The actual paid amount for the rehearsal was zero. For the main session, applying the **archived** GLM guard rates of USD 0.10/M input units and 0.20/M output tokens to the fake call schedule gives the following conditional reservations. Both schedules have 999,470 bytes of serialized prompts. The client adds 1,024 input units per call and reserves the selected output limit on each attempt. Live replies, retries and replanning can change the call count, input sizes and cost. [Fake metering](LLM.py#L363) · [Client formula](LLM.py#L541) · [Archived rates](review/chen2d-19/verification.json) · [Computed pilot totals](review/chen2d-22/continuation/pilot-audit.json)
+
+| Output limit | Calls at fake schedule | Scripted USD | Input-unit bound | Output-token bound | Conditional reservation USD |
+|---:|---:|---:|---:|---:|---:|
+| 8,192 | 146 | 0.146 | 1,148,974 | 1,196,032 | 0.3541038 |
+| 2,048 | 146 | 0.146 | 1,148,974 | 299,008 | 0.1746990 |
+
+### Offline verification
+
+**All 305 offline tests passed in 429.247 seconds** (292 existing and 13 new, exit 0). The path-and-content hashes of all 863 files in `envs/` and all 399 files in `envs-scaled/` matched their pre-work values. Regenerating the map CSV and both sets of reference schedules reproduced their SHA-256 values. The map CSV SHA-256 is `bb0450e068a2815cc50250f12c5aa07c541d9391821fd76518ee2ce0d040f147`. [Full suite](review/chen2d-22/continuation/all-tests.txt) · [Registry digests before](review/chen2d-22/continuation/boxnet1-before.txt) · [Registry digests after](review/chen2d-22/continuation/boxnet1-after.txt) · [Verification hashes](review/chen2d-22/continuation/verification.json)
+
+The 13 new tests exercise the checked-in upstream action lists, placements, state transitions and collision flag, the `skip` fixed point, same-colour identity after rollback, actual writer prompts, strict and prefix readers, blocked writers, map registration and BoxNet1 byte compatibility. The source-parity test sampled 576 joint proposals on 96 seeded boards in different robot orders. The independent source audit replayed all **496 coordinated actions and 493 witness actions** through Chen’s original executor. A separate cell-graph breadth-first search and exhaustive per-colour target matching reproduced the handover sum of **205**. [Focused tests](review/chen2d-22/continuation/focused-tests.txt) · [Parity and integration cases](test_chen2d_v22.py) · [Source replay totals](review/chen2d-22/continuation/map-audit.json)
+
+The BoxNet1 CLI resolves the task-21 protocol sources under revision `6172cbfbac44`. Its published source manifest and byte-format records retain that revision. A fixed-clock, fixed-invocation replay compared complete output trees to an independently executed copy of the frozen task-21 sources. It compared source snapshots, maps, assignments, prompts, replies, call records, episode JSON, CSV, invocation files and both text summary modes, including the source-version bytes. The native replay used all five native writers, and the matched replay used all three structures with the idle and prefix settings. The BoxNet2 pilots used revision `a37e94b9b590`. [Protocol source resolver](storage.py#L90) · [Original task-21 driver](protocol_boxnet1/run_chen2d.py) · [Byte comparison](test_chen2d_v22.py)
+
+To reproduce the map measures, source replay, pilot audit and full regression from this directory, use the commands below. The pilot audit reads the recorded fake pilot folders.
+
+```bash
+export TMPDIR="$PWD" OPENBLAS_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1
+python3 -B review/chen2d-22/continuation/measure_maps.py
+python3 -B review/chen2d-22/continuation/audit_maps.py
+python3 -B review/chen2d-22/continuation/audit_pilots.py
+python3 -B test_chen2d_v14.py test_chen2d test_chen2d_v{2..14} \
+  test_chen2d_v15_{maps,matched,cli,probe,probe_exec} test_chen2d_v16 \
+  test_chen2d_v17_{writers,retry,limits,replay} test_chen2d_v18 test_chen2d_v19 \
+  test_chen2d_v20 test_chen2d_v21 test_chen2d_v22
+```
+
+The first full run exposed an archived BoxNet1 replay that passes only rows and columns to the doable-action lookup. The lookup now defaults such historical descriptors to BoxNet1. The exact replay case passed on the corrected code. The BoxNet1 probe also resolves its historical source manifest, and the probe regression passed all 21 cases. [Earlier failing run](review/chen2d-22/continuation/development/all-tests.txt) · [Original replay case](test_chen2d_v17_replay.py#L29) · [Probe regression](review/chen2d-22/continuation/probe-regression.txt)
+
+### 확인 안 됨
+
+Final user confirmation of one box per robot is pending. Real-model delivery rates, differences between writer structures, cut-off frequency at each output limit, live prices and billed cost remain unmeasured. The map evidence establishes the minimum handovers and the outcome of the specified independent policy on these 48 seeds. Optimal parallel makespans, other independent policies, and execution on the MuJoCo or physical robots remain open. [Task continuation](TASK-CHEN2D-22.md#L76) · [Offline map results](review/chen2d-22/continuation/map-results.csv) · [Fake pilot audit](review/chen2d-22/continuation/pilot-audit.json)
+
+## CHEN2D-22C
+
+**The parallel planner finished all 48 registered BoxNet2 maps in 1–7 team steps. Robots that saw the board and chose independently finished 30/48 maps with fixed tie-breaking and 953/960 runs (99.3%) with random tie-breaking and a one-step wait after some collisions.** Every map finished with at least one random seed. Only 3×3 map seed 11 failed any randomized runs. The BoxNet1 independent control finished 48/48. Each size used the `scaled:1` family, map seeds 0–15, one box per robot, and a 40-step limit. The BoxNet1 controls share size, seed and colour counts with their BoxNet2 partners. Both sets of board hashes match the 22B registration. [48 paired maps](review/chen2d-22/analysis-c/maps.csv) · [Every map, policy and random seed](review/chen2d-22/analysis-c/runs.csv)
+
+### Completion, team steps and cancelled moves
+
+A team step gives each robot one opportunity to move a box. The “all” column includes a value of 40 for each unfinished run. The “finished” column gives makespan conditional on completion. Entries show median (minimum–maximum). Cancellations count individual proposals, so several can occur in one step. The randomized rows pool 20 runs per map. BoxNet1 uses the unchanged independent rule in `map_events.reference_plan` and has no corner-collision rule. [Per-size distributions](review/chen2d-22/analysis-c/summary.json) · [BoxNet1 control](map_events.py#L80)
+
+| Board | Policy | Finished / runs | Steps, all | Steps, finished | Cancelled moves, all |
+|---|---|---:|---:|---:|---:|
+| 1×3 | Parallel coordinated | 16/16 | 3 (1–4) | 3 (1–4) | 0 (0–0) |
+| 1×3 | Exact joint optimum | 16/16 | 3 (1–4) | 3 (1–4) | 0 (0–0) |
+| 1×3 | Independent local | 14/16 | 3 (1–40) | 3 (1–4) | 0 (0–80) |
+| 1×3 | Independent local, randomized | 320/320 | 3 (1–8) | 3 (1–8) | 0 (0–4) |
+| 1×3 | Independent, ignores occupancy (22B) | 13/16 | 3 (1–40) | 3 (1–4) | 0 (0–80) |
+| 1×3 | BoxNet1 independent | 16/16 | 3.5 (2–5) | 3.5 (2–5) | 0 (0–0) |
+| 2×3 | Parallel coordinated | 16/16 | 4 (2–6) | 4 (2–6) | 0 (0–0) |
+| 2×3 | Independent local | 8/16 | 23 (2–40) | 4 (2–6) | 39 (0–158) |
+| 2×3 | Independent local, randomized | 320/320 | 5 (2–28) | 5 (2–28) | 0 (0–55) |
+| 2×3 | Independent, ignores occupancy (22B) | 10/16 | 5 (2–40) | 4 (2–6) | 3 (0–200) |
+| 2×3 | BoxNet1 independent | 16/16 | 5 (4–8) | 5 (4–8) | 0 (0–0) |
+| 3×3 | Parallel coordinated | 16/16 | 5 (3–7) | 5 (3–7) | 0 (0–0) |
+| 3×3 | Independent local | 8/16 | 23 (4–40) | 5.5 (4–6) | 59.5 (0–273) |
+| 3×3 | Independent local, randomized | 313/320 | 7 (4–40) | 7 (4–19) | 2 (0–105) |
+| 3×3 | Independent, ignores occupancy (22B) | 7/16 | 40 (3–40) | 6 (3–7) | 77.5 (0–196) |
+| 3×3 | BoxNet1 independent | 16/16 | 7 (5–11) | 7 (5–11) | 0 (0–0) |
+
+The parallel planner recomputes a shortest currently feasible route for each pending box with the other boxes held in place. It gives the longest of those routes first choice of an available robot, breaking ties by source corner. It reserves the robot, box and destination, then looks for more moves for the same tick. Commands must be doable on the initial board and must move the intended physical boxes in issue order, including when several share a colour. Chen’s executor checks occupancy after all proposals. Earlier departures therefore freed corners for 1, 16 and 35 arrivals on the three sizes. Multiple robots moved in 22/44, 49/65 and 67/82 team steps, respectively. The 22B serial steps count individual box actions. [Planner](boxnet2_planning.py#L182) · [Executor](boxnet2.py#L163) · [Cancellation and vacancy audit](review/chen2d-22/analysis-c/audit.json)
+
+The exact search on **1×3** matched an independent breadth-first search on all 16 maps. The parallel heuristic attained the optimum on 15. On seed 8 it took four steps and the optimum was three, giving a per-map gap of **0 (0–1)**. The exact search considers pre-step legal commands, waits, simultaneous vacancies and orders of same-colour commands. It increases the allowed depth from lower bounds on team work, deliveries in each cell and travel for unique colours. The second search uses physical locations. Each colour is unique on 1×3, so every robot that can name a box already touches its starting corner. If several robots relay that box within a tick, the last robot can produce the same final location directly. Larger boards had median initial joint-choice counts of 228,800 on 2×3 and 180,060,160 on 3×3, before collision filtering or issue-order expansion. Exact search was run only on 1×3. Optimal makespans on 2×3 and 3×3 are **확인 안 됨**. [Schedules for replay](review/chen2d-22/analysis-c/schedules.json) · [Independent search](review/chen2d-22/analysis-c/test_chen2d_v22c.py)
+
+### Where independent choices failed
+
+Each robot uses the whole pre-step board to find the nearest matching targets for its addressable boxes. It delivers locally or moves strictly closer to a nearest target, considering only corners empty at the start. The deterministic rule retains 22B’s tie order by remaining distance, colour, target, source and destination. The randomized rule samples uniformly among distinct minimum-distance actions. A robot whose own proposal was cancelled on the preceding tick waits with probability 0.5 before choosing. Robots receive no other robot’s pending action. Each map restarts the pseudorandom stream for each policy seed 0–19. [Policy implementations](boxnet2_planning.py) · [Seed-level results](review/chen2d-22/analysis-c/runs.csv)
+
+| Board | Independent local failed map seeds | Ignores occupancy failed map seeds | Randomized completions per map, out of 20 |
+|---|---|---|---:|
+| 1×3 | 7, 8 | 7, 8, 10 | 20 (20–20) |
+| 2×3 | 0, 3, 4, 6, 9, 10, 11, 12 | 0, 3, 4, 6, 9, 10 | 20 (20–20) |
+| 3×3 | 2, 6, 7, 9, 11, 12, 13, 14 | 1, 3, 4, 6, 7, 10, 11, 12, 14 | 20 (13–20) |
+
+Both deterministic rules ended all 18 of their failures in **livelock**. After the final board change the same collision recurred. On 1×3 seed 7, for example, two robots aimed red and green boxes at the same empty corner (0,2) for the last 39 ticks. Of the older rule’s 1,927 cancelled proposals, 724 aimed at visibly occupied corners and 1,203 at initially empty corners. The occupancy-aware deterministic rule accumulated 2,456 cancellations, all at initially empty corners. The common tie-break can keep directing several robots to the same place even after the board stops changing. [Collision counts and terminal states](review/chen2d-22/analysis-c/audit.json)
+
+The randomized policy finished all 20 runs on 47 maps. It finished **13/20 on 3×3 seed 11**. Six failures were **deadlocks** with no move toward a nearest target even before the optional wait. For example, policy seed 5 left green at (1,1) and purple at (2,2). Each box occupied the other’s only closer corner. One run, policy seed 1, **ran out of steps while progressing**. Its orange box moved from (3,1) to (2,2) on tick 40 and five boxes remained. These seven failures account for all missed randomized runs. [Per-run steps and cancellations](review/chen2d-22/analysis-c/runs.csv) · [Final positions and last moves](review/chen2d-22/analysis-c/audit.json)
+
+### What the difficulty values count
+
+`min_box_moves` sums the individually shortest deliveries. A corner-to-corner action costs one and the final move from a corner onto a matching target costs one. `min_robot_changes` minimizes the number of changes of acting robot along those shortest deliveries, including the delivery action. The first robot is free. The route search records the last robot at each corner and minimizes moves first, changes second. In a 1×3 row, a robot can leave a box at either corner of a shared door. A handover occurs when the robot in the next room acts on that box. Starting on the shared edge can save a handover because either adjacent robot can act first. [Route and assignment calculations](boxnet2_planning.py)
+
+The two primary sums let each box use its own nearest matching target. Two boxes can select the same target slot in this calculation. The `_distinct` columns require a one-to-one assignment of same-colour boxes to individual target slots and minimize total moves, then total changes. The `_fixed` columns hold every other initial box stationary, including earlier same-colour boxes that can hide the selected box from a robot’s colour-only command. Each finite nearest-target length agrees with `shortest_delivery`. A blank sum in the CSV means at least one required route or assignment is impossible under that assumption. [Per-map values and finite counts](review/chen2d-22/analysis-c/maps.csv) · [Measurement code](review/chen2d-22/analysis-c/measure.py)
+
+| Map metric, median (minimum–maximum) | 1×3 | 2×3 | 3×3 |
+|---|---:|---:|---:|
+| Box moves, other boxes removed | 5 (3–7) | 9.5 (7–13) | 16 (12–18) |
+| Robot changes on those shortest routes | 2 (0–4) | 3.5 (1–7) | 7 (3–9) |
+| Box moves, distinct slots | 5 (3–7) | 9.5 (8–14) | 17 (12–19) |
+| Robot changes, distinct slots | 2 (0–4) | 3.5 (2–8) | 8 (3–10) |
+| Legacy `min_corner_handovers` | 2 (0–4) | 3.5 (2–8) | 8 (3–10) |
+| Box moves, fixed obstacles, finite maps | 4 (3–7) | 9 (8–14) | No finite map |
+| Robot changes, fixed obstacles, finite maps | 1 (0–4) | 3 (2–8) | No finite map |
+| Box moves, fixed obstacles and distinct slots, finite maps | 4 (3–7) | 9 (8–14) | No finite map |
+| Robot changes, fixed obstacles and distinct slots, finite maps | 1 (0–4) | 3 (2–8) | No finite map |
+| Individually unreachable boxes with fixed obstacles | 0 (0–1) | 1 (0–4) | 3 (1–6) |
+
+All free-board rows contain 16 maps per size. Both fixed-obstacle sums have finite values on **11/16, 5/16 and 0/16** maps, respectively. Freezing the other boxes made 5/48, 25/96 and 54/144 individual boxes unreachable across each size. The finite-only medians therefore describe different subsets of maps. Moving other boxes during the team plan made all 48 boards solvable. [Distributions and sample sizes](review/chen2d-22/analysis-c/summary.json)
+
+The legacy `min_corner_handovers` computes the minimum sum of **corner hops to a corner touching a distinct matching target cell**. Its distance is `max(abs(x-u), abs(y-v)) − 0.5` for a starting corner `(x,y)` and target cell centre `(u,v)`. It ignores occupancy, omits the final delivery action, and does not track which robot moved. On these open square cells a shortest route can compress any two successive actions by the same robot into one. With distinct target slots, the explicitly counted changes equal the legacy hop figure on all 48 maps. Allowing boxes to choose the same target changes that equality on three 2×3 and ten 3×3 maps. [Original formula and new route search](boxnet2_planning.py) · [Map-level comparison](review/chen2d-22/analysis-c/maps.csv)
+
+### Offline verification
+
+The measurement reproduced all 48 published occupancy-blind outcomes and BoxNet1 control outcomes, including step and cancellation totals where applicable. The complete original 5,396-byte planning module remains the prefix of the extended module. A second pass replayed 1,120 BoxNet2 runs, checked every proposed move against its initial action list, and verified all 43 failed runs against their final boards. The 48 parallel schedules and 16 exact schedules also replayed under the executor’s collision-fail mode. [Measurement inputs and output hashes](review/chen2d-22/analysis-c/audit.json) · [Reproducible replay](review/chen2d-22/analysis-c/audit.py)
+
+From this folder, reproduce the measurements, audit and offline suite with the following commands.
+
+```bash
+export TMPDIR="$PWD" PYTHONDONTWRITEBYTECODE=1 OPENBLAS_NUM_THREADS=1
+python3 -B review/chen2d-22/analysis-c/measure.py
+python3 -B review/chen2d-22/analysis-c/audit.py
+PYTHONPATH="$PWD/review/chen2d-22/analysis-c" python3 -B test_chen2d_v14.py \
+  test_chen2d test_chen2d_v{2..14} test_chen2d_v15_{maps,matched,cli,probe,probe_exec} \
+  test_chen2d_v16 test_chen2d_v17_{writers,retry,limits,replay} test_chen2d_v18 \
+  test_chen2d_v19 test_chen2d_v20 test_chen2d_v21 test_chen2d_v22 test_chen2d_v22c
+```
+
+**All 315 offline tests passed in 648.896 seconds (exit 0)**, including 10 new tests and the exhaustive physical-state cross-check on 1×3. Regenerating the two CSVs, schedules, size summary and replay audit reproduced all five files byte for byte. Real-model behaviour, MuJoCo or physical-robot performance, and success rates on new maps or policy seeds are **확인 안 됨**. [New tests](review/chen2d-22/analysis-c/test_chen2d_v22c.py) · [Whole-suite transcript](review/chen2d-22/analysis-c/all-tests.txt)
+
+로봇 한 대당 상자 한 개를 둔 이번 48개 판에서는, 로봇들이 서로의 다음 수를 몰라도 모든 판을 적어도 한 번은 끝냈다. 다만 빈 모서리 중 늘 같은 곳을 고르면 같은 자리에서 계속 부딪혀 18개 판에서 멈췄다. 갈 곳이 여럿일 때 무작위로 고르고 충돌한 뒤 가끔 한 번 쉬게 하자 1×3과 2×3에서는 매번 끝냈고, 3×3에서는 11번 판만 20번 중 7번을 놓쳤다. 중앙에서 누가 어느 모서리를 쓸지 정한 규칙은 이 판을 포함해 48개 판을 모두 7스텝 안에 끝냈다. 여기서 역할 조율의 이점은 로봇끼리 길을 막기 쉬운 판도 빠르고 일관되게 끝낸다는 데 있다.

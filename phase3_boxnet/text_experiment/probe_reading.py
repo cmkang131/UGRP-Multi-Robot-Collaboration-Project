@@ -37,7 +37,7 @@ from prompt_env1 import state_action_history
 from limits import Invocation, StopEpisode
 from plan_parse import OWN_MOVE, PlanParser, speaker_coordinates
 from prompt_env1 import input_prompt_1_func_total, input_prompt_local_agent_DMAS_dialogue_func
-from storage import atomic_file, local_path, locked, read_json, write_json
+from storage import atomic_file, local_path, locked, read_json, source_path, write_json
 from fake_model import SCRIPTS
 
 CALLERS = ("leader", "own_first", "own_last")
@@ -454,9 +454,8 @@ def _input_digest(selected: list[SavedState]) -> str:
 
 
 def _source_hashes(first_round=False) -> dict[str, str]:
-    root = Path(__file__).resolve().parent
     files = SOURCE_ARTIFACTS + (("map_sets.py", "enrol_maps.py") if first_round else ())
-    return {name: hashlib.sha256((root / name).read_bytes()).hexdigest() for name in files}
+    return {name: hashlib.sha256(source_path(name).read_bytes()).hexdigest() for name in files}
 
 
 def _state_key(row: dict) -> tuple[str, int]:

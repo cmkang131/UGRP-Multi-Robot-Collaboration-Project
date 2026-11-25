@@ -17,7 +17,7 @@ from limits import CALL_CEILING, OUTPUT_LIMIT, Invocation, StopEpisode
 from map_events import (DROPOFF_MODES, EVENT_FILE_VERSION, agent_at, boxes, cell_key, coordinates,
                         distance, event_path, event_version, speech_fields, step_limit)
 import matched_protocol as matched
-from plan_parse import PlanParser
+from plan_parse import CORNER_MOVES, SQUARE_MOVES, PlanParser
 from planning_metrics import (DMAS_RETENTIONS, ENV_STEP_LIMIT, ITERATION_LIMIT, MATCHED_CALL_CAP,
                               cutoff_records, fill_planning_counts, matched_measurements)
 from prompt_env1 import input_prompt_token_limit
@@ -175,8 +175,19 @@ class Spec:
     failed_writer: str = "drop"
     max_stalled_rounds: int | None = None
     cut_answer: str = "discard"
+    env: str = "boxnet1"
+    collision: str | None = None
 
     def __post_init__(self):
+        if self.env == "boxnet2":
+            if self.collision is None:
+                object.__setattr__(self, "collision", "skip")
+            if self.collision not in ("skip", "fail"):
+                raise ValueError("--collision must be skip or fail")
+            if self.protocol != "matched" or self.condition != "static" or self.dropoff != "event":
+                raise ValueError("BoxNet2 uses --protocol matched --conditions static --dropoff event")
+        elif self.env != "boxnet1" or self.collision is not None:
+            raise ValueError("--collision requires --env boxnet2")
         validate_board(self.size, self.map_set, self.protocol, (self.condition,))
         validate_horizon(self.horizon, self.framework)
         matched.validate_writer_options(self.protocol, self.plan_note, self.failed_writer, self.max_stalled_rounds,
@@ -238,6 +249,8 @@ class Spec:
         settings = dict(max_env_steps=self.max_env_steps, state_position=self.state_position,
                         state_position_effective=(self.state_position if self.protocol == "matched" or
                                                   self.framework in ("DMAS", "OWN") else "ignored"))
+        if self.env == "boxnet2":
+            settings.update(env=self.env, collision=self.collision)
         if self.protocol == "matched":
             settings.update(protocol=self.protocol, max_planning_rounds=self.max_planning_rounds,
                             plan_note=self.plan_note, failed_writer=self.failed_writer)
@@ -281,7 +294,8 @@ class Episode:
         self.leader = assignment["L2"] if self.condition == "e2" else assignment["L"]
         self.member = None if self.condition == "e2" else assignment["M"]
         self.parser = PlanParser(spec.parse_mode, session.mark_rescue, record_own=session.record_own_reply,
-                                 record_shape=session.record_reply_shape)
+                                 record_shape=session.record_reply_shape,
+                                 syntax=CORNER_MOVES if spec.env == "boxnet2" else SQUARE_MOVES)
         self.previous = {(it.get("planning_round"), it["step"]): it for it in previous.get("iterations", [])}
         self.iterations = []
         self.round_log = []
@@ -289,7 +303,7 @@ class Episode:
         self.correct = self.wrong = self.dropoffs = 0
         self.first_wrong_delivery_step = None
         self.steps_to_last_dropoff = None
-        self.robots = [agent_at(p) for p in sorted(map(coordinates, state))]
+        self.robots = [agent_at((i + .5, j + .5)) for i in range(spec.rows) for j in range(spec.cols)]
         self.box_ids = None
         if spec.dropoff == "always":
             self.state = copy.deepcopy(state)
@@ -582,7 +596,7 @@ class Episode:
         relay_prompt, relay_completion = relay_totals["relay_prompt_tokens"], relay_totals["relay_completion_tokens"]
         relay_totals["relay_tokens"] = relay_prompt + relay_completion if None not in (relay_prompt, relay_completion) else None
         assignment = self.assignment
-        return dict(episode_id=self.spec.name, code_version=code_version(), size=self.spec.size,
+        return dict(episode_id=self.spec.name, code_version=code_version(self.spec.env), size=self.spec.size,
                     framework=self.spec.framework, condition=self.condition, dropoff=self.spec.dropoff,
                     dropoff_rule=self.spec.dropoff_rule,
                     tell=self.spec.tell if self.condition != "static" else None, parse=self.spec.parse_mode,
@@ -656,12 +670,14 @@ def admit_episode(spec, out, budget_path, max_output_tokens, temperature, retry_
     result_path = directory / "episode.json"
     previous = read_json(result_path) if result_path.exists() else {}
     if previous and (previous["env_sha256"], previous.get("event_sha256"), previous.get("code_version")) != (
-            spec.env_hash, spec.event_hash, code_version()):
+            spec.env_hash, spec.event_hash, code_version(spec.env)):
         raise ValueError(f"Saved episode inputs or code changed: {spec.name}")
     if previous and previous.get("max_output_tokens") != max_output_tokens:
         raise ValueError(f"Saved episode output-token limit changed: {spec.name}")
     if previous and previous.get("horizon", 1) != spec.horizon:
         raise ValueError(f"Saved episode horizon changed: {spec.name}")
+    if previous and (previous.get("env", "boxnet1"), previous.get("collision")) != (spec.env, spec.collision):
+        raise ValueError(f"Saved episode environment or collision policy changed: {spec.name}")
     if previous and previous.get("group_size") != spec.group_size:
         raise ValueError(f"Saved episode group size changed: {spec.name}")
     if previous and previous.get("cut_answer", "discard") != spec.cut_answer:
@@ -705,6 +721,8 @@ def run_episode(spec, out, budget_path, model, script, ceiling, max_output_token
                 temperature=0.0, retry_temperature=None, previous=None):
     retry_temperature = temperature if retry_temperature is None else retry_temperature
     config = read_json(out / "run.json") if (out / "run.json").is_file() else {}
+    if config and (config.get("env", "boxnet1"), config.get("collision")) != (spec.env, spec.collision):
+        raise ValueError("Episode environment or collision policy disagrees with run settings")
     if spec.reasoning_setting is None:
         spec = replace(spec, reasoning_setting=config.get("reasoning_setting"))
     if "horizon" in config and spec.horizon != config["horizon"]:
@@ -737,7 +755,12 @@ def run_episode(spec, out, budget_path, model, script, ceiling, max_output_token
     box_count = boxes(state).total()
     if spec.box_count is not None and spec.box_count != box_count:
         raise ValueError(f"Initial box count disagrees with enrolled map: {spec.name}")
-    speech_map = speech_fields(assignment, spec.rows, spec.cols, spec.seed)
+    if assignment.get("env", "boxnet1") != spec.env:
+        raise ValueError("Registered map belongs to a different environment")
+    if spec.env == "boxnet2":
+        speech_map = {k: assignment[k] for k in ("stratum", "wording", "member_position")}
+    else:
+        speech_map = speech_fields(assignment, spec.rows, spec.cols, spec.seed)
     extra = spec.env_path.with_suffix(".speech.event.json")
     if extra.exists():
         frozen = read_json(extra)
@@ -769,6 +792,9 @@ def run_episode(spec, out, budget_path, model, script, ceiling, max_output_token
         except re.error:
             label, detail = "Hallucination of wrong plan", "Upstream syntactic checker raised on invalid JSON/shape"
         result = episode.result(model, script, label, detail, interrupted)
+        if spec.env == "boxnet2":
+            result["collision_cancelled_moves"] = sum(len(it.get("collisions", ())) for it in episode.iterations
+                                                      if spec.collision == "skip")
         if spec.protocol == "matched":
             result["protocol"] = spec.protocol
         if spec.map_set is not None or spec.protocol == "matched":

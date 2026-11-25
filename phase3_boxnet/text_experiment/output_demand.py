@@ -32,7 +32,7 @@ from analysis_runs import recorded_calls
 from env1_create import MAX_REPAIRS
 from failure_causes import AGENT, grouped, print_row, share
 from limits import CALL_CEILING
-from plan_parse import PlanParser, speaker_coordinates
+from plan_parse import CORNER_MOVES, SQUARE_MOVES, PlanParser, speaker_coordinates
 from planning_metrics import cutoff_records, print_planning_table, repair_feedback
 from prompt_env1 import history_tokens
 from storage import atomic_file, local_path
@@ -121,7 +121,7 @@ def measure_episode(out, row, relays):
     list_mode = matched_shape or row["horizon"] > 1 or row["framework"] in ("OWN", "GROUP")
     extracted = {c["call"] for b in row.get("round_log", ()) for c in b.get("checks", ())
                  if c["status"] != "parse failure"}
-    parser = PlanParser(row["parse"])
+    parser = PlanParser(row["parse"], syntax=CORNER_MOVES if row.get("env") == "boxnet2" else SQUARE_MOVES)
     row.setdefault("map_set", "legacy")
     metadata = {field: row[field] for field in (*STEP_GROUP, "condition", "max_output_tokens",
                                                 "code_version", "episode_id", "env_seed")}

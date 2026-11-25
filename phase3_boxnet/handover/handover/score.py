@@ -71,11 +71,14 @@ def stable_lift(rows, now, start):
 
 
 def milestones(trial, events, run, samples, frame_ok):
+    station_tilt = run.get("station_tilt", "strict")
+    check(station_tilt in layout.STATION_TILT_MODES, "records", "unknown station tilt mode", 0.)
     stages = ["setup", "donor_pick", "release", "donor_clear", "receiver_seen", "receiver_pick",
               "sign_seen", "set_down", "complete"]
     index, previous, body = 0, 0., None
     attempts = {"r1": 0, "r2": 0}
     opened, replay_start, pending, scan = False, None, None, False
+    tilted_at_station = False
     lost = None
     for seq, event in enumerate(events):
         t, name = event["sim_s"], event["event"]
@@ -139,8 +142,11 @@ def milestones(trial, events, run, samples, frame_ok):
                 index += 1
             pending = None
         elif name in ("release_start", "set_down_start"):
+            pose = event["pose"]
             need(stage+"_start" == name and replay_start is None and event["robot"] == rid
-                 and body_pose(event["pose"], body) and criteria.held(event["pose"], rid), "box lost before placement")
+                 and body_pose(pose, body) and criteria.held(pose, rid, ignore_tilt=station_tilt == "ignore"),
+                 "box lost before placement")
+            tilted_at_station = pose["tilt_deg"] > layout.TILT_TOL
             if stage == "release":
                 need(math.dist(event["chassis"], layout.xy(trial["direction"], -layout.RELEASE_STAND, 0)) <= .09,
                      "replay did not start at the donor stand-off")
@@ -154,7 +160,9 @@ def milestones(trial, events, run, samples, frame_ok):
                  and body_pose(pose, body) and criteria.free(pose) and "frame" in event,
                  "physical separation during the release is missing")
             if stage == "release":
-                need(criteria.at_mark(trial, pose), "box missed the mark at opening")
+                # Separation can precede settling. Keep the opening position and yaw checks.
+                opening_check = criteria.aligned_with_mark if tilted_at_station else criteria.at_mark
+                need(opening_check(trial, pose), "box missed the mark at opening")
             opened = True
         elif name in ("release", "set_down"):
             pose, rest = event["pose"], event["rest"]

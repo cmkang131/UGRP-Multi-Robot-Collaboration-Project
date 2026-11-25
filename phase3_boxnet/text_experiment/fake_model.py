@@ -76,6 +76,33 @@ def plan_from_text(prompt, obey):
     return json.dumps(plan_for_state(observed_state(prompt), prompt, obey))
 
 
+def corner_sequence(prompt, script, horizon, own, repair):
+    """Reconstruct only the visible current board and project a deterministic plan onto this writer's scope."""
+    from boxnet2_planning import coordinated_plan
+    from map_events import cell_key
+    from matched_protocol import GROUP_WRITER
+
+    observed = observed_state(prompt)
+    state = {cell_key(pos): items for pos, items in observed.items()}
+    size = tuple(int(max(pos[i] for pos in observed)) + 1 for i in (0, 1))
+    for raw in re.findall(r"my corners contain (\{[^}\n]*\}), I can do", prompt):
+        state.update(ast.literal_eval(raw))
+    speaker = re.search(r"choosing only the action of (Agent\[[\d., ]+\])\.", prompt) if own else None
+    group_prefix = GROUP_WRITER.split("{robots}")[0]
+    group_line = next((line for line in prompt.splitlines() if line.startswith(group_prefix)), None)
+    block = json.JSONDecoder().raw_decode(group_line[len(group_prefix):])[0] if group_line else None
+    if script == "invalid" or (script == "repair" and not repair):
+        bad = "move(box_missing, target_missing)"
+        return json.dumps([bad] if own else [{block[0] if block else "Agent[0.5, 0.5]": bad}])
+    plans, _ = coordinated_plan(*size, state, limit=horizon)
+    plans.extend({} for _ in range(horizon - len(plans)))
+    if own:
+        return json.dumps([joint.get(speaker[1]) for joint in plans])
+    if block:
+        return json.dumps([{r: a for r, a in joint.items() if r in block} for joint in plans])
+    return json.dumps(plans)
+
+
 def sequence_reply(messages, script, horizon, own):
     # The offline model predicts from visible text, including earlier speakers' lists.
     from env1_create import action_from_response
@@ -84,6 +111,8 @@ def sequence_reply(messages, script, horizon, own):
     from prompt_env1 import OWN_DIALOGUE
 
     prompt = messages[1]["content"]
+    if "my corners contain " in prompt:
+        return corner_sequence(prompt, script, horizon, own, len(messages) > 2)
     # A matched repair now gives a concrete H-length example.  Preserve the
     # old short first submission, but make the fake honour that explicit repair
     # contract after its simulated board is solved.

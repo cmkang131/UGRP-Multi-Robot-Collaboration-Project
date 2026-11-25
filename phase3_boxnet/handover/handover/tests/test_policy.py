@@ -98,16 +98,59 @@ class PolicyChecks(unittest.TestCase):
         self.assertAlmostEqual(math.hypot(*seen[0]["observed_xy"]),0.)
 
     def test_failed_station_hold_preserves_forces_tilt_and_chassis_before_opening(self):
-        rid = self.t["donor"]
-        self.world.carried_by = rid
-        pose = {**self.world.witness(), "tilt_deg": 11.}
-        with patch.object(self.world, "witness", return_value=pose), self.assertRaises(StopTrial):
-            self.p.release("donor")
-        event, = self.observations()
-        self.assertEqual(self.events(), [])
-        self.assertEqual((event["observation"], event["pose"], event["chassis_pose"]),
-                         ("station_hold_failed", pose, self.world.coords[rid]))
-        self.assertEqual(self.world.commands, [])
+        for role in layout.ROLES:
+            rid = self.t[role]
+            self.world.carried_by = rid
+            for mode, height, forces in [("strict", .07, [4., 4.]), ("ignore", .0119, [4., 4.]),
+                                        ("ignore", .07, [.49, 4.]), ("ignore", .07, [4., .49])]:
+                with self.subTest(role=role, mode=mode, height=height, forces=forces):
+                    policy = self.p if mode == "strict" else Policy(self.world, None, station_tilt=mode)
+                    pose = dict(self.world.witness(), tilt_deg=16., clearance_m=height)
+                    pose["finger_n"][rid] = forces
+                    with patch.object(self.world, "witness", return_value=pose), self.assertRaises(StopTrial):
+                        policy.release(role)
+                    event = self.observations()[-1]
+                    self.assertEqual((event["observation"], event["pose"], event["chassis_pose"]),
+                                     ("station_hold_failed", pose, self.world.coords[rid]))
+                    self.assertEqual(self.events(), [])
+                    self.assertEqual(self.world.commands, [])
+
+    def test_tilted_station_grip_replays_and_judges_the_landing(self):
+        policy = Policy(self.world, None, station_tilt="ignore")
+        for role, stage, target in (("donor", "release", [0., 0.]), ("receiver", "set_down", [2.36, 0.])):
+            rid = self.t[role]
+            outside = "missed the mark" if role == "donor" else "outside the receiver sign area"
+            for xy, tilt, reason in ((target, 0., None), (target, 11., "settled on the floor"), ([1., 0.], 0., outside)):
+                with self.subTest(role=role, landing=xy, tilt=tilt):
+                    self.world.carried_by, self.world.box_xy = rid, xy
+                    self.world.pwm[rid] = dict(GraspTransitionRule.END_PWM)
+                    start, witness = self.record.now, self.world.witness
+
+                    def measured():
+                        pose = witness()
+                        if self.record.now == start:
+                            pose.update(tilt_deg=16., clearance_m=layout.LIFT_FLOOR)
+                            pose["finger_n"][rid] = [layout.FINGER_N] * 2
+                        else:
+                            pose["tilt_deg"] = tilt
+                        return pose
+
+                    with patch.object(self.world, "witness", side_effect=measured):
+                        if reason is None:
+                            policy.release(role)
+                        else:
+                            with self.assertRaisesRegex(StopTrial, reason) as stopped:
+                                policy.release(role)
+                            self.assertEqual(stopped.exception.stage, stage)
+                    observation = self.observations()[-1]
+                    opened, detached, landed = self.events()[-3:]
+                    self.assertEqual([e["event"] for e in (opened, detached, landed)],
+                                     [stage + "_start", stage + "_open", stage])
+                    self.assertEqual((observation["observation"], observation["stage"], observation["robot"],
+                                      observation["next_event_seq"], observation["pose"]),
+                                     ("held_tilted", stage, rid, opened["seq"], opened["pose"]))
+                    self.assertEqual((observation["pose"]["tilt_deg"], landed["rows"], len(landed["rest"])),
+                                     (16., 87, 10))
 
     def test_sign_misses_retain_each_frame_and_raw_read_can_locate_target(self):
         rid, target = self.t["receiver"], self.t["receiver_sign"]

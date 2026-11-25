@@ -23,6 +23,8 @@ def parser():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--trial", required=True, type=int, choices=range(1, 13), metavar="1..12")
     p.add_argument("--trial-table", choices=layout.TRIAL_TABLES, default=layout.TABLE.name)
+    p.add_argument("--station-tilt", choices=layout.STATION_TILT_MODES, default="strict",
+                   help="allow a tilted, gripped box to start placement with 'ignore'")
     p.add_argument("--out", required=True, type=Path, help="new directory, created exclusively")
     p.add_argument("--wall-seconds", type=int, default=1080, help="local wall budget including initialization")
     return p
@@ -33,7 +35,7 @@ def offline(event, args):
         raise PermissionError("hand-over trials use local files and in-process controllers")
 
 
-def run(trial, out, wall_seconds):
+def run(trial, out, wall_seconds, *, station_tilt="strict"):
     start = time.monotonic()
     out = out.resolve()
     out.mkdir(parents=True, exist_ok=False)
@@ -92,7 +94,7 @@ def run(trial, out, wall_seconds):
                          directory=str(model), scene_root=str(sim_dir), backend="local_cpu_act")
             world = World(trial, record, stack)
             dt = world.dt
-            policy = Policy(world, actor)
+            policy = Policy(world, actor, station_tilt=station_tilt)
             alarm_stage = "script"
             policy.run()
             stage, status = "complete", "finished"
@@ -117,7 +119,7 @@ def run(trial, out, wall_seconds):
             record.flush()
             summary = {"schema": "handover.run.v1", "trial": trial["trial"], "status": status, "stage": stage,
                        "reason": reason, "sim_s": record.now, "wall_s": time.monotonic()-start,
-                       "dt": dt, "last_step": record.step, "wall_budget_s": wall_seconds}
+                       "dt": dt, "last_step": record.step, "wall_budget_s": wall_seconds, "station_tilt": station_tilt}
             write_json(out / "run.json", summary)
     print(f"trial {trial['trial']:02d}  {status}  {stage}  sim {record.now:.2f} s  wall {summary['wall_s']:.2f} s")
     if reason:
@@ -131,7 +133,8 @@ def main(argv=None):
     if not 0 < args.wall_seconds < 1200:
         p.error("--wall-seconds must be between 1 and 1199")
     try:
-        return run(layout.trials(args.trial_table)[args.trial], args.out, args.wall_seconds)
+        return run(layout.trials(args.trial_table)[args.trial], args.out, args.wall_seconds,
+                   station_tilt=args.station_tilt)
     except FileExistsError:
         p.error("output already exists: " + str(args.out))
 

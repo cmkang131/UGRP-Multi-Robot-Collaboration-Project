@@ -4,9 +4,9 @@ import math
 from handover import layout
 
 
-def held(pose, rid):
-    return (pose["clearance_m"] >= layout.LIFT_FLOOR and pose["tilt_deg"] <= layout.TILT_TOL
-            and min(pose["finger_n"][rid]) >= layout.FINGER_N)
+def held(pose, rid, *, ignore_tilt=False):
+    return (pose["clearance_m"] >= layout.LIFT_FLOOR and min(pose["finger_n"][rid]) >= layout.FINGER_N
+            and (ignore_tilt or pose["tilt_deg"] <= layout.TILT_TOL))
 
 
 def free(pose):
@@ -18,10 +18,13 @@ def resting(pose):
             and pose["speed_m_s"] <= layout.REST_SPEED and pose["tilt_deg"] <= layout.TILT_TOL)
 
 
-def at_mark(trial, pose):
+def aligned_with_mark(trial, pose):
     return (math.hypot(pose["x"], pose["y"]) <= layout.RELEASE_RADIUS
-            and layout.yaw_error(pose["yaw"], trial["mark"][2]) <= layout.YAW_TOL
-            and pose["tilt_deg"] <= layout.TILT_TOL)
+            and layout.yaw_error(pose["yaw"], trial["mark"][2]) <= layout.YAW_TOL)
+
+
+def at_mark(trial, pose):
+    return aligned_with_mark(trial, pose) and pose["tilt_deg"] <= layout.TILT_TOL
 
 
 def at_sign(trial, pose):

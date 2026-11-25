@@ -152,6 +152,50 @@ class Referee(unittest.TestCase):
         self.e("donor_clear")["xy"]=[0,0]
         self.assertEqual(self.result()["stage"],"release")
 
+    def test_recorded_station_mode_and_resting_witnesses_at_each_station(self):
+        for stage in ("release", "set_down"):
+            with self.subTest(stage=stage):
+                self.t, self.events, self.rows, self.run = synthetic()
+                start = self.e(stage + "_start")["pose"]
+                start["tilt_deg"] = 16.
+                self.assertEqual(self.result()["reason"], "box lost before placement")  # old run.json
+                self.run["station_tilt"] = "strict"
+                self.assertEqual(self.result()["stage"], stage)
+                self.run["station_tilt"] = "ignore"
+                self.e(stage + "_open")["pose"]["tilt_deg"] = 14.
+                self.assertEqual(self.result()["status"], "SUCCESS")
+
+                rest = self.e(stage)["rest"][0]
+                rest["tilt_deg"] = layout.TILT_TOL + .01
+                self.assertEqual(self.result()["reason"], "missing detached, settled body after release replay")
+                rest["tilt_deg"] = layout.TILT_TOL
+                rest["x"] = 1.
+                reason = ("release outside mark or orientation tolerance" if stage == "release"
+                          else "box outside destination sign area")
+                self.assertEqual(self.result()["reason"], reason)
+
+                rid = self.e(stage + "_start")["robot"]
+                start["finger_n"][rid][1] = layout.FINGER_N - .001
+                self.assertEqual(self.result()["reason"], "box lost before placement")
+                start["finger_n"][rid][1] = layout.FINGER_N
+                start["clearance_m"] = layout.LIFT_FLOOR - .001
+                self.assertEqual(self.result()["reason"], "box lost before placement")
+
+    def test_station_mode_keeps_lift_and_donor_opening_geometry(self):
+        self.run["station_tilt"] = "ignore"
+        self.e("release_start")["pose"]["tilt_deg"] = 16.
+        opening = self.e("release_open")["pose"]
+        opening["x"] = layout.RELEASE_RADIUS + .001
+        self.assertEqual(self.result()["reason"], "box missed the mark at opening")
+        opening["x"] = 0.
+        opening["yaw"] += math.radians(layout.YAW_TOL + .1)
+        self.assertEqual(self.result()["reason"], "box missed the mark at opening")
+        self.e("grasp_attempt")["lift_samples"][0][2] = layout.TILT_TOL + .01
+        self.assertEqual(self.result()["reason"], "same-body bilateral stable lift not established")
+        self.run["station_tilt"] = "unknown"
+        result = self.result()
+        self.assertEqual((result["stage"], result["evaluated"]), ("records", False))
+
     def test_rectangular_box_half_turn_equivalent(self):
         self.e("release_open")["pose"]["yaw"]+=math.pi
         self.assertEqual(self.result()["status"],"SUCCESS")
