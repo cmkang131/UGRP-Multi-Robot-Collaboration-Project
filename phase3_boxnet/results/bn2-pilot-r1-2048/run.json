@@ -1,0 +1,265 @@
+{
+  "code_version": "a18c33ea887c",
+  "source_sha256": {
+    "run_chen2d.py": "b618d3134bed1ba106d8b08f3ea40593c3f075132ba46e9d0abf5e837fd4bd74",
+    "env1-box-arrange.py": "967b83562eb6301694c7f1b53785c8e5122c62d869facf1dc1dc53cebea5d829",
+    "env1_create.py": "5e2bea57410f809772a038bd9783d81ad1447eb3ea329a939fbc1608a67b0749",
+    "prompt_env1.py": "31bf4324eec12769dd9e92dd2dc748691faa4319facb841c8967b2ded931511c",
+    "LLM.py": "3fcdb4041d49c24241adb0e7f82a3a0602478f171d85259594609747b16202d5",
+    "limits.py": "ca8082da8cd764fb1dcbec733cb7c51ddae7142456cd8a9c8a0e93f5964a43bd",
+    "episode.py": "8d30b1bd64f3402f1d9f13757612b091d5273f0eb85067362e50c9e90fb7e5fd",
+    "map_events.py": "356e286efa9aefc295410b0fc0c19b1059de82d50b6faf2aa756eaf9a3a1fd28",
+    "plan_parse.py": "e1833372919cc1531c02e536b47d33ef666072a6fff010c54363978f2bbc12cb",
+    "fake_model.py": "ae79a5efd91ab6776fad579f3ee6dc3c266695dd1708eab03803f542bd297e6d",
+    "storage.py": "373ca842f0c18d8d6a5f7ec0d88b78da968b992d56f84f0279f4d9275ab6713e",
+    "summarize.py": "394e9d3b6445d2f74fb5b6c63ebded36a355f982b6a5f178ebbbdb3cc1842102",
+    "enrol_maps.py": "d90585aac67bc2c215182b48b5ac0ce4a9d4a38de159061d7fd8c0520a74c200",
+    "relay.py": "67ef8c1d6f17e538e50059d63ee737462a09528427807bcbc2cada9a18a28741",
+    "paired.py": "be096b70b7919ea474997cb05a915bb6e2388dbd1e4e22de063d5f0bc381b2c9",
+    "analysis_runs.py": "ae606d8f3b7d034bd7070b022174709049ccb129cde0646f2854ca4628aa9f1f",
+    "cost.py": "0065b86a9812a1845b6c0be9f71132bcc96d73d7c9fa8bcc8f6eb8ae61e8cd9e",
+    "audit_news.py": "11bbb33dc1e50bf8e21945f237d4b70ee07e3513010b833ea5c8b6372103ac27",
+    "rescues.py": "415a220110d3fe9772f279a535ca173ac8699bccdbabda78bb3f6194ba66fec9",
+    "free_messages.py": "a56f946fc547a52fd250c96fe68892d08ef4467c50bfddb52745d16bf0ed03d4",
+    "failure_causes.py": "c164a4565716cc2e3df5481395d00c9378afff389631800408309cb8abc37491",
+    "output_demand.py": "7671a5099140294c496a0780e93d90246fccd949293c606139d80bebeec49b30",
+    "horizon.py": "7ec638c329de57de00f1f10df46c390c72a30401024c192040fa71a7ef0d4f6e",
+    "planning_metrics.py": "c10bb67908e27951a1b40308be076cc1e243803b0da01ffa1fb005aa05938eb8",
+    "map_sets.py": "7947a5c3b53a634522725bc8d1da50ea1b09e11866df49bcf77a5537878c6cd0",
+    "matched_protocol.py": "37da7947531700a496d1e309e5a2367c92f7b5086551e04a4727e1291d12f0d4",
+    "board_sizes.py": "f80ba17dd5163db29031676188869fdeed643f4c851f2170a6b4780e1633ff0b",
+    "boxnet2.py": "033edb3af84e7747fc90f43d815bd94a6c93ba6dfe9762be37753ad12e40714f",
+    "boxnet2_maps.py": "dc8f4797c1eb551dbc934b5a27c4e60847fa74f359bfa583ab82f377a45c2d68",
+    "boxnet2_planning.py": "4cb5f3cb45df909f63db3010b6215d5c5ed086305bf37aa6c7d6b7ab4b46adde"
+  },
+  "model": "z-ai/glm-5.3-flash",
+  "reasoning_setting": "default",
+  "map_set": "scaled:1",
+  "boxes_per_robot": 1.0,
+  "protocol": "matched",
+  "parse": "lenient",
+  "horizon": 5,
+  "dropoff": "event",
+  "dropoff_rule": "off",
+  "state_position": "after",
+  "max_env_steps": 40,
+  "event_step_override": null,
+  "fake_script": null,
+  "episode_call_ceiling": 600,
+  "history": "_w_only_state_action_history",
+  "history_window": 100000,
+  "history_method": "authors",
+  "cmas_history": "off",
+  "event_file_version": 3,
+  "stratified_e2_event_file_version": 4,
+  "relay_measurement_version": 1,
+  "max_output_tokens": 2048,
+  "max_attempts_per_call": 5,
+  "temperature": 0.0,
+  "retry_temperature": 0.7,
+  "real_client_sha256": "bac988e962c28b7d801d3d081f3c1d6d3e10efb113506f4c958e98b555fa3d64",
+  "hard_episode_calls": 600,
+  "hard_campaign_usd": 1.5,
+  "retry_total_s": 600.0,
+  "retry_window": true,
+  "env": "boxnet2",
+  "collision": "skip",
+  "plan_note": "continue",
+  "failed_writer": "idle",
+  "max_planning_rounds": 30,
+  "repairs_per_writer": 2,
+  "effective_episode_call_ceiling": 600,
+  "max_reply_attempts_per_call": 3,
+  "max_transport_errors_per_call": 3,
+  "transport_retry_total_s": 60.0,
+  "max_stalled_rounds": 3,
+  "cut_answer": "prefix",
+  "group_size": 3,
+  "group_partitions": {
+    "4x6": {
+      "framework": "GROUP",
+      "group_size": 3,
+      "callers_per_round": 8,
+      "block_shape": [
+        1,
+        3
+      ],
+      "blocks": [
+        [
+          "Agent[0.5, 0.5]",
+          "Agent[0.5, 1.5]",
+          "Agent[0.5, 2.5]"
+        ],
+        [
+          "Agent[0.5, 3.5]",
+          "Agent[0.5, 4.5]",
+          "Agent[0.5, 5.5]"
+        ],
+        [
+          "Agent[1.5, 0.5]",
+          "Agent[1.5, 1.5]",
+          "Agent[1.5, 2.5]"
+        ],
+        [
+          "Agent[1.5, 3.5]",
+          "Agent[1.5, 4.5]",
+          "Agent[1.5, 5.5]"
+        ],
+        [
+          "Agent[2.5, 0.5]",
+          "Agent[2.5, 1.5]",
+          "Agent[2.5, 2.5]"
+        ],
+        [
+          "Agent[2.5, 3.5]",
+          "Agent[2.5, 4.5]",
+          "Agent[2.5, 5.5]"
+        ],
+        [
+          "Agent[3.5, 0.5]",
+          "Agent[3.5, 1.5]",
+          "Agent[3.5, 2.5]"
+        ],
+        [
+          "Agent[3.5, 3.5]",
+          "Agent[3.5, 4.5]",
+          "Agent[3.5, 5.5]"
+        ]
+      ]
+    },
+    "6x6": {
+      "framework": "GROUP",
+      "group_size": 3,
+      "callers_per_round": 12,
+      "block_shape": [
+        1,
+        3
+      ],
+      "blocks": [
+        [
+          "Agent[0.5, 0.5]",
+          "Agent[0.5, 1.5]",
+          "Agent[0.5, 2.5]"
+        ],
+        [
+          "Agent[0.5, 3.5]",
+          "Agent[0.5, 4.5]",
+          "Agent[0.5, 5.5]"
+        ],
+        [
+          "Agent[1.5, 0.5]",
+          "Agent[1.5, 1.5]",
+          "Agent[1.5, 2.5]"
+        ],
+        [
+          "Agent[1.5, 3.5]",
+          "Agent[1.5, 4.5]",
+          "Agent[1.5, 5.5]"
+        ],
+        [
+          "Agent[2.5, 0.5]",
+          "Agent[2.5, 1.5]",
+          "Agent[2.5, 2.5]"
+        ],
+        [
+          "Agent[2.5, 3.5]",
+          "Agent[2.5, 4.5]",
+          "Agent[2.5, 5.5]"
+        ],
+        [
+          "Agent[3.5, 0.5]",
+          "Agent[3.5, 1.5]",
+          "Agent[3.5, 2.5]"
+        ],
+        [
+          "Agent[3.5, 3.5]",
+          "Agent[3.5, 4.5]",
+          "Agent[3.5, 5.5]"
+        ],
+        [
+          "Agent[4.5, 0.5]",
+          "Agent[4.5, 1.5]",
+          "Agent[4.5, 2.5]"
+        ],
+        [
+          "Agent[4.5, 3.5]",
+          "Agent[4.5, 4.5]",
+          "Agent[4.5, 5.5]"
+        ],
+        [
+          "Agent[5.5, 0.5]",
+          "Agent[5.5, 1.5]",
+          "Agent[5.5, 2.5]"
+        ],
+        [
+          "Agent[5.5, 3.5]",
+          "Agent[5.5, 4.5]",
+          "Agent[5.5, 5.5]"
+        ]
+      ]
+    },
+    "1x3": {
+      "framework": "GROUP",
+      "group_size": 3,
+      "callers_per_round": 1,
+      "block_shape": [
+        1,
+        3
+      ],
+      "blocks": [
+        [
+          "Agent[0.5, 0.5]",
+          "Agent[0.5, 1.5]",
+          "Agent[0.5, 2.5]"
+        ]
+      ]
+    },
+    "2x3": {
+      "framework": "GROUP",
+      "group_size": 3,
+      "callers_per_round": 2,
+      "block_shape": [
+        1,
+        3
+      ],
+      "blocks": [
+        [
+          "Agent[0.5, 0.5]",
+          "Agent[0.5, 1.5]",
+          "Agent[0.5, 2.5]"
+        ],
+        [
+          "Agent[1.5, 0.5]",
+          "Agent[1.5, 1.5]",
+          "Agent[1.5, 2.5]"
+        ]
+      ]
+    },
+    "3x3": {
+      "framework": "GROUP",
+      "group_size": 3,
+      "callers_per_round": 3,
+      "block_shape": [
+        1,
+        3
+      ],
+      "blocks": [
+        [
+          "Agent[0.5, 0.5]",
+          "Agent[0.5, 1.5]",
+          "Agent[0.5, 2.5]"
+        ],
+        [
+          "Agent[1.5, 0.5]",
+          "Agent[1.5, 1.5]",
+          "Agent[1.5, 2.5]"
+        ],
+        [
+          "Agent[2.5, 0.5]",
+          "Agent[2.5, 1.5]",
+          "Agent[2.5, 2.5]"
+        ]
+      ]
+    }
+  }
+}

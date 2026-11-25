@@ -1,0 +1,114 @@
+FIX3 recorded MuJoCo observations from cloudrun/runs/handover-fix3-20261125c/trials
+Event and CSV line numbers are one-based, including the CSV header. Distances are metres; force is N per finger.
+
+trial-01 W-E red donor=r1 receiver=r2
+Initial overview top-face centre pixel (471, 487) RGB=(253, 92, 98), HSV (OpenCV units, continuous)=[178.9, 162.3, 253.0]
+events.jsonl:4 23.2 approach_end r1 chassis.csv:234 xy=(-1.30329,-0.05560) attempt=1 reason=arrived selected=0 alignment=aligned_wide_face
+events.jsonl:6 64.4 grasp_attempt r1 chassis.csv:646 xy=(-1.30719,-0.05914) box=(-1.13157,-0.05465,0.01589) yaw_deg=2.9614 tilt_deg=0.00000 clearance=-0.00011 fingers=(0.0, 0.0) miss attempt=1 consecutive_held_samples=0
+events.jsonl:7 96.1 approach_end r1 chassis.csv:963 xy=(-1.34065,-0.06054) attempt=2 reason=arrived selected=0 alignment=aligned_wide_face
+events.jsonl:9 108.1 grasp_attempt r1 chassis.csv:1083 xy=(-1.33863,-0.06178) box=(-1.13855,-0.04825,0.08435) yaw_deg=4.8915 tilt_deg=5.75882 clearance=0.06671 fingers=(5.2028, 5.2029) lift attempt=2 consecutive_held_samples=77 window=100.5..108.1
+events.jsonl:10 116.9 release_start r1 chassis.csv:1171 xy=(-0.31380,-0.00455) box=(-0.11313,-0.00131,0.08360) yaw_deg=1.8131 tilt_deg=6.15038 clearance=0.06583 fingers=(5.2194, 5.1778)
+events.jsonl:12 126.6 release r1 chassis.csv:1268 xy=(-0.31658,-0.00101) box=(0.00219,-0.00710,0.01589) yaw_deg=-0.6708 tilt_deg=0.00000 clearance=-0.00011 fingers=(0.0, 0.0) mark_offset=0.00743 yaw_error_deg=0.6708
+events.jsonl:22 142.6 scan_start r2 chassis.csv:1428 xy=(0.81693,-0.01274)
+events.jsonl:24 166.1 approach_end r2 chassis.csv:1663 xy=(0.21450,-0.00083) attempt=1 reason=arrived selected=0 alignment=aligned_wide_face
+events.jsonl:26 221.0 grasp_attempt r2 chassis.csv:2212 xy=(0.21088,-0.00106) box=(-0.02261,0.00199,0.01589) yaw_deg=3.0031 tilt_deg=0.00000 clearance=-0.00011 fingers=(0.0, 0.0) miss attempt=1 consecutive_held_samples=0
+events.jsonl:27 254.4 approach_end r2 chassis.csv:2546 xy=(0.18334,0.01012) attempt=2 reason=arrived selected=0 alignment=aligned_wide_face
+events.jsonl:29 266.3 grasp_attempt r2 chassis.csv:2665 xy=(0.18644,0.01208) box=(-0.01353,0.00047,0.08340) yaw_deg=4.0918 tilt_deg=6.15719 clearance=0.06564 fingers=(5.2028, 5.2025) lift attempt=2 consecutive_held_samples=76 window=258.8..266.3
+events.jsonl:34 281.6 sign_seen r2 chassis.csv:2818 xy=(0.46406,0.00271) corners_rectified_px=[[254.0, 77.0], [253.0, 16.0], [313.0, 17.0], [312.0, 77.0]] file=0033-receiver-sign.jpg
+  scan chassis.csv:2818 t=281.6 xy=(0.46406,0.00271) sign_range=2.15894 bearing_vs_command_deg=-0.072
+events.jsonl:37 306.6 set_down r2 chassis.csv:3068 xy=(2.19234,0.01145) box=(2.50752,-0.01539,0.01589) yaw_deg=174.4530 tilt_deg=0.00000 clearance=-0.00011 fingers=(0.0, 0.0)
+
+trial-02 E-W blue donor=r2 receiver=r1
+Initial overview top-face centre pixel (823, 490) RGB=(131, 255, 255), HSV (OpenCV units, continuous)=[90.0, 124.0, 255.0]
+events.jsonl:4 9.9 approach_end r2 chassis.csv:101 xy=(1.99943,-0.15012) attempt=1 reason=not_found selected=None alignment=None
+events.jsonl:5 9.9 failure r2 chassis.csv:101 xy=(1.99943,-0.15012) donor_pick own-camera approach could not hand off a selected box to ACT
+
+trial-03 S-N blue donor=r1 receiver=r2
+Initial overview top-face centre pixel (653, 654) RGB=(134, 253, 249), HSV (OpenCV units, continuous)=[89.0, 119.9, 253.0]
+events.jsonl:4 9.9 approach_end r1 chassis.csv:101 xy=(0.22048,-1.89275) attempt=1 reason=not_found selected=None alignment=None
+events.jsonl:5 9.9 failure r1 chassis.csv:101 xy=(0.22048,-1.89275) donor_pick own-camera approach could not hand off a selected box to ACT
+
+trial-04 N-S red donor=r2 receiver=r1
+Initial overview top-face centre pixel (658, 314) RGB=(255, 99, 93), HSV (OpenCV units, continuous)=[1.1, 162.0, 255.0]
+events.jsonl:4 22.7 approach_end r2 chassis.csv:229 xy=(0.11673,1.28206) attempt=1 reason=arrived selected=0 alignment=aligned_wide_face
+events.jsonl:6 34.7 grasp_attempt r2 chassis.csv:349 xy=(0.12207,1.28346) box=(0.12568,1.07218,0.09234) yaw_deg=-89.2901 tilt_deg=8.64037 clearance=0.07395 fingers=(3.6369, 3.637) lift attempt=1 consecutive_held_samples=77 window=27.1..34.7
+events.jsonl:7 43.3 failure r2 chassis.csv:435 xy=(0.00223,0.32159) release box was no longer held at the release station
+
+trial-05 W-E blue donor=r1 receiver=r2
+Initial overview top-face centre pixel (451, 497) RGB=(113, 255, 247), HSV (OpenCV units, continuous)=[88.3, 142.0, 255.0]
+events.jsonl:4 9.9 approach_end r1 chassis.csv:101 xy=(-2.00927,-0.19005) attempt=1 reason=not_found selected=None alignment=None
+events.jsonl:5 9.9 failure r1 chassis.csv:101 xy=(-2.00927,-0.19005) donor_pick own-camera approach could not hand off a selected box to ACT
+
+trial-06 E-W red donor=r2 receiver=r1
+Initial overview top-face centre pixel (816, 493) RGB=(247, 93, 93), HSV (OpenCV units, continuous)=[0.0, 159.0, 247.0]
+events.jsonl:4 20.3 approach_end r2 chassis.csv:205 xy=(1.34869,-0.09710) attempt=1 reason=arrived selected=0 alignment=aligned_unverified_face
+events.jsonl:6 32.6 grasp_attempt r2 chassis.csv:328 xy=(1.34948,-0.09442) box=(1.14861,-0.09498,0.08347) yaw_deg=-178.2082 tilt_deg=7.29870 clearance=0.06542 fingers=(5.2034, 5.204) lift attempt=1 consecutive_held_samples=77 window=25.0..32.6
+events.jsonl:7 41.3 release_start r2 chassis.csv:415 xy=(0.31452,-0.00262) box=(0.11418,-0.01770,0.08325) yaw_deg=-174.3980 tilt_deg=7.57871 clearance=0.06506 fingers=(5.2054, 5.2502)
+events.jsonl:9 51.0 release r2 chassis.csv:512 xy=(0.32292,-0.00253) box=(0.00112,-0.01189,0.01589) yaw_deg=-177.6706 tilt_deg=0.00000 clearance=-0.00011 fingers=(0.0, 0.0) mark_offset=0.01194 yaw_error_deg=2.3294
+events.jsonl:17 68.2 scan_start r1 chassis.csv:684 xy=(-0.80229,-0.01090)
+events.jsonl:19 93.8 approach_end r1 chassis.csv:940 xy=(-0.21050,-0.03147) attempt=1 reason=arrived selected=0 alignment=aligned_wide_face
+events.jsonl:21 105.7 grasp_attempt r1 chassis.csv:1059 xy=(-0.21192,-0.02998) box=(0.00009,-0.01183,0.08575) yaw_deg=-174.8860 tilt_deg=5.22329 clearance=0.06826 fingers=(4.5804, 4.5804) lift attempt=1 consecutive_held_samples=76 window=98.2..105.7
+events.jsonl:24 117.6 failure r1 chassis.csv:1178 xy=(-0.46665,-0.00526) sign_seen destination card was not localized from the receiver's own RGB
+  scan chassis.csv:1142 t=114.0 xy=(-0.46352,-0.00731) sign_range=2.15949 bearing_vs_command_deg=-0.194
+  scan chassis.csv:1148 t=114.6 xy=(-0.46308,-0.00570) sign_range=2.15993 bearing_vs_command_deg=-0.151
+  scan chassis.csv:1154 t=115.2 xy=(-0.46479,-0.00703) sign_range=2.15822 bearing_vs_command_deg=-0.187
+  scan chassis.csv:1160 t=115.8 xy=(-0.46428,-0.00519) sign_range=2.15873 bearing_vs_command_deg=-0.138
+  scan chassis.csv:1166 t=116.4 xy=(-0.46498,-0.00617) sign_range=2.15803 bearing_vs_command_deg=-0.164
+  scan chassis.csv:1172 t=117.0 xy=(-0.46556,-0.00472) sign_range=2.15745 bearing_vs_command_deg=-0.125
+  scan chassis.csv:1178 t=117.6 xy=(-0.46665,-0.00526) sign_range=2.15635 bearing_vs_command_deg=-0.140
+
+trial-07 S-N red donor=r1 receiver=r2
+Initial overview top-face centre pixel (630, 670) RGB=(255, 95, 87), HSV (OpenCV units, continuous)=[1.4, 168.0, 255.0]
+events.jsonl:4 24.4 approach_end r1 chassis.csv:246 xy=(-0.06991,-1.44090) attempt=1 reason=arrived selected=0 alignment=aligned_wide_face
+events.jsonl:6 36.6 grasp_attempt r1 chassis.csv:368 xy=(-0.07063,-1.44526) box=(-0.06148,-1.23398,0.08782) yaw_deg=87.6501 tilt_deg=6.57398 clearance=0.06996 fingers=(4.5782, 4.5824) lift attempt=1 consecutive_held_samples=77 window=29.0..36.6
+events.jsonl:7 45.7 release_start r1 chassis.csv:459 xy=(0.00283,-0.32927) box=(0.00007,-0.11802,0.08782) yaw_deg=90.8584 tilt_deg=8.13983 clearance=0.06955 fingers=(4.5329, 4.6196)
+events.jsonl:9 55.4 release r1 chassis.csv:556 xy=(0.00836,-0.32731) box=(0.00982,0.00214,0.01589) yaw_deg=88.7659 tilt_deg=0.00000 clearance=-0.00011 fingers=(0.0, 0.0) mark_offset=0.01005 yaw_error_deg=1.2341
+events.jsonl:13 71.4 scan_start r2 chassis.csv:716 xy=(0.00111,0.79815)
+events.jsonl:15 95.0 approach_end r2 chassis.csv:952 xy=(0.02581,0.21120) attempt=1 reason=arrived selected=0 alignment=aligned_wide_face
+events.jsonl:17 106.9 grasp_attempt r2 chassis.csv:1071 xy=(0.03137,0.20349) box=(0.01566,0.00877,0.08306) yaw_deg=89.7083 tilt_deg=6.16021 clearance=0.06533 fingers=(5.2092, 5.209) lift attempt=1 consecutive_held_samples=76 window=99.4..106.9
+events.jsonl:20 116.9 sign_seen r2 chassis.csv:1171 xy=(0.00834,0.47027) corners_rectified_px=[[393.0, 15.0], [456.0, 15.0], [450.0, 78.0], [390.0, 77.0]] file=0019-receiver-sign.jpg
+  scan chassis.csv:1171 t=116.9 xy=(0.00834,0.47027) sign_range=2.15274 bearing_vs_command_deg=0.222
+events.jsonl:23 142.8 set_down r2 chassis.csv:1430 xy=(-0.04699,2.26069) box=(-0.04587,2.57502,0.01589) yaw_deg=-89.2192 tilt_deg=0.00000 clearance=-0.00011 fingers=(0.0, 0.0)
+
+trial-08 N-S blue donor=r2 receiver=r1
+Initial overview top-face centre pixel (629, 302) RGB=(118, 254, 250), HSV (OpenCV units, continuous)=[89.1, 136.5, 254.0]
+events.jsonl:4 9.9 approach_end r2 chassis.csv:101 xy=(-0.16028,1.92908) attempt=1 reason=not_found selected=None alignment=None
+events.jsonl:5 9.9 failure r2 chassis.csv:101 xy=(-0.16028,1.92908) donor_pick own-camera approach could not hand off a selected box to ACT
+
+trial-09 W-E red donor=r1 receiver=r2
+Initial overview top-face centre pixel (460, 464) RGB=(252, 89, 90), HSV (OpenCV units, continuous)=[179.8, 164.9, 252.0]
+events.jsonl:4 25.5 approach_end r1 chassis.csv:257 xy=(-1.37124,0.12020) attempt=1 reason=arrived selected=0 alignment=aligned_wide_face
+events.jsonl:6 37.7 grasp_attempt r1 chassis.csv:379 xy=(-1.36792,0.11833) box=(-1.16689,0.10989,0.08348) yaw_deg=-0.1162 tilt_deg=6.32559 clearance=0.06569 fingers=(5.2047, 5.2044) lift attempt=1 consecutive_held_samples=76 window=30.2..37.7
+events.jsonl:7 46.7 release_start r1 chassis.csv:469 xy=(-0.30856,-0.00206) box=(-0.10737,0.00099,0.08315) yaw_deg=2.7764 tilt_deg=6.70245 clearance=0.06526 fingers=(5.199, 5.2085)
+events.jsonl:9 56.4 release r1 chassis.csv:566 xy=(-0.30959,-0.00159) box=(0.01414,-0.00561,0.01589) yaw_deg=0.4298 tilt_deg=0.00000 clearance=-0.00011 fingers=(0.0, 0.0) mark_offset=0.01521 yaw_error_deg=0.4298
+events.jsonl:19 72.8 scan_start r2 chassis.csv:730 xy=(0.80066,0.00149)
+events.jsonl:21 95.6 approach_end r2 chassis.csv:958 xy=(0.22501,-0.01634) attempt=1 reason=arrived selected=0 alignment=aligned_wide_face
+events.jsonl:23 132.0 grasp_attempt r2 chassis.csv:1322 xy=(0.22945,-0.01389) box=(0.04625,-0.01581,0.01589) yaw_deg=3.3238 tilt_deg=0.00000 clearance=-0.00011 fingers=(0.0, 0.0) miss attempt=1 consecutive_held_samples=0
+events.jsonl:26 157.2 approach_end r2 chassis.csv:1574 xy=(0.25887,-0.01512) attempt=2 reason=arrived selected=0 alignment=aligned_unverified_face
+events.jsonl:28 196.0 grasp_attempt r2 chassis.csv:1962 xy=(0.26695,-0.01436) box=(0.11549,-0.02422,0.01589) yaw_deg=5.2394 tilt_deg=0.00000 clearance=-0.00011 fingers=(0.0, 0.0) miss attempt=2 consecutive_held_samples=0
+events.jsonl:29 196.0 failure r2 chassis.csv:1962 xy=(0.26695,-0.01436) receiver_pick both grasp attempts failed
+
+trial-10 E-W blue donor=r2 receiver=r1
+Initial overview top-face centre pixel (806, 467) RGB=(139, 255, 255), HSV (OpenCV units, continuous)=[90.0, 116.0, 255.0]
+events.jsonl:4 9.9 approach_end r2 chassis.csv:101 xy=(1.79955,0.20013) attempt=1 reason=not_found selected=None alignment=None
+events.jsonl:5 9.9 failure r2 chassis.csv:101 xy=(1.79955,0.20013) donor_pick own-camera approach could not hand off a selected box to ACT
+
+trial-11 S-N blue donor=r1 receiver=r2
+Initial overview top-face centre pixel (636, 650) RGB=(129, 250, 243), HSV (OpenCV units, continuous)=[88.3, 123.4, 250.0]
+events.jsonl:4 9.9 approach_end r1 chassis.csv:101 xy=(-0.07974,-1.85933) attempt=1 reason=not_found selected=None alignment=None
+events.jsonl:5 9.9 failure r1 chassis.csv:101 xy=(-0.07974,-1.85933) donor_pick own-camera approach could not hand off a selected box to ACT
+
+trial-12 N-S red donor=r2 receiver=r1
+Initial overview top-face centre pixel (640, 294) RGB=(248, 94, 92), HSV (OpenCV units, continuous)=[0.4, 160.4, 248.0]
+events.jsonl:4 30.8 approach_end r2 chassis.csv:310 xy=(-0.01500,1.40828) attempt=1 reason=arrived selected=0 alignment=aligned_wide_face
+events.jsonl:6 42.8 grasp_attempt r2 chassis.csv:430 xy=(-0.01464,1.41059) box=(0.00533,1.20993,0.08362) yaw_deg=-85.5236 tilt_deg=6.61440 clearance=0.06577 fingers=(5.1373, 5.1377) lift attempt=1 consecutive_held_samples=77 window=35.2..42.8
+events.jsonl:7 51.4 release_start r2 chassis.csv:516 xy=(-0.00113,0.31565) box=(0.00731,0.11425,0.08364) yaw_deg=-88.4053 tilt_deg=6.88979 clearance=0.06567 fingers=(5.137, 5.1372)
+events.jsonl:9 61.1 release r2 chassis.csv:613 xy=(-0.00315,0.31239) box=(0.00890,-0.00727,0.01589) yaw_deg=-88.8304 tilt_deg=0.00000 clearance=-0.00011 fingers=(0.0, 0.0) mark_offset=0.01149 yaw_error_deg=1.1696
+events.jsonl:11 78.9 scan_start r1 chassis.csv:791 xy=(-0.00906,-0.81484)
+events.jsonl:13 105.6 approach_end r1 chassis.csv:1058 xy=(-0.00248,-0.21467) attempt=1 reason=arrived selected=0 alignment=aligned_wide_face
+events.jsonl:15 158.0 grasp_attempt r1 chassis.csv:1582 xy=(-0.00507,-0.21917) box=(-0.01285,-0.02442,0.01589) yaw_deg=-86.6773 tilt_deg=0.00000 clearance=-0.00011 fingers=(0.0, 0.0) miss attempt=1 consecutive_held_samples=0
+events.jsonl:16 191.9 approach_end r1 chassis.csv:1921 xy=(0.01372,-0.23184) attempt=2 reason=arrived selected=0 alignment=aligned_wide_face
+events.jsonl:18 203.9 grasp_attempt r1 chassis.csv:2041 xy=(0.01818,-0.23173) box=(-0.01299,-0.03611,0.08358) yaw_deg=-84.7155 tilt_deg=7.71712 clearance=0.06539 fingers=(5.2101, 5.209) lift attempt=2 consecutive_held_samples=77 window=196.3..203.9
+events.jsonl:19 213.2 sign_seen r1 chassis.csv:2134 xy=(0.00623,-0.48078) corners_rectified_px=[[412.0, 14.0], [476.0, 14.0], [470.0, 78.0], [409.0, 77.0]] file=0018-receiver-sign.jpg
+  scan chassis.csv:2134 t=213.2 xy=(0.00623,-0.48078) sign_range=2.14223 bearing_vs_command_deg=-0.167
+events.jsonl:22 239.9 set_down r1 chassis.csv:2401 xy=(-0.01135,-2.27863) box=(-0.00474,-2.59479,0.01589) yaw_deg=90.5230 tilt_deg=0.00000 clearance=-0.00011 fingers=(0.0, 0.0)

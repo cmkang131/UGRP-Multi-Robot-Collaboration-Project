@@ -1,0 +1,640 @@
+{
+ "schema": "mapgen.scenes.v1",
+ "scenes": [
+  {
+   "id": "P2R_N03_S25",
+   "type": "phase2_tworoom",
+   "type_code": "P2",
+   "control": false,
+   "schema": "mapgen.scene.v1",
+   "family": "tworoom",
+   "n_robots": 3,
+   "seed": 25,
+   "profile": "strict",
+   "time_model": "path",
+   "arena": {
+    "bounds": [
+     -1.05,
+     6.0,
+     -3.6,
+     1.45
+    ],
+    "wall_half": 0.025,
+    "wall_height": 0.4,
+    "rooms": [
+     {
+      "id": "B1",
+      "kind": "box",
+      "name": "box room",
+      "rect": [
+       -1.05,
+       3.05,
+       -3.6,
+       1.45
+      ]
+     },
+     {
+      "id": "D1",
+      "kind": "dest",
+      "name": "destination room",
+      "rect": [
+       3.05,
+       6.0,
+       -3.6,
+       1.45
+      ]
+     }
+    ],
+    "walls": [
+     {
+      "id": "wall_north",
+      "a": [
+       -1.05,
+       1.45
+      ],
+      "b": [
+       6.0,
+       1.45
+      ],
+      "kind": "outer"
+     },
+     {
+      "id": "wall_south",
+      "a": [
+       -1.05,
+       -3.6
+      ],
+      "b": [
+       6.0,
+       -3.6
+      ],
+      "kind": "outer"
+     },
+     {
+      "id": "wall_west",
+      "a": [
+       -1.05,
+       -3.6
+      ],
+      "b": [
+       -1.05,
+       1.45
+      ],
+      "kind": "outer"
+     },
+     {
+      "id": "wall_east",
+      "a": [
+       6.0,
+       -3.6
+      ],
+      "b": [
+       6.0,
+       1.45
+      ],
+      "kind": "outer"
+     },
+     {
+      "id": "wall_divider_1",
+      "a": [
+       3.05,
+       -3.6
+      ],
+      "b": [
+       3.05,
+       -1.35
+      ],
+      "kind": "divider"
+     },
+     {
+      "id": "wall_divider_2",
+      "a": [
+       3.05,
+       -0.85
+      ],
+      "b": [
+       3.05,
+       1.45
+      ],
+      "kind": "divider"
+     }
+    ],
+    "doors": [
+     {
+      "centre": [
+       3.05,
+       -1.1
+      ],
+      "axis": "x",
+      "width": 0.5,
+      "lanes": 1,
+      "rooms": [
+       "B1",
+       "D1"
+      ],
+      "id": "door_1"
+     }
+    ],
+    "signs": [
+     {
+      "number": 11,
+      "room": "D1",
+      "wall": "north",
+      "pos": [
+       3.9,
+       1.422
+      ],
+      "facing": "-y",
+      "face": 1.425,
+      "size": 0.25,
+      "area": [
+       3.4,
+       4.4,
+       0.77,
+       1.425
+      ],
+      "drop": [
+       3.9,
+       1.12
+      ],
+      "stand": [
+       3.9,
+       0.795
+      ]
+     },
+     {
+      "number": 12,
+      "room": "D1",
+      "wall": "south",
+      "pos": [
+       5.15,
+       -3.572
+      ],
+      "facing": "+y",
+      "face": -3.575,
+      "size": 0.25,
+      "area": [
+       4.65,
+       5.65,
+       -3.575,
+       -2.92
+      ],
+      "drop": [
+       5.15,
+       -3.27
+      ],
+      "stand": [
+       5.15,
+       -2.945
+      ]
+     },
+     {
+      "number": 13,
+      "room": "D1",
+      "wall": "east",
+      "pos": [
+       5.972,
+       0.6
+      ],
+      "facing": "-x",
+      "face": 5.975,
+      "size": 0.25,
+      "area": [
+       5.32,
+       5.975,
+       0.1,
+       1.1
+      ],
+      "drop": [
+       5.67,
+       0.6
+      ],
+      "stand": [
+       5.345,
+       0.6
+      ]
+     }
+    ],
+    "family": "tworoom",
+    "markers": {
+     "dictionary": "DICT_4X4_50",
+     "dictionary_size": 50,
+     "sign_ids": [
+      11,
+      12,
+      13
+     ],
+     "robot_side_id0": 20,
+     "robot_top_id0": 40,
+     "max_id": 42,
+     "legacy_allocation": true
+    }
+   },
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": -0.15,
+     "y": 0.49,
+     "room": "B1"
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": -0.23,
+     "y": -1.16,
+     "room": "B1"
+    },
+    {
+     "id": "c",
+     "colour": "red",
+     "x": 0.52,
+     "y": -1.65,
+     "room": "B1"
+    },
+    {
+     "id": "d",
+     "colour": "blue",
+     "x": 0.66,
+     "y": -2.97,
+     "room": "B1"
+    },
+    {
+     "id": "e",
+     "colour": "blue",
+     "x": 0.18,
+     "y": -2.16,
+     "room": "B1"
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 1.04,
+     "y": -2.38,
+     "yaw": -2.2082,
+     "room": "B1"
+    },
+    {
+     "rid": "r2",
+     "x": 0.67,
+     "y": 0.16,
+     "yaw": 2.9904,
+     "room": "B1"
+    },
+    {
+     "rid": "r3",
+     "x": 0.12,
+     "y": -0.63,
+     "yaw": -2.205,
+     "room": "B1"
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o2",
+     "colour": "blue",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o3",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o4",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o5",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o2",
+     "o3",
+     "o5"
+    ],
+    "r2": [
+     "o2",
+     "o3",
+     "o5"
+    ],
+    "r3": [
+     "o2",
+     "o3",
+     "o5"
+    ]
+   },
+   "constraints": [
+    {
+     "id": "k1",
+     "type": "order",
+     "orders": [
+      "o1",
+      "o4"
+     ],
+     "known_by": []
+    }
+   ],
+   "max_trips_per_robot": 2,
+   "oracle_plan": {
+    "r1": [
+     [
+      "d",
+      "o2"
+     ]
+    ],
+    "r2": [
+     [
+      "a",
+      "o3"
+     ],
+     [
+      "c",
+      "o1"
+     ]
+    ],
+    "r3": [
+     [
+      "b",
+      "o5"
+     ],
+     [
+      "e",
+      "o4"
+     ]
+    ]
+   },
+   "oracle": {
+    "kind": "phase2_multi_fixed_plan_v2_reveal",
+    "trips": {
+     "r1": [
+      {
+       "box": "d",
+       "box_xy": [
+        0.66,
+        -2.97
+       ],
+       "order": "o2",
+       "sign": 11,
+       "door": "door_1",
+       "planned_pick_ready_s": 62.88,
+       "planned_go_s": 211.49,
+       "planned_arrival_s": 332.72,
+       "planned_down_s": 342.72
+      }
+     ],
+     "r2": [
+      {
+       "box": "a",
+       "box_xy": [
+        -0.15,
+        0.49
+       ],
+       "order": "o3",
+       "sign": 12,
+       "door": "door_1",
+       "planned_pick_ready_s": 76.08,
+       "planned_go_s": 342.72,
+       "planned_arrival_s": 490.4,
+       "planned_down_s": 500.4
+      },
+      {
+       "box": "c",
+       "box_xy": [
+        0.52,
+        -1.65
+       ],
+       "order": "o1",
+       "sign": 11,
+       "door": "door_1",
+       "planned_pick_ready_s": 714.85,
+       "planned_go_s": 714.85,
+       "planned_arrival_s": 826.09,
+       "planned_down_s": 836.09,
+       "planned_return_enter_s": 568.04
+      }
+     ],
+     "r3": [
+      {
+       "box": "b",
+       "box_xy": [
+        -0.23,
+        -1.16
+       ],
+       "order": "o5",
+       "sign": 13,
+       "door": "door_1",
+       "planned_pick_ready_s": 58.05,
+       "planned_go_s": 58.05,
+       "planned_arrival_s": 201.49,
+       "planned_down_s": 211.49
+      },
+      {
+       "box": "e",
+       "box_xy": [
+        0.18,
+        -2.16
+       ],
+       "order": "o4",
+       "sign": 12,
+       "door": "door_1",
+       "planned_pick_ready_s": 686.86,
+       "planned_go_s": 838.09,
+       "planned_arrival_s": 974.26,
+       "planned_down_s": 984.26,
+       "planned_return_enter_s": 500.4
+      }
+     ]
+    },
+    "door_queues": {
+     "door_1": [
+      [
+       "out",
+       "o5"
+      ],
+      [
+       "out",
+       "o2"
+      ],
+      [
+       "out",
+       "o3"
+      ],
+      [
+       "back",
+       "o4"
+      ],
+      [
+       "back",
+       "o1"
+      ],
+      [
+       "out",
+       "o1"
+      ],
+      [
+       "out",
+       "o4"
+      ]
+     ]
+    },
+    "rules": [
+     {
+      "id": "k1",
+      "prior": "o1",
+      "later": "o4",
+      "prior_robot": "r2",
+      "later_robot": "r3",
+      "rule_blind_margin_s": 121.24,
+      "lead_s": 148.18
+     }
+    ],
+    "after_orders": {
+     "o4": [
+      "o1"
+     ]
+    },
+    "not_before": {
+     "o1": 211.49,
+     "o4": 211.49
+    }
+   },
+   "estimate": {
+    "plan_exists": true,
+    "time_model": "path",
+    "oracle_method": "p2_reveal_stripe_enumeration_multi_trip",
+    "oracle_correct": 5,
+    "oracle_errors": 0,
+    "oracle_completion_s": 668.76,
+    "door_passes": {
+     "door_1": 7
+    },
+    "carriers": 3,
+    "door_gate_completion_of_plan_s": 984.26,
+    "door_gate_ratio_of_900": 1.094,
+    "deadline_s_recommended": 1300,
+    "p2": {
+     "completion_with_rules_s": 984.26,
+     "completion_rule_blind_s": 954.28,
+     "rules": 1
+    }
+   },
+   "gen": {
+    "attempts": 3,
+    "rejections": {
+     "box_door": 5,
+     "box_gap": 4,
+     "near": 8,
+     "no_binding_plan: no feasible binding multi-trip plan for door_1": 2,
+     "robot_door": 1,
+     "robot_gap": 2,
+     "robot_wall": 5
+    },
+    "generator": "gen_p2.py",
+    "sizing": {
+     "family": "tworoom",
+     "modular": true,
+     "n": 3,
+     "modules": 1,
+     "demand": 5,
+     "signs": 3,
+     "boxes_rooms": 1,
+     "dest_rooms": 1,
+     "corridor_w": 0.0,
+     "door_w": 0.5,
+     "doors_in": [
+      1
+     ],
+     "doors_out": [
+      1
+     ],
+     "H": 5.05,
+     "w_b": 4.1,
+     "w_d": 2.95,
+     "w_c": 0.0,
+     "area_b": 20.705,
+     "area_d": 14.8975,
+     "a_r": 6.9017,
+     "a_d": 4.9658,
+     "door_robots": 3,
+     "robots_per_room": [
+      3
+     ],
+     "signs_per_room": [
+      3
+     ]
+    },
+    "door_robots": 3,
+    "axes": {
+     "sign_pattern": "spread",
+     "box_layout": "scatter",
+     "start": "scatter",
+     "info": "full",
+     "caps": "none",
+     "decoys": 0
+    },
+    "rules": 1,
+    "box_door_m": 2.0,
+    "stripe_margin_m": 0.6,
+    "oracle_box": "first picks use the start PLAN list; second picks use a west-facing return survey 1.30 m inside the box room, with unknown moving bodies omitted",
+    "plan_list": {
+     "min_m": 0.1,
+     "max_m": 2.0,
+     "max_deg": 70.0,
+     "los_m": 0.25
+    },
+    "accept_rule": "feasible geometry and a binding plan. Completion time and greedy conflicts are measured after generation",
+    "design_choices": [
+     "door_sign_visibility: three readable signs per stripe host 2, 2 and 1 orders. Each colour/sign pair is unique. Check the actual box door on every trip.",
+     "precedence_within_door_stripe: one fixed pair of different colours and signs per stripe, served by different robots. Ignoring the rule must reverse the pair.",
+     "robot_start: three robots per stripe face a nearest box at 0.6..1.1 m. Anchors are drawn with replacement.",
+     "multi_carry: five local boxes for three robots, two trips each for two robots and one for the third. At least two robots share each colour.",
+     "oracle_box: first picks use the start PLAN list; second picks use a west-facing return survey 1.30 m inside the box room, with unknown moving bodies omitted",
+     "schedule: minimise final set-down among feasible local assignments. A free lane takes the lowest-numbered eligible waiter. Loaded trips hold it until release; empty returns share it.",
+     "seed: orders, rules, colours, stripe labels and layout are fixed. Only box and sign positions and robot poses are sampled.",
+     "accept_rule: feasible geometry and a binding plan. Completion time and greedy conflicts are measured after generation"
+    ]
+   },
+   "reveal": {
+    "version": 1,
+    "source_scene": "P2_N03_S25",
+    "source_sha256": "cb8623e2bab16722be4aae504ab2b5e392390c65c4e7444e049923b3c52d899b",
+    "initial_orders": [
+     "o2",
+     "o3",
+     "o5"
+    ],
+    "hidden_orders": [
+     "o1",
+     "o4"
+    ],
+    "withdrawn_orders": [
+     "o2"
+    ],
+    "rule": "k1",
+    "rule_sentence": "Change of orders: the order <blue box> to <sign11 zone> is withdrawn. A blue box set down at the sign11 zone no longer counts, unless it had already passed the door when this message arrived. Rule of this task: the <red box> for the <sign11 zone> must be set down at its zone BEFORE the <blue box> for the <sign12 zone> is set down at its zone. A box set down earlier than that does not count as delivered.",
+    "t_reveal_s": 211.49,
+    "leader_seed": 347753638,
+    "leader": "r2",
+    "recipient": "r1",
+    "control": "all robots at t_reveal_s",
+    "treatment": "recipient only at t_reveal_s"
+   }
+  }
+ ]
+}

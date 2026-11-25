@@ -1,0 +1,31 @@
+apiVersion: run.googleapis.com/v1
+kind: Job
+metadata:
+  name: ugrp-handover-gate
+  namespace: '<project-number>'
+spec:
+  template:
+    metadata:
+      annotations:
+        run.googleapis.com/execution-environment: gen2
+    spec:
+      parallelism: 1
+      taskCount: 12
+      template:
+        spec:
+          maxRetries: 0
+          timeoutSeconds: '1800'
+          serviceAccountName: <service-account>
+          containers:
+          - image: '@IMAGE@'
+            env:
+            - name: HANDOVER_IMAGE
+              value: '@IMAGE@'
+            - name: HANDOVER_FIRST_TRIAL
+              value: '1'
+            - name: RESULT_BUCKET
+              value: <bucket>
+            resources:
+              limits:
+                cpu: '2'
+                memory: 6Gi

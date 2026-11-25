@@ -1,0 +1,51 @@
+# TASK-CHEN2D-2: changes to the 2D experiment after the review debate (2026-11-24)
+
+Context: `TASK-CHEN2D.md` was carried out (see `REPORT-CHEN2D.md`). The user and the second reviewer settled the points below (`<work>/20261123-plan3/debate/R2-ASTRA.md`, items 1, 3, 4). Same hard limits as before: work only inside this folder, no network, fake model for tests, do not run real-model batches, keep the authors' prompts and loops untouched outside the event.
+
+## C1. The event's colour and destination are fixed by the initial map, not by what happened
+- For every environment file, A (the colour) and D (the square) are drawn once from the environment seed at generation time and stored next to the environment (for example `event.json`). Every framework gets the same A and D on the same map. A is drawn among the colours of the map; D among squares that hold no target of colour A at the start.
+- If no box of colour A is left when the event fires, the event still fires (the message is still shown) and the episode is marked `event_nothing_to_change`. Such episodes stay in every denominator and are counted in the summary.
+
+## C2. When the event fires
+- `event_step = ceil(S / 2)`, where S is the number of steps a fixed rule-based planner needs on that initial map (write this planner: every step, each box moves one square along a shortest path to the nearest target of its colour, or into the target when it is in the target's square; all boxes move in parallel as the authors' environment allows; verify the plan against the authors' action rules). Bounds: at least 2, at most half of the step limit of that grid size. Store S and `event_step` in `event.json`. The event fires right after the executed step number `event_step`.
+- `--event-step N` overrides it for tests.
+
+## C3. The message tells the change, not the command
+Replace the block of section 2.2 by: `Change of orders (announced after step K): the order for boxes of colour A has changed. They are no longer wanted in target_A. They are now wanted in the drop-off at square[D]. A box_A that is put into target_A from now on counts as a wrong delivery.` (K, A, D filled in.) The action `move(box_A, dropoff_A)` appears only in the doable-action list of an agent whose square holds both a box_A and the drop-off, exactly like the authors' target actions. Same block for every planner, local agent and re-prompt, from the event on.
+
+## C4. Second kind of event: `--event e2` (something already delivered must be moved again). `--event e1` is the event above.
+- From the initial map: one colour A2 and one square D2, D2 at least two squares (Manhattan) away from every target of A2 when the grid allows it, else the farthest square. Stored in `event.json`.
+- Trigger: the first correct delivery of a box of colour A2 into target_A2 (any step). Right after that step: the delivery is cancelled. The box comes back into the square where it was delivered, renamed `box_A2_returned` (visible in the state), the used target stays removed, and a `dropoff_A2` item appears in square D2. From then on the returned box must be carried square by square to D2 and put into the drop-off (`move(box_A2_returned, dropoff_A2)`). Other boxes of colour A2 keep their normal targets. Only this one box is affected, once per episode.
+- Message block, same rules as C3: `Change of orders (announced after step K): the box of colour A2 that was just delivered was not accepted. It is back in square[X] as box_A2_returned and is now wanted in the drop-off at square[D2].`
+- An episode in which no box of A2 is ever delivered is marked `event_not_fired` and stays in the denominators.
+- Completion and strict success: no box left (the returned box included), no wrong delivery.
+- Metrics as for e1, plus: step of the trigger, steps from the trigger until the returned box is in the drop-off (NA if never), whether the first plan after the trigger moves the returned box towards D2.
+
+## C5. Runner and summary
+`--conditions static,e1,e2`. The summary shows, per size x framework x condition: episodes, event fired / nothing to change / not fired, success, strict success, steps, calls, tokens, cost, wrong deliveries, first-plan measures. Old run folders made before this change must not be mixed in: the run folder records the code version (a short hash of the source files) and the summary refuses to mix versions.
+
+## C7. Who is told the change: `--tell all | leader | member` (default all). Premise given by the user: edge computing, no machine that knows everything; every LLM runs on a robot; the commanding LLM is the LLM of one robot (the leader robot).
+- For every environment two agents are drawn from the seed and stored in `event.json`: the leader agent L and one member agent M (M differs from L). In CMAS, HMAS-1 and HMAS-2 the central planner IS robot L's LLM: its prompt wording stays the authors' central-planner prompt, nothing is added about L. In DMAS, L has no special role.
+- The state and the doable-action lists stay shared exactly as in the authors' code (robots exchange their state; that is cheap telemetry). Only the change-of-orders block (C3, C4) is restricted:
+  - `all`: every planner, local agent and re-prompt carries the block (the paper's premise; baseline).
+  - `leader`: only L's prompts carry it: the central-planner prompts (CMAS, HMAS-1, HMAS-2) and L's own local turns (its DMAS / HMAS-1 dialogue turns, its HMAS-2 review turn).
+  - `member`: only M's own local prompts carry it (its DMAS / HMAS-1 dialogue turns, its HMAS-2 review turn). The central planner's prompts never carry it.
+  From the event on, at every step, for the whole episode.
+- The other LLMs can learn the change only from what a told agent writes, through the channels the framework already has (DMAS / HMAS-1 dialogue, HMAS-2 feedback to the central planner). Do not add channels and do not change which agents the authors' code lets speak or review (check how HMAS-2 chooses reviewers and keep it). Consequences to record, not to fix: in CMAS with `member` nothing carries the news to the planner; with the default history method an earlier step's dialogue is not shown again.
+- Record per episode: L, M, how often each told agent had a turn after the event, whether a told agent mentioned the change at the first planning iteration after the event (its text contains the drop-off name, "drop-off" or "Change of orders") and at how many later iterations, and whether the executed plan of that iteration respected the change.
+- Runner: `--tell all,leader,member` (ignored for `static`). Summary: one more grouping column. Tests: with `leader` / `member` the block is absent from every prompt except the allowed ones; with `all` the prompts equal the C3 behaviour byte for byte; L and M are the same for every framework on a map.
+
+## C8. Plan extraction: `--parse lenient | strict` (default lenient). Found in the first real-model episodes (frozen copy of version 1 in `../20261124-chen2d-snap-v1/runs/glm-smoke-*`):
+- DMAS, 2x2 env 0: after a syntactic re-prompt the model answered `EXECUTE\n{...}`; the authors' check passes the whole re-prompt reply to `json.loads`, which raised, and the episode ended as `Hallucination of wrong plan` (calls 00011, 00012).
+- HMAS-2, 2x2 env 0: the central planner's reply was a correct JSON plan followed by leaked reasoning text; the greedy `{.*}` match was not valid JSON and the episode ended the same way (call 00017).
+These are parser accidents of the authors' code with a model that adds text, not effects of the communication structure, so they must not decide our results.
+- `lenient`: everywhere the authors' code turns a reply into a plan (the `re.search(r'{.*}', ..., re.DOTALL)` sites and the `json.loads(response)` at the top of the syntactic-check loop, for the first reply and for every re-prompt reply), the plan is the FIRST JSON object that parses as a dict, scanning left to right from the last `EXECUTE` if the text has one, else from the start of the text (`json.JSONDecoder().raw_decode` at each `{`). The checker then works on that object's canonical JSON text. If no object parses: in the syntactic-check loop send the authors' own format-feedback sentence (the line that follows `raise error(...)` in their code, unreachable today) and count it in the 6 re-prompts; at the other sites keep what the authors' code does when its regex finds no match. Dialogue-ending rules (EXECUTE, `I Agree`) are NOT changed.
+- `strict`: the authors' behaviour, byte for byte as in version 1 (keep the existing reference tests green under `--parse strict`).
+- Record per episode `lenient_rescues` (number of replies where strict would have raised or produced a different plan) and, per call, a flag. Summary column: episodes with at least one rescue.
+- Tests: the two real replies above (copy them from the saved calls into the test file) crash under strict and give the intended plan under lenient; a reply with reasoning text before the JSON; a reply with two JSON objects after EXECUTE takes the first; a reply with no JSON takes the format-feedback path.
+
+## C9. Real parallelism
+Version 1 lets the workers of one output directory share one campaign ledger, and the client admits one outstanding paid request per ledger, so `--jobs 6` is sequential in practice. Give every episode its own client ledger inside its episode folder (the client's per-ledger cap of 1.5 USD then applies per episode), keep `--max-cost-usd` and `--max-calls` as sums over all episodes of the invocation (file-locked shared counter), and keep resume working. Test with the scripted transport that two episodes have requests in flight at the same time.
+
+## C6. Tests and report
+Offline tests for C1 to C5 and C7 to C9 (same A, D, event_step for every framework on a map; e1 message without the command; e2 trigger, cancellation, returned box, completion; denominators). Append a section "CHEN2D-2" to `REPORT-CHEN2D.md` with the changes, test output, and the exact commands for (a) a 3-episode real-model smoke (2x2, CMAS / HMAS-2 / DMAS, condition e1), (b) batch 1: sizes 2x2 and 4x8, frameworks CMAS, HMAS-2, DMAS, conditions static and e1, `--tell all,leader,member` (static has no tell variant), envs 0 to 2. Last step: create the empty file `review/ASTRA-CHEN2D-2.done`.

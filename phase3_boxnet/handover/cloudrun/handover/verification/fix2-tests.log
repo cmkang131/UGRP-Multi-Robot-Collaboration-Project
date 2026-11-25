@@ -1,0 +1,166 @@
+FIX2 · local verification
+Scratch writes were confined to the phase-3 workspace. The requested suites ran with the local Python socket guard, -B, and one OpenBLAS thread.
+
+Hand-over
+$ python3 -B -m unittest discover -s handover/tests -v
+test_balanced_preselection_and_room_starts (test_gate.Design.test_balanced_preselection_and_room_starts) ... ok
+test_built_xml_both_orientations_both_sides (test_gate.Design.test_built_xml_both_orientations_both_sides) ... ok
+test_trace_catches_one_substep_excursion_and_keeps_raw_point (test_gate.Design.test_trace_catches_one_substep_excursion_and_keeps_raw_point) ... ok
+test_dry_run_and_staged_manifest_offline (test_gate.Interfaces.test_dry_run_and_staged_manifest_offline) ... ok
+test_explicit_trial_and_no_overwrite (test_gate.Interfaces.test_explicit_trial_and_no_overwrite) ... ok
+test_file_backed_score_reads_evidence_and_rejects_a_missing_frame (test_gate.Interfaces.test_file_backed_score_reads_evidence_and_rejects_a_missing_frame) ... ok
+test_ordinary_executor_parser_has_no_gate_option_or_import (test_gate.Interfaces.test_ordinary_executor_parser_has_no_gate_option_or_import) ... ok
+test_both_fingers_and_hold_duration (test_gate.Referee.test_both_fingers_and_hold_duration) ... ok
+test_clearance_and_receiver_wait (test_gate.Referee.test_clearance_and_receiver_wait) ... ok
+test_gate_requires_unique_complete_cohort (test_gate.Referee.test_gate_requires_unique_complete_cohort) ... ok
+test_jaw_opening_while_still_held (test_gate.Referee.test_jaw_opening_while_still_held) ... ok
+test_missing_sign_read_and_early_observation (test_gate.Referee.test_missing_sign_read_and_early_observation) ... ok
+test_no_sampling_gap_or_between_endpoint_crossing (test_gate.Referee.test_no_sampling_gap_or_between_endpoint_crossing) ... ok
+test_rectangular_box_half_turn_equivalent (test_gate.Referee.test_rectangular_box_half_turn_equivalent) ... ok
+test_release_thresholds_and_first_failure (test_gate.Referee.test_release_thresholds_and_first_failure) ... ok
+test_retry_count_and_extra_attempt (test_gate.Referee.test_retry_count_and_extra_attempt) ... ok
+test_same_body_and_contiguous_lift (test_gate.Referee.test_same_body_and_contiguous_lift) ... ok
+test_scene_without_images_cannot_pass (test_gate.Referee.test_scene_without_images_cannot_pass) ... ok
+test_sign_and_final_floor_pose (test_gate.Referee.test_sign_and_final_floor_pose) ... ok
+test_success_rotated_reversed_and_identity (test_gate.Referee.test_success_rotated_reversed_and_identity) ... ok
+test_magnified_quads_keep_native_position_heading_and_tile_calibration (test_overhead_recovery.DetectorCoordinates.test_magnified_quads_keep_native_position_heading_and_tile_calibration) ... ok
+test_clean_reads_and_distinct_short_losses_on_both_robots_and_both_walls (test_overhead_recovery.Recovery.test_clean_reads_and_distinct_short_losses_on_both_robots_and_both_walls) ... ok
+test_final_recheck_can_recover_with_gripper_and_lowered_arm_held (test_overhead_recovery.Recovery.test_final_recheck_can_recover_with_gripper_and_lowered_arm_held) ... ok
+test_persistent_other_id_stops_navigation_at_the_active_stage (test_overhead_recovery.Recovery.test_persistent_other_id_stops_navigation_at_the_active_stage) ... ok
+test_recorded_intervals_score_without_advancing_the_gate (test_overhead_recovery.Recovery.test_recorded_intervals_score_without_advancing_the_gate) ... ok
+test_recorded_timeout_scores_as_an_evaluated_stage_failure (test_overhead_recovery.Recovery.test_recorded_timeout_scores_as_an_evaluated_stage_failure) ... ok
+test_sign_is_measured_again_after_overhead_recovery (test_overhead_recovery.Recovery.test_sign_is_measured_again_after_overhead_recovery) ... ok
+test_each_robot_gets_only_one_retry_and_rescans (test_policy.PolicyChecks.test_each_robot_gets_only_one_retry_and_rescans) ... ok
+test_mark_only_receiver_exception_uses_own_observation (test_policy.PolicyChecks.test_mark_only_receiver_exception_uses_own_observation) ... ok
+test_native_chunk_decoder_and_release_table_link_to_witnesses (test_policy.PolicyChecks.test_native_chunk_decoder_and_release_table_link_to_witnesses) ... ok
+test_receiver_never_acts_when_donor_clear_fails (test_policy.PolicyChecks.test_receiver_never_acts_when_donor_clear_fails) ... ok
+
+----------------------------------------------------------------------
+Ran 31 tests in 0.436s
+
+OK
+
+Cloud wrapper
+$ python3 -B -m unittest discover -s cloudrun/handover -p 'test_handover_cloud.py' -v
+test_ambiguous_submission_reconciles_a_unique_id_without_reexecution (test_handover_cloud.CloudPath.test_ambiguous_submission_reconciles_a_unique_id_without_reexecution) ... ok
+test_build_deploy_run_watch_against_recorded_response_shapes (test_handover_cloud.CloudPath.test_build_deploy_run_watch_against_recorded_response_shapes) ... ok
+test_deploy_flags_match_job_yaml (test_handover_cloud.CloudPath.test_deploy_flags_match_job_yaml) ... ok
+test_deploy_reuses_matching_receipts_and_refuses_a_conflict (test_handover_cloud.CloudPath.test_deploy_reuses_matching_receipts_and_refuses_a_conflict) ... ok
+test_execute_command_and_offline_plan (test_handover_cloud.CloudPath.test_execute_command_and_offline_plan) ... ok
+test_extractor_requires_a_regular_trial_tree (test_handover_cloud.CloudPath.test_extractor_requires_a_regular_trial_tree) ... ok
+test_image_mismatch_stops_each_launch_before_reservation (test_handover_cloud.CloudPath.test_image_mismatch_stops_each_launch_before_reservation) ... ok
+test_index_mapping_smoke_remaining_and_all (test_handover_cloud.CloudPath.test_index_mapping_smoke_remaining_and_all) ... ok
+test_partial_fetch_resumes_without_publishing_damaged_or_mixed_rows (test_handover_cloud.CloudPath.test_partial_fetch_resumes_without_publishing_damaged_or_mixed_rows) ... ok
+test_recorded_failure_error_and_unexpected_exit (test_handover_cloud.CloudPath.test_recorded_failure_error_and_unexpected_exit) ... ok
+test_split_round_trip_and_real_scorer_with_synthetic_evidence (test_handover_cloud.CloudPath.test_split_round_trip_and_real_scorer_with_synthetic_evidence) ... ok
+test_staged_input_bytes_parent_and_commit (test_handover_cloud.CloudPath.test_staged_input_bytes_parent_and_commit) ... ok
+test_upload_failures_are_reported_after_both_transfers (test_handover_cloud.CloudPath.test_upload_failures_are_reported_after_both_transfers) ... ok
+test_watchdog_and_failed_start_publish_diagnostics (test_handover_cloud.CloudPath.test_watchdog_and_failed_start_publish_diagnostics) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 1.435s
+
+OK
+
+Dispatcher
+$ (cd cloudrun && python3 -B -m unittest test_cr_dispatch_p3 -v)
+test_a_row_without_fixed_still_needs_allow_llm (test_cr_dispatch_p3.Dispatcher.test_a_row_without_fixed_still_needs_allow_llm) ... ok
+test_budget_groups_load_with_all_server_options (test_cr_dispatch_p3.Dispatcher.test_budget_groups_load_with_all_server_options) ... ok
+test_static_main_and_check_groups_load (test_cr_dispatch_p3.Dispatcher.test_static_main_and_check_groups_load) ... ok
+test_the_phase_two_dispatcher_files_are_unchanged (test_cr_dispatch_p3.Dispatcher.test_the_phase_two_dispatcher_files_are_unchanged) ... ok
+test_the_real_loader_of_the_dispatcher_accepts_the_placeholder_and_refuses_todo (test_cr_dispatch_p3.Dispatcher.test_the_real_loader_of_the_dispatcher_accepts_the_placeholder_and_refuses_todo)
+The gap the wrapper closes: dispatch.load_manifest(real=True) refuses TODO and PLACEHOLDER words only; the v8 placeholder has neither. ... ok
+test_the_v8_groups_are_registered_the_way_the_phase_two_groups_are (test_cr_dispatch_p3.Dispatcher.test_the_v8_groups_are_registered_the_way_the_phase_two_groups_are) ... ok
+test_the_wrapper_adds_no_new_job_or_quota_rule (test_cr_dispatch_p3.Dispatcher.test_the_wrapper_adds_no_new_job_or_quota_rule) ... ok
+test_v10_groups_load_with_the_runner_team_values (test_cr_dispatch_p3.Dispatcher.test_v10_groups_load_with_the_runner_team_values) ... ok
+test_v11_groups_load_with_the_manifest_leader (test_cr_dispatch_p3.Dispatcher.test_v11_groups_load_with_the_manifest_leader) ... ok
+test_a_dry_run_lists_the_rows_and_calls_no_gcloud (test_cr_dispatch_p3.RealRunGuards.test_a_dry_run_lists_the_rows_and_calls_no_gcloud) ... ok
+test_a_real_run_without_allow_llm_is_refused_before_any_gcloud_call (test_cr_dispatch_p3.RealRunGuards.test_a_real_run_without_allow_llm_is_refused_before_any_gcloud_call) ... ok
+test_a_missing_manifest_is_refused_not_crashed (test_cr_dispatch_p3.ShaGuard.test_a_missing_manifest_is_refused_not_crashed) ... ok
+test_short_long_upper_case_and_empty_shas_are_refused (test_cr_dispatch_p3.ShaGuard.test_short_long_upper_case_and_empty_shas_are_refused) ... ok
+test_the_main_placeholder_is_refused_for_a_real_run_too (test_cr_dispatch_p3.ShaGuard.test_the_main_placeholder_is_refused_for_a_real_run_too) ... ok
+test_the_placeholder_is_refused_before_the_dispatcher_runs (test_cr_dispatch_p3.ShaGuard.test_the_placeholder_is_refused_before_the_dispatcher_runs) ... ok
+test_the_check_rows_pass_the_loading_and_the_simulation (test_cr_dispatch_p3.Simulation.test_the_check_rows_pass_the_loading_and_the_simulation) ... <work>/20261115-batch/cloudrun/cr_dispatch.py:550: ResourceWarning: unclosed file <_io.TextIOWrapper name='<work>/20261123-phase3/.tmp/handover-fix2-1HVpT506/cr_p2_plan_wdx462y3/state/cr.lock' mode='w' encoding='UTF-8'>
+  return {"run": cmd_run, "status": cmd_status, "cancel": cmd_cancel, "stop": cmd_stop, "fetch": cmd_fetch}[a.cmd](a)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_the_main_rows_pass_the_loading_and_the_simulation (test_cr_dispatch_p3.Simulation.test_the_main_rows_pass_the_loading_and_the_simulation) ... <work>/20261115-batch/cloudrun/cr_dispatch.py:550: ResourceWarning: unclosed file <_io.TextIOWrapper name='<work>/20261123-phase3/.tmp/handover-fix2-1HVpT506/cr_p2_plan_b00hdpx1/state/cr.lock' mode='w' encoding='UTF-8'>
+  return {"run": cmd_run, "status": cmd_status, "cancel": cmd_cancel, "stop": cmd_stop, "fetch": cmd_fetch}[a.cmd](a)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 7.532s
+
+OK
+
+Extra legacy executor regression
+$ python3 -B handover/tests/legacy_checks.py
+Ran 690 tests in 51.373s
+
+OK (skipped=49)
+12 skipped: 'approach_core needs OpenCV'
+11 skipped: 'needs cv2'
+5 skipped: 'place_memory_v1 needs OpenCV'
+4 skipped: 'mapgen reveal scenes not found'
+4 skipped: 'the sign reader needs OpenCV'
+2 skipped: 'git object 4f0a57b not available'
+2 skipped: 'the card projection needs OpenCV'
+1 skipped: 'base commit 676768a not available'
+1 skipped: 'git object aa008ea not available'
+1 skipped: 'needs headless MuJoCo'
+1 skipped: 'MuJoCo unavailable'
+1 skipped: 'git object a58dad1 not available'
+1 skipped: 'the scoring tool tools/reveal_metrics.py of 20261123-phase3 is not here'
+1 skipped: 'the v8 scene P2R_N03_S10 of 20261123-phase3/scenes is not here'
+1 skipped: 'close sign projection needs OpenCV'
+1 skipped: 'git object 374eb57 not available'
+
+Executor goldens
+$ sha256sum -c handover/verification/golden.sha256
+exec/tests/golden_door_off.json: OK
+exec/tests/golden_gatefail_off.json: OK
+exec/tests/golden_look_ticks_talk_off.json: OK
+exec/tests/golden_order_reveal_off.json: OK
+exec/tests/golden_reveal_v7_fake_all.json: OK
+exec/tests/golden_reveal_v7_fake_all_not_fired.json: OK
+exec/tests/golden_reveal_v7_fake_recipient.json: OK
+exec/tests/golden_talk_off.json: OK
+
+Archived trial 1 rescored locally
+trial 1  FAIL  donor_clear  retries donor=1 receiver=0  ceiling camera lost r1's card  [cloudrun/runs/handover-20261125a/trials/trial-01]
+0/12 successes  |  1 evaluated  |  retries donor=1 receiver=0  |  gate PENDING (requires 10/12)
+Expected scorer exit 1 for this recorded failure.
+
+cloudrun/runs/handover-20261125a baseline comparison
+48 regular files. Changed files: none.
+
+exec baseline comparison
+2218 regular files. Changed files: exec/harness/handover_policy.py, exec/scripts/handover_world.py
+
+Staging
+.gcloudignore: OK
+Dockerfile: OK
+check_image.py: OK
+cloudbuild.yaml: OK
+exec/harness/handover_policy.py: OK
+exec/scripts/handover_world.py: OK
+exec/sim/handover_scene.py: OK
+handover/criteria.py: OK
+handover/layout.py: OK
+handover/records.py: OK
+handover/run_trial.py: OK
+handover/scenes/trials.csv: OK
+handover/score.py: OK
+layer.json: OK
+worker.py: OK
+15 files, 76196 bytes. Independent filesystem walk verified.
+Inventory SHA-256 774c224e2484f0c4c833a8dd06145f0067b4f2c04e2a023e3f6fdd7a0d14dba4
+Layer SHA-256 f9b4c6629df0333aa31f7cc933755f540a9b1717ebd12157f46c4d4e7f69083d
+FIX2 executor 2891894258b177ac4850a4992329b7795da056ae
+Files with different bytes from the trial-01 image context: check_image.py, exec/harness/handover_policy.py, exec/scripts/handover_world.py, handover/score.py, layer.json
+
+Build entry point
+ops.main() was given argv [ops.py, build, <fresh workspace directory>]. ops.cloud received three in-memory replies. All 15 staged files, the inventory and the FIX2 revision matched the independently verified context. The build ID and registry digest in this test were fixtures.
+
+The live image build, in-image OpenCV and MuJoCo checks, deployment and native FIX2 trials were left to the main session.
