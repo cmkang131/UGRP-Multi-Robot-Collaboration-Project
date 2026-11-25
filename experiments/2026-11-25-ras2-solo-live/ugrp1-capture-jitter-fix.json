@@ -1,0 +1,69 @@
+{
+  "failure_source_commit": "b4d53aaa42960db298af43be1d6551c311962682",
+  "recorded_trial_status": "failed during approach; align and ACT not reached",
+  "raw_run": "C:\\Users\\kevin\\Documents\\ChatGPT\\UGRP\\outputs\\ras2-solo-pipeline\\runs\\20261125-165826",
+  "raw_hashes": {
+    "events.jsonl": "edca2e38cec4e1d721d0eee627c6c3f63551d0ea9850b7cc7fa187ea5c7c97e0",
+    "result.json": "a4e02387df457cb4c317c262e99a1d0c2c0eef426d0c4521621d722c56bf9aa2"
+  },
+  "diagnosis": "Published fixed-tick history retains a predecessor beyond MEMORY_S + 0.15 under real capture jitter. The next failed capture was not saved; a synthetic next timestamp reproduces the same error.",
+  "fix": "Prune expired frame references before published time-only history sampling; preserve original timestamps, hashes and strict validator. Save frames before validation and approach state on failure.",
+  "replay": {
+    "source_run": "C:\\Users\\kevin\\Documents\\ChatGPT\\UGRP\\outputs\\ras2-solo-pipeline\\runs\\20261125-165826",
+    "recorded_rows_replayed": 166,
+    "published_approach_commands_exactly_matched": 166,
+    "original_failure_reproduced": {
+      "error": "future, reversed or stale image",
+      "oldest_age_s": 5.373766606999993,
+      "synthetic_next_frame_time": 320.032506876
+    },
+    "fixed_next_observation_ages_s": [
+      5.0939115589999915,
+      1.5084082939999917,
+      0.5515518290000045,
+      0.0
+    ],
+    "jitter_ticks_validated": 1000,
+    "clock_reversal_rejected": true,
+    "future_command_rejected": true,
+    "unchanged_published_contract_sha256": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056",
+    "failure_cleanup_and_evidence": "fake transport: 167 accepted ticks; reversed-clock frame saved; session close called; diagnostics saved",
+    "recorded_stages": [
+      "approach",
+      "init",
+      "restore",
+      "survey"
+    ],
+    "physical_commands_sent_by_verification": 0,
+    "calibration_and_lift_validation": "not performed"
+  },
+  "approach_reconstruction": {
+    "ticks": {
+      "init": 10,
+      "survey": 104,
+      "restore": 7,
+      "approach": 45,
+      "align": 0
+    },
+    "estimated_range_at_end_m": 0.4002,
+    "selected_entry": {
+      "kind": "red",
+      "x": 0.4432496060260913,
+      "y": -0.14607540424835647,
+      "bearing_rad": -0.3183467792009287,
+      "distance_m": 0.46669930037295526,
+      "observations": 18,
+      "dispersion": 0.013257345676403886
+    },
+    "alignment_ran": false
+  },
+  "remaining_limitations": [
+    "Physical camera geometry and per-pulse travel not calibrated for this robot",
+    "Final target is truncated by bottom image border while command-only estimate remains about 0.40m",
+    "ACT was not executed in recorded trial; real grasp or lift success has not been validated"
+  ],
+  "source_hashes": {
+    "run.py": "13b91c817627527198bd3cf9d806febe80f30e153adf82ce1b992d09c6d30ca6",
+    "verify_live_history.py": "e36707069d2bf2e2dddb9571230f542e4f221f4e39cde62764251440b34d6b36"
+  }
+}
