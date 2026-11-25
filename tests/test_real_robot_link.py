@@ -954,3 +954,71 @@ def test_calibrate_real_robot_diagonal_trim_and_root_solver():
     ugrp1 = calibration.load('configs/real_robot/ugrp1.json')
     assert ras2.camera.enabled is True and ras2.camera.pitch_offset_deg == 14.0 and ras2.vision.red_sat_min == 185
     assert ugrp1.camera.enabled is True and ugrp1.camera.pitch_offset_deg == 8.0 and ugrp1.vision.red_hue_max == 0
+
+
+def test_preflight_check_detects_ok_missing_clipped_and_too_close():
+    import numpy as np
+    cv2 = pytest.importorskip('cv2')
+    from real_robot.adapter import Sim2RealAdapter
+    from scripts import real_skill_test as rst
+
+    adapter = Sim2RealAdapter.from_file('configs/real_robot/ras2.json')
+
+    def make_jpg(rect=None):
+        img = np.full((480, 640, 3), 220, dtype=np.uint8)
+        if rect is not None:
+            x0, y0, x1, y1 = rect
+            img[y0:y1, x0:x1] = (34, 23, 181)  # high-saturation red cube
+        ok, enc = cv2.imencode('.jpg', img)
+        assert ok
+        return enc.tobytes()
+
+    # 1. Missing cube
+    pf_miss = adapter.preflight_check(make_jpg(None), 'red', already_warped=True)
+    assert pf_miss['ok'] is False and pf_miss['reason'] == 'no_target_blob'
+
+    # 2. Clipped at bottom edge (like ras2-pick-05 frame 0)
+    pf_clip = adapter.preflight_check(make_jpg((240, 410, 320, 480)), 'red', already_warped=True)
+    assert pf_clip['ok'] is False and pf_clip['reason'] == 'clipped'
+
+    # 3. Too close (huge whole blob ~20000 px -> d_hat ~0.20 m < 0.28 m)
+    pf_close = adapter.preflight_check(make_jpg((220, 180, 365, 325)), 'red', already_warped=True)
+    assert pf_close['ok'] is False and pf_close['reason'] == 'too_close'
+
+    # 4. Good placement (~50x50 = 2500 px -> d_hat ~0.58 m, centered, whole)
+    pf_ok = adapter.preflight_check(make_jpg((265, 220, 315, 270)), 'red', already_warped=True)
+    assert pf_ok['ok'] is True and pf_ok['reason'] == 'ok' and 0.45 <= pf_ok['best']['d_hat_m'] <= 0.70
+
+    # CLI flag
+    parser = rst.build_parser()
+    assert parser.parse_args(['pick', '--side', 'real', '--host', 'ras2', '--out', '/tmp/x']).preflight is False
+    assert parser.parse_args(['pick', '--side', 'real', '--host', 'ras2', '--preflight', '--out', '/tmp/x']).preflight is True
+
+
+def test_wheel_trim_diag_and_yaw_plus_fit_camera_from_cube_samples():
+    import importlib.util
+    pytest.importorskip('cv2')
+    spec = importlib.util.spec_from_file_location('cal_helper_ext', 'scripts/calibrate_real_robot.py')
+    ch = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(ch)
+
+    # Combined diagonal (+4) and yaw (+2) trim: FR gets highest boost, FL stays at base 40.0
+    t = ch.apply_wheel_trim(TEST_CAL, diag_delta=4.0, yaw_delta=2.0)
+    assert t['wheels']['front_left']['points'][0][1] == pytest.approx(40.0)
+    assert t['wheels']['front_right']['points'][0][1] == pytest.approx(46.0)
+    assert t['wheels']['rear_left']['points'][0][1] == pytest.approx(44.0)
+    assert t['wheels']['rear_right']['points'][0][1] == pytest.approx(42.0)
+    # Re-applying with zeros restores exact symmetric base curve (idempotent)
+    t0 = ch.apply_wheel_trim(t, diag_delta=0.0, yaw_delta=0.0)
+    for w in ('front_left', 'front_right', 'rear_left', 'rear_right'):
+        assert t0['wheels'][w]['points'] == [[0.31, 40.0], [0.40, 60.0]]
+
+    # fit_camera_from_cube_samples reproduces ras2-like f_real ~ 450 and positive pitch offset
+    # At d=0.45 m, 30mm cube with f_geom~515 has side ~34.3 px (area ~1180); at d=0.25 m, area ~3820.
+    fitted = ch.fit_camera_from_cube_samples([
+        {'distance_m': 0.25, 'cx': 320.0, 'cy': 300.0, 'area_px': 7130.0, 'y1': 342.0},
+        {'distance_m': 0.45, 'cx': 320.0, 'cy': 220.0, 'area_px': 2200.0, 'y1': 243.0},
+    ])
+    assert 435.0 <= fitted['f_real'] <= 465.0
+    assert fitted['pitch_offset_deg'] > 5.0
+    assert abs(fitted['yaw_offset_deg']) < 0.5

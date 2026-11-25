@@ -263,6 +263,15 @@ def _run_with_adapter(a, adapter):
 
     def loop(io):
         io.start(brain.start())
+        if a.side == 'real' and getattr(a, 'preflight', False) and kind in ('red', 'cyan'):
+            pf_jpg = io.frame()
+            (out / 'preflight.jpg').write_bytes(pf_jpg)
+            pf = adapter.preflight_check(pf_jpg, kind, already_warped=True)
+            summary['preflight'] = pf
+            print(json.dumps({'preflight': pf}, default=str), flush=True)
+            if not pf['ok']:
+                summary['preflight_aborted'] = True
+                return
         brain.begin(io.now())
         while io.now() - (getattr(io, 'origin', 0.) or 0.) < a.cap_s - 1e-8 and not brain.finished:
             jpeg, now = io.frame(), io.now()
@@ -346,6 +355,8 @@ def build_parser():
         k.add_argument('--scene-source', help='sim: frozen 6f057f7e scene package')
         k.add_argument('--host', help='real: Pi address')
         k.add_argument('--calibration', help='real: per-robot Sim2Real profile JSON (loads camera warp + vision thresholds)')
+        k.add_argument('--preflight', action='store_true',
+                       help='real: inspect first frame before driving and abort safely if target cube is missing, clipped, or out of range')
         k.add_argument('--cmd-port', type=int, default=8765)
         k.add_argument('--cam-port', type=int, default=8766)
         k.add_argument('--kind', choices=('red', 'cyan'))

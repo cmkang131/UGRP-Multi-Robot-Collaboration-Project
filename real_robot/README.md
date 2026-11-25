@@ -18,15 +18,39 @@ MasterPi 확장 보드의 모터 레지스터에는 속도만 들어가고 시�
 
 | 파일 | 하는 일 |
 |---|---|
-| `calibration.py` | 시뮬 바퀴 값 → 보드 정수, 바퀴 → 모터 번호·방향. 기본값 없음 |
-| `executor.py` | 명령 적용, 펄스 끝 정지, 거부, 기록 |
+| `calibration.py` | 시뮬 바퀴 값 → 보드 정수, 바퀴 → 모터 번호·방향, 동작별 `pulse_scale`, 서보 `offset_pwm`/안전 범위, 카메라 워프·비전 설정을 한 JSON에서 로드 |
+| `adapter.py` | 로봇 JSON에서 `SimCameraWarp` + 비전 임계값(`UGRP_*`) + 시작 전 `preflight_check()`를 제공하는 통합 Sim2Real 어댑터 |
+| `camera_warp.py` | 실기 640×480 프레임을 시뮬 카메라 `(K_SIM, D_SIM, -18°)`로 3축 회전(`pitch`/`yaw`/`roll`)·초점거리 리맵 |
+| `executor.py` | 명령 적용(`pulse_scale`, `servo_pwm`), 펄스 끝 정지, 거부, 기록 |
 | `boards.py` | 가짜 보드(시험용), 실제 I2C 보드(smbus2 로 버스를 한 번 열어 둠. 프레임은 `scripts/masterpi_control.py` 와 같은 바이트) |
 | `server.py` | Pi 쪽 TCP 서버(JSON 한 줄씩), 노트북 쪽 `RobotLink` |
-| `camera.py` | Pi → 노트북 카메라 프레임(640×480 JPEG, 0.1초 간격, Pi 촬영 시각 포함). 노트북은 가장 새 프레임만 둔다 |
+| `camera.py` | Pi → 노트북 카메라 프레임(640×480 JPEG, V4L2 백그라운드 드레인 스레드로 최신 프레임 유지) |
 | `pi_check.py` | 로봇에서 도는 읽기 전용 점검(배터리, 카메라, I2C, 카메라·I2C를 잡은 프로세스, 제조사 서비스, 온도, 시계 동기). 아무것도 움직이지 않음 |
 | `../scripts/masterpi_robot_server.py` | 실행 진입점. `--camera-port` 를 주면 카메라 전송도 같이 켬 |
+| `../scripts/calibrate_real_robot.py` | 로봇별 보정 도구: `sync-runtime`, `trim-straight`(직진 대각 트림), `fit-camera`(큐브 프레임 기반 카메라 워프 피팅), `verify-motions`, `set-profile` |
 | `../scripts/masterpi_fleet_check.py` | 노트북에서 여러 로봇에 SSH 로 `pi_check.py` 를 돌려 표로 보여 줌 |
 | `../configs/real_robot/calibration_template.json` | 보정 파일 양식. 채우기 전에는 읽히지 않음 |
+
+## 로봇별 통합 Sim2Real 보정 워크플로우
+
+브레인(`PickBrain`, `SignBrain`, `ACT`)은 항상 시뮬레이터 규약만 보고 동작하고, 로봇마다 다른 물리 특성(바퀴 배선·대각/요 트림·동작별 펄스 스케일·서보 오프셋·카메라 각도/초점거리·색상 필터)은 `configs/real_robot/<robot_id>.json` 한 파일에서 흡수합니다.
+
+```bash
+# 1) Pi에 최신 런타임과 로봇 프로파일 동기화
+python3 scripts/calibrate_real_robot.py sync-runtime --host ras2 --calibration configs/real_robot/ras2.json
+
+# 2) (신규 로봇) 30 mm 큐브를 정면 거리 2곳에 두고 촬영한 이미지로 카메라 워프 자동 피팅
+python3 scripts/calibrate_real_robot.py fit-camera --calibration configs/real_robot/ras2.json \
+  --sample 0.25:near.jpg --sample 0.45:far.jpg --apply --host ras2 --sync
+
+# 3) 빨간 큐브를 정면 45~50 cm에 두고 직진 대각 바퀴 트림 자동 보정
+python3 scripts/calibrate_real_robot.py trim-straight --host ras2 --calibration configs/real_robot/ras2.json --apply --sync
+
+# 4) 단일 프로파일 플래그(--calibration) + 시작 전 안전 검사(--preflight)로 Pick 실행
+python3 scripts/real_skill_test.py pick --side real --host ras2 --kind red \
+  --calibration configs/real_robot/ras2.json --preflight \
+  --model <actor_dir> --actor-python <venv_python> --actor-threads 2 --out runs/ras2-pick
+```
 
 ## 쓰는 법
 

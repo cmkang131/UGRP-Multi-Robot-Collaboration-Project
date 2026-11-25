@@ -129,3 +129,89 @@ class Sim2RealAdapter:
             if non_default_servos:
                 out['servos'] = non_default_servos
         return out
+
+    def preflight_check(
+        self,
+        jpeg: bytes,
+        kind: str,
+        *,
+        already_warped: bool = True,
+        min_dist_m: float = 0.28,
+        max_dist_m: float = 1.20,
+    ) -> dict:
+        """Inspect a start frame before moving: verify target blob is visible, whole (unclipped), and in range."""
+        import importlib.util
+        import math
+
+        frame = jpeg if already_warped else self.transform_frame(jpeg)
+        ac_path = (
+            Path(__file__).resolve().parents[1]
+            / 'solo_pipeline' / 'harness' / 'approach_survey_v1_parts' / 'approach_core.py'
+        )
+        spec = importlib.util.spec_from_file_location('ugrp_preflight_approach_core', ac_path)
+        ac = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(ac)
+
+        with self.vision_context():
+            comps = ac.components(frame, kind)
+            a_scale = ac.area_scale()
+
+        if not comps:
+            return {
+                'ok': False,
+                'reason': 'no_target_blob',
+                'kind': kind,
+                'n_blobs': 0,
+                'best': None,
+                'recommendation': f'Place the {kind} cube 0.35-0.55 m straight ahead of the robot before starting.',
+            }
+
+        best = comps[0]
+        whole = bool(ac._is_whole(best))
+        d_hat_m = float(ac.D_STOP_M * math.sqrt((ac.A_REF_PX * a_scale) / max(1, best['A'])))
+        best_info = {
+            'A': int(best['A']),
+            'cx': round(float(best['cx']), 1),
+            'cy': round(float(best['cy']), 1),
+            'x0': int(best['x0']),
+            'y0': int(best['y0']),
+            'x1': int(best['x1']),
+            'y1': int(best['y1']),
+            'whole': whole,
+            'd_hat_m': round(d_hat_m, 3),
+        }
+        if not whole:
+            return {
+                'ok': False,
+                'reason': 'clipped',
+                'kind': kind,
+                'n_blobs': len(comps),
+                'best': best_info,
+                'recommendation': 'Target blob touches the frame edge or fisheye rim (often too close); move cube back to ~0.40-0.55 m.',
+            }
+        if d_hat_m < min_dist_m:
+            return {
+                'ok': False,
+                'reason': 'too_close',
+                'kind': kind,
+                'n_blobs': len(comps),
+                'best': best_info,
+                'recommendation': f'Estimated distance {d_hat_m:.2f} m < {min_dist_m:.2f} m; move cube slightly farther (~0.40-0.55 m).',
+            }
+        if d_hat_m > max_dist_m:
+            return {
+                'ok': False,
+                'reason': 'too_far',
+                'kind': kind,
+                'n_blobs': len(comps),
+                'best': best_info,
+                'recommendation': f'Estimated distance {d_hat_m:.2f} m > {max_dist_m:.2f} m; move cube closer (~0.40-0.55 m).',
+            }
+        return {
+            'ok': True,
+            'reason': 'ok',
+            'kind': kind,
+            'n_blobs': len(comps),
+            'best': best_info,
+            'recommendation': 'Ready to run.',
+        }

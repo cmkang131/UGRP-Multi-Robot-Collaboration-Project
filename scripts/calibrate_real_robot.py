@@ -33,32 +33,46 @@ sys.path.insert(0, str(ROOT))
 from real_robot import calibration as cal_mod  # noqa: E402
 
 
-def apply_diagonal_trim(data: dict, delta_fr_rl: float, *, min_speed: float = 35.0, max_speed: float = 100.0) -> dict:
-    """Return a copy of calibration JSON with symmetric mecanum diagonal trim applied.
+def apply_wheel_trim(
+    data: dict,
+    *,
+    diag_delta: float = 0.0,
+    yaw_delta: float = 0.0,
+    min_speed: float = 35.0,
+    max_speed: float = 100.0,
+) -> dict:
+    """Return a copy of calibration JSON with idempotent per-wheel mecanum diagonal & yaw trim.
 
-    `delta_fr_rl > 0` boosts `front_right` & `rear_left` (counters forward-right drift by pushing
-    forward-left); `delta_fr_rl < 0` boosts `front_left` & `rear_right` (counters forward-left drift).
-    Base wheel speed curve is taken from the minimum across the 4 wheels at each sim point so
-    re-running trim is idempotent rather than cumulative.
+    - `diag_delta > 0` boosts `front_right` & `rear_left` (counters forward-right lateral drift).
+      `diag_delta < 0` boosts `front_left` & `rear_right` (counters forward-left lateral drift).
+    - `yaw_delta > 0` boosts `front_right` & `rear_right` (counters right/CW heading drift).
+      `yaw_delta < 0` boosts `front_left` & `rear_left` (counters left/CCW heading drift).
+    All 4 wheel boosts are shifted so min(boost) == 0, preserving the symmetric base speed curve.
     """
     out = json.loads(json.dumps(data))
     wheels = out['wheels']
     names = ('front_left', 'front_right', 'rear_left', 'rear_right')
     n_pts = len(wheels['front_left']['points'])
     if any(len(wheels[w]['points']) != n_pts for w in names):
-        raise ValueError('all four wheels must have the same number of calibration points to apply diagonal trim')
+        raise ValueError('all four wheels must have the same number of calibration points to apply wheel trim')
 
-    # Reconstruct symmetric base curve as per-point minimum across all 4 wheels (idempotent).
     base_points = []
     for idx in range(n_pts):
         sim_v = float(wheels['front_left']['points'][idx][0])
         base_b = min(float(wheels[w]['points'][idx][1]) for w in names)
         base_points.append((sim_v, base_b))
 
-    boost_fr_rl = max(0.0, float(delta_fr_rl))
-    boost_fl_rr = max(0.0, -float(delta_fr_rl))
+    raw_offsets = {
+        'front_left': -0.5 * float(diag_delta) - 0.5 * float(yaw_delta),
+        'front_right': +0.5 * float(diag_delta) + 0.5 * float(yaw_delta),
+        'rear_left': +0.5 * float(diag_delta) - 0.5 * float(yaw_delta),
+        'rear_right': -0.5 * float(diag_delta) + 0.5 * float(yaw_delta),
+    }
+    floor = min(raw_offsets.values())
+    boosts = {w: round(raw_offsets[w] - floor, 2) for w in names}
+
     for w in names:
-        boost = boost_fr_rl if w in ('front_right', 'rear_left') else boost_fl_rr
+        boost = boosts[w]
         new_pts = []
         for sim_v, base_b in base_points:
             b_val = round(max(min_speed, min(max_speed, base_b + boost)), 1)
@@ -67,14 +81,98 @@ def apply_diagonal_trim(data: dict, delta_fr_rl: float, *, min_speed: float = 35
 
     src = out.get('source')
     if isinstance(src, dict):
-        src['diagonal_trim'] = {
-            'delta_fr_rl': round(float(delta_fr_rl), 2),
-            'boost_fr_rl': round(boost_fr_rl, 2),
-            'boost_fl_rr': round(boost_fl_rr, 2),
-            'note': 'Applied symmetrically (+ boosts FR+RL to counter forward-right drift; - boosts FL+RR).',
+        src['wheel_trim'] = {
+            'diag_delta': round(float(diag_delta), 2),
+            'yaw_delta': round(float(yaw_delta), 2),
+            'per_wheel_boost': boosts,
         }
     cal_mod.parse(out)
     return out
+
+
+def apply_diagonal_trim(data: dict, delta_fr_rl: float, *, min_speed: float = 35.0, max_speed: float = 100.0) -> dict:
+    """Backward-compatible wrapper applying symmetric mecanum diagonal trim (`diag_delta=delta_fr_rl`)."""
+    return apply_wheel_trim(data, diag_delta=delta_fr_rl, yaw_delta=0.0, min_speed=min_speed, max_speed=max_speed)
+
+
+def fit_camera_from_cube_samples(
+    samples: list[dict],
+    *,
+    cube_size_mm: float = 30.0,
+    cx_real: float = 320.0,
+    cy_real: float = 240.0,
+    posture: dict | None = None,
+) -> dict:
+    """Estimate `SimCameraWarp` parameters (`f_real`, `pitch_offset_deg`, `yaw_offset_deg`) from cube frames.
+
+    Each sample dict requires:
+      - `distance_m`: measured floor distance from robot base to cube front/center (m, > 0)
+      - `cx`, `cy`: detected cube centroid (px) in the unwarped 640x480 real frame
+      - `area_px`: detected cube pixel area in the unwarped 640x480 real frame
+      - `y1` (optional): bottom pixel row of the cube blob (used for ground projection; falls back to `cy + 0.5*sqrt(area_px)`)
+    """
+    import importlib.util
+    if not samples:
+        raise ValueError('at least one cube sample is required')
+    if cube_size_mm <= 0.0:
+        raise ValueError(f'cube_size_mm must be > 0, got {cube_size_mm}')
+
+    gp_path = ROOT / 'solo_pipeline' / 'harness' / 'approach_survey_v1_parts' / 'ground_projection.py'
+    ac_path = ROOT / 'solo_pipeline' / 'harness' / 'approach_survey_v1_parts' / 'approach_core.py'
+    gp_spec = importlib.util.spec_from_file_location('ugrp_cal_gp', gp_path)
+    gp = importlib.util.module_from_spec(gp_spec)
+    gp_spec.loader.exec_module(gp)
+    ac_spec = importlib.util.spec_from_file_location('ugrp_cal_ac', ac_path)
+    ac = importlib.util.module_from_spec(ac_spec)
+    ac_spec.loader.exec_module(ac)
+
+    use_posture = dict(ac.FAR_POSTURE) if posture is None else {int(k): int(v) for k, v in posture.items()}
+    f_sim = math.sqrt(float(gp.K[0, 0]) * float(gp.K[1, 1]))
+    cube_m = cube_size_mm / 1000.0
+
+    f_geom_list = []
+    f_sim_match_list = []
+    yaw_list = []
+    pitch_list = []
+    for s in samples:
+        d = float(s['distance_m'])
+        area = float(s['area_px'])
+        cx = float(s['cx'])
+        cy = float(s['cy'])
+        if d <= 0.0 or area <= 0.0:
+            raise ValueError(f'invalid sample {s!r}')
+        side_px = math.sqrt(area)
+        f_geom = side_px * d / cube_m
+        f_geom_list.append(f_geom)
+        # Match apparent cube area in warped sim image to A_REF_PX at D_STOP_M (0.20 m):
+        # A_real * (f_sim / f_real)^2 == A_REF_PX * (D_STOP_M / d)^2
+        f_match = f_sim * (d / ac.D_STOP_M) * math.sqrt(area / ac.A_REF_PX)
+        f_sim_match_list.append(f_match)
+        yaw_list.append(-math.degrees(math.atan2(cx - cx_real, f_geom)))
+
+        # Solve pitch_offset_deg by bisection so ground_projection of cube bottom edge matches d
+        y_bot = float(s['y1']) if s.get('y1') is not None else min(479.0, cy + 0.5 * side_px)
+        lo, hi = -30.0, 45.0
+        for _ in range(32):
+            mid = 0.5 * (lo + hi)
+            gp.set_camera_pitch_offset_deg(mid)
+            hit = gp.project_pixels([[cx, y_bot]], use_posture)[0]
+            r_est = float(hit[0]) if math.isfinite(hit[0]) and hit[0] > 0 else 99.0
+            # Larger +pitch (steeper downward) -> shorter projected distance r_est
+            if r_est > d:
+                lo = mid
+            else:
+                hi = mid
+        pitch_list.append(0.5 * (lo + hi))
+    gp.set_camera_pitch_offset_deg(None)
+
+    return {
+        'f_real_geom': round(float(median(f_geom_list)), 1),
+        'f_real': round(float(median(f_sim_match_list)), 1),
+        'pitch_offset_deg': round(float(median(pitch_list)), 1),
+        'yaw_offset_deg': round(float(median(yaw_list)), 1),
+        'n_samples': len(samples),
+    }
 
 
 def solve_zero_drift_delta(samples: list[tuple[float, float]]) -> float:
@@ -391,11 +489,62 @@ def cmd_verify_motions(args) -> int:
     return 0 if report.get('ok') else 1
 
 
+def cmd_fit_camera(args) -> int:
+    import importlib.util
+    cal_path = Path(args.calibration)
+    data = json.loads(cal_path.read_text())
+    cal = cal_mod.parse(data)
+
+    ac_path = ROOT / 'solo_pipeline' / 'harness' / 'approach_survey_v1_parts' / 'approach_core.py'
+    ac_spec = importlib.util.spec_from_file_location('ugrp_fitcam_ac', ac_path)
+    ac = importlib.util.module_from_spec(ac_spec)
+    ac_spec.loader.exec_module(ac)
+    ac.set_red_hue_max(cal.vision.red_hue_max)
+    ac.set_red_sat_min(cal.vision.red_sat_min)
+
+    samples = []
+    for item in args.sample:
+        if ':' not in item:
+            raise SystemExit(f'--sample must be DIST_M:IMAGE_PATH, got {item!r}')
+        dist_str, img_path = item.split(':', 1)
+        d_m = float(dist_str)
+        comps = ac.components(Path(img_path).read_bytes(), args.kind)
+        if not comps:
+            raise SystemExit(f'no {args.kind} cube detected in {img_path}')
+        b = comps[0]
+        samples.append({'distance_m': d_m, 'cx': b['cx'], 'cy': b['cy'], 'area_px': b['A'], 'y1': b['y1']})
+
+    fitted = fit_camera_from_cube_samples(samples, cube_size_mm=args.cube_size_mm)
+    print(json.dumps({'samples': samples, 'fitted': fitted}, indent=2))
+    if args.apply:
+        cam = dict(data.get('camera') or {})
+        cam.update(
+            enabled=True,
+            f_real=fitted['f_real'],
+            pitch_offset_deg=fitted['pitch_offset_deg'],
+            yaw_offset_deg=fitted['yaw_offset_deg'] if args.apply_yaw else cam.get('yaw_offset_deg', 0.0),
+        )
+        data['camera'] = cam
+        if isinstance(data.get('source'), dict):
+            data['source']['camera_fit'] = fitted
+        cal_mod.parse(data)
+        cal_path.write_text(json.dumps(data, indent=1) + '\n')
+        print(f'Updated {cal_path} camera section')
+        if args.sync and args.host:
+            _sync_calibration(args.host, cal_path)
+            print(f'Synced {cal_path.name} to {args.host}:~/ugrp_sim2real/configs/real_robot/')
+    return 0
+
+
 def cmd_set_profile(args) -> int:
     cal_path = Path(args.calibration)
     data = json.loads(cal_path.read_text())
-    if args.diagonal_trim is not None:
-        data = apply_diagonal_trim(data, args.diagonal_trim)
+    if args.diagonal_trim is not None or args.yaw_trim is not None:
+        data = apply_wheel_trim(
+            data,
+            diag_delta=args.diagonal_trim or 0.0,
+            yaw_delta=args.yaw_trim or 0.0,
+        )
     if args.camera_f_real is not None or args.camera_pitch_deg is not None or args.camera_enabled is not None:
         cam = dict(data.get('camera') or {})
         if args.camera_enabled is not None:
@@ -452,6 +601,7 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser('set-profile', help='Update and validate profile fields offline')
     s.add_argument('--calibration', required=True)
     s.add_argument('--diagonal-trim', type=float, default=None)
+    s.add_argument('--yaw-trim', type=float, default=None)
     s.add_argument('--camera-enabled', choices=('true', 'false'), default=None)
     s.add_argument('--camera-f-real', type=float, default=None)
     s.add_argument('--camera-pitch-deg', type=float, default=None)
@@ -462,6 +612,16 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument('--strafe-scale', type=float, default=None)
     s.add_argument('--host', default=None)
     s.add_argument('--sync', action='store_true')
+
+    f = sub.add_parser('fit-camera', help='Fit camera f_real/pitch/yaw from cube frames at known distances')
+    f.add_argument('--calibration', required=True)
+    f.add_argument('--sample', action='append', required=True, help='DIST_M:IMAGE_PATH (repeatable, e.g. 0.45:far.jpg)')
+    f.add_argument('--kind', choices=('red', 'cyan'), default='red')
+    f.add_argument('--cube-size-mm', type=float, default=30.0)
+    f.add_argument('--apply', action='store_true')
+    f.add_argument('--apply-yaw', action='store_true', help='Also write fitted yaw_offset_deg into camera config')
+    f.add_argument('--host', default=None)
+    f.add_argument('--sync', action='store_true')
 
     r = sub.add_parser('sync-runtime', help='Copy updated real_robot/ runtime and optional calibration JSON to Pi')
     r.add_argument('--host', required=True)
@@ -478,6 +638,8 @@ def main(argv=None) -> int:
         return cmd_trim_straight(a)
     if a.cmd == 'verify-motions':
         return cmd_verify_motions(a)
+    if a.cmd == 'fit-camera':
+        return cmd_fit_camera(a)
     if a.cmd == 'sync-runtime':
         return cmd_sync_runtime(a)
     return cmd_set_profile(a)
