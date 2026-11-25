@@ -1,0 +1,289 @@
+{
+ "robot_id": "ugrp1",
+ "measured": true,
+ "source": {
+  "bench_json": "/home/ubuntu/projects/ugrp/sim2real-work/experiments/sim2real-20261125-T03-ugrp1/ugrp1_t03_camera_bench.json",
+  "bench_csv": "/home/ubuntu/projects/ugrp/sim2real-work/experiments/sim2real-20261125-T03-ugrp1/bench_pitch8deg_30mm.csv",
+  "camera_pitch_diag": "/home/ubuntu/projects/ugrp/sim2real-work/experiments/sim2real-20261125-T03-ugrp1/camera_pitch_diag.json",
+  "sim_reference": "experiments/2026-11-19-sim2real-dr/sim_pulse_reference.jsonl",
+  "wheel_map": "configs/real_robot/wheel_map_from_drive_map.json",
+  "wheel_map_verification": "6-direction paired floor verification on white_desk (forward/backward/rotate-left/rotate-right/left/right all matched wheel_map_from_drive_map.json signs; 84 paired trials, 77 obs_ok, 7 clipped-edge rows documented)",
+  "cube_calibration": "30 mm red cube; POSE_BENCH (s3=500) bottom/top edge lengths solve camera pitch offset dp=+8.0 deg steeper down than ground_projection.py (bot_edge=30.38 mm, top_edge=29.48 mm, mean=29.93 mm), corroborated independently in FAR_POSTURE (+7.6..+10.5 deg)",
+  "real_forward_median_mm_per_0.1s": [
+   [
+    35,
+    15.495000000000001
+   ],
+   [
+    40,
+    20.43
+   ],
+   [
+    50,
+    31.225
+   ],
+   [
+    60,
+    40.945
+   ]
+  ],
+  "forward_holdout_mae_mm": 0.495,
+  "raw_unclamped_fitter_points": [
+   [
+    0.4,
+    35.2
+   ]
+  ],
+  "raw_unclamped_fitter_skipped": [
+   {
+    "sim_value": 0.31,
+    "sim_mm": 0.02,
+    "why": "sim does not move at this value"
+   },
+   {
+    "sim_value": 0.32,
+    "sim_mm": 0.01,
+    "why": "sim does not move at this value"
+   },
+   {
+    "sim_value": 0.33,
+    "sim_mm": 10.64,
+    "why": "real board range 35..60 does not reach it"
+   },
+   {
+    "sim_value": 0.34,
+    "sim_mm": 11.36,
+    "why": "real board range 35..60 does not reach it"
+   },
+   {
+    "sim_value": 0.35,
+    "sim_mm": 11.78,
+    "why": "real board range 35..60 does not reach it"
+   },
+   {
+    "sim_value": 0.36,
+    "sim_mm": 12.63,
+    "why": "real board range 35..60 does not reach it"
+   },
+   {
+    "sim_value": 0.37,
+    "sim_mm": 13.0,
+    "why": "real board range 35..60 does not reach it"
+   },
+   {
+    "sim_value": 0.38,
+    "sim_mm": 13.96,
+    "why": "real board range 35..60 does not reach it"
+   },
+   {
+    "sim_value": 0.39,
+    "sim_mm": 14.76,
+    "why": "real board range 35..60 does not reach it"
+   }
+  ],
+  "min_speed_floor_note": "On ugrp1 (white_desk, ~7.55 V), minimum legal board speed 35 already moves 15.49 mm/0.10s (vs sim 0.33..0.39 = 10.64..14.76 mm/0.10s; sim 0.40 = 15.71 mm -> 35.2). Because real_robot/calibration.py enforces BOARD_MIN_ABS_SPEED=35 and rejects out-of-range sim magnitudes, 0.33..0.39 are mapped to hardware minimum 35.0 (+0.73..+4.85 mm/0.10s over sim) so PickBrain/ACT contract 0.31..0.40 executes safely; 0.31..0.32 map to 0 via sim_no_motion_max=0.32.",
+  "servo_bench": "ugrp1_servo_bench.json (all 5 servos 1,3,4,5,6 verified in FAR_POSTURE; servo_min_duration_s=0.02 s)",
+  "continuous_gap_fix": "Prepended [0.32, 35.0] so continuous ACT floats in (0.32, 0.33) interpolate cleanly while <=0.32 still returns 0 via sim_no_motion_max=0.32 (fixes ras2-pick-02 seq 446 rejection at 0.327287)."
+ },
+ "wheels": {
+  "front_left": {
+   "motor": 3,
+   "sign": 1,
+   "points": [
+    [
+     0.32,
+     35.0
+    ],
+    [
+     0.33,
+     35.0
+    ],
+    [
+     0.34,
+     35.0
+    ],
+    [
+     0.35,
+     35.0
+    ],
+    [
+     0.36,
+     35.0
+    ],
+    [
+     0.37,
+     35.0
+    ],
+    [
+     0.38,
+     35.0
+    ],
+    [
+     0.39,
+     35.0
+    ],
+    [
+     0.4,
+     35.2
+    ]
+   ]
+  },
+  "front_right": {
+   "motor": 1,
+   "sign": -1,
+   "points": [
+    [
+     0.32,
+     35.0
+    ],
+    [
+     0.33,
+     35.0
+    ],
+    [
+     0.34,
+     35.0
+    ],
+    [
+     0.35,
+     35.0
+    ],
+    [
+     0.36,
+     35.0
+    ],
+    [
+     0.37,
+     35.0
+    ],
+    [
+     0.38,
+     35.0
+    ],
+    [
+     0.39,
+     35.0
+    ],
+    [
+     0.4,
+     35.2
+    ]
+   ]
+  },
+  "rear_left": {
+   "motor": 4,
+   "sign": -1,
+   "points": [
+    [
+     0.32,
+     35.0
+    ],
+    [
+     0.33,
+     35.0
+    ],
+    [
+     0.34,
+     35.0
+    ],
+    [
+     0.35,
+     35.0
+    ],
+    [
+     0.36,
+     35.0
+    ],
+    [
+     0.37,
+     35.0
+    ],
+    [
+     0.38,
+     35.0
+    ],
+    [
+     0.39,
+     35.0
+    ],
+    [
+     0.4,
+     35.2
+    ]
+   ]
+  },
+  "rear_right": {
+   "motor": 2,
+   "sign": 1,
+   "points": [
+    [
+     0.32,
+     35.0
+    ],
+    [
+     0.33,
+     35.0
+    ],
+    [
+     0.34,
+     35.0
+    ],
+    [
+     0.35,
+     35.0
+    ],
+    [
+     0.36,
+     35.0
+    ],
+    [
+     0.37,
+     35.0
+    ],
+    [
+     0.38,
+     35.0
+    ],
+    [
+     0.39,
+     35.0
+    ],
+    [
+     0.4,
+     35.2
+    ]
+   ]
+  }
+ },
+ "servo_min_duration_s": 0.02,
+ "sim_no_motion_max": 0.32,
+ "pulse_scale": {
+  "drive": 0.78,
+  "rotate": 0.45,
+  "strafe": 0.8
+ },
+ "servos": {
+  "1": {"offset_pwm": 0, "min_pwm": 500, "max_pwm": 2500},
+  "3": {"offset_pwm": 0, "min_pwm": 500, "max_pwm": 2500},
+  "4": {"offset_pwm": 0, "min_pwm": 500, "max_pwm": 2500},
+  "5": {"offset_pwm": 0, "min_pwm": 500, "max_pwm": 2500},
+  "6": {"offset_pwm": 0, "min_pwm": 500, "max_pwm": 2500}
+ },
+ "camera": {
+  "enabled": true,
+  "f_real": 450.0,
+  "pitch_offset_deg": 8.0,
+  "yaw_offset_deg": 0.0,
+  "roll_offset_deg": 0.0,
+  "cx_real": 320.0,
+  "cy_real": 240.0,
+  "d_real": null,
+  "jpeg_quality": 90
+ },
+ "vision": {
+  "red_hue_max": 0,
+  "red_sat_min": 185,
+  "area_scale": 1.0,
+  "camera_pitch_offset_deg": 0.0
+ }
+}

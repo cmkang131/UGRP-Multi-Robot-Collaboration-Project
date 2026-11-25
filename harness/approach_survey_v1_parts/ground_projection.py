@@ -4,6 +4,7 @@ Adapted from ground_geometry_v4.py without rectangle fitting or half-depth.
 Assumes settled commanded joints, a level base and a flat floor. No sim inputs.
 """
 import math
+import os
 
 import cv2
 import numpy as np
@@ -15,6 +16,36 @@ D = np.array([-.0199819517209417, -.1707593617153504,
               -.2568318201202376, .9650933421665181])
 TOOL_OFFSET = np.array([(407.5-283)*343/806/1000, 0.,
                         (831.5-765)*185/437/1000])
+PITCH_OFFSET_ENV = 'UGRP_CAMERA_PITCH_OFFSET_DEG'
+_PITCH_OFFSET_DEG = None
+
+
+def camera_pitch_offset_deg() -> float:
+    """Opt-in camera pitch offset in degrees (+ = actual camera pitched steeper downward than model).
+
+    Defaults to 0.0 when unset so simulator and existing callers remain unchanged.
+    """
+    if _PITCH_OFFSET_DEG is not None:
+        return _PITCH_OFFSET_DEG
+    raw = os.environ.get(PITCH_OFFSET_ENV)
+    if not raw:
+        return 0.0
+    val = float(raw)
+    if not math.isfinite(val):
+        raise ValueError(f'{PITCH_OFFSET_ENV} must be finite, got {raw!r}')
+    return val
+
+
+def set_camera_pitch_offset_deg(offset_deg: float | None) -> float:
+    """Explicitly set (or clear with None) the module-level camera pitch offset in degrees."""
+    global _PITCH_OFFSET_DEG
+    if offset_deg is None:
+        _PITCH_OFFSET_DEG = None
+        return camera_pitch_offset_deg()
+    if isinstance(offset_deg, bool) or not isinstance(offset_deg, (int, float)) or not math.isfinite(offset_deg):
+        raise ValueError(f'camera pitch offset must be a finite number, got {offset_deg!r}')
+    _PITCH_OFFSET_DEG = float(offset_deg)
+    return _PITCH_OFFSET_DEG
 
 
 def camera_extrinsics(posture):
@@ -38,7 +69,7 @@ def camera_extrinsics(posture):
     origin = np.array([.0482+c*r, s*r,
                        .1277+.065*math.sin(shoulder)+.062*math.sin(shoulder+elbow)])
     origin = origin + TOOL_OFFSET[0]*ex + TOOL_OFFSET[2]*ez
-    a = math.radians(10)
+    a = math.radians(10.0 - camera_pitch_offset_deg())
     return origin, np.array([-ey, math.sin(a)*ex-math.cos(a)*ez,
                               math.cos(a)*ex+math.sin(a)*ez])
 

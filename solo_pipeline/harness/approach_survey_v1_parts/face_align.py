@@ -31,6 +31,27 @@ def estimate(jpeg, kind, posture, previous=None):
     b, g, r = [img[:, :, i].astype(int) for i in range(3)]
     m = ((r - np.maximum(g, b) > 60) & (r > 90) if kind == 'red'
          else (b - np.maximum(g, r) > 60) & (b > 90)).astype(np.uint8)
+    if kind == 'red':
+        import os
+        raw_rm = os.environ.get('UGRP_RED_HUE_MAX')
+        raw_rs = os.environ.get('UGRP_RED_SAT_MIN')
+        rm = 8
+        if raw_rm:
+            rm = int(raw_rm)
+            if not 0 <= rm <= 8:
+                raise ValueError(f'UGRP_RED_HUE_MAX must be in 0..8, got {raw_rm!r}')
+        rs = None
+        if raw_rs:
+            rs = int(raw_rs)
+            if not 0 <= rs <= 255:
+                raise ValueError(f'UGRP_RED_SAT_MIN must be in 0..255, got {raw_rs!r}')
+        if rm < 8 or (rs is not None and rs > 150):
+            hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+            if rm < 8:
+                hh = hsv[..., 0]
+                m = (m & ((hh <= rm) | (hh >= 172))).astype(np.uint8)
+            if rs is not None and rs > 150:
+                m = (m & (hsv[..., 1] > rs)).astype(np.uint8)
     n, labels, stats, cents = cv2.connectedComponentsWithStats(m, 8)
     big = max(range(1, n), key=lambda k: stats[k, 4]) if n > 1 else None
     hint = None

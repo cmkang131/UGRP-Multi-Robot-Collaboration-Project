@@ -15,6 +15,8 @@ Thresholds are those of the 2026-11-12 draft (OpenCV 8-bit HSV: H 0..179, S 0..2
 """
 from __future__ import annotations
 
+import os
+
 import numpy as np
 
 FRONTEND = 'seg5_v1'
@@ -25,14 +27,72 @@ TARGET = (255, 0, 0)
 OTHER = (0, 0, 255)
 BODY = (255, 255, 255)
 BLACK = (0, 0, 0)
+RED_HUE_MAX_DEFAULT = 8
+RED_HUE_MAX_ENV = 'UGRP_RED_HUE_MAX'
+_RED_HUE_MAX = None
+RED_SAT_MIN_DEFAULT = 150
+RED_SAT_MIN_ENV = 'UGRP_RED_SAT_MIN'
+_RED_SAT_MIN = None
+
+
+def red_hue_max() -> int:
+    """Opt-in upper bound on OpenCV low-red hue [0..8] (default 8; set 0 on real MasterPi so orange wheels map to BODY)."""
+    if _RED_HUE_MAX is not None:
+        return _RED_HUE_MAX
+    raw = os.environ.get(RED_HUE_MAX_ENV)
+    if not raw:
+        return RED_HUE_MAX_DEFAULT
+    val = int(raw)
+    if str(val) != raw.strip() or not 0 <= val <= RED_HUE_MAX_DEFAULT:
+        raise ValueError(f'{RED_HUE_MAX_ENV} must be an integer in 0..{RED_HUE_MAX_DEFAULT}, got {raw!r}')
+    return val
+
+
+def set_red_hue_max(hue_max: int | None) -> int:
+    """Explicitly set (or clear with None) the module-level red hue upper bound (0..8)."""
+    global _RED_HUE_MAX
+    if hue_max is None:
+        _RED_HUE_MAX = None
+        return red_hue_max()
+    if type(hue_max) is not int or not 0 <= hue_max <= RED_HUE_MAX_DEFAULT:
+        raise ValueError(f'red hue max must be an integer in 0..{RED_HUE_MAX_DEFAULT}, got {hue_max!r}')
+    _RED_HUE_MAX = hue_max
+    return _RED_HUE_MAX
+
+
+def red_sat_min() -> int:
+    """Opt-in lower bound on OpenCV red HSV saturation [0..255] (default 150)."""
+    if _RED_SAT_MIN is not None:
+        return _RED_SAT_MIN
+    raw = os.environ.get(RED_SAT_MIN_ENV)
+    if not raw:
+        return RED_SAT_MIN_DEFAULT
+    val = int(raw)
+    if str(val) != raw.strip() or not 0 <= val <= 255:
+        raise ValueError(f'{RED_SAT_MIN_ENV} must be an integer in 0..255, got {raw!r}')
+    return val
+
+
+def set_red_sat_min(sat_min: int | None) -> int:
+    """Explicitly set (or clear with None) the module-level red saturation lower bound (0..255)."""
+    global _RED_SAT_MIN
+    if sat_min is None:
+        _RED_SAT_MIN = None
+        return red_sat_min()
+    if type(sat_min) is not int or not 0 <= sat_min <= 255:
+        raise ValueError(f'red sat min must be an integer in 0..255, got {sat_min!r}')
+    _RED_SAT_MIN = sat_min
+    return _RED_SAT_MIN
 
 
 def masks(hsv):
     h, s, v = hsv[..., 0], hsv[..., 1], hsv[..., 2]
-    red = ((h <= 8) | (h >= 172)) & (s > 150) & (v > 90)
+    rm = red_hue_max()
+    rs = red_sat_min()
+    red = ((h <= rm) | (h >= 172)) & (s > rs) & (v > 90)
     blue = (h >= 110) & (h <= 124) & (s > 170) & (v > 70)
     wall = (h >= 55) & (h <= 85) & (s > 110) & (v < 140)
-    body = (h >= 9) & (h <= 24) & (s > 140) & (v > 120)
+    body = (h > rm) & (h <= 24) & (s > 140) & (v > 120)
     dark = v < 45
     return red, blue, wall, body, dark
 

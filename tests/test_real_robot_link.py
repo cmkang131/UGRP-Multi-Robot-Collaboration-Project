@@ -369,3 +369,656 @@ def test_real_io_paces_commands_and_uses_newest_frame():
     stop.set(); server.running = False
     st.join(timeout=1); ct.join(timeout=1)
     assert ex.speeds == [0, 0, 0, 0]
+
+
+def test_pulse_scale_defaults_to_one_backward_compat():
+    cal = calibration.parse(TEST_CAL)
+    assert cal.pulse_scale == {'drive': 1.0, 'rotate': 1.0, 'strafe': 1.0}
+    clock, board, ex, events = make()
+    ev = ex.apply(1, row(0., (0.35,) * 4, (0.10,) * 4), clock())
+    assert ev['status'] == 'applied'
+    assert ev['pulse_motion'] == 'drive'
+    assert ev['pulse_scale'] == pytest.approx(1.0)
+    assert ev['effective_duration_s'] == pytest.approx([0.10] * 4)
+    assert ex.deadlines == pytest.approx([clock() + 0.10] * 4)
+
+
+def test_pulse_scale_classifies_motions_scales_deadlines_and_caps_at_contract_max():
+    cal_data = dict(TEST_CAL, pulse_scale={'drive': 0.75, 'rotate': 0.45, 'strafe': 1.8})
+    clock = Clock()
+    board = FakeBoard(clock)
+    events = []
+    ex = Executor(board, calibration.parse(cal_data), events.append)
+    ex.initialize_servos(INIT, 1.0, clock())
+
+    # Drive forward: 0.10 s * 0.75 = 0.075 s
+    ev_fwd = ex.apply(1, row(0.0, (0.35, 0.35, 0.35, 0.35), (0.10,) * 4), clock())
+    assert ev_fwd['pulse_motion'] == 'drive'
+    assert ev_fwd['pulse_scale'] == pytest.approx(0.75)
+    assert ev_fwd['effective_duration_s'] == pytest.approx([0.075] * 4)
+    assert ex.deadlines == pytest.approx([clock() + 0.075] * 4)
+
+    # Rotate CCW (-, +, -, +): 0.10 s * 0.45 = 0.045 s
+    clock.t += 0.1
+    ev_rot = ex.apply(2, row(0.1, (-0.35, 0.35, -0.35, 0.35), (0.10,) * 4), clock())
+    assert ev_rot['pulse_motion'] == 'rotate'
+    assert ev_rot['pulse_scale'] == pytest.approx(0.45)
+    assert ev_rot['effective_duration_s'] == pytest.approx([0.045] * 4)
+    assert ex.deadlines == pytest.approx([clock() + 0.045] * 4)
+
+    # Rotate CW (+, -, +, -) with slightly unequal ACT-like magnitudes
+    clock.t += 0.1
+    ev_rot_cw = ex.apply(3, row(0.2, (0.36, -0.35, 0.35, -0.34), (0.05,) * 4), clock())
+    assert ev_rot_cw['pulse_motion'] == 'rotate'
+    assert ev_rot_cw['effective_duration_s'] == pytest.approx([0.0225] * 4)
+
+    # Strafe left (-, +, +, -): 0.10 s * 1.8 = 0.18 s -> capped at contract max 0.15 s
+    clock.t += 0.1
+    ev_str = ex.apply(4, row(0.3, (-0.35, 0.35, 0.35, -0.35), (0.10,) * 4), clock())
+    assert ev_str['pulse_motion'] == 'strafe'
+    assert ev_str['pulse_scale'] == pytest.approx(1.8)
+    assert ev_str['effective_duration_s'] == pytest.approx([0.15] * 4)
+    assert ex.deadlines == pytest.approx([clock() + 0.15] * 4)
+
+    # Strafe right (+, -, -, +): 0.05 s * 1.8 = 0.09 s (below cap)
+    clock.t += 0.1
+    ev_str_r = ex.apply(5, row(0.4, (0.35, -0.35, -0.35, 0.35), (0.05,) * 4), clock())
+    assert ev_str_r['pulse_motion'] == 'strafe'
+    assert ev_str_r['effective_duration_s'] == pytest.approx([0.09] * 4)
+
+    # Partial wheel command falls back to drive and leaves zero wheels with deadline None
+    clock.t += 0.1
+    ev_part = ex.apply(6, row(0.5, (0.35, 0.0, 0.35, 0.0), (0.10, 0.0, 0.08, 0.0)), clock())
+    assert ev_part['pulse_motion'] == 'drive'
+    assert ev_part['effective_duration_s'] == pytest.approx([0.075, 0.0, 0.06, 0.0])
+    assert ex.deadlines[0] == pytest.approx(clock() + 0.075)
+    assert ex.deadlines[1] is None and ex.deadlines[3] is None
+
+    # Stop command
+    clock.t += 0.1
+    ev_stop = ex.apply(7, row(0.6), clock())
+    assert ev_stop['pulse_motion'] == 'stop'
+    assert ev_stop['effective_duration_s'] == [0.0, 0.0, 0.0, 0.0]
+    assert ex.deadlines == [None, None, None, None]
+
+
+@pytest.mark.parametrize('bad_scale', [
+    'fast',
+    [0.5, 0.5, 0.5],
+    {'turn': 0.5},
+    {'drive': 0.0},
+    {'rotate': -0.4},
+    {'strafe': float('nan')},
+    {'drive': float('inf')},
+    {'drive': True},
+    {'drive': 3.5},
+])
+def test_pulse_scale_rejects_invalid_values(bad_scale):
+    with pytest.raises(ValueError):
+        calibration.parse(dict(TEST_CAL, pulse_scale=bad_scale))
+
+
+def test_camera_pitch_offset_default_and_sign_matches_ugrp1_diag(monkeypatch):
+    import importlib.util
+    from pathlib import Path
+    cv2 = pytest.importorskip('cv2')
+    _ = cv2
+    path = Path('solo_pipeline/harness/approach_survey_v1_parts/ground_projection.py')
+    spec = importlib.util.spec_from_file_location('test_gp_pitch', path)
+    gp = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(gp)
+
+    far = {1: 2000, 3: 740, 4: 2320, 5: 1320, 6: 1500}
+    monkeypatch.delenv(gp.PITCH_OFFSET_ENV, raising=False)
+    gp.set_camera_pitch_offset_deg(None)
+
+    assert gp.camera_pitch_offset_deg() == 0.0
+    hit0_mid = gp.project_pixels([[320.0, 240.0]], far)[0]
+    hit0_bot = gp.project_pixels([[320.0, 440.0]], far)[0]
+    assert hit0_mid[0] == pytest.approx(0.758, abs=0.002)
+    assert hit0_bot[0] == pytest.approx(0.414, abs=0.002)
+
+    # +8.0 deg means camera is pitched steeper downward -> shorter projected range
+    monkeypatch.setenv(gp.PITCH_OFFSET_ENV, '8.0')
+    assert gp.camera_pitch_offset_deg() == pytest.approx(8.0)
+    hit8_mid = gp.project_pixels([[320.0, 240.0]], far)[0]
+    hit8_bot = gp.project_pixels([[320.0, 440.0]], far)[0]
+    assert hit8_mid[0] == pytest.approx(0.559, abs=0.002)
+    assert hit8_bot[0] == pytest.approx(0.344, abs=0.002)
+    assert hit8_mid[0] < hit0_mid[0] and hit8_bot[0] < hit0_bot[0]
+
+    # Explicit setter overrides env and validates finite numeric values
+    gp.set_camera_pitch_offset_deg(0.0)
+    assert gp.project_pixels([[320.0, 240.0]], far)[0][0] == pytest.approx(hit0_mid[0])
+    with pytest.raises(ValueError):
+        gp.set_camera_pitch_offset_deg(float('nan'))
+    with pytest.raises(ValueError):
+        gp.set_camera_pitch_offset_deg(True)
+    gp.set_camera_pitch_offset_deg(None)
+
+
+def test_approach_area_scale_default_and_cli_flags(monkeypatch):
+    import importlib.util
+    from pathlib import Path
+    from scripts import real_skill_test as rst
+
+    path = Path('solo_pipeline/harness/approach_survey_v1_parts/approach_core.py')
+    spec = importlib.util.spec_from_file_location('test_ac_area', path)
+    ac = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(ac)
+
+    monkeypatch.delenv(ac.AREA_SCALE_ENV, raising=False)
+    ac.set_area_scale(None)
+    assert ac.area_scale() == 1.0
+
+    # At scale=1.0, a 7877 px blob (30mm cube at 0.20 m) looks ~0.329 m away (dev ~0.129 m vs 0.20 m)
+    blob = {'A': 7877, 'cx': ac.CX_REF_PX, 'cy': 327.0, 'w': 90,
+            'x0': 240, 'x1': 330, 'y0': 280, 'y1': 370, 'clipped': False}
+    dev_default = ac._identity_dev(blob, 0.20, 0.0)
+    assert dev_default == pytest.approx(0.1288, abs=0.005)
+
+    # With opt-in area_scale=0.37, 7877 px matches D_STOP_M=0.20 m closely
+    monkeypatch.setenv(ac.AREA_SCALE_ENV, '0.37')
+    assert ac.area_scale() == pytest.approx(0.37)
+    assert ac._identity_dev(blob, 0.20, 0.0) < 0.002
+    tracker = ac.BlobTracker({'bearing_rad': 0.0, 'distance_m': 0.20, 'facing_rad': 0.0})
+    assert tracker.expected['A'] == pytest.approx(ac.A_REF_PX * 0.37)
+
+    with pytest.raises(ValueError):
+        ac.set_area_scale(0.0)
+    with pytest.raises(ValueError):
+        ac.set_area_scale(-0.5)
+    ac.set_area_scale(None)
+
+    # CLI flags default to 0.0 and 1.0, and accept opt-in values
+    parser = rst.build_parser()
+    args_def = parser.parse_args(['pick', '--side', 'real', '--host', 'ugrp1', '--out', '/tmp/x'])
+    assert args_def.camera_pitch_offset_deg == 0.0
+    assert args_def.area_scale == 1.0
+    args_opt = parser.parse_args(['pick', '--side', 'real', '--host', 'ugrp1', '--out', '/tmp/x',
+                                  '--camera-pitch-offset-deg', '8.0', '--area-scale', '0.37'])
+    assert args_opt.camera_pitch_offset_deg == pytest.approx(8.0)
+    assert args_opt.area_scale == pytest.approx(0.37)
+
+
+def test_opencv_source_drains_buffer_and_returns_newest_frame():
+    import numpy as np
+    cv2 = pytest.importorskip('cv2')
+    from real_robot import camera
+
+    class FakeCapture:
+        def __init__(self):
+            self.n = 0
+            self.released = False
+
+        def read(self):
+            self.n += 1
+            time.sleep(0.005)
+            frame = np.full((480, 640, 3), self.n % 256, dtype=np.uint8)
+            return True, frame
+
+        def release(self):
+            self.released = True
+
+    cap = FakeCapture()
+    src = camera.OpenCVSource(capture=cap)
+    try:
+        assert src.quality == 70
+        time.sleep(0.08)  # let background thread drain multiple frames
+        t1, jpg1, w1, h1 = src.grab()
+        assert (w1, h1) == (640, 480) and jpg1.startswith(b'\xff\xd8')
+        img1 = cv2.imdecode(np.frombuffer(jpg1, np.uint8), cv2.IMREAD_COLOR)
+        val1 = int(round(float(img1.mean())))
+        assert val1 >= 5  # skipped earlier frames rather than popping frame #1 from a stale queue
+        time.sleep(0.08)
+        t2, jpg2, _, _ = src.grab()
+        img2 = cv2.imdecode(np.frombuffer(jpg2, np.uint8), cv2.IMREAD_COLOR)
+        val2 = int(round(float(img2.mean())))
+        assert t2 > t1 and val2 > val1 + 2
+    finally:
+        src.close()
+    assert cap.released is True
+
+
+def test_camera_serve_clamps_next_t_after_slow_grab_no_burst():
+    from real_robot import camera
+
+    class SlowOnceSource:
+        def __init__(self):
+            self.calls = []
+
+        def grab(self):
+            idx = len(self.calls)
+            if idx == 1:
+                time.sleep(0.18)  # simulate a 180 ms stall (> 4 * period_s)
+            t = time.monotonic()
+            self.calls.append(t)
+            return t, b'\xff\xd8' + b'x' * 64 + b'\xff\xd9', 640, 480
+
+    src = SlowOnceSource()
+    stop, ready, addr = threading.Event(), threading.Event(), []
+    thread = threading.Thread(
+        target=camera.serve,
+        args=(src, '127.0.0.1', 0),
+        kwargs={'period_s': 0.04, 'stop': stop, 'ready': ready, 'address': addr},
+        daemon=True,
+    )
+    thread.start()
+    ready.wait(1)
+    link = camera.CameraLink(*addr[0])
+    try:
+        deadline = time.monotonic() + 2.0
+        while len(src.calls) < 5 and time.monotonic() < deadline:
+            time.sleep(0.01)
+    finally:
+        link.close()
+        stop.set()
+        thread.join(timeout=1)
+
+    assert len(src.calls) >= 5
+    # After the slow frame (calls[1]), calls[2] runs immediately, then calls[3] and calls[4]
+    # must resume normal ~period_s pacing instead of bursting back-to-back.
+    post_stall_gap = src.calls[3] - src.calls[2]
+    assert post_stall_gap >= 0.03
+
+
+def test_calibration_continuous_032_to_033_mapping_from_fitter(tmp_path):
+    import csv
+    import importlib.util
+    import json
+
+    spec = importlib.util.spec_from_file_location('fitcal_cont', 'scripts/fit_real_robot_calibration.py')
+    fitcal = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fitcal)
+
+    sim = [{'direction': 'forward', 'value': v, 'pulse_s': 0.1, 'forward_mm': mm}
+           for v, mm in ((0.31, 0.0), (0.32, 0.0), (0.33, 10.0), (0.40, 16.0))]
+    bench = [{'mode': 'floor', 'direction': 'forward', 'split': 'fit', 'pulse_s': '0.1', 'board_speed': str(b),
+              'dx_mm': str(mm), 'dy_mm': ''} for b, mm in ((35, 8.0), (55, 20.0))]
+    rows = bench + [{'mode': 'lifted', 'check': 'pass', 'direction': n, 'split': 'check', 'pulse_s': '0.3',
+                     'board_speed': '40', 'dx_mm': '', 'dy_mm': ''} for n in range(4)]
+    bench_p = tmp_path / 'bench.csv'
+    with bench_p.open('w', newline='') as f:
+        w = csv.DictWriter(f, sorted({k for r in rows for k in r}))
+        w.writeheader()
+        w.writerows(rows)
+    sim_p = tmp_path / 'sim.jsonl'
+    sim_p.write_text('\n'.join(json.dumps(r) for r in sim))
+    out_p = tmp_path / 'cal.json'
+    fitcal.main(['--bench', str(bench_p), '--sim-reference', str(sim_p), '--robot-id', 't',
+                 '--wheel-map', 'configs/real_robot/wheel_map_from_drive_map.json',
+                 '--servo-min-duration-s', '0.02', '--out', str(out_p)])
+    cal = calibration.load(out_p)
+    assert cal.board_speed(0, 0.32) == 0
+    assert cal.board_speed(0, 0.327287) == 37  # smoothly interpolated in (0.32, 0.33) instead of raising ValueError
+    assert cal.board_speed(0, 0.33) == 38
+    assert cal.board_speed(0, 0.40) == 48
+
+
+def test_red_hue_max_rejects_orange_wheels_and_preserves_red_cube(monkeypatch):
+    import importlib.util
+    from pathlib import Path
+    import numpy as np
+    cv2 = pytest.importorskip('cv2')
+    from scripts import real_skill_test as rst
+
+    ac_spec = importlib.util.spec_from_file_location(
+        'test_ac_red_hue', Path('solo_pipeline/harness/approach_survey_v1_parts/approach_core.py'))
+    ac = importlib.util.module_from_spec(ac_spec)
+    ac_spec.loader.exec_module(ac)
+
+    seg_spec = importlib.util.spec_from_file_location(
+        'test_seg_red_hue', Path('solo_pipeline/harness/seg_frontend_v1.py'))
+    seg = importlib.util.module_from_spec(seg_spec)
+    seg_spec.loader.exec_module(seg)
+
+    # Synthetic 640x480 frame containing BOTH a real-red-cube patch (RGB=(181, 23, 34), H=178)
+    # and a real-MasterPi orange-wheel patch (RGB=(191, 54, 40), H=3).
+    img_bgr = np.full((480, 640, 3), 220, dtype=np.uint8)
+    img_bgr[280:360, 400:480] = (34, 23, 181)  # BGR of real red cube (H=178)
+    img_bgr[180:260, 40:120] = (40, 54, 191)   # BGR of real orange mecanum wheel (H=3)
+    ok, enc = cv2.imencode('.jpg', img_bgr)
+    assert ok
+    jpeg = enc.tobytes()
+
+    monkeypatch.delenv(ac.RED_HUE_MAX_ENV, raising=False)
+    ac.set_red_hue_max(None)
+    seg.set_red_hue_max(None)
+
+    # Default (red_hue_max=8): both red cube and H=3 orange wheel match (100% backward compatible with sim)
+    assert ac.red_hue_max() == 8 and seg.red_hue_max() == 8
+    comps_def = ac.components(jpeg, 'red')
+    assert len(comps_def) == 2
+
+    # Opt-in red_hue_max=0: orange wheel is rejected by approach_core AND mapped to BODY by seg5_v1!
+    monkeypatch.setenv(ac.RED_HUE_MAX_ENV, '0')
+    assert ac.red_hue_max() == 0 and seg.red_hue_max() == 0
+    comps_strict = ac.components(jpeg, 'red')
+    assert len(comps_strict) == 1
+    assert comps_strict[0]['cx'] == pytest.approx(440.0, abs=3.0)
+    assert comps_strict[0]['A'] >= 6000
+
+    rgb_small = cv2.cvtColor(cv2.resize(img_bgr, (320, 240), interpolation=cv2.INTER_AREA), cv2.COLOR_BGR2RGB)
+    seg_out = seg.segment(rgb_small.transpose(2, 0, 1), 'red').transpose(1, 2, 0)
+    # Red cube patch -> TARGET (255, 0, 0); orange wheel patch -> BODY (255, 255, 255)
+    assert tuple(seg_out[160, 220].tolist()) == seg.TARGET
+    assert tuple(seg_out[110, 40].tolist()) == seg.BODY
+
+    # Validation
+    with pytest.raises(ValueError):
+        ac.set_red_hue_max(-1)
+    with pytest.raises(ValueError):
+        ac.set_red_hue_max(9)
+    with pytest.raises(ValueError):
+        seg.set_red_hue_max(True)
+
+    # CLI flag default 8, accepts 0
+    parser = rst.build_parser()
+    assert parser.parse_args(['pick', '--side', 'real', '--host', 'ras2', '--out', '/tmp/x']).red_hue_max == 8
+    assert parser.parse_args(['pick', '--side', 'real', '--host', 'ras2', '--out', '/tmp/x',
+                              '--red-hue-max', '0']).red_hue_max == 0
+
+
+def test_sim_camera_warp_pitch_sign_zoom_validation_and_real_io():
+    import numpy as np
+    cv2 = pytest.importorskip('cv2')
+    from real_robot import camera
+    from real_robot.camera_warp import SimCameraWarp
+    from real_robot.skill_io import RealIO
+    from scripts import real_skill_test as rst
+
+    # Create a 640x480 image with a bright red square centered at (320, 240)
+    img = np.full((480, 640, 3), 200, dtype=np.uint8)
+    img[220:260, 300:340] = (0, 0, 220)  # 40x40 = 1600 px red patch at real optical center
+    ok, enc = cv2.imencode('.jpg', img)
+    assert ok
+    jpeg = enc.tobytes()
+
+    # +14 deg steeper-downward real camera -> warped sim view moves center object DOWN (cy_out > 240)
+    # and f_real=515.7 < f_sim~620.8 zooms the patch IN (area_out > 1600).
+    warp = SimCameraWarp(f_real=515.7, pitch_offset_deg=14.0)
+    out_jpeg = warp(jpeg)
+    out_img = cv2.imdecode(np.frombuffer(out_jpeg, np.uint8), cv2.IMREAD_COLOR)
+    assert out_img.shape == (480, 640, 3)
+    red_mask = (out_img[:, :, 2] > 180) & (out_img[:, :, 0] < 60)
+    ys, xs = np.nonzero(red_mask)
+    assert len(ys) > 2000  # ~1.45x area boost from f_sim/f_real
+    assert float(ys.mean()) > 340.0  # shifted significantly downward from y=240
+    assert abs(float(xs.mean()) - 287.7) < 5.0  # real center (320) maps onto sim principal point cx_sim~287.7
+
+    # Validation
+    with pytest.raises(ValueError):
+        SimCameraWarp(f_real=0.0, pitch_offset_deg=14.0)
+    with pytest.raises(ValueError):
+        SimCameraWarp(f_real=515.7, pitch_offset_deg=90.0)
+    with pytest.raises(ValueError):
+        SimCameraWarp(f_real=515.7, pitch_offset_deg=float('nan'))
+    with pytest.raises(ValueError):
+        warp.warp_image(np.zeros((240, 320, 3), dtype=np.uint8))
+
+    # RealIO frame_transform hook
+    class Source:
+        def grab(self):
+            return time.monotonic(), jpeg, 640, 480
+
+    board = FakeBoard()
+    ex = Executor(board, calibration.parse(TEST_CAL), lambda e: None)
+    server = Server(ex, '127.0.0.1', 0)
+    st = threading.Thread(target=server.serve_forever, daemon=True); st.start()
+    stop, ready, addr = threading.Event(), threading.Event(), []
+    ct = threading.Thread(target=camera.serve, args=(Source(), '127.0.0.1', 0),
+                          kwargs=dict(period_s=0.05, stop=stop, ready=ready, address=addr), daemon=True)
+    ct.start(); ready.wait(2)
+    io = RealIO('127.0.0.1', cmd_port=server.address[1], cam_port=addr[0][1], frame_transform=warp)
+    try:
+        io.start(INIT, settle_s=0.05)
+        got = io.frame()
+        got_img = cv2.imdecode(np.frombuffer(got, np.uint8), cv2.IMREAD_COLOR)
+        ys_io, _ = np.nonzero((got_img[:, :, 2] > 180) & (got_img[:, :, 0] < 60))
+        assert float(ys_io.mean()) > 340.0
+    finally:
+        io.close()
+        stop.set(); server.running = False
+        st.join(timeout=1); ct.join(timeout=1)
+
+    # CLI flags default off, accept warp parameters
+    parser = rst.build_parser()
+    a_def = parser.parse_args(['pick', '--side', 'real', '--host', 'ras2', '--out', '/tmp/x'])
+    assert a_def.sim_camera_warp is False
+    a_on = parser.parse_args(['pick', '--side', 'real', '--host', 'ras2', '--out', '/tmp/x',
+                              '--sim-camera-warp', '--camera-f-real', '450.0', '--camera-warp-pitch-deg', '14.0'])
+    assert a_on.sim_camera_warp is True
+    assert a_on.camera_f_real == pytest.approx(450.0)
+    assert a_on.camera_warp_pitch_deg == pytest.approx(14.0)
+
+
+def test_unified_calibration_servos_camera_vision_and_adapter(tmp_path, monkeypatch):
+    import json
+    import numpy as np
+    cv2 = pytest.importorskip('cv2')
+    from real_robot.adapter import Sim2RealAdapter
+    from real_robot.camera_warp import SimCameraWarp
+    from scripts import real_skill_test as rst
+
+    full_cal = dict(
+        TEST_CAL,
+        servos={
+            '1': {'offset_pwm': -25, 'min_pwm': 600, 'max_pwm': 2400},
+            '4': {'offset_pwm': 40, 'min_pwm': 500, 'max_pwm': 2500},
+        },
+        camera={
+            'enabled': True,
+            'f_real': 450.0,
+            'pitch_offset_deg': 14.0,
+            'yaw_offset_deg': 5.0,
+            'roll_offset_deg': -3.0,
+            'cx_real': 320.0,
+            'cy_real': 240.0,
+            'd_real': None,
+            'jpeg_quality': 88,
+        },
+        vision={
+            'red_hue_max': 0,
+            'red_sat_min': 185,
+            'area_scale': 1.0,
+            'camera_pitch_offset_deg': 0.0,
+        },
+    )
+    cal = calibration.parse(full_cal)
+
+    # Servo offset & safe clamp (never crashes at boundary 2500 + 40 -> 2500 with clamped=True)
+    assert cal.servo_pwm(1, 2000) == (1975, False)
+    assert cal.servo_pwm(1, 610) == (600, True)
+    assert cal.servo_pwm(4, 2500) == (2500, True)
+    assert cal.servo_pwm(5, 1320) == (1320, False)
+
+    # Executor writes physical PWM while tracking sim PWM for slew delta
+    clock = Clock()
+    board = FakeBoard(clock)
+    events = []
+    ex = Executor(board, cal, events.append)
+    ex.initialize_servos(INIT, 1.0, clock())
+    init_servos = {w[1]: w[2] for w in board.writes if w[0] == 'servo'}
+    assert init_servos[1] == 1975 and init_servos[4] == 2360 and init_servos[5] == 1320
+    assert ex.pwm[1] == 2000 and ex.pwm[4] == 2320
+    board.writes.clear()
+    ev = ex.apply(1, row(0.1, pwm=dict(INIT, **{'4': 2500})), clock())
+    assert ev['status'] == 'applied'
+    assert [w for w in board.writes if w[0] == 'servo'] == [('servo', 4, 2500, 90, clock())]
+    assert ev['servos'][0]['sim_pwm'] == 2500 and ev['servos'][0]['pwm'] == 2500 and ev['servos'][0]['clamped'] is True
+
+    # Camera yaw/roll sign: +yaw means real camera pointed right -> center object shifts right (+x) in warped sim view
+    img = np.full((480, 640, 3), 200, dtype=np.uint8)
+    img[220:260, 300:340] = (0, 0, 220)
+    ok, enc = cv2.imencode('.jpg', img)
+    assert ok
+    w0 = SimCameraWarp(f_real=515.7, pitch_offset_deg=0.0, yaw_offset_deg=0.0)
+    wy = SimCameraWarp(f_real=515.7, pitch_offset_deg=0.0, yaw_offset_deg=8.0)
+    i0 = cv2.imdecode(np.frombuffer(w0(enc.tobytes()), np.uint8), cv2.IMREAD_COLOR)
+    iy = cv2.imdecode(np.frombuffer(wy(enc.tobytes()), np.uint8), cv2.IMREAD_COLOR)
+    x0 = float(np.nonzero((i0[:, :, 2] > 180) & (i0[:, :, 0] < 60))[1].mean())
+    xy = float(np.nonzero((iy[:, :, 2] > 180) & (iy[:, :, 0] < 60))[1].mean())
+    assert xy > x0 + 50.0
+
+    # Sim2RealAdapter from file + CLI --calibration loading and overrides
+    cal_file = tmp_path / 'ras2_test.json'
+    cal_file.write_text(json.dumps(full_cal))
+    adapter = Sim2RealAdapter.from_file(cal_file)
+    assert adapter.frame_transform is not None
+    assert adapter.vision_env() == {'UGRP_RED_HUE_MAX': '0', 'UGRP_RED_SAT_MIN': '185'}
+
+    import os
+    monkeypatch.delenv('UGRP_RED_HUE_MAX', raising=False)
+    monkeypatch.delenv('UGRP_RED_SAT_MIN', raising=False)
+    with adapter.vision_context():
+        assert os.environ['UGRP_RED_HUE_MAX'] == '0'
+        assert os.environ['UGRP_RED_SAT_MIN'] == '185'
+    assert 'UGRP_RED_HUE_MAX' not in os.environ and 'UGRP_RED_SAT_MIN' not in os.environ
+
+    parser = rst.build_parser()
+    a_cal = parser.parse_args(['pick', '--side', 'real', '--host', 'ras2', '--calibration', str(cal_file), '--out', '/tmp/x'])
+    ad_cal = rst._build_adapter(a_cal)
+    assert ad_cal.frame_transform is not None and ad_cal.camera.f_real == pytest.approx(450.0)
+    assert ad_cal.vision.red_hue_max == 0 and ad_cal.vision.red_sat_min == 185
+
+    # Explicit CLI overrides win over --calibration
+    a_ovr = parser.parse_args([
+        'pick', '--side', 'real', '--host', 'ras2', '--calibration', str(cal_file),
+        '--no-sim-camera-warp', '--red-sat-min', '200', '--out', '/tmp/x',
+    ])
+    ad_ovr = rst._build_adapter(a_ovr)
+    assert ad_ovr.frame_transform is None and ad_ovr.vision.red_sat_min == 200 and ad_ovr.vision.red_hue_max == 0
+
+
+def test_red_sat_min_rejects_skin_and_keeps_red_cube(monkeypatch):
+    import importlib.util
+    from pathlib import Path
+    import numpy as np
+    cv2 = pytest.importorskip('cv2')
+
+    ac_spec = importlib.util.spec_from_file_location(
+        'test_ac_red_sat', Path('solo_pipeline/harness/approach_survey_v1_parts/approach_core.py'))
+    ac = importlib.util.module_from_spec(ac_spec)
+    ac_spec.loader.exec_module(ac)
+
+    seg_spec = importlib.util.spec_from_file_location(
+        'test_seg_red_sat', Path('solo_pipeline/harness/seg_frontend_v1.py'))
+    seg = importlib.util.module_from_spec(seg_spec)
+    seg_spec.loader.exec_module(seg)
+
+    # Synthetic 640x480 with a bright red cube (S~223) and a lower-saturation skin-like patch (S~165, H=178)
+    img_bgr = np.full((480, 640, 3), 220, dtype=np.uint8)
+    img_bgr[280:360, 400:480] = (34, 23, 181)  # cube: H=178, S~223, V=181
+    img_bgr[180:260, 100:180] = (50, 46, 130)  # skin-like: H=178, S~165, V=130
+    ok, enc = cv2.imencode('.jpg', img_bgr)
+    assert ok
+    jpeg = enc.tobytes()
+
+    monkeypatch.delenv(ac.RED_SAT_MIN_ENV, raising=False)
+    ac.set_red_sat_min(None)
+    seg.set_red_sat_min(None)
+    assert len(ac.components(jpeg, 'red')) == 2  # default S > 150 matches both
+
+    monkeypatch.setenv(ac.RED_SAT_MIN_ENV, '185')
+    comps = ac.components(jpeg, 'red')
+    assert len(comps) == 1 and comps[0]['cx'] == pytest.approx(440.0, abs=3.0)
+
+    rgb_small = cv2.cvtColor(cv2.resize(img_bgr, (320, 240), interpolation=cv2.INTER_AREA), cv2.COLOR_BGR2RGB)
+    seg_out = seg.segment(rgb_small.transpose(2, 0, 1), 'red').transpose(1, 2, 0)
+    assert tuple(seg_out[160, 220].tolist()) == seg.TARGET
+    assert tuple(seg_out[110, 70].tolist()) == seg.FLOOR
+
+
+def test_calibrate_real_robot_diagonal_trim_and_root_solver():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location('cal_helper', 'scripts/calibrate_real_robot.py')
+    ch = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(ch)
+
+    # Idempotent diagonal trim
+    t1 = ch.apply_diagonal_trim(TEST_CAL, 6.0)
+    assert t1['wheels']['front_left']['points'] == [[0.31, 40.0], [0.40, 60.0]]
+    assert t1['wheels']['front_right']['points'] == [[0.31, 46.0], [0.40, 66.0]]
+    assert t1['wheels']['rear_left']['points'] == [[0.31, 46.0], [0.40, 66.0]]
+    assert t1['wheels']['rear_right']['points'] == [[0.31, 40.0], [0.40, 60.0]]
+    # Applying again with 4.0 replaces (not adds to) previous 6.0
+    t2 = ch.apply_diagonal_trim(t1, 4.0)
+    assert t2['wheels']['front_right']['points'] == [[0.31, 44.0], [0.40, 64.0]]
+
+    # Root solver interpolates zero-crossing cleanly
+    root = ch.solve_zero_drift_delta([(0.0, -30.0), (4.0, -10.0), (8.0, 10.0)])
+    assert root == pytest.approx(6.0)
+
+    # Real robot configs ras2.json and ugrp1.json both parse cleanly with unified sections
+    ras2 = calibration.load('configs/real_robot/ras2.json')
+    ugrp1 = calibration.load('configs/real_robot/ugrp1.json')
+    assert ras2.camera.enabled is True and ras2.camera.pitch_offset_deg == 14.0 and ras2.vision.red_sat_min == 185
+    assert ugrp1.camera.enabled is True and ugrp1.camera.pitch_offset_deg == 8.0 and ugrp1.vision.red_hue_max == 0
+
+
+def test_preflight_check_detects_ok_missing_clipped_and_too_close():
+    import numpy as np
+    cv2 = pytest.importorskip('cv2')
+    from real_robot.adapter import Sim2RealAdapter
+    from scripts import real_skill_test as rst
+
+    adapter = Sim2RealAdapter.from_file('configs/real_robot/ras2.json')
+
+    def make_jpg(rect=None):
+        img = np.full((480, 640, 3), 220, dtype=np.uint8)
+        if rect is not None:
+            x0, y0, x1, y1 = rect
+            img[y0:y1, x0:x1] = (34, 23, 181)  # high-saturation red cube
+        ok, enc = cv2.imencode('.jpg', img)
+        assert ok
+        return enc.tobytes()
+
+    # 1. Missing cube
+    pf_miss = adapter.preflight_check(make_jpg(None), 'red', already_warped=True)
+    assert pf_miss['ok'] is False and pf_miss['reason'] == 'no_target_blob'
+
+    # 2. Clipped at bottom edge (like ras2-pick-05 frame 0)
+    pf_clip = adapter.preflight_check(make_jpg((240, 410, 320, 480)), 'red', already_warped=True)
+    assert pf_clip['ok'] is False and pf_clip['reason'] == 'clipped'
+
+    # 3. Too close (huge whole blob ~20000 px -> d_hat ~0.20 m < 0.28 m)
+    pf_close = adapter.preflight_check(make_jpg((220, 180, 365, 325)), 'red', already_warped=True)
+    assert pf_close['ok'] is False and pf_close['reason'] == 'too_close'
+
+    # 4. Good placement (~50x50 = 2500 px -> d_hat ~0.58 m, centered, whole)
+    pf_ok = adapter.preflight_check(make_jpg((265, 220, 315, 270)), 'red', already_warped=True)
+    assert pf_ok['ok'] is True and pf_ok['reason'] == 'ok' and 0.45 <= pf_ok['best']['d_hat_m'] <= 0.70
+
+    # CLI flag
+    parser = rst.build_parser()
+    assert parser.parse_args(['pick', '--side', 'real', '--host', 'ras2', '--out', '/tmp/x']).preflight is False
+    assert parser.parse_args(['pick', '--side', 'real', '--host', 'ras2', '--preflight', '--out', '/tmp/x']).preflight is True
+
+
+def test_wheel_trim_diag_and_yaw_plus_fit_camera_from_cube_samples():
+    import importlib.util
+    pytest.importorskip('cv2')
+    spec = importlib.util.spec_from_file_location('cal_helper_ext', 'scripts/calibrate_real_robot.py')
+    ch = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(ch)
+
+    # Combined diagonal (+4) and yaw (+2) trim: FR gets highest boost, FL stays at base 40.0
+    t = ch.apply_wheel_trim(TEST_CAL, diag_delta=4.0, yaw_delta=2.0)
+    assert t['wheels']['front_left']['points'][0][1] == pytest.approx(40.0)
+    assert t['wheels']['front_right']['points'][0][1] == pytest.approx(46.0)
+    assert t['wheels']['rear_left']['points'][0][1] == pytest.approx(44.0)
+    assert t['wheels']['rear_right']['points'][0][1] == pytest.approx(42.0)
+    # Re-applying with zeros restores exact symmetric base curve (idempotent)
+    t0 = ch.apply_wheel_trim(t, diag_delta=0.0, yaw_delta=0.0)
+    for w in ('front_left', 'front_right', 'rear_left', 'rear_right'):
+        assert t0['wheels'][w]['points'] == [[0.31, 40.0], [0.40, 60.0]]
+
+    # fit_camera_from_cube_samples reproduces ras2-like f_real ~ 450 and positive pitch offset
+    # At d=0.45 m, 30mm cube with f_geom~515 has side ~34.3 px (area ~1180); at d=0.25 m, area ~3820.
+    fitted = ch.fit_camera_from_cube_samples([
+        {'distance_m': 0.25, 'cx': 320.0, 'cy': 300.0, 'area_px': 7130.0, 'y1': 342.0},
+        {'distance_m': 0.45, 'cx': 320.0, 'cy': 220.0, 'area_px': 2200.0, 'y1': 243.0},
+    ])
+    assert 435.0 <= fitted['f_real'] <= 465.0
+    assert fitted['pitch_offset_deg'] > 5.0
+    assert abs(fitted['yaw_offset_deg']) < 0.5

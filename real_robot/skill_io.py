@@ -121,11 +121,15 @@ class SimIO:
 
 
 class RealIO:
-    def __init__(self, host, *, cmd_port=8765, cam_port=8766, timeout_s=3.0):
+    def __init__(self, host, *, cmd_port=8765, cam_port=8766, timeout_s=3.0, frame_transform=None, adapter=None):
         from real_robot.server import RobotLink
         from real_robot.camera import CameraLink
         self.robot = RobotLink(host, cmd_port, timeout_s)
         self.camera = CameraLink(host, cam_port, timeout_s)
+        self.adapter = adapter
+        self.frame_transform = frame_transform if frame_transform is not None else (
+            adapter.frame_transform if adapter is not None else None
+        )
         self.tick = 0
         self.t_wall0 = None
         self.last_frame_id = None
@@ -150,6 +154,8 @@ class RealIO:
         header, jpeg = self.camera.newest()
         self.last_frame_id = header['frame_id']
         self._header = header
+        if self.frame_transform is not None:
+            jpeg = self.frame_transform(jpeg)
         return jpeg
 
     def send(self, row):
