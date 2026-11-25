@@ -1,0 +1,357 @@
+{
+ "schema": "mapgen.scenes.v1",
+ "scenes": [
+  {
+   "id": "P2F_N03_S10",
+   "type": "phase2_tworoom",
+   "type_code": "P2",
+   "control": false,
+   "schema": "mapgen.scene.v1",
+   "family": "tworoom",
+   "n_robots": 3,
+   "seed": 10,
+   "profile": "strict",
+   "time_model": "path",
+   "arena": {
+    "bounds": [
+     -1.05,
+     6.0,
+     -3.6,
+     1.45
+    ],
+    "wall_half": 0.025,
+    "wall_height": 0.4,
+    "rooms": [
+     {
+      "id": "B1",
+      "kind": "box",
+      "name": "box room",
+      "rect": [
+       -1.05,
+       3.05,
+       -3.6,
+       1.45
+      ]
+     },
+     {
+      "id": "D1",
+      "kind": "dest",
+      "name": "destination room",
+      "rect": [
+       3.05,
+       6.0,
+       -3.6,
+       1.45
+      ]
+     }
+    ],
+    "walls": [
+     {
+      "id": "wall_north",
+      "a": [
+       -1.05,
+       1.45
+      ],
+      "b": [
+       6.0,
+       1.45
+      ],
+      "kind": "outer"
+     },
+     {
+      "id": "wall_south",
+      "a": [
+       -1.05,
+       -3.6
+      ],
+      "b": [
+       6.0,
+       -3.6
+      ],
+      "kind": "outer"
+     },
+     {
+      "id": "wall_west",
+      "a": [
+       -1.05,
+       -3.6
+      ],
+      "b": [
+       -1.05,
+       1.45
+      ],
+      "kind": "outer"
+     },
+     {
+      "id": "wall_east",
+      "a": [
+       6.0,
+       -3.6
+      ],
+      "b": [
+       6.0,
+       1.45
+      ],
+      "kind": "outer"
+     },
+     {
+      "id": "wall_divider_1",
+      "a": [
+       3.05,
+       -3.6
+      ],
+      "b": [
+       3.05,
+       -1.35
+      ],
+      "kind": "divider"
+     },
+     {
+      "id": "wall_divider_2",
+      "a": [
+       3.05,
+       -0.85
+      ],
+      "b": [
+       3.05,
+       1.45
+      ],
+      "kind": "divider"
+     }
+    ],
+    "doors": [
+     {
+      "centre": [
+       3.05,
+       -1.1
+      ],
+      "axis": "x",
+      "width": 0.5,
+      "lanes": 1,
+      "rooms": [
+       "B1",
+       "D1"
+      ],
+      "id": "door_1"
+     }
+    ],
+    "signs": [
+     {
+      "number": 11,
+      "room": "D1",
+      "wall": "east",
+      "pos": [
+       5.972,
+       -1.05
+      ],
+      "facing": "-x",
+      "face": 5.975,
+      "size": 0.25,
+      "area": [
+       5.32,
+       5.975,
+       -1.55,
+       -0.55
+      ],
+      "drop": [
+       5.67,
+       -1.05
+      ],
+      "stand": [
+       5.345,
+       -1.05
+      ]
+     },
+     {
+      "number": 12,
+      "room": "D1",
+      "wall": "south",
+      "pos": [
+       3.9,
+       -3.572
+      ],
+      "facing": "+y",
+      "face": -3.575,
+      "size": 0.25,
+      "area": [
+       3.4,
+       4.4,
+       -3.575,
+       -2.92
+      ],
+      "drop": [
+       3.9,
+       -3.27
+      ],
+      "stand": [
+       3.9,
+       -2.945
+      ]
+     },
+     {
+      "number": 13,
+      "room": "D1",
+      "wall": "east",
+      "pos": [
+       5.972,
+       0.6
+      ],
+      "facing": "-x",
+      "face": 5.975,
+      "size": 0.25,
+      "area": [
+       5.32,
+       5.975,
+       0.1,
+       1.1
+      ],
+      "drop": [
+       5.67,
+       0.6
+      ],
+      "stand": [
+       5.345,
+       0.6
+      ]
+     }
+    ],
+    "family": "tworoom",
+    "markers": {
+     "dictionary": "DICT_4X4_50",
+     "dictionary_size": 50,
+     "sign_ids": [
+      11,
+      12,
+      13
+     ],
+     "robot_side_id0": 20,
+     "robot_top_id0": 40,
+     "max_id": 42,
+     "legacy_allocation": true
+    }
+   },
+   "boxes": [
+    {
+     "id": "a",
+     "colour": "red",
+     "x": 0.97,
+     "y": -1.79,
+     "room": "B1"
+    },
+    {
+     "id": "b",
+     "colour": "red",
+     "x": 0.06,
+     "y": -2.74,
+     "room": "B1"
+    },
+    {
+     "id": "c",
+     "colour": "red",
+     "x": 0.01,
+     "y": -1.55,
+     "room": "B1"
+    },
+    {
+     "id": "d",
+     "colour": "blue",
+     "x": 0.39,
+     "y": -0.63,
+     "room": "B1"
+    },
+    {
+     "id": "e",
+     "colour": "blue",
+     "x": -0.01,
+     "y": 0.89,
+     "room": "B1"
+    }
+   ],
+   "robots": [
+    {
+     "rid": "r1",
+     "x": 0.14,
+     "y": 0.23,
+     "yaw": 1.5235,
+     "room": "B1"
+    },
+    {
+     "rid": "r2",
+     "x": -0.65,
+     "y": -2.97,
+     "yaw": 0.1355,
+     "room": "B1"
+    },
+    {
+     "rid": "r3",
+     "x": 1.03,
+     "y": -0.95,
+     "yaw": 2.9006,
+     "room": "B1"
+    }
+   ],
+   "orders": [
+    {
+     "id": "o1",
+     "colour": "red",
+     "count": 1,
+     "sign": 11
+    },
+    {
+     "id": "o3",
+     "colour": "red",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o4",
+     "colour": "blue",
+     "count": 1,
+     "sign": 12
+    },
+    {
+     "id": "o5",
+     "colour": "red",
+     "count": 1,
+     "sign": 13
+    }
+   ],
+   "knows": {
+    "r1": [
+     "o1",
+     "o3",
+     "o4",
+     "o5"
+    ],
+    "r2": [
+     "o1",
+     "o3",
+     "o4",
+     "o5"
+    ],
+    "r3": [
+     "o1",
+     "o3",
+     "o4",
+     "o5"
+    ]
+   },
+   "constraints": [
+    {
+     "id": "k1",
+     "type": "order",
+     "orders": [
+      "o1",
+      "o4"
+     ],
+     "known_by": [
+      "r1",
+      "r2",
+      "r3"
+     ]
+    }
+   ],
+   "max_trips_per_robot": 2
+  }
+ ]
+}
