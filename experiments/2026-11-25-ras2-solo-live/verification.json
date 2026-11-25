@@ -1,0 +1,47 @@
+{
+  "scope": "Experimental Windows-to-ras2 Solo pipeline adapter; no physical trial performed",
+  "published_source_sha": "240faec8244c5cee1c91fa69f3e0ff9a5471be94",
+  "release_tag": "solo-v1-20261114",
+  "release_assets": {
+    "solo-pipeline-code.zip": "79cb2365880cbca73a80c53f39fbcbc9df570c920f2df79695e0cfb1d5406575",
+    "solo-act-model-gseg-step4000.zip": "74b1213b07fcc3ec5cc286be3c44a310ebe2fea2d80ae2057c0b290977a4fea7"
+  },
+  "hardware_driver_sha": "d924f3f255fc271d7a5579727bc021b03af12e89",
+  "prototype_choices": {
+    "target": "nearest observed object of requested color",
+    "camera_calibration": "published SIM intrinsics/extrinsics, ras2 calibration unverified",
+    "wheel_conversion": "explicit min(nonzero)=35; retained pulse lengths; inverse motor permutation",
+    "inference_scheduling": "pause for a chunk prediction with local pulse expiry; actual time logged",
+    "success": "own-issued-command completion only; physical lift not automatically scored"
+  },
+  "checks": {
+    "motor_mapping_and_validation": "passed",
+    "pulse_expiry_preemption_and_link_timeout": "passed",
+    "stop_on_i2c_failure": "passed",
+    "published_model": "loaded",
+    "image_frontend": "seg5_v1",
+    "model_chunk_shape": [
+      8,
+      14
+    ],
+    "inference_seconds": [
+      0.7189999999991414,
+      0.625,
+      0.6869999999998981
+    ],
+    "live_pipeline_simulated_frames": "121 valid ticks, terminal=not_found",
+    "physical_commands_sent": 0,
+    "physical_grasp_success": null
+  },
+  "files": {
+    "run_ras2_solo.ps1": "57e86dfc8a6e05a9b112ecd7f1526b2e0a54128cf4e0039d5bb4bde475e502e7",
+    "source/pi_bridge.py": "422f74a5c005c95a1fcd974220ffce260ca54c1a35484e99fcb01466088bd42c",
+    "source/prepare.py": "16f54c2f1b8cc2ec0aa38e2e7e808ab6846136aac207968f43f1bea080c8f26e",
+    "source/run.py": "6c709430c57a2a80781202b0bee3e3fda1b313bb54799a0ef3636cd94fedc74a",
+    "source/verify.py": "9d4264a3e9e25d4155f8cc28358cb4f1c9b8d3e1514d5eae5fb63e9ff812fc06",
+    "dependencies/grasp_act_data.py": "2f09ee7fe13bd8b2423500783d5b91d05490020600f40cbafb3c1233a5e6e3bd",
+    "dependencies/grasp_act_loss.py": "d9dd54c32613f56b63d1f8a641b1156a1e7f925afd36e0c5ff68f3febd53dc52",
+    "dependencies/json_encoding.py": "55698b6b6ced12f62cdc00d57d9a84b76c29d7c9b7f0a37ee0fff4db29137832"
+  },
+  "raw_location": "C:\\Users\\kevin\\Documents\\ChatGPT\\UGRP\\outputs\\ras2-solo-pipeline"
+}
