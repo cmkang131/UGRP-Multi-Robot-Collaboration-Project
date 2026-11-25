@@ -12,7 +12,7 @@ import socket
 import sys
 import threading
 import time
-import urllib.request
+from camera_source import CameraSource
 
 SERVOS = {'1', '3', '4', '5', '6'}
 
@@ -107,6 +107,7 @@ def main():
     control = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(control)
     lease, hardware = None, None
+    camera = CameraSource()
 
     def emit(value):
         print(json.dumps(value, allow_nan=False), flush=True)
@@ -140,11 +141,9 @@ def main():
                 hardware.heartbeat = time.monotonic()
             op = request.get('op')
             if op == 'observe':
-                with urllib.request.urlopen('http://127.0.0.1:8080/snapshot', timeout=2.) as response:
-                    jpeg = response.read(2_000_000)
-                if not jpeg.startswith(b'\xff\xd8'):
-                    raise ValueError('Camera did not return JPEG')
-                emit({'t': time.monotonic(), 'jpeg': base64.b64encode(jpeg).decode('ascii')})
+                jpeg, received = camera.read()
+                emit({'t': received, 'jpeg': base64.b64encode(jpeg).decode('ascii'),
+                      'source': camera.source})
             elif op == 'command' and hardware:
                 with contextlib.redirect_stdout(sys.stderr):
                     result = hardware.apply(request)
@@ -166,8 +165,11 @@ def main():
                         hardware.thread.join(timeout=3.)
                     hardware.stop()
             finally:
-                if lease:
-                    lease.close()
+                try:
+                    camera.close()
+                finally:
+                    if lease:
+                        lease.close()
 
 
 if __name__ == '__main__':

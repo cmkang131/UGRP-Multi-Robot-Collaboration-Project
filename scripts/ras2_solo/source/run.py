@@ -81,7 +81,9 @@ class Link:
             raise ValueError('Existing hardware driver archive checksum mismatch')
         with tarfile.open(control_archive) as archived:
             driver = archived.extractfile('masterpi_control.py').read()
-        files = {'masterpi_control.py': driver, 'pi_bridge.py': Path(__file__).with_name('pi_bridge.py').read_bytes()}
+        files = {'masterpi_control.py': driver,
+                 'pi_bridge.py': Path(__file__).with_name('pi_bridge.py').read_bytes(),
+                 'camera_source.py': Path(__file__).with_name('camera_source.py').read_bytes()}
         signature = hashlib.sha256(b''.join(files.values())).hexdigest()
         with tarfile.open(fileobj=package, mode='w:gz') as bundle:
             manifest = ''.join(f'{hashlib.sha256(data).hexdigest()}  {name}\n' for name, data in files.items())
@@ -201,13 +203,16 @@ def main():
         if actor.image_frontend != 'seg5_v1':
             raise ValueError('Wrong actor preprocessing')
         link = Link(args.host, args.user, output, args.execute, args.seconds, args.expected_host)
+        report['hardware'] = link.ready
         frame = link.request({'op': 'observe'})
+        report['camera_source'] = frame.get('source', 'unspecified')
         jpeg = base64.b64decode(frame['jpeg'], validate=True)
         from harness.grasp_act_data import image_array
         image_array(jpeg)  # enforce the trained 640x480 camera input
         (output / 'first-frame.jpg').write_bytes(jpeg)
         report['hardware'] = link.ready
         print(f"{link.ready['host']} connected, camera 640x480, battery {link.ready['probe'].get('battery_mv')} mV", flush=True)
+        print(f"Camera source: {report['camera_source']}", flush=True)
         initial = {'t': frame['t'], 'wheels': [0.] * 4, 'duration_s': [0.] * 4,
                    'pwm': {str(k): v for k, v in FAR_POSTURE.items()}}
         if not args.execute:

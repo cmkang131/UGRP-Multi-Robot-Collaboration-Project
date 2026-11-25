@@ -4,6 +4,12 @@ Target: ras2 at 192.168.137.11; red 30 mm cube. The published Solo release suppl
 survey, approach, alignment and the seg5 ACT step4000 grasp model. Inference runs
 on the Windows laptop; the owned Pi process supplies images and drives hardware.
 
+Camera input uses the existing local snapshot server when available. When that
+server cannot be reached, the owned Pi session opens `/dev/video0` with OpenCV
+V4L2 at 640x480 and releases it when the session ends. It starts no standalone
+camera service and does not terminate another camera owner. Pi python3 needs
+OpenCV for this fallback. The result records which camera source was used.
+
 Current status: the camera-history crash is fixed. The latest recorded ras2 trial
 failed alignment with `quality_exhausted` and never reached ACT. There is no
 verified physical pick success. Camera geometry and pulse travel still need real
