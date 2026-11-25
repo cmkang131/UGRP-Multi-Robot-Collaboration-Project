@@ -33,7 +33,9 @@ def board_command(value, minimum):
 
 
 class Link:
-    def __init__(self, host, user, output, execute, seconds):
+    def __init__(self, host, user, output, execute, seconds, expected_host='ras2'):
+        if expected_host not in ('ras2', 'ugrp1'):
+            raise ValueError('Unsupported expected robot hostname')
         self.process = None
         self.stderr = (output / 'ssh-stderr.log').open('w', encoding='utf-8')
         self.ssh = ['ssh', '-T', '-o', 'ConnectTimeout=8', '-o', 'StrictHostKeyChecking=accept-new',
@@ -61,7 +63,7 @@ class Link:
         except BaseException:
             self.stderr.close()
             raise
-        command = f'cd {remote} && exec python3 -u pi_bridge.py --control masterpi_control.py --seconds {seconds + 30}'
+        command = f'cd {remote} && exec python3 -u pi_bridge.py --control masterpi_control.py --seconds {seconds + 30} --expected-host {expected_host}'
         if execute:
             command += ' --execute'
         self.process = subprocess.Popen([*self.ssh, command], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
@@ -130,6 +132,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--host', default='192.168.137.11')
     parser.add_argument('--user', required=True)
+    parser.add_argument('--expected-host', choices=('ras2', 'ugrp1'), default='ras2')
     parser.add_argument('--target', choices=('red', 'cyan'), default='red')
     parser.add_argument('--execute', action='store_true')
     parser.add_argument('--seconds', type=float, default=240.)
@@ -145,6 +148,7 @@ def main():
     output = ROOT / 'runs' / time.strftime('%Y%m%d-%H%M%S')
     output.mkdir(parents=True, exist_ok=False)
     report = {'mode': 'execute' if args.execute else 'check', 'target': args.target,
+              'expected_host': args.expected_host, 'address': args.host,
               'model': 'solo-act-model-gseg-step4000', 'image_frontend': 'seg5_v1',
               'camera_geometry': 'published SIM reference; ras2 calibration pending',
               'wheel_projection': 'experimental nonzero floor 35, original pulse widths, inverse motor permutation',
@@ -157,14 +161,14 @@ def main():
         actor = GraspActor.load(ROOT / 'runtime/actor', device='cpu')
         if actor.image_frontend != 'seg5_v1':
             raise ValueError('Wrong actor preprocessing')
-        link = Link(args.host, args.user, output, args.execute, args.seconds)
+        link = Link(args.host, args.user, output, args.execute, args.seconds, args.expected_host)
         frame = link.request({'op': 'observe'})
         jpeg = base64.b64decode(frame['jpeg'], validate=True)
         from harness.grasp_act_data import image_array
         image_array(jpeg)  # enforce the trained 640x480 camera input
         (output / 'first-frame.jpg').write_bytes(jpeg)
         report['hardware'] = link.ready
-        print(f"ras2 connected, camera 640x480, battery {link.ready['probe'].get('battery_mv')} mV", flush=True)
+        print(f"{link.ready['host']} connected, camera 640x480, battery {link.ready['probe'].get('battery_mv')} mV", flush=True)
         initial = {'t': frame['t'], 'wheels': [0.] * 4, 'duration_s': [0.] * 4,
                    'pwm': {str(k): v for k, v in FAR_POSTURE.items()}}
         if not args.execute:

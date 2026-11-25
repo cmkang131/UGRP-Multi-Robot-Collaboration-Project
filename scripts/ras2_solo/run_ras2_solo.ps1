@@ -1,6 +1,7 @@
 param(
     [string]$User = '',
     [string]$RobotAddress = '192.168.137.11',
+    [ValidateSet('ras2', 'ugrp1')][string]$RobotName = 'ras2',
     [ValidateSet('red', 'cyan')][string]$Target = 'red',
     [switch]$Execute,
     [ValidateRange(1,600)][int]$Seconds = 240
@@ -15,7 +16,7 @@ try {
     if (-not (Test-Path -LiteralPath $actPython)) {
         throw "Existing ACT Python environment missing: $actPython"
     }
-    if (-not $User) { $User = Read-Host 'ras2 SSH username' }
+    if (-not $User) { $User = Read-Host "$RobotName SSH username" }
     if ($User -notmatch '^[A-Za-z_][A-Za-z0-9_-]*$') { throw 'Invalid SSH username' }
     if ($RobotAddress -notmatch '^[A-Za-z0-9.-]+$') { throw 'Invalid robot address' }
 
@@ -24,7 +25,7 @@ try {
     & $actPython -m pip check
     if ($LASTEXITCODE -ne 0) { throw 'ACT dependency check failed' }
 
-    $credential = Read-Host 'ras2 SSH password' -AsSecureString
+    $credential = Read-Host "$RobotName SSH password" -AsSecureString
     $pointer = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($credential)
     $helper = Join-Path ([IO.Path]::GetTempPath()) ('ras2-askpass-' + [Guid]::NewGuid().ToString('N') + '.cmd')
     $savedEnvironment = @{}
@@ -39,9 +40,9 @@ try {
         $env:SSH_ASKPASS_REQUIRE = 'force'
         $env:DISPLAY = 'ras2-solo'
         $arguments = @((Join-Path $PSScriptRoot 'source\run.py'), '--host', $RobotAddress,
-                       '--user', $User, '--target', $Target, '--seconds', $Seconds)
+                       '--user', $User, '--expected-host', $RobotName, '--target', $Target, '--seconds', $Seconds)
         if ($Execute) {
-            Write-Host 'EXECUTE: ras2 will move its wheels, arm, gripper and camera.'
+            Write-Host "EXECUTE: $RobotName will move its wheels, arm, gripper and camera."
             Write-Host 'Experimental profile: published SIM camera geometry; nonzero wheel floor 35.'
             $arguments += '--execute'
         } else {

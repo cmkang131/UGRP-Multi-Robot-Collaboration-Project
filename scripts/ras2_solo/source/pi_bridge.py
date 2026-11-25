@@ -99,9 +99,10 @@ def main():
     parser.add_argument('--control', type=Path, required=True)
     parser.add_argument('--execute', action='store_true')
     parser.add_argument('--seconds', type=float, default=300)
+    parser.add_argument('--expected-host', choices=('ras2', 'ugrp1'), default='ras2')
     args = parser.parse_args()
-    if socket.gethostname().split('.')[0] != 'ras2':
-        raise RuntimeError('Connected hardware is not ras2')
+    if socket.gethostname().split('.')[0].lower() != args.expected_host:
+        raise RuntimeError(f'Connected hardware is not {args.expected_host}')
     spec = importlib.util.spec_from_file_location('masterpi_control', args.control)
     control = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(control)
