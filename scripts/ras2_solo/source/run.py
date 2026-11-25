@@ -19,7 +19,41 @@ sys.path.insert(0, str(ROOT / 'runtime' / 'solo_pipeline'))
 from harness import grasp_act_contract as contract
 from harness.approach_survey_v1 import FAR_POSTURE, SurveyApproach
 from harness.grasp_act_policy import GraspActor
-from harness.grasp_act_rollout import GraspTransitionRule, OwnHistory
+from harness.grasp_act_rollout import GraspTransitionRule, OwnHistory as PublishedOwnHistory
+
+
+class OwnHistory(PublishedOwnHistory):
+    """Bound real-time frame ages without changing the published input contract.
+
+    The fixed-tick SIM buffer retains one predecessor of its memory cutoff.
+    With real camera/SSH jitter that predecessor can exceed MEMORY_S + .15.
+    Drop expired frames before the published time-only sampler runs. During a
+    gap, its existing early-history padding uses the earliest remaining frame.
+    All references keep their original receive timestamps and JPEG hashes.
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.dropped_expired_frames = 0
+        self.last_audit = None
+
+    def observe(self, now, jpeg, **instruction):
+        now = contract.finite(now)
+        if self.frames and now < self.frames[-1][0]['t']:
+            raise ValueError('Live camera clock reversed')
+        if self.issued[-1]['t'] > now:
+            raise ValueError('Live camera timestamp precedes the last issued command')
+        dropped = 0
+        while self.frames and now - self.frames[0][0]['t'] > contract.MEMORY_S + .15:
+            self.frames.popleft()
+            dropped += 1
+        self.dropped_expired_frames += dropped
+        result = super().observe(now, jpeg, **instruction)
+        refs = result[0]['rgb']
+        self.last_audit = {'expired_frames_dropped': dropped,
+                           'expired_frames_dropped_total': self.dropped_expired_frames,
+                           'selected_image_ages_s': [now-r['t'] for r in refs],
+                           'timestamp_source': 'Pi snapshot receive monotonic time; not exposure time'}
+        return result
 
 
 def board_command(value, minimum):
@@ -154,7 +188,9 @@ def main():
               'wheel_projection': 'experimental nonzero floor 35, original pulse widths, inverse motor permutation',
               'timing': '10 Hz target; motors expire locally; inference pauses logged, no time compression',
               'physical_grasp_success': None, 'status': 'starting'}
-    link = None
+    link, approach, history = None, None, None
+    stage = 'starting'
+    issued_count = 0
     began = time.monotonic()
     try:
         print('Loading published seg5_v1 step4000 ACT model...', flush=True)
@@ -191,14 +227,21 @@ def main():
         phase = None
         (output / 'rgb/r1').mkdir(parents=True)
         run_start = time.monotonic()
+        last_capture_time = None
         with (output / 'events.jsonl').open('w', encoding='utf-8') as events:
             while time.monotonic() - run_start < args.seconds:
                 tick_start = time.monotonic()
                 frame = link.request({'op': 'observe'})
                 now = frame['t']
                 jpeg = base64.b64decode(frame['jpeg'], validate=True)
-                obs, pixels, relative = history.observe(now, jpeg, skill='grasp', object_kind=args.target, role='west')
+                # Preserve even a frame which later fails observation validation.
+                relative = f'rgb/r1/{history.index:06d}.jpg'
                 (output / relative).write_bytes(jpeg)
+                report['last_capture'] = {'t': now, 'path': relative,
+                                          'previous_gap_s': None if last_capture_time is None else now-last_capture_time,
+                                          'sha256': hashlib.sha256(jpeg).hexdigest()}
+                last_capture_time = now
+                obs, pixels, relative = history.observe(now, jpeg, skill='grasp', object_kind=args.target, role='west')
                 inference_s = 0.
                 if not approach.arrived:
                     stage = approach.stage
@@ -229,11 +272,15 @@ def main():
                     phase = stage
                 hardware, applied_wheels = board_command(requested, args.wheel_floor)
                 accepted = link.request(hardware)
+                issued_count += 1
                 issued = dict(requested, t=accepted['accepted_at'], wheels=applied_wheels,
                               pwm={key: accepted['pwm'][key] for key in requested['pwm']})
                 history.issue(issued)
                 events.write(json.dumps({'stage': stage, 'observation': obs, 'requested': requested,
-                                         'issued': issued, 'board': hardware, 'inference_s': inference_s}) + '\n')
+                                         'issued': issued, 'board': hardware, 'inference_s': inference_s,
+                                         'history_audit': history.last_audit,
+                                         'capture_gap_s': report['last_capture']['previous_gap_s'],
+                                         'approach_trace': approach.trace[-1] if stage == 'approach' and approach.trace else None}) + '\n')
                 events.flush()
                 if stage == 'ACT grasp' and rule.observe(issued['t'], issued):
                     report.update(status='grasp_command_sequence_complete',
@@ -247,11 +294,20 @@ def main():
         report.update(status='interrupted' if isinstance(error, KeyboardInterrupt) else 'failed', error=str(error))
         raise
     finally:
-        if link:
-            link.close()
-        report['wall_s'] = time.monotonic() - began
-        (output / 'result.json').write_text(json.dumps(report, indent=2), encoding='utf-8')
-        print(f'Log directory: {output}', flush=True)
+        try:
+            if link:
+                link.close()
+        finally:
+            report.update(wall_s=time.monotonic() - began, last_stage=stage,
+                          loop_commands_acknowledged=issued_count)
+            if history is not None:
+                report['history_audit'] = history.last_audit
+            if approach is not None:
+                (output / 'approach.json').write_text(json.dumps(approach.record(), indent=2), encoding='utf-8')
+                (output / 'approach-trace.json').write_text(json.dumps(approach.trace, indent=2), encoding='utf-8')
+                (output / 'alignment-trace.json').write_text(json.dumps(approach.alignment_trace(), indent=2), encoding='utf-8')
+            (output / 'result.json').write_text(json.dumps(report, indent=2), encoding='utf-8')
+            print(f'Log directory: {output}', flush=True)
 
 
 if __name__ == '__main__':
